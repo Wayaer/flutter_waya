@@ -1,0 +1,11 @@
+*.dart linguist-language=Dart
+*.h linguist-language=Dart
+*.m linguist-language=Dart
+*.html linguist-language=Dart
+*.xml linguist-language=Dart
+*.xml linguist-language=Dart
+*.java linguist-language=Dart
+*.md linguist-language=Dart
+*.cmd linguist-language=Dart
+*.dart linguist-language=Dart
+*.swift linguist-language=Dart
