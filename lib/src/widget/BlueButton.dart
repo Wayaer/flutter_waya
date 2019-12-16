@@ -24,7 +24,7 @@ class BlueButton extends StatelessWidget {
     return CustomButton(
       margin: margin,
       padding: padding,
-      text: text,
+      text: text ?? 'BlueButton',
       onTap: onTap,
       height: Utils.getHeight(35),
       width: width ?? Utils.getWidth() - Utils.getWidth(40),

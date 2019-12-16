@@ -14,6 +14,10 @@ enum DateType {
   monthSecond,
 }
 
+Log(String message) {
+  Utils.log(message);
+}
+
 class Utils {
   static Timer timerInfo;
 
