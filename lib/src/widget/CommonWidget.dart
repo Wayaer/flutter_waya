@@ -3,7 +3,7 @@ import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/src/utils/Utils.dart';
 
 class CommonWidget {
-  static Widget titleWidget(title) {
+  static Widget titleWidget(String title) {
     return Text(title,
         style: TextStyle(
             color: getColors(appBarTextColor),
@@ -14,9 +14,9 @@ class CommonWidget {
   //垂直线
   static Widget lineVertical(double height,
       {EdgeInsetsGeometry padding,
-      double width,
-      Color color,
-      EdgeInsetsGeometry margin}) {
+        double width,
+        Color color,
+        EdgeInsetsGeometry margin}) {
     return Container(
       height: height,
       width: width ?? Utils.getWidth(1),
@@ -29,9 +29,9 @@ class CommonWidget {
   //横线
   static Widget lineHorizontal(double width,
       {EdgeInsetsGeometry padding,
-      double height,
-      Color color,
-      EdgeInsetsGeometry margin}) {
+        double height,
+        Color color,
+        EdgeInsetsGeometry margin}) {
     return Container(
       height: height ?? Utils.getWidth(1),
       padding: padding,
@@ -47,9 +47,9 @@ class CommonWidget {
       margin: margin ?? EdgeInsets.all(100),
       child: Center(
           child: Text(
-        showText ?? "暂无数据",
-        style: textStyle ?? TextStyle(),
-      )),
+            showText ?? "暂无数据",
+            style: textStyle ?? TextStyle(),
+          )),
     );
   }
 }

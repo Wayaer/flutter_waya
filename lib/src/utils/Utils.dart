@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_waya/src/utils/MediaQueryUtils.dart';
+import 'package:oktoast/oktoast.dart';
 
 enum DateType {
   dateTime,
@@ -14,8 +15,8 @@ enum DateType {
   monthSecond,
 }
 
-Log(String message) {
-  Utils.log(message);
+log(message) {
+  Utils.log(message.toString());
 }
 
 class Utils {
@@ -178,11 +179,22 @@ class Utils {
     FocusScope.of(context).requestFocus(FocusNode());
   }
 
-  static timerUtils(Duration duration, [Function callback]) {
+  static timerUtils(Duration duration, [Function function]) {
     timerInfo = Timer(duration, () {
-      if (callback != null) callback();
+      if (function != null) function();
       timerInfo.cancel();
     });
+  }
+
+  static timePeriodic(Duration duration, [Function function]) {
+    //需要手动释放timer
+    timerInfo = Timer.periodic(duration, (covariant) {
+      if (function != null) function();
+    });
+  }
+
+  static cancelTimer() {
+    timerInfo.cancel();
   }
 
   static log(String message, {int wrapWidth}) {

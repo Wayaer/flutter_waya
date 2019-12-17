@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/src/utils/NavigatorUtils.dart';
+import 'package:oktoast/oktoast.dart';
 
 class CustomMaterialApp extends StatelessWidget {
   final GlobalKey<NavigatorState> navigatorKey; //导航键
@@ -28,6 +29,17 @@ class CustomMaterialApp extends StatelessWidget {
   final bool debugShowCheckedModeBanner; //调试显示检查模式横幅
   final bool debugShowMaterialGrid;
 
+  final TextStyle toastTextStyle;
+  final Color toastBackgroundColor;
+  final double toastRadius;
+  final ToastPosition toastPosition;
+  final TextDirection toastTextDirection;
+  final bool toastDismissOtherOnShow;
+  final bool toastMovingOnWindowChange;
+  final EdgeInsets toastTextPadding;
+  final TextAlign toastTextAlign;
+  final bool toastHandleTouth;
+
   const CustomMaterialApp({
     Key key,
     this.navigatorKey,
@@ -54,7 +66,17 @@ class CustomMaterialApp extends StatelessWidget {
     this.checkerboardRasterCacheImages = false,
     this.checkerboardOffscreenLayers = false,
     this.showSemanticsDebugger = false,
-    this.debugShowCheckedModeBanner = true,
+    this.debugShowCheckedModeBanner = false,
+    this.toastTextStyle,
+    this.toastRadius = 10.0,
+    this.toastPosition = ToastPosition.center,
+    this.toastTextDirection = TextDirection.ltr,
+    this.toastDismissOtherOnShow = false,
+    this.toastMovingOnWindowChange = true,
+    this.toastBackgroundColor,
+    this.toastTextPadding,
+    this.toastTextAlign,
+    this.toastHandleTouth = false,
   })  : assert(routes != null),
         assert(navigatorObservers != null),
         assert(title != null),
@@ -68,33 +90,44 @@ class CustomMaterialApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      navigatorKey: navigatorKey,
-      home: home,
-      routes: routes,
-      initialRoute: initialRoute,
-      onGenerateRoute: onGenerateRoute,
-      onUnknownRoute: onUnknownRoute,
-      navigatorObservers:
-          navigatorObservers ?? [NavigatorManager.getInstance()],
-      builder: builder,
-      title: title,
-      onGenerateTitle: onGenerateTitle,
-      color: color,
-      theme: theme,
-      darkTheme: darkTheme,
-      themeMode: themeMode,
-      locale: locale,
-      localizationsDelegates: localizationsDelegates,
-      localeListResolutionCallback: localeListResolutionCallback,
-      localeResolutionCallback: localeResolutionCallback,
-      supportedLocales: supportedLocales,
-      debugShowMaterialGrid: debugShowMaterialGrid,
-      showPerformanceOverlay: showPerformanceOverlay,
-      checkerboardRasterCacheImages: checkerboardRasterCacheImages,
-      checkerboardOffscreenLayers: checkerboardOffscreenLayers,
-      showSemanticsDebugger: showSemanticsDebugger,
-      debugShowCheckedModeBanner: debugShowCheckedModeBanner,
-    );
+    return OKToast(
+        textStyle: toastTextStyle,
+        radius: toastRadius ?? 10.0,
+        position: toastPosition ?? ToastPosition.center,
+        textDirection: toastTextDirection ?? TextDirection.ltr,
+        dismissOtherOnShow: toastDismissOtherOnShow ?? false,
+        movingOnWindowChange: toastMovingOnWindowChange ?? true,
+        backgroundColor: toastBackgroundColor,
+        textPadding: toastTextPadding,
+        textAlign: toastTextAlign,
+        handleTouth: toastHandleTouth ?? false,
+        child: MaterialApp(
+          navigatorKey: navigatorKey,
+          home: home,
+          routes: routes,
+          initialRoute: initialRoute,
+          onGenerateRoute: onGenerateRoute,
+          onUnknownRoute: onUnknownRoute,
+          navigatorObservers:
+              navigatorObservers ?? [NavigatorManager.getInstance()],
+          builder: builder,
+          title: title,
+          onGenerateTitle: onGenerateTitle,
+          color: color,
+          theme: theme,
+          darkTheme: darkTheme,
+          themeMode: themeMode,
+          locale: locale,
+          localizationsDelegates: localizationsDelegates,
+          localeListResolutionCallback: localeListResolutionCallback,
+          localeResolutionCallback: localeResolutionCallback,
+          supportedLocales: supportedLocales,
+          debugShowMaterialGrid: debugShowMaterialGrid,
+          showPerformanceOverlay: showPerformanceOverlay,
+          checkerboardRasterCacheImages: checkerboardRasterCacheImages,
+          checkerboardOffscreenLayers: checkerboardOffscreenLayers,
+          showSemanticsDebugger: showSemanticsDebugger,
+          debugShowCheckedModeBanner: debugShowCheckedModeBanner,
+        ));
   }
 }

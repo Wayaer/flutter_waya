@@ -45,7 +45,7 @@ class DioUtils {
 
   addInterceptors() {
     ResponseModel responseModel =
-        new ResponseModel({'code': "9999999", 'data': null, 'message': ''});
+    new ResponseModel({'code': "9999999", 'data': null, 'message': ''});
     dio.interceptors
         .add(InterceptorsWrapper(onRequest: (RequestOptions options) async {
       // 在请求被发送之前做一些事情
@@ -85,7 +85,7 @@ class DioUtils {
       } else if (e.type == DioErrorType.RESPONSE) {
         responseModel.statusCode = e.response.statusCode.toString();
         responseModel.statusMessage =
-            'HTTP请求错误,${e.response.statusCode.toString()}';
+        'HTTP请求错误,${e.response.statusCode.toString()}';
         responseModel.statusMessageT = 'network_response';
       } else if (e.type == DioErrorType.SEND_TIMEOUT) {
         responseModel.statusCode = 'send_timeout';
@@ -97,7 +97,7 @@ class DioUtils {
     }));
   }
 
-  Future get(String url, [Map<String, dynamic> param]) async {
+  Future get(String url, {Map<String, dynamic> param}) async {
     try {
       Utils.log("GET url:" + url + "  param:" + param.toString());
       Response response = await dio.get(url, queryParameters: param);
@@ -119,7 +119,7 @@ class DioUtils {
           "  data:" +
           data.toString());
       Response response =
-          await dio.post(url, queryParameters: params, data: data);
+      await dio.post(url, queryParameters: params, data: data);
       Utils.log(
           "POST url:" + url + '  respronseData==  ' + response.toString());
       return response.toString();

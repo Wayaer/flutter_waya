@@ -30,7 +30,7 @@ class CustomButton extends StatelessWidget {
     this.color,
     this.height,
     this.decoration,
-    this.alignment: Alignment.center,
+    this.alignment,
     this.maxLines: 1,
     this.child,
     this.overflow: TextOverflow.ellipsis,
@@ -40,6 +40,7 @@ class CustomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomFlex(
       inkWell: inkWell,
+      mainAxisSize: MainAxisSize.min,
       child: child != null
           ? child
           : Text(

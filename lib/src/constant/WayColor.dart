@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-const String white  = 'white';
+
+const String white = 'white';
+const String white50 = 'white50';
 const String background = 'background';
 const String iconWhite = 'iconWhite';
 const String iconBlue = 'iconBlue';
@@ -30,6 +32,7 @@ const String tabBarNavigationUnSelectedItemColor =
     'tabBarNavigationUnSelectedItemColor';
 const String containerColor = 'containerColor';
 const String appBarTextColor = 'appBarTextColor';
+
 getColors(String color) {
   return ColorInfo[color];
 }
@@ -62,6 +65,7 @@ const ColorInfo = {
   '$tabBarNavigationSelectedItemColor': Color(0xFF349DFF),
   '$tabBarNavigationUnSelectedItemColor': Color(0xFFA7A7A7),
   '$white': Colors.white,
+  '$white50': Color(0xFFFFFFFF),
   '$containerColor': Colors.white,
   '$appBarBackgroundColor': Colors.white,
 };
