@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class IconInfo{
+class WayIcon{
   static const IconData iconsChecked = getIcon(0xe71d);
   static const IconData iconsUnChecked = getIcon(0xe71c);
   static const IconData iconsEyeOpen = getIcon(0xe6de);

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/src/constant/ColorInfo.dart';
-import 'package:flutter_waya/src/constant/IconInfo.dart';
+import 'package:flutter_waya/src/constant/WayColor.dart';
+import 'package:flutter_waya/src/constant/WayIcon.dart';
 import 'package:flutter_waya/src/utils/Utils.dart';
 
 
@@ -38,7 +38,7 @@ class CustomEyeState extends State<CustomEye> {
         }
       },
       child: Icon(
-        _status ? IconInfo.iconsEyeOpen : IconInfo.iconsEyeClose,
+        _status ? WayIcon.iconsEyeOpen : WayIcon.iconsEyeClose,
         size: widget.size ?? Utils.getWidth( 16),
         color: widget.color ?? getColors(iconGray),
       ),

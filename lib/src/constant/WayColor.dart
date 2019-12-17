@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 const String white  = 'white';
 const String background = 'background';

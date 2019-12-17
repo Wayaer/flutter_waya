@@ -1,10 +1,10 @@
 library flutter_waya;
 
 //constant
-export 'src/constant/ColorInfo.dart';
-export 'src/constant/Constant.dart';
-export 'src/constant/IconInfo.dart';
-export 'src/constant/Styles.dart';
+export 'src/constant/WayColor.dart';
+export 'src/constant/WayConstant.dart';
+export 'src/constant/WayIcon.dart';
+export 'src/constant/WayStyles.dart';
 
 //custom
 export 'src/custom/azlist/AzCommon.dart';

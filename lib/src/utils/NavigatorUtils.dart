@@ -3,7 +3,8 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class NavigatorUtils {
+//例子  自行封装utils
+class NavigatorExample {
   static push(Function function, {PushMode pushMode}) {
     return NavigatorManager.getInstance().push(function, pushMode: pushMode);
   }

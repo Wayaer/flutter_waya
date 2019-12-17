@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/src/constant/ColorInfo.dart';
-import 'package:flutter_waya/src/constant/IconInfo.dart';
-import 'package:flutter_waya/src/constant/Styles.dart';
+import 'package:flutter_waya/src/constant/WayColor.dart';
+import 'package:flutter_waya/src/constant/WayIcon.dart';
+import 'package:flutter_waya/src/constant/WayStyles.dart';
 import 'package:flutter_waya/src/custom/CustomIcon.dart';
 import 'package:flutter_waya/src/utils/Utils.dart';
 
@@ -50,18 +50,18 @@ class SearchInputWidget extends StatelessWidget {
         direction: Axis.horizontal,
         children: <Widget>[
           CustomIcon(
-            icon ?? IconInfo.iconsSearch,
+            icon ?? WayIcon.iconsSearch,
             iconColor: iconColor ?? getColors( iconBlack),
             iconSize: iconSize ?? Utils.getWidth( 14),
           ),
           Expanded(
               child: TextField(
-            style: Styles.textStyleBlack70(context, fontSize: 13.5),
+            style: WayStyles.textStyleBlack70(context, fontSize: 13.5),
             controller: controller,
             decoration: InputDecoration(
               contentPadding: EdgeInsets.all(5),
               hintText: hintText ?? "搜索",
-              hintStyle: hintStyle ?? Styles.textStyleBlack20(context, fontSize: 12),
+              hintStyle: hintStyle ?? WayStyles.textStyleBlack20(context, fontSize: 12),
               border: InputBorder.none, //隐藏下划线
             ),
             onChanged: onChanged,

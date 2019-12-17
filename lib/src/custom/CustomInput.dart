@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/src/constant/ColorInfo.dart';
-import 'package:flutter_waya/src/constant/Styles.dart';
+import 'package:flutter_waya/src/constant/WayColor.dart';
+import 'package:flutter_waya/src/constant/WayStyles.dart';
 import 'package:flutter_waya/src/utils/Utils.dart';
 
 import 'CustomButton.dart';
@@ -170,7 +170,7 @@ class CustomInputState extends State<CustomInput> {
                                 widget.headLeftText != null),
                             child: widget.headLeftText != null
                                 ? Text(widget.headLeftText,
-                                    style: Styles.textStyleBlack70(context,
+                                    style: WayStyles.textStyleBlack70(context,
                                         fontSize: 15))
                                 : widget.headLeftWight,
                           ),
@@ -204,7 +204,7 @@ class CustomInputState extends State<CustomInput> {
                                     margin: EdgeInsets.only(
                                         top: Utils.getHeight(4)),
                                     text: widget.footLeftText,
-                                    textStyle: Styles.textStyleBlack70(context,
+                                    textStyle: WayStyles.textStyleBlack70(context,
                                         fontSize: 12),
                                   )
                                 : widget.footLeftWight,
@@ -277,7 +277,7 @@ class CustomInputState extends State<CustomInput> {
       obscureText: widget.showEye == true ? eye : false,
       keyboardType: widget.keyboardType,
       style: widget.inputTextStyle ??
-          Styles.textStyleBlack70(context, fontSize: 16),
+          WayStyles.textStyleBlack70(context, fontSize: 16),
       controller: widget.controller,
       // 保持光标在最后
 //        selection: TextSelection.fromPosition(TextPosition(
@@ -329,7 +329,7 @@ class CustomInputState extends State<CustomInput> {
             hintText: widget.hintText,
             //显示在输入框内的提示信息，当输入框为空时显示，一旦开始输入内容就消失
             hintStyle: widget.hintStyle ??
-                Styles.textStyleBlack30(context, fontSize: 16),
+                WayStyles.textStyleBlack30(context, fontSize: 16),
             hintMaxLines: 1,
             //提示语的做多显示行数，超过行数显示...
 

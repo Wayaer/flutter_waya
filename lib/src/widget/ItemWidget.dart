@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/src/constant/ColorInfo.dart';
-import 'package:flutter_waya/src/constant/IconInfo.dart';
-import 'package:flutter_waya/src/constant/Styles.dart';
+import 'package:flutter_waya/src/constant/WayColor.dart';
+import 'package:flutter_waya/src/constant/WayIcon.dart';
+import 'package:flutter_waya/src/constant/WayStyles.dart';
 import 'package:flutter_waya/src/custom/CustomFlex.dart';
 import 'package:flutter_waya/src/custom/CustomIcon.dart';
 import 'package:flutter_waya/src/utils/Utils.dart';
@@ -49,7 +49,7 @@ class ItemWidget extends StatelessWidget {
       padding: padding ?? EdgeInsets.symmetric(vertical: Utils.getHeight(13)),
       direction: Axis.horizontal,
       decoration: underline
-          ? Styles.containerUnderlineBackground(
+          ? WayStyles.containerUnderlineBackground(
               context,
               color: background ?? getColors(lineBackground),
             )
@@ -86,7 +86,7 @@ class ItemWidget extends StatelessWidget {
         Offstage(
           offstage: !(arrow != null && arrow),
           child: CustomIcon(
-            IconInfo.iconsRight,
+            WayIcon.iconsRight,
             iconSize: Utils.getWidth(17),
             iconColor: getColors(iconGray),
           ),

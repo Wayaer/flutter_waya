@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/src/constant/ColorInfo.dart';
-import 'package:flutter_waya/src/constant/Styles.dart';
+import 'package:flutter_waya/src/constant/WayColor.dart';
+import 'package:flutter_waya/src/constant/WayStyles.dart';
 import 'package:flutter_waya/src/custom/CustomFlex.dart';
 import 'package:flutter_waya/src/utils/Utils.dart';
 
@@ -48,8 +48,8 @@ class SendSMSState extends State<SendSMS> {
       child: Text(
         '$verifyStr',
         style: seconds == 0
-            ? Styles.textStyleBlue(context, fontSize: 13)
-            : Styles.textStyleBlack70(context, fontSize: 13),
+            ? WayStyles.textStyleBlue(context, fontSize: 13)
+            : WayStyles.textStyleBlack70(context, fontSize: 13),
       ),
     );
   }

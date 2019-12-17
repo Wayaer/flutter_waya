@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_waya/src/constant/ColorInfo.dart';
-import 'package:flutter_waya/src/constant/Styles.dart';
+import 'package:flutter_waya/src/constant/WayColor.dart';
+import 'package:flutter_waya/src/constant/WayStyles.dart';
 import 'package:flutter_waya/src/custom/CustomButton.dart';
 import 'package:flutter_waya/src/utils/Utils.dart';
 
@@ -32,7 +32,7 @@ class BlueButton extends StatelessWidget {
         color: getColors(buttonBlue),
         borderRadius: BorderRadius.circular(30),
       ),
-      textStyle: Styles.textStyleWhite(context, fontSize: 15),
+      textStyle: WayStyles.textStyleWhite(context, fontSize: 15),
     );
   }
 }

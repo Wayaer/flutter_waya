@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/src/utils/Utils.dart';
 
-import 'ColorInfo.dart';
-import 'Constant.dart';
+import 'WayColor.dart';
+import 'WayConstant.dart';
 
-const double radiusLocal = Constant.Radius;
-const double fontSize = Constant.fontSize;
 
-class Styles {
+const double radiusLocal = WayConstant.Radius;
+const double fontSize = WayConstant.fontSize;
+
+class WayStyles {
   //统一所有阴影效果
   static List<BoxShadow> boxShadow(BuildContext context) {
     return [
