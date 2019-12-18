@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/src/constant/WayStyles.dart';
 import 'package:flutter_waya/src/custom/CustomFlex.dart';
-import 'package:flutter_waya/src/utils/Utils.dart';
+import 'package:flutter_waya/src/utils/WayUtils.dart';
 
 
 class SendSMS extends StatefulWidget {
@@ -38,8 +38,8 @@ class SendSMSState extends State<SendSMS> {
     return CustomFlex(
       onTap: (seconds == 0 && widget.onTap != null) ? onTap : null,
       alignment: Alignment.center,
-      width: Utils.getWidth(86),
-      height: Utils.getHeight(25),
+      width: WayUtils.getWidth(86),
+      height: WayUtils.getHeight(25),
       decoration: BoxDecoration(
           border: Border.all(
               width: 1.0,

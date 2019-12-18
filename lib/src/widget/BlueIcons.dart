@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/src/custom/CustomIcon.dart';
-import 'package:flutter_waya/src/utils/Utils.dart';
+import 'package:flutter_waya/src/utils/WayUtils.dart';
 
 
 class BlueIcons extends StatelessWidget {
@@ -26,7 +26,7 @@ class BlueIcons extends StatelessWidget {
       margin: margin,
       padding: padding,
       onTap: onTap,
-      iconSize: Utils.getWidth( 22),
+      iconSize: WayUtils.getWidth( 22),
       iconColor: getColors(iconBlue),
       text: text,
     );

@@ -4,7 +4,7 @@ import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/src/constant/WayIcon.dart';
 import 'package:flutter_waya/src/constant/WayStyles.dart';
 import 'package:flutter_waya/src/custom/CustomIcon.dart';
-import 'package:flutter_waya/src/utils/Utils.dart';
+import 'package:flutter_waya/src/utils/WayUtils.dart';
 
 import '../custom/CustomFlex.dart';
 
@@ -40,8 +40,8 @@ class SearchInputWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomFlex(
         height: height,
-        width: width ?? Utils.getWidth( 220),
-        padding: padding ?? EdgeInsets.only(left: Utils.getWidth( 8)),
+        width: width ?? WayUtils.getWidth( 220),
+        padding: padding ?? EdgeInsets.only(left: WayUtils.getWidth( 8)),
         margin: margin,
         decoration: BoxDecoration(
           color: getColors( background),
@@ -52,7 +52,7 @@ class SearchInputWidget extends StatelessWidget {
           CustomIcon(
             icon ?? WayIcon.iconsSearch,
             iconColor: iconColor ?? getColors( iconBlack),
-            iconSize: iconSize ?? Utils.getWidth( 14),
+            iconSize: iconSize ?? WayUtils.getWidth( 14),
           ),
           Expanded(
               child: TextField(

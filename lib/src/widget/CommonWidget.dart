@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
-import 'package:flutter_waya/src/utils/Utils.dart';
+import 'package:flutter_waya/src/utils/WayUtils.dart';
 
 class CommonWidget {
   static Widget titleWidget(String title) {
@@ -19,7 +19,7 @@ class CommonWidget {
         EdgeInsetsGeometry margin}) {
     return Container(
       height: height,
-      width: width ?? Utils.getWidth(1),
+      width: width ?? WayUtils.getWidth(1),
       margin: margin,
       padding: padding,
       color: color ?? getColors(lineBackground),
@@ -33,9 +33,9 @@ class CommonWidget {
         Color color,
         EdgeInsetsGeometry margin}) {
     return Container(
-      height: height ?? Utils.getWidth(1),
+      height: height ?? WayUtils.getWidth(1),
       padding: padding,
-      width: width ?? Utils.getWidth(),
+      width: width ?? WayUtils.getWidth(),
       margin: margin,
       color: color ?? getColors(lineBackground),
     );

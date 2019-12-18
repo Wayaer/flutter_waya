@@ -4,7 +4,7 @@ import 'package:flutter_waya/src/constant/WayIcon.dart';
 import 'package:flutter_waya/src/constant/WayStyles.dart';
 import 'package:flutter_waya/src/custom/CustomFlex.dart';
 import 'package:flutter_waya/src/custom/CustomIcon.dart';
-import 'package:flutter_waya/src/utils/Utils.dart';
+import 'package:flutter_waya/src/utils/WayUtils.dart';
 
 class ItemWidget extends StatelessWidget {
   final Widget title;
@@ -43,10 +43,10 @@ class ItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomFlex(
-      height: height ?? Utils.getHeight(44),
+      height: height ?? WayUtils.getHeight(44),
       inkWell: inkWell,
       margin: margin,
-      padding: padding ?? EdgeInsets.symmetric(vertical: Utils.getHeight(13)),
+      padding: padding ?? EdgeInsets.symmetric(vertical: WayUtils.getHeight(13)),
       direction: Axis.horizontal,
       decoration: underline
           ? WayStyles.containerUnderlineBackground(
@@ -87,7 +87,7 @@ class ItemWidget extends StatelessWidget {
           offstage: !(arrow != null && arrow),
           child: CustomIcon(
             WayIcon.iconsRight,
-            iconSize: Utils.getWidth(17),
+            iconSize: WayUtils.getWidth(17),
             iconColor: getColors(iconGray),
           ),
         ),

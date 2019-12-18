@@ -20,10 +20,10 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 flutter:
-  fonts:
-    - family: Icons
-      fonts:
-        - asset: lib/res/icons.ttf
+#  fonts:
+#    - family: Icons
+#      fonts:
+#        - asset: lib/res/icons.ttf
 
   # assets:
   #  - images/a_dot_burr.jpeg

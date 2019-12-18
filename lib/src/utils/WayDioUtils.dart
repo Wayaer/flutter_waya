@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter_waya/src/model/ResponseModel.dart';
 
-import 'Utils.dart';
+import 'WayUtils.dart';
 
 //网络链接超时时间
 const int HTTP_TIMEOUT_CONNECT = 5000;
@@ -17,22 +17,23 @@ const HTTP_CONTENT_TYPE = [
   "text/xml"
 ];
 
-class DioUtils {
+class WayDioUtils {
   static Dio dio;
   static DioError error;
 
   static BaseOptions _options;
 
   //单例模式
-  factory DioUtils() => getHttp();
+  factory WayDioUtils() => getHttp();
 
-  static DioUtils getHttp({BaseOptions options}) {
-    return DioUtils.internal(options: options);
+  static WayDioUtils getHttp({BaseOptions options}) {
+    return WayDioUtils.internal(options: options);
   }
 
-  DioUtils.internal({BaseOptions options}) {
+  WayDioUtils.internal({BaseOptions options}) {
     dio = Dio();
-    if (options = null) {
+    if (options == null) {
+      _options = dio.options;
       _options.connectTimeout = HTTP_TIMEOUT_CONNECT;
       _options.receiveTimeout = HTTP_TIMEOUT_RECEIVE;
       _options.contentType = HTTP_CONTENT_TYPE[2];
@@ -45,7 +46,7 @@ class DioUtils {
 
   addInterceptors() {
     ResponseModel responseModel =
-    new ResponseModel({'code': "9999999", 'data': null, 'message': ''});
+        new ResponseModel({'code': "9999999", 'data': null, 'message': ''});
     dio.interceptors
         .add(InterceptorsWrapper(onRequest: (RequestOptions options) async {
       // 在请求被发送之前做一些事情
@@ -61,7 +62,7 @@ class DioUtils {
       } else {
         responseModel.statusCode = response.statusCode.toString();
         responseModel.statusMessage = response.statusMessage;
-        Utils.log(jsonEncode(responseModel).toString());
+        WayUtils.log(jsonEncode(responseModel).toString());
         return jsonEncode(responseModel).toString();
       }
     }, onError: (DioError e) async {
@@ -85,24 +86,23 @@ class DioUtils {
       } else if (e.type == DioErrorType.RESPONSE) {
         responseModel.statusCode = e.response.statusCode.toString();
         responseModel.statusMessage =
-        'HTTP请求错误,${e.response.statusCode.toString()}';
+            'HTTP请求错误,${e.response.statusCode.toString()}';
         responseModel.statusMessageT = 'network_response';
       } else if (e.type == DioErrorType.SEND_TIMEOUT) {
         responseModel.statusCode = 'send_timeout';
         responseModel.statusMessage = '网络发送超时';
         responseModel.statusMessageT = 'network_send_timeout';
       }
-      Utils.log(jsonEncode(responseModel).toString());
+      WayUtils.log(jsonEncode(responseModel).toString());
       return jsonEncode(responseModel).toString();
     }));
   }
 
   Future get(String url, {Map<String, dynamic> param}) async {
     try {
-      Utils.log("GET url:" + url + "  param:" + param.toString());
+      WayUtils.log("GET url:" + url + "  param:" + param.toString());
       Response response = await dio.get(url, queryParameters: param);
-      Utils.log(
-          "GET url:" + url + '  respronseData==  ' + response.toString());
+      WayUtils.log("GET url:" + url + '  responseData==  ' + response.toString());
       return response.toString();
     } catch (e) {
       error = e;
@@ -112,16 +112,16 @@ class DioUtils {
 
   Future post(String url, {Map<String, dynamic> params, data}) async {
     try {
-      Utils.log("POST url:" +
+      WayUtils.log("POST url:" +
           url +
           "  param:" +
           params.toString() +
           "  data:" +
           data.toString());
       Response response =
-      await dio.post(url, queryParameters: params, data: data);
-      Utils.log(
-          "POST url:" + url + '  respronseData==  ' + response.toString());
+          await dio.post(url, queryParameters: params, data: data);
+      WayUtils.log(
+          "POST url:" + url + '  responseData==  ' + response.toString());
       return response.toString();
     } catch (e) {
       error = e;
@@ -131,10 +131,9 @@ class DioUtils {
 
   Future put(String url, Map<String, dynamic> param) async {
     try {
-      Utils.log("PUT url:" + url + "  param:" + param.toString());
+      WayUtils.log("PUT url:" + url + "  param:" + param.toString());
       Response response = await dio.put(url, queryParameters: param);
-      Utils.log(
-          "PUT url:" + url + '  respronseData==  ' + response.toString());
+      WayUtils.log("PUT url:" + url + '  responseData==  ' + response.toString());
       return response.toString();
     } catch (e) {
       error = e;
@@ -144,10 +143,10 @@ class DioUtils {
 
   Future delete(String url, Map<String, dynamic> param) async {
     try {
-      Utils.log("DELETE url:" + url + "  param:" + param.toString());
+      WayUtils.log("DELETE url:" + url + "  param:" + param.toString());
       Response response = await dio.delete(url, queryParameters: param);
-      Utils.log(
-          "DELETE url:" + url + '  respronseData==  ' + response.toString());
+      WayUtils.log(
+          "DELETE url:" + url + '  responseData==  ' + response.toString());
       return response.toString();
     } catch (e) {
       error = e;
@@ -158,7 +157,7 @@ class DioUtils {
   Future download(String url, String savePath,
       [ProgressCallback onReceiveProgress]) async {
     try {
-      Utils.log("url:" + url + "  savePath:" + savePath.toString());
+      WayUtils.log("url:" + url + "  savePath:" + savePath.toString());
       dio.download(url, savePath, onReceiveProgress: (received, total) {
         onReceiveProgress(received, total);
       });

@@ -1,12 +1,15 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
+import 'package:convert/convert.dart';
+import 'package:crypto/crypto.dart';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_waya/src/utils/MediaQueryUtils.dart';
-import 'package:oktoast/oktoast.dart';
+import 'package:flutter_waya/src/utils/WayMediaQueryUtils.dart';
 
 enum DateType {
   dateTime,
@@ -16,10 +19,17 @@ enum DateType {
 }
 
 log(message) {
-  Utils.log(message.toString());
+  WayUtils.log(message.toString());
 }
 
-class Utils {
+isDebug() {
+  return !kReleaseMode;
+  if (kReleaseMode) {
+    //release
+  }
+}
+
+class WayUtils {
   static Timer timerInfo;
 
   // 截屏
@@ -156,10 +166,10 @@ class Utils {
   static getHeight([double height, bool intType]) {
     double h;
     if (height == null || height == 0)
-      h = MediaQueryUtils.getSize().height;
+      h = WayMediaQueryUtils.getSize().height;
     else {
       //  h = (height / 667) * phoneFitHeight(context);
-      h = (height / 667) * MediaQueryUtils.getSize().height;
+      h = (height / 667) * WayMediaQueryUtils.getSize().height;
     }
     return intType == true ? h.toInt() : h;
   }
@@ -167,9 +177,9 @@ class Utils {
   static getWidth([double width, bool intType]) {
     double w;
     if (width == null || width == 0) {
-      w = MediaQueryUtils.getSize().width;
+      w = WayMediaQueryUtils.getSize().width;
     } else {
-      w = (width / 375) * MediaQueryUtils.getSize().width;
+      w = (width / 375) * WayMediaQueryUtils.getSize().width;
     }
     return intType == true ? w.toInt() : w;
   }
@@ -199,5 +209,13 @@ class Utils {
 
   static log(String message, {int wrapWidth}) {
     debugPrint(message, wrapWidth: wrapWidth);
+  }
+
+  // md5 加密
+  static setMd5(String data) {
+    var content = new Utf8Encoder().convert(data);
+    var digest = md5.convert(content);
+    // 这里其实就是 digest.toString()
+    return hex.encode(digest.bytes);
   }
 }

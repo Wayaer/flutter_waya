@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/src/utils/Utils.dart';
+import 'package:flutter_waya/src/utils/WayUtils.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'CustomListView.dart';
@@ -85,15 +85,15 @@ class CustomSmartRefresher extends StatelessWidget {
   }
 
   onRefreshed() {
-    Utils.log('onRefreshed');
-    Utils.timerUtils(Duration(seconds: 4), () {
+    WayUtils.log('onRefreshed');
+    WayUtils.timerUtils(Duration(seconds: 4), () {
       refreshController.loadComplete();
     });
   }
 
   onLoadings() {
-    Utils.log('onLoadings');
-    Utils.timerUtils(Duration(seconds: 4), () {
+    WayUtils.log('onLoadings');
+    WayUtils.timerUtils(Duration(seconds: 4), () {
       refreshController.loadComplete();
     });
   }

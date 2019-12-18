@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/src/utils/Utils.dart';
+import 'package:flutter_waya/src/utils/WayUtils.dart';
 import 'package:flutter_waya/src/widget/CommonWidget.dart';
 
 class CustomGridView extends StatelessWidget {
@@ -47,7 +47,7 @@ class CustomGridView extends StatelessWidget {
           )
         : noData == null
             ? CommonWidget.noDataWidget(
-                margin: EdgeInsets.all(Utils.getWidth( 10)))
+                margin: EdgeInsets.all(WayUtils.getWidth( 10)))
             : noData;
   }
 }

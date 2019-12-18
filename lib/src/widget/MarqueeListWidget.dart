@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_waya/src/custom/marquee/Marquee.dart';
-import 'package:flutter_waya/src/utils/Utils.dart';
+import 'package:flutter_waya/src/utils/WayUtils.dart';
 
 class MarqueeListWidget extends StatelessWidget {
   final int itemCount;
@@ -18,7 +18,7 @@ class MarqueeListWidget extends StatelessWidget {
     return itemCount > 0
         ? Marquee(
             center: false,
-            animateDistance: animateDistance ?? Utils.getHeight( 100),
+            animateDistance: animateDistance ?? WayUtils.getHeight( 100),
             children: children,
           )
         : Container();

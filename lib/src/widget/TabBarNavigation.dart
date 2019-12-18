@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
-import 'package:flutter_waya/src/utils/Utils.dart';
+import 'package:flutter_waya/src/utils/WayUtils.dart';
 
 class TabBarNavigation extends StatefulWidget {
   Map<String, Object> params;
@@ -82,7 +82,7 @@ class TabBarNavigationState extends State<TabBarNavigation> {
   Widget barIcon(IconData icons) {
     return Icon(
       icons,
-      size: Utils.getWidth(24),
+      size: WayUtils.getWidth(24),
     );
   }
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/src/utils/NavigatorUtils.dart';
+import 'package:flutter_waya/src/utils/WayNavigatorUtils.dart';
 import 'package:oktoast/oktoast.dart';
 
 class CustomMaterialApp extends StatelessWidget {
@@ -48,7 +48,7 @@ class CustomMaterialApp extends StatelessWidget {
     this.initialRoute,
     this.onGenerateRoute,
     this.onUnknownRoute,
-    this.navigatorObservers = const <NavigatorObserver>[],
+    this.navigatorObservers,
     this.builder,
     this.title = '',
     this.onGenerateTitle,
@@ -78,7 +78,7 @@ class CustomMaterialApp extends StatelessWidget {
     this.toastTextAlign,
     this.toastHandleTouth = false,
   })  : assert(routes != null),
-        assert(navigatorObservers != null),
+//        assert(navigatorObservers != null),
         assert(title != null),
         assert(debugShowMaterialGrid != null),
         assert(showPerformanceOverlay != null),
@@ -109,7 +109,7 @@ class CustomMaterialApp extends StatelessWidget {
           onGenerateRoute: onGenerateRoute,
           onUnknownRoute: onUnknownRoute,
           navigatorObservers:
-              navigatorObservers ?? [NavigatorManager.getInstance()],
+              navigatorObservers ?? [WayNavigatorUtils.getInstance()],
           builder: builder,
           title: title,
           onGenerateTitle: onGenerateTitle,

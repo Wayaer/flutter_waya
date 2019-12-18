@@ -6,21 +6,21 @@ import 'package:flutter/material.dart';
 //例子  自行封装utils
 class NavigatorExample {
   static push(Function function, {PushMode pushMode}) {
-    return NavigatorManager.getInstance().push(function, pushMode: pushMode);
+    return WayNavigatorUtils.getInstance().push(function, pushMode: pushMode);
   }
 
   static pushReplacement(Function function, {PushMode pushMode}) {
-    return NavigatorManager.getInstance()
+    return WayNavigatorUtils.getInstance()
         .pushReplacement(function, pushMode: pushMode);
   }
 
   static pushAndRemoveUntil(Function function, {PushMode pushMode}) {
-    return NavigatorManager.getInstance()
+    return WayNavigatorUtils.getInstance()
         .pushAndRemoveUntil(function, pushMode: pushMode);
   }
 
   static pop<T extends Object>([T result]) {
-    return NavigatorManager.getInstance().pop(result);
+    return WayNavigatorUtils.getInstance().pop(result);
   }
 }
 
@@ -29,18 +29,18 @@ enum PushMode {
   Material,
 }
 
-class NavigatorManager extends NavigatorObserver {
+class WayNavigatorUtils extends NavigatorObserver {
   // ignore: close_sinks
   static StreamController _streamController;
 
   StreamController get streamController => _streamController;
 
-  /* 单例给出NavigatorManager */
-  static NavigatorManager navigatorManager;
+  /* 单例给出WayNavigatorUtils */
+  static WayNavigatorUtils navigatorManager;
 
-  static NavigatorManager getInstance() {
+  static WayNavigatorUtils getInstance() {
     if (navigatorManager == null) {
-      navigatorManager = NavigatorManager();
+      navigatorManager = WayNavigatorUtils();
       _streamController = StreamController.broadcast();
     }
     return navigatorManager;

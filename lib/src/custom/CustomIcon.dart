@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/src/utils/Utils.dart';
+import 'package:flutter_waya/src/utils/WayUtils.dart';
 
 import 'CustomFlex.dart';
 
@@ -68,7 +68,7 @@ class CustomIcon extends StatelessWidget {
           ? null
           : <Widget>[
               reversal ? textWidget() : iconWidget(context),
-              Container(width: Utils.getWidth(spacing)),
+              Container(width: WayUtils.getWidth(spacing)),
               reversal ? iconWidget(context) : textWidget(),
             ],
       width: width,
@@ -97,7 +97,7 @@ class CustomIcon extends StatelessWidget {
     return Icon(
       icon,
       color: iconColor,
-      size: iconSize ?? Utils.getWidth(15),
+      size: iconSize ?? WayUtils.getWidth(15),
       textDirection: textDirection,
       semanticLabel: semanticLabel,
     );

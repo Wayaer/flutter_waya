@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/src/utils/Utils.dart';
+import 'package:flutter_waya/src/utils/WayUtils.dart';
 import '../CustomListView.dart';
 import 'AzCommon.dart';
 import 'AzIndexBar.dart';
@@ -174,8 +174,8 @@ class AzListViewState extends State<AzListView> {
             }),
         suspensionWidget: widget.suspensionWidget,
         controller: scrollController,
-        suspensionHeight: widget.suspensionHeight ?? Utils.getWidth(80, true),
-        itemHeight: widget.itemHeight ?? Utils.getHeight(40, true),
+        suspensionHeight: widget.suspensionHeight ?? WayUtils.getWidth(80, true),
+        itemHeight: widget.itemHeight ?? WayUtils.getHeight(40, true),
         onSusTagChanged: widget.onSusTagChanged,
         header: widget.header,
         onSusSectionInited: (Map<String, int> map) =>
@@ -187,7 +187,7 @@ class AzListViewState extends State<AzListView> {
     if (widget.indexBarBuilder == null) {
       indexBar = AzIndexBar(
         data: indexTagList,
-        size: Utils.getWidth(23, true),
+        size: WayUtils.getWidth(23, true),
         onTouch: onIndexBarTouch,
       );
     } else {
@@ -209,8 +209,8 @@ class AzListViewState extends State<AzListView> {
         decoration: BoxDecoration(
             color: Colors.black26, borderRadius: BorderRadius.circular(10)),
         alignment: Alignment.center,
-        width: Utils.getWidth(60),
-        height: Utils.getWidth(60),
+        width: WayUtils.getWidth(60),
+        height: WayUtils.getWidth(60),
         child: Text(
           '$indexBarHint',
           style: TextStyle(

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/src/utils/Utils.dart';
+import 'package:flutter_waya/src/utils/WayUtils.dart';
 
 /// IndexBar touch callback IndexModel.
 typedef void IndexBarTouchCallback(AzIndexBarDetails model);
@@ -153,7 +153,7 @@ class AzIndexBarState extends State<AzIndexBar> {
 
     return Container(
         padding: widget.padding,
-        margin: EdgeInsets.only(right: Utils.getWidth(10)),
+        margin: EdgeInsets.only(right: WayUtils.getWidth(10)),
         decoration: BoxDecoration(
             color: widget.color,
             borderRadius: widget.radius ?? BorderRadius.circular(radius)),

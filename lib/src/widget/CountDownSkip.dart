@@ -1,14 +1,16 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/flutter_waya.dart';
+import 'package:flutter_waya/src/constant/WayColor.dart';
+import 'package:flutter_waya/src/custom/CustomButton.dart';
+import 'package:flutter_waya/src/utils/WayUtils.dart';
 
 class CountDownSkip extends StatefulWidget {
   // ignore: non_constant_identifier_names
   final String SkipText;
   final int seconds;
   final TextStyle textStyle;
-  final Function onChange;
+  final ValueChanged<int> onChange;
   final GestureTapCallback onTap;
   final bool showSkip;
   final Decoration decoration;
@@ -40,11 +42,14 @@ class CountDownSkipState extends State<CountDownSkip> {
     seconds = widget.seconds;
     WidgetsBinding.instance.addPostFrameCallback((callback) {
       if (seconds > 1) {
-        Utils.timePeriodic(Duration(seconds: 1), () {
+        log(seconds);
+        WayUtils.timePeriodic(Duration(seconds: 1), () {
           seconds -= 1;
           setState(() {});
-          widget.onChange(seconds);
-          if (seconds == 0) Utils.cancelTimer();
+          if (widget.onChange is ValueChanged<int>) {
+            widget.onChange(seconds);
+          }
+          if (seconds == 0) WayUtils.cancelTimer();
         });
       }
     });
@@ -59,7 +64,7 @@ class CountDownSkipState extends State<CountDownSkip> {
               color: getColors(white50),
               borderRadius: BorderRadius.circular(5)),
       padding: EdgeInsets.symmetric(
-          horizontal: Utils.getHeight(5), vertical: Utils.getWidth(4)),
+          horizontal: WayUtils.getHeight(5), vertical: WayUtils.getWidth(4)),
       text: seconds.toString() +
           's' +
           (widget.showSkip
@@ -73,6 +78,6 @@ class CountDownSkipState extends State<CountDownSkip> {
   @override
   void dispose() {
     super.dispose();
-    Utils.cancelTimer();
+    WayUtils.cancelTimer();
   }
 }

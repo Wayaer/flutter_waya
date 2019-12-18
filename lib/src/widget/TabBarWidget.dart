@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/src/constant/WayStyles.dart';
-import 'package:flutter_waya/src/utils/Utils.dart';
+import 'package:flutter_waya/src/utils/WayUtils.dart';
 
 class TabBarWidget extends StatelessWidget {
   TabController controller;
@@ -26,16 +26,16 @@ class TabBarWidget extends StatelessWidget {
       controller: controller,
       labelPadding: labelPadding ??
           EdgeInsets.only(
-              top: Utils.getHeight(11),
+              top: WayUtils.getHeight(11),
               left: 0,
               right: 0,
-              bottom: Utils.getHeight(10)),
+              bottom: WayUtils.getHeight(10)),
       tabs: tabs,
       labelColor: labelColor ?? getColors(tabBarLabelColor),
       unselectedLabelColor:
           unselectedLabelColor ?? getColors(tabBarUnselectedLabelColor),
       indicatorColor: labelColor ?? getColors(tabBarLabelColor),
-      indicatorWeight: Utils.getWidth(1),
+      indicatorWeight: WayUtils.getWidth(1),
       labelStyle: WayStyles.textStyleBlack70(context, fontSize: 13),
       indicatorSize: indicatorSize ?? TabBarIndicatorSize.label,
     );

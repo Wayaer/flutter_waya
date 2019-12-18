@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
-import 'package:flutter_waya/src/utils/Utils.dart';
+import 'package:flutter_waya/src/utils/WayMediaQueryUtils.dart';
+import 'package:flutter_waya/src/utils/WayUtils.dart';
 
 class CustomScaffold extends StatelessWidget {
   final Widget body;
@@ -63,10 +64,10 @@ class CustomScaffold extends StatelessWidget {
     return Container(
       color: backgroundColor,
       margin: expandedBody
-          ? EdgeInsets.only(top: Utils.getHeight(10))
+          ? EdgeInsets.only(top: WayUtils.getHeight(10))
           : EdgeInsets.zero,
       padding: paddingStatusBar
-          ? EdgeInsets.only(top: MediaQueryUtils.getStatusBarHeight())
+          ? EdgeInsets.only(top: WayMediaQueryUtils.getStatusBarHeight())
           : padding,
       width: double.infinity,
       height: double.infinity,

@@ -1,10 +1,10 @@
 library flutter_waya;
 
 //constant
-export 'src/constant/WayColor.dart';
-export 'src/constant/WayConstant.dart';
-export 'src/constant/WayIcon.dart';
-export 'src/constant/WayStyles.dart';
+//export 'src/constant/WayColor.dart';
+//export 'src/constant/WayConstant.dart';
+//export 'src/constant/WayIcon.dart';
+//export 'src/constant/WayStyles.dart';
 
 //custom
 export 'src/custom/azlist/AzCommon.dart';
@@ -17,7 +17,6 @@ export 'src/custom/CustomButton.dart';
 export 'src/custom/CustomCheckBox.dart';
 export 'src/custom/CustomClipRRect.dart';
 export 'src/custom/CustomClipRRect.dart';
-export 'src/custom/CustomEye.dart';
 export 'src/custom/CustomFlex.dart';
 export 'src/custom/CustomGridView.dart';
 export 'src/custom/CustomIcon.dart';
@@ -30,11 +29,11 @@ export 'src/custom/CustomSmartRefresher.dart';
 export 'src/custom/CustomMaterialApp.dart';
 
 //utils
-export 'src/utils/DioUtils.dart';
-export 'src/utils/MediaQueryUtils.dart';
-export 'src/utils/StorageUtil.dart';
-export 'src/utils/Utils.dart';
-export 'src/utils/NavigatorUtils.dart';
+export 'src/utils/WayDioUtils.dart';
+export 'src/utils/WayMediaQueryUtils.dart';
+export 'src/utils/WayStorageUtil.dart';
+export 'src/utils/WayUtils.dart';
+export 'src/utils/WayNavigatorUtils.dart';
 
 //widget
 export 'src/widget/gestures/Gesture.dart';
