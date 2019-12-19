@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/src/constant/WayStyles.dart';
@@ -107,7 +109,7 @@ class SendSMSState extends State<SendSMS> {
 
   startTimer() {
     seconds = widget.seconds ?? 60;
-    WayUtils.timePeriodic(Duration(seconds: 1), (timer) {
+    WayUtils.timePeriodic(Duration(seconds: 1), () {
       if (seconds == 0) {
         WayUtils.cancelTimer();
         return;
