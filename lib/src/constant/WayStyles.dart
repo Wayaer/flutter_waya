@@ -59,7 +59,7 @@ class WayStyles {
         borderRadius: BorderRadius.circular(radius ?? radiusLocal),
         border: Border.all(
             width: width ?? WayUtils.getWidth(1),
-            color: widthColor ?? getColors(lineBackground)));
+            color: widthColor ?? getColors(background)));
   }
 
   //统一下划线样式
@@ -70,7 +70,7 @@ class WayStyles {
         border: Border(
             bottom: BorderSide(
                 width: width ?? WayUtils.getHeight(1),
-                color: getColors(lineBackground))));
+                color: getColors(background))));
   }
 
   //统一上划线样式
@@ -78,7 +78,7 @@ class WayStyles {
       {Color color}) {
     return BoxDecoration(
         color: color,
-        border: Border(top: BorderSide(color: getColors(lineBackground))));
+        border: Border(top: BorderSide(color: getColors(background))));
   }
 
   static TextStyle textStyleWhite(BuildContext context,

@@ -11,7 +11,7 @@ class ItemWidget extends StatelessWidget {
   final Widget icon;
   final double iconRightSpacing;
   final double height;
-  final Color background;
+  final Color backgroundColor;
   final Function onTap;
   final EdgeInsetsGeometry padding;
   final EdgeInsetsGeometry margin;
@@ -36,7 +36,7 @@ class ItemWidget extends StatelessWidget {
       this.padding,
       this.margin,
       this.decoration,
-      this.background,
+      this.backgroundColor,
       this.child})
       : super(key: key);
 
@@ -51,7 +51,7 @@ class ItemWidget extends StatelessWidget {
       decoration: underline
           ? WayStyles.containerUnderlineBackground(
               context,
-              color: background ?? getColors(lineBackground),
+              color: background ?? getColors(background),
             )
           : BoxDecoration(color: background ?? getColors(containerColor)),
       mainAxisAlignment: MainAxisAlignment.spaceBetween,

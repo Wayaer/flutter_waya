@@ -20,7 +20,6 @@ const String buttonBlue20 = 'buttonBlue20';
 const String boxShadowColor = 'boxShadowColor';
 const String checkboxActiveColor = 'checkboxActiveColor';
 const String checkboxCheckColor = 'checkboxCheckColor';
-const String lineBackground = 'lineBackground';
 const String activeColor = 'activeColor';
 const String tabBarLabelColor = 'tabBarLabelColor';
 const String tabBarUnselectedLabelColor = 'tabBarUnselectedLabelColor';
@@ -59,7 +58,6 @@ const ColorInfo = {
   '$tabBarLabelColor': Color.fromRGBO(52, 157, 255, 1),
   '$tabBarUnselectedLabelColor': Color.fromRGBO(57, 57, 57, 1),
   '$background': Color.fromRGBO(246, 246, 246, 1),
-  '$lineBackground': Color.fromRGBO(246, 246, 246, 1),
   '$activeColor': Color.fromRGBO(52, 157, 255, 1),
   '$tabBarNavigationColor': Colors.white,
   '$tabBarNavigationSelectedItemColor': Color(0xFF349DFF),

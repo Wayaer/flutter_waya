@@ -43,7 +43,7 @@ export 'src/widget/BlueIcons.dart';
 export 'src/widget/CommonWidget.dart';
 export 'src/widget/MarqueeListWidget.dart';
 export 'src/widget/SearchInputWidget.dart';
-export 'src/widget/TabBarNavigation.dart';
+export 'src/widget/TabNavigationPage.dart';
 export 'src/widget/TabBarWidget.dart';
 export 'src/widget/SendSMS.dart';
 export 'src/widget/CountDownSkip.dart';

@@ -1,16 +1,46 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/src/constant/WayStyles.dart';
 import 'package:flutter_waya/src/custom/CustomFlex.dart';
 import 'package:flutter_waya/src/utils/WayUtils.dart';
 
-
 class SendSMS extends StatefulWidget {
   final Function onTap;
+  final Decoration decoration;
+  final BorderRadiusGeometry borderRadius;
+  final double borderWidth;
+  final double width;
+  final double height;
+  final String defaultText;
+  final String sendingText;
+  final String sentText;
+  final String notTapText;
+  final Color defaultBorderColor;
+  final Color notTapBorderColor;
+  final Color background;
+  final TextStyle defaultTextStyle;
+  final TextStyle notTapTextStyle;
+  final int seconds;
 
-  const SendSMS({Key key, this.onTap}) : super(key: key);
+  SendSMS(
+      {Key key,
+      this.onTap,
+      this.decoration,
+      this.borderRadius,
+      this.borderWidth,
+      this.defaultBorderColor,
+      this.notTapBorderColor,
+      this.width,
+      this.height,
+      this.defaultText,
+      this.sendingText,
+      this.sentText,
+      this.notTapText,
+      this.defaultTextStyle,
+      this.notTapTextStyle,
+      this.background,
+      this.seconds})
+      : super(key: key);
 
   @override
   SendSMSState createState() => SendSMSState();
@@ -18,17 +48,14 @@ class SendSMS extends StatefulWidget {
 
 class SendSMSState extends State<SendSMS> {
   int seconds = 0;
-
   String verifyStr;
-
-  Timer timer;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((callback) {
       setState(() {
-        verifyStr = '获取验证码';
+        verifyStr = widget.defaultText ?? '获取验证码';
       });
     });
   }
@@ -38,65 +65,65 @@ class SendSMSState extends State<SendSMS> {
     return CustomFlex(
       onTap: (seconds == 0 && widget.onTap != null) ? onTap : null,
       alignment: Alignment.center,
-      width: WayUtils.getWidth(86),
-      height: WayUtils.getHeight(25),
-      decoration: BoxDecoration(
-          border: Border.all(
-              width: 1.0,
-              color: getColors(seconds == 0 ? textBlue : textBlack70)),
-          borderRadius: BorderRadius.circular(20)),
+      width: widget.width ?? WayUtils.getWidth(86),
+      height: widget.height ?? WayUtils.getHeight(25),
+      decoration: widget.decoration ??
+          BoxDecoration(
+              color: widget.background,
+              border: Border.all(
+                  width: widget.borderWidth ?? WayUtils.getWidth(0),
+                  color: seconds == 0
+                      ? (widget.defaultBorderColor ?? getColors(textBlue))
+                      : (widget.notTapBorderColor ?? getColors(textBlack70))),
+              borderRadius: widget.borderRadius ?? BorderRadius.circular(20)),
       child: Text(
         '$verifyStr',
         style: seconds == 0
-            ? WayStyles.textStyleBlue(context, fontSize: 13)
-            : WayStyles.textStyleBlack70(context, fontSize: 13),
+            ? widget.defaultTextStyle ??
+                WayStyles.textStyleBlue(context, fontSize: 13)
+            : widget.notTapTextStyle ??
+                WayStyles.textStyleBlack70(context, fontSize: 13),
       ),
     );
   }
 
   onTap() {
     setState(() {
-      verifyStr = '发送中';
+      verifyStr = widget.sendingText ?? '发送中';
     });
-    widget.onTap(begin);
+    widget.onTap(send);
   }
 
-  begin(bool isBegin) {
-    if (isBegin) {
-      setState(() {
-        startTimer();
-      });
+  send(bool sending) {
+    log(sending);
+    if (sending) {
+      startTimer();
     } else {
       setState(() {
-        verifyStr = '已发送';
+        verifyStr = widget.sentText ?? '已发送';
       });
     }
   }
 
   startTimer() {
-    seconds = 60;
-
-    timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    seconds = widget.seconds ?? 60;
+    WayUtils.timePeriodic(Duration(seconds: 1), (timer) {
       if (seconds == 0) {
-        cancelTimer();
+        WayUtils.cancelTimer();
         return;
       }
       seconds--;
       verifyStr = '${seconds}s';
       setState(() {});
       if (seconds == 0) {
-        verifyStr = '已发送';
+        verifyStr = widget.sentText ?? '已发送';
       }
     });
   }
 
-  cancelTimer() {
-    timer?.cancel();
-  }
-
   @override
   void dispose() {
-    cancelTimer();
+    WayUtils.cancelTimer();
     super.dispose();
   }
 }

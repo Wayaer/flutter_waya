@@ -218,4 +218,11 @@ class WayUtils {
     // 这里其实就是 digest.toString()
     return hex.encode(digest.bytes);
   }
+
+  static setStatusBarLight(bool isLight) {
+    if (isLight is bool) {
+      SystemChrome.setSystemUIOverlayStyle(
+          isLight ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark);
+    }
+  }
 }

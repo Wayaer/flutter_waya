@@ -10,20 +10,31 @@ import 'CustomButton.dart';
 import 'CustomFlex.dart';
 import 'CustomIcon.dart';
 
+enum LineType {
+  outLine,
+  underline,
+}
+
 class CustomInput extends StatefulWidget {
   final TextEditingController controller;
   final ValueChanged<String> onChanged;
   final double width;
   final EdgeInsetsGeometry padding;
   final EdgeInsetsGeometry margin;
+  final EdgeInsetsGeometry headMargin;
+  final EdgeInsetsGeometry headPadding;
+  final EdgeInsetsGeometry footPadding;
+  final EdgeInsetsGeometry footMargin;
   final double height;
-  final double underlineWidth;
+  final double lineWidth;
   final double inputBoxWidth;
   final double inputBoxHeight;
   final EdgeInsetsGeometry inputBoxPadding;
   final EdgeInsetsGeometry inputBoxMargin;
   final Widget inputBoxRightWight;
+  final Widget inputBoxOutLeftWidget;
   final Widget inputBoxLeftWight;
+  final Widget inputBoxOutRightWidget;
   final String hintText;
   final Widget headLeftWight;
   final String headLeftText;
@@ -33,6 +44,7 @@ class CustomInput extends StatefulWidget {
   final String footLeftText;
   final Widget footRightWight;
   final TextStyle hintStyle;
+  final TextStyle headLeftTextStyle;
   final EdgeInsetsGeometry contentPadding;
   final Color inputBoxColor;
   final Color color;
@@ -48,8 +60,8 @@ class CustomInput extends StatefulWidget {
   final bool underline;
   final bool showEye;
   final InputDecoration inputDecoration;
-  final Color underlineBackground;
-  final Color underlineFocusBackground;
+  final Color lineBackground;
+  final Color lineFocusBackground;
   final Color cursorColor;
   final GestureTapCallback headRightIconOnTap;
   final String value;
@@ -60,6 +72,8 @@ class CustomInput extends StatefulWidget {
   final Color eyeCloseColor;
   final Widget eyeOpenWidget;
   final Widget eyeCloseWidget;
+  final LineType lineType;
+  final BorderRadiusGeometry inputBoxLineBorderRadius;
 
   final Widget icon;
 
@@ -75,10 +89,10 @@ class CustomInput extends StatefulWidget {
     this.eyeCloseColor,
     this.underline: true,
     this.value,
-    this.underlineWidth,
+    this.lineWidth,
     this.controller,
-    this.underlineBackground,
-    this.underlineFocusBackground,
+    this.lineBackground,
+    this.lineFocusBackground,
     this.headRightIconOnTap,
     this.enabled,
     this.inputDecoration,
@@ -102,6 +116,7 @@ class CustomInput extends StatefulWidget {
     this.headLeftText,
     this.headRightWight,
     this.headRightIcon,
+    this.headLeftTextStyle,
     this.footLeftWight,
     this.footLeftText,
     this.footRightWight,
@@ -115,6 +130,14 @@ class CustomInput extends StatefulWidget {
     this.inputBoxRightWight,
     this.inputBoxLeftWight,
     this.contentPadding,
+    this.lineType,
+    this.inputBoxLineBorderRadius,
+    this.inputBoxOutLeftWidget,
+    this.inputBoxOutRightWidget,
+    this.headMargin,
+    this.headPadding,
+    this.footPadding,
+    this.footMargin,
   }) : super(key: key);
 
   @override
@@ -131,16 +154,14 @@ class CustomInputState extends State<CustomInput> {
   InputDecoration inputDecoration;
   static String value;
   TextEditingController textController;
-  Color underlineBackground;
-  Color underlineFocusBackground;
+  Color lineBackground;
+  Color lineFocusBackground;
 
   @override
   void initState() {
     super.initState();
-    underlineBackground =
-        widget.underlineBackground ?? getColors(lineBackground);
-    underlineFocusBackground =
-        widget.underlineFocusBackground ?? getColors(buttonBlue);
+    lineBackground = widget.lineBackground ?? getColors(background);
+    lineFocusBackground = widget.lineFocusBackground ?? getColors(buttonBlue);
     inputFocusNode.addListener(onChangeFocus);
 //    eye = !(widget.inputType == InputType.password);
     if (widget.controller == null) {
@@ -148,7 +169,7 @@ class CustomInputState extends State<CustomInput> {
       textController = TextEditingController.fromValue(TextEditingValue(
           text: value.trim(),
           selection:
-          TextSelection.fromPosition(TextPosition(offset: value.length))));
+              TextSelection.fromPosition(TextPosition(offset: value.length))));
     }
   }
 
@@ -167,82 +188,133 @@ class CustomInputState extends State<CustomInput> {
   @override
   Widget build(BuildContext context) {
     return widget.headLeftWight != null ||
-        widget.headLeftText != null ||
-        widget.headRightWight != null ||
-        widget.headRightIcon != null ||
-        widget.footLeftWight != null ||
-        widget.footLeftText != null ||
-        widget.footRightWight != null
+            widget.headLeftText != null ||
+            widget.headRightWight != null ||
+            widget.headRightIcon != null ||
+            widget.footLeftWight != null ||
+            widget.footLeftText != null ||
+            widget.footRightWight != null
         ? CustomFlex(
-        mainAxisSize: MainAxisSize.min,
-        decoration: BoxDecoration(
-          color: widget.color,
-        ),
-        height: widget.height,
-        width: widget.width,
-        margin: widget.margin,
-        padding: widget.padding,
-        children: <Widget>[
-          //输入框头部
-          Offstage(
-              offstage: !(widget.headLeftWight != null ||
-                  widget.headRightWight != null ||
-                  widget.headLeftText != null),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Offstage(
-                      offstage: !(widget.headLeftWight != null ||
-                          widget.headLeftText != null),
-                      child: widget.headLeftText != null
-                          ? Text(widget.headLeftText,
-                          style: WayStyles.textStyleBlack70(context,
-                              fontSize: 15))
-                          : widget.headLeftWight,
-                    ),
-                    Offstage(
-                      offstage: !(widget.headRightWight != null ||
-                          widget.headRightIcon != null),
-                      child: widget.headRightIcon != null
-                          ? CustomIcon(
-                        widget.headRightIcon,
-                        iconColor: getColors(iconBlue),
-                        iconSize: WayUtils.getWidth(18),
-                        onTap: widget.headRightIconOnTap,
-                      )
-                          : widget.headRightWight,
-                    )
-                  ])),
-          inputBoxCenter(context),
-          //输入框底部
-          Offstage(
-              offstage: !(widget.footLeftWight != null ||
-                  widget.footRightWight != null ||
-                  widget.footLeftText != null),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Offstage(
-                      offstage: !(widget.footLeftWight != null ||
-                          widget.footLeftText != null),
-                      child: widget.footLeftText != null
-                          ? CustomButton(
-                        margin: EdgeInsets.only(
-                            top: WayUtils.getHeight(4)),
-                        text: widget.footLeftText,
-                        textStyle: WayStyles.textStyleBlack70(
-                            context,
-                            fontSize: 12),
-                      )
-                          : widget.footLeftWight,
-                    ),
-                    Offstage(
-                      offstage: widget.footRightWight == null,
-                      child: widget.footRightWight,
-                    )
-                  ]))
-        ])
+            mainAxisSize: MainAxisSize.min,
+            decoration: BoxDecoration(
+              color: widget.color,
+            ),
+            height: widget.height,
+            width: widget.width,
+            margin: widget.margin,
+            padding: widget.padding,
+            children: <Widget>[
+                //输入框头部
+                Offstage(
+                    offstage: !(widget.headLeftWight != null ||
+                        widget.headRightWight != null ||
+                        widget.headLeftText != null),
+                    child: CustomFlex(
+                        margin: widget.headMargin,
+                        padding: widget.headPadding,
+                        direction: Axis.horizontal,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Offstage(
+                            offstage: !(widget.headLeftWight != null ||
+                                widget.headLeftText != null),
+                            child: widget.headLeftText != null
+                                ? Text(widget.headLeftText,
+                                    style: widget.headLeftTextStyle ??
+                                        WayStyles.textStyleBlack70(context,
+                                            fontSize: 15))
+                                : widget.headLeftWight,
+                          ),
+                          Offstage(
+                            offstage: !(widget.headRightWight != null ||
+                                widget.headRightIcon != null),
+                            child: widget.headRightIcon != null
+                                ? CustomIcon(
+                                    widget.headRightIcon,
+                                    iconColor: getColors(iconBlue),
+                                    iconSize: WayUtils.getWidth(18),
+                                    onTap: widget.headRightIconOnTap,
+                                  )
+                                : widget.headRightWight,
+                          )
+                        ])),
+                inputBoxCenterRow(context),
+
+                //输入框底部
+                Offstage(
+                    offstage: !(widget.footLeftWight != null ||
+                        widget.footRightWight != null ||
+                        widget.footLeftText != null),
+                    child: CustomFlex(
+                        margin: widget.footMargin,
+                        padding: widget.footPadding,
+                        direction: Axis.horizontal,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Offstage(
+                            offstage: !(widget.footLeftWight != null ||
+                                widget.footLeftText != null),
+                            child: widget.footLeftText != null
+                                ? CustomButton(
+                                    margin: EdgeInsets.only(
+                                        top: WayUtils.getHeight(4)),
+                                    text: widget.footLeftText,
+                                    textStyle: WayStyles.textStyleBlack70(
+                                        context,
+                                        fontSize: 12),
+                                  )
+                                : widget.footLeftWight,
+                          ),
+                          Offstage(
+                            offstage: widget.footRightWight == null,
+                            child: widget.footRightWight,
+                          )
+                        ]))
+              ])
+        : inputBoxCenterRow(context);
+  }
+
+  inputBoxCenterRow(BuildContext context) {
+    return widget.inputBoxOutLeftWidget != null ||
+            widget.inputBoxOutRightWidget != null
+        ? CustomFlex(
+            direction: Axis.horizontal,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Offstage(
+                offstage: widget.inputBoxOutLeftWidget == null,
+                child: widget.inputBoxOutLeftWidget,
+              ),
+              Expanded(child: inputBoxCenter(context)),
+              Offstage(
+                offstage: widget.inputBoxOutRightWidget == null,
+                child: widget.inputBoxOutRightWidget,
+              )
+            ],
+          )
         : inputBoxCenter(context);
+  }
+
+  BoxDecoration inputBoxLine() {
+    if (widget.lineType == LineType.underline) {
+      return BoxDecoration(
+          color: widget.inputBoxColor,
+          border: Border(
+              bottom: BorderSide(
+                  width: widget.lineWidth ?? WayUtils.getWidth(1),
+                  color: focus ? lineFocusBackground : lineBackground)));
+    } else if (widget.lineType == LineType.outLine) {
+      return BoxDecoration(
+          color: widget.inputBoxColor,
+          borderRadius: widget.inputBoxLineBorderRadius,
+          border: Border.all(
+              width: widget.lineWidth ?? WayUtils.getWidth(1),
+              color: focus ? lineFocusBackground : lineBackground));
+    } else {
+      return BoxDecoration();
+    }
   }
 
   Widget inputBoxCenter(BuildContext context) {
@@ -252,16 +324,7 @@ class CustomInputState extends State<CustomInput> {
       margin: widget.inputBoxMargin,
       padding: widget.inputBoxPadding,
       direction: Axis.horizontal,
-      decoration: BoxDecoration(
-          color: widget.inputBoxColor,
-          border: Border(
-              bottom: widget.underline
-                  ? BorderSide(
-                  width: widget.underlineWidth ?? WayUtils.getWidth(1),
-                  color: focus
-                      ? underlineFocusBackground
-                      : underlineBackground)
-                  : BorderSide.none)),
+      decoration: inputBoxLine(),
       children: <Widget>[
         Offstage(
           offstage: widget.inputBoxLeftWight == null,
@@ -375,10 +438,10 @@ class CustomInputState extends State<CustomInput> {
 //                errorStyle: TextStyle(color: Colors.orange),
 //                errorMaxLines: 1,
             //做多显示的行数  ，超过行数显示...
-//            errorBorder: UnderlineInputBorder(
+//            errorBorder: underlineInputBorder(
 //                borderSide: BorderSide(width: 5, color: Colors.orange, style: BorderStyle.solid)),
 //            //失去焦点时，error时下划线显示的边框样式，不设置则使用默认的的下划线
-//            focusedErrorBorder: UnderlineInputBorder(
+//            focusedErrorBorder: underlineInputBorder(
 //                borderSide: BorderSide(width: 5, color: Colors.green, style: BorderStyle.solid)),
 //            //获取焦点时，error时下划线显示的边框样式，不设置则使用默认的的下划线
 
@@ -395,14 +458,14 @@ class CustomInputState extends State<CustomInput> {
 //            filled: false,
 
             //输入框禁用时，下划线的样式.如果设置了errorText，则此属性无效
-//            disabledBorder: UnderlineInputBorder(
+//            disabledBorder: underlineInputBorder(
 //                borderSide: BorderSide(
 //                    width: WayUtils.getWidth( 1),
 //                    color: getColors( lineBackground),
 //                    style: BorderStyle.solid)),
 
             //输入框启用时，下划线的样式
-//            enabledBorder: UnderlineInputBorder(
+//            enabledBorder: underlineInputBorder(
 //                borderSide: BorderSide(
 //                    width: WayUtils.getWidth( 1),
 //                    color: getColors( lineBackground),
@@ -411,9 +474,9 @@ class CustomInputState extends State<CustomInput> {
             //是否启用输入框
 //            enabled: true,
             //获取焦点时，下划线的样式
-//            focusedBorder: UnderlineInputBorder(
+//            focusedBorder: underlineInputBorder(
 //                borderSide: BorderSide(
-//                    width: WayUtils.getWidth( 1),
+//                    width: WayUtils.getWidth(1),
 //                    color: Colors.blue,
 //                    style: BorderStyle.solid)),
 
@@ -427,8 +490,7 @@ class CustomInputState extends State<CustomInput> {
           ),
       onChanged: (text) {
         value = text;
-        if (widget.onChanged is
-        ValueChanged<String>) {
+        if (widget.onChanged is ValueChanged<String>) {
           widget.onChanged(text);
         }
       },

@@ -15,16 +15,15 @@ class CustomScaffold extends StatelessWidget {
   final Color backgroundColor;
 
   //isScroll  和expandedBody  不可同时使用
-  CustomScaffold(
-      {Key key,
-      this.appBar,
-      this.bottomNavigationBar,
-      this.isScroll: false,
-      this.expandedBody: false,
-      this.body,
-      this.backgroundColor,
-      this.paddingStatusBar: false,
-      this.padding})
+  CustomScaffold({Key key,
+    this.appBar,
+    this.bottomNavigationBar,
+    this.isScroll: false,
+    this.expandedBody: false,
+    this.body,
+    this.backgroundColor,
+    this.paddingStatusBar: false,
+    this.padding})
       : super(key: key);
 
   Size preferredSize;
@@ -41,19 +40,19 @@ class CustomScaffold extends StatelessWidget {
       backgroundColor: backgroundColor ?? getColors(background),
       appBar: appBar != null
           ? PreferredSize(
-              //自定义导航栏高度
-              preferredSize: Size.fromHeight(preferredSize?.height ?? 0),
-              child: AppBar(
-                  leading: appBar.leading,
-                  iconTheme: IconThemeData(color: getColors(iconBlack)),
-                  elevation: appBar.elevation ?? 0,
-                  title: appBar.title,
-                  centerTitle: true,
-                  bottom: appBar.bottom,
-                  brightness: appBar.brightness ?? Brightness.dark,
-                  backgroundColor: appBar.backgroundColor ??
-                      getColors(appBarBackgroundColor),
-                  actions: appBar.actions))
+        //自定义导航栏高度
+          preferredSize: Size.fromHeight(preferredSize?.height ?? 0),
+          child: AppBar(
+              leading: appBar.leading,
+              iconTheme: IconThemeData(color: getColors(iconBlack)),
+              elevation: appBar.elevation ?? 0,
+              title: appBar.title,
+              centerTitle: true,
+              bottom: appBar.bottom,
+              brightness: appBar.brightness ?? Brightness.dark,
+              backgroundColor: appBar.backgroundColor ??
+                  getColors(appBarBackgroundColor),
+              actions: appBar.actions))
           : null,
       bottomNavigationBar: bottomNavigationBar,
       body: bodyWidget(context),

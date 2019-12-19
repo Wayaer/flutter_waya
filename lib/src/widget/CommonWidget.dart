@@ -22,7 +22,7 @@ class CommonWidget {
       width: width ?? WayUtils.getWidth(1),
       margin: margin,
       padding: padding,
-      color: color ?? getColors(lineBackground),
+      color: color ?? getColors(background),
     );
   }
 
@@ -37,7 +37,7 @@ class CommonWidget {
       padding: padding,
       width: width ?? WayUtils.getWidth(),
       margin: margin,
-      color: color ?? getColors(lineBackground),
+      color: color ?? getColors(background),
     );
   }
 

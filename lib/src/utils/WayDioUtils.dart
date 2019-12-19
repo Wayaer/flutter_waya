@@ -98,10 +98,10 @@ class WayDioUtils {
     }));
   }
 
-  Future get(String url, {Map<String, dynamic> param}) async {
+  Future get(String url, {Map<String, dynamic> params}) async {
     try {
-      WayUtils.log("GET url:" + url + "  param:" + param.toString());
-      Response response = await dio.get(url, queryParameters: param);
+      WayUtils.log("GET url:" + url + "  params:" + params.toString());
+      Response response = await dio.get(url, queryParameters: params);
       WayUtils.log("GET url:" + url + '  responseData==  ' + response.toString());
       return response.toString();
     } catch (e) {
@@ -114,7 +114,7 @@ class WayDioUtils {
     try {
       WayUtils.log("POST url:" +
           url +
-          "  param:" +
+          "  params:" +
           params.toString() +
           "  data:" +
           data.toString());
@@ -131,7 +131,7 @@ class WayDioUtils {
 
   Future put(String url, Map<String, dynamic> param) async {
     try {
-      WayUtils.log("PUT url:" + url + "  param:" + param.toString());
+      WayUtils.log("PUT url:" + url + "  params:" + param.toString());
       Response response = await dio.put(url, queryParameters: param);
       WayUtils.log("PUT url:" + url + '  responseData==  ' + response.toString());
       return response.toString();
@@ -143,7 +143,7 @@ class WayDioUtils {
 
   Future delete(String url, Map<String, dynamic> param) async {
     try {
-      WayUtils.log("DELETE url:" + url + "  param:" + param.toString());
+      WayUtils.log("DELETE url:" + url + "  params:" + param.toString());
       Response response = await dio.delete(url, queryParameters: param);
       WayUtils.log(
           "DELETE url:" + url + '  responseData==  ' + response.toString());
