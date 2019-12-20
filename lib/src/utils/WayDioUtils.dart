@@ -32,15 +32,14 @@ class WayDioUtils {
 
   WayDioUtils.internal({BaseOptions options}) {
     dio = Dio();
-    if (options == null) {
-      _options = dio.options;
-      _options.connectTimeout = HTTP_TIMEOUT_CONNECT;
-      _options.receiveTimeout = HTTP_TIMEOUT_RECEIVE;
-      _options.contentType = HTTP_CONTENT_TYPE[2];
-      _options.responseType = ResponseType.json;
-    } else {
-      _options = options;
-    }
+    _options = dio.options;
+    _options.connectTimeout = options.connectTimeout ?? HTTP_TIMEOUT_CONNECT;
+    _options.receiveTimeout = options.receiveTimeout ?? HTTP_TIMEOUT_RECEIVE;
+    _options.contentType =
+        options.contentType ?? HTTP_CONTENT_TYPE[2].toString();
+    _options.responseType = options.responseType ?? ResponseType.json;
+    Map<String, dynamic> _headers = {};
+    _options.headers = options.headers ?? _headers;
     addInterceptors();
   }
 
@@ -102,7 +101,8 @@ class WayDioUtils {
     try {
       WayUtils.log("GET url:" + url + "  params:" + params.toString());
       Response response = await dio.get(url, queryParameters: params);
-      WayUtils.log("GET url:" + url + '  responseData==  ' + response.toString());
+      WayUtils.log(
+          "GET url:" + url + '  responseData==  ' + response.toString());
       return response.toString();
     } catch (e) {
       error = e;
@@ -133,7 +133,8 @@ class WayDioUtils {
     try {
       WayUtils.log("PUT url:" + url + "  params:" + param.toString());
       Response response = await dio.put(url, queryParameters: param);
-      WayUtils.log("PUT url:" + url + '  responseData==  ' + response.toString());
+      WayUtils.log(
+          "PUT url:" + url + '  responseData==  ' + response.toString());
       return response.toString();
     } catch (e) {
       error = e;

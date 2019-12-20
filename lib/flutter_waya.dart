@@ -38,7 +38,7 @@ export 'src/utils/WayNavigatorUtils.dart';
 //widget
 export 'src/widget/gestures/Gesture.dart';
 export 'src/widget/BlueButton.dart';
-export 'src/widget/ItemWidget.dart';
+export 'src/widget/ListItem.dart';
 export 'src/widget/BlueIcons.dart';
 export 'src/widget/CommonWidget.dart';
 export 'src/widget/MarqueeListWidget.dart';

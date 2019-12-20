@@ -31,12 +31,19 @@ const String tabBarNavigationUnSelectedItemColor =
     'tabBarNavigationUnSelectedItemColor';
 const String containerColor = 'containerColor';
 const String appBarTextColor = 'appBarTextColor';
+const String black = 'black';
+const String black70 = 'black70';
 
 getColors(String color) {
   return ColorInfo[color];
 }
 
 const ColorInfo = {
+  '$white': Colors.white,
+  '$white50': Color(0x50FFFFFF),
+  '$black': Color(0xFF000000),
+  '$black70': Color(0x70000000),
+  //
   '$appBarTextColor': Colors.white,
   '$textBlack100': Color(0xFF000000),
   '$textBlack70': Color(0xFF393939),
@@ -62,8 +69,6 @@ const ColorInfo = {
   '$tabBarNavigationColor': Colors.white,
   '$tabBarNavigationSelectedItemColor': Color(0xFF349DFF),
   '$tabBarNavigationUnSelectedItemColor': Color(0xFFA7A7A7),
-  '$white': Colors.white,
-  '$white50': Color(0xFFFFFFFF),
   '$containerColor': Colors.white,
   '$appBarBackgroundColor': Colors.white,
 };

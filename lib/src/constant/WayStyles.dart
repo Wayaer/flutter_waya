@@ -101,15 +101,6 @@ class WayStyles {
             decoration: TextDecoration.none));
   }
 
-  static TextStyle textStyleBlack20(BuildContext context,
-      {double fontSize, TextStyle textStyle}) {
-    return mergeTextStyle(
-        textStyle,
-        TextStyle(
-            color: getColors(textBlack20),
-            fontSize: fontSize,
-            decoration: TextDecoration.none));
-  }
 
   static TextStyle textStyleBlue(BuildContext context,
       {double fontSize, TextStyle textStyle}) {

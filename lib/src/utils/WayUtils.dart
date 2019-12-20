@@ -9,7 +9,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/src/utils/WayMediaQueryUtils.dart';
+import 'package:oktoast/oktoast.dart';
+import 'package:package_info/package_info.dart';
 
 enum DateType {
   dateTime,
@@ -29,8 +32,32 @@ isDebug() {
   }
 }
 
+showToast(message) {
+  WayUtils.showToast(message.toString());
+}
+
+showAlertWidget(Widget widget) {
+  WayUtils.showAlertWidget(widget);
+}
+
 class WayUtils {
   static Timer timerInfo;
+
+  static showToast(String message) {
+    showAlertWidget(Container(
+      decoration: BoxDecoration(
+          color: getColors(black70), borderRadius: BorderRadius.circular(5)),
+      padding: EdgeInsets.all(WayUtils.getWidth(10)),
+      child: Text(
+        message,
+        style: TextStyle(color: getColors(textWhite), fontSize: 16),
+      ),
+    ));
+  }
+
+  static showAlertWidget(Widget widget) {
+    showToastWidget(widget);
+  }
 
   // 截屏
   static capture(GlobalKey globalKey) async {
@@ -41,8 +68,8 @@ class WayUtils {
     return byteData;
   }
 
-  // 复制
-  static copy(BuildContext context, text) {
+  // 复制到粘贴板
+  static copy(text) {
     Clipboard.setData(new ClipboardData(text: text));
   }
 
@@ -236,6 +263,34 @@ class WayUtils {
     if (isLight is bool) {
       SystemChrome.setSystemUIOverlayStyle(
           isLight ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark);
+    }
+  }
+
+  static getAppVersion() async {
+    if (Platform.isIOS || Platform.isAndroid) {
+      PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      return packageInfo.version.toString();
+    }
+  }
+
+  static getAppName() async {
+    if (Platform.isIOS || Platform.isAndroid) {
+      PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      return packageInfo.appName.toString();
+    }
+  }
+
+  static getPackageName() async {
+    if (Platform.isIOS || Platform.isAndroid) {
+      PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      return packageInfo.packageName.toString();
+    }
+  }
+
+  static getBuildNumber() async {
+    if (Platform.isIOS || Platform.isAndroid) {
+      PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      return packageInfo.buildNumber.toString();
     }
   }
 }

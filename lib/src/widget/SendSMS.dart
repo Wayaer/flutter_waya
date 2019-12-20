@@ -24,24 +24,23 @@ class SendSMS extends StatefulWidget {
   final TextStyle notTapTextStyle;
   final int seconds;
 
-  SendSMS(
-      {Key key,
-      this.onTap,
-      this.decoration,
-      this.borderRadius,
-      this.borderWidth,
-      this.defaultBorderColor,
-      this.notTapBorderColor,
-      this.width,
-      this.height,
-      this.defaultText,
-      this.sendingText,
-      this.sentText,
-      this.notTapText,
-      this.defaultTextStyle,
-      this.notTapTextStyle,
-      this.background,
-      this.seconds})
+  SendSMS({Key key,
+    this.onTap,
+    this.decoration,
+    this.borderRadius,
+    this.borderWidth,
+    this.defaultBorderColor,
+    this.notTapBorderColor,
+    this.width,
+    this.height,
+    this.defaultText,
+    this.sendingText,
+    this.sentText,
+    this.notTapText,
+    this.defaultTextStyle,
+    this.notTapTextStyle,
+    this.background,
+    this.seconds})
       : super(key: key);
 
   @override
@@ -51,6 +50,7 @@ class SendSMS extends StatefulWidget {
 class SendSMSState extends State<SendSMS> {
   int seconds = 0;
   String verifyStr;
+  Timer timer;
 
   @override
   void initState() {
@@ -82,9 +82,9 @@ class SendSMSState extends State<SendSMS> {
         '$verifyStr',
         style: seconds == 0
             ? widget.defaultTextStyle ??
-                WayStyles.textStyleBlue(context, fontSize: 13)
+            WayStyles.textStyleBlue(context, fontSize: 13)
             : widget.notTapTextStyle ??
-                WayStyles.textStyleBlack70(context, fontSize: 13),
+            WayStyles.textStyleBlack70(context, fontSize: 13),
       ),
     );
   }
@@ -109,9 +109,9 @@ class SendSMSState extends State<SendSMS> {
 
   startTimer() {
     seconds = widget.seconds ?? 60;
-    WayUtils.timePeriodic(Duration(seconds: 1), () {
+    timer = Timer.periodic(Duration(seconds: 1), (time) {
       if (seconds == 0) {
-        WayUtils.cancelTimer();
+        timer.cancel();
         return;
       }
       seconds--;
@@ -125,7 +125,7 @@ class SendSMSState extends State<SendSMS> {
 
   @override
   void dispose() {
-    WayUtils.cancelTimer();
     super.dispose();
+    if (timer != null) timer.cancel();
   }
 }

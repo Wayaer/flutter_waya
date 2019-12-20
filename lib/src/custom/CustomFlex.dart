@@ -33,6 +33,11 @@ class CustomFlex extends StatelessWidget {
   final Matrix4 transform;
   final bool isScroll;
 
+  //  HitTestBehavior.opaque 自己处理事件 
+  //  HitTestBehavior.deferToChild child处理事件
+  //  HitTestBehavior.translucent 自己和child都可以接收事件
+  final HitTestBehavior behavior;
+
   CustomFlex({
     Key key,
     this.onTap,
@@ -58,6 +63,7 @@ class CustomFlex extends StatelessWidget {
     this.decoration,
     this.constraints,
     this.transform,
+    this.behavior: HitTestBehavior.opaque,
   }) : super(key: key);
   List<Widget> list;
 
@@ -65,31 +71,33 @@ class CustomFlex extends StatelessWidget {
   Widget build(BuildContext context) {
     return onTap != null || onLongPress != null
         ? (inkWell
-            ? Material(
-                child: Ink(
-                    child: InkWell(
-                onTap: onTap,
-                onLongPress: onLongPress,
-                onDoubleTap: onDoubleTap,
-                child: childBody(),
-              )))
-            : GestureDetector(
-                onTap: onTap,
-                onDoubleTap: onDoubleTap,
-                onLongPress: onLongPress,
-                child: childBody(),
-              ))
+        ? Material(
+        color: Colors.transparent,
+        child: Ink(
+            child: InkWell(
+              onTap: onTap,
+              onLongPress: onLongPress,
+              onDoubleTap: onDoubleTap,
+              child: childBody(),
+            )))
+        : GestureDetector(
+      behavior: behavior,
+      onTap: onTap,
+      onDoubleTap: onDoubleTap,
+      onLongPress: onLongPress,
+      child: childBody(),
+    ))
         : childBody();
   }
 
   Widget childBody() {
     if (children != null && children.length > 0) {
       return padding != null ||
-              margin != null ||
-              height != null ||
-              width != null ||
-              color != null ||
-              decoration != null
+          margin != null ||
+          height != null ||
+          width != null ||
+          color != null ||
+          decoration != null
           ? containerWidget(singleChildScrollView())
           : singleChildScrollView();
     } else {
@@ -114,9 +122,9 @@ class CustomFlex extends StatelessWidget {
   Widget singleChildScrollView() {
     return isScroll
         ? Expanded(
-            child: SingleChildScrollView(
-            child: flex(),
-          ))
+        child: SingleChildScrollView(
+          child: flex(),
+        ))
         : flex();
   }
 

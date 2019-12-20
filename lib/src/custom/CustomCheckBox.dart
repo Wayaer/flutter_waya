@@ -14,7 +14,6 @@ class CustomCheckBox extends StatefulWidget {
   final Color background;
   final Color unCheckColor;
 
-//  final bool tristate;
   final TextStyle textStyle;
   final double iconSize;
   final double width;
@@ -31,7 +30,6 @@ class CustomCheckBox extends StatefulWidget {
   CustomCheckBox(
       {Key key,
       this.value: false,
-//      this.tristate: false,
       this.onChange,
       this.checkWidget,
       this.checkIcon,
@@ -79,6 +77,13 @@ class CustomCheckBoxState extends State<CustomCheckBox> {
 
   Widget customWidget({Widget uncheckWidget, Widget checkWidget}) {
     return CustomFlex(
+        width: widget.width,
+        height: widget.height,
+        color: widget.background,
+        margin: widget.margin,
+        padding: widget.padding,
+        mainAxisAlignment: widget.mainAxisAlignment,
+        crossAxisAlignment: widget.crossAxisAlignment,
         onTap: () {
           setState(() {
             value = !value;

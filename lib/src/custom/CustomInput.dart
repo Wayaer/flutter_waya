@@ -25,6 +25,8 @@ class CustomInput extends StatefulWidget {
   final EdgeInsetsGeometry headPadding;
   final EdgeInsetsGeometry footPadding;
   final EdgeInsetsGeometry footMargin;
+  final EdgeInsetsGeometry eyePadding;
+  final EdgeInsetsGeometry eyeMargin;
   final double height;
   final double lineWidth;
   final double inputBoxWidth;
@@ -55,6 +57,7 @@ class CustomInput extends StatefulWidget {
   final int minLines;
   final TextInputType keyboardType;
   final TextStyle inputTextStyle;
+  final TextStyle footLeftTextStyle;
   final ValueChanged<String> onSubmitted;
   final bool enabled;
   final bool underline;
@@ -138,6 +141,9 @@ class CustomInput extends StatefulWidget {
     this.headPadding,
     this.footPadding,
     this.footMargin,
+    this.eyePadding,
+    this.eyeMargin,
+    this.footLeftTextStyle,
   }) : super(key: key);
 
   @override
@@ -169,7 +175,7 @@ class CustomInputState extends State<CustomInput> {
       textController = TextEditingController.fromValue(TextEditingValue(
           text: value.trim(),
           selection:
-              TextSelection.fromPosition(TextPosition(offset: value.length))));
+          TextSelection.fromPosition(TextPosition(offset: value.length))));
     }
   }
 
@@ -188,112 +194,111 @@ class CustomInputState extends State<CustomInput> {
   @override
   Widget build(BuildContext context) {
     return widget.headLeftWight != null ||
-            widget.headLeftText != null ||
-            widget.headRightWight != null ||
-            widget.headRightIcon != null ||
-            widget.footLeftWight != null ||
-            widget.footLeftText != null ||
-            widget.footRightWight != null
+        widget.headLeftText != null ||
+        widget.headRightWight != null ||
+        widget.headRightIcon != null ||
+        widget.footLeftWight != null ||
+        widget.footLeftText != null ||
+        widget.footRightWight != null
         ? CustomFlex(
-            mainAxisSize: MainAxisSize.min,
-            decoration: BoxDecoration(
-              color: widget.color,
-            ),
-            height: widget.height,
-            width: widget.width,
-            margin: widget.margin,
-            padding: widget.padding,
-            children: <Widget>[
-                //输入框头部
-                Offstage(
-                    offstage: !(widget.headLeftWight != null ||
-                        widget.headRightWight != null ||
-                        widget.headLeftText != null),
-                    child: CustomFlex(
-                        margin: widget.headMargin,
-                        padding: widget.headPadding,
-                        direction: Axis.horizontal,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Offstage(
-                            offstage: !(widget.headLeftWight != null ||
-                                widget.headLeftText != null),
-                            child: widget.headLeftText != null
-                                ? Text(widget.headLeftText,
-                                    style: widget.headLeftTextStyle ??
-                                        WayStyles.textStyleBlack70(context,
-                                            fontSize: 15))
-                                : widget.headLeftWight,
-                          ),
-                          Offstage(
-                            offstage: !(widget.headRightWight != null ||
-                                widget.headRightIcon != null),
-                            child: widget.headRightIcon != null
-                                ? CustomIcon(
-                                    widget.headRightIcon,
-                                    iconColor: getColors(iconBlue),
-                                    iconSize: WayUtils.getWidth(18),
-                                    onTap: widget.headRightIconOnTap,
-                                  )
-                                : widget.headRightWight,
-                          )
-                        ])),
-                inputBoxCenterRow(context),
+        mainAxisSize: MainAxisSize.min,
+        decoration: BoxDecoration(
+          color: widget.color,
+        ),
+        height: widget.height,
+        width: widget.width,
+        margin: widget.margin,
+        padding: widget.padding,
+        children: <Widget>[
+          //输入框头部
+          Offstage(
+              offstage: !(widget.headLeftWight != null ||
+                  widget.headRightWight != null ||
+                  widget.headLeftText != null),
+              child: CustomFlex(
+                  margin: widget.headMargin,
+                  padding: widget.headPadding,
+                  direction: Axis.horizontal,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Offstage(
+                      offstage: !(widget.headLeftWight != null ||
+                          widget.headLeftText != null),
+                      child: widget.headLeftText != null
+                          ? Text(widget.headLeftText,
+                          style: widget.headLeftTextStyle ??
+                              WayStyles.textStyleBlack70(context,
+                                  fontSize: 15))
+                          : widget.headLeftWight,
+                    ),
+                    Offstage(
+                      offstage: !(widget.headRightWight != null ||
+                          widget.headRightIcon != null),
+                      child: widget.headRightIcon != null
+                          ? CustomIcon(
+                        widget.headRightIcon,
+                        iconColor: getColors(iconBlue),
+                        iconSize: WayUtils.getWidth(18),
+                        onTap: widget.headRightIconOnTap,
+                      )
+                          : widget.headRightWight,
+                    )
+                  ])),
+          inputBoxCenterRow(context),
 
-                //输入框底部
-                Offstage(
-                    offstage: !(widget.footLeftWight != null ||
-                        widget.footRightWight != null ||
-                        widget.footLeftText != null),
-                    child: CustomFlex(
-                        margin: widget.footMargin,
-                        padding: widget.footPadding,
-                        direction: Axis.horizontal,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Offstage(
-                            offstage: !(widget.footLeftWight != null ||
-                                widget.footLeftText != null),
-                            child: widget.footLeftText != null
-                                ? CustomButton(
-                                    margin: EdgeInsets.only(
-                                        top: WayUtils.getHeight(4)),
-                                    text: widget.footLeftText,
-                                    textStyle: WayStyles.textStyleBlack70(
-                                        context,
-                                        fontSize: 12),
-                                  )
-                                : widget.footLeftWight,
-                          ),
-                          Offstage(
-                            offstage: widget.footRightWight == null,
-                            child: widget.footRightWight,
-                          )
-                        ]))
-              ])
+          //输入框底部
+          Offstage(
+              offstage: !(widget.footLeftWight != null ||
+                  widget.footRightWight != null ||
+                  widget.footLeftText != null),
+              child: CustomFlex(
+                  margin: widget.footMargin ??
+                      EdgeInsets.only(top: WayUtils.getHeight(5)),
+                  padding: widget.footPadding,
+                  direction: Axis.horizontal,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Offstage(
+                      offstage: !(widget.footLeftWight != null ||
+                          widget.footLeftText != null),
+                      child: widget.footLeftText != null
+                          ? Text(
+                        widget.footLeftText,
+                        style: widget.footLeftTextStyle ??
+                            WayStyles.textStyleBlack70(context,
+                                fontSize: 12),
+                      )
+                          : widget.footLeftWight,
+                    ),
+                    Offstage(
+                      offstage: widget.footRightWight == null,
+                      child: widget.footRightWight,
+                    )
+                  ]))
+        ])
         : inputBoxCenterRow(context);
   }
 
   inputBoxCenterRow(BuildContext context) {
     return widget.inputBoxOutLeftWidget != null ||
-            widget.inputBoxOutRightWidget != null
+        widget.inputBoxOutRightWidget != null
         ? CustomFlex(
-            direction: Axis.horizontal,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Offstage(
-                offstage: widget.inputBoxOutLeftWidget == null,
-                child: widget.inputBoxOutLeftWidget,
-              ),
-              Expanded(child: inputBoxCenter(context)),
-              Offstage(
-                offstage: widget.inputBoxOutRightWidget == null,
-                child: widget.inputBoxOutRightWidget,
-              )
-            ],
-          )
+      direction: Axis.horizontal,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        Offstage(
+          offstage: widget.inputBoxOutLeftWidget == null,
+          child: widget.inputBoxOutLeftWidget,
+        ),
+        Expanded(child: inputBoxCenter(context)),
+        Offstage(
+          offstage: widget.inputBoxOutRightWidget == null,
+          child: widget.inputBoxOutRightWidget,
+        )
+      ],
+    )
         : inputBoxCenter(context);
   }
 
@@ -335,6 +340,9 @@ class CustomInputState extends State<CustomInput> {
           offstage: !widget.showEye,
           child: CustomCheckBox(
             value: !eye,
+            padding: widget.eyePadding,
+            margin: widget.eyeMargin ??
+                EdgeInsets.only(right: WayUtils.getWidth(10)),
             iconSize: widget.eyeIconSize,
             uncheckIcon: widget.eyeCloseIcon ?? WayIcon.iconsEyeClose,
             checkIcon: widget.eyeOpenIcon ?? WayIcon.iconsEyeOpen,
@@ -372,16 +380,11 @@ class CustomInputState extends State<CustomInput> {
       cursorRadius: Radius.circular(1),
       //光标宽度
       cursorWidth: 2,
-
       obscureText: widget.showEye == true ? eye : false,
       keyboardType: widget.keyboardType,
       style: widget.inputTextStyle ??
           WayStyles.textStyleBlack70(context, fontSize: 16),
       controller: widget.controller ?? textController,
-      // 保持光标在最后
-//        selection: TextSelection.fromPosition(TextPosition(
-//            affinity: TextAffinity.downstream,
-//            offset: inputText.length)),
 //        onTap:widget.onTap,
       decoration: widget.inputDecoration ??
           InputDecoration(

@@ -40,19 +40,19 @@ class SearchInputWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomFlex(
         height: height,
-        width: width ?? WayUtils.getWidth( 220),
-        padding: padding ?? EdgeInsets.only(left: WayUtils.getWidth( 8)),
+        width: width ?? WayUtils.getWidth(220),
+        padding: padding ?? EdgeInsets.only(left: WayUtils.getWidth(8)),
         margin: margin,
         decoration: BoxDecoration(
-          color: getColors( background),
-          border: Border.all(color: getColors( background)),
+          color: getColors(background),
+          border: Border.all(color: getColors(background)),
         ),
         direction: Axis.horizontal,
         children: <Widget>[
           CustomIcon(
             icon ?? WayIcon.iconsSearch,
-            iconColor: iconColor ?? getColors( iconBlack),
-            iconSize: iconSize ?? WayUtils.getWidth( 14),
+            iconColor: iconColor ?? getColors(iconBlack),
+            iconSize: iconSize ?? WayUtils.getWidth(14),
           ),
           Expanded(
               child: TextField(
@@ -61,7 +61,8 @@ class SearchInputWidget extends StatelessWidget {
             decoration: InputDecoration(
               contentPadding: EdgeInsets.all(5),
               hintText: hintText ?? "搜索",
-              hintStyle: hintStyle ?? WayStyles.textStyleBlack20(context, fontSize: 12),
+              hintStyle: hintStyle ??
+                  WayStyles.textStyleBlack30(context, fontSize: 12),
               border: InputBorder.none, //隐藏下划线
             ),
             onChanged: onChanged,
