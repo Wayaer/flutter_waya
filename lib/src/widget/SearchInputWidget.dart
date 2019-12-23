@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/src/constant/WayIcon.dart';
 import 'package:flutter_waya/src/constant/WayStyles.dart';
@@ -17,9 +18,23 @@ class SearchInputWidget extends StatelessWidget {
   final EdgeInsetsGeometry padding;
   final EdgeInsetsGeometry margin;
   final String hintText;
+  final String labelText;
   final TextStyle hintStyle;
+  final TextStyle inputTextStyle;
+  final TextStyle labelTextStyle;
+  final Color labelIconColor;
+  final double labelIconSize;
   final Color iconColor;
+  final Color borderColor;
   final IconData icon;
+  final double borderRadius;
+  final Color cursorColor;
+  final EdgeInsetsGeometry labelMargin;
+  final EdgeInsetsGeometry labelPadding;
+  final double labelSpacing;
+  final bool labelShow;
+  final double lineWidth;
+  final GestureTapCallback labelOnTap;
 
   SearchInputWidget({
     Key key,
@@ -34,39 +49,66 @@ class SearchInputWidget extends StatelessWidget {
     this.iconColor,
     this.icon,
     this.iconSize,
+    this.borderColor,
+    this.borderRadius,
+    this.inputTextStyle,
+    this.cursorColor,
+    this.labelTextStyle,
+    this.labelIconColor,
+    this.labelIconSize,
+    this.labelMargin,
+    this.labelPadding,
+    this.labelSpacing,
+    this.labelText,
+    this.labelShow: false,
+    this.lineWidth,
+    this.labelOnTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return CustomFlex(
-        height: height,
-        width: width ?? WayUtils.getWidth(220),
-        padding: padding ?? EdgeInsets.only(left: WayUtils.getWidth(8)),
+    return Container(
         margin: margin,
-        decoration: BoxDecoration(
-          color: getColors(background),
-          border: Border.all(color: getColors(background)),
-        ),
-        direction: Axis.horizontal,
-        children: <Widget>[
-          CustomIcon(
-            icon: icon ?? WayIcon.iconsSearch,
-            iconColor: iconColor ?? getColors(black),
-            iconSize: iconSize ?? WayUtils.getWidth(14),
+        padding: padding,
+        child: CustomInput(
+          inputBoxHeight: height,
+          hintStyle: hintStyle,
+          hintText: hintText,
+          inputBoxLineBorderRadius: BorderRadius.circular(borderRadius),
+          lineWidth: lineWidth ?? WayUtils.getWidth(0.5),
+          lineBackground: borderColor,
+          lineFocusBackground: borderColor,
+          inputTextStyle: inputTextStyle,
+          cursorColor: cursorColor ?? borderColor,
+          inputBoxPadding:
+              EdgeInsets.symmetric(horizontal: WayUtils.getWidth(10)),
+          inputBoxLeftWight: CustomIcon(
+            margin: EdgeInsets.only(right: WayUtils.getWidth(5)),
+            icon: WayIcon.iconsSearch,
+            iconSize: iconSize,
+            iconColor: iconColor,
           ),
-          Expanded(
-              child: TextField(
-            style: WayStyles.textStyleBlack70( fontSize: 13.5),
-            controller: controller,
-            decoration: InputDecoration(
-              contentPadding: EdgeInsets.all(5),
-              hintText: hintText ?? "搜索",
-              hintStyle: hintStyle ??
-                  WayStyles.textStyleBlack30( fontSize: 12),
-              border: InputBorder.none, //隐藏下划线
-            ),
-            onChanged: onChanged,
-          )),
-        ]);
+          lineType: LineType.outLine,
+          inputBoxOutLeftWidget: labelShow
+              ? CustomFlex(
+                  direction: Axis.horizontal,
+                  margin: labelMargin,
+                  padding: labelPadding,
+                  onTap: labelOnTap,
+                  children: <Widget>[
+                      Text(
+                        labelText ?? '选择',
+                        style: labelTextStyle,
+                      ),
+                      CustomIcon(
+                        margin: EdgeInsets.only(
+                            left: labelSpacing ?? WayUtils.getWidth(5)),
+                        icon: Icons.arrow_drop_down,
+                        iconSize: labelIconSize ?? iconSize,
+                        iconColor: labelIconColor,
+                      )
+                    ])
+              : null,
+        ));
   }
 }

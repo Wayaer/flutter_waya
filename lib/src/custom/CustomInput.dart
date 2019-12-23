@@ -60,7 +60,6 @@ class CustomInput extends StatefulWidget {
   final TextStyle footLeftTextStyle;
   final ValueChanged<String> onSubmitted;
   final bool enabled;
-  final bool underline;
   final bool showEye;
   final InputDecoration inputDecoration;
   final Color lineBackground;
@@ -90,7 +89,6 @@ class CustomInput extends StatefulWidget {
     this.eyeOpenIcon,
     this.eyeOpenColor,
     this.eyeCloseColor,
-    this.underline: true,
     this.value,
     this.lineWidth,
     this.controller,
