@@ -50,19 +50,19 @@ class SearchInputWidget extends StatelessWidget {
         direction: Axis.horizontal,
         children: <Widget>[
           CustomIcon(
-            icon ?? WayIcon.iconsSearch,
-            iconColor: iconColor ?? getColors(iconBlack),
+            icon: icon ?? WayIcon.iconsSearch,
+            iconColor: iconColor ?? getColors(black),
             iconSize: iconSize ?? WayUtils.getWidth(14),
           ),
           Expanded(
               child: TextField(
-            style: WayStyles.textStyleBlack70(context, fontSize: 13.5),
+            style: WayStyles.textStyleBlack70( fontSize: 13.5),
             controller: controller,
             decoration: InputDecoration(
               contentPadding: EdgeInsets.all(5),
               hintText: hintText ?? "搜索",
               hintStyle: hintStyle ??
-                  WayStyles.textStyleBlack30(context, fontSize: 12),
+                  WayStyles.textStyleBlack30( fontSize: 12),
               border: InputBorder.none, //隐藏下划线
             ),
             onChanged: onChanged,

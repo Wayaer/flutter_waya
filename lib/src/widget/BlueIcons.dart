@@ -3,7 +3,6 @@ import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/src/custom/CustomIcon.dart';
 import 'package:flutter_waya/src/utils/WayUtils.dart';
 
-
 class BlueIcons extends StatelessWidget {
   final GestureTapCallback onTap;
   final EdgeInsetsGeometry margin;
@@ -22,12 +21,12 @@ class BlueIcons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomIcon(
-      icon,
+      icon: icon,
       margin: margin,
       padding: padding,
       onTap: onTap,
-      iconSize: WayUtils.getWidth( 22),
-      iconColor: getColors(iconBlue),
+      iconSize: WayUtils.getWidth(22),
+      iconColor: getColors(blue),
       text: text,
     );
   }

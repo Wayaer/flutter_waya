@@ -75,16 +75,16 @@ class SendSMSState extends State<SendSMS> {
               border: Border.all(
                   width: widget.borderWidth ?? WayUtils.getWidth(0),
                   color: seconds == 0
-                      ? (widget.defaultBorderColor ?? getColors(textBlue))
-                      : (widget.notTapBorderColor ?? getColors(textBlack70))),
+                      ? (widget.defaultBorderColor ?? getColors(blue))
+                      : (widget.notTapBorderColor ?? getColors(black70))),
               borderRadius: widget.borderRadius ?? BorderRadius.circular(20)),
       child: Text(
         '$verifyStr',
         style: seconds == 0
             ? widget.defaultTextStyle ??
-            WayStyles.textStyleBlue(context, fontSize: 13)
+            WayStyles.textStyleBlue( fontSize: 13)
             : widget.notTapTextStyle ??
-            WayStyles.textStyleBlack70(context, fontSize: 13),
+            WayStyles.textStyleBlack70( fontSize: 13),
       ),
     );
   }

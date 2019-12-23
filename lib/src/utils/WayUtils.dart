@@ -50,7 +50,7 @@ class WayUtils {
       padding: EdgeInsets.all(WayUtils.getWidth(10)),
       child: Text(
         message,
-        style: TextStyle(color: getColors(textWhite), fontSize: 16),
+        style: TextStyle(color: getColors(white), fontSize: 16),
       ),
     ));
   }

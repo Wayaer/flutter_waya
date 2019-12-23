@@ -97,7 +97,7 @@ class CustomCheckBoxState extends State<CustomCheckBox> {
 
   Widget customIcon({IconData uncheckIcon, IconData checkIcon}) {
     return CustomIcon(
-        value
+        icon: value
             ? checkIcon ?? WayIcon.iconsChecked
             : uncheckIcon ?? WayIcon.iconsUnChecked,
         iconSize: widget.iconSize ?? WayUtils.getWidth(17.5),
@@ -109,17 +109,18 @@ class CustomCheckBoxState extends State<CustomCheckBox> {
         mainAxisAlignment: widget.mainAxisAlignment,
         crossAxisAlignment: widget.crossAxisAlignment,
         iconColor: value
-            ? widget.checkColor ?? getColors(iconBlue)
-            : widget.unCheckColor ?? getColors(iconGray),
+            ? widget.checkColor ?? getColors(blue)
+            : widget.unCheckColor ?? getColors(black),
         textStyle: widget.textStyle,
-        text: widget.label, onTap: () {
-      setState(() {
-        value = !value;
-      });
-      if (widget.onChange is ValueChanged<bool>) {
-        widget.onChange(value);
-      }
-    });
+        text: widget.label,
+        onTap: () {
+          setState(() {
+            value = !value;
+          });
+          if (widget.onChange is ValueChanged<bool>) {
+            widget.onChange(value);
+          }
+        });
   }
 
   Widget checkBox() {
@@ -142,7 +143,7 @@ class CustomCheckBoxState extends State<CustomCheckBox> {
                     ? widget.textStyle
                     : TextStyle(
                         fontSize: 12,
-                        color: getColors(textBlack70),
+                        color: getColors(black70),
                       ),
               ),
             ],
@@ -154,9 +155,9 @@ class CustomCheckBoxState extends State<CustomCheckBox> {
     return Checkbox(
 //      tristate: widget.tristate,
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-      activeColor: widget.unCheckColor ?? getColors(checkboxActiveColor),
+      activeColor: widget.unCheckColor ?? getColors(blue),
       value: value,
-      checkColor: widget.checkColor ?? getColors(checkboxCheckColor),
+      checkColor: widget.checkColor ?? getColors(black),
       onChanged: (bool v) {
         if (value != v) {
           setState(() {

@@ -29,10 +29,10 @@ class BlueButton extends StatelessWidget {
       height: WayUtils.getHeight(35),
       width: width ?? WayUtils.getWidth() - WayUtils.getWidth(40),
       decoration: BoxDecoration(
-        color: getColors(buttonBlue),
+        color: getColors(blue),
         borderRadius: BorderRadius.circular(30),
       ),
-      textStyle: WayStyles.textStyleWhite(context, fontSize: 15),
+      textStyle: WayStyles.textStyleWhite( fontSize: 15),
     );
   }
 }

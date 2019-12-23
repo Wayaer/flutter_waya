@@ -26,12 +26,13 @@ class CustomIcon extends StatelessWidget {
   final TextDirection textDirection;
   final String semanticLabel;
   final Axis direction;
+  final Image image;
   final MainAxisAlignment mainAxisAlignment;
   final CrossAxisAlignment crossAxisAlignment;
 
-  CustomIcon(
-    this.icon, {
+  CustomIcon({
     Key key,
+    this.icon,
     this.iconSize,
     this.reversal: false,
     this.background,
@@ -54,6 +55,7 @@ class CustomIcon extends StatelessWidget {
     this.crossAxisAlignment: CrossAxisAlignment.center,
     this.maxLines: 1,
     this.overflow: TextOverflow.ellipsis,
+    this.image,
   }) : super(key: key);
 
   @override
@@ -67,10 +69,14 @@ class CustomIcon extends StatelessWidget {
       children: text == null
           ? null
           : <Widget>[
-              reversal ? textWidget() : iconWidget(context),
-              Container(width: WayUtils.getWidth(spacing)),
-              reversal ? iconWidget(context) : textWidget(),
-            ],
+        reversal ? textWidget() : iconWidget(context),
+        direction == Axis.horizontal
+            ? Container(width: spacing ?? WayUtils.getWidth(spacing))
+            : Container(
+          height: spacing ?? WayUtils.getHeight(spacing),
+        ),
+        reversal ? iconWidget(context) : textWidget(),
+      ],
       width: width,
       height: height,
       onTap: onTap,
@@ -94,12 +100,12 @@ class CustomIcon extends StatelessWidget {
   }
 
   Widget iconWidget(BuildContext context) {
-    return Icon(
-      icon,
-      color: iconColor,
-      size: iconSize ?? WayUtils.getWidth(15),
-      textDirection: textDirection,
-      semanticLabel: semanticLabel,
-    );
+    return image == null
+        ? Icon(icon,
+        color: iconColor,
+        size: iconSize ?? WayUtils.getWidth(15),
+        textDirection: textDirection,
+        semanticLabel: semanticLabel)
+        : image;
   }
 }

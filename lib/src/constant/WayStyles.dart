@@ -9,7 +9,7 @@ const double fontSize = WayConstant.fontSize;
 
 class WayStyles {
   //统一所有阴影效果
-  static List<BoxShadow> boxShadow(BuildContext context) {
+  static List<BoxShadow> boxShadow() {
     return [
       BoxShadow(
           color: getColors(boxShadowColor),
@@ -20,13 +20,11 @@ class WayStyles {
   }
 
   //left right  margin or padding 20
-  static EdgeInsetsGeometry edgeInsetsHorizontal(BuildContext context,
-      {double width: 20}) {
+  static EdgeInsetsGeometry edgeInsetsHorizontal({double width: 20}) {
     return EdgeInsets.symmetric(horizontal: WayUtils.getWidth(width));
   }
 
-  static Decoration borderRadiusTop(BuildContext context,
-      {Color color, double radius}) {
+  static Decoration borderRadiusTop({Color color, double radius}) {
     return BoxDecoration(
       color: color ?? getColors(white),
       borderRadius: BorderRadius.only(
@@ -36,23 +34,22 @@ class WayStyles {
   }
 
   //top bottom  margin or padding 20
-  static EdgeInsetsGeometry edgeInsetsVertical(BuildContext context,
-      {double height: 20}) {
+  static EdgeInsetsGeometry edgeInsetsVertical({double height: 20}) {
     return EdgeInsets.symmetric(vertical: WayUtils.getHeight(height));
   }
 
   //统一白色背景 圆角
-  static Decoration containerWhiteRadius(BuildContext context,
+  static Decoration containerWhiteRadius(
       {Color color, double radius, bool shadow: false}) {
     return BoxDecoration(
       color: color ?? getColors(white),
       borderRadius: BorderRadius.circular(radius ?? radiusLocal),
-      boxShadow: shadow ? boxShadow(context) : null,
+      boxShadow: shadow ? boxShadow() : null,
     );
   }
 
   //统一 白色背景 圆角 边框
-  static Decoration containerRadiusWidth(BuildContext context,
+  static Decoration containerRadiusWidth(
       {Color color, double width, Color widthColor, double radius}) {
     return BoxDecoration(
         color: color ?? getColors(white),
@@ -63,7 +60,7 @@ class WayStyles {
   }
 
   //统一下划线样式
-  static Decoration containerUnderlineBackground(BuildContext context,
+  static Decoration containerUnderlineBackground(
       {Color color, double width, Color underlineColor}) {
     return BoxDecoration(
         color: color,
@@ -74,50 +71,44 @@ class WayStyles {
   }
 
   //统一上划线样式
-  static Decoration containerTopLineBackground(BuildContext context,
-      {Color color}) {
+  static Decoration containerTopLineBackground({Color color}) {
     return BoxDecoration(
         color: color,
         border: Border(top: BorderSide(color: getColors(background))));
   }
 
-  static TextStyle textStyleWhite(BuildContext context,
-      {double fontSize, TextStyle textStyle}) {
+  static TextStyle textStyleWhite({double fontSize, TextStyle textStyle}) {
     return mergeTextStyle(
         textStyle,
         TextStyle(
-            color: getColors(textWhite),
+            color: getColors(white),
             fontSize: fontSize,
             decoration: TextDecoration.none));
   }
 
-  static TextStyle textStyleBlack70(BuildContext context,
-      {double fontSize, TextStyle textStyle}) {
+  static TextStyle textStyleBlack70({double fontSize, TextStyle textStyle}) {
     return mergeTextStyle(
         textStyle,
         TextStyle(
-            color: getColors(textBlack70),
+            color: getColors(black70),
             fontSize: fontSize,
             decoration: TextDecoration.none));
   }
 
-
-  static TextStyle textStyleBlue(BuildContext context,
-      {double fontSize, TextStyle textStyle}) {
+  static TextStyle textStyleBlue({double fontSize, TextStyle textStyle}) {
     return mergeTextStyle(
         textStyle,
         TextStyle(
-            color: getColors(textBlue),
+            color: getColors(blue),
             fontSize: fontSize,
             decoration: TextDecoration.none));
   }
 
-  static TextStyle textStyleBlack30(BuildContext context,
-      {double fontSize, TextStyle textStyle}) {
+  static TextStyle textStyleBlack30({double fontSize, TextStyle textStyle}) {
     return mergeTextStyle(
         textStyle,
         TextStyle(
-            color: getColors(textBlack30),
+            color: getColors(black30),
             fontSize: fontSize,
             decoration: TextDecoration.none));
   }

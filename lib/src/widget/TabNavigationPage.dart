@@ -60,9 +60,9 @@ class TabNavigationPageState extends State<TabNavigationPage> {
     return Scaffold(
       body: currentPage,
       bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: getColors(tabBarNavigationSelectedItemColor),
-        unselectedItemColor: getColors(tabBarNavigationUnSelectedItemColor),
-        backgroundColor: getColors(tabBarNavigationColor),
+        selectedItemColor: getColors(blue),
+        unselectedItemColor: getColors(background),
+        backgroundColor: getColors(white),
         items: widget.navigationBarItem ??
             <BottomNavigationBarItem>[
               BottomNavigationBarItem(

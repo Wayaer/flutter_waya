@@ -12,7 +12,7 @@ class ListItem extends StatelessWidget {
   final double titleLeftSpacing;
   final double arrowLeftSpacing;
   final double height;
-  final Function onTap;
+  final GestureTapCallback onTap;
   final EdgeInsetsGeometry padding;
   final EdgeInsetsGeometry margin;
   final bool arrowShow;
@@ -53,7 +53,8 @@ class ListItem extends StatelessWidget {
       this.iconColor,
       this.icon,
       this.iconImage,
-      this.underlineColor, this.arrowLeftSpacing})
+      this.underlineColor,
+      this.arrowLeftSpacing})
       : super(key: key);
 
   @override
@@ -65,10 +66,11 @@ class ListItem extends StatelessWidget {
       padding:
           padding ?? EdgeInsets.symmetric(vertical: WayUtils.getHeight(13)),
       direction: Axis.horizontal,
-      decoration: decoration ?? underlineShow
-          ? WayStyles.containerUnderlineBackground(context,
-              underlineColor: underlineColor, color: backgroundColor)
-          : BoxDecoration(color: backgroundColor),
+      decoration: decoration ??
+          (underlineShow
+              ? WayStyles.containerUnderlineBackground(
+                  underlineColor: underlineColor, color: backgroundColor)
+              : BoxDecoration(color: backgroundColor)),
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Offstage(
@@ -79,7 +81,7 @@ class ListItem extends StatelessWidget {
               : Icon(
                   icon,
                   size: iconSize ?? WayUtils.getWidth(17),
-                  color: iconColor ?? getColors(iconBlack),
+                  color: iconColor ?? getColors(black),
                 ),
         ),
         Container(
@@ -116,7 +118,7 @@ class ListItem extends StatelessWidget {
           child: Icon(
             WayIcon.iconsRight,
             size: arrowSize ?? WayUtils.getWidth(17),
-            color: arrowColor ?? getColors(iconBlack),
+            color: arrowColor ?? getColors(black),
           ),
         ),
       ],

@@ -71,7 +71,7 @@ class CountDownSkipState extends State<CountDownSkip> {
               ? (seconds == 0 ? ' ' + widget.SkipText : '')
               : ' ' + widget.SkipText),
       textStyle: widget.textStyle ??
-          TextStyle(fontSize: 13, color: getColors(textBlack70)),
+          TextStyle(fontSize: 13, color: getColors(black70)),
     );
   }
 
