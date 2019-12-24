@@ -50,3 +50,4 @@ export 'src/widget/TabNavigationPage.dart';
 export 'src/widget/TabBarWidget.dart';
 export 'src/widget/SendSMS.dart';
 export 'src/widget/CountDownSkip.dart';
+export 'src/widget/ProviderWidget.dart';

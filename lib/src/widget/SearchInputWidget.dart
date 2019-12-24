@@ -3,10 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/WayEnum.dart';
 import 'package:flutter_waya/src/constant/WayIcon.dart';
-import 'package:flutter_waya/src/custom/CustomIcon.dart';
 import 'package:flutter_waya/src/utils/WayUtils.dart';
 
-import '../custom/CustomFlex.dart';
 
 class SearchInputWidget extends StatelessWidget {
   final TextEditingController controller;

@@ -42,7 +42,6 @@ class CountDownSkipState extends State<CountDownSkip> {
     seconds = widget.seconds;
     WidgetsBinding.instance.addPostFrameCallback((callback) {
       if (seconds > 1) {
-        log(seconds);
         WayUtils.timePeriodic(Duration(seconds: 1), () {
           seconds -= 1;
           setState(() {});

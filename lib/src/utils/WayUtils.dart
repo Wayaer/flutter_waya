@@ -21,9 +21,6 @@ log(message) {
 
 isDebug() {
   return !kReleaseMode;
-  if (kReleaseMode) {
-    //release
-  }
 }
 
 showToast(message) {
