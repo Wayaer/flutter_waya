@@ -5,7 +5,6 @@ import 'package:flutter_waya/src/utils/WayMediaQueryUtils.dart';
 import 'package:flutter_waya/src/utils/WayUtils.dart';
 
 class CustomScaffold extends StatelessWidget {
-  final Widget body;
   final Widget bottomNavigationBar;
   final AppBar appBar;
   final EdgeInsets padding;
@@ -13,19 +12,20 @@ class CustomScaffold extends StatelessWidget {
   final bool expandedBody;
   final bool paddingStatusBar;
   final Color backgroundColor;
+  final Widget body;
 
   //isScroll  和expandedBody  不可同时使用
-  CustomScaffold(
-      {Key key,
-      this.appBar,
-      this.bottomNavigationBar,
-      this.isScroll: false,
-      this.expandedBody: false,
-      this.body,
-      this.backgroundColor,
-      this.paddingStatusBar: false,
-      this.padding})
-      : super(key: key);
+  CustomScaffold({
+    Key key,
+    this.appBar,
+    this.bottomNavigationBar,
+    this.isScroll: false,
+    this.expandedBody: false,
+    this.body,
+    this.backgroundColor,
+    this.paddingStatusBar: false,
+    this.padding,
+  }) : super(key: key);
 
   Size preferredSize;
   double bottom = 0;
@@ -36,7 +36,6 @@ class CustomScaffold extends StatelessWidget {
       bottom = appBar.bottom?.preferredSize?.height ?? 0.0;
       preferredSize = Size.fromHeight(kToolbarHeight - 8 + bottom);
     }
-
     return Scaffold(
       backgroundColor: backgroundColor ?? getColors(background),
       appBar: appBar != null
@@ -51,8 +50,7 @@ class CustomScaffold extends StatelessWidget {
                   centerTitle: true,
                   bottom: appBar.bottom,
                   brightness: appBar.brightness ?? Brightness.dark,
-                  backgroundColor:
-                      appBar.backgroundColor ?? getColors(blue),
+                  backgroundColor: appBar.backgroundColor ?? getColors(blue),
                   actions: appBar.actions))
           : null,
       bottomNavigationBar: bottomNavigationBar,
