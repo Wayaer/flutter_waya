@@ -1,38 +1,35 @@
-import 'dart:convert';
+import 'package:dio/dio.dart';
 
 class ResponseModel {
-  String code;
-  String statusCode;
-  String statusMessage;
-  String statusMessageT;
-  String message;
+  int statusCode; //error状态
+  String statusMessage; //error 状态消息
+  String statusMessageT; //error 语言翻译版 消息
+  DioErrorType type;
   Object data;
 
-//  ResponseModel({this.code, this.data, this.message});
-  factory ResponseModel(jsonStr) => jsonStr == null
-      ? null
-      : jsonStr is String
-          ? new ResponseModel.fromJson(json.decode(jsonStr))
-          : new ResponseModel.fromJson(jsonStr);
+  ResponseModel({
+    this.data,
+    this.type,
+    this.statusCode,
+    this.statusMessage,
+    this.statusMessageT,
+  });
 
   ResponseModel.fromJson(Map<String, dynamic> json) {
-    statusCode = json['statusCode'].toString();
+    type = json['type'];
+    statusCode = json['statusCode'];
     statusMessage = json['statusMessage'].toString();
     statusMessageT = json['statusMessageT'].toString();
-    code = json['code'].toString();
     data = json['data'];
-    message = json['message'].toString();
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['code'] = this.code;
+    data['type'] = this.type;
     data['data'] = this.data;
-    data['message'] = this.message;
     data['statusCode'] = this.statusCode;
     data['statusMessage'] = this.statusMessage;
     data['statusMessageT'] = this.statusMessageT;
     return data;
   }
 }
-

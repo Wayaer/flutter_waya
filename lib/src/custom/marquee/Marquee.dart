@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_waya/src/constant/WayEnum.dart';
 
-import 'AnimationDirection.dart';
 import 'MarqueeItem.dart';
 
 typedef Widget WidgetMaker<T>(BuildContext context, T item);
@@ -35,7 +35,7 @@ class Marquee extends StatefulWidget {
   final bool autoStart;
 
   ///动画显示的切换方式，默认是从上往下切换
-  final AnimationDirection animationDirection;
+  final MarqueeAnimation marqueeAnimation;
 
   ///移动的距离
   ///如果没有设置就是默认获取组件宽高，横向动画就是组建的宽度，纵向的就是组件的高度
@@ -56,7 +56,7 @@ class Marquee extends StatefulWidget {
       int duration,
       double itemDuration,
       bool autoStart,
-      AnimationDirection animationDirection,
+      MarqueeAnimation marqueeAnimation,
       this.animateDistance,
       this.onChange,
       bool singleLine})
@@ -67,7 +67,7 @@ class Marquee extends StatefulWidget {
         this.singleLine = singleLine ?? true,
         this.textColor = textColor ?? Colors.black,
         this.selectTextColor = selectTextColor ?? Colors.black,
-        this.animationDirection = animationDirection ?? AnimationDirection.b2t;
+        this.marqueeAnimation = marqueeAnimation ?? MarqueeAnimation.b2t;
 
   @override
   State<StatefulWidget> createState() {
@@ -97,7 +97,7 @@ class MarqueeState extends State<Marquee> {
             widget.onChange(i);
           },
           singleLine: widget.singleLine,
-          animationDirection: widget.animationDirection,
+          marqueeAnimation: widget.marqueeAnimation,
           animateDistance: widget.animateDistance,
           itemDuration: widget.itemDuration,
         ));
@@ -111,7 +111,7 @@ class MarqueeState extends State<Marquee> {
             widget.onChange(i);
           },
           singleLine: widget.singleLine,
-          animationDirection: widget.animationDirection,
+          marqueeAnimation: widget.marqueeAnimation,
           animateDistance: widget.animateDistance,
           itemDuration: widget.itemDuration,
         ));
@@ -146,8 +146,8 @@ class MarqueeState extends State<Marquee> {
   Widget build(BuildContext context) {
     ///设置动画的宽度或者高度
     if (widget.animateDistance == null) {
-      if (widget.animationDirection == AnimationDirection.l2r ||
-          widget.animationDirection == AnimationDirection.l2r) {
+      if (widget.marqueeAnimation == MarqueeAnimation.l2r ||
+          widget.marqueeAnimation == MarqueeAnimation.l2r) {
         double width = MediaQuery.of(context).size.width;
         firstItem.animateDistance = width;
         if (secondItem != null) {

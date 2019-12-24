@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'AnimationDirection.dart';
+import 'package:flutter_waya/src/constant/WayEnum.dart';
 
 class MarqueeItem extends StatefulWidget {
   Key key;
@@ -25,7 +24,7 @@ class MarqueeItem extends StatefulWidget {
   VoidCallback onPress;
 
   ///动画的方向
-  AnimationDirection animationDirection;
+  MarqueeAnimation marqueeAnimation;
 
   ///移动的距离
   double animateDistance;
@@ -46,7 +45,7 @@ class MarqueeItem extends StatefulWidget {
     Color textColor,
     double textSize,
     ValueNotifier<bool> modeListener,
-    AnimationDirection animationDirection,
+    MarqueeAnimation marqueeAnimation,
     this.onPress,
     this.animateDistance,
     int itemDuration,
@@ -57,7 +56,7 @@ class MarqueeItem extends StatefulWidget {
         this.modeListener = modeListener ?? ValueNotifier(false),
         this.textColor = textColor ?? Colors.black,
         this.textSize = textSize ?? 14.0,
-        this.animationDirection = animationDirection ?? AnimationDirection.b2t,
+        this.marqueeAnimation = marqueeAnimation ?? MarqueeAnimation.b2t,
         this.itemDuration = itemDuration ?? 500,
         this.key = key ?? GlobalKey(),
         this.singleLine = !singleLine ?? true,
@@ -69,7 +68,8 @@ class MarqueeItem extends StatefulWidget {
   }
 }
 
-class MarqueeItemState extends State<MarqueeItem> with SingleTickerProviderStateMixin {
+class MarqueeItemState extends State<MarqueeItem>
+    with SingleTickerProviderStateMixin {
   Animation animation;
   Animation transformAnimation;
   AnimationController animationController;
@@ -84,24 +84,24 @@ class MarqueeItemState extends State<MarqueeItem> with SingleTickerProviderState
   @override
   void initState() {
     super.initState();
-    switch (widget.animationDirection) {
-      case AnimationDirection.t2b:
+    switch (widget.marqueeAnimation) {
+      case MarqueeAnimation.t2b:
         inTween = Tween(begin: -widget.animateDistance, end: 0.0);
         outTween = Tween(begin: 0.0, end: widget.animateDistance);
         isXAniamation = false;
         break;
-      case AnimationDirection.b2t:
+      case MarqueeAnimation.b2t:
         inTween = Tween(begin: widget.animateDistance, end: 0.0);
         outTween = Tween(begin: 0.0, end: -widget.animateDistance);
         isXAniamation = false;
         break;
-      case AnimationDirection.l2r:
+      case MarqueeAnimation.l2r:
         inTween = Tween(begin: -widget.animateDistance, end: 0.0);
         outTween = Tween(begin: 0.0, end: widget.animateDistance);
         isXAniamation = true;
         break;
 
-      case AnimationDirection.r2l:
+      case MarqueeAnimation.r2l:
         inTween = Tween(begin: widget.animateDistance, end: 0.0);
         outTween = Tween(begin: 0.0, end: -widget.animateDistance);
         isXAniamation = true;
@@ -115,8 +115,8 @@ class MarqueeItemState extends State<MarqueeItem> with SingleTickerProviderState
     _updateListener = () {
       setState(() {
         if (widget.modeListener.value) {
-          transformAnimation = outTween
-              .animate(CurvedAnimation(parent: animationController, curve: Curves.easeInOut));
+          transformAnimation = outTween.animate(CurvedAnimation(
+              parent: animationController, curve: Curves.easeInOut));
 
           animationController.reset();
           animationController.forward();
@@ -125,13 +125,13 @@ class MarqueeItemState extends State<MarqueeItem> with SingleTickerProviderState
     };
     widget.modeListener.addListener(_updateListener);
 
-    animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: widget.itemDuration))
-          ..addListener(() {});
+    animationController = AnimationController(
+        vsync: this, duration: Duration(milliseconds: widget.itemDuration))
+      ..addListener(() {});
 
-    transformAnimation = inTween
-        .animate(CurvedAnimation(parent: animationController, curve: Curves.easeInOut))
-          ..addListener(() => setState(() {}));
+    transformAnimation = inTween.animate(
+        CurvedAnimation(parent: animationController, curve: Curves.easeInOut))
+      ..addListener(() => setState(() {}));
 
     animationController.forward();
   }
@@ -160,7 +160,8 @@ class MarqueeItemState extends State<MarqueeItem> with SingleTickerProviderState
     if (widget.child != null) {
       if (widget.onPress != null) {
         current = GestureDetector(
-            onTap: widget.onPress, child: Container(child: widget.child, transform: transform));
+            onTap: widget.onPress,
+            child: Container(child: widget.child, transform: transform));
       } else {
         current = Container(child: widget.child, transform: transform);
       }
@@ -171,7 +172,8 @@ class MarqueeItemState extends State<MarqueeItem> with SingleTickerProviderState
             child: Text(
               widget.text,
               softWrap: widget.singleLine,
-              style: TextStyle(fontSize: widget.textSize, color: widget.textColor),
+              style:
+                  TextStyle(fontSize: widget.textSize, color: widget.textColor),
             ),
             transform: transform,
           ));

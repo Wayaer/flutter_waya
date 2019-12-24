@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/src/utils/WayNavigatorUtils.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 class CustomMaterialApp extends StatelessWidget {
   final GlobalKey<NavigatorState> navigatorKey; //导航键
@@ -117,11 +118,18 @@ class CustomMaterialApp extends StatelessWidget {
           theme: theme,
           darkTheme: darkTheme,
           themeMode: themeMode,
-          locale: locale,
-          localizationsDelegates: localizationsDelegates,
+          locale: locale ?? const Locale('zh'),
+          localizationsDelegates: localizationsDelegates ??
+              [
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+              ],
           localeListResolutionCallback: localeListResolutionCallback,
           localeResolutionCallback: localeResolutionCallback,
-          supportedLocales: supportedLocales,
+          supportedLocales: supportedLocales ??
+              [
+                const Locale('zh', 'CH'),
+              ],
           debugShowMaterialGrid: debugShowMaterialGrid,
           showPerformanceOverlay: showPerformanceOverlay,
           checkerboardRasterCacheImages: checkerboardRasterCacheImages,

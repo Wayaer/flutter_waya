@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flutter_waya/src/constant/WayConstant.dart';
 import 'package:flutter_waya/src/model/ResponseModel.dart';
 
 import 'WayUtils.dart';
@@ -16,12 +17,13 @@ const HTTP_CONTENT_TYPE = [
   "application/json",
   "text/xml"
 ];
+const int errorCode = 911;
 
 class WayDioUtils {
   static Dio dio;
   static DioError error;
-
   static BaseOptions _options;
+  static int errorCode = 911;
 
   //单例模式
   factory WayDioUtils() => getHttp();
@@ -44,8 +46,7 @@ class WayDioUtils {
   }
 
   addInterceptors() {
-    ResponseModel responseModel =
-        new ResponseModel({'code': "9999999", 'data': null, 'message': ''});
+    ResponseModel responseModel = ResponseModel(statusCode: errorCode);
     dio.interceptors
         .add(InterceptorsWrapper(onRequest: (RequestOptions options) async {
       // 在请求被发送之前做一些事情
@@ -59,38 +60,40 @@ class WayDioUtils {
       if (response.statusCode == 200) {
         return response.data;
       } else {
-        responseModel.statusCode = response.statusCode.toString();
+        responseModel.statusCode = response.statusCode;
         responseModel.statusMessage = response.statusMessage;
         WayUtils.log(jsonEncode(responseModel).toString());
         return jsonEncode(responseModel).toString();
       }
     }, onError: (DioError e) async {
       // 当请求失败时做一些预处理
+      responseModel.type = e.type;
       if (e.type == DioErrorType.DEFAULT) {
-        responseModel.statusCode = 'failed';
-        responseModel.statusMessage = '网络请求失败';
-        responseModel.statusMessageT = 'network_failed';
+        responseModel.statusCode = WayConstant.errorCode911;
+        responseModel.statusMessage = WayConstant.errorMessage911;
+        responseModel.statusMessageT = WayConstant.errorMessageT911;
       } else if (e.type == DioErrorType.CANCEL) {
-        responseModel.statusCode = 'cancel';
-        responseModel.statusMessage = '网络请求已取消';
-        responseModel.statusMessageT = 'network_cancel';
+        responseModel.statusCode = WayConstant.errorCode920;
+        responseModel.statusMessage = WayConstant.errorMessage920;
+        responseModel.statusMessageT = WayConstant.errorMessageT920;
       } else if (e.type == DioErrorType.CONNECT_TIMEOUT) {
-        responseModel.statusCode = 'connect_timeout';
-        responseModel.statusMessage = '网络请求链接超时';
-        responseModel.statusMessageT = 'network_connect_timeout';
+        responseModel.statusCode = WayConstant.errorCode930;
+        responseModel.statusMessage = WayConstant.errorMessage930;
+        responseModel.statusMessageT = WayConstant.errorMessageT930;
+        responseModel.statusMessage = WayConstant.errorMessage911;
       } else if (e.type == DioErrorType.RECEIVE_TIMEOUT) {
-        responseModel.statusCode = 'receive_timeout';
-        responseModel.statusMessage = '网络请求接收超时';
-        responseModel.statusMessageT = 'network_receive_timeout';
-      } else if (e.type == DioErrorType.RESPONSE) {
-        responseModel.statusCode = e.response.statusCode.toString();
-        responseModel.statusMessage =
-            'HTTP请求错误,${e.response.statusCode.toString()}';
-        responseModel.statusMessageT = 'network_response';
+        responseModel.statusCode = WayConstant.errorCode940;
+        responseModel.statusMessage = WayConstant.errorMessage940;
+        responseModel.statusMessageT = WayConstant.errorMessageT940;
       } else if (e.type == DioErrorType.SEND_TIMEOUT) {
-        responseModel.statusCode = 'send_timeout';
-        responseModel.statusMessage = '网络发送超时';
-        responseModel.statusMessageT = 'network_send_timeout';
+        responseModel.statusCode = WayConstant.errorCode950;
+        responseModel.statusMessage = WayConstant.errorMessage950;
+        responseModel.statusMessageT = WayConstant.errorMessageT950;
+      } else if (e.type == DioErrorType.RESPONSE) {
+        responseModel.statusCode = e.response.statusCode;
+        responseModel.statusMessage =
+            WayConstant.errorMessage960 + e.response.statusCode.toString();
+        responseModel.statusMessageT = WayConstant.errorMessageT960;
       }
       WayUtils.log(jsonEncode(responseModel).toString());
       return jsonEncode(responseModel).toString();

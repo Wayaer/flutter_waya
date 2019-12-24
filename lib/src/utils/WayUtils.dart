@@ -10,16 +10,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
+import 'package:flutter_waya/src/constant/WayEnum.dart';
 import 'package:flutter_waya/src/utils/WayMediaQueryUtils.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:package_info/package_info.dart';
-
-enum DateType {
-  dateTime,
-  data,
-  time,
-  monthSecond,
-}
 
 log(message) {
   WayUtils.log(message.toString());
@@ -62,7 +56,7 @@ class WayUtils {
   // 截屏
   static capture(GlobalKey globalKey) async {
     RenderRepaintBoundary boundary =
-    globalKey.currentContext.findRenderObject();
+        globalKey.currentContext.findRenderObject();
     var image = await boundary.toImage();
     ByteData byteData = await image.toByteData(format: ImageByteFormat.png);
     return byteData;
@@ -139,13 +133,8 @@ class WayUtils {
 //  * @returns {number} 返回全面屏对应的16：9 屏幕高度
 
   static phoneFitHeight(BuildContext context) {
-    double h = MediaQuery
-        .of(context)
-        .size
-        .height;
-    double s = MediaQuery
-        .of(context)
-        .devicePixelRatio;
+    double h = MediaQuery.of(context).size.height;
+    double s = MediaQuery.of(context).devicePixelRatio;
     double y = s * h;
 
     if (Platform.isAndroid) {
@@ -198,14 +187,10 @@ class WayUtils {
   static getHeight([double height, bool intType]) {
     double h;
     if (height == null || height == 0)
-      h = WayMediaQueryUtils
-          .getSize()
-          .height;
+      h = WayMediaQueryUtils.getSize().height;
     else {
       //  h = (height / 667) * phoneFitHeight(context);
-      h = (height / 667) * WayMediaQueryUtils
-          .getSize()
-          .height;
+      h = (height / 667) * WayMediaQueryUtils.getSize().height;
     }
     return intType == true ? h.toInt() : h;
   }
@@ -213,13 +198,9 @@ class WayUtils {
   static getWidth([double width, bool intType]) {
     double w;
     if (width == null || width == 0) {
-      w = WayMediaQueryUtils
-          .getSize()
-          .width;
+      w = WayMediaQueryUtils.getSize().width;
     } else {
-      w = (width / 375) * WayMediaQueryUtils
-          .getSize()
-          .width;
+      w = (width / 375) * WayMediaQueryUtils.getSize().width;
     }
     return intType == true ? w.toInt() : w;
   }

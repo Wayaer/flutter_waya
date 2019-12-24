@@ -1,16 +1,19 @@
 library flutter_waya;
 
 //constant
+//内部常量勿用
 //export 'src/constant/WayColor.dart';
 //export 'src/constant/WayConstant.dart';
 //export 'src/constant/WayIcon.dart';
 //export 'src/constant/WayStyles.dart';
 
+//可调用常量
+export 'src/constant/WayEnum.dart';
+
 //custom
 export 'src/custom/azlist/AzCommon.dart';
 export 'src/custom/azlist/AzIndexBar.dart';
 export 'src/custom/azlist/AzListView.dart';
-export 'src/custom/marquee/AnimationDirection.dart';
 export 'src/custom/marquee/Marquee.dart';
 export 'src/custom/marquee/MarqueeItem.dart';
 export 'src/custom/CustomButton.dart';

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_waya/src/constant/WayEnum.dart';
 
 //例子  自行封装utils
 class NavigatorExample {
@@ -22,11 +23,6 @@ class NavigatorExample {
   static pop<T extends Object>([T result]) {
     return WayNavigatorUtils.getInstance().pop(result);
   }
-}
-
-enum PushMode {
-  Cupertino,
-  Material,
 }
 
 class WayNavigatorUtils extends NavigatorObserver {
