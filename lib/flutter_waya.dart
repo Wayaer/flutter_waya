@@ -30,6 +30,7 @@ export 'src/custom/CustomRichText.dart';
 export 'src/custom/CustomScaffold.dart';
 export 'src/custom/CustomSmartRefresher.dart';
 export 'src/custom/CustomMaterialApp.dart';
+export 'src/custom/CustomAppBar.dart';
 
 //utils
 export 'src/utils/WayDioUtils.dart';
@@ -43,7 +44,7 @@ export 'src/widget/gestures/Gesture.dart';
 export 'src/widget/BlueButton.dart';
 export 'src/widget/ListItem.dart';
 export 'src/widget/BlueIcons.dart';
-export 'src/widget/CommonWidget.dart';
+//export 'src/widget/CommonWidget.dart';
 export 'src/widget/MarqueeListWidget.dart';
 export 'src/widget/SearchInputWidget.dart';
 export 'src/widget/TabNavigationPage.dart';

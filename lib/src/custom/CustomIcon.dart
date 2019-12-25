@@ -62,21 +62,21 @@ class CustomIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomFlex(
       inkWell: inkWell,
-      child: text == null ? iconWidget(context) : null,
+      child: text == null ? iconWidget() : null,
       direction: direction,
       crossAxisAlignment: crossAxisAlignment,
       mainAxisAlignment: mainAxisAlignment,
       children: text == null
           ? null
           : <Widget>[
-        reversal ? textWidget() : iconWidget(context),
-        direction == Axis.horizontal
-            ? Container(width: spacing ?? WayUtils.getWidth(spacing))
-            : Container(
-          height: spacing ?? WayUtils.getHeight(spacing),
-        ),
-        reversal ? iconWidget(context) : textWidget(),
-      ],
+              reversal ? textWidget() : iconWidget(),
+              direction == Axis.horizontal
+                  ? Container(width: spacing ?? WayUtils.getWidth(spacing))
+                  : Container(
+                      height: spacing ?? WayUtils.getHeight(spacing),
+                    ),
+              reversal ? iconWidget() : textWidget(),
+            ],
       width: width,
       height: height,
       onTap: onTap,
@@ -99,13 +99,13 @@ class CustomIcon extends StatelessWidget {
     );
   }
 
-  Widget iconWidget(BuildContext context) {
+  Widget iconWidget() {
     return image == null
         ? Icon(icon,
-        color: iconColor,
-        size: iconSize ?? WayUtils.getWidth(15),
-        textDirection: textDirection,
-        semanticLabel: semanticLabel)
+            color: iconColor,
+            size: iconSize ?? WayUtils.getWidth(15),
+            textDirection: textDirection,
+            semanticLabel: semanticLabel)
         : image;
   }
 }

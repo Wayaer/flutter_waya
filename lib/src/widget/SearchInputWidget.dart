@@ -5,12 +5,12 @@ import 'package:flutter_waya/src/constant/WayEnum.dart';
 import 'package:flutter_waya/src/constant/WayIcon.dart';
 import 'package:flutter_waya/src/utils/WayUtils.dart';
 
-
 class SearchInputWidget extends StatelessWidget {
   final TextEditingController controller;
   final ValueChanged<String> onChanged;
   final double width;
   final double height;
+
   final double iconSize;
   final EdgeInsetsGeometry padding;
   final EdgeInsetsGeometry margin;
@@ -32,6 +32,7 @@ class SearchInputWidget extends StatelessWidget {
   final bool labelShow;
   final double lineWidth;
   final GestureTapCallback labelOnTap;
+  double labelWidth;
 
   SearchInputWidget({
     Key key,
@@ -60,7 +61,10 @@ class SearchInputWidget extends StatelessWidget {
     this.labelShow: false,
     this.lineWidth,
     this.labelOnTap,
-  }) : super(key: key);
+    this.labelWidth,
+  }) : super(key: key) {
+    labelWidth = WayUtils.getWidth(90);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,33 +82,37 @@ class SearchInputWidget extends StatelessWidget {
           inputTextStyle: inputTextStyle,
           cursorColor: cursorColor ?? borderColor,
           inputBoxPadding:
-              EdgeInsets.symmetric(horizontal: WayUtils.getWidth(10)),
+          EdgeInsets.symmetric(horizontal: WayUtils.getWidth(10)),
           inputBoxLeftWight: CustomIcon(
             margin: EdgeInsets.only(right: WayUtils.getWidth(5)),
             icon: WayIcon.iconsSearch,
             iconSize: iconSize,
             iconColor: iconColor,
           ),
+          onChanged: onChanged,
           lineType: LineType.outLine,
           inputBoxOutLeftWidget: labelShow
               ? CustomFlex(
-                  direction: Axis.horizontal,
-                  margin: labelMargin,
-                  padding: labelPadding,
-                  onTap: labelOnTap,
-                  children: <Widget>[
-                      Text(
-                        labelText ?? '选择',
-                        style: labelTextStyle,
-                      ),
-                      CustomIcon(
-                        margin: EdgeInsets.only(
-                            left: labelSpacing ?? WayUtils.getWidth(5)),
-                        icon: Icons.arrow_drop_down,
-                        iconSize: labelIconSize ?? iconSize,
-                        iconColor: labelIconColor,
-                      )
-                    ])
+              direction: Axis.horizontal,
+              margin: labelMargin,
+              padding: labelPadding,
+              onTap: labelOnTap,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              width: labelWidth,
+              children: <Widget>[
+                CustomButton(
+                  alignment: Alignment.centerLeft,
+                  text: labelText ?? '选择',
+                  textStyle: labelTextStyle,
+                ),
+                CustomIcon(
+                  margin: EdgeInsets.only(
+                      left: labelSpacing ?? WayUtils.getWidth(5)),
+                  icon: Icons.arrow_drop_down,
+                  iconSize: labelIconSize ?? iconSize,
+                  iconColor: labelIconColor,
+                )
+              ])
               : null,
         ));
   }

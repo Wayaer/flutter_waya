@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/src/gestures/recognizer.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
+import 'package:flutter_waya/src/constant/WayConstant.dart';
 import 'package:flutter_waya/src/utils/WayMediaQueryUtils.dart';
 import 'package:flutter_waya/src/utils/WayUtils.dart';
 
 class CustomScaffold extends StatelessWidget {
   final Widget bottomNavigationBar;
-  final AppBar appBar;
+  final CustomAppBar appBar;
   final EdgeInsets padding;
   final bool isScroll;
   final bool expandedBody;
@@ -27,32 +29,11 @@ class CustomScaffold extends StatelessWidget {
     this.padding,
   }) : super(key: key);
 
-  Size preferredSize;
-  double bottom = 0;
-
   @override
   Widget build(BuildContext context) {
-    if (appBar != null && appBar.title != null) {
-      bottom = appBar.bottom?.preferredSize?.height ?? 0.0;
-      preferredSize = Size.fromHeight(kToolbarHeight - 8 + bottom);
-    }
     return Scaffold(
       backgroundColor: backgroundColor ?? getColors(background),
-      appBar: appBar != null
-          ? PreferredSize(
-              //自定义导航栏高度
-              preferredSize: Size.fromHeight(preferredSize?.height ?? 0),
-              child: AppBar(
-                  leading: appBar.leading,
-                  iconTheme: IconThemeData(color: getColors(black)),
-                  elevation: appBar.elevation ?? 0,
-                  title: appBar.title,
-                  centerTitle: true,
-                  bottom: appBar.bottom,
-                  brightness: appBar.brightness ?? Brightness.dark,
-                  backgroundColor: appBar.backgroundColor ?? getColors(blue),
-                  actions: appBar.actions))
-          : null,
+      appBar: appBar,
       bottomNavigationBar: bottomNavigationBar,
       body: bodyWidget(context),
     );
