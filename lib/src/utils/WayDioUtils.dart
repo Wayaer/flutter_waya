@@ -17,7 +17,6 @@ const HTTP_CONTENT_TYPE = [
   "application/json",
   "text/xml"
 ];
-const int errorCode = 911;
 
 class WayDioUtils {
   static Dio dio;
@@ -62,12 +61,12 @@ class WayDioUtils {
       } else {
         responseModel.statusCode = response.statusCode;
         responseModel.statusMessage = response.statusMessage;
-        WayUtils.log(jsonEncode(responseModel).toString());
+        log(responseModel.toJson());
         return jsonEncode(responseModel).toString();
       }
     }, onError: (DioError e) async {
       // 当请求失败时做一些预处理
-      responseModel.type = e.type;
+      responseModel.type = e.type.toString();
       if (e.type == DioErrorType.DEFAULT) {
         responseModel.statusCode = WayConstant.errorCode911;
         responseModel.statusMessage = WayConstant.errorMessage911;
@@ -95,17 +94,16 @@ class WayDioUtils {
             WayConstant.errorMessage960 + e.response.statusCode.toString();
         responseModel.statusMessageT = WayConstant.errorMessageT960;
       }
-      WayUtils.log(jsonEncode(responseModel).toString());
+      log(responseModel.toJson());
       return jsonEncode(responseModel).toString();
     }));
   }
 
   Future get(String url, {Map<String, dynamic> params}) async {
     try {
-      WayUtils.log("GET url:" + url + "  params:" + params.toString());
+      log("GET url:" + url + "  params:" + params.toString());
       Response response = await dio.get(url, queryParameters: params);
-      WayUtils.log(
-          "GET url:" + url + '  responseData==  ' + response.toString());
+      log("GET url:" + url + '  responseData==  ' + response.toString());
       return response.toString();
     } catch (e) {
       error = e;
@@ -115,7 +113,7 @@ class WayDioUtils {
 
   Future post(String url, {Map<String, dynamic> params, data}) async {
     try {
-      WayUtils.log("POST url:" +
+      log("POST url:" +
           url +
           "  params:" +
           params.toString() +
@@ -123,8 +121,7 @@ class WayDioUtils {
           data.toString());
       Response response =
           await dio.post(url, queryParameters: params, data: data);
-      WayUtils.log(
-          "POST url:" + url + '  responseData==  ' + response.toString());
+      log("POST url:" + url + '  responseData==  ' + response.toString());
       return response.toString();
     } catch (e) {
       error = e;
@@ -134,10 +131,9 @@ class WayDioUtils {
 
   Future put(String url, Map<String, dynamic> param) async {
     try {
-      WayUtils.log("PUT url:" + url + "  params:" + param.toString());
+      log("PUT url:" + url + "  params:" + param.toString());
       Response response = await dio.put(url, queryParameters: param);
-      WayUtils.log(
-          "PUT url:" + url + '  responseData==  ' + response.toString());
+      log("PUT url:" + url + '  responseData==  ' + response.toString());
       return response.toString();
     } catch (e) {
       error = e;
@@ -147,10 +143,9 @@ class WayDioUtils {
 
   Future delete(String url, Map<String, dynamic> param) async {
     try {
-      WayUtils.log("DELETE url:" + url + "  params:" + param.toString());
+      log("DELETE url:" + url + "  params:" + param.toString());
       Response response = await dio.delete(url, queryParameters: param);
-      WayUtils.log(
-          "DELETE url:" + url + '  responseData==  ' + response.toString());
+      log("DELETE url:" + url + '  responseData==  ' + response.toString());
       return response.toString();
     } catch (e) {
       error = e;
@@ -161,13 +156,13 @@ class WayDioUtils {
   Future download(String url, String savePath,
       [ProgressCallback onReceiveProgress]) async {
     try {
-      WayUtils.log("url:" + url + "  savePath:" + savePath.toString());
+      log("url:" + url + "  savePath:" + savePath.toString());
       dio.download(url, savePath, onReceiveProgress: (received, total) {
         onReceiveProgress(received, total);
       });
     } catch (e) {
       error = e;
-      return error;
+      return error.toString();
     }
   }
 }

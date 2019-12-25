@@ -1,10 +1,8 @@
-import 'package:dio/dio.dart';
-
 class ResponseModel {
   int statusCode; //error状态
   String statusMessage; //error 状态消息
   String statusMessageT; //error 语言翻译版 消息
-  DioErrorType type;
+  String type;
   Object data;
 
   ResponseModel({
@@ -16,7 +14,7 @@ class ResponseModel {
   });
 
   ResponseModel.fromJson(Map<String, dynamic> json) {
-    type = json['type'];
+    type = json['type'].toString();
     statusCode = json['statusCode'];
     statusMessage = json['statusMessage'].toString();
     statusMessageT = json['statusMessageT'].toString();

@@ -85,14 +85,14 @@ class CustomSmartRefresher extends StatelessWidget {
   }
 
   onRefreshed() {
-    WayUtils.log('onRefreshed');
+   log('onRefreshed');
     WayUtils.timerUtils(Duration(seconds: 4), () {
       refreshController.loadComplete();
     });
   }
 
   onLoadings() {
-    WayUtils.log('onLoadings');
+   log('onLoadings');
     WayUtils.timerUtils(Duration(seconds: 4), () {
       refreshController.loadComplete();
     });

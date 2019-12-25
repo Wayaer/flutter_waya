@@ -16,7 +16,7 @@ import 'package:oktoast/oktoast.dart';
 import 'package:package_info/package_info.dart';
 
 log(message) {
-  WayUtils.log(message.toString());
+ WayUtils.log(message.toString());
 }
 
 isDebug() {
