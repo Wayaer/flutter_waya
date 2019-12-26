@@ -23,7 +23,7 @@ export 'src/custom/CustomClipRRect.dart';
 export 'src/custom/CustomFlex.dart';
 export 'src/custom/CustomGridView.dart';
 export 'src/custom/CustomIcon.dart';
-export 'src/custom/CustomInput.dart';
+
 export 'src/custom/CustomListView.dart';
 export 'src/custom/CustomNestedScrollView.dart';
 export 'src/custom/CustomRichText.dart';
@@ -44,6 +44,8 @@ export 'src/widget/gestures/Gesture.dart';
 export 'src/widget/BlueButton.dart';
 export 'src/widget/ListItem.dart';
 export 'src/widget/BlueIcons.dart';
+export 'src/widget/TextInput.dart';
+
 //export 'src/widget/CommonWidget.dart';
 export 'src/widget/MarqueeListWidget.dart';
 export 'src/widget/SearchInputWidget.dart';

@@ -7,13 +7,13 @@ import 'package:flutter_waya/src/constant/WayIcon.dart';
 import 'package:flutter_waya/src/constant/WayStyles.dart';
 import 'package:flutter_waya/src/utils/WayUtils.dart';
 
-import 'CustomButton.dart';
-import 'CustomFlex.dart';
-import 'CustomIcon.dart';
+import '../custom/CustomButton.dart';
+import '../custom/CustomFlex.dart';
+import '../custom/CustomIcon.dart';
 
 
 
-class CustomInput extends StatefulWidget {
+class TextInput extends StatefulWidget {
   final TextEditingController controller;
   final ValueChanged<String> onChanged;
   final double width;
@@ -77,7 +77,7 @@ class CustomInput extends StatefulWidget {
 
   final Widget icon;
 
-  CustomInput({
+  TextInput({
     Key key,
     this.icon,
     this.eyeCloseWidget,
@@ -144,11 +144,11 @@ class CustomInput extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return CustomInputState();
+    return TextInputState();
   }
 }
 
-class CustomInputState extends State<CustomInput> {
+class TextInputState extends State<TextInput> {
   FocusNode inputFocusNode = FocusNode();
   bool focus = false;
   bool eye = true;
@@ -325,6 +325,7 @@ class CustomInputState extends State<CustomInput> {
       padding: widget.inputBoxPadding,
       direction: Axis.horizontal,
       decoration: inputBoxLine(),
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Offstage(
           offstage: widget.inputBoxLeftWight == null,
