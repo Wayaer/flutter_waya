@@ -9,7 +9,7 @@ import 'package:flutter_waya/src/utils/WayUtils.dart';
 class CustomScaffold extends StatelessWidget {
   final Widget bottomNavigationBar;
   final CustomAppBar appBar;
-  final EdgeInsets padding;
+  final EdgeInsetsGeometry padding;
   final bool isScroll;
   final bool expandedBody;
   final bool paddingStatusBar;
