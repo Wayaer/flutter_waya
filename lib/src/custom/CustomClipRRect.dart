@@ -32,7 +32,7 @@ class CustomClipRRect extends StatelessWidget {
     return Container(
       width: width,
       height: height,
-      padding: padding ?? EdgeInsets.all(WayUtils.getWidth( 1)),
+      padding: padding ?? EdgeInsets.all(WayUtils.getWidth(1)),
       margin: margin,
       decoration: decoration ?? WayStyles.containerRadiusWidth(),
       child: ClipRRect(

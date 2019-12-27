@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'Point.dart';
 
-
 class CanvasPoint extends CustomPainter {
-
   final double ringWidth;
   final double ringRadius;
   final bool showUnSelectRing;
@@ -13,33 +11,30 @@ class CanvasPoint extends CustomPainter {
   final Color unSelectColor;
   final List<Point> points;
 
-  CanvasPoint({
-    @required this.ringWidth,
-    @required this.ringRadius,
-    @required this.showUnSelectRing,
-    @required this.circleRadius,
-    @required this.selectColor,
-    @required this.unSelectColor,
-    @required this.points
-  });
+  CanvasPoint(
+      {@required this.ringWidth,
+      @required this.ringRadius,
+      @required this.showUnSelectRing,
+      @required this.circleRadius,
+      @required this.selectColor,
+      @required this.unSelectColor,
+      @required this.points});
 
   @override
   void paint(Canvas canvas, Size size) {
-
     // 绘制9个圆
     final ringPaint = Paint()
-        ..isAntiAlias = true
-        ..color  = this.unSelectColor
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = this.ringWidth;
+      ..isAntiAlias = true
+      ..color = this.unSelectColor
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = this.ringWidth;
 
     final circlePaint = Paint()
       ..isAntiAlias = true
-      ..color  = this.unSelectColor
+      ..color = this.unSelectColor
       ..style = PaintingStyle.fill;
 
-
-    for (int i = 0 ; i < this.points.length ; i++) {
+    for (int i = 0; i < this.points.length; i++) {
       final point = points[i];
       final offSet = Offset(point.x, points[i].y);
       final color = point.isSelect ? this.selectColor : this.unSelectColor;
@@ -47,16 +42,12 @@ class CanvasPoint extends CustomPainter {
       ringPaint.color = color;
       canvas.drawCircle(offSet, this.circleRadius, circlePaint);
       if (this.showUnSelectRing || point.isSelect) {
-        canvas.drawArc(
-            Rect.fromCircle(center: offSet,radius: this.ringRadius),
-            0, 360, false, ringPaint
-        );
+        canvas.drawArc(Rect.fromCircle(center: offSet, radius: this.ringRadius),
+            0, 360, false, ringPaint);
       }
     }
-
   }
 
   @override
   bool shouldRepaint(CustomPainter oldDelegate) => true;
-
 }

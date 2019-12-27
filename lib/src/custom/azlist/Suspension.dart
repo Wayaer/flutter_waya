@@ -49,7 +49,7 @@ class Suspension extends StatefulWidget {
         super(key: key);
 
   @override
-  SuspensionState createState() =>  SuspensionState();
+  SuspensionState createState() => SuspensionState();
 }
 
 class SuspensionState extends State<Suspension> {
@@ -57,8 +57,8 @@ class SuspensionState extends State<Suspension> {
   int lastIndex;
   int suSectionListLength;
 
-  List<int> suspensionSectionList =  List();
-  Map<String, int> suspensionSectionMap =  Map();
+  List<int> suspensionSectionList = List();
+  Map<String, int> suspensionSectionMap = Map();
 
   @override
   void initState() {

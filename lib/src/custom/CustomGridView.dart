@@ -47,7 +47,7 @@ class CustomGridView extends StatelessWidget {
           )
         : noData == null
             ? CommonWidget.noDataWidget(
-                margin: EdgeInsets.all(WayUtils.getWidth( 10)))
+                margin: EdgeInsets.all(WayUtils.getWidth(10)))
             : noData;
   }
 }

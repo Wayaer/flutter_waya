@@ -4,7 +4,6 @@ import 'CanvasLine.dart';
 import 'CanvasPoint.dart';
 import 'Point.dart';
 
-
 // ignore: must_be_immutable
 class Gesture extends StatefulWidget {
   final double size;
@@ -41,7 +40,8 @@ class Gesture extends StatefulWidget {
     for (int i = 0; i < 9; i++) {
       double x = gapWidth + realRingSize;
       double y = gapWidth + realRingSize;
-      points.add(Point(x: (1 + i % 3 * 2) * x, y: (1 + i ~/ 3 * 2) * y, position: i));
+      points.add(
+          Point(x: (1 + i % 3 * 2) * x, y: (1 + i ~/ 3 * 2) * y, position: i));
     }
   }
 

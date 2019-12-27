@@ -32,7 +32,7 @@ class BlueButton extends StatelessWidget {
         color: getColors(blue),
         borderRadius: BorderRadius.circular(30),
       ),
-      textStyle: WayStyles.textStyleWhite( fontSize: 15),
+      textStyle: WayStyles.textStyleWhite(fontSize: 15),
     );
   }
 }

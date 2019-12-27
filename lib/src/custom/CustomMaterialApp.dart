@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_waya/src/utils/WayNavigatorUtils.dart';
 import 'package:oktoast/oktoast.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 
 class CustomMaterialApp extends StatelessWidget {
   final GlobalKey<NavigatorState> navigatorKey; //导航键

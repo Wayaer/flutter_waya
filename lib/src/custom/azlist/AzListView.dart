@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/src/utils/WayUtils.dart';
+
 import '../CustomListView.dart';
 import 'AzCommon.dart';
 import 'AzIndexBar.dart';
@@ -174,7 +175,8 @@ class AzListViewState extends State<AzListView> {
             }),
         suspensionWidget: widget.suspensionWidget,
         controller: scrollController,
-        suspensionHeight: widget.suspensionHeight ?? WayUtils.getWidth(80, true),
+        suspensionHeight:
+            widget.suspensionHeight ?? WayUtils.getWidth(80, true),
         itemHeight: widget.itemHeight ?? WayUtils.getHeight(40, true),
         onSusTagChanged: widget.onSusTagChanged,
         header: widget.header,

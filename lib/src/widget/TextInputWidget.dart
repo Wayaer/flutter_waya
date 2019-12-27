@@ -8,7 +8,6 @@ import 'package:flutter_waya/src/constant/WayIcon.dart';
 import 'package:flutter_waya/src/constant/WayStyles.dart';
 import 'package:flutter_waya/src/utils/WayUtils.dart';
 
-import '../custom/CustomButton.dart';
 import '../custom/CustomFlex.dart';
 import '../custom/CustomIcon.dart';
 

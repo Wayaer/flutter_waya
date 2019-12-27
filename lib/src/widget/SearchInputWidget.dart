@@ -82,7 +82,7 @@ class SearchInputWidget extends StatelessWidget {
           inputTextStyle: inputTextStyle,
           cursorColor: cursorColor ?? borderColor,
           inputBoxPadding:
-          EdgeInsets.symmetric(horizontal: WayUtils.getWidth(10)),
+              EdgeInsets.symmetric(horizontal: WayUtils.getWidth(10)),
           inputBoxLeftWight: CustomIcon(
             margin: EdgeInsets.only(right: WayUtils.getWidth(5)),
             icon: WayIcon.iconsSearch,
@@ -93,26 +93,26 @@ class SearchInputWidget extends StatelessWidget {
           lineType: LineType.outLine,
           inputBoxOutLeftWidget: labelShow
               ? CustomFlex(
-              direction: Axis.horizontal,
-              margin: labelMargin,
-              padding: labelPadding,
-              onTap: labelOnTap,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              width: labelWidth,
-              children: <Widget>[
-                CustomButton(
-                  alignment: Alignment.centerLeft,
-                  text: labelText ?? '选择',
-                  textStyle: labelTextStyle,
-                ),
-                CustomIcon(
-                  margin: EdgeInsets.only(
-                      left: labelSpacing ?? WayUtils.getWidth(5)),
-                  icon: Icons.arrow_drop_down,
-                  iconSize: labelIconSize ?? iconSize,
-                  iconColor: labelIconColor,
-                )
-              ])
+                  direction: Axis.horizontal,
+                  margin: labelMargin,
+                  padding: labelPadding,
+                  onTap: labelOnTap,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  width: labelWidth,
+                  children: <Widget>[
+                      CustomButton(
+                        alignment: Alignment.centerLeft,
+                        text: labelText ?? '选择',
+                        textStyle: labelTextStyle,
+                      ),
+                      CustomIcon(
+                        margin: EdgeInsets.only(
+                            left: labelSpacing ?? WayUtils.getWidth(5)),
+                        icon: Icons.arrow_drop_down,
+                        iconSize: labelIconSize ?? iconSize,
+                        iconColor: labelIconColor,
+                      )
+                    ])
               : null,
         ));
   }

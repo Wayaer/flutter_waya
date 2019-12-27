@@ -18,7 +18,7 @@ class MarqueeListWidget extends StatelessWidget {
     return itemCount > 0
         ? Marquee(
             center: false,
-            animateDistance: animateDistance ?? WayUtils.getHeight( 100),
+            animateDistance: animateDistance ?? WayUtils.getHeight(100),
             children: children,
           )
         : Container();

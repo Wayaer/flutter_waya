@@ -6,9 +6,5 @@ class Point {
   bool isSelect = false;
   int position;
 
-  Point({
-    @required this.x,
-    @required this.y,
-    @required this.position
-  });
+  Point({@required this.x, @required this.y, @required this.position});
 }

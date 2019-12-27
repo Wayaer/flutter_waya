@@ -69,7 +69,7 @@ class CustomNestedScrollViewState extends State<CustomNestedScrollView> {
       expandedHeight = widget.containsStatusBar
           ? containerHeight +
               preferredSizeHeight -
-          WayMediaQueryUtils.getStatusBarHeight()
+              WayMediaQueryUtils.getStatusBarHeight()
           : containerHeight + preferredSizeHeight;
       setState(() {
         showNestedScrollView = true;
