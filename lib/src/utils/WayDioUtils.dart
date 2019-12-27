@@ -95,7 +95,7 @@ class WayDioUtils {
         responseModel.statusMessageT = WayConstant.errorMessageT960;
       }
       log(responseModel.toJson());
-      return responseModel;
+      return jsonEncode(responseModel);
     }));
   }
 
@@ -107,7 +107,7 @@ class WayDioUtils {
       return jsonDecode(response.toString());
     } catch (e) {
       error = e;
-      return jsonDecode(jsonDecode(error.message.toString()).toString());
+      return jsonDecode(error.message);
     }
   }
 
@@ -125,7 +125,7 @@ class WayDioUtils {
       return jsonDecode(response.toString());
     } catch (e) {
       error = e;
-      return jsonDecode(error.message.toString());
+      return jsonDecode(error.message);
     }
   }
 
@@ -137,7 +137,7 @@ class WayDioUtils {
       return jsonDecode(response.toString());
     } catch (e) {
       error = e;
-      return jsonDecode(error.message.toString());
+      return jsonDecode(error.message);
     }
   }
 
@@ -149,7 +149,7 @@ class WayDioUtils {
       return jsonDecode(response.toString());
     } catch (e) {
       error = e;
-      return jsonDecode(error.message.toString());
+      return jsonDecode(error.message);
     }
   }
 

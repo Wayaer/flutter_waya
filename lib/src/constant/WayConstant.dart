@@ -18,5 +18,5 @@ class WayConstant {
   static const String errorMessageT930 = 'Connect Timeout'; //网络连接超时
   static const String errorMessageT940 = 'Receive Timeout'; //网络接收超时
   static const String errorMessageT950 = 'Send Timeout'; //网络发送超时
-  static const String errorMessageT960 = 'Response:'; //服务器错误
+  static const String errorMessageT960 = 'Response'; //服务器错误
 }

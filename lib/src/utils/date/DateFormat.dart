@@ -1,5 +1,3 @@
-
-
 /// Outputs year as four digits
 ///
 /// Example:
