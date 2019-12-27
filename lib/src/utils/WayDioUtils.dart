@@ -62,7 +62,7 @@ class WayDioUtils {
         responseModel.statusCode = response.statusCode;
         responseModel.statusMessage = response.statusMessage;
         log(responseModel.toJson());
-        return jsonEncode(responseModel).toString();
+        return responseModel;
       }
     }, onError: (DioError e) async {
       // 当请求失败时做一些预处理
@@ -95,7 +95,7 @@ class WayDioUtils {
         responseModel.statusMessageT = WayConstant.errorMessageT960;
       }
       log(responseModel.toJson());
-      return jsonEncode(responseModel).toString();
+      return responseModel;
     }));
   }
 
@@ -104,7 +104,7 @@ class WayDioUtils {
       log("GET url:" + url + "  params:" + params.toString());
       Response response = await dio.get(url, queryParameters: params);
       log("GET url:" + url + '  responseData==  ' + response.toString());
-      return response.toString();
+      return jsonDecode(response.toString());
     } catch (e) {
       error = e;
       return error.message;
@@ -122,7 +122,8 @@ class WayDioUtils {
       Response response =
           await dio.post(url, queryParameters: params, data: data);
       log("POST url:" + url + '  responseData==  ' + response.toString());
-      return response.toString();
+
+      return jsonDecode(response.toString());
     } catch (e) {
       error = e;
       return error.message;
@@ -134,7 +135,7 @@ class WayDioUtils {
       log("PUT url:" + url + "  params:" + param.toString());
       Response response = await dio.put(url, queryParameters: param);
       log("PUT url:" + url + '  responseData==  ' + response.toString());
-      return response.toString();
+      return jsonDecode(response.toString());
     } catch (e) {
       error = e;
       return error.message;
@@ -146,7 +147,7 @@ class WayDioUtils {
       log("DELETE url:" + url + "  params:" + param.toString());
       Response response = await dio.delete(url, queryParameters: param);
       log("DELETE url:" + url + '  responseData==  ' + response.toString());
-      return response.toString();
+      return jsonDecode(response.toString());
     } catch (e) {
       error = e;
       return error.message;
@@ -162,7 +163,7 @@ class WayDioUtils {
       });
     } catch (e) {
       error = e;
-      return error.toString();
+      return error;
     }
   }
 }

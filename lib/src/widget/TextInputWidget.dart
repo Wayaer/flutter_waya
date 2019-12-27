@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/src/constant/WayEnum.dart';
@@ -11,9 +12,7 @@ import '../custom/CustomButton.dart';
 import '../custom/CustomFlex.dart';
 import '../custom/CustomIcon.dart';
 
-
-
-class TextInput extends StatefulWidget {
+class TextInputWidget extends StatefulWidget {
   final TextEditingController controller;
   final ValueChanged<String> onChanged;
   final double width;
@@ -25,6 +24,7 @@ class TextInput extends StatefulWidget {
   final EdgeInsetsGeometry footMargin;
   final EdgeInsetsGeometry eyePadding;
   final EdgeInsetsGeometry eyeMargin;
+  final List<TextInputFormatter> inputFormatter;
   final double height;
   final double lineWidth;
   final double inputBoxWidth;
@@ -77,7 +77,7 @@ class TextInput extends StatefulWidget {
 
   final Widget icon;
 
-  TextInput({
+  TextInputWidget({
     Key key,
     this.icon,
     this.eyeCloseWidget,
@@ -140,15 +140,16 @@ class TextInput extends StatefulWidget {
     this.eyePadding,
     this.eyeMargin,
     this.footLeftTextStyle,
+    this.inputFormatter,
   }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return TextInputState();
+    return TextInputWidgetState();
   }
 }
 
-class TextInputState extends State<TextInput> {
+class TextInputWidgetState extends State<TextInputWidget> {
   FocusNode inputFocusNode = FocusNode();
   bool focus = false;
   bool eye = true;
@@ -370,6 +371,7 @@ class TextInputState extends State<TextInput> {
       textDirection: widget.textDirection,
       textAlign: widget.textAlign,
       focusNode: inputFocusNode,
+      inputFormatters: widget.inputFormatter,
       //光标颜色
       cursorColor: widget.cursorColor ?? getColors(black70),
       //光标圆角

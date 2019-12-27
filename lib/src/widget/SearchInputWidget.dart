@@ -71,7 +71,7 @@ class SearchInputWidget extends StatelessWidget {
     return Container(
         margin: margin,
         padding: padding,
-        child: TextInput(
+        child: TextInputWidget(
           inputBoxHeight: height,
           hintStyle: hintStyle,
           hintText: hintText,

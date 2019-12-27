@@ -16,7 +16,7 @@ import 'package:oktoast/oktoast.dart';
 import 'package:package_info/package_info.dart';
 
 log(message) {
- WayUtils.log(message.toString());
+  WayUtils.log(message.toString());
 }
 
 isDebug() {
@@ -91,38 +91,38 @@ class WayUtils {
   }
 
   static formatDate(String date, [DateType dateType = DateType.dateTime]) {
-    DateTime time = DateTime.parse(date.toString());
+    DateTime time = DateTime.parse(date);
     switch (dateType) {
       case DateType.dateTime:
         return time.year.toString() +
             '-' +
-            time.month.toString() +
+            time.month.toString().padLeft(2, '0') +
             '-' +
-            time.day.toString() +
+            time.day.toString().padLeft(2, '0') +
             ' ' +
-            time.hour.toString() +
+            time.hour.toString().padLeft(2, '0') +
             ':' +
-            time.second.toString();
+            time.second.toString().padLeft(2, '0');
       case DateType.data:
         return time.year.toString() +
             '-' +
-            time.month.toString() +
+            time.month.toString().padLeft(2, '0') +
             '-' +
-            time.day.toString();
+            time.day.toString().padLeft(2, '0');
       case DateType.time:
-        return time.hour.toString() +
+        return time.hour.toString().padLeft(2, '0') +
             ':' +
-            time.minute.toString() +
+            time.minute.toString().padLeft(2, '0') +
             ':' +
             time.second.toString();
       case DateType.monthSecond: //月到分
-        return time.month.toString() +
+        return time.month.toString().padLeft(2, '0') +
             '-' +
-            time.day.toString() +
+            time.day.toString().padLeft(2, '0') +
             ' ' +
-            time.hour.toString() +
+            time.hour.toString().padLeft(2, '0') +
             '-' +
-            time.second.toString();
+            time.second.toString().padLeft(2, '0');
     }
   }
 
@@ -271,4 +271,10 @@ class WayUtils {
       return packageInfo.buildNumber.toString();
     }
   }
+//   // 确保输入的全部是数字
+//
+//  static allAreNum(number) {
+//    number = number.hashCode(/[^\d]/g, '' + '');
+//    return number;
+//  }
 }
