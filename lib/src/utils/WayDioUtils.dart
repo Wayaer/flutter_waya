@@ -107,7 +107,7 @@ class WayDioUtils {
       return jsonDecode(response.toString());
     } catch (e) {
       error = e;
-      return error.message;
+      return jsonDecode(jsonDecode(error.message.toString()).toString());
     }
   }
 
@@ -122,11 +122,10 @@ class WayDioUtils {
       Response response =
           await dio.post(url, queryParameters: params, data: data);
       log("POST url:" + url + '  responseData==  ' + response.toString());
-
       return jsonDecode(response.toString());
     } catch (e) {
       error = e;
-      return error.message;
+      return jsonDecode(error.message.toString());
     }
   }
 
@@ -138,7 +137,7 @@ class WayDioUtils {
       return jsonDecode(response.toString());
     } catch (e) {
       error = e;
-      return error.message;
+      return jsonDecode(error.message.toString());
     }
   }
 
@@ -150,7 +149,7 @@ class WayDioUtils {
       return jsonDecode(response.toString());
     } catch (e) {
       error = e;
-      return error.message;
+      return jsonDecode(error.message.toString());
     }
   }
 
