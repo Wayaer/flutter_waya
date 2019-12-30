@@ -67,7 +67,7 @@ class WayStyles {
         border: Border(
             bottom: BorderSide(
                 width: width ?? WayUtils.getHeight(1),
-                color: getColors(background))));
+                color: underlineColor ?? getColors(background))));
   }
 
   //统一上划线样式

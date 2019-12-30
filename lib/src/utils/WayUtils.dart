@@ -11,12 +11,13 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/src/constant/WayEnum.dart';
+import 'package:flutter_waya/src/utils/LogUtils.dart';
 import 'package:flutter_waya/src/utils/WayMediaQueryUtils.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:package_info/package_info.dart';
 
 log(message) {
-  WayUtils.log(message.toString());
+  LogUtils.d(message);
 }
 
 isDebug() {
@@ -223,10 +224,6 @@ class WayUtils {
 
   static cancelTimer() {
     timerInfo.cancel();
-  }
-
-  static log(String message, {int wrapWidth}) {
-    debugPrint(message, wrapWidth: wrapWidth);
   }
 
   // md5 加密
