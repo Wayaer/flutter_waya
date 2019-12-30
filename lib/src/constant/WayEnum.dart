@@ -1,6 +1,7 @@
 enum LineType {
   outLine, //外边框四周
   underline, //下划线
+  none,//不显示线
 }
 
 enum MarqueeAnimation {

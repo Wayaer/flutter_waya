@@ -58,7 +58,7 @@ class TextInputWidget extends StatefulWidget {
   final ValueChanged<String> onSubmitted;
   final bool enabled;
   final bool showEye;
-  final InputDecoration inputDecoration;
+  final InputDecoration decoration;
   final Color lineBackground;
   final Color lineFocusBackground;
   final Color cursorColor;
@@ -68,6 +68,7 @@ class TextInputWidget extends StatefulWidget {
   final IconData eyeCloseIcon;
   final IconData eyeOpenIcon;
   final Color eyeOpenColor;
+  final Color fillColor;
   final Color eyeCloseColor;
   final Widget eyeOpenWidget;
   final Widget eyeCloseWidget;
@@ -93,12 +94,12 @@ class TextInputWidget extends StatefulWidget {
     this.lineFocusBackground,
     this.headRightIconOnTap,
     this.enabled,
-    this.inputDecoration,
+    this.decoration,
     this.onSubmitted,
     this.showEye: false,
     this.inputTextStyle,
     this.keyboardType,
-    this.maxLines,
+    this.maxLines: 1,
     this.minLines,
     this.textDirection,
     this.textAlign: TextAlign.left,
@@ -140,6 +141,7 @@ class TextInputWidget extends StatefulWidget {
     this.eyeMargin,
     this.footLeftTextStyle,
     this.inputFormatter,
+    this.fillColor,
   }) : super(key: key);
 
   @override
@@ -153,7 +155,7 @@ class TextInputWidgetState extends State<TextInputWidget> {
   bool focus = false;
   bool eye = true;
   bool obscureText = false;
-  InputDecoration inputDecoration;
+  InputDecoration decoration;
   static String value;
   TextEditingController textController;
   Color lineBackground;
@@ -189,6 +191,9 @@ class TextInputWidgetState extends State<TextInputWidget> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.maxLines != 1) {
+      return inputBox(context);
+    }
     return widget.headLeftWight != null ||
             widget.headLeftText != null ||
             widget.headRightWight != null ||
@@ -313,7 +318,7 @@ class TextInputWidgetState extends State<TextInputWidget> {
               width: widget.lineWidth ?? WayUtils.getWidth(1),
               color: focus ? lineFocusBackground : lineBackground));
     } else {
-      return BoxDecoration();
+      return BoxDecoration(color: widget.inputBoxColor);
     }
   }
 
@@ -363,13 +368,14 @@ class TextInputWidgetState extends State<TextInputWidget> {
 
   Widget inputBox(BuildContext context) {
     return TextField(
-      maxLines: widget.maxLines ?? 1,
+      maxLines: widget.maxLines,
       minLines: widget.minLines,
       maxLength: widget.maxLength,
       keyboardAppearance: Brightness.dark,
       textDirection: widget.textDirection,
       textAlign: widget.textAlign,
       focusNode: inputFocusNode,
+
       inputFormatters: widget.inputFormatter,
       //光标颜色
       cursorColor: widget.cursorColor ?? getColors(black70),
@@ -382,7 +388,7 @@ class TextInputWidgetState extends State<TextInputWidget> {
       style: widget.inputTextStyle ?? WayStyles.textStyleBlack70(fontSize: 16),
       controller: widget.controller ?? textController,
 //        onTap:widget.onTap,
-      decoration: widget.inputDecoration ??
+      decoration: widget.decoration ??
           InputDecoration(
 //            fillColor: Colors.blue,
             //显示在输入框前面的图标，在文字和下划线前面
@@ -452,9 +458,9 @@ class TextInputWidgetState extends State<TextInputWidget> {
 //            contentPadding: EdgeInsets.zero,
 //            //输入框的padding  对内部的文字有效
 //            //背景色
-//            fillColor: Colors.red,
+            fillColor: widget.fillColor,
 //            //输入框内部的填充颜色  需filled=true
-//            filled: false,
+            filled: widget.fillColor != null,
 
             //输入框禁用时，下划线的样式.如果设置了errorText，则此属性无效
 //            disabledBorder: underlineInputBorder(
