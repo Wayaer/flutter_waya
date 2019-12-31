@@ -19,7 +19,6 @@ class ListItem extends StatelessWidget {
   final bool inkWell;
   final bool underlineShow;
   final Color underlineColor;
-  final Widget extra;
   final Widget child;
   final Color backgroundColor;
   final BoxDecoration decoration;
@@ -38,7 +37,6 @@ class ListItem extends StatelessWidget {
       this.inkWell: false,
       this.onTap,
       this.arrowShow: true,
-      this.extra,
       this.underlineShow: false,
       this.padding,
       this.margin,
@@ -60,7 +58,7 @@ class ListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomFlex(
-      height: height ?? WayUtils.getHeight(44),
+      height: height,
       inkWell: inkWell,
       margin: margin,
       padding:
@@ -88,7 +86,8 @@ class ListItem extends StatelessWidget {
           width: titleLeftSpacing ?? WayUtils.getWidth(10),
         ),
         Expanded(
-            child: Row(
+            child: Flex(
+          direction: Axis.horizontal,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Offstage(
@@ -98,16 +97,14 @@ class ListItem extends StatelessWidget {
                   ? Text(titleText, style: titleTextStyle)
                   : title,
             ),
-            Row(children: <Widget>[
-              Offstage(
-                offstage: !(extra != null && extra is Widget),
-                child: extra,
-              ),
-              Offstage(
-                offstage: !(child != null && child is Widget),
+            Expanded(
+                child: Offstage(
+              offstage: !(child != null && child is Widget),
+              child: Container(
                 child: child,
+                alignment: Alignment.centerRight,
               ),
-            ])
+            ))
           ],
         )),
         Container(

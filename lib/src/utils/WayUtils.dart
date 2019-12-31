@@ -235,9 +235,27 @@ class WayUtils {
   }
 
   static setStatusBarLight(bool isLight) {
+    const color = Color(0x00000000);
     if (isLight is bool) {
-      SystemChrome.setSystemUIOverlayStyle(
-          isLight ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark);
+      if (isLight) {
+        SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+          systemNavigationBarColor: color,
+          systemNavigationBarDividerColor: color,
+          statusBarColor: color,
+          systemNavigationBarIconBrightness: Brightness.light,
+          statusBarIconBrightness: Brightness.light,
+          statusBarBrightness: Brightness.dark,
+        ));
+      } else {
+        SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+          systemNavigationBarColor: color,
+          systemNavigationBarDividerColor: color,
+          statusBarColor: color,
+          systemNavigationBarIconBrightness: Brightness.light,
+          statusBarIconBrightness: Brightness.dark,
+          statusBarBrightness: Brightness.light,
+        ));
+      }
     }
   }
 

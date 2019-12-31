@@ -11,6 +11,10 @@ class CustomListView extends StatelessWidget {
   final EdgeInsetsGeometry padding;
   final Widget noData;
 
+  static setNoData(Widget noDataWidget) {
+    return noDataWidget;
+  }
+
   CustomListView({
     Key key,
     this.itemBuilder,
@@ -21,7 +25,8 @@ class CustomListView extends StatelessWidget {
     this.padding,
     this.noData,
     this.shrinkWrap: true,
-  })  : assert(itemCount != null),
+  })
+      : assert(itemCount != null),
         assert(itemBuilder != null),
         super(key: key);
 
@@ -29,14 +34,14 @@ class CustomListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return itemCount > 0
         ? ListView.builder(
-            physics: physics,
-            shrinkWrap: shrinkWrap,
-            controller: controller,
-            itemBuilder: itemBuilder,
-            itemCount: itemCount,
-            itemExtent: itemExtent,
-            padding: padding,
-          )
+      physics: physics,
+      shrinkWrap: shrinkWrap,
+      controller: controller,
+      itemBuilder: itemBuilder,
+      itemCount: itemCount,
+      itemExtent: itemExtent,
+      padding: padding,
+    )
         : noData == null ? CommonWidget.noDataWidget() : noData;
   }
 }
