@@ -5,7 +5,7 @@ import 'package:flutter_waya/src/constant/WayEnum.dart';
 import 'package:flutter_waya/src/constant/WayIcon.dart';
 import 'package:flutter_waya/src/utils/WayUtils.dart';
 
-class SearchInputWidget extends StatelessWidget {
+class SearchInput extends StatelessWidget {
   final TextEditingController controller;
   final ValueChanged<String> onChanged;
   final double width;
@@ -34,7 +34,7 @@ class SearchInputWidget extends StatelessWidget {
   final GestureTapCallback labelOnTap;
   double labelWidth; //不建议设置宽度
 
-  SearchInputWidget({
+  SearchInput({
     Key key,
     this.controller,
     this.onChanged,
