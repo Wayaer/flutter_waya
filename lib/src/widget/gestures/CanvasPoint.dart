@@ -11,14 +11,13 @@ class CanvasPoint extends CustomPainter {
   final Color unSelectColor;
   final List<Point> points;
 
-  CanvasPoint(
-      {@required this.ringWidth,
-      @required this.ringRadius,
-      @required this.showUnSelectRing,
-      @required this.circleRadius,
-      @required this.selectColor,
-      @required this.unSelectColor,
-      @required this.points});
+  CanvasPoint({@required this.ringWidth,
+    @required this.ringRadius,
+    @required this.showUnSelectRing,
+    @required this.circleRadius,
+    @required this.selectColor,
+    @required this.unSelectColor,
+    @required this.points});
 
   @override
   void paint(Canvas canvas, Size size) {

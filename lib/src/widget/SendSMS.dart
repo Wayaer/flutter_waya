@@ -24,24 +24,23 @@ class SendSMS extends StatefulWidget {
   final TextStyle notTapTextStyle;
   final int seconds;
 
-  SendSMS(
-      {Key key,
-      this.onTap,
-      this.decoration,
-      this.borderRadius,
-      this.borderWidth,
-      this.defaultBorderColor,
-      this.notTapBorderColor,
-      this.width,
-      this.height,
-      this.defaultText,
-      this.sendingText,
-      this.sentText,
-      this.notTapText,
-      this.defaultTextStyle,
-      this.notTapTextStyle,
-      this.background,
-      this.seconds})
+  SendSMS({Key key,
+    this.onTap,
+    this.decoration,
+    this.borderRadius,
+    this.borderWidth,
+    this.defaultBorderColor,
+    this.notTapBorderColor,
+    this.width,
+    this.height,
+    this.defaultText,
+    this.sendingText,
+    this.sentText,
+    this.notTapText,
+    this.defaultTextStyle,
+    this.notTapTextStyle,
+    this.background,
+    this.seconds})
       : super(key: key);
 
   @override
@@ -84,7 +83,7 @@ class SendSMSState extends State<SendSMS> {
         style: seconds == 0
             ? widget.defaultTextStyle ?? WayStyles.textStyleBlue(fontSize: 13)
             : widget.notTapTextStyle ??
-                WayStyles.textStyleBlack70(fontSize: 13),
+            WayStyles.textStyleBlack70(fontSize: 13),
       ),
     );
   }

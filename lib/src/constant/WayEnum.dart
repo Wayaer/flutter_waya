@@ -1,7 +1,7 @@
 enum LineType {
   outLine, //外边框四周
   underline, //下划线
-  none,//不显示线
+  none, //不显示线
 }
 
 enum MarqueeAnimation {
@@ -20,4 +20,22 @@ enum DateType {
 enum PushMode {
   Cupertino, //从右往左push
   Material, //从下往上 push
+}
+enum InputTextType {
+  password, //密码
+  number, //整数
+  text, //文本
+  decimal, //小数
+  letter, //字母
+  chinese, //中文
+  email, //邮箱
+  mobilePhoneNumber, //国内手机号码
+  phoneNumber, //国内电话号码
+  dateTime, //日期格式
+  idCard, //身份证
+  ip, //ip地址
+  url, //网址url
+  positive, //正数
+  negative, //负数
+
 }

@@ -39,8 +39,7 @@ class WayStyles {
   }
 
   //统一白色背景 圆角
-  static Decoration containerWhiteRadius(
-      {Color color, double radius, bool shadow: false}) {
+  static Decoration containerWhiteRadius({Color color, double radius, bool shadow: false}) {
     return BoxDecoration(
       color: color ?? getColors(white),
       borderRadius: BorderRadius.circular(radius ?? radiusLocal),
@@ -49,8 +48,7 @@ class WayStyles {
   }
 
   //统一 白色背景 圆角 边框
-  static Decoration containerRadiusWidth(
-      {Color color, double width, Color widthColor, double radius}) {
+  static Decoration containerRadiusWidth({Color color, double width, Color widthColor, double radius}) {
     return BoxDecoration(
         color: color ?? getColors(white),
         borderRadius: BorderRadius.circular(radius ?? radiusLocal),
@@ -60,8 +58,7 @@ class WayStyles {
   }
 
   //统一下划线样式
-  static Decoration containerUnderlineBackground(
-      {Color color, double width, Color underlineColor}) {
+  static Decoration containerUnderlineBackground({Color color, double width, Color underlineColor}) {
     return BoxDecoration(
         color: color,
         border: Border(

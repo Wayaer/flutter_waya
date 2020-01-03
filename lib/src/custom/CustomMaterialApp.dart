@@ -78,7 +78,8 @@ class CustomMaterialApp extends StatelessWidget {
     this.toastTextPadding,
     this.toastTextAlign,
     this.toastHandleTouth = false,
-  })  : assert(routes != null),
+  })
+      : assert(routes != null),
 //        assert(navigatorObservers != null),
         assert(title != null),
         assert(debugShowMaterialGrid != null),
@@ -110,7 +111,7 @@ class CustomMaterialApp extends StatelessWidget {
           onGenerateRoute: onGenerateRoute,
           onUnknownRoute: onUnknownRoute,
           navigatorObservers:
-              navigatorObservers ?? [WayNavigatorUtils.getInstance()],
+          navigatorObservers ?? [WayNavigatorUtils.getInstance()],
           builder: builder,
           title: title,
           onGenerateTitle: onGenerateTitle,

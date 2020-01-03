@@ -87,6 +87,9 @@ class WayNavigatorUtils extends NavigatorObserver {
     返回当前route传递过来的参数
    */
   static getParams(context) {
-    return ModalRoute.of(context).settings.arguments;
+    return ModalRoute
+        .of(context)
+        .settings
+        .arguments;
   }
 }

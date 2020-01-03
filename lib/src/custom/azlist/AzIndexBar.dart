@@ -69,19 +69,18 @@ class AzIndexBar extends StatefulWidget {
   final BorderRadius radius;
   final BorderRadius touchDownRadius;
 
-  AzIndexBar(
-      {Key key,
-      this.data = AzIndexData,
-      @required this.onTouch,
-      this.size = 23,
-      this.textStyle,
-      this.padding,
-      this.margin,
-      this.radius,
-      this.touchDownRadius,
-      this.color: Colors.white,
-      this.onTouchColor: Colors.lightBlue,
-      this.touchDownTextStyle})
+  AzIndexBar({Key key,
+    this.data = AzIndexData,
+    @required this.onTouch,
+    this.size = 23,
+    this.textStyle,
+    this.padding,
+    this.margin,
+    this.radius,
+    this.touchDownRadius,
+    this.color: Colors.white,
+    this.onTouchColor: Colors.lightBlue,
+    this.touchDownTextStyle})
       : assert(onTouch != null),
         assert(size >= 15),
         assert(size <= 24),
@@ -139,7 +138,7 @@ class AzIndexBarState extends State<AzIndexBar> {
                 ? widget.onTouchColor
                 : widget.color,
             borderRadius:
-                widget.touchDownRadius ?? BorderRadius.circular(radius)),
+            widget.touchDownRadius ?? BorderRadius.circular(radius)),
         alignment: Alignment.center,
         width: widget.size.toDouble(),
         height: widget.size.toDouble(),

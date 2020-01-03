@@ -51,8 +51,9 @@ class MarqueeItem extends StatefulWidget {
     int itemDuration,
     this.child,
     bool singleLine,
-  })  :
-        // assert(modeListener != null),
+  })
+      :
+  // assert(modeListener != null),
         this.modeListener = modeListener ?? ValueNotifier(false),
         this.textColor = textColor ?? Colors.black,
         this.textSize = textSize ?? 14.0,
@@ -173,7 +174,7 @@ class MarqueeItemState extends State<MarqueeItem>
               widget.text,
               softWrap: widget.singleLine,
               style:
-                  TextStyle(fontSize: widget.textSize, color: widget.textColor),
+              TextStyle(fontSize: widget.textSize, color: widget.textColor),
             ),
             transform: transform,
           ));

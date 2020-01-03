@@ -28,26 +28,27 @@ class CustomGridView extends StatelessWidget {
     this.mainAxisSpacing: 0.0,
     this.crossAxisSpacing: 0.0,
     this.childAspectRatio: 1.0,
-  })  : assert(children != null),
+  })
+      : assert(children != null),
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return itemCount > 0
         ? GridView.count(
-            mainAxisSpacing: mainAxisSpacing,
-            crossAxisSpacing: crossAxisSpacing,
-            controller: controller,
-            physics: physics,
-            padding: padding,
-            crossAxisCount: crossAxisCount,
-            shrinkWrap: true,
-            childAspectRatio: childAspectRatio,
-            children: children,
-          )
+      mainAxisSpacing: mainAxisSpacing,
+      crossAxisSpacing: crossAxisSpacing,
+      controller: controller,
+      physics: physics,
+      padding: padding,
+      crossAxisCount: crossAxisCount,
+      shrinkWrap: true,
+      childAspectRatio: childAspectRatio,
+      children: children,
+    )
         : noData == null
-            ? CommonWidget.noDataWidget(
-                margin: EdgeInsets.all(WayUtils.getWidth(10)))
-            : noData;
+        ? CommonWidget.noDataWidget(
+        margin: EdgeInsets.all(WayUtils.getWidth(10)))
+        : noData;
   }
 }

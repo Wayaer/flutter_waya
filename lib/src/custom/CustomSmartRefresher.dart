@@ -39,7 +39,7 @@ class CustomSmartRefresher extends StatelessWidget {
   }) : super(key: key);
 
   RefreshController refreshController =
-      RefreshController(initialRefresh: false);
+  RefreshController(initialRefresh: false);
   Timer timer;
 
   @override
@@ -51,35 +51,35 @@ class CustomSmartRefresher extends StatelessWidget {
       header: header ?? WaterDropHeader(),
       footer: footer == null
           ? CustomFooter(
-              builder: (BuildContext context, LoadStatus mode) {
-                Widget body;
-                if (mode == LoadStatus.idle) {
-                  body = Text('pull loading');
-                } else if (mode == LoadStatus.loading) {
-                  body = loadingWidget;
-                } else if (mode == LoadStatus.failed) {
-                  body = Text('load failed');
-                } else if (mode == LoadStatus.canLoading) {
-                  body = Text('load data');
-                } else {
-                  body = Text('load not data');
-                }
-                return Container(
-                  height: 40,
-                  child: Center(child: body),
-                );
-              },
-            )
+        builder: (BuildContext context, LoadStatus mode) {
+          Widget body;
+          if (mode == LoadStatus.idle) {
+            body = Text('pull loading');
+          } else if (mode == LoadStatus.loading) {
+            body = loadingWidget;
+          } else if (mode == LoadStatus.failed) {
+            body = Text('load failed');
+          } else if (mode == LoadStatus.canLoading) {
+            body = Text('load data');
+          } else {
+            body = Text('load not data');
+          }
+          return Container(
+            height: 40,
+            child: Center(child: body),
+          );
+        },
+      )
           : footer,
       onRefresh: onRefresh ?? onRefreshed,
       onLoading: onLoading ?? onLoadings,
       child: child == null
           ? CustomListView(
-              physics: physics ?? ScrollPhysics(),
-              shrinkWrap: shrinkWrap,
-              itemCount: itemCount,
-              itemBuilder: itemBuilder,
-            )
+        physics: physics ?? ScrollPhysics(),
+        shrinkWrap: shrinkWrap,
+        itemCount: itemCount,
+        itemBuilder: itemBuilder,
+      )
           : child,
     );
   }

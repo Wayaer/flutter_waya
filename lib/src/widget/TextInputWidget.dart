@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
+import 'package:flutter_waya/src/constant/WayConstant.dart';
 import 'package:flutter_waya/src/constant/WayEnum.dart';
 import 'package:flutter_waya/src/constant/WayIcon.dart';
 import 'package:flutter_waya/src/constant/WayStyles.dart';
@@ -74,6 +75,7 @@ class TextInputWidget extends StatefulWidget {
   final Widget eyeCloseWidget;
   final LineType lineType;
   final BorderRadiusGeometry inputBoxLineBorderRadius;
+  final InputTextType inputTextType;
 
   final Widget icon;
 
@@ -141,7 +143,7 @@ class TextInputWidget extends StatefulWidget {
     this.eyeMargin,
     this.footLeftTextStyle,
     this.inputFormatter,
-    this.fillColor,
+    this.fillColor, this.inputTextType,
   }) : super(key: key);
 
   @override
@@ -173,7 +175,7 @@ class TextInputWidgetState extends State<TextInputWidget> {
       textController = TextEditingController.fromValue(TextEditingValue(
           text: value.trim(),
           selection:
-              TextSelection.fromPosition(TextPosition(offset: value.length))));
+          TextSelection.fromPosition(TextPosition(offset: value.length))));
     }
   }
 
@@ -195,110 +197,110 @@ class TextInputWidgetState extends State<TextInputWidget> {
       return inputBox(context);
     }
     return widget.headLeftWight != null ||
-            widget.headLeftText != null ||
-            widget.headRightWight != null ||
-            widget.headRightIcon != null ||
-            widget.footLeftWight != null ||
-            widget.footLeftText != null ||
-            widget.footRightWight != null
+        widget.headLeftText != null ||
+        widget.headRightWight != null ||
+        widget.headRightIcon != null ||
+        widget.footLeftWight != null ||
+        widget.footLeftText != null ||
+        widget.footRightWight != null
         ? CustomFlex(
-            mainAxisSize: MainAxisSize.min,
-            decoration: BoxDecoration(
-              color: widget.color,
-            ),
-            height: widget.height,
-            width: widget.width,
-            margin: widget.margin,
-            padding: widget.padding,
-            children: <Widget>[
-                //输入框头部
-                Offstage(
-                    offstage: !(widget.headLeftWight != null ||
-                        widget.headRightWight != null ||
-                        widget.headLeftText != null),
-                    child: CustomFlex(
-                        margin: widget.headMargin,
-                        padding: widget.headPadding,
-                        direction: Axis.horizontal,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Offstage(
-                            offstage: !(widget.headLeftWight != null ||
-                                widget.headLeftText != null),
-                            child: widget.headLeftText != null
-                                ? Text(widget.headLeftText,
-                                    style: widget.headLeftTextStyle ??
-                                        WayStyles.textStyleBlack70(
-                                            fontSize: 15))
-                                : widget.headLeftWight,
-                          ),
-                          Offstage(
-                            offstage: !(widget.headRightWight != null ||
-                                widget.headRightIcon != null),
-                            child: widget.headRightIcon != null
-                                ? CustomIcon(
-                                    icon: widget.headRightIcon,
-                                    iconColor: getColors(blue),
-                                    iconSize: WayUtils.getWidth(18),
-                                    onTap: widget.headRightIconOnTap,
-                                  )
-                                : widget.headRightWight,
-                          )
-                        ])),
-                inputBoxCenterRow(context),
-                //输入框底部
-                Offstage(
-                    offstage: !(widget.footLeftWight != null ||
-                        widget.footRightWight != null ||
-                        widget.footLeftText != null),
-                    child: CustomFlex(
-                        margin: widget.footMargin ??
-                            EdgeInsets.only(top: WayUtils.getHeight(5)),
-                        padding: widget.footPadding,
-                        direction: Axis.horizontal,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Offstage(
-                            offstage: !(widget.footLeftWight != null ||
-                                widget.footLeftText != null),
-                            child: widget.footLeftText != null
-                                ? Text(
-                                    widget.footLeftText,
-                                    style: widget.footLeftTextStyle ??
-                                        WayStyles.textStyleBlack70(
-                                            fontSize: 12),
-                                  )
-                                : widget.footLeftWight,
-                          ),
-                          Offstage(
-                            offstage: widget.footRightWight == null,
-                            child: widget.footRightWight,
-                          )
-                        ]))
-              ])
+        mainAxisSize: MainAxisSize.min,
+        decoration: BoxDecoration(
+          color: widget.color,
+        ),
+        height: widget.height,
+        width: widget.width,
+        margin: widget.margin,
+        padding: widget.padding,
+        children: <Widget>[
+          //输入框头部
+          Offstage(
+              offstage: !(widget.headLeftWight != null ||
+                  widget.headRightWight != null ||
+                  widget.headLeftText != null),
+              child: CustomFlex(
+                  margin: widget.headMargin,
+                  padding: widget.headPadding,
+                  direction: Axis.horizontal,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Offstage(
+                      offstage: !(widget.headLeftWight != null ||
+                          widget.headLeftText != null),
+                      child: widget.headLeftText != null
+                          ? Text(widget.headLeftText,
+                          style: widget.headLeftTextStyle ??
+                              WayStyles.textStyleBlack70(
+                                  fontSize: 15))
+                          : widget.headLeftWight,
+                    ),
+                    Offstage(
+                      offstage: !(widget.headRightWight != null ||
+                          widget.headRightIcon != null),
+                      child: widget.headRightIcon != null
+                          ? CustomIcon(
+                        icon: widget.headRightIcon,
+                        iconColor: getColors(blue),
+                        iconSize: WayUtils.getWidth(18),
+                        onTap: widget.headRightIconOnTap,
+                      )
+                          : widget.headRightWight,
+                    )
+                  ])),
+          inputBoxCenterRow(context),
+          //输入框底部
+          Offstage(
+              offstage: !(widget.footLeftWight != null ||
+                  widget.footRightWight != null ||
+                  widget.footLeftText != null),
+              child: CustomFlex(
+                  margin: widget.footMargin ??
+                      EdgeInsets.only(top: WayUtils.getHeight(5)),
+                  padding: widget.footPadding,
+                  direction: Axis.horizontal,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Offstage(
+                      offstage: !(widget.footLeftWight != null ||
+                          widget.footLeftText != null),
+                      child: widget.footLeftText != null
+                          ? Text(
+                        widget.footLeftText,
+                        style: widget.footLeftTextStyle ??
+                            WayStyles.textStyleBlack70(
+                                fontSize: 12),
+                      )
+                          : widget.footLeftWight,
+                    ),
+                    Offstage(
+                      offstage: widget.footRightWight == null,
+                      child: widget.footRightWight,
+                    )
+                  ]))
+        ])
         : inputBoxCenterRow(context);
   }
 
   inputBoxCenterRow(BuildContext context) {
     return widget.inputBoxOutLeftWidget != null ||
-            widget.inputBoxOutRightWidget != null
+        widget.inputBoxOutRightWidget != null
         ? CustomFlex(
-            direction: Axis.horizontal,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Offstage(
-                offstage: widget.inputBoxOutLeftWidget == null,
-                child: widget.inputBoxOutLeftWidget,
-              ),
-              Expanded(child: inputBoxCenter(context)),
-              Offstage(
-                offstage: widget.inputBoxOutRightWidget == null,
-                child: widget.inputBoxOutRightWidget,
-              )
-            ],
-          )
+      direction: Axis.horizontal,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        Offstage(
+          offstage: widget.inputBoxOutLeftWidget == null,
+          child: widget.inputBoxOutLeftWidget,
+        ),
+        Expanded(child: inputBoxCenter(context)),
+        Offstage(
+          offstage: widget.inputBoxOutRightWidget == null,
+          child: widget.inputBoxOutRightWidget,
+        )
+      ],
+    )
         : inputBoxCenter(context);
   }
 
@@ -366,6 +368,43 @@ class TextInputWidgetState extends State<TextInputWidget> {
     );
   }
 
+  List<TextInputFormatter> inputTextType() {
+    switch (widget.inputTextType) {
+      case InputTextType.number:
+        return [WhitelistingTextInputFormatter.digitsOnly];
+      case InputTextType.password:
+        return [ WhitelistingTextInputFormatter(RegExp(WayConstant.regExpPassword))]; //密码常见类型
+      case InputTextType.text:
+        return widget.inputFormatter;
+      case InputTextType.decimal:
+        return [ WhitelistingTextInputFormatter(RegExp(WayConstant.regExpDecimal))]; //只允许输入小数
+      case InputTextType.letter:
+        return [ WhitelistingTextInputFormatter(RegExp(WayConstant.regExpLetter)),]; //只允许输入字母
+      case InputTextType.chinese:
+        return [ WhitelistingTextInputFormatter(RegExp(WayConstant.regExpLetter)),];
+      case InputTextType.email:
+        return [ WhitelistingTextInputFormatter(RegExp(WayConstant.regExpChinese)),];
+      case InputTextType.phoneNumber:
+        return [ WhitelistingTextInputFormatter(RegExp(WayConstant.regExpPhoneNumber)),];
+      case InputTextType.mobilePhoneNumber:
+        return [ WhitelistingTextInputFormatter(RegExp(WayConstant.regExpMobilePhoneNumber)),];
+      case InputTextType.dateTime:
+        return [ WhitelistingTextInputFormatter(RegExp(WayConstant.regExpDateTime)),];
+      case InputTextType.idCard:
+        return [ WhitelistingTextInputFormatter(RegExp(WayConstant.regExpIdCard)),];
+      case InputTextType.ip:
+        return [ WhitelistingTextInputFormatter(RegExp(WayConstant.regExpIP)),];
+      case InputTextType.url:
+        return [ WhitelistingTextInputFormatter(RegExp(WayConstant.regExpUrl)),];
+      case InputTextType.positive:
+        return [ WhitelistingTextInputFormatter(RegExp(WayConstant.regExpPassword)),];
+      case InputTextType.negative:
+        return [ WhitelistingTextInputFormatter(RegExp(WayConstant.regExpNegative)),];
+      default:
+        return widget.inputFormatter;
+    }
+  }
+
   Widget inputBox(BuildContext context) {
     return TextField(
       maxLines: widget.maxLines,
@@ -376,7 +415,7 @@ class TextInputWidgetState extends State<TextInputWidget> {
       textAlign: widget.textAlign,
       focusNode: inputFocusNode,
 
-      inputFormatters: widget.inputFormatter,
+      inputFormatters: widget.inputFormatter ?? inputTextType,
       //光标颜色
       cursorColor: widget.cursorColor ?? getColors(black70),
       //光标圆角
@@ -433,7 +472,7 @@ class TextInputWidgetState extends State<TextInputWidget> {
             hintText: widget.hintText,
             //显示在输入框内的提示信息，当输入框为空时显示，一旦开始输入内容就消失
             hintStyle:
-                widget.hintStyle ?? WayStyles.textStyleBlack30(fontSize: 16),
+            widget.hintStyle ?? WayStyles.textStyleBlack30(fontSize: 16),
             hintMaxLines: 1,
             //提示语的做多显示行数，超过行数显示...
 

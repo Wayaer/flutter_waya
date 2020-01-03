@@ -44,12 +44,12 @@ class CustomButton extends StatelessWidget {
       child: child != null
           ? child
           : Text(
-              text,
-              textAlign: TextAlign.start,
-              style: textStyle,
-              maxLines: maxLines,
-              overflow: overflow,
-            ),
+        text,
+        textAlign: TextAlign.start,
+        style: textStyle,
+        maxLines: maxLines,
+        overflow: overflow,
+      ),
       width: width,
       height: height,
       onTap: onTap,

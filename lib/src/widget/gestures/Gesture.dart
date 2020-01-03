@@ -19,19 +19,18 @@ class Gesture extends StatefulWidget {
   final Function() onPanDown;
   final Function(List<int>) onPanUp;
 
-  Gesture(
-      {Key key,
-      @required this.size,
-      this.selectColor = Colors.greenAccent,
-      this.unSelectColor = Colors.grey,
-      this.ringWidth: 2,
-      this.ringRadius: 35,
-      this.showUnSelectRing: false,
-      this.circleRadius: 10,
-      this.lineWidth: 3,
-      this.onPanUp,
-      this.onPanDown,
-      this.immediatelyClear: true})
+  Gesture({Key key,
+    @required this.size,
+    this.selectColor = Colors.greenAccent,
+    this.unSelectColor = Colors.grey,
+    this.ringWidth: 2,
+    this.ringRadius: 35,
+    this.showUnSelectRing: false,
+    this.circleRadius: 10,
+    this.lineWidth: 3,
+    this.onPanUp,
+    this.onPanDown,
+    this.immediatelyClear: true})
       : super(key: key) {
     // 减少刷新频率
     points = [];

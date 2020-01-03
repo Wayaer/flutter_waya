@@ -19,4 +19,18 @@ class WayConstant {
   static const String errorMessageT940 = 'Receive Timeout'; //网络接收超时
   static const String errorMessageT950 = 'Send Timeout'; //网络发送超时
   static const String errorMessageT960 = 'Response'; //服务器错误
+  static const String regExpNumber = '-?[1-9]\d*'; //整数
+  static const String regExpPositive = '-?[1-9]\d*'; //正数
+  static const String regExpNegative = '-?[1-9.]\d*'; //负数
+  static const String regExpPassword = '[a-zA-Z1-9.*_-+]'; //密码
+  static const String regExpDecimal = '[0-9.]'; //小数
+  static const String regExpLetter = '[a-zA-Z]'; //字母
+  static const String regExpChinese = '[\u4e00-\u9fa5]'; //中文
+  static const String regExpEmail = '\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}'; //邮箱
+  static const String regExpPhoneNumber = '[0-9-()（）]{7,18}'; //国内电话号
+  static const String regExpMobilePhoneNumber = '0?(13|14|15|17|18|19)[0-9]{9}'; //国内手机号
+  static const String regExpDateTime = '\d{4}(\-|\/|.)\d{1,2}\1\d{1,2}'; //日期时间
+  static const String regExpIdCard = '\d{17}[\d|x]|\d{15}'; //身份证
+  static const String regExpIP = '(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)'; //ip
+  static const String regExpUrl = '^((https|http|ftp|rtsp|mms)?:\/\/)[^\s]+'; //
 }
