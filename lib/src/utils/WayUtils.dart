@@ -7,8 +7,10 @@ import 'package:convert/convert.dart';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/src/constant/WayEnum.dart';
 import 'package:flutter_waya/src/utils/LogUtils.dart';
@@ -252,7 +254,7 @@ class WayUtils {
     if (isLight is bool) {
       if (isLight) {
         SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-          systemNavigationBarColor: color,
+          systemNavigationBarColor: Colors.black,
           systemNavigationBarDividerColor: color,
           statusBarColor: color,
           systemNavigationBarIconBrightness: Brightness.light,
@@ -261,7 +263,7 @@ class WayUtils {
         ));
       } else {
         SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-          systemNavigationBarColor: color,
+          systemNavigationBarColor: Colors.black,
           systemNavigationBarDividerColor: color,
           statusBarColor: color,
           systemNavigationBarIconBrightness: Brightness.light,
@@ -298,6 +300,13 @@ class WayUtils {
       PackageInfo packageInfo = await PackageInfo.fromPlatform();
       return packageInfo.buildNumber.toString();
     }
+  }
+
+  static futurePop(navigator) {
+    Future future = navigator;
+    future.then((v) {
+      WayNavigatorUtils.getInstance().pop();
+    });
   }
 //   // 确保输入的全部是数字
 //

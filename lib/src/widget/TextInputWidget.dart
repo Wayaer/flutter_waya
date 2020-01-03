@@ -76,7 +76,6 @@ class TextInputWidget extends StatefulWidget {
   final LineType lineType;
   final BorderRadiusGeometry inputBoxLineBorderRadius;
   final InputTextType inputTextType;
-
   final Widget icon;
 
   TextInputWidget({
@@ -414,8 +413,7 @@ class TextInputWidgetState extends State<TextInputWidget> {
       textDirection: widget.textDirection,
       textAlign: widget.textAlign,
       focusNode: inputFocusNode,
-
-      inputFormatters: widget.inputFormatter ?? inputTextType,
+      inputFormatters: widget.inputFormatter ?? inputTextType(),
       //光标颜色
       cursorColor: widget.cursorColor ?? getColors(black70),
       //光标圆角
