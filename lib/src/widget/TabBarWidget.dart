@@ -21,18 +21,20 @@ class TabBarWidget extends StatelessWidget {
   final double tabBarViewHeight;
   final Color underlineBackgroundColor;
   final double underlineHeight;
-  final EdgeInsetsGeometry padding;
   final EdgeInsetsGeometry tabBarViewPadding;
-  final EdgeInsetsGeometry margin;
   final EdgeInsetsGeometry tabBarMargin;
   final EdgeInsetsGeometry tabBarPadding;
   final EdgeInsetsGeometry tabBarViewMargin;
   final EdgeInsetsGeometry indicatorPadding;
   final ScrollPhysics physics;
   final Widget tabBarViewWidget;
+  final Decoration decoration;
+  final Decoration indicator;
 
   TabBarWidget({
     this.controller,
+    this.indicator,
+    this.decoration,
     this.labelPadding,
     this.tabBar,
     this.labelColor,
@@ -42,8 +44,6 @@ class TabBarWidget extends StatelessWidget {
     this.indicatorWeight,
     this.underlineBackgroundColor: Colors.transparent,
     this.underlineHeight,
-    this.padding,
-    this.margin,
     this.indicatorPadding: EdgeInsets.zero,
     this.tabBarView,
     this.amongWidget,
@@ -74,7 +74,7 @@ class TabBarWidget extends StatelessWidget {
       Container(
         margin: tabBarMargin,
         padding: tabBarPadding,
-        decoration: BoxDecoration(
+        decoration: decoration ?? BoxDecoration(
             border: Border(
                 bottom: BorderSide(
                     width: underlineHeight ?? 0,
@@ -83,6 +83,7 @@ class TabBarWidget extends StatelessWidget {
           controller: controller,
           labelPadding: labelPadding,
           tabs: tabBar,
+          indicator: indicator,
           labelColor: labelColor ?? getColors(blue),
           unselectedLabelColor: unselectedLabelColor ?? getColors(background),
           indicatorColor: labelColor ?? getColors(blue),
