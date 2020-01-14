@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/src/utils/BaseUtils.dart';
+import 'package:flutter_waya/src/utils/LogUtils.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'CustomListView.dart';

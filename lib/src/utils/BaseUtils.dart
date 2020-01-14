@@ -12,13 +12,9 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/BaseEnum.dart';
-import 'package:flutter_waya/src/utils/LogUtils.dart';
 import 'package:flutter_waya/src/utils/MediaQueryUtils.dart';
 import 'package:package_info/package_info.dart';
 
-log(message) {
-  LogUtils.d(message);
-}
 
 isDebug() {
   return !kReleaseMode;
@@ -165,11 +161,11 @@ class BaseUtils {
 
   static getHeight([double height, bool intType]) {
     double h;
-    if (height == null || height == 0)
+    if (height == null || height == 0) {
       h = MediaQueryUtils
           .getSize()
           .height;
-    else {
+    } else {
       //  h = (height / 667) * phoneFitHeight(context);
       h = (height / 667) * MediaQueryUtils
           .getSize()

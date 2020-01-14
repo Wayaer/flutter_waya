@@ -3,8 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter_waya/src/constant/WayConstant.dart';
 import 'package:flutter_waya/src/model/ResponseModel.dart';
-
-import 'BaseUtils.dart';
+import 'package:flutter_waya/src/utils/LogUtils.dart';
 
 //网络链接超时时间
 const int HTTP_TIMEOUT_CONNECT = 5000;

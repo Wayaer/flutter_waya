@@ -4,7 +4,7 @@ import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/custom/OverlayBase.dart';
 
 // ignore: must_be_immutable
-class OverlayMaterialApp extends StatelessWidget {
+class OverlayMaterial extends StatelessWidget {
   final GlobalKey<NavigatorState> navigatorKey; //导航键
   final Widget home; //主页
   final Map<String, WidgetBuilder> routes; //路由
@@ -32,7 +32,7 @@ class OverlayMaterialApp extends StatelessWidget {
   final bool debugShowMaterialGrid;
   TextDirection textDirection;
 
-  OverlayMaterialApp({
+  OverlayMaterial({
     Key key,
     this.textDirection,
     this.navigatorKey,

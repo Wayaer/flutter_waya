@@ -13,10 +13,10 @@ class AlertSureCancel extends StatelessWidget {
   final Widget sure;
   final Widget cancel;
   final Color backgroundColor;
-
   final TextStyle cancelTextStyle;
   final TextStyle sureTextStyle;
   final EdgeInsetsGeometry padding;
+  final GestureTapCallback backsideTap;
 
   AlertSureCancel({
     this.showWidget,
@@ -29,17 +29,31 @@ class AlertSureCancel extends StatelessWidget {
     this.sure,
     this.cancel,
     this.backgroundColor,
-    this.padding,
-  });
+    this.padding, this.backsideTap,
+  }) {
+    if (backgroundColor == null) getColors(white);
+    if (padding == null) EdgeInsets.all(BaseUtils.getWidth(20));
+    if (sureTextStyle == null) TextStyle(
+        decoration: TextDecoration.none,
+        fontSize: 13,
+        fontWeight: FontWeight.w500,
+        color: getColors(blue));
+    if (cancelTextStyle == null) TextStyle(
+        decoration: TextDecoration.none,
+        fontSize: 13,
+        fontWeight: FontWeight.w500,
+        color: getColors(black30));
+  }
 
   @override
   Widget build(BuildContext context) {
     return AlertBase(
+        onTap: backsideTap,
         child: CustomFlex(
           onTap: () {},
           mainAxisAlignment: MainAxisAlignment.end,
-          color: backgroundColor ?? getColors(white),
-          padding: padding ?? EdgeInsets.all(BaseUtils.getWidth(20)),
+          color: backgroundColor,
+          padding: padding,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Expanded(child: showWidget),
@@ -47,38 +61,28 @@ class AlertSureCancel extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 CustomButton(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: BaseUtils.getWidth(20),
-                      vertical: BaseUtils.getHeight(5)),
-                  onTap: cancelOnTap ??
-                          () {
-                        BaseNavigatorUtils.getInstance().pop();
-                      },
-                  child: cancel,
-                  text: cancelText,
-                  textStyle: cancelTextStyle ??
-                      TextStyle(
-                          decoration: TextDecoration.none,
-                          fontSize: 13,
-                          fontWeight: FontWeight.w500,
-                          color: getColors(black30)),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: BaseUtils.getWidth(20),
+                        vertical: BaseUtils.getHeight(5)),
+                    onTap: cancelOnTap ??
+                            () {
+                          BaseNavigatorUtils.getInstance().pop();
+                        },
+                    child: cancel,
+                    text: cancelText,
+                    textStyle: cancelTextStyle
                 ),
                 CustomButton(
-                  onTap: sureOnTap ??
-                          () {
-                        BaseNavigatorUtils.getInstance().pop();
-                      },
-                  padding: EdgeInsets.symmetric(
-                      horizontal: BaseUtils.getWidth(20),
-                      vertical: BaseUtils.getHeight(5)),
-                  text: sureText,
-                  child: sure,
-                  textStyle: sureTextStyle ??
-                      TextStyle(
-                          decoration: TextDecoration.none,
-                          fontSize: 13,
-                          fontWeight: FontWeight.w500,
-                          color: getColors(blue)),
+                    onTap: sureOnTap ??
+                            () {
+                          BaseNavigatorUtils.getInstance().pop();
+                        },
+                    padding: EdgeInsets.symmetric(
+                        horizontal: BaseUtils.getWidth(20),
+                        vertical: BaseUtils.getHeight(5)),
+                    text: sureText,
+                    child: sure,
+                    textStyle: sureTextStyle
                 ),
               ],
             )

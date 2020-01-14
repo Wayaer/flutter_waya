@@ -1,3 +1,7 @@
+log(message) {
+  LogUtils.d(message);
+}
+
 class LogUtils {
   static var separator = "=";
   static var split =
