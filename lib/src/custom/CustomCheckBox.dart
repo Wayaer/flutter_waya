@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/src/constant/WayIcon.dart';
-import 'package:flutter_waya/src/utils/WayUtils.dart';
+import 'package:flutter_waya/src/utils/BaseUtils.dart';
 
 import 'CustomFlex.dart';
 import 'CustomIcon.dart';
@@ -99,7 +99,7 @@ class CustomCheckBoxState extends State<CustomCheckBox> {
         icon: value
             ? checkIcon ?? WayIcon.iconsChecked
             : uncheckIcon ?? WayIcon.iconsUnChecked,
-        iconSize: widget.iconSize ?? WayUtils.getWidth(17.5),
+        iconSize: widget.iconSize ?? BaseUtils.getWidth(17.5),
         width: widget.width,
         height: widget.height,
         background: widget.background,

@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
-class WayMediaQueryUtils {
+class MediaQueryUtils {
   //获取状态栏高度
   static getStatusBarHeight() {
     return MediaQueryData

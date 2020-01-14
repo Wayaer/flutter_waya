@@ -11,11 +11,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:flutter_waya/src/constant/WayColor.dart';
-import 'package:flutter_waya/src/constant/WayEnum.dart';
+import 'package:flutter_waya/src/constant/BaseEnum.dart';
 import 'package:flutter_waya/src/utils/LogUtils.dart';
-import 'package:flutter_waya/src/utils/WayMediaQueryUtils.dart';
-import 'package:oktoast/oktoast.dart';
+import 'package:flutter_waya/src/utils/MediaQueryUtils.dart';
 import 'package:package_info/package_info.dart';
 
 log(message) {
@@ -26,32 +24,8 @@ isDebug() {
   return !kReleaseMode;
 }
 
-showToast(message) {
-  WayUtils.showToast(message.toString());
-}
-
-showAlertWidget(Widget widget) {
-  WayUtils.showAlertWidget(widget);
-}
-
-class WayUtils {
+class BaseUtils {
   static Timer timerInfo;
-
-  static showToast(String message) {
-    showAlertWidget(Container(
-      decoration: BoxDecoration(
-          color: getColors(black70), borderRadius: BorderRadius.circular(5)),
-      padding: EdgeInsets.all(WayUtils.getWidth(10)),
-      child: Text(
-        message,
-        style: TextStyle(color: getColors(white), fontSize: 16),
-      ),
-    ));
-  }
-
-  static showAlertWidget(Widget widget) {
-    showToastWidget(widget);
-  }
 
   // 截屏
   static capture(GlobalKey globalKey) async {
@@ -192,12 +166,12 @@ class WayUtils {
   static getHeight([double height, bool intType]) {
     double h;
     if (height == null || height == 0)
-      h = WayMediaQueryUtils
+      h = MediaQueryUtils
           .getSize()
           .height;
     else {
       //  h = (height / 667) * phoneFitHeight(context);
-      h = (height / 667) * WayMediaQueryUtils
+      h = (height / 667) * MediaQueryUtils
           .getSize()
           .height;
     }
@@ -207,11 +181,11 @@ class WayUtils {
   static getWidth([double width, bool intType]) {
     double w;
     if (width == null || width == 0) {
-      w = WayMediaQueryUtils
+      w = MediaQueryUtils
           .getSize()
           .width;
     } else {
-      w = (width / 375) * WayMediaQueryUtils
+      w = (width / 375) * MediaQueryUtils
           .getSize()
           .width;
     }
@@ -305,7 +279,7 @@ class WayUtils {
   static futurePop(navigator) {
     Future future = navigator;
     future.then((v) {
-      WayNavigatorUtils.getInstance().pop();
+      BaseNavigatorUtils.getInstance().pop();
     });
   }
 //   // 确保输入的全部是数字

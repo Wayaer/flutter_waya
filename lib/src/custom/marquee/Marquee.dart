@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/src/constant/WayEnum.dart';
+import 'package:flutter_waya/src/constant/BaseEnum.dart';
 
 import 'MarqueeItem.dart';
 

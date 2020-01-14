@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:flutter_waya/src/constant/WayEnum.dart';
+import 'package:flutter_waya/src/constant/BaseEnum.dart';
 import 'package:flutter_waya/src/constant/WayIcon.dart';
-import 'package:flutter_waya/src/utils/WayUtils.dart';
+import 'package:flutter_waya/src/utils/BaseUtils.dart';
 
 class SearchInput extends StatelessWidget {
   final TextEditingController controller;
@@ -75,15 +75,15 @@ class SearchInput extends StatelessWidget {
           hintStyle: hintStyle,
           hintText: hintText,
           inputBoxLineBorderRadius: BorderRadius.circular(borderRadius),
-          lineWidth: lineWidth ?? WayUtils.getWidth(0.5),
+          lineWidth: lineWidth ?? BaseUtils.getWidth(0.5),
           lineBackground: borderColor,
           lineFocusBackground: borderColor,
           inputTextStyle: inputTextStyle,
           cursorColor: cursorColor ?? borderColor,
           inputBoxPadding:
-          EdgeInsets.symmetric(horizontal: WayUtils.getWidth(10)),
+          EdgeInsets.symmetric(horizontal: BaseUtils.getWidth(10)),
           inputBoxLeftWight: CustomIcon(
-            margin: EdgeInsets.only(right: WayUtils.getWidth(5)),
+            margin: EdgeInsets.only(right: BaseUtils.getWidth(5)),
             icon: WayIcon.iconsSearch,
             iconSize: iconSize,
             iconColor: iconColor,
@@ -106,7 +106,7 @@ class SearchInput extends StatelessWidget {
                 ),
                 CustomIcon(
                   margin: EdgeInsets.only(
-                      left: labelSpacing ?? WayUtils.getWidth(5)),
+                      left: labelSpacing ?? BaseUtils.getWidth(5)),
                   icon: Icons.arrow_drop_down,
                   iconSize: labelIconSize ?? iconSize,
                   iconColor: labelIconColor,

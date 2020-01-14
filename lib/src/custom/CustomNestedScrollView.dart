@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
-import 'package:flutter_waya/src/utils/WayMediaQueryUtils.dart';
+import 'package:flutter_waya/src/utils/MediaQueryUtils.dart';
 
 class CustomNestedScrollView extends StatefulWidget {
   final ScrollController controller;
@@ -68,7 +68,7 @@ class CustomNestedScrollViewState extends State<CustomNestedScrollView> {
       expandedHeight = widget.containsStatusBar
           ? containerHeight +
           preferredSizeHeight -
-          WayMediaQueryUtils.getStatusBarHeight()
+          MediaQueryUtils.getStatusBarHeight()
           : containerHeight + preferredSizeHeight;
       setState(() {
         showNestedScrollView = true;

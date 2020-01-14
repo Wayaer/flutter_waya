@@ -2,41 +2,41 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/src/constant/WayEnum.dart';
+import 'package:flutter_waya/src/constant/BaseEnum.dart';
 
 //例子  自行封装utils
 class NavigatorExample {
   static push(Function function, {PushMode pushMode}) {
-    return WayNavigatorUtils.getInstance().push(function, pushMode: pushMode);
+    return BaseNavigatorUtils.getInstance().push(function, pushMode: pushMode);
   }
 
   static pushReplacement(Function function, {PushMode pushMode}) {
-    return WayNavigatorUtils.getInstance()
+    return BaseNavigatorUtils.getInstance()
         .pushReplacement(function, pushMode: pushMode);
   }
 
   static pushAndRemoveUntil(Function function, {PushMode pushMode}) {
-    return WayNavigatorUtils.getInstance()
+    return BaseNavigatorUtils.getInstance()
         .pushAndRemoveUntil(function, pushMode: pushMode);
   }
 
   static pop<T extends Object>([T result]) {
-    return WayNavigatorUtils.getInstance().pop(result);
+    return BaseNavigatorUtils.getInstance().pop(result);
   }
 }
 
-class WayNavigatorUtils extends NavigatorObserver {
+class BaseNavigatorUtils extends NavigatorObserver {
   // ignore: close_sinks
   static StreamController _streamController;
 
   StreamController get streamController => _streamController;
 
   /* 单例给出WayNavigatorUtils */
-  static WayNavigatorUtils navigatorManager;
+  static BaseNavigatorUtils navigatorManager;
 
-  static WayNavigatorUtils getInstance() {
+  static BaseNavigatorUtils getInstance() {
     if (navigatorManager == null) {
-      navigatorManager = WayNavigatorUtils();
+      navigatorManager = BaseNavigatorUtils();
       _streamController = StreamController.broadcast();
     }
     return navigatorManager;

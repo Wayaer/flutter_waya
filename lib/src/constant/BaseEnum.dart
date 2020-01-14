@@ -37,5 +37,4 @@ enum InputTextType {
   url, //网址url
   positive, //正数
   negative, //负数
-
 }

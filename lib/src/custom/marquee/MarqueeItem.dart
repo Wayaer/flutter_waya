@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/src/constant/WayEnum.dart';
+import 'package:flutter_waya/src/constant/BaseEnum.dart';
 
 class MarqueeItem extends StatefulWidget {
   Key key;

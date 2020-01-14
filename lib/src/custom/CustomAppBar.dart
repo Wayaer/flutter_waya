@@ -19,7 +19,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Color backgroundColor;
   double statusBarHeight = 0;
   double height;
-  double rightLeftWidth = WayUtils.getWidth() / 4.5;
+  double rightLeftWidth = BaseUtils.getWidth() / 4.5;
   double contentHeight = 0;
   double iconSize;
   Color iconColor;
@@ -43,14 +43,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.backgroundColor,
     this.appBar})
       : super(key: key) {
-    iconSize = iconSize ?? WayUtils.getWidth(20);
+    iconSize = iconSize ?? BaseUtils.getWidth(20);
     iconColor = iconColor ?? getColors(white);
     textColor = textColor ?? getColors(white);
-    statusBarHeight = WayMediaQueryUtils.getStatusBarHeight();
+    statusBarHeight = MediaQueryUtils.getStatusBarHeight();
     if (height != null) {
       height = height + (paddingStatusBar ? statusBarHeight : 0);
     } else {
-      height = WayUtils.getHeight(WayConstant.appBarHeight) +
+      height = BaseUtils.getHeight(WayConstant.appBarHeight) +
           (paddingStatusBar ? statusBarHeight : 0);
     }
   }
@@ -76,11 +76,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 child: rightWidget ??
                     (rightIcon != null
                         ? CustomIcon(
-                      width: iconSize ?? WayUtils.getWidth(28),
+                      width: iconSize ?? BaseUtils.getWidth(28),
                       icon: rightIcon,
                       padding: EdgeInsets.all(8.0),
                       iconColor: iconColor ?? getColors(white),
-                      iconSize: iconSize ?? WayUtils.getWidth(22),
+                      iconSize: iconSize ?? BaseUtils.getWidth(22),
                       onTap: rightOnTap,
                     )
                         : null)),
@@ -95,8 +95,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         direction: Axis.horizontal,
         padding: padding ??
             EdgeInsets.only(
-                left: WayUtils.getWidth(12),
-                right: WayUtils.getWidth(12),
+                left: BaseUtils.getWidth(12),
+                right: BaseUtils.getWidth(12),
                 top: paddingStatusBar ? statusBarHeight : 0),
         margin: margin,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -114,7 +114,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 iconSize: iconSize,
                 onTap: leftOnTap ??
                         () {
-                      WayNavigatorUtils.getInstance().pop();
+                      BaseNavigatorUtils.getInstance().pop();
                     },
               )),
           Expanded(

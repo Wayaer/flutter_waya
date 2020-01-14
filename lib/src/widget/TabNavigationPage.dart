@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
-import 'package:flutter_waya/src/utils/WayUtils.dart';
+import 'package:flutter_waya/src/utils/BaseUtils.dart';
 
 // ignore: must_be_immutable
 class TabNavigationPage extends StatefulWidget {
@@ -93,7 +93,7 @@ class TabNavigationPageState extends State<TabNavigationPage> {
   Widget barIcon(IconData icons) {
     return Icon(
       icons,
-      size: WayUtils.getWidth(24),
+      size: BaseUtils.getWidth(24),
     );
   }
 }

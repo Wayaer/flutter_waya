@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_waya/src/constant/WayConstant.dart';
 import 'package:flutter_waya/src/model/ResponseModel.dart';
 
-import 'WayUtils.dart';
+import 'BaseUtils.dart';
 
 //网络链接超时时间
 const int HTTP_TIMEOUT_CONNECT = 5000;
@@ -18,20 +18,20 @@ const HTTP_CONTENT_TYPE = [
   "text/xml"
 ];
 
-class WayDioUtils {
+class DioBaseUtils {
   static Dio dio;
   static DioError error;
   static BaseOptions _options;
   static int errorCode = 911;
 
   //单例模式
-  factory WayDioUtils() => getHttp();
+  factory DioBaseUtils() => getHttp();
 
-  static WayDioUtils getHttp({BaseOptions options}) {
-    return WayDioUtils.internal(options: options);
+  static DioBaseUtils getHttp({BaseOptions options}) {
+    return DioBaseUtils.internal(options: options);
   }
 
-  WayDioUtils.internal({BaseOptions options}) {
+  DioBaseUtils.internal({BaseOptions options}) {
     dio = Dio();
     _options = dio.options;
     _options.connectTimeout = options.connectTimeout ?? HTTP_TIMEOUT_CONNECT;
@@ -79,7 +79,6 @@ class WayDioUtils {
         responseModel.statusCode = WayConstant.errorCode930;
         responseModel.statusMessage = WayConstant.errorMessage930;
         responseModel.statusMessageT = WayConstant.errorMessageT930;
-        responseModel.statusMessage = WayConstant.errorMessage911;
       } else if (e.type == DioErrorType.RECEIVE_TIMEOUT) {
         responseModel.statusCode = WayConstant.errorCode940;
         responseModel.statusMessage = WayConstant.errorMessage940;

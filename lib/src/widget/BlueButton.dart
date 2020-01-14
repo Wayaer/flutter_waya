@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/src/constant/WayStyles.dart';
 import 'package:flutter_waya/src/custom/CustomButton.dart';
-import 'package:flutter_waya/src/utils/WayUtils.dart';
+import 'package:flutter_waya/src/utils/BaseUtils.dart';
 
 class BlueButton extends StatelessWidget {
   final String text;
@@ -26,8 +26,8 @@ class BlueButton extends StatelessWidget {
       padding: padding,
       text: text ?? 'BlueButton',
       onTap: onTap,
-      height: WayUtils.getHeight(35),
-      width: width ?? WayUtils.getWidth() - WayUtils.getWidth(40),
+      height: BaseUtils.getHeight(35),
+      width: width ?? BaseUtils.getWidth() - BaseUtils.getWidth(40),
       decoration: BoxDecoration(
         color: getColors(blue),
         borderRadius: BorderRadius.circular(30),

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_waya/src/constant/WayStyles.dart';
-import 'package:flutter_waya/src/utils/WayUtils.dart';
+import 'package:flutter_waya/src/utils/BaseUtils.dart';
 
 class CustomClipRRect extends StatelessWidget {
   final BorderRadius borderRadius;
@@ -33,7 +33,7 @@ class CustomClipRRect extends StatelessWidget {
     return Container(
       width: width,
       height: height,
-      padding: padding ?? EdgeInsets.all(WayUtils.getWidth(1)),
+      padding: padding ?? EdgeInsets.all(BaseUtils.getWidth(1)),
       margin: margin,
       decoration: decoration ?? WayStyles.containerRadiusWidth(),
       child: ClipRRect(

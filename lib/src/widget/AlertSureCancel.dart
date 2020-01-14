@@ -39,7 +39,7 @@ class AlertSureCancel extends StatelessWidget {
           onTap: () {},
           mainAxisAlignment: MainAxisAlignment.end,
           color: backgroundColor ?? getColors(white),
-          padding: padding ?? EdgeInsets.all(WayUtils.getWidth(20)),
+          padding: padding ?? EdgeInsets.all(BaseUtils.getWidth(20)),
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Expanded(child: showWidget),
@@ -48,11 +48,11 @@ class AlertSureCancel extends StatelessWidget {
               children: <Widget>[
                 CustomButton(
                   padding: EdgeInsets.symmetric(
-                      horizontal: WayUtils.getWidth(20),
-                      vertical: WayUtils.getHeight(5)),
+                      horizontal: BaseUtils.getWidth(20),
+                      vertical: BaseUtils.getHeight(5)),
                   onTap: cancelOnTap ??
                           () {
-                        WayNavigatorUtils.getInstance().pop();
+                        BaseNavigatorUtils.getInstance().pop();
                       },
                   child: cancel,
                   text: cancelText,
@@ -66,11 +66,11 @@ class AlertSureCancel extends StatelessWidget {
                 CustomButton(
                   onTap: sureOnTap ??
                           () {
-                        WayNavigatorUtils.getInstance().pop();
+                        BaseNavigatorUtils.getInstance().pop();
                       },
                   padding: EdgeInsets.symmetric(
-                      horizontal: WayUtils.getWidth(20),
-                      vertical: WayUtils.getHeight(5)),
+                      horizontal: BaseUtils.getWidth(20),
+                      vertical: BaseUtils.getHeight(5)),
                   text: sureText,
                   child: sure,
                   textStyle: sureTextStyle ??

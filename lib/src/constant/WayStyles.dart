@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/src/utils/WayUtils.dart';
+import 'package:flutter_waya/src/utils/BaseUtils.dart';
 
 import 'WayColor.dart';
 import 'WayConstant.dart';
@@ -21,7 +21,7 @@ class WayStyles {
 
   //left right  margin or padding 20
   static EdgeInsetsGeometry edgeInsetsHorizontal({double width: 20}) {
-    return EdgeInsets.symmetric(horizontal: WayUtils.getWidth(width));
+    return EdgeInsets.symmetric(horizontal: BaseUtils.getWidth(width));
   }
 
   static Decoration borderRadiusTop({Color color, double radius}) {
@@ -35,7 +35,7 @@ class WayStyles {
 
   //top bottom  margin or padding 20
   static EdgeInsetsGeometry edgeInsetsVertical({double height: 20}) {
-    return EdgeInsets.symmetric(vertical: WayUtils.getHeight(height));
+    return EdgeInsets.symmetric(vertical: BaseUtils.getHeight(height));
   }
 
   //统一白色背景 圆角
@@ -53,7 +53,7 @@ class WayStyles {
         color: color ?? getColors(white),
         borderRadius: BorderRadius.circular(radius ?? radiusLocal),
         border: Border.all(
-            width: width ?? WayUtils.getWidth(1),
+            width: width ?? BaseUtils.getWidth(1),
             color: widthColor ?? getColors(background)));
   }
 
@@ -63,7 +63,7 @@ class WayStyles {
         color: color,
         border: Border(
             bottom: BorderSide(
-                width: width ?? WayUtils.getHeight(1),
+                width: width ?? BaseUtils.getHeight(1),
                 color: underlineColor ?? getColors(background))));
   }
 

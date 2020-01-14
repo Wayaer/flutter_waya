@@ -3,7 +3,7 @@ import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/src/constant/WayIcon.dart';
 import 'package:flutter_waya/src/constant/WayStyles.dart';
 import 'package:flutter_waya/src/custom/CustomFlex.dart';
-import 'package:flutter_waya/src/utils/WayUtils.dart';
+import 'package:flutter_waya/src/utils/BaseUtils.dart';
 
 class ListItem extends StatelessWidget {
   final Text title;
@@ -61,7 +61,7 @@ class ListItem extends StatelessWidget {
       inkWell: inkWell,
       margin: margin,
       padding:
-      padding ?? EdgeInsets.symmetric(vertical: WayUtils.getHeight(13)),
+      padding ?? EdgeInsets.symmetric(vertical: BaseUtils.getHeight(13)),
       direction: Axis.horizontal,
       decoration: decoration ??
           (underlineShow
@@ -77,12 +77,12 @@ class ListItem extends StatelessWidget {
               ? iconImage
               : Icon(
             icon,
-            size: iconSize ?? WayUtils.getWidth(17),
+            size: iconSize ?? BaseUtils.getWidth(17),
             color: iconColor ?? getColors(black),
           ),
         ),
         Container(
-          width: titleLeftSpacing ?? WayUtils.getWidth(10),
+          width: titleLeftSpacing ?? BaseUtils.getWidth(10),
         ),
         Expanded(
             child: Flex(
@@ -107,13 +107,13 @@ class ListItem extends StatelessWidget {
               ],
             )),
         Container(
-          width: arrowLeftSpacing ?? WayUtils.getWidth(10),
+          width: arrowLeftSpacing ?? BaseUtils.getWidth(10),
         ),
         Offstage(
           offstage: !(arrowShow != null && arrowShow),
           child: Icon(
             WayIcon.iconsRight,
-            size: arrowSize ?? WayUtils.getWidth(17),
+            size: arrowSize ?? BaseUtils.getWidth(17),
             color: arrowColor ?? getColors(black),
           ),
         ),

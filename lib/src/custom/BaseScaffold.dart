@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
-import 'package:flutter_waya/src/utils/WayMediaQueryUtils.dart';
-import 'package:flutter_waya/src/utils/WayUtils.dart';
+import 'package:flutter_waya/src/utils/MediaQueryUtils.dart';
+import 'package:flutter_waya/src/utils/BaseUtils.dart';
 
-class CustomScaffold extends StatelessWidget {
+class BaseScaffold extends StatelessWidget {
   final Widget bottomNavigationBar;
   final CustomAppBar appBar;
   final EdgeInsetsGeometry padding;
@@ -15,7 +15,7 @@ class CustomScaffold extends StatelessWidget {
   final Widget body;
 
   //isScroll  和expandedBody  不可同时使用
-  CustomScaffold({
+  BaseScaffold({
     Key key,
     this.appBar,
     this.bottomNavigationBar,
@@ -41,10 +41,10 @@ class CustomScaffold extends StatelessWidget {
     return Container(
       color: backgroundColor,
       margin: expandedBody
-          ? EdgeInsets.only(top: WayUtils.getHeight(10))
+          ? EdgeInsets.only(top: BaseUtils.getHeight(10))
           : EdgeInsets.zero,
       padding: paddingStatusBar
-          ? EdgeInsets.only(top: WayMediaQueryUtils.getStatusBarHeight())
+          ? EdgeInsets.only(top: MediaQueryUtils.getStatusBarHeight())
           : padding,
       width: double.infinity,
       height: double.infinity,

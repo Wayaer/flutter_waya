@@ -4,18 +4,18 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:synchronized/synchronized.dart';
 
-class WayStorageUtil {
-  static WayStorageUtil singleton;
+class StorageUtil {
+  static StorageUtil singleton;
   static SharedPreferences prefs;
   static Lock lock = Lock();
 
-  static Future<WayStorageUtil> getInstance() async {
+  static Future<StorageUtil> getInstance() async {
     if (singleton == null) {
       await lock.synchronized(() async {
         if (singleton == null) {
           // keep local instance till it is fully initialized.
           // 保持本地实例直到完全初始化。
-          var singleton = WayStorageUtil();
+          var singleton = StorageUtil();
           await singleton.init();
           singleton = singleton;
         }
@@ -24,7 +24,7 @@ class WayStorageUtil {
     return singleton;
   }
 
-  WayStorageUtil();
+  StorageUtil();
 
   Future init() async {
     prefs = await SharedPreferences.getInstance();

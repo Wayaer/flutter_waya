@@ -4,10 +4,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/src/constant/WayConstant.dart';
-import 'package:flutter_waya/src/constant/WayEnum.dart';
+import 'package:flutter_waya/src/constant/BaseEnum.dart';
 import 'package:flutter_waya/src/constant/WayIcon.dart';
 import 'package:flutter_waya/src/constant/WayStyles.dart';
-import 'package:flutter_waya/src/utils/WayUtils.dart';
+import 'package:flutter_waya/src/utils/BaseUtils.dart';
 
 import '../custom/CustomFlex.dart';
 import '../custom/CustomIcon.dart';
@@ -241,7 +241,7 @@ class TextInputWidgetState extends State<TextInputWidget> {
                           ? CustomIcon(
                         icon: widget.headRightIcon,
                         iconColor: getColors(blue),
-                        iconSize: WayUtils.getWidth(18),
+                        iconSize: BaseUtils.getWidth(18),
                         onTap: widget.headRightIconOnTap,
                       )
                           : widget.headRightWight,
@@ -255,7 +255,7 @@ class TextInputWidgetState extends State<TextInputWidget> {
                   widget.footLeftText != null),
               child: CustomFlex(
                   margin: widget.footMargin ??
-                      EdgeInsets.only(top: WayUtils.getHeight(5)),
+                      EdgeInsets.only(top: BaseUtils.getHeight(5)),
                   padding: widget.footPadding,
                   direction: Axis.horizontal,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -309,14 +309,14 @@ class TextInputWidgetState extends State<TextInputWidget> {
           color: widget.inputBoxColor,
           border: Border(
               bottom: BorderSide(
-                  width: widget.lineWidth ?? WayUtils.getWidth(1),
+                  width: widget.lineWidth ?? BaseUtils.getWidth(1),
                   color: focus ? lineFocusBackground : lineBackground)));
     } else if (widget.lineType == LineType.outLine) {
       return BoxDecoration(
           color: widget.inputBoxColor,
           borderRadius: widget.inputBoxLineBorderRadius,
           border: Border.all(
-              width: widget.lineWidth ?? WayUtils.getWidth(1),
+              width: widget.lineWidth ?? BaseUtils.getWidth(1),
               color: focus ? lineFocusBackground : lineBackground));
     } else {
       return BoxDecoration(color: widget.inputBoxColor);
@@ -344,7 +344,7 @@ class TextInputWidgetState extends State<TextInputWidget> {
             value: !eye,
             padding: widget.eyePadding,
             margin: widget.eyeMargin ??
-                EdgeInsets.only(right: WayUtils.getWidth(10)),
+                EdgeInsets.only(right: BaseUtils.getWidth(10)),
             iconSize: widget.eyeIconSize,
             uncheckIcon: widget.eyeCloseIcon ?? WayIcon.iconsEyeClose,
             checkIcon: widget.eyeOpenIcon ?? WayIcon.iconsEyeOpen,
@@ -502,14 +502,14 @@ class TextInputWidgetState extends State<TextInputWidget> {
             //输入框禁用时，下划线的样式.如果设置了errorText，则此属性无效
 //            disabledBorder: underlineInputBorder(
 //                borderSide: BorderSide(
-//                    width: WayUtils.getWidth( 1),
+//                    width: BaseUtils.getWidth( 1),
 //                    color: getColors( lineBackground),
 //                    style: BorderStyle.solid)),
 
             //输入框启用时，下划线的样式
 //            enabledBorder: underlineInputBorder(
 //                borderSide: BorderSide(
-//                    width: WayUtils.getWidth( 1),
+//                    width: BaseUtils.getWidth( 1),
 //                    color: getColors( lineBackground),
 //                    style: BorderStyle.solid)),
 
@@ -518,14 +518,14 @@ class TextInputWidgetState extends State<TextInputWidget> {
             //获取焦点时，下划线的样式
 //            focusedBorder: underlineInputBorder(
 //                borderSide: BorderSide(
-//                    width: WayUtils.getWidth(1),
+//                    width: BaseUtils.getWidth(1),
 //                    color: Colors.blue,
 //                    style: BorderStyle.solid)),
 
             //级别最低的border，没有设置其他border时显示的border
 //            border: OutlineInputBorder(
 //                borderSide: BorderSide(
-//                    width: WayUtils.getWidth( 1),
+//                    width: BaseUtils.getWidth( 1),
 //                    color: getColors( lineBackground),
 //                    style: BorderStyle.solid)),
             border: InputBorder.none,
