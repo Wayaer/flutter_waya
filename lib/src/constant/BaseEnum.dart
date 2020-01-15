@@ -17,6 +17,11 @@ enum DateType {
   time, //00:00:00
   monthSecond, //1-1 00:00:00
 }
+enum LoadingType {
+  Circular, //圆圈
+  Linear, //横条
+  Refresh, //不常用 下拉刷新圆圈
+}
 enum PushMode {
   Cupertino, //从右往左push
   Material, //从下往上 push
