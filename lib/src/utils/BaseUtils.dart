@@ -198,6 +198,7 @@ class BaseUtils {
       if (function != null) function();
       timerInfo.cancel();
     });
+    return timerInfo;
   }
 
   static timePeriodic(Duration duration, [Function function]) {
@@ -205,10 +206,11 @@ class BaseUtils {
     timerInfo = Timer.periodic(duration, (covariant) {
       if (function is Function) function();
     });
+    return timerInfo;
   }
 
   static cancelTimer() {
-    timerInfo.cancel();
+    if (timerInfo != null) timerInfo.cancel();
   }
 
   // md5 加密
