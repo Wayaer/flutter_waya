@@ -17,8 +17,8 @@ dependencies:
   dio: ^3.0.7
   synchronized: ^2.1.1
   pull_to_refresh: ^1.5.7
-  package_info: ^0.4.0+13
-
+  flutter_curiosity:
+    path: ../flutter_curiosity
 dev_dependencies:
   flutter_test:
     sdk: flutter

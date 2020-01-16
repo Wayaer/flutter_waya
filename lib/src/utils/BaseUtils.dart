@@ -13,7 +13,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/BaseEnum.dart';
 import 'package:flutter_waya/src/utils/MediaQueryUtils.dart';
-import 'package:package_info/package_info.dart';
 
 
 isDebug() {
@@ -243,34 +242,6 @@ class BaseUtils {
           statusBarBrightness: Brightness.light,
         ));
       }
-    }
-  }
-
-  static getAppVersion() async {
-    if (Platform.isIOS || Platform.isAndroid) {
-      PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      return packageInfo.version.toString();
-    }
-  }
-
-  static getAppName() async {
-    if (Platform.isIOS || Platform.isAndroid) {
-      PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      return packageInfo.appName.toString();
-    }
-  }
-
-  static getPackageName() async {
-    if (Platform.isIOS || Platform.isAndroid) {
-      PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      return packageInfo.packageName.toString();
-    }
-  }
-
-  static getBuildNumber() async {
-    if (Platform.isIOS || Platform.isAndroid) {
-      PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      return packageInfo.buildNumber.toString();
     }
   }
 
