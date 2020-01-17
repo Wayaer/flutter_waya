@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
-import 'package:flutter_waya/src/utils/MediaQueryUtils.dart';
 import 'package:flutter_waya/src/utils/BaseUtils.dart';
+import 'package:flutter_waya/src/utils/MediaQueryUtils.dart';
 
 class BaseScaffold extends StatelessWidget {
   final Widget bottomNavigationBar;
