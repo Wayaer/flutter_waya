@@ -342,7 +342,8 @@ class TextInputWidgetState extends State<TextInputWidget> {
           offstage: !widget.showEye,
           child: CustomCheckBox(
             value: !eye,
-            padding: widget.eyePadding,
+            padding: widget.eyePadding ??
+                EdgeInsets.symmetric(vertical: BaseUtils.getWidth(6), horizontal: BaseUtils.getHeight(10)),
             margin: widget.eyeMargin ??
                 EdgeInsets.only(right: BaseUtils.getWidth(10)),
             iconSize: widget.eyeIconSize,
