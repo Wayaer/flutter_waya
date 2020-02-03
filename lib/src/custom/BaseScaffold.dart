@@ -10,7 +10,7 @@ class BaseScaffold extends StatelessWidget {
   final CustomAppBar appBar;
   final EdgeInsetsGeometry padding;
   final bool isScroll;
-  final bool expandedBody;
+  final bool isolationBody;
   final bool paddingStatusBar;
   final Color backgroundColor;
   final Widget body;
@@ -24,13 +24,13 @@ class BaseScaffold extends StatelessWidget {
   final Widget footer;
   final TextStyle footerTextStyle;
 
-  //isScroll  和expandedBody  不可同时使用
+  //isScroll  和isolationBody（body隔离出一个横条目）  不可同时使用
   BaseScaffold({
     Key key,
     this.appBar,
     this.bottomNavigationBar,
     this.isScroll: false,
-    this.expandedBody: false,
+    this.isolationBody: false,
     this.body,
     this.backgroundColor,
     this.paddingStatusBar: false,
@@ -75,7 +75,7 @@ class BaseScaffold extends StatelessWidget {
   Widget container() {
     return Container(
       color: backgroundColor,
-      margin: expandedBody
+      margin: isolationBody
           ? EdgeInsets.only(top: BaseUtils.getHeight(10))
           : EdgeInsets.zero,
       padding: paddingStatusBar
