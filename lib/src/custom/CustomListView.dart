@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/widget/CommonWidget.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class CustomListView extends StatelessWidget {
   final bool shrinkWrap;
@@ -10,10 +12,18 @@ class CustomListView extends StatelessWidget {
   final ScrollController controller;
   final EdgeInsetsGeometry padding;
   final Widget noData;
+  final bool enablePullDown;
+  final bool enablePullUp;
 
-  static setNoData(Widget noDataWidget) {
-    return noDataWidget;
-  }
+  //刷新组件相关
+  final RefreshController refreshController;
+  final VoidCallback onLoading;
+  final VoidCallback onRefresh;
+  final Widget loadingWidget;
+  final Widget child;
+  final Widget header;
+  final Widget footer;
+  final TextStyle footerTextStyle;
 
   CustomListView({
     Key key,
@@ -25,23 +35,53 @@ class CustomListView extends StatelessWidget {
     this.padding,
     this.noData,
     this.shrinkWrap: true,
-  })
-      : assert(itemCount != null),
+    this.enablePullDown: false,
+    this.enablePullUp: false,
+    this.refreshController,
+    this.onLoading,
+    this.onRefresh,
+    this.loadingWidget,
+    this.child,
+    this.header,
+    this.footer,
+    this.footerTextStyle,
+  })  : assert(itemCount != null),
         assert(itemBuilder != null),
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    if (enablePullDown || enablePullUp) {
+      return refresherListView();
+    }
+    return listViewBuilder();
+  }
+
+  Widget listViewBuilder() {
     return itemCount > 0
         ? ListView.builder(
-      physics: physics,
-      shrinkWrap: shrinkWrap,
-      controller: controller,
-      itemBuilder: itemBuilder,
-      itemCount: itemCount,
-      itemExtent: itemExtent,
-      padding: padding,
-    )
-        : noData == null ? CommonWidget.noDataWidget() : noData;
+            physics: physics,
+            shrinkWrap: shrinkWrap,
+            controller: controller,
+            itemBuilder: itemBuilder,
+            itemCount: itemCount,
+            itemExtent: itemExtent,
+            padding: padding,
+          )
+        : noData ?? CommonWidget.noDataWidget();
+  }
+
+  Widget refresherListView() {
+    return Refresher(
+        enablePullDown: enablePullDown,
+        enablePullUp: enablePullUp,
+        controller: refreshController,
+        onLoading: onLoading,
+        onRefresh: onRefresh,
+        loadingWidget: loadingWidget,
+        child: listViewBuilder(),
+        header: header,
+        footer: footer,
+        footerTextStyle: footerTextStyle);
   }
 }
