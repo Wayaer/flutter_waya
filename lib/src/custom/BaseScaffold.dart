@@ -15,13 +15,10 @@ class BaseScaffold extends StatelessWidget {
   final Color backgroundColor;
   final Widget body;
   final bool enablePullDown;
-  final bool enablePullUp;
 
   //刷新组件相关
   final RefreshController refreshController;
-  final VoidCallback onLoading;
   final VoidCallback onRefresh;
-  final Widget loadingWidget;
   final Widget child;
   final Widget header;
   final Widget footer;
@@ -39,15 +36,12 @@ class BaseScaffold extends StatelessWidget {
     this.paddingStatusBar: false,
     this.padding,
     this.refreshController,
-    this.onLoading,
     this.onRefresh,
-    this.loadingWidget,
     this.child,
     this.header,
     this.footer,
     this.footerTextStyle,
     this.enablePullDown: false,
-    this.enablePullUp: false,
   }) : super(key: key);
 
   @override
@@ -61,7 +55,7 @@ class BaseScaffold extends StatelessWidget {
   }
 
   Widget bodyWidget(BuildContext context) {
-    if (enablePullDown || enablePullUp) {
+    if (enablePullDown) {
       return refresherContainer();
     }
     return container();
@@ -70,11 +64,8 @@ class BaseScaffold extends StatelessWidget {
   Widget refresherContainer() {
     return Refresher(
         enablePullDown: enablePullDown,
-        enablePullUp: enablePullUp,
         controller: refreshController,
-        onLoading: onLoading,
         onRefresh: onRefresh,
-        loadingWidget: loadingWidget,
         child: container(),
         header: header,
         footer: footer,

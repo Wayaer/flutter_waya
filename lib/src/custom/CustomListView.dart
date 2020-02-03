@@ -78,7 +78,6 @@ class CustomListView extends StatelessWidget {
         controller: refreshController,
         onLoading: onLoading,
         onRefresh: onRefresh,
-        loadingWidget: loadingWidget,
         child: listViewBuilder(),
         header: header,
         footer: footer,

@@ -13,14 +13,13 @@ class Refresher extends StatelessWidget {
   final bool enablePullUp;
   final VoidCallback onLoading;
   final VoidCallback onRefresh;
-  final Widget loadingWidget;
   final Widget child;
   final Widget header;
   final Widget footer;
   final TextStyle footerTextStyle;
 
   //
-  final bool enableTwoLevel;
+  final bool enableTwoLevel;//二楼是否开启
   final VoidCallback onTwoLevel;
   final OnOffsetChange onOffsetChange;
   final Axis scrollDirection;
@@ -40,7 +39,6 @@ class Refresher extends StatelessWidget {
     this.enablePullUp: false,
     this.onLoading,
     this.onRefresh,
-    this.loadingWidget,
     this.child,
     this.footer,
     this.header,
@@ -74,7 +72,7 @@ class Refresher extends StatelessWidget {
               if (mode == LoadStatus.idle) {
                 body = footerText('pull loading');
               } else if (mode == LoadStatus.loading) {
-                body = loadingWidget ?? footerText('loading');
+                body =  footerText('loading');
               } else if (mode == LoadStatus.failed) {
                 body = footerText('load failed');
               } else if (mode == LoadStatus.canLoading) {
