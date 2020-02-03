@@ -116,7 +116,7 @@ class Refresher extends StatelessWidget {
   onRefreshed() {
     log('onRefreshed');
     BaseUtils.timerUtils(Duration(seconds: 4), () {
-      refreshController.loadComplete();
+      refreshController.refreshCompleted();
     });
   }
 

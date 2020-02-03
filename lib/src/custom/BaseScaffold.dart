@@ -3,6 +3,7 @@ import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/src/utils/BaseUtils.dart';
 import 'package:flutter_waya/src/utils/MediaQueryUtils.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class BaseScaffold extends StatelessWidget {
   final Widget bottomNavigationBar;
@@ -13,6 +14,18 @@ class BaseScaffold extends StatelessWidget {
   final bool paddingStatusBar;
   final Color backgroundColor;
   final Widget body;
+  final bool enablePullDown;
+  final bool enablePullUp;
+
+  //刷新组件相关
+  final RefreshController refreshController;
+  final VoidCallback onLoading;
+  final VoidCallback onRefresh;
+  final Widget loadingWidget;
+  final Widget child;
+  final Widget header;
+  final Widget footer;
+  final TextStyle footerTextStyle;
 
   //isScroll  和expandedBody  不可同时使用
   BaseScaffold({
@@ -25,6 +38,16 @@ class BaseScaffold extends StatelessWidget {
     this.backgroundColor,
     this.paddingStatusBar: false,
     this.padding,
+    this.refreshController,
+    this.onLoading,
+    this.onRefresh,
+    this.loadingWidget,
+    this.child,
+    this.header,
+    this.footer,
+    this.footerTextStyle,
+    this.enablePullDown: false,
+    this.enablePullUp: false,
   }) : super(key: key);
 
   @override
@@ -38,6 +61,27 @@ class BaseScaffold extends StatelessWidget {
   }
 
   Widget bodyWidget(BuildContext context) {
+    if (enablePullDown || enablePullUp) {
+      return refresherContainer();
+    }
+    return container();
+  }
+
+  Widget refresherContainer() {
+    return Refresher(
+        enablePullDown: enablePullDown,
+        enablePullUp: enablePullUp,
+        controller: refreshController,
+        onLoading: onLoading,
+        onRefresh: onRefresh,
+        loadingWidget: loadingWidget,
+        child: container(),
+        header: header,
+        footer: footer,
+        footerTextStyle: footerTextStyle);
+  }
+
+  Widget container() {
     return Container(
       color: backgroundColor,
       margin: expandedBody
