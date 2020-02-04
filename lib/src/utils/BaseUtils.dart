@@ -14,7 +14,6 @@ import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/BaseEnum.dart';
 import 'package:flutter_waya/src/utils/MediaQueryUtils.dart';
 
-
 isDebug() {
   return !kReleaseMode;
 }
@@ -25,7 +24,7 @@ class BaseUtils {
   // 截屏
   static capture(GlobalKey globalKey) async {
     RenderRepaintBoundary boundary =
-    globalKey.currentContext.findRenderObject();
+        globalKey.currentContext.findRenderObject();
     var image = await boundary.toImage();
     ByteData byteData = await image.toByteData(format: ImageByteFormat.png);
     return byteData;
@@ -102,13 +101,8 @@ class BaseUtils {
 //  * @returns {number} 返回全面屏对应的16：9 屏幕高度
 
   static phoneFitHeight(BuildContext context) {
-    double h = MediaQuery
-        .of(context)
-        .size
-        .height;
-    double s = MediaQuery
-        .of(context)
-        .devicePixelRatio;
+    double h = MediaQuery.of(context).size.height;
+    double s = MediaQuery.of(context).devicePixelRatio;
     double y = s * h;
 
     if (Platform.isAndroid) {
@@ -161,14 +155,10 @@ class BaseUtils {
   static getHeight([double height, bool intType]) {
     double h;
     if (height == null || height == 0) {
-      h = MediaQueryUtils
-          .getSize()
-          .height;
+      h = MediaQueryUtils.getSize().height;
     } else {
       //  h = (height / 667) * phoneFitHeight(context);
-      h = (height / 667) * MediaQueryUtils
-          .getSize()
-          .height;
+      h = (height / 667) * MediaQueryUtils.getSize().height;
     }
     return intType == true ? h.toInt() : h;
   }
@@ -176,13 +166,9 @@ class BaseUtils {
   static getWidth([double width, bool intType]) {
     double w;
     if (width == null || width == 0) {
-      w = MediaQueryUtils
-          .getSize()
-          .width;
+      w = MediaQueryUtils.getSize().width;
     } else {
-      w = (width / 375) * MediaQueryUtils
-          .getSize()
-          .width;
+      w = (width / 375) * MediaQueryUtils.getSize().width;
     }
     return intType == true ? w.toInt() : w;
   }

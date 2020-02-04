@@ -44,8 +44,7 @@ class Suspension extends StatefulWidget {
     this.onSusTagChanged,
     this.onSusSectionInited,
     this.header,
-  })
-      : assert(contentWidget != null),
+  })  : assert(contentWidget != null),
         assert(controller != null),
         super(key: key);
 
@@ -147,7 +146,6 @@ class SuspensionState extends State<Suspension> {
     ];
     if (widget.suspensionWidget != null) {
       children.add(Positioned(
-
         ///-0.1修复部分手机丢失精度问题
         top: suspensionTop.toDouble() - 0.1,
         left: 0.0,

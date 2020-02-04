@@ -60,8 +60,7 @@ class OverlayMaterial extends StatelessWidget {
     this.checkerboardOffscreenLayers = false,
     this.showSemanticsDebugger = false,
     this.debugShowCheckedModeBanner = false,
-  })
-      : assert(routes != null),
+  })  : assert(routes != null),
         assert(navigatorObservers != null),
         assert(title != null),
         assert(debugShowMaterialGrid != null),
@@ -72,13 +71,16 @@ class OverlayMaterial extends StatelessWidget {
         assert(debugShowCheckedModeBanner != null),
         super(key: key) {
     if (textDirection == null) textDirection = TextDirection.ltr;
-    if (navigatorObservers == null) navigatorObservers = [BaseNavigatorUtils.getInstance()];
+    if (navigatorObservers == null)
+      navigatorObservers = [BaseNavigatorUtils.getInstance()];
     if (locale == null) locale = const Locale('zh');
-    if (supportedLocales == null) supportedLocales = [ const Locale('zh', 'CH')];
+    if (supportedLocales == null) supportedLocales = [const Locale('zh', 'CH')];
     if (localizationsDelegates == null)
-      localizationsDelegates = [GlobalMaterialLocalizations.delegate, GlobalWidgetsLocalizations.delegate];
+      localizationsDelegates = [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate
+      ];
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -110,6 +112,7 @@ class OverlayMaterial extends StatelessWidget {
         checkerboardOffscreenLayers: checkerboardOffscreenLayers,
         showSemanticsDebugger: showSemanticsDebugger,
         debugShowCheckedModeBanner: debugShowCheckedModeBanner,
-      ),);
+      ),
+    );
   }
 }

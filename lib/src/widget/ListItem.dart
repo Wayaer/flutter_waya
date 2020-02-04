@@ -29,29 +29,30 @@ class ListItem extends StatelessWidget {
   final IconData icon;
   final Image iconImage;
 
-  ListItem({Key key,
-    this.title,
-    this.height,
-    this.titleLeftSpacing,
-    this.inkWell: false,
-    this.onTap,
-    this.arrowShow: true,
-    this.underlineShow: false,
-    this.padding,
-    this.margin,
-    this.decoration,
-    this.child,
-    this.backgroundColor,
-    this.titleText,
-    this.titleTextStyle,
-    this.arrowSize,
-    this.arrowColor,
-    this.iconSize,
-    this.iconColor,
-    this.icon,
-    this.iconImage,
-    this.underlineColor,
-    this.arrowLeftSpacing})
+  ListItem(
+      {Key key,
+      this.title,
+      this.height,
+      this.titleLeftSpacing,
+      this.inkWell: false,
+      this.onTap,
+      this.arrowShow: true,
+      this.underlineShow: false,
+      this.padding,
+      this.margin,
+      this.decoration,
+      this.child,
+      this.backgroundColor,
+      this.titleText,
+      this.titleTextStyle,
+      this.arrowSize,
+      this.arrowColor,
+      this.iconSize,
+      this.iconColor,
+      this.icon,
+      this.iconImage,
+      this.underlineColor,
+      this.arrowLeftSpacing})
       : super(key: key);
 
   @override
@@ -61,12 +62,12 @@ class ListItem extends StatelessWidget {
       inkWell: inkWell,
       margin: margin,
       padding:
-      padding ?? EdgeInsets.symmetric(vertical: BaseUtils.getHeight(13)),
+          padding ?? EdgeInsets.symmetric(vertical: BaseUtils.getHeight(13)),
       direction: Axis.horizontal,
       decoration: decoration ??
           (underlineShow
               ? WayStyles.containerUnderlineBackground(
-              underlineColor: underlineColor, color: backgroundColor)
+                  underlineColor: underlineColor, color: backgroundColor)
               : BoxDecoration(color: backgroundColor)),
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
@@ -76,36 +77,36 @@ class ListItem extends StatelessWidget {
           child: iconImage != null
               ? iconImage
               : Icon(
-            icon,
-            size: iconSize ?? BaseUtils.getWidth(17),
-            color: iconColor ?? getColors(black),
-          ),
+                  icon,
+                  size: iconSize ?? BaseUtils.getWidth(17),
+                  color: iconColor ?? getColors(black),
+                ),
         ),
         Container(
           width: titleLeftSpacing ?? BaseUtils.getWidth(10),
         ),
         Expanded(
             child: Flex(
-              direction: Axis.horizontal,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Offstage(
-                  offstage:
+          direction: Axis.horizontal,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Offstage(
+              offstage:
                   !((title != null && title is Text) || titleText != null),
-                  child: title == null
-                      ? Text(titleText, style: titleTextStyle)
-                      : title,
-                ),
-                Expanded(
-                    child: Offstage(
-                      offstage: !(child != null && child is Widget),
-                      child: Container(
-                        child: child,
-                        alignment: Alignment.centerRight,
-                      ),
-                    ))
-              ],
-            )),
+              child: title == null
+                  ? Text(titleText, style: titleTextStyle)
+                  : title,
+            ),
+            Expanded(
+                child: Offstage(
+              offstage: !(child != null && child is Widget),
+              child: Container(
+                child: child,
+                alignment: Alignment.centerRight,
+              ),
+            ))
+          ],
+        )),
         Container(
           width: arrowLeftSpacing ?? BaseUtils.getWidth(10),
         ),

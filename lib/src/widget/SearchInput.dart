@@ -62,8 +62,7 @@ class SearchInput extends StatelessWidget {
     this.lineWidth,
     this.labelOnTap,
     this.labelWidth,
-  }) : super(key: key) {
-  }
+  }) : super(key: key) {}
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +80,7 @@ class SearchInput extends StatelessWidget {
           inputTextStyle: inputTextStyle,
           cursorColor: cursorColor ?? borderColor,
           inputBoxPadding:
-          EdgeInsets.symmetric(horizontal: BaseUtils.getWidth(10)),
+              EdgeInsets.symmetric(horizontal: BaseUtils.getWidth(10)),
           inputBoxLeftWight: CustomIcon(
             margin: EdgeInsets.only(right: BaseUtils.getWidth(5)),
             icon: WayIcon.iconsSearch,
@@ -92,26 +91,26 @@ class SearchInput extends StatelessWidget {
           lineType: LineType.outLine,
           inputBoxOutLeftWidget: labelShow
               ? CustomFlex(
-              direction: Axis.horizontal,
-              margin: labelMargin,
-              padding: labelPadding,
-              onTap: labelOnTap,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              width: labelWidth,
-              children: <Widget>[
-                CustomButton(
-                  alignment: Alignment.centerLeft,
-                  text: labelText ?? '选择',
-                  textStyle: labelTextStyle,
-                ),
-                CustomIcon(
-                  margin: EdgeInsets.only(
-                      left: labelSpacing ?? BaseUtils.getWidth(5)),
-                  icon: Icons.arrow_drop_down,
-                  iconSize: labelIconSize ?? iconSize,
-                  iconColor: labelIconColor,
-                )
-              ])
+                  direction: Axis.horizontal,
+                  margin: labelMargin,
+                  padding: labelPadding,
+                  onTap: labelOnTap,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  width: labelWidth,
+                  children: <Widget>[
+                      CustomButton(
+                        alignment: Alignment.centerLeft,
+                        text: labelText ?? '选择',
+                        textStyle: labelTextStyle,
+                      ),
+                      CustomIcon(
+                        margin: EdgeInsets.only(
+                            left: labelSpacing ?? BaseUtils.getWidth(5)),
+                        icon: Icons.arrow_drop_down,
+                        iconSize: labelIconSize ?? iconSize,
+                        iconColor: labelIconColor,
+                      )
+                    ])
               : null,
         ));
   }

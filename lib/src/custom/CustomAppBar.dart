@@ -25,23 +25,24 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Color iconColor;
   Color textColor;
 
-  CustomAppBar({Key key,
-    this.title: 'title',
-    this.leftWidget,
-    this.rightWidget,
-    this.leftOnTap,
-    this.rightOnTap,
-    this.leftIcon,
-    this.rightIcon,
-    this.iconColor,
-    this.iconSize,
-    this.textColor,
-    this.padding,
-    this.margin,
-    this.height,
-    this.paddingStatusBar: true,
-    this.backgroundColor,
-    this.appBar})
+  CustomAppBar(
+      {Key key,
+      this.title: 'title',
+      this.leftWidget,
+      this.rightWidget,
+      this.leftOnTap,
+      this.rightOnTap,
+      this.leftIcon,
+      this.rightIcon,
+      this.iconColor,
+      this.iconSize,
+      this.textColor,
+      this.padding,
+      this.margin,
+      this.height,
+      this.paddingStatusBar: true,
+      this.backgroundColor,
+      this.appBar})
       : super(key: key) {
     iconSize = iconSize ?? BaseUtils.getWidth(20);
     iconColor = iconColor ?? getColors(white);
@@ -76,13 +77,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 child: rightWidget ??
                     (rightIcon != null
                         ? CustomIcon(
-                      width: iconSize ?? BaseUtils.getWidth(28),
-                      icon: rightIcon,
-                      padding: EdgeInsets.all(8.0),
-                      iconColor: iconColor ?? getColors(white),
-                      iconSize: iconSize ?? BaseUtils.getWidth(22),
-                      onTap: rightOnTap,
-                    )
+                            width: iconSize ?? BaseUtils.getWidth(28),
+                            icon: rightIcon,
+                            padding: EdgeInsets.all(8.0),
+                            iconColor: iconColor ?? getColors(white),
+                            iconSize: iconSize ?? BaseUtils.getWidth(22),
+                            onTap: rightOnTap,
+                          )
                         : null)),
           ],
         ));
@@ -108,25 +109,25 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               child: leftWidget != null
                   ? leftWidget
                   : CustomIcon(
-                width: iconSize,
-                icon: leftIcon ?? Icons.arrow_back_ios,
-                iconColor: iconColor,
-                iconSize: iconSize,
-                onTap: leftOnTap ??
-                        () {
-                      BaseNavigatorUtils.getInstance().pop();
-                    },
-              )),
+                      width: iconSize,
+                      icon: leftIcon ?? Icons.arrow_back_ios,
+                      iconColor: iconColor,
+                      iconSize: iconSize,
+                      onTap: leftOnTap ??
+                          () {
+                            BaseNavigatorUtils.getInstance().pop();
+                          },
+                    )),
           Expanded(
               child: Center(
                   child: Text(
-                    title,
-                    maxLines: 1,
-                    style: TextStyle(
-                        fontSize: 18,
-                        color: textColor ?? getColors(white),
-                        fontWeight: FontWeight.w700),
-                  ))),
+            title,
+            maxLines: 1,
+            style: TextStyle(
+                fontSize: 18,
+                color: textColor ?? getColors(white),
+                fontWeight: FontWeight.w700),
+          ))),
           Container(
               alignment: Alignment.centerRight,
               height: height - contentHeight,
@@ -134,12 +135,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               child: rightWidget ??
                   (rightIcon != null
                       ? CustomIcon(
-                    width: iconSize,
-                    icon: rightIcon,
-                    iconColor: iconColor,
-                    iconSize: iconSize,
-                    onTap: rightOnTap,
-                  )
+                          width: iconSize,
+                          icon: rightIcon,
+                          iconColor: iconColor,
+                          iconSize: iconSize,
+                          onTap: rightOnTap,
+                        )
                       : null)),
         ]);
   }

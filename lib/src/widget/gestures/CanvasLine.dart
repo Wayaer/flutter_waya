@@ -8,10 +8,11 @@ class CanvasLine extends CustomPainter {
   final double lineWidth;
   final Point curPoint;
 
-  CanvasLine({@required this.pathPoints,
-    @required this.selectColor,
-    @required this.lineWidth,
-    @required this.curPoint});
+  CanvasLine(
+      {@required this.pathPoints,
+      @required this.selectColor,
+      @required this.lineWidth,
+      @required this.curPoint});
 
   @override
   void paint(Canvas canvas, Size size) {

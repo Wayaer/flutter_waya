@@ -21,9 +21,12 @@ class AlertBase extends StatelessWidget {
             color: Colors.transparent,
             height: BaseUtils.getHeight(),
             width: BaseUtils.getWidth(),
-            onTap: onTap ?? () {
-              BaseNavigatorUtils.getInstance().pop();
-            },
-            child: Center(child: child,)));
+            onTap: onTap ??
+                () {
+                  BaseNavigatorUtils.getInstance().pop();
+                },
+            child: Center(
+              child: child,
+            )));
   }
 }

@@ -24,10 +24,10 @@ class CustomRichText extends StatelessWidget {
         ? richText()
         : CustomFlex(
 //            alignment: alignment ?? Alignment.centerLeft,
-      color: background,
-      onTap: onTap,
-      child: richText(),
-    );
+            color: background,
+            onTap: onTap,
+            child: richText(),
+          );
   }
 
   Widget richText() {

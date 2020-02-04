@@ -10,7 +10,8 @@ import 'Suspension.dart';
 typedef Widget ItemWidgetBuilder(BuildContext context, SuspensionModel model);
 
 /// Called to build IndexBar.
-typedef Widget IndexBarBuilder(BuildContext context, List<String> tags, IndexBarTouchCallback onTouch);
+typedef Widget IndexBarBuilder(
+    BuildContext context, List<String> tags, IndexBarTouchCallback onTouch);
 
 /// Called to build index hint.
 typedef Widget IndexHintBuilder(BuildContext context, String hint);
@@ -28,23 +29,24 @@ class Header extends SuspensionModel {
 
 /// AzListView.
 class AzListView extends StatefulWidget {
-  AzListView({Key key,
-    this.data,
-    this.topData,
-    this.itemBuilder,
-    this.controller,
-    this.physics,
-    this.shrinkWrap = true,
-    this.padding = EdgeInsets.zero,
-    this.suspensionWidget,
-    this.isUseRealIndex = true,
-    this.itemHeight,
-    this.suspensionHeight,
-    this.onSusTagChanged,
-    this.header,
-    this.indexBarBuilder,
-    this.indexHintBuilder,
-    this.showIndexHint = true})
+  AzListView(
+      {Key key,
+      this.data,
+      this.topData,
+      this.itemBuilder,
+      this.controller,
+      this.physics,
+      this.shrinkWrap = true,
+      this.padding = EdgeInsets.zero,
+      this.suspensionWidget,
+      this.isUseRealIndex = true,
+      this.itemHeight,
+      this.suspensionHeight,
+      this.onSusTagChanged,
+      this.header,
+      this.indexBarBuilder,
+      this.indexHintBuilder,
+      this.showIndexHint = true})
       : assert(itemBuilder != null),
         super(key: key);
 
@@ -141,8 +143,7 @@ class AzListViewState extends State<AzListView> {
     SuspensionUtil.setShowSuspensionStatus(cityList);
 
     if (widget.header != null) {
-      cityList.insert(0, Header()
-        ..tag = widget.header.tag);
+      cityList.insert(0, Header()..tag = widget.header.tag);
     }
     indexTagList.clear();
     if (widget.isUseRealIndex) {
@@ -175,12 +176,12 @@ class AzListViewState extends State<AzListView> {
         suspensionWidget: widget.suspensionWidget,
         controller: scrollController,
         suspensionHeight:
-        widget.suspensionHeight ?? BaseUtils.getWidth(80, true),
+            widget.suspensionHeight ?? BaseUtils.getWidth(80, true),
         itemHeight: widget.itemHeight ?? BaseUtils.getHeight(40, true),
         onSusTagChanged: widget.onSusTagChanged,
         header: widget.header,
         onSusSectionInited: (Map<String, int> map) =>
-        suspensionSectionMap = map,
+            suspensionSectionMap = map,
       )
     ];
 

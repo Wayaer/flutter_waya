@@ -29,20 +29,23 @@ class AlertSureCancel extends StatelessWidget {
     this.sure,
     this.cancel,
     this.backgroundColor,
-    this.padding, this.backsideTap,
+    this.padding,
+    this.backsideTap,
   }) {
     if (backgroundColor == null) getColors(white);
     if (padding == null) EdgeInsets.all(BaseUtils.getWidth(20));
-    if (sureTextStyle == null) TextStyle(
-        decoration: TextDecoration.none,
-        fontSize: 13,
-        fontWeight: FontWeight.w500,
-        color: getColors(blue));
-    if (cancelTextStyle == null) TextStyle(
-        decoration: TextDecoration.none,
-        fontSize: 13,
-        fontWeight: FontWeight.w500,
-        color: getColors(black30));
+    if (sureTextStyle == null)
+      TextStyle(
+          decoration: TextDecoration.none,
+          fontSize: 13,
+          fontWeight: FontWeight.w500,
+          color: getColors(blue));
+    if (cancelTextStyle == null)
+      TextStyle(
+          decoration: TextDecoration.none,
+          fontSize: 13,
+          fontWeight: FontWeight.w500,
+          color: getColors(black30));
   }
 
   @override
@@ -65,16 +68,15 @@ class AlertSureCancel extends StatelessWidget {
                         horizontal: BaseUtils.getWidth(20),
                         vertical: BaseUtils.getHeight(5)),
                     onTap: cancelOnTap ??
-                            () {
+                        () {
                           BaseNavigatorUtils.getInstance().pop();
                         },
                     child: cancel,
                     text: cancelText,
-                    textStyle: cancelTextStyle
-                ),
+                    textStyle: cancelTextStyle),
                 CustomButton(
                     onTap: sureOnTap ??
-                            () {
+                        () {
                           BaseNavigatorUtils.getInstance().pop();
                         },
                     padding: EdgeInsets.symmetric(
@@ -82,8 +84,7 @@ class AlertSureCancel extends StatelessWidget {
                         vertical: BaseUtils.getHeight(5)),
                     text: sureText,
                     child: sure,
-                    textStyle: sureTextStyle
-                ),
+                    textStyle: sureTextStyle),
               ],
             )
           ],

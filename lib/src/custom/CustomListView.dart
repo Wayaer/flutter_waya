@@ -12,15 +12,13 @@ class CustomListView extends StatelessWidget {
   final ScrollController controller;
   final EdgeInsetsGeometry padding;
   final Widget noData;
-  final bool enablePullDown;
-  final bool enablePullUp;
 
   //刷新组件相关
+  final bool enablePullDown;
+  final bool enablePullUp;
   final RefreshController refreshController;
   final VoidCallback onLoading;
   final VoidCallback onRefresh;
-  final Widget loadingWidget;
-  final Widget child;
   final Widget header;
   final Widget footer;
   final TextStyle footerTextStyle;
@@ -40,8 +38,6 @@ class CustomListView extends StatelessWidget {
     this.refreshController,
     this.onLoading,
     this.onRefresh,
-    this.loadingWidget,
-    this.child,
     this.header,
     this.footer,
     this.footerTextStyle,

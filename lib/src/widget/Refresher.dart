@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
@@ -19,7 +17,7 @@ class Refresher extends StatelessWidget {
   final TextStyle footerTextStyle;
 
   //
-  final bool enableTwoLevel;//二楼是否开启
+  final bool enableTwoLevel; //二楼是否开启
   final VoidCallback onTwoLevel;
   final OnOffsetChange onOffsetChange;
   final Axis scrollDirection;
@@ -64,7 +62,10 @@ class Refresher extends StatelessWidget {
       controller: controller ?? refreshController,
       enablePullDown: enablePullDown,
       enablePullUp: enablePullUp,
-      header: header ?? WaterDropHeader(),
+      header: header ??
+          BezierCircleHeader(
+            bezierColor: Colors.transparent,
+          ),
       footer: footer ??
           CustomFooter(
             builder: (BuildContext context, LoadStatus mode) {
@@ -72,7 +73,7 @@ class Refresher extends StatelessWidget {
               if (mode == LoadStatus.idle) {
                 body = footerText('pull loading');
               } else if (mode == LoadStatus.loading) {
-                body =  footerText('loading');
+                body = footerText('loading');
               } else if (mode == LoadStatus.failed) {
                 body = footerText('load failed');
               } else if (mode == LoadStatus.canLoading) {

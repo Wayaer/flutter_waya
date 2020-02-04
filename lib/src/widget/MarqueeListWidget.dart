@@ -17,10 +17,10 @@ class MarqueeListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return itemCount > 0
         ? Marquee(
-      center: false,
-      animateDistance: animateDistance ?? BaseUtils.getHeight(100),
-      children: children,
-    )
+            center: false,
+            animateDistance: animateDistance ?? BaseUtils.getHeight(100),
+            children: children,
+          )
         : Container();
     ;
   }

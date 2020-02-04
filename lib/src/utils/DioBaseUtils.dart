@@ -118,7 +118,7 @@ class DioBaseUtils {
           "  data:" +
           data.toString());
       Response response =
-      await dio.post(url, queryParameters: params, data: data);
+          await dio.post(url, queryParameters: params, data: data);
       log("POST url:" + url + '  responseData==  ' + response.toString());
       return jsonDecode(response.toString());
     } catch (e) {

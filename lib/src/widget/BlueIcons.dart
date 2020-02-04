@@ -10,7 +10,8 @@ class BlueIcons extends StatelessWidget {
   final IconData icon;
   final String text;
 
-  BlueIcons(this.icon, {
+  BlueIcons(
+    this.icon, {
     this.onTap,
     this.text,
     this.margin,

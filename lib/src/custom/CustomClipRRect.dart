@@ -24,8 +24,7 @@ class CustomClipRRect extends StatelessWidget {
     this.decoration,
     this.clipBehavior = Clip.antiAlias,
     this.child,
-  })
-      : assert(clipBehavior != null),
+  })  : assert(clipBehavior != null),
         super(key: key);
 
   @override

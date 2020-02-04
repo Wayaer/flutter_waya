@@ -47,18 +47,19 @@ class Marquee extends StatefulWidget {
   ///点击事件回调
   ValueChanged<int> onChange;
 
-  Marquee({this.children,
-    this.texts,
-    bool center,
-    Color selectTextColor,
-    Color textColor,
-    int duration,
-    double itemDuration,
-    bool autoStart,
-    MarqueeAnimation marqueeAnimation,
-    this.animateDistance,
-    this.onChange,
-    bool singleLine})
+  Marquee(
+      {this.children,
+      this.texts,
+      bool center,
+      Color selectTextColor,
+      Color textColor,
+      int duration,
+      double itemDuration,
+      bool autoStart,
+      MarqueeAnimation marqueeAnimation,
+      this.animateDistance,
+      this.onChange,
+      bool singleLine})
       : this.center = center ?? true,
         this.duration = duration ?? 4,
         this.itemDuration = itemDuration ?? 500,
@@ -125,22 +126,16 @@ class MarqueeState extends State<Marquee> {
           if (currentPage >= items.length) {
             //last item
             currentPage = 0;
-            firstItem = items[items.length - 1]
-              ..modeListener.value = true;
-            secondItem = items[currentPage]
-              ..modeListener.value = false;
+            firstItem = items[items.length - 1]..modeListener.value = true;
+            secondItem = items[currentPage]..modeListener.value = false;
           } else if (currentPage <= 0) {
             // first item
             currentPage = items.length - 1;
-            firstItem = items[0]
-              ..modeListener.value = true;
-            secondItem = items[currentPage]
-              ..modeListener.value = false;
+            firstItem = items[0]..modeListener.value = true;
+            secondItem = items[currentPage]..modeListener.value = false;
           } else {
-            firstItem = items[currentPage - 1]
-              ..modeListener.value = true;
-            secondItem = items[currentPage]
-              ..modeListener.value = false;
+            firstItem = items[currentPage - 1]..modeListener.value = true;
+            secondItem = items[currentPage]..modeListener.value = false;
           }
         });
       });
@@ -153,19 +148,13 @@ class MarqueeState extends State<Marquee> {
     if (widget.animateDistance == null) {
       if (widget.marqueeAnimation == MarqueeAnimation.l2r ||
           widget.marqueeAnimation == MarqueeAnimation.l2r) {
-        double width = MediaQuery
-            .of(context)
-            .size
-            .width;
+        double width = MediaQuery.of(context).size.width;
         firstItem.animateDistance = width;
         if (secondItem != null) {
           secondItem.animateDistance = width;
         }
       } else {
-        double height = MediaQuery
-            .of(context)
-            .size
-            .height;
+        double height = MediaQuery.of(context).size.height;
         firstItem.animateDistance = height;
         if (secondItem != null) {
           secondItem.animateDistance = height;
@@ -175,20 +164,20 @@ class MarqueeState extends State<Marquee> {
     List<MarqueeItem> items = secondItem == null
         ? <MarqueeItem>[firstItem..textColor = widget.selectTextColor]
         : <MarqueeItem>[
-      secondItem..textColor = widget.selectTextColor,
-      firstItem..textColor = widget.textColor
-    ];
+            secondItem..textColor = widget.selectTextColor,
+            firstItem..textColor = widget.textColor
+          ];
 
     return ClipRect(
         child: widget.center
             ? Center(
-          child: Stack(
-            children: items,
-          ),
-        )
+                child: Stack(
+                  children: items,
+                ),
+              )
             : Stack(
-          children: items,
-        ));
+                children: items,
+              ));
   }
 
   @override
