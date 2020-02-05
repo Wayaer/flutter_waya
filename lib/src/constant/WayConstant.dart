@@ -1,7 +1,7 @@
 class WayConstant {
   static const double Radius = 5; //全局圆角大小
   static const double fontSize = 14; //全局默认字体大小
-  static const double appBarHeight = 43; //全局默认字体大小
+  static const double appBarHeight = 43; //导航栏高度
   static const int errorCode911 = 911; //网络请求失败
   static const int errorCode920 = 920; //网络请求已取消
   static const int errorCode930 = 930; //网络连接超时
