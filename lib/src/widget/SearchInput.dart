@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/BaseEnum.dart';
+import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/src/constant/WayIcon.dart';
 import 'package:flutter_waya/src/utils/BaseUtils.dart';
 
@@ -31,8 +32,12 @@ class SearchInput extends StatelessWidget {
   final double labelSpacing;
   final bool labelShow;
   final double lineWidth;
+  final String searchButtonText;
+  final TextStyle searchButtonTextStyle;
   final GestureTapCallback labelOnTap;
   double labelWidth; //不建议设置宽度
+  final GestureTapCallback searchButtonTap;
+  final EdgeInsetsGeometry searchPadding;
 
   SearchInput({
     Key key,
@@ -62,6 +67,10 @@ class SearchInput extends StatelessWidget {
     this.lineWidth,
     this.labelOnTap,
     this.labelWidth,
+    this.searchButtonText,
+    this.searchButtonTextStyle,
+    this.searchButtonTap,
+    this.searchPadding,
   }) : super(key: key) {}
 
   @override
@@ -89,6 +98,16 @@ class SearchInput extends StatelessWidget {
           ),
           onChanged: onChanged,
           lineType: LineType.outLine,
+          inputBoxRightWight: searchButtonText == null
+              ? null
+              : CustomButton(
+                  text: '搜索',
+                  onTap: searchButtonTap,
+                  padding: searchPadding ??
+                      EdgeInsets.symmetric(horizontal: BaseUtils.getWidth(3)),
+                  textStyle: searchButtonTextStyle ??
+                      TextStyle(color: getColors(white)),
+                ),
           inputBoxOutLeftWidget: labelShow
               ? CustomFlex(
                   direction: Axis.horizontal,
