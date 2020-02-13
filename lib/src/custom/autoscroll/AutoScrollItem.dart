@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/src/constant/BaseEnum.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 
-class MarqueeItem extends StatefulWidget {
+class AutoScrollItem extends StatefulWidget {
   Key key;
 
   ///这是text的具体内容
@@ -24,7 +24,7 @@ class MarqueeItem extends StatefulWidget {
   VoidCallback onPress;
 
   ///动画的方向
-  MarqueeAnimation marqueeAnimation;
+  AutoScrollAnimation autoScrollAnimation;
 
   ///移动的距离
   double animateDistance;
@@ -39,36 +39,36 @@ class MarqueeItem extends StatefulWidget {
 
   set mode(bool mode) => this.modeListener.value = mode;
 
-  MarqueeItem({
+  AutoScrollItem({
     Key key, //必须传key，否则动画只会走一次
     this.text,
     Color textColor,
     double textSize,
     ValueNotifier<bool> modeListener,
-    MarqueeAnimation marqueeAnimation,
+    AutoScrollAnimation autoScrollAnimation,
     this.onPress,
     this.animateDistance,
     int itemDuration,
     this.child,
     bool singleLine,
   })  :
-        // assert(modeListener != null),
+  // assert(modeListener != null),
         this.modeListener = modeListener ?? ValueNotifier(false),
         this.textColor = textColor ?? Colors.black,
         this.textSize = textSize ?? 14.0,
-        this.marqueeAnimation = marqueeAnimation ?? MarqueeAnimation.b2t,
+        this.autoScrollAnimation = autoScrollAnimation ?? AutoScrollAnimation.b2t,
         this.itemDuration = itemDuration ?? 500,
         this.key = key ?? GlobalKey(),
         this.singleLine = !singleLine ?? true,
         super(key: key);
 
   @override
-  MarqueeItemState createState() {
-    return MarqueeItemState();
+  AutoScrollItemState createState() {
+    return AutoScrollItemState();
   }
 }
 
-class MarqueeItemState extends State<MarqueeItem>
+class AutoScrollItemState extends State<AutoScrollItem>
     with SingleTickerProviderStateMixin {
   Animation animation;
   Animation transformAnimation;
@@ -84,24 +84,24 @@ class MarqueeItemState extends State<MarqueeItem>
   @override
   void initState() {
     super.initState();
-    switch (widget.marqueeAnimation) {
-      case MarqueeAnimation.t2b:
+    switch (widget.autoScrollAnimation) {
+      case AutoScrollAnimation.t2b:
         inTween = Tween(begin: -widget.animateDistance, end: 0.0);
         outTween = Tween(begin: 0.0, end: widget.animateDistance);
         isXAniamation = false;
         break;
-      case MarqueeAnimation.b2t:
+      case AutoScrollAnimation.b2t:
         inTween = Tween(begin: widget.animateDistance, end: 0.0);
         outTween = Tween(begin: 0.0, end: -widget.animateDistance);
         isXAniamation = false;
         break;
-      case MarqueeAnimation.l2r:
+      case AutoScrollAnimation.l2r:
         inTween = Tween(begin: -widget.animateDistance, end: 0.0);
         outTween = Tween(begin: 0.0, end: widget.animateDistance);
         isXAniamation = true;
         break;
 
-      case MarqueeAnimation.r2l:
+      case AutoScrollAnimation.r2l:
         inTween = Tween(begin: widget.animateDistance, end: 0.0);
         outTween = Tween(begin: 0.0, end: -widget.animateDistance);
         isXAniamation = true;
@@ -173,7 +173,7 @@ class MarqueeItemState extends State<MarqueeItem>
               widget.text,
               softWrap: widget.singleLine,
               style:
-                  TextStyle(fontSize: widget.textSize, color: widget.textColor),
+              TextStyle(fontSize: widget.textSize, color: widget.textColor),
             ),
             transform: transform,
           ));

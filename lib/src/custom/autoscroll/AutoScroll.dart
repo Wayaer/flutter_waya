@@ -1,13 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/src/constant/BaseEnum.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 
-import 'MarqueeItem.dart';
 
 typedef Widget WidgetMaker<T>(BuildContext context, T item);
 
-class Marquee extends StatefulWidget {
+class AutoScroll extends StatefulWidget {
   /// 跑马灯的具体类容
   final List<Widget> children;
 
@@ -35,7 +34,7 @@ class Marquee extends StatefulWidget {
   final bool autoStart;
 
   ///动画显示的切换方式，默认是从上往下切换
-  final MarqueeAnimation marqueeAnimation;
+  final AutoScrollAnimation autoScrollAnimation;
 
   ///移动的距离
   ///如果没有设置就是默认获取组件宽高，横向动画就是组建的宽度，纵向的就是组件的高度
@@ -47,19 +46,19 @@ class Marquee extends StatefulWidget {
   ///点击事件回调
   ValueChanged<int> onChange;
 
-  Marquee(
+  AutoScroll(
       {this.children,
-      this.texts,
-      bool center,
-      Color selectTextColor,
-      Color textColor,
-      int duration,
-      double itemDuration,
-      bool autoStart,
-      MarqueeAnimation marqueeAnimation,
-      this.animateDistance,
-      this.onChange,
-      bool singleLine})
+        this.texts,
+        bool center,
+        Color selectTextColor,
+        Color textColor,
+        int duration,
+        double itemDuration,
+        bool autoStart,
+        AutoScrollAnimation autoScrollAnimation,
+        this.animateDistance,
+        this.onChange,
+        bool singleLine})
       : this.center = center ?? true,
         this.duration = duration ?? 4,
         this.itemDuration = itemDuration ?? 500,
@@ -67,28 +66,28 @@ class Marquee extends StatefulWidget {
         this.singleLine = singleLine ?? true,
         this.textColor = textColor ?? Colors.black,
         this.selectTextColor = selectTextColor ?? Colors.black,
-        this.marqueeAnimation = marqueeAnimation ?? MarqueeAnimation.b2t;
+        this.autoScrollAnimation = autoScrollAnimation ?? AutoScrollAnimation.b2t;
 
   @override
   State<StatefulWidget> createState() {
-    return MarqueeState();
+    return AutoScrollState();
   }
 }
 
-class MarqueeState extends State<Marquee> {
+class AutoScrollState extends State<AutoScroll> {
   Timer _timer; // 定时器timer
   int currentPage = 0;
   bool lastPage = false;
-  List<MarqueeItem> items = <MarqueeItem>[];
-  MarqueeItem firstItem;
-  MarqueeItem secondItem;
+  List<AutoScrollItem> items = <AutoScrollItem>[];
+  AutoScrollItem firstItem;
+  AutoScrollItem secondItem;
 
   @override
   void initState() {
     super.initState();
     if (widget.texts != null) {
       for (var i = 0; i < widget.texts.length; i++) {
-        items.add(new MarqueeItem(
+        items.add(new AutoScrollItem(
           child: Text(
             widget.texts[i],
           ),
@@ -97,21 +96,21 @@ class MarqueeState extends State<Marquee> {
             widget.onChange(i);
           },
           singleLine: widget.singleLine,
-          marqueeAnimation: widget.marqueeAnimation,
+          autoScrollAnimation: widget.autoScrollAnimation,
           animateDistance: widget.animateDistance,
           itemDuration: widget.itemDuration,
         ));
       }
     } else {
       for (var i = 0; i < widget.children.length; i++) {
-        items.add(new MarqueeItem(
+        items.add(new AutoScrollItem(
           child: widget.children[i],
           // text: widget.texts[i],
           onPress: () {
             widget.onChange(i);
           },
           singleLine: widget.singleLine,
-          marqueeAnimation: widget.marqueeAnimation,
+          autoScrollAnimation: widget.autoScrollAnimation,
           animateDistance: widget.animateDistance,
           itemDuration: widget.itemDuration,
         ));
@@ -146,8 +145,8 @@ class MarqueeState extends State<Marquee> {
   Widget build(BuildContext context) {
     ///设置动画的宽度或者高度
     if (widget.animateDistance == null) {
-      if (widget.marqueeAnimation == MarqueeAnimation.l2r ||
-          widget.marqueeAnimation == MarqueeAnimation.l2r) {
+      if (widget.autoScrollAnimation == AutoScrollAnimation.l2r ||
+          widget.autoScrollAnimation == AutoScrollAnimation.l2r) {
         double width = MediaQuery.of(context).size.width;
         firstItem.animateDistance = width;
         if (secondItem != null) {
@@ -161,23 +160,23 @@ class MarqueeState extends State<Marquee> {
         }
       }
     }
-    List<MarqueeItem> items = secondItem == null
-        ? <MarqueeItem>[firstItem..textColor = widget.selectTextColor]
-        : <MarqueeItem>[
-            secondItem..textColor = widget.selectTextColor,
-            firstItem..textColor = widget.textColor
-          ];
+    List<AutoScrollItem> items = secondItem == null
+        ? <AutoScrollItem>[firstItem..textColor = widget.selectTextColor]
+        : <AutoScrollItem>[
+      secondItem..textColor = widget.selectTextColor,
+      firstItem..textColor = widget.textColor
+    ];
 
     return ClipRect(
         child: widget.center
             ? Center(
-                child: Stack(
-                  children: items,
-                ),
-              )
+          child: Stack(
+            children: items,
+          ),
+        )
             : Stack(
-                children: items,
-              ));
+          children: items,
+        ));
   }
 
   @override

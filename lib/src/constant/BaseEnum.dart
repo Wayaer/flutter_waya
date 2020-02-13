@@ -4,7 +4,7 @@ enum LineType {
   none, //不显示线
 }
 
-enum MarqueeAnimation {
+enum AutoScrollAnimation {
   l2r, //从左往右执行动画
   r2l, //从右往左执行动画
   t2b, //从上往下执行动画
@@ -18,13 +18,13 @@ enum DateType {
   monthSecond, //1-1 00:00:00
 }
 enum LoadingType {
-  Circular, //圆圈
-  Linear, //横条
-  Refresh, //不常用 下拉刷新圆圈
+  circular, //圆圈
+  linear, //横条
+  refresh, //不常用 下拉刷新圆圈
 }
 enum PushMode {
-  Cupertino, //从右往左push
-  Material, //从下往上 push
+  cupertino, //从右往左push
+  material, //从下往上 push
 }
 enum InputTextType {
   password, //密码

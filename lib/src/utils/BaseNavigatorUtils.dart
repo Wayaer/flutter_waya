@@ -59,8 +59,8 @@ class BaseNavigatorUtils extends NavigatorObserver {
   }
 
   pageRoute(Function function, PushMode pushMode) {
-    if (pushMode == null) pushMode = PushMode.Cupertino;
-    if (pushMode == PushMode.Cupertino) {
+    if (pushMode == null) pushMode = PushMode.cupertino;
+    if (pushMode == PushMode.cupertino) {
       return CupertinoPageRoute(
         builder: (BuildContext context) {
           return function(context);
@@ -68,7 +68,7 @@ class BaseNavigatorUtils extends NavigatorObserver {
         // settings: RouteSettings(name: routeName, arguments: arguments),
       );
     }
-    if (pushMode == PushMode.Material) {
+    if (pushMode == PushMode.material) {
       return MaterialPageRoute(
         builder: (BuildContext context) {
           return function(context);
