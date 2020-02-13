@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
@@ -24,15 +25,27 @@ class BaseScaffold extends StatelessWidget {
   final Widget footer;
   final TextStyle footerTextStyle;
 
+  //Scaffold相关属性
+  Widget floatingActionButton;
+  FloatingActionButtonAnimator floatingActionButtonAnimator;
+  FloatingActionButtonLocation floatingActionButtonLocation;
+  Widget bottomSheet;
+  Widget endDrawer;
+  Widget drawer;
+  List<Widget> persistentFooterButtons;
+  bool resizeToAvoidBottomPadding;
+  bool extendBody;
+  bool resizeToAvoidBottomInset;
+  bool primary;
+  DragStartBehavior drawerDragStartBehavior;
+
   //isScroll  和isolationBody（body隔离出一个横条目）  不可同时使用
   BaseScaffold({
     Key key,
     this.appBar,
-    this.bottomNavigationBar,
     this.isScroll: false,
     this.isolationBody: false,
     this.body,
-    this.backgroundColor,
     this.paddingStatusBar: false,
     this.padding,
     this.refreshController,
@@ -42,6 +55,21 @@ class BaseScaffold extends StatelessWidget {
     this.footer,
     this.footerTextStyle,
     this.enablePullDown: false,
+    //
+    this.floatingActionButton, //悬浮按钮
+    this.floatingActionButtonLocation, //悬浮按钮位置
+    this.floatingActionButtonAnimator, //悬浮按钮动画
+    this.persistentFooterButtons, //固定在下方显示的按钮，比如对话框下方的确定、取消按钮
+    this.drawer, //侧滑菜单左
+    this.endDrawer, //侧滑菜单右
+    this.bottomNavigationBar, //底部导航
+    this.bottomSheet,
+    this.backgroundColor, //内容的背景颜色，默认使用的是 ThemeData.scaffoldBackgroundColor 的值
+    this.resizeToAvoidBottomPadding, //类似于 Android 中的 android:windowSoftInputMode=”adjustResize”，控制界面内容 body 是否重新布局来避免底部被覆盖了，比如当键盘显示的时候，重新布局避免被键盘盖住内容。默认值为 true。
+    this.resizeToAvoidBottomInset,
+    this.primary = true, //试用使用primary主色
+    this.drawerDragStartBehavior = DragStartBehavior.start,
+    this.extendBody = false,
   }) : super(key: key) {
     if (refreshController == null) {
       refreshController = RefreshController(initialRefresh: false);
@@ -51,6 +79,18 @@ class BaseScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      primary: primary,
+      resizeToAvoidBottomInset: resizeToAvoidBottomInset,
+      drawerDragStartBehavior: drawerDragStartBehavior,
+      bottomSheet: bottomSheet,
+      extendBody: extendBody,
+      resizeToAvoidBottomPadding: resizeToAvoidBottomPadding,
+      endDrawer: endDrawer,
+      drawer: drawer,
+      persistentFooterButtons: persistentFooterButtons,
+      floatingActionButtonLocation: floatingActionButtonLocation,
+      floatingActionButton: floatingActionButton,
+      floatingActionButtonAnimator: floatingActionButtonAnimator,
       backgroundColor: backgroundColor ?? getColors(background),
       appBar: appBar,
       bottomNavigationBar: bottomNavigationBar,
@@ -78,12 +118,8 @@ class BaseScaffold extends StatelessWidget {
   Widget container() {
     return Container(
       color: backgroundColor,
-      margin: isolationBody
-          ? EdgeInsets.only(top: BaseUtils.getHeight(10))
-          : EdgeInsets.zero,
-      padding: paddingStatusBar
-          ? EdgeInsets.only(top: MediaQueryUtils.getStatusBarHeight())
-          : padding,
+      margin: isolationBody ? EdgeInsets.only(top: BaseUtils.getHeight(10)) : EdgeInsets.zero,
+      padding: paddingStatusBar ? EdgeInsets.only(top: MediaQueryUtils.getStatusBarHeight()) : padding,
       width: double.infinity,
       height: double.infinity,
       child: isScroll ? SingleChildScrollView(child: body) : body,
