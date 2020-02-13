@@ -12,7 +12,6 @@ export 'package:pull_to_refresh/pull_to_refresh.dart';
 
 export 'src/constant/BaseEnum.dart';
 export 'src/custom/BaseScaffold.dart';
-export 'src/custom/CustomAppBar.dart';
 export 'src/custom/CustomButton.dart';
 export 'src/custom/CustomCheckBox.dart';
 export 'src/custom/CustomClipRRect.dart';

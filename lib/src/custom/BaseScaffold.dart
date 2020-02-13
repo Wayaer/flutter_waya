@@ -7,8 +7,6 @@ import 'package:flutter_waya/src/utils/MediaQueryUtils.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class BaseScaffold extends StatelessWidget {
-  final Widget bottomNavigationBar;
-  final CustomAppBar appBar;
   final EdgeInsetsGeometry padding;
   final bool isScroll;
   final bool isolationBody;
@@ -26,18 +24,20 @@ class BaseScaffold extends StatelessWidget {
   final TextStyle footerTextStyle;
 
   //Scaffold相关属性
-  Widget floatingActionButton;
-  FloatingActionButtonAnimator floatingActionButtonAnimator;
-  FloatingActionButtonLocation floatingActionButtonLocation;
-  Widget bottomSheet;
-  Widget endDrawer;
-  Widget drawer;
-  List<Widget> persistentFooterButtons;
-  bool resizeToAvoidBottomPadding;
-  bool extendBody;
-  bool resizeToAvoidBottomInset;
-  bool primary;
-  DragStartBehavior drawerDragStartBehavior;
+  final Widget bottomNavigationBar;
+  final AppBar appBar;
+  final Widget floatingActionButton;
+  final FloatingActionButtonAnimator floatingActionButtonAnimator;
+  final FloatingActionButtonLocation floatingActionButtonLocation;
+  final Widget bottomSheet;
+  final Widget endDrawer;
+  final Widget drawer;
+  final List<Widget> persistentFooterButtons;
+  final bool resizeToAvoidBottomPadding;
+  final bool extendBody;
+  final bool resizeToAvoidBottomInset;
+  final bool primary;
+  final DragStartBehavior drawerDragStartBehavior;
 
   //isScroll  和isolationBody（body隔离出一个横条目）  不可同时使用
   BaseScaffold({
