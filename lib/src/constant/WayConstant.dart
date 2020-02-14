@@ -9,8 +9,8 @@ class WayConstant {
   static const int errorCode950 = 950; //网络发送超时
   static const String errorMessage911 = '网络请求失败'; //网络请求失败
   static const String errorMessage920 = '网络请求已取消'; //网络请求已取消
-  static const String errorMessage930 = '网络连接链接超时'; //网络连接超时
-  static const String errorMessage940 = '网络接收链接超时'; //网络接收超时
+  static const String errorMessage930 = '网络连接超时'; //网络连接超时
+  static const String errorMessage940 = '网络接收超时'; //网络接收超时
   static const String errorMessage950 = '网络发送超时'; //网络发送超时
   static const String errorMessage960 = '服务器错误:'; //服务器错误
   static const String errorMessageT911 = 'Failed'; //网络请求失败
