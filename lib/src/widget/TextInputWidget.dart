@@ -63,7 +63,7 @@ class TextInputWidget extends StatefulWidget {
   final Color lineBackground;
   final Color lineFocusBackground;
   final Color cursorColor;
-  final GestureTapCallback headRightIconOnTap;
+  final GestureTapCallback headRightIconTap;
   final String value;
   final double eyeIconSize;
   final IconData eyeCloseIcon;
@@ -93,7 +93,7 @@ class TextInputWidget extends StatefulWidget {
     this.controller,
     this.lineBackground,
     this.lineFocusBackground,
-    this.headRightIconOnTap,
+    this.headRightIconTap,
     this.enabled,
     this.decoration,
     this.onSubmitted,
@@ -243,7 +243,7 @@ class TextInputWidgetState extends State<TextInputWidget> {
                                     icon: widget.headRightIcon,
                                     iconColor: getColors(blue),
                                     iconSize: BaseUtils.getWidth(18),
-                                    onTap: widget.headRightIconOnTap,
+                                    onTap: widget.headRightIconTap,
                                   )
                                 : widget.headRightWight,
                           )

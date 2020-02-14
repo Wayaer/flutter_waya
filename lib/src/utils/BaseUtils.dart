@@ -23,8 +23,7 @@ class BaseUtils {
 
   // 截屏
   static capture(GlobalKey globalKey) async {
-    RenderRepaintBoundary boundary =
-        globalKey.currentContext.findRenderObject();
+    RenderRepaintBoundary boundary = globalKey.currentContext.findRenderObject();
     var image = await boundary.toImage();
     ByteData byteData = await image.toByteData(format: ImageByteFormat.png);
     return byteData;
@@ -45,19 +44,16 @@ class BaseUtils {
   }
 
   //时间戳转换
-  static stampToDate(int s,
-      {DateType dateType = DateType.dateTime, bool micro}) {
+  static stampToDate(int s, {DateType dateType = DateType.dateTime, bool micro}) {
     if (micro == null) {
       micro = false;
     }
     if (micro) {
       //微秒
-      return formatDate(
-          DateTime.fromMicrosecondsSinceEpoch(s).toString(), dateType);
+      return formatDate(DateTime.fromMicrosecondsSinceEpoch(s).toString(), dateType);
     } else {
       //毫秒
-      return formatDate(
-          DateTime.fromMillisecondsSinceEpoch(s).toString(), dateType);
+      return formatDate(DateTime.fromMillisecondsSinceEpoch(s).toString(), dateType);
     }
   }
 
@@ -231,10 +227,14 @@ class BaseUtils {
     }
   }
 
-  static futurePop(navigator) {
+  static popBack(navigator) {
     Future future = navigator;
-    future.then((v) {
-      BaseNavigatorUtils.getInstance().pop();
+    future.then((value) {
+      if (value == null) {
+        BaseNavigatorUtils.getInstance().pop();
+      } else {
+        BaseNavigatorUtils.getInstance().pop(value);
+      }
     });
   }
 //   // 确保输入的全部是数字

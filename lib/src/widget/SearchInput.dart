@@ -34,7 +34,7 @@ class SearchInput extends StatelessWidget {
   final double lineWidth;
   final String searchButtonText;
   final TextStyle searchButtonTextStyle;
-  final GestureTapCallback labelOnTap;
+  final GestureTapCallback labelTap;
   double labelWidth; //不建议设置宽度
   final GestureTapCallback searchButtonTap;
   final EdgeInsetsGeometry searchPadding;
@@ -65,7 +65,7 @@ class SearchInput extends StatelessWidget {
     this.labelText,
     this.labelShow: false,
     this.lineWidth,
-    this.labelOnTap,
+    this.labelTap,
     this.labelWidth,
     this.searchButtonText,
     this.searchButtonTextStyle,
@@ -113,7 +113,7 @@ class SearchInput extends StatelessWidget {
                   direction: Axis.horizontal,
                   margin: labelMargin,
                   padding: labelPadding,
-                  onTap: labelOnTap,
+                  onTap: labelTap,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   width: labelWidth,
                   children: <Widget>[
