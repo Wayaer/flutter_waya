@@ -17,10 +17,7 @@ dependencies:
   dio: ^3.0.7
   synchronized: ^2.1.1
   pull_to_refresh: ^1.5.7
-  flutter_curiosity:
-    git:
-      url: git://github.com/Wayaer/flutter_curiosity.git
-      ref: master
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
