@@ -64,19 +64,20 @@ class CustomIcon extends StatelessWidget {
       inkWell: inkWell,
       child: text == null ? iconWidget() : null,
       direction: direction,
+      mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: crossAxisAlignment,
       mainAxisAlignment: mainAxisAlignment,
       children: text == null
           ? null
           : <Widget>[
-              reversal ? textWidget() : iconWidget(),
-              direction == Axis.horizontal
-                  ? Container(width: spacing ?? BaseUtils.getWidth(spacing))
-                  : Container(
-                      height: spacing ?? BaseUtils.getHeight(spacing),
-                    ),
-              reversal ? iconWidget() : textWidget(),
-            ],
+        reversal ? textWidget() : iconWidget(),
+        direction == Axis.horizontal
+            ? Container(width: spacing ?? BaseUtils.getWidth(spacing))
+            : Container(
+          height: spacing ?? BaseUtils.getHeight(spacing),
+        ),
+        reversal ? iconWidget() : textWidget(),
+      ],
       width: width,
       height: height,
       onTap: onTap,
@@ -102,10 +103,10 @@ class CustomIcon extends StatelessWidget {
   Widget iconWidget() {
     return image == null
         ? Icon(icon,
-            color: iconColor,
-            size: iconSize ?? BaseUtils.getWidth(15),
-            textDirection: textDirection,
-            semanticLabel: semanticLabel)
+        color: iconColor,
+        size: iconSize ?? BaseUtils.getWidth(15),
+        textDirection: textDirection,
+        semanticLabel: semanticLabel)
         : image;
   }
 }

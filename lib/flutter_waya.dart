@@ -54,5 +54,5 @@ export 'src/widget/SearchInput.dart';
 export 'src/widget/SendSMS.dart';
 export 'src/widget/TabBarWidget.dart';
 export 'src/widget/TabNavigationPage.dart';
-export 'src/widget/TextInputWidget.dart';
+export 'src/widget/TextInputBox.dart';
 export 'src/widget/gestures/Gesture.dart';
