@@ -71,15 +71,11 @@ class OverlayMaterial extends StatelessWidget {
         assert(debugShowCheckedModeBanner != null),
         super(key: key) {
     if (textDirection == null) textDirection = TextDirection.ltr;
-    if (navigatorObservers == null)
-      navigatorObservers = [BaseNavigatorUtils.getInstance()];
+    if (navigatorObservers == null) navigatorObservers = [BaseNavigatorUtils.getInstance()];
     if (locale == null) locale = const Locale('zh');
     if (supportedLocales == null) supportedLocales = [const Locale('zh', 'CH')];
     if (localizationsDelegates == null)
-      localizationsDelegates = [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate
-      ];
+      localizationsDelegates = [GlobalMaterialLocalizations.delegate, GlobalWidgetsLocalizations.delegate];
   }
 
   @override

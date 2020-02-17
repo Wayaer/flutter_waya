@@ -20,7 +20,7 @@ class TextInputBox extends StatelessWidget {
   final int minLines;
   final TextInputType keyboardType;
   final ValueChanged<String> onSubmitted;
-  final InputDecoration decoration;
+  final InputDecoration inputDecoration;
   final Color cursorColor; //光标颜色
   final InputTextType inputTextType;
 
@@ -82,7 +82,7 @@ class TextInputBox extends StatelessWidget {
     this.icon,
     this.controller,
     this.enabled,
-    this.decoration,
+    this.inputDecoration,
     this.onSubmitted,
     this.inputStyle,
     this.keyboardType,
@@ -178,7 +178,7 @@ class TextInputBox extends StatelessWidget {
       style: inputStyle ?? WayStyles.textStyleBlack70(fontSize: 16),
       controller: controller,
       onTap: onTap,
-      decoration: decoration ??
+      decoration: inputDecoration ??
           InputDecoration(
             //显示在输入框前面的图标，在文字和下划线前面
             icon: icon,

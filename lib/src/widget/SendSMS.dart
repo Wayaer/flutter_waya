@@ -84,8 +84,7 @@ class SendSMSState extends State<SendSMS> {
         '$verifyStr',
         style: seconds == 0
             ? widget.defaultTextStyle ?? WayStyles.textStyleBlue(fontSize: 13)
-            : widget.notTapTextStyle ??
-                WayStyles.textStyleBlack70(fontSize: 13),
+            : widget.notTapTextStyle ?? WayStyles.textStyleBlack70(fontSize: 13),
       ),
     );
   }

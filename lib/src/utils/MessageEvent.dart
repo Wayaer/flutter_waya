@@ -5,11 +5,9 @@ class MessageEvent {
 
   StreamController get streamController => _streamController;
 
-  MessageEvent({bool sync = false})
-      : _streamController = StreamController.broadcast(sync: sync);
+  MessageEvent({bool sync = false}) : _streamController = StreamController.broadcast(sync: sync);
 
-  MessageEvent.customController(StreamController controller)
-      : _streamController = controller;
+  MessageEvent.customController(StreamController controller) : _streamController = controller;
 
   Stream<T> on<T>() {
     if (T == dynamic) {

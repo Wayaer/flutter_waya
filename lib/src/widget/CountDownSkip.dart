@@ -58,19 +58,12 @@ class CountDownSkipState extends State<CountDownSkip> {
   Widget build(BuildContext context) {
     return CustomButton(
       onTap: widget.onTap,
-      decoration: widget.decoration ??
-          BoxDecoration(
-              color: getColors(white50),
-              borderRadius: BorderRadius.circular(5)),
-      padding: EdgeInsets.symmetric(
-          horizontal: BaseUtils.getHeight(5), vertical: BaseUtils.getWidth(4)),
+      decoration: widget.decoration ?? BoxDecoration(color: getColors(white50), borderRadius: BorderRadius.circular(5)),
+      padding: EdgeInsets.symmetric(horizontal: BaseUtils.getHeight(5), vertical: BaseUtils.getWidth(4)),
       text: seconds.toString() +
           's' +
-          (widget.showSkip
-              ? (seconds == 0 ? ' ' + widget.SkipText : '')
-              : ' ' + widget.SkipText),
-      textStyle: widget.textStyle ??
-          TextStyle(fontSize: 13, color: getColors(black70)),
+          (widget.showSkip ? (seconds == 0 ? ' ' + widget.SkipText : '') : ' ' + widget.SkipText),
+      textStyle: widget.textStyle ?? TextStyle(fontSize: 13, color: getColors(black70)),
     );
   }
 

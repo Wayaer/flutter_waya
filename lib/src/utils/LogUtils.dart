@@ -4,8 +4,7 @@ log(message) {
 
 class LogUtils {
   static var separator = "=";
-  static var split =
-      "$separator$separator$separator$separator$separator$separator$separator$separator$separator";
+  static var split = "$separator$separator$separator$separator$separator$separator$separator$separator$separator";
   static var title = "Yl-Log";
   static var isDebug = true;
   static int limitLength = 800;

@@ -56,20 +56,10 @@ class CustomNestedScrollViewState extends State<CustomNestedScrollView> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((callback) {
-      double containerHeight = containerKey.currentContext
-          .findRenderObject()
-          .paintBounds
-          .size
-          .height;
-      double preferredSizeHeight = preferredSizeKey.currentContext
-          .findRenderObject()
-          .paintBounds
-          .size
-          .height;
+      double containerHeight = containerKey.currentContext.findRenderObject().paintBounds.size.height;
+      double preferredSizeHeight = preferredSizeKey.currentContext.findRenderObject().paintBounds.size.height;
       expandedHeight = widget.containsStatusBar
-          ? containerHeight +
-              preferredSizeHeight -
-              MediaQueryUtils.getStatusBarHeight()
+          ? containerHeight + preferredSizeHeight - MediaQueryUtils.getStatusBarHeight()
           : containerHeight + preferredSizeHeight;
       setState(() {
         showNestedScrollView = true;
@@ -82,8 +72,7 @@ class CustomNestedScrollViewState extends State<CustomNestedScrollView> {
     return showNestedScrollView
         ? NestedScrollView(
             controller: widget.controller,
-            headerSliverBuilder:
-                (BuildContext context, bool innerBoxIsScrolled) {
+            headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
               return <Widget>[
                 SliverAppBar(
                   leading: widget.leading ?? Container(),
@@ -91,15 +80,10 @@ class CustomNestedScrollViewState extends State<CustomNestedScrollView> {
                   floating: widget.floating,
                   centerTitle: widget.centerTitle ?? true,
                   title: widget.title,
-                  backgroundColor:
-                      widget.backgroundColor ?? getColors(background),
+                  backgroundColor: widget.backgroundColor ?? getColors(background),
                   expandedHeight: expandedHeight,
-                  flexibleSpace: FlexibleSpaceBar(
-                      collapseMode: widget.collapseMode,
-                      background: widget.topBody),
-                  bottom: PreferredSize(
-                      child: widget.tabBarBody,
-                      preferredSize: widget.preferredSize),
+                  flexibleSpace: FlexibleSpaceBar(collapseMode: widget.collapseMode, background: widget.topBody),
+                  bottom: PreferredSize(child: widget.tabBarBody, preferredSize: widget.preferredSize),
                 ),
               ];
             },
@@ -109,10 +93,7 @@ class CustomNestedScrollViewState extends State<CustomNestedScrollView> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Container(key: containerKey, child: widget.topBody),
-              PreferredSize(
-                  key: preferredSizeKey,
-                  child: widget.tabBarBody,
-                  preferredSize: widget.preferredSize)
+              PreferredSize(key: preferredSizeKey, child: widget.tabBarBody, preferredSize: widget.preferredSize)
             ],
           );
   }

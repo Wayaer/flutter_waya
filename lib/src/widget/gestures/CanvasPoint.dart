@@ -42,8 +42,7 @@ class CanvasPoint extends CustomPainter {
       ringPaint.color = color;
       canvas.drawCircle(offSet, this.circleRadius, circlePaint);
       if (this.showUnSelectRing || point.isSelect) {
-        canvas.drawArc(Rect.fromCircle(center: offSet, radius: this.ringRadius),
-            0, 360, false, ringPaint);
+        canvas.drawArc(Rect.fromCircle(center: offSet, radius: this.ringRadius), 0, 360, false, ringPaint);
       }
     }
   }

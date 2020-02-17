@@ -4,19 +4,12 @@ import 'package:flutter_waya/src/utils/BaseUtils.dart';
 
 class CommonWidget {
   static Widget titleWidget(String title) {
-    return Text(title,
-        style: TextStyle(
-            color: getColors(white),
-            fontSize: 16,
-            fontWeight: FontWeight.w700));
+    return Text(title, style: TextStyle(color: getColors(white), fontSize: 16, fontWeight: FontWeight.w700));
   }
 
   //垂直线
   static Widget lineVertical(double height,
-      {EdgeInsetsGeometry padding,
-      double width,
-      Color color,
-      EdgeInsetsGeometry margin}) {
+      {EdgeInsetsGeometry padding, double width, Color color, EdgeInsetsGeometry margin}) {
     return Container(
       height: height,
       width: width ?? BaseUtils.getWidth(1),
@@ -28,10 +21,7 @@ class CommonWidget {
 
   //横线
   static Widget lineHorizontal(double width,
-      {EdgeInsetsGeometry padding,
-      double height,
-      Color color,
-      EdgeInsetsGeometry margin}) {
+      {EdgeInsetsGeometry padding, double height, Color color, EdgeInsetsGeometry margin}) {
     return Container(
       height: height ?? BaseUtils.getWidth(1),
       padding: padding,
@@ -41,8 +31,7 @@ class CommonWidget {
     );
   }
 
-  static Widget noDataWidget(
-      {double size, String showText, TextStyle textStyle, double, margin}) {
+  static Widget noDataWidget({double size, String showText, TextStyle textStyle, double, margin}) {
     return Container(
       margin: margin ?? EdgeInsets.all(100),
       child: Center(

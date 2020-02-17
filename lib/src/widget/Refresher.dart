@@ -53,8 +53,7 @@ class Refresher extends StatelessWidget {
     this.scrollController,
   }) : super(key: key);
 
-  RefreshController refreshController =
-      RefreshController(initialRefresh: false);
+  RefreshController refreshController = RefreshController(initialRefresh: false);
 
   @override
   Widget build(BuildContext context) {
@@ -107,8 +106,7 @@ class Refresher extends StatelessWidget {
   Widget footerText(String text) {
     return Text(
       text,
-      style:
-          footerTextStyle ?? TextStyle(fontSize: 13, color: getColors(black70)),
+      style: footerTextStyle ?? TextStyle(fontSize: 13, color: getColors(black70)),
     );
   }
 

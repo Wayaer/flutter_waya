@@ -33,8 +33,6 @@ class SearchInput extends StatelessWidget {
   final Color enabledBorderColor;
   final Widget extraPrefix;
 
-
-
   SearchInput({
     Key key,
     this.controller,

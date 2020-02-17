@@ -76,10 +76,7 @@ class TabBarWidget extends StatelessWidget {
         padding: tabBarPadding,
         decoration: decoration ??
             BoxDecoration(
-                border: Border(
-                    bottom: BorderSide(
-                        width: underlineHeight ?? 0,
-                        color: underlineBackgroundColor))),
+                border: Border(bottom: BorderSide(width: underlineHeight ?? 0, color: underlineBackgroundColor))),
         child: TabBar(
           controller: controller,
           labelPadding: labelPadding,
@@ -103,8 +100,7 @@ class TabBarWidget extends StatelessWidget {
               child: Container(
                   margin: tabBarViewMargin,
                   padding: tabBarViewPadding,
-                  child:
-                      TabBarView(controller: controller, children: tabBarView)))
+                  child: TabBarView(controller: controller, children: tabBarView)))
           : Container(
               margin: tabBarViewMargin,
               padding: tabBarViewPadding,

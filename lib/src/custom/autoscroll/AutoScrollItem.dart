@@ -52,7 +52,7 @@ class AutoScrollItem extends StatefulWidget {
     this.child,
     bool singleLine,
   })  :
-  // assert(modeListener != null),
+        // assert(modeListener != null),
         this.modeListener = modeListener ?? ValueNotifier(false),
         this.textColor = textColor ?? Colors.black,
         this.textSize = textSize ?? 14.0,
@@ -68,8 +68,7 @@ class AutoScrollItem extends StatefulWidget {
   }
 }
 
-class AutoScrollItemState extends State<AutoScrollItem>
-    with SingleTickerProviderStateMixin {
+class AutoScrollItemState extends State<AutoScrollItem> with SingleTickerProviderStateMixin {
   Animation animation;
   Animation transformAnimation;
   AnimationController animationController;
@@ -115,8 +114,7 @@ class AutoScrollItemState extends State<AutoScrollItem>
     _updateListener = () {
       setState(() {
         if (widget.modeListener.value) {
-          transformAnimation = outTween.animate(CurvedAnimation(
-              parent: animationController, curve: Curves.easeInOut));
+          transformAnimation = outTween.animate(CurvedAnimation(parent: animationController, curve: Curves.easeInOut));
 
           animationController.reset();
           animationController.forward();
@@ -125,12 +123,10 @@ class AutoScrollItemState extends State<AutoScrollItem>
     };
     widget.modeListener.addListener(_updateListener);
 
-    animationController = AnimationController(
-        vsync: this, duration: Duration(milliseconds: widget.itemDuration))
+    animationController = AnimationController(vsync: this, duration: Duration(milliseconds: widget.itemDuration))
       ..addListener(() {});
 
-    transformAnimation = inTween.animate(
-        CurvedAnimation(parent: animationController, curve: Curves.easeInOut))
+    transformAnimation = inTween.animate(CurvedAnimation(parent: animationController, curve: Curves.easeInOut))
       ..addListener(() => setState(() {}));
 
     animationController.forward();
@@ -159,9 +155,7 @@ class AutoScrollItemState extends State<AutoScrollItem>
     //     0, 0, 0, 1, 0, 0, transformAnimation.value, 0, 1)
     if (widget.child != null) {
       if (widget.onPress != null) {
-        current = GestureDetector(
-            onTap: widget.onPress,
-            child: Container(child: widget.child, transform: transform));
+        current = GestureDetector(onTap: widget.onPress, child: Container(child: widget.child, transform: transform));
       } else {
         current = Container(child: widget.child, transform: transform);
       }
@@ -172,8 +166,7 @@ class AutoScrollItemState extends State<AutoScrollItem>
             child: Text(
               widget.text,
               softWrap: widget.singleLine,
-              style:
-              TextStyle(fontSize: widget.textSize, color: widget.textColor),
+              style: TextStyle(fontSize: widget.textSize, color: widget.textColor),
             ),
             transform: transform,
           ));

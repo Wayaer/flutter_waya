@@ -26,11 +26,9 @@ class WayConstant {
   static const String regExpDecimal = '[0-9.]'; //小数
   static const String regExpLetter = '[a-zA-Z]'; //字母
   static const String regExpChinese = '[\u4e00-\u9fa5]'; //中文
-  static const String regExpEmail =
-      '\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}'; //邮箱
+  static const String regExpEmail = '\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}'; //邮箱
   static const String regExpPhoneNumber = '[0-9-()（）]{7,18}'; //国内电话号
-  static const String regExpMobilePhoneNumber =
-      '0?(13|14|15|17|18|19)[0-9]{9}'; //国内手机号
+  static const String regExpMobilePhoneNumber = '0?(13|14|15|17|18|19)[0-9]{9}'; //国内手机号
   static const String regExpDateTime = '\d{4}(\-|\/|.)\d{1,2}\1\d{1,2}'; //日期时间
   static const String regExpIdCard = '\d{17}[\d|x]|\d{15}'; //身份证
   static const String regExpIP =

@@ -65,12 +65,10 @@ class CustomCheckBoxState extends State<CustomCheckBox> {
   @override
   Widget build(BuildContext context) {
     if (widget.uncheckWidget != null && widget.checkWidget != null) {
-      return customWidget(
-          uncheckWidget: widget.uncheckWidget, checkWidget: widget.checkWidget);
+      return customWidget(uncheckWidget: widget.uncheckWidget, checkWidget: widget.checkWidget);
     }
     if (widget.uncheckIcon != null || widget.checkIcon != null) {
-      return customIcon(
-          uncheckIcon: widget.uncheckIcon, checkIcon: widget.checkIcon);
+      return customIcon(uncheckIcon: widget.uncheckIcon, checkIcon: widget.checkIcon);
     }
     return customIcon();
   }
@@ -97,9 +95,7 @@ class CustomCheckBoxState extends State<CustomCheckBox> {
 
   Widget customIcon({IconData uncheckIcon, IconData checkIcon}) {
     return CustomIcon(
-        icon: value
-            ? checkIcon ?? WayIcon.iconsChecked
-            : uncheckIcon ?? WayIcon.iconsUnChecked,
+        icon: value ? checkIcon ?? WayIcon.iconsChecked : uncheckIcon ?? WayIcon.iconsUnChecked,
         iconSize: widget.iconSize ?? BaseUtils.getWidth(17.5),
         width: widget.width,
         height: widget.height,
@@ -108,9 +104,7 @@ class CustomCheckBoxState extends State<CustomCheckBox> {
         padding: widget.padding,
         mainAxisAlignment: widget.mainAxisAlignment,
         crossAxisAlignment: widget.crossAxisAlignment,
-        iconColor: value
-            ? widget.checkColor ?? getColors(blue)
-            : widget.unCheckColor ?? getColors(black),
+        iconColor: value ? widget.checkColor ?? getColors(blue) : widget.unCheckColor ?? getColors(black),
         textStyle: widget.textStyle,
         text: widget.label,
         onTap: () {

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-
 typedef Widget WidgetMaker<T>(BuildContext context, T item);
 
 class AutoScroll extends StatefulWidget {
@@ -48,17 +47,17 @@ class AutoScroll extends StatefulWidget {
 
   AutoScroll(
       {this.children,
-        this.texts,
-        bool center,
-        Color selectTextColor,
-        Color textColor,
-        int duration,
-        double itemDuration,
-        bool autoStart,
-        AutoScrollAnimation autoScrollAnimation,
-        this.animateDistance,
-        this.onChange,
-        bool singleLine})
+      this.texts,
+      bool center,
+      Color selectTextColor,
+      Color textColor,
+      int duration,
+      double itemDuration,
+      bool autoStart,
+      AutoScrollAnimation autoScrollAnimation,
+      this.animateDistance,
+      this.onChange,
+      bool singleLine})
       : this.center = center ?? true,
         this.duration = duration ?? 4,
         this.itemDuration = itemDuration ?? 500,
@@ -162,21 +161,18 @@ class AutoScrollState extends State<AutoScroll> {
     }
     List<AutoScrollItem> items = secondItem == null
         ? <AutoScrollItem>[firstItem..textColor = widget.selectTextColor]
-        : <AutoScrollItem>[
-      secondItem..textColor = widget.selectTextColor,
-      firstItem..textColor = widget.textColor
-    ];
+        : <AutoScrollItem>[secondItem..textColor = widget.selectTextColor, firstItem..textColor = widget.textColor];
 
     return ClipRect(
         child: widget.center
             ? Center(
-          child: Stack(
-            children: items,
-          ),
-        )
+                child: Stack(
+                  children: items,
+                ),
+              )
             : Stack(
-          children: items,
-        ));
+                children: items,
+              ));
   }
 
   @override

@@ -9,10 +9,7 @@ class CanvasLine extends CustomPainter {
   final Point curPoint;
 
   CanvasLine(
-      {@required this.pathPoints,
-      @required this.selectColor,
-      @required this.lineWidth,
-      @required this.curPoint});
+      {@required this.pathPoints, @required this.selectColor, @required this.lineWidth, @required this.curPoint});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -28,8 +25,8 @@ class CanvasLine extends CustomPainter {
       ..strokeWidth = this.lineWidth;
 
     for (int i = 0; i < length - 1; i++) {
-      canvas.drawLine(Offset(pathPoints[i].x, pathPoints[i].y),
-          Offset(pathPoints[i + 1].x, pathPoints[i + 1].y), linePaint);
+      canvas.drawLine(
+          Offset(pathPoints[i].x, pathPoints[i].y), Offset(pathPoints[i + 1].x, pathPoints[i + 1].y), linePaint);
     }
 
     double endX = curPoint.x;
@@ -45,8 +42,7 @@ class CanvasLine extends CustomPainter {
       endY = size.height;
     }
 
-    canvas.drawLine(Offset(pathPoints[length - 1].x, pathPoints[length - 1].y),
-        Offset(endX, endY), linePaint);
+    canvas.drawLine(Offset(pathPoints[length - 1].x, pathPoints[length - 1].y), Offset(endX, endY), linePaint);
   }
 
   @override

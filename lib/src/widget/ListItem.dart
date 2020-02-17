@@ -61,19 +61,16 @@ class ListItem extends StatelessWidget {
       height: height,
       inkWell: inkWell,
       margin: margin,
-      padding:
-          padding ?? EdgeInsets.symmetric(vertical: BaseUtils.getHeight(13)),
+      padding: padding ?? EdgeInsets.symmetric(vertical: BaseUtils.getHeight(13)),
       direction: Axis.horizontal,
       decoration: decoration ??
           (underlineShow
-              ? WayStyles.containerUnderlineBackground(
-                  underlineColor: underlineColor, color: backgroundColor)
+              ? WayStyles.containerUnderlineBackground(underlineColor: underlineColor, color: backgroundColor)
               : BoxDecoration(color: backgroundColor)),
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Offstage(
-          offstage: !((iconImage != null && iconImage is Image) ||
-              (icon != null && icon is IconData)),
+          offstage: !((iconImage != null && iconImage is Image) || (icon != null && icon is IconData)),
           child: iconImage != null
               ? iconImage
               : Icon(
@@ -91,11 +88,8 @@ class ListItem extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Offstage(
-              offstage:
-                  !((title != null && title is Text) || titleText != null),
-              child: title == null
-                  ? Text(titleText, style: titleTextStyle)
-                  : title,
+              offstage: !((title != null && title is Text) || titleText != null),
+              child: title == null ? Text(titleText, style: titleTextStyle) : title,
             ),
             Expanded(
                 child: Offstage(

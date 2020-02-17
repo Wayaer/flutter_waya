@@ -80,8 +80,7 @@ class SuspensionState extends State<Suspension> {
 
   int getIndex(int offset) {
     if (widget.header != null && offset < widget.header.height) {
-      if (suspensionTop != -widget.header.height &&
-          widget.suspensionWidget != null) {
+      if (suspensionTop != -widget.header.height && widget.suspensionWidget != null) {
         setState(() {
           suspensionTop = -widget.header.height;
         });
