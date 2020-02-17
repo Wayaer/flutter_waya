@@ -23,7 +23,7 @@ class CustomRichText extends StatelessWidget {
     return onTap == null
         ? richText()
         : CustomFlex(
-//            alignment: alignment ?? Alignment.centerLeft,
+            alignment: alignment,
             color: background,
             onTap: onTap,
             child: richText(),
