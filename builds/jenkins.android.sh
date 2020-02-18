@@ -3,26 +3,27 @@
 ## 计时
 cd ..
 env=${SET_ENV}
-app="app"
-version="`cat pubspec.yaml | shyaml get-value version`"
-echo "${version}"
-echo "===android====${env}"
+
+app="app/android"
+env=release
+
+version=$(grep 'version:' pubspec.yaml)
+version=${version#version: }
+
+mkdir -p "$app/${env}/"
+echo "android===$env====$version"
+
 echo "清理 build"
-find . -d -name "build" | xargs rm -rf
 flutter clean
-mkdir -p app
-apk_path=app/android-${env}
-if [ ! -d "${apk_path}" ]; then
-  rm -rf ${apk_path}
-  mkdir -p ${apk_path}
-fi
+rm -rf build
+
 echo "开始获取 packages 插件资源"
 flutter packages get
+
 echo "开始打包apk"
-flutter build apk -t lib/main.dart --release --flavor "${env}" #--no-codesign
+flutter build apk --"${env}" --target-platform android-arm -t lib/main_local.dart   #--no-codesign
 echo "打包apk已完成"
-cp -r build/app/outputs/apk/"${env}"/release/app-"${env}"-release.apk ${apk_path}
-mv ${apk_path}/app-"${env}"-release.apk "${apk_path}"/v${version}-"${env}".apk
 
-#cat ./scripts/ver.json | jq ".android"
+mv ./build/app/outputs/apk/${env}/app-${env}.apk ./$app/${env}/聚砼v${version}.$(date "+%Y%m%d%H%M").apk
 
+echo "打包完成😄"

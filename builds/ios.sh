@@ -1,50 +1,38 @@
 #!/usr/bin/env bash
-app="app"
-version="`cat pubspec.yaml | shyaml get-value version`"
-echo "${version}"
 
-read -n "输入你要打包的环境: release ?  profile" env
-read  env
+app="app/ios"
+env=release
+ipa="ipa"
 
-echo "===ios====${env}"
+version=$(grep 'version:' pubspec.yaml)
+version=${version#version: }
+
+mkdir -p "$app/${env}/"
+echo "ios===$env====$version"
+
 echo "清理 build"
-find . -d -name "build" | xargs rm -rf
 flutter clean
-mkdir -p app
-ipa_path=app/ios-${env}/
-if [ ! -d "${ipa_path}" ]; then
-  rm -rf ${ipa_path}
-  mkdir -p ${ipa_path}
-fi
+rm -rf build
+
+echo "清理 pods"
+rm -rf ./ios/Pods
+rm -rf ./ios/${ipa}
+
 echo "开始获取 packages 插件资源"
 flutter packages get
-Pods=./ios/Pods
-if [ -d "${Pods}" ]; then
-  rm -rf ${Pods}
-fi
-echo "打包的版本${env}"
-archive_path=./ipa-${env}/KKing.xcarchive
 echo "开始flutter build"
-flutter build ios -t lib/main.dart  --release --flavor ${env}
-case "${env}" in
-"profile")
+flutter build ios -t lib/main_local.dart  --release --flavor ${env}
+
 cd ios
+
+mkdir -p "${ipa}"
+archive=${ipa}/ipa-${env}.xcarchive
 echo "开始xcode build"
-xcodebuild archive -workspace Runner.xcworkspace -scheme ${env} -configuration Release-${env} -archivePath ${archive_path}
+xcodebuild archive -workspace Runner.xcworkspace -scheme ${env} -configuration Release-${env} -archivePath ${archive}
 echo "开始导出ipa"
-#xcodebuild -exportArchive -archivePath ${archive_path} -exportOptionsPlist ./iosExportOptions.plist -exportPath ipa-${env}/
-xcodebuild -exportArchive -archivePath ${archive_path} -exportPath ipa-${env}/
-;;
-"release")
-cd ios
-echo "开始xcode build"
-xcodebuild archive -workspace Runner.xcworkspace -scheme ${env} -configuration Release-${env}  -archivePath ${archive_path}
-echo "开始导出ipa"
-#xcodebuild -exportArchive -archivePath ${archive_path} -exportOptionsPlist ./iosExportOptions.plist -exportPath ipa-${env}/
-xcodebuild -exportArchive -archivePath ${archive_path} -exportPath ipa-${env}/
-;;
-esac
+#xcodebuild -exportArchive -archivePath ${archive} -exportOptionsPlist ./iosExportOptions.plist -exportPath ipa-${env}/
+xcodebuild -exportArchive -archivePath ${archive} -exportPath $ipa/
 cd ..
-mv ios/ipa-${env}/${env}.ipa ${ipa_path}v${version}-"${env}".ipa
-#rm -rf ./ios/ipa-${env}
+mv ./ios/ipa/${env}.ipa ./${app}v${version}-"${env}".ipa
+
 echo "打包完成😄"
