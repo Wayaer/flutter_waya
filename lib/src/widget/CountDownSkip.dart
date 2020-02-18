@@ -7,7 +7,7 @@ import 'package:flutter_waya/src/utils/BaseUtils.dart';
 
 class CountDownSkip extends StatefulWidget {
   // ignore: non_constant_identifier_names
-  final String SkipText;
+  final String skipText;
   final int seconds;
   final TextStyle textStyle;
   final ValueChanged<int> onChange;
@@ -17,7 +17,7 @@ class CountDownSkip extends StatefulWidget {
 
   CountDownSkip({
     // ignore: non_constant_identifier_names
-    this.SkipText: '跳过',
+    this.skipText: 'Skip',
     this.seconds: 5,
     this.textStyle,
     this.showSkip: true,
@@ -62,7 +62,7 @@ class CountDownSkipState extends State<CountDownSkip> {
       padding: EdgeInsets.symmetric(horizontal: BaseUtils.getHeight(5), vertical: BaseUtils.getWidth(4)),
       text: seconds.toString() +
           's' +
-          (widget.showSkip ? (seconds == 0 ? ' ' + widget.SkipText : '') : ' ' + widget.SkipText),
+          (widget.showSkip ? (seconds == 0 ? ' ' + widget.skipText : '') : ' ' + widget.skipText),
       textStyle: widget.textStyle ?? TextStyle(fontSize: 13, color: getColors(black70)),
     );
   }
