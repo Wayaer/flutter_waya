@@ -22,7 +22,7 @@ class WayConstant {
   static const String regExpNumber = '-?[1-9]\d*'; //整数
   static const String regExpPositive = '-?[1-9]\d*'; //正数
   static const String regExpNegative = '-?[1-9.]\d*'; //负数
-  static const String regExpPassword = '[a-zA-Z1-9.*_-+]'; //密码
+  static const String regExpPassword = '[a-zA-Z1-9.]'; //密码
   static const String regExpDecimal = '[0-9.]'; //小数
   static const String regExpLetter = '[a-zA-Z]'; //字母
   static const String regExpChinese = '[\u4e00-\u9fa5]'; //中文
