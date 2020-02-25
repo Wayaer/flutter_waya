@@ -97,8 +97,13 @@ class BaseUtils {
 //  * @returns {number} 返回全面屏对应的16：9 屏幕高度
 
   static phoneFitHeight(BuildContext context) {
-    double h = MediaQuery.of(context).size.height;
-    double s = MediaQuery.of(context).devicePixelRatio;
+    double h = MediaQuery
+        .of(context)
+        .size
+        .height;
+    double s = MediaQuery
+        .of(context)
+        .devicePixelRatio;
     double y = s * h;
 
     if (Platform.isAndroid) {
@@ -148,23 +153,29 @@ class BaseUtils {
     }
   }
 
+  //相对iphone 6s 尺寸设计稿 高
   static getHeight([double height, bool intType]) {
     double h;
     if (height == null || height == 0) {
-      h = MediaQueryUtils.getSize().height;
+      h = MediaQueryUtils
+          .getSize()
+          .height;
     } else {
       //  h = (height / 667) * phoneFitHeight(context);
-      h = (height / 667) * MediaQueryUtils.getSize().height;
+      h = (height / 667) * MediaQueryUtils.getHeight();
     }
     return intType == true ? h.toInt() : h;
   }
 
+  //相对iphone 6s 尺寸设计稿 宽
   static getWidth([double width, bool intType]) {
     double w;
     if (width == null || width == 0) {
-      w = MediaQueryUtils.getSize().width;
+      w = MediaQueryUtils
+          .getSize()
+          .width;
     } else {
-      w = (width / 375) * MediaQueryUtils.getSize().width;
+      w = (width / 375) * MediaQueryUtils.getWidth();
     }
     return intType == true ? w.toInt() : w;
   }
