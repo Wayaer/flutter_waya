@@ -26,6 +26,7 @@ class BaseScaffold extends StatelessWidget {
   //Scaffold相关属性
   final Widget bottomNavigationBar;
   final AppBar appBar;
+  final double appBarHeight;
   final Widget floatingActionButton;
   final FloatingActionButtonAnimator floatingActionButtonAnimator;
   final FloatingActionButtonLocation floatingActionButtonLocation;
@@ -70,6 +71,7 @@ class BaseScaffold extends StatelessWidget {
     this.primary = true, //试用使用primary主色
     this.drawerDragStartBehavior = DragStartBehavior.start,
     this.extendBody = false,
+    this.appBarHeight,
   }) : super(key: key) {
     if (refreshController == null) {
       refreshController = RefreshController(initialRefresh: false);
@@ -92,7 +94,9 @@ class BaseScaffold extends StatelessWidget {
       floatingActionButton: floatingActionButton,
       floatingActionButtonAnimator: floatingActionButtonAnimator,
       backgroundColor: backgroundColor ?? getColors(background),
-      appBar: appBar,
+      appBar: appBarHeight == null ? appBar : (appBar == null ? null : PreferredSize(
+          child: appBar,
+          preferredSize: Size.fromHeight(MediaQueryUtils.getStatusBarHeight() + appBarHeight))),
       bottomNavigationBar: bottomNavigationBar,
       body: bodyWidget(context),
     );
