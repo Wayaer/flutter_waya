@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/waya.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
+import 'package:flutter_waya/waya.dart';
 
 class AlertBase extends StatelessWidget {
   final Widget child;
@@ -18,10 +18,7 @@ class AlertBase extends StatelessWidget {
         height: BaseUtils.getHeight(),
         width: BaseUtils.getWidth(),
         onTap: onTap,
-        child: center
-            ? Center(
-                child: child,
-              )
-            : child);
+        padding: padding,
+        child: center ? Center(child: child) : child);
   }
 }
