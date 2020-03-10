@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/flutter_waya.dart';
+import 'package:flutter_waya/waya.dart';
 
 typedef Widget WidgetMaker<T>(BuildContext context, T item);
 

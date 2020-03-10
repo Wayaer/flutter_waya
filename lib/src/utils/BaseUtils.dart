@@ -10,7 +10,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_waya/flutter_waya.dart';
+import 'package:flutter_waya/waya.dart';
 import 'package:flutter_waya/src/constant/BaseEnum.dart';
 import 'package:flutter_waya/src/utils/MediaQueryUtils.dart';
 

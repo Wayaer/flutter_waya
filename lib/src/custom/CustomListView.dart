@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/flutter_waya.dart';
+import 'package:flutter_waya/waya.dart';
 import 'package:flutter_waya/src/widget/CommonWidget.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 

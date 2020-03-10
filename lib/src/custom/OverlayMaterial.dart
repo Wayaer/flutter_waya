@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_waya/flutter_waya.dart';
+import 'package:flutter_waya/waya.dart';
 import 'package:flutter_waya/src/custom/OverlayBase.dart';
 
 // ignore: must_be_immutable

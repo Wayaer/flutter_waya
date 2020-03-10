@@ -12,11 +12,11 @@ dependencies:
     sdk: flutter
   flutter_localizations: # 添加
     sdk: flutter
-  shared_preferences: ^0.5.6
-  provider: ^4.0.0
-  dio: ^3.0.7
-  synchronized: ^2.1.1
-  pull_to_refresh: ^1.5.7
+  shared_preferences: ^0.5.6+2
+  provider: ^4.0.4
+  dio: ^3.0.9
+  synchronized: ^2.2.0
+  pull_to_refresh: ^1.5.8
 
 dev_dependencies:
   flutter_test:

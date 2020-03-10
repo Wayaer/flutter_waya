@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/flutter_waya.dart';
+import 'package:flutter_waya/waya.dart';
 
 class AutoScrollItem extends StatefulWidget {
   Key key;
