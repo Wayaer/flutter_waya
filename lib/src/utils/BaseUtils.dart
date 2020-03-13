@@ -10,9 +10,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_waya/waya.dart';
 import 'package:flutter_waya/src/constant/BaseEnum.dart';
 import 'package:flutter_waya/src/utils/MediaQueryUtils.dart';
+import 'package:flutter_waya/waya.dart';
 
 isDebug() {
   return !kReleaseMode;
@@ -20,6 +20,8 @@ isDebug() {
 
 class BaseUtils {
   static Timer timerInfo;
+  static double designWidth = 375;
+  static double designHeight = 667;
 
   // 截屏
   static capture(GlobalKey globalKey) async {
@@ -161,8 +163,8 @@ class BaseUtils {
           .getSize()
           .height;
     } else {
-      //  h = (height / 667) * phoneFitHeight(context);
-      h = (height / 667) * MediaQueryUtils.getHeight();
+      //  h = (height / designHeight) * phoneFitHeight(context);
+      h = (height / designHeight) * MediaQueryUtils.getHeight();
     }
     return intType == true ? h.toInt() : h;
   }
@@ -175,9 +177,16 @@ class BaseUtils {
           .getSize()
           .width;
     } else {
-      w = (width / 375) * MediaQueryUtils.getWidth();
+      w = (width / designWidth) * MediaQueryUtils.getWidth();
     }
     return intType == true ? w.toInt() : w;
+  }
+
+  //初始化设置 设计稿宽高
+  //默认为 667*375
+  static setDesignSize(Size size) {
+    designHeight = size.height;
+    designWidth = size.width;
   }
 
   //关闭键盘
