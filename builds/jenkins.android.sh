@@ -24,6 +24,6 @@ echo "开始打包apk"
 flutter build apk --"${env}" --target-platform android-arm -t lib/main_local.dart   #--no-codesign
 echo "打包apk已完成"
 
-mv ./build/app/outputs/apk/${env}/app-${env}.apk ./$app/${env}/聚砼v${version}.$(date "+%Y%m%d%H%M").apk
+mv ./build/app/outputs/apk/${env}/app-${env}.apk ./$app/${env}/APPv${version}.$(date "+%Y%m%d%H%M").apk
 
 echo "打包完成😄"
