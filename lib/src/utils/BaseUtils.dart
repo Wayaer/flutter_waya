@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
 
-import 'package:convert/convert.dart';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -216,10 +215,7 @@ class BaseUtils {
 
   // md5 加密
   static setMd5(String data) {
-    var content = new Utf8Encoder().convert(data);
-    var digest = md5.convert(content);
-    // 这里其实就是 digest.toString()
-    return hex.encode(digest.bytes);
+    return md5.convert(utf8.encode(data)).toString();
   }
 
   static setStatusBarLight(bool isLight) {

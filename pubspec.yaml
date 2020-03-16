@@ -12,7 +12,7 @@ dependencies:
     sdk: flutter
   flutter_localizations: # 添加
     sdk: flutter
-  shared_preferences: ^0.5.6+2
+  shared_preferences: ^0.5.6+3
   provider: ^4.0.4
   dio: ^3.0.9
   synchronized: ^2.2.0
