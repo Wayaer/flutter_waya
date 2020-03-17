@@ -218,6 +218,16 @@ class BaseUtils {
     return md5.convert(utf8.encode(data)).toString();
   }
 
+  // Base64加密
+  static String encodeBase64(String data) {
+    return base64Encode(utf8.encode(data));
+  }
+
+  //Base64解密
+  static String decodeBase64(String data) {
+    return String.fromCharCodes(base64Decode(data));
+  }
+
   static setStatusBarLight(bool isLight) {
     const color = Color(0x00000000);
     if (isLight is bool) {
