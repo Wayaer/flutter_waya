@@ -17,7 +17,7 @@ echo "开始获取 packages 插件资源"
 flutter packages get
 
 echo "开始打包apk"
-flutter build apk --"${env}" --target-platform android-arm -t lib/main_local.dart   #--no-codesign
+flutter build apk --"${env}" --target-platform android-arm -t lib/main.dart   #--no-codesign
 echo "打包apk已完成"
 
 mv ./build/app/outputs/apk/${env}/app-${env}.apk ./$app/${env}/APPv${version}.$(date "+%Y%m%d%H%M").apk
