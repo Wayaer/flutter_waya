@@ -201,7 +201,7 @@ class BaseUtils {
     return timerInfo;
   }
 
-  static timePeriodic(Duration duration, [Function function]) {
+  static timerPeriodic(Duration duration, [Function function]) {
     //需要手动释放timer
     timerInfo = Timer.periodic(duration, (covariant) {
       if (function is Function) function();
@@ -209,7 +209,7 @@ class BaseUtils {
     return timerInfo;
   }
 
-  static cancelTimer() {
+  static timerCancel() {
     if (timerInfo != null) timerInfo.cancel();
   }
 

@@ -14,7 +14,7 @@ class CountDownSkip extends StatefulWidget {
   final Decoration decoration;
 
   CountDownSkip({
-    this.skipText,
+    this.skipText: '',
     this.seconds: 5,
     this.textStyle,
     this.onChange,
@@ -38,13 +38,13 @@ class CountDownSkipState extends State<CountDownSkip> {
     seconds = widget.seconds;
     WidgetsBinding.instance.addPostFrameCallback((callback) {
       if (seconds > 1) {
-        BaseUtils.timePeriodic(Duration(seconds: 1), () {
+        BaseUtils.timerPeriodic(Duration(seconds: 1), () {
           seconds -= 1;
           setState(() {});
           if (widget.onChange is ValueChanged<int>) {
             widget.onChange(seconds);
           }
-          if (seconds == 0) BaseUtils.cancelTimer();
+          if (seconds == 0) BaseUtils.timerCancel();
         });
       }
     });
@@ -57,8 +57,7 @@ class CountDownSkipState extends State<CountDownSkip> {
       decoration: widget.decoration ?? BoxDecoration(color: getColors(white50), borderRadius: BorderRadius.circular(5)),
       padding: EdgeInsets.symmetric(horizontal: BaseUtils.getHeight(5), vertical: BaseUtils.getWidth(4)),
       text: seconds.toString() +
-          's' +
-          widget.skipText ?? '',
+          's' + widget.skipText,
       textStyle: widget.textStyle ?? TextStyle(fontSize: 13, color: getColors(black70)),
     );
   }
@@ -66,6 +65,6 @@ class CountDownSkipState extends State<CountDownSkip> {
   @override
   void dispose() {
     super.dispose();
-    BaseUtils.cancelTimer();
+    BaseUtils.timerCancel();
   }
 }
