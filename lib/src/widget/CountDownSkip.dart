@@ -35,19 +35,23 @@ class CountDownSkipState extends State<CountDownSkip> {
   @override
   void initState() {
     super.initState();
-    seconds = widget.seconds;
     WidgetsBinding.instance.addPostFrameCallback((callback) {
-      if (seconds > 1) {
-        BaseUtils.timerPeriodic(Duration(seconds: 1), () {
-          seconds -= 1;
-          setState(() {});
-          if (widget.onChange is ValueChanged<int>) {
-            widget.onChange(seconds);
-          }
-          if (seconds == 0) BaseUtils.timerCancel();
-        });
-      }
+      seconds = widget.seconds;
+      startTime();
     });
+  }
+
+  startTime() {
+    if (seconds > 0) {
+      timer = BaseUtils.timerPeriodic(Duration(seconds: 1), (time) {
+        seconds -= 1;
+        setState(() {});
+        if (widget.onChange is ValueChanged<int>) {
+          widget.onChange(seconds);
+        }
+        if (seconds == 0) timer.cancel();
+      });
+    }
   }
 
   @override

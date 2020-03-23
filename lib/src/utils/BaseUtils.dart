@@ -201,10 +201,10 @@ class BaseUtils {
     return timerInfo;
   }
 
-  static timerPeriodic(Duration duration, [Function function]) {
+  static timerPeriodic(Duration duration, [void callback(Timer timer)]) {
     //需要手动释放timer
-    timerInfo = Timer.periodic(duration, (covariant) {
-      if (function is Function) function();
+    timerInfo = Timer.periodic(duration, (time) {
+      callback(time);
     });
     return timerInfo;
   }
