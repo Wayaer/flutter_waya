@@ -263,6 +263,31 @@ class BaseUtils {
       }
     });
   }
+
+  static isAndroid() {
+    return Platform.isAndroid;
+  }
+
+  static isIOS() {
+    return Platform.isIOS;
+  }
+
+  static isMacOS() {
+    return Platform.isMacOS;
+  }
+
+  static isWindows() {
+    return Platform.isWindows;
+  }
+
+  static isLinux() {
+    return Platform.isLinux;
+  }
+
+  static isFuchsia() {
+    return Platform.isFuchsia;
+  }
+ 
 //   // 确保输入的全部是数字
 //
 //  static allAreNum(number) {
