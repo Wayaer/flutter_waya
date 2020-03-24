@@ -10,11 +10,17 @@ const int HTTP_TIMEOUT_CONNECT = 5000;
 //接收超时时间
 const int HTTP_TIMEOUT_RECEIVE = 10000;
 //请求数据类型 (4种): application/x-www-form-urlencoded 、multipart/form-data、application/json、text/xml
-const HTTP_CONTENT_TYPE = ["application/x-www-form-urlencoded", "multipart/form-data", "application/json", "text/xml"];
+const List<String> HTTP_CONTENT_TYPE = [
+  "application/x-www-form-urlencoded",
+  "multipart/form-data",
+  "application/json",
+  "text/xml"
+];
 
 class DioBaseUtils {
   static Dio dio;
   static DioError error;
+  static CancelToken cancelToken = CancelToken();
   static BaseOptions _options;
   static int errorCode = 911;
 
@@ -26,19 +32,21 @@ class DioBaseUtils {
   }
 
   DioBaseUtils.internal({BaseOptions options}) {
-    dio = Dio();
-    _options = dio.options;
-    _options.connectTimeout = options.connectTimeout ?? HTTP_TIMEOUT_CONNECT;
-    _options.receiveTimeout = options.receiveTimeout ?? HTTP_TIMEOUT_RECEIVE;
-    _options.contentType = options.contentType ?? HTTP_CONTENT_TYPE[2].toString();
-    _options.responseType = options.responseType ?? ResponseType.json;
-    Map<String, dynamic> _headers = {};
-    _options.headers = options.headers ?? _headers;
+    if (options != null) {
+      Map<String, dynamic> _headers = {};
+      dio = Dio();
+      _options = dio.options;
+      _options.connectTimeout = options?.connectTimeout ?? HTTP_TIMEOUT_CONNECT;
+      _options.receiveTimeout = options?.receiveTimeout ?? HTTP_TIMEOUT_RECEIVE;
+      _options.contentType = options?.contentType ?? HTTP_CONTENT_TYPE[2];
+      _options.responseType = options?.responseType ?? ResponseType.json;
+      _options.headers = options?.headers ?? _headers;
+    }
     addInterceptors();
   }
 
   addInterceptors() {
-    ResponseModel responseModel = ResponseModel(statusCode: errorCode);
+    ResponseModel responseModel = ResponseModel(statusCode: WayConstant.errorCode911);
     dio.interceptors.add(InterceptorsWrapper(onRequest: (RequestOptions options) async {
       // 在请求被发送之前做一些事情
       return options; //continue
@@ -92,7 +100,7 @@ class DioBaseUtils {
   Future get(String url, {Map<String, dynamic> params}) async {
     try {
       log("GET url:" + url + "  params:" + params.toString());
-      Response response = await dio.get(url, queryParameters: params);
+      Response response = await dio.get(url, queryParameters: params, cancelToken: cancelToken);
       log("GET url:" + url + '  responseData==  ' + response.toString());
       return jsonDecode(response.toString());
     } catch (e) {
@@ -104,7 +112,7 @@ class DioBaseUtils {
   Future post(String url, {Map<String, dynamic> params, data}) async {
     try {
       log("POST url:" + url + "  params:" + params.toString() + "  data:" + data.toString());
-      Response response = await dio.post(url, queryParameters: params, data: data);
+      Response response = await dio.post(url, queryParameters: params, data: data, cancelToken: cancelToken);
       log("POST url:" + url + '  responseData==  ' + response.toString());
       return jsonDecode(response.toString());
     } catch (e) {
@@ -116,7 +124,7 @@ class DioBaseUtils {
   Future put(String url, Map<String, dynamic> param) async {
     try {
       log("PUT url:" + url + "  params:" + param.toString());
-      Response response = await dio.put(url, queryParameters: param);
+      Response response = await dio.put(url, queryParameters: param, cancelToken: cancelToken);
       log("PUT url:" + url + '  responseData==  ' + response.toString());
       return jsonDecode(response.toString());
     } catch (e) {
@@ -128,7 +136,7 @@ class DioBaseUtils {
   Future delete(String url, Map<String, dynamic> param) async {
     try {
       log("DELETE url:" + url + "  params:" + param.toString());
-      Response response = await dio.delete(url, queryParameters: param);
+      Response response = await dio.delete(url, queryParameters: param, cancelToken: cancelToken);
       log("DELETE url:" + url + '  responseData==  ' + response.toString());
       return jsonDecode(response.toString());
     } catch (e) {
@@ -137,15 +145,20 @@ class DioBaseUtils {
     }
   }
 
+  //下载文件需要申请文件储存权限
   Future download(String url, String savePath, [ProgressCallback onReceiveProgress]) async {
     try {
       log("url:" + url + "  savePath:" + savePath.toString());
-      dio.download(url, savePath, onReceiveProgress: (received, total) {
+      return await dio.download(url, savePath, cancelToken: cancelToken, onReceiveProgress: (int received, int total) {
         onReceiveProgress(received, total);
       });
     } catch (e) {
       error = e;
-      return error;
+      return jsonDecode(error.message);
     }
+  }
+
+  cancel() {
+    cancelToken.cancelError;
   }
 }
