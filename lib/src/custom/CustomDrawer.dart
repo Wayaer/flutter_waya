@@ -47,7 +47,6 @@ class CustomDrawerState extends State<CustomDrawer> {
     return ConstrainedBox(
       constraints: BoxConstraints.expand(width: widget.width),
       child: AlertBase(
-        center: false,
         backgroundColor: widget.backgroundColor,
         child: widget.child,
       ),

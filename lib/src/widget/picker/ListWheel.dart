@@ -48,13 +48,13 @@ class ListWheel extends StatefulWidget {
     @required this.itemBuilder,
     @required this.itemCount,
     this.itemExtent,
-    this.diameterRatio = 1.07,
+    this.diameterRatio = 1,
     this.offAxisFraction = 0,
     this.initialIndex = 0,
     this.controller,
     this.onItemSelected, this.perspective: 0.01, this.magnification: 1.5, this.useMagnifier: true, this.squeeze: 1, this.physics,
   }) {
-    if (itemExtent == null) itemExtent = BaseUtils.getHeight(20);
+    if (itemExtent == null) itemExtent = BaseUtils.getHeight(12);
     if (physics == null) physics = FixedExtentScrollPhysics();
     if (controller == null) controller = FixedExtentScrollController(initialItem: initialIndex);
   }

@@ -7,9 +7,54 @@ class AlertBase extends StatelessWidget {
   EdgeInsetsGeometry padding;
   final GestureTapCallback onTap;
   final Color backgroundColor;
-  final bool center;
+  AlertPosition position;
+  MainAxisAlignment mainAxisAlignment;
+  CrossAxisAlignment crossAxisAlignment;
 
-  AlertBase({this.child, this.padding, this.onTap, this.backgroundColor, this.center: true});
+  AlertBase({this.child, this.padding, this.onTap, this.backgroundColor, this.position}) {
+    switch (position) {
+      case AlertPosition.top:
+        mainAxisAlignment = MainAxisAlignment.start;
+        crossAxisAlignment = CrossAxisAlignment.center;
+        break;
+      case AlertPosition.topLeft:
+        mainAxisAlignment = MainAxisAlignment.start;
+        crossAxisAlignment = CrossAxisAlignment.start;
+        break;
+      case AlertPosition.topRight:
+        mainAxisAlignment = MainAxisAlignment.start;
+        crossAxisAlignment = CrossAxisAlignment.end;
+        break;
+      case AlertPosition.center:
+        mainAxisAlignment = MainAxisAlignment.center;
+        crossAxisAlignment = CrossAxisAlignment.center;
+        break;
+      case AlertPosition.centerLeft:
+        mainAxisAlignment = MainAxisAlignment.center;
+        crossAxisAlignment = CrossAxisAlignment.start;
+        break;
+      case AlertPosition.centerRight:
+        mainAxisAlignment = MainAxisAlignment.center;
+        crossAxisAlignment = CrossAxisAlignment.end;
+        break;
+      case AlertPosition.bottom:
+        mainAxisAlignment = MainAxisAlignment.end;
+        crossAxisAlignment = CrossAxisAlignment.center;
+        break;
+      case AlertPosition.bottomLeft:
+        mainAxisAlignment = MainAxisAlignment.end;
+        crossAxisAlignment = CrossAxisAlignment.start;
+        break;
+      case AlertPosition.bottomRight:
+        mainAxisAlignment = MainAxisAlignment.end;
+        crossAxisAlignment = CrossAxisAlignment.end;
+        break;
+      default:
+        mainAxisAlignment = MainAxisAlignment.center;
+        crossAxisAlignment = CrossAxisAlignment.center;
+        break;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +64,10 @@ class AlertBase extends StatelessWidget {
         width: BaseUtils.getWidth(),
         onTap: onTap,
         padding: padding,
-        child: center ? Center(child: child) : child);
+        mainAxisAlignment: mainAxisAlignment,
+        crossAxisAlignment: crossAxisAlignment,
+        children: <Widget>[
+          child,
+        ]);
   }
 }

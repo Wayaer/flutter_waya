@@ -45,7 +45,7 @@ class BaseUtils {
   }
 
   //时间戳转换
-  static stampToDate(int s, {DateType dateType = DateType.dateTime, bool micro}) {
+  static stampToDate(int s, {DateType dateType, bool micro}) {
     if (micro == null) {
       micro = false;
     }
@@ -58,39 +58,40 @@ class BaseUtils {
     }
   }
 
-  static formatDate(String date, [DateType dateType = DateType.dateTime]) {
+  static formatDate(String date, [DateType dateType]) {
+    if (dateType == null) dateType = DateType.yearSecond;
     DateTime time = DateTime.parse(date);
+    String year = time.year.toString();
+    String month = time.month.toString().padLeft(2, '0');
+    String day = time.day.toString().padLeft(2, '0');
+    String hour = time.hour.toString().padLeft(2, '0');
+    String minute = time.minute.toString().padLeft(2, '0');
+    String second = time.second.toString().padLeft(2, '0');
+
     switch (dateType) {
-      case DateType.dateTime:
-        return time.year.toString() +
-            '-' +
-            time.month.toString().padLeft(2, '0') +
-            '-' +
-            time.day.toString().padLeft(2, '0') +
-            ' ' +
-            time.hour.toString().padLeft(2, '0') +
-            ':' +
-            time.second.toString().padLeft(2, '0');
-      case DateType.data:
-        return time.year.toString() +
-            '-' +
-            time.month.toString().padLeft(2, '0') +
-            '-' +
-            time.day.toString().padLeft(2, '0');
-      case DateType.time:
-        return time.hour.toString().padLeft(2, '0') +
-            ':' +
-            time.minute.toString().padLeft(2, '0') +
-            ':' +
-            time.second.toString();
-      case DateType.monthSecond: //月到分
-        return time.month.toString().padLeft(2, '0') +
-            '-' +
-            time.day.toString().padLeft(2, '0') +
-            ' ' +
-            time.hour.toString().padLeft(2, '0') +
-            '-' +
-            time.second.toString().padLeft(2, '0');
+      case DateType.yearSecond:
+        return '$year-$month-$day $hour:$minute:$second';
+      case DateType.yearMinute:
+        return '$year-$month-$day $hour:$minute';
+        break;
+      case DateType.yearDay:
+        return '$year-$month-$day';
+        break;
+      case DateType.monthSecond:
+        return '$month-$day $hour:$minute:$second';
+        break;
+      case DateType.monthMinute:
+        return '$month-$day $hour:$minute';
+        break;
+      case DateType.monthDay:
+        return '$month-$day';
+        break;
+      case DateType.hourSecond:
+        return '$hour:$minute:$second';
+        break;
+      case DateType.hourMinute:
+        return '$hour:$minute';
+        break;
     }
   }
 
@@ -287,7 +288,7 @@ class BaseUtils {
   static isFuchsia() {
     return Platform.isFuchsia;
   }
- 
+
 //   // 确保输入的全部是数字
 //
 //  static allAreNum(number) {

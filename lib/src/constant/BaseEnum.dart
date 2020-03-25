@@ -10,10 +10,19 @@ enum AutoScrollAnimation {
 }
 
 enum DateType {
-  dateTime, //2020-1-1 00:00
-  data, //2020-1-1
-  time, //00:00:00
+  yearSecond, //2020-1-1 00:00:00
+  yearMinute, //2020-1-1 00:00
+//  yearHour, //2020-1-1 00
+  yearDay, //2020-1-1
   monthSecond, //1-1 00:00:00
+  monthMinute, //1-1 00:00
+//  monthHour, //1-1 00
+  monthDay, //1-1
+//  daySecond, //1 00:00:00
+//  dayMinute, //1 00:00
+//  dayHour, //1 00
+  hourSecond, //00:00:00
+  hourMinute, //00:00
 }
 enum LoadingType {
   circular, //圆圈
@@ -40,4 +49,26 @@ enum InputTextType {
   url, //网址url
   positive, //正数
   negative, //负数
+}
+
+//弹窗位置
+enum AlertPosition {
+  top, //头部居中
+  topLeft, //头部居左
+  topRight, //头部居右
+  center, //中间居中
+  centerLeft, //中间居左
+  centerRight, //中间居右
+  bottom, //底部居中
+  bottomLeft, //底部居左
+  bottomRight, //底部居右
+}
+//时间选择器 类型
+enum DateTimePickerType {
+  year,
+  month,
+  day,
+  hour,
+  minute,
+  second
 }

@@ -6,7 +6,6 @@ library flutter_waya;
 //export 'src/constant/WayConstant.dart';
 //export 'src/constant/WayIcon.dart';
 //export 'src/constant/WayStyles.dart';
-
 //可调用常量
 export 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -29,7 +28,7 @@ export 'src/custom/autoscroll/AutoScrollItem.dart';
 export 'src/custom/azlist/AzCommon.dart';
 export 'src/custom/azlist/AzIndexBar.dart';
 export 'src/custom/azlist/AzListView.dart';
-export 'src/custom/picker/ListWheel.dart';
+export 'src/model/MapModel.dart';
 export 'src/utils/AlertUtils.dart';
 export 'src/utils/BaseNavigatorUtils.dart';
 export 'src/utils/BaseUtils.dart';
@@ -37,6 +36,7 @@ export 'src/utils/DioBaseUtils.dart';
 export 'src/utils/LogUtils.dart';
 export 'src/utils/MediaQueryUtils.dart';
 export 'src/utils/MessageEvent.dart';
+export 'src/utils/PickerUtils.dart';
 export 'src/utils/StorageUtils.dart';
 export 'src/utils/date/DateFormat.dart';
 export 'src/utils/date/EnglishLocale.dart';
@@ -57,3 +57,5 @@ export 'src/widget/TabBarWidget.dart';
 export 'src/widget/TabNavigationPage.dart';
 export 'src/widget/TextInputBox.dart';
 export 'src/widget/gestures/Gesture.dart';
+export 'src/widget/picker/DateTimePicker.dart';
+export 'src/widget/picker/ListWheel.dart';
