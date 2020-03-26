@@ -116,7 +116,7 @@ class Refresh extends StatelessWidget {
 
   onTwoLevelVoid() {
     log('onTwoLevel');
-    BaseUtils.timerUtils(Duration(seconds: 4), () {
+    BaseUtils.timerUtils(Duration(seconds: 2), () {
       refreshController.twoLevelComplete();
     });
   }
@@ -124,14 +124,14 @@ class Refresh extends StatelessWidget {
 
   onRefreshVoid() {
     log('onRefresh');
-    BaseUtils.timerUtils(Duration(seconds: 4), () {
+    BaseUtils.timerUtils(Duration(seconds: 2), () {
       refreshController.refreshCompleted();
     });
   }
 
   onLoadingVoid() {
     log('onLoading');
-    BaseUtils.timerUtils(Duration(seconds: 4), () {
+    BaseUtils.timerUtils(Duration(seconds: 2), () {
       refreshController.loadComplete();
     });
   }

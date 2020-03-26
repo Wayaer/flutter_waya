@@ -95,17 +95,18 @@ class TabBarWidget extends StatelessWidget {
         offstage: amongWidget == null,
         child: amongWidget,
       ),
-      tabBarViewHeight == 0
-          ? Expanded(
-          child: Container(
-              margin: tabBarViewMargin,
-              padding: tabBarViewPadding,
-              child: TabBarView(controller: controller, children: tabBarView)))
-          : Container(
-          margin: tabBarViewMargin,
-          padding: tabBarViewPadding,
-          height: tabBarViewHeight,
-          child: TabBarView(controller: controller, children: tabBarView)),
+      Container(
+        child: tabBarView == null ? null : tabBarViewHeight == 0
+            ? Expanded(
+            child: Container(
+                margin: tabBarViewMargin,
+                padding: tabBarViewPadding,
+                child: TabBarView(controller: controller, children: tabBarView)))
+            : Container(
+            margin: tabBarViewMargin,
+            padding: tabBarViewPadding,
+            height: tabBarViewHeight,
+            child: TabBarView(controller: controller, children: tabBarView)),),
       Offstage(
         offstage: footWidget == null,
         child: footWidget,
