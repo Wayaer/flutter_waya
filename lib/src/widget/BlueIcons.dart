@@ -10,13 +10,13 @@ class BlueIcons extends StatelessWidget {
   final IconData icon;
   final String text;
 
-  BlueIcons(
-    this.icon, {
+  BlueIcons(this.icon, {
+    Key key,
     this.onTap,
     this.text,
     this.margin,
     this.padding,
-  });
+  }) :super(key: key);
 
   @override
   Widget build(BuildContext context) {

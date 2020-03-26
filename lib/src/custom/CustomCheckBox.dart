@@ -9,7 +9,7 @@ import 'CustomIcon.dart';
 class CustomCheckBox extends StatefulWidget {
   final ValueChanged<bool> onChange;
   final String label;
-  final bool value;
+
   final Color checkColor;
   final Color background;
   final Color unCheckColor;
@@ -20,34 +20,38 @@ class CustomCheckBox extends StatefulWidget {
   final double height;
   final EdgeInsetsGeometry margin;
   final EdgeInsetsGeometry padding;
-  final MainAxisAlignment mainAxisAlignment;
-  final CrossAxisAlignment crossAxisAlignment;
   final Widget checkWidget;
   final Widget uncheckWidget;
   final IconData checkIcon;
   final IconData uncheckIcon;
+  bool value;
+  MainAxisAlignment mainAxisAlignment;
+  CrossAxisAlignment crossAxisAlignment;
 
-  CustomCheckBox(
-      {Key key,
-      this.value: false,
-      this.onChange,
-      this.checkWidget,
-      this.checkIcon,
-      this.uncheckIcon,
-      this.uncheckWidget,
-      this.background,
-      this.padding,
-      this.margin,
-      this.label,
-      this.iconSize,
-      this.width,
-      this.height,
-      this.unCheckColor,
-      this.checkColor,
-      this.mainAxisAlignment: MainAxisAlignment.center,
-      this.crossAxisAlignment: CrossAxisAlignment.center,
-      this.textStyle})
-      : super(key: key);
+  CustomCheckBox({Key key,
+    this.value,
+    this.onChange,
+    this.checkWidget,
+    this.checkIcon,
+    this.uncheckIcon,
+    this.uncheckWidget,
+    this.background,
+    this.padding,
+    this.margin,
+    this.label,
+    this.iconSize,
+    this.width,
+    this.height,
+    this.unCheckColor,
+    this.checkColor,
+    this.mainAxisAlignment,
+    this.crossAxisAlignment,
+    this.textStyle})
+      : super(key: key) {
+    if (value == null) value = false;
+    if (mainAxisAlignment == null) mainAxisAlignment = MainAxisAlignment.center;
+    if (crossAxisAlignment == null) crossAxisAlignment = CrossAxisAlignment.center;
+  }
 
   @override
   CustomCheckBoxState createState() => CustomCheckBoxState();
@@ -120,28 +124,28 @@ class CustomCheckBoxState extends State<CustomCheckBox> {
   Widget checkBox() {
     return widget.label != null
         ? CustomFlex(
-            onTap: () {
-              setState(() {
-                value = !value;
-              });
-              if (widget.onChange is ValueChanged<bool>) {
-                widget.onChange(value);
-              }
-            },
-            direction: Axis.horizontal,
-            children: <Widget>[
-              checkBoxWidget(),
-              Text(
-                widget.label,
-                style: widget.textStyle != null
-                    ? widget.textStyle
-                    : TextStyle(
-                        fontSize: 12,
-                        color: getColors(black70),
-                      ),
-              ),
-            ],
-          )
+      onTap: () {
+        setState(() {
+          value = !value;
+        });
+        if (widget.onChange is ValueChanged<bool>) {
+          widget.onChange(value);
+        }
+      },
+      direction: Axis.horizontal,
+      children: <Widget>[
+        checkBoxWidget(),
+        Text(
+          widget.label,
+          style: widget.textStyle != null
+              ? widget.textStyle
+              : TextStyle(
+            fontSize: 12,
+            color: getColors(black70),
+          ),
+        ),
+      ],
+    )
         : checkBoxWidget();
   }
 

@@ -14,49 +14,59 @@ class CustomIcon extends StatelessWidget {
   final Color iconColor;
   final double height;
   final double width;
-  final bool reversal;
   final Decoration decoration;
   final GestureTapCallback onTap;
-  final AlignmentGeometry alignment;
-  final int maxLines;
-  final TextOverflow overflow;
   final IconData icon;
   final double iconSize;
-  final double spacing;
   final TextDirection textDirection;
   final String semanticLabel;
-  final Axis direction;
   final Image image;
-  final MainAxisAlignment mainAxisAlignment;
-  final CrossAxisAlignment crossAxisAlignment;
+  Axis direction;
+  MainAxisAlignment mainAxisAlignment;
+  CrossAxisAlignment crossAxisAlignment;
+  int maxLines;
+  bool reversal;
+  TextOverflow overflow;
+  double spacing;
+  AlignmentGeometry alignment;
 
   CustomIcon({
     Key key,
     this.icon,
     this.iconSize,
-    this.reversal: false,
+    this.reversal,
     this.background,
     this.iconColor,
     this.semanticLabel,
     this.textDirection,
     this.text,
-    this.inkWell: false,
+    this.inkWell,
     this.textStyle,
     this.onTap,
     this.padding,
     this.margin,
     this.width,
-    this.spacing: 4,
+    this.spacing,
     this.height,
     this.decoration,
-    this.direction: Axis.horizontal,
-    this.alignment: Alignment.center,
-    this.mainAxisAlignment: MainAxisAlignment.center,
-    this.crossAxisAlignment: CrossAxisAlignment.center,
-    this.maxLines: 1,
-    this.overflow: TextOverflow.ellipsis,
+    this.direction,
+    this.alignment,
+    this.mainAxisAlignment,
+    this.crossAxisAlignment,
+    this.maxLines,
+    this.overflow,
     this.image,
-  }) : super(key: key);
+  }) : super(key: key) {
+    if (maxLines == null) maxLines = 1;
+    if (overflow == null) overflow = TextOverflow.ellipsis;
+    if (reversal == null) reversal = false;
+    if (spacing == null) spacing = 4;
+    if (overflow == null) overflow = TextOverflow.ellipsis;
+    if (crossAxisAlignment == null) crossAxisAlignment = CrossAxisAlignment.center;
+    if (mainAxisAlignment == null) mainAxisAlignment = MainAxisAlignment.center;
+    if (alignment == null) alignment = Alignment.center;
+    if (direction == null) direction = Axis.horizontal;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,14 +80,14 @@ class CustomIcon extends StatelessWidget {
       children: text == null
           ? null
           : <Widget>[
-              reversal ? textWidget() : iconWidget(),
-              direction == Axis.horizontal
-                  ? Container(width: spacing ?? BaseUtils.getWidth(spacing))
-                  : Container(
-                      height: spacing ?? BaseUtils.getHeight(spacing),
-                    ),
-              reversal ? iconWidget() : textWidget(),
-            ],
+        reversal ? textWidget() : iconWidget(),
+        direction == Axis.horizontal
+            ? Container(width: spacing ?? BaseUtils.getWidth(spacing))
+            : Container(
+          height: spacing ?? BaseUtils.getHeight(spacing),
+        ),
+        reversal ? iconWidget() : textWidget(),
+      ],
       width: width,
       height: height,
       onTap: onTap,
@@ -103,10 +113,10 @@ class CustomIcon extends StatelessWidget {
   Widget iconWidget() {
     return image == null
         ? Icon(icon,
-            color: iconColor,
-            size: iconSize ?? BaseUtils.getWidth(15),
-            textDirection: textDirection,
-            semanticLabel: semanticLabel)
+        color: iconColor,
+        size: iconSize ?? BaseUtils.getWidth(15),
+        textDirection: textDirection,
+        semanticLabel: semanticLabel)
         : image;
   }
 }

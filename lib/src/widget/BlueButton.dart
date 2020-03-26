@@ -12,12 +12,13 @@ class BlueButton extends StatelessWidget {
   final EdgeInsetsGeometry padding;
 
   BlueButton({
+    Key key,
     this.text,
     this.onTap,
     this.width,
     this.margin,
     this.padding,
-  });
+  }) :super(key: key);
 
   @override
   Widget build(BuildContext context) {

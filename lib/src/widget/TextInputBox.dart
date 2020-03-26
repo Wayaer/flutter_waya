@@ -1,21 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_waya/waya.dart';
 import 'package:flutter_waya/src/constant/BaseEnum.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/src/constant/WayConstant.dart';
 import 'package:flutter_waya/src/constant/WayStyles.dart';
+import 'package:flutter_waya/waya.dart';
 
 class TextInputBox extends StatelessWidget {
   final TextEditingController controller;
   final ValueChanged<String> onChanged;
-
   final List<TextInputFormatter> inputFormatter;
-  final TextAlign textAlign; // 对齐方式
   final int maxLength; //最大长度
   final TextDirection textDirection;
-  final int maxLines;
+  int maxLines;
+  TextAlign textAlign; // 对齐方式
 
   final int minLines;
   final TextInputType keyboardType;
@@ -29,7 +28,7 @@ class TextInputBox extends StatelessWidget {
   final TextStyle counterStyle;
   final Widget counter;
 
-  final bool obscureText; //隐藏文字
+  bool obscureText; //隐藏文字
   final Widget header;
   final Widget footer;
   final FocusNode focusNode;
@@ -86,10 +85,10 @@ class TextInputBox extends StatelessWidget {
     this.onSubmitted,
     this.inputStyle,
     this.keyboardType,
-    this.maxLines: 1,
+    this.maxLines,
     this.minLines,
     this.textDirection,
-    this.textAlign: TextAlign.left,
+    this.textAlign,
     this.maxLength,
     this.onChanged,
     this.cursorColor,
@@ -127,12 +126,16 @@ class TextInputBox extends StatelessWidget {
     this.focusNode,
     this.header,
     this.footer,
-    this.obscureText: false,
+    this.obscureText,
     this.hintMaxLines,
     this.counterText,
     this.counterStyle,
     this.counter,
-  }) : super(key: key);
+  }) : super(key: key) {
+    if (obscureText == null) obscureText = false;
+    if (maxLines == null) maxLines = 1;
+    if (textAlign == null) textAlign = TextAlign.left;
+  }
 
 //  解决光标左移问题
 //  @override
@@ -148,12 +151,12 @@ class TextInputBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return header != null || footer != null
         ? Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-            //输入框头部
-            Offstage(offstage: header == null, child: header),
-            textField(context),
-            //输入框底部
-            Offstage(offstage: footer == null, child: footer)
-          ])
+      //输入框头部
+      Offstage(offstage: header == null, child: header),
+      textField(context),
+      //输入框底部
+      Offstage(offstage: footer == null, child: footer)
+    ])
         : textField(context);
   }
 

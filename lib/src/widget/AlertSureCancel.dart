@@ -1,18 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/waya.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/src/widget/AlertBase.dart';
+import 'package:flutter_waya/waya.dart';
 
 class AlertSureCancel extends StatelessWidget {
   final Widget showWidget;
   final GestureTapCallback sureTap;
   final GestureTapCallback cancelTap;
-  final String cancelText;
-  final String sureText;
+  String cancelText;
+  String sureText;
   final Widget sure;
   final Widget cancel;
-  final Color backgroundColor;
+  Color backgroundColor;
   final TextStyle cancelTextStyle;
   final TextStyle sureTextStyle;
   final EdgeInsetsGeometry padding;
@@ -24,8 +24,8 @@ class AlertSureCancel extends StatelessWidget {
     this.showWidget,
     this.sureTap,
     this.cancelTap,
-    this.cancelText: 'cancle',
-    this.sureText: 'sure',
+    this.cancelText,
+    this.sureText,
     this.cancelTextStyle,
     this.sureTextStyle,
     this.sure,
@@ -36,7 +36,9 @@ class AlertSureCancel extends StatelessWidget {
     this.width,
     this.height,
   }) {
-    if (backgroundColor == null) getColors(white);
+    if (cancelText == null) cancelText = 'cancle';
+    if (sureText == null) sureText = 'sure';
+    if (backgroundColor == null) backgroundColor = getColors(white);
     if (padding == null) EdgeInsets.all(BaseUtils.getWidth(20));
     if (sureTextStyle == null)
       TextStyle(decoration: TextDecoration.none, fontSize: 13, fontWeight: FontWeight.w500, color: getColors(blue));
@@ -65,7 +67,7 @@ class AlertSureCancel extends StatelessWidget {
                 CustomButton(
                     padding: EdgeInsets.symmetric(horizontal: BaseUtils.getWidth(20), vertical: BaseUtils.getHeight(5)),
                     onTap: cancelTap ??
-                        () {
+                            () {
                           BaseNavigatorUtils.getInstance().pop();
                         },
                     child: cancel,
@@ -73,7 +75,7 @@ class AlertSureCancel extends StatelessWidget {
                     textStyle: cancelTextStyle),
                 CustomButton(
                     onTap: sureTap ??
-                        () {
+                            () {
                           BaseNavigatorUtils.getInstance().pop();
                         },
                     padding: EdgeInsets.symmetric(horizontal: BaseUtils.getWidth(20), vertical: BaseUtils.getHeight(5)),

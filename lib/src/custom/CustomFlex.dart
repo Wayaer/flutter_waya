@@ -4,21 +4,20 @@ import 'package:flutter/material.dart';
 class CustomFlex extends StatelessWidget {
   //自定义横向竖向布局 加入了点击事件
   //公用 点击时间
-  final bool inkWell;
+  bool inkWell;
   final GestureTapCallback onTap;
   final GestureTapCallback onDoubleTap;
   final GestureLongPressCallback onLongPress;
 
   //横竖 布局 List<Widget>   children
   final List<Widget> children;
-  final MainAxisAlignment mainAxisAlignment;
-  final CrossAxisAlignment crossAxisAlignment;
-  final Axis direction; //布局横竖
   final MainAxisSize mainAxisSize;
-
   final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
   final TextBaseline textBaseline;
+  MainAxisAlignment mainAxisAlignment;
+  CrossAxisAlignment crossAxisAlignment;
+  Axis direction; //布局横竖
+  VerticalDirection verticalDirection;
 
   //容器 布局
   final Widget child;
@@ -31,28 +30,28 @@ class CustomFlex extends StatelessWidget {
   final Decoration decoration;
   final BoxConstraints constraints;
   final Matrix4 transform;
-  final bool isScroll;
+  bool isScroll;
 
   //  HitTestBehavior.opaque 自己处理事件 
   //  HitTestBehavior.deferToChild child处理事件
   //  HitTestBehavior.translucent 自己和child都可以接收事件
-  final HitTestBehavior behavior;
+  HitTestBehavior behavior;
 
   CustomFlex({
     Key key,
     this.onTap,
     this.onDoubleTap,
     this.onLongPress,
-    this.isScroll: false,
+    this.isScroll,
     this.children,
-    this.mainAxisAlignment: MainAxisAlignment.start,
-    this.crossAxisAlignment: CrossAxisAlignment.center,
+    this.mainAxisAlignment,
+    this.crossAxisAlignment,
     this.mainAxisSize,
     this.textDirection,
     this.textBaseline,
-    this.verticalDirection: VerticalDirection.down,
-    this.direction: Axis.vertical,
-    this.inkWell: false,
+    this.verticalDirection,
+    this.direction,
+    this.inkWell,
     this.child,
     this.padding,
     this.margin,
@@ -63,8 +62,17 @@ class CustomFlex extends StatelessWidget {
     this.decoration,
     this.constraints,
     this.transform,
-    this.behavior: HitTestBehavior.opaque,
-  }) : super(key: key);
+    this.behavior,
+  }) : super(key: key) {
+    if (isScroll == null) isScroll = false;
+    if (mainAxisAlignment == null) mainAxisAlignment = MainAxisAlignment.start;
+    if (crossAxisAlignment == null) crossAxisAlignment = CrossAxisAlignment.center;
+    if (verticalDirection == null) verticalDirection = VerticalDirection.down;
+    if (direction == null) direction = Axis.vertical;
+    if (inkWell == null) inkWell = false;
+    if (behavior == null) behavior = HitTestBehavior.opaque;
+  }
+
   List<Widget> list;
 
   @override

@@ -6,21 +6,25 @@ import 'package:flutter_waya/src/custom/CustomButton.dart';
 import 'package:flutter_waya/src/utils/BaseUtils.dart';
 
 class CountDownSkip extends StatefulWidget {
-  final String skipText;
-  final int seconds;
+  String skipText;
+  int seconds;
   final TextStyle textStyle;
   final ValueChanged<int> onChange;
   final GestureTapCallback onTap;
   final Decoration decoration;
 
   CountDownSkip({
-    this.skipText: '',
-    this.seconds: 5,
+    Key key,
+    this.skipText,
+    this.seconds,
     this.textStyle,
     this.onChange,
     this.onTap,
     this.decoration,
-  });
+  }) :super(key: key) {
+    if (skipText == null) skipText = '';
+    if (seconds == null) seconds = 5;
+  }
 
   @override
   State<StatefulWidget> createState() {

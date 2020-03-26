@@ -5,10 +5,10 @@ import 'package:flutter_waya/src/utils/BaseUtils.dart';
 import 'package:flutter_waya/src/utils/LogUtils.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class Refresher extends StatelessWidget {
+class Refresh extends StatelessWidget {
   final RefreshController controller;
-  final bool enablePullDown;
-  final bool enablePullUp;
+  bool enablePullDown;
+  bool enablePullUp;
   final VoidCallback onLoading;
   final VoidCallback onRefresh;
   final Widget child;
@@ -17,7 +17,7 @@ class Refresher extends StatelessWidget {
   final TextStyle footerTextStyle;
 
   //
-  final bool enableTwoLevel; //二楼是否开启
+  bool enableTwoLevel; //二楼是否开启
   final VoidCallback onTwoLevel;
   final OnOffsetChange onOffsetChange;
   final Axis scrollDirection;
@@ -29,18 +29,18 @@ class Refresher extends StatelessWidget {
   final int semanticChildCount;
   final DragStartBehavior dragStartBehavior;
 
-  Refresher({
+  Refresh({
     Key key,
     this.controller,
     this.footerTextStyle,
-    this.enablePullDown: false,
-    this.enablePullUp: false,
+    this.enablePullDown,
+    this.enablePullUp,
     this.onLoading,
     this.onRefresh,
     this.child,
     this.footer,
     this.header,
-    this.enableTwoLevel: false,
+    this.enableTwoLevel,
     this.onTwoLevel,
     this.onOffsetChange,
     this.dragStartBehavior,
@@ -51,7 +51,11 @@ class Refresher extends StatelessWidget {
     this.physics,
     this.scrollDirection,
     this.scrollController,
-  }) : super(key: key);
+  }) : super(key: key) {
+    if (enablePullDown == null) enablePullDown = false;
+    if (enablePullUp == null) enablePullUp = false;
+    if (enableTwoLevel == null) enableTwoLevel = false;
+  }
 
   RefreshController refreshController = RefreshController(initialRefresh: false);
 
@@ -86,11 +90,11 @@ class Refresher extends StatelessWidget {
               );
             },
           ),
-      onRefresh: onRefresh ?? onRefreshed,
-      onLoading: onLoading ?? onLoadings,
+      onRefresh: onRefresh ?? onRefreshVoid,
+      onLoading: onLoading ?? onLoadingVoid,
       child: child,
-      enableTwoLevel: false,
-      onTwoLevel: onTwoLevel,
+      enableTwoLevel: enableTwoLevel,
+      onTwoLevel: onTwoLevel ?? onTwoLevelVoid,
       onOffsetChange: onOffsetChange,
       dragStartBehavior: dragStartBehavior,
       primary: primary,
@@ -110,15 +114,23 @@ class Refresher extends StatelessWidget {
     );
   }
 
-  onRefreshed() {
-    log('onRefreshed');
+  onTwoLevelVoid() {
+    log('onTwoLevel');
+    BaseUtils.timerUtils(Duration(seconds: 4), () {
+      refreshController.twoLevelComplete();
+    });
+  }
+
+
+  onRefreshVoid() {
+    log('onRefresh');
     BaseUtils.timerUtils(Duration(seconds: 4), () {
       refreshController.refreshCompleted();
     });
   }
 
-  onLoadings() {
-    log('onLoadings');
+  onLoadingVoid() {
+    log('onLoading');
     BaseUtils.timerUtils(Duration(seconds: 4), () {
       refreshController.loadComplete();
     });

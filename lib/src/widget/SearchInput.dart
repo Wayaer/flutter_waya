@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/waya.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/src/constant/WayIcon.dart';
 import 'package:flutter_waya/src/utils/BaseUtils.dart';
+import 'package:flutter_waya/waya.dart';
 
 class SearchInput extends StatelessWidget {
   final String searchText;
@@ -17,7 +17,7 @@ class SearchInput extends StatelessWidget {
   final Widget prefixIcon;
 
   final double labelSpacing;
-  final LineType lineType;
+  LineType lineType;
   final EdgeInsetsGeometry margin;
 
   final TextEditingController controller;
@@ -50,7 +50,7 @@ class SearchInput extends StatelessWidget {
     this.searchPadding,
     this.defaultBorder,
     this.focusedBorder,
-    this.lineType: LineType.outline,
+    this.lineType,
     this.focusedBorderColor,
     this.enabledBorderColor,
     this.margin,
@@ -58,7 +58,9 @@ class SearchInput extends StatelessWidget {
     this.prefixIcon,
     this.searchStyle,
     this.searchTap,
-  }) : super(key: key) {}
+  }) : super(key: key) {
+    if (lineType == null) lineType = LineType.outline;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -93,11 +95,11 @@ class SearchInput extends StatelessWidget {
       suffix: searchText == null
           ? null
           : CustomButton(
-              text: '搜索',
-              onTap: searchTap,
-              padding: searchPadding ?? EdgeInsets.symmetric(horizontal: BaseUtils.getWidth(3)),
-              textStyle: searchStyle ?? TextStyle(color: getColors(white)),
-            ),
+        text: '搜索',
+        onTap: searchTap,
+        padding: searchPadding ?? EdgeInsets.symmetric(horizontal: BaseUtils.getWidth(3)),
+        textStyle: searchStyle ?? TextStyle(color: getColors(white)),
+      ),
     );
   }
 

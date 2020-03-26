@@ -4,8 +4,6 @@ import 'CustomFlex.dart';
 
 class CustomButton extends StatelessWidget {
   final child;
-  final String text;
-  final bool inkWell;
   final TextStyle textStyle;
   final EdgeInsetsGeometry padding;
   final EdgeInsetsGeometry margin;
@@ -15,13 +13,15 @@ class CustomButton extends StatelessWidget {
   final Decoration decoration;
   final GestureTapCallback onTap;
   final AlignmentGeometry alignment;
-  final int maxLines;
-  final TextOverflow overflow;
+  int maxLines;
+  TextOverflow overflow;
+  String text;
+  bool inkWell;
 
   CustomButton({
     Key key,
-    this.text: 'Button',
-    this.inkWell: false,
+    this.text,
+    this.inkWell,
     this.textStyle,
     this.onTap,
     this.padding,
@@ -31,10 +31,15 @@ class CustomButton extends StatelessWidget {
     this.height,
     this.decoration,
     this.alignment,
-    this.maxLines: 1,
+    this.maxLines,
     this.child,
     this.overflow: TextOverflow.ellipsis,
-  }) : super(key: key);
+  }) : super(key: key) {
+    if (text == null) text = 'Button';
+    if (inkWell == null) inkWell = false;
+    if (maxLines == null) maxLines = 1;
+    if (overflow == null) overflow = TextOverflow.ellipsis;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,12 +49,12 @@ class CustomButton extends StatelessWidget {
       child: child != null
           ? child
           : Text(
-              text,
-              textAlign: TextAlign.start,
-              style: textStyle,
-              maxLines: maxLines,
-              overflow: overflow,
-            ),
+        text,
+        textAlign: TextAlign.start,
+        style: textStyle,
+        maxLines: maxLines,
+        overflow: overflow,
+      ),
       width: width,
       height: height,
       onTap: onTap,

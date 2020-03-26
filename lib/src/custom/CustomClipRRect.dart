@@ -5,15 +5,15 @@ import 'package:flutter_waya/src/utils/BaseUtils.dart';
 class CustomClipRRect extends StatelessWidget {
   final BorderRadius borderRadius;
   final CustomClipper<RRect> clipper;
-  final Clip clipBehavior;
   final Widget child;
   final EdgeInsetsGeometry padding;
   final EdgeInsetsGeometry margin;
   final double height;
   final double width;
   final Decoration decoration;
+  Clip clipBehavior;
 
-  const CustomClipRRect({
+  CustomClipRRect({
     Key key,
     this.borderRadius,
     this.padding,
@@ -22,10 +22,11 @@ class CustomClipRRect extends StatelessWidget {
     this.width,
     this.height,
     this.decoration,
-    this.clipBehavior = Clip.antiAlias,
+    this.clipBehavior,
     this.child,
-  })  : assert(clipBehavior != null),
-        super(key: key);
+  }) :super(key: key) {
+    if (clipBehavior == null) clipBehavior = Clip.antiAlias;
+  }
 
   @override
   Widget build(BuildContext context) {

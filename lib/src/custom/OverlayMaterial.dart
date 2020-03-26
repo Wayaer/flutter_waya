@@ -1,35 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_waya/waya.dart';
 import 'package:flutter_waya/src/custom/OverlayBase.dart';
+import 'package:flutter_waya/waya.dart';
 
 // ignore: must_be_immutable
 class OverlayMaterial extends StatelessWidget {
   final GlobalKey<NavigatorState> navigatorKey; //导航键
   final Widget home; //主页
-  final Map<String, WidgetBuilder> routes; //路由
   final String initialRoute; //初始路由
   final RouteFactory onGenerateRoute; //生成路由
   final RouteFactory onUnknownRoute; //未知路由
-  List<NavigatorObserver> navigatorObservers; //导航观察器
   final TransitionBuilder builder; //建造者
-  final String title; //标题
+  final LocaleListResolutionCallback localeListResolutionCallback; //区域分辨回调
+  final LocaleResolutionCallback localeResolutionCallback;
   final GenerateAppTitle onGenerateTitle; //生成标题
   final ThemeData theme; //主题
   final ThemeData darkTheme;
-  final ThemeMode themeMode;
   final Color color; //颜色
-  Locale locale; //地点
+  Map<String, WidgetBuilder> routes; //路由
+  List<NavigatorObserver> navigatorObservers; //导航观察器
   Iterable<LocalizationsDelegate<dynamic>> localizationsDelegates; //本地化委托
-  final LocaleListResolutionCallback localeListResolutionCallback; //区域分辨回调
-  final LocaleResolutionCallback localeResolutionCallback;
+  String title; //标题
+  ThemeMode themeMode;
+  Locale locale; //地点
   Iterable<Locale> supportedLocales; //支持区域
-  final bool showPerformanceOverlay; //显示性能叠加
-  final bool checkerboardRasterCacheImages; //棋盘格光栅缓存图像
-  final bool checkerboardOffscreenLayers;
-  final bool showSemanticsDebugger; //显示语义调试器
-  final bool debugShowCheckedModeBanner; //调试显示检查模式横幅
-  final bool debugShowMaterialGrid;
+  bool showPerformanceOverlay; //显示性能叠加
+  bool checkerboardRasterCacheImages; //棋盘格光栅缓存图像
+  bool checkerboardOffscreenLayers;
+  bool showSemanticsDebugger; //显示语义调试器
+  bool debugShowCheckedModeBanner; //调试显示检查模式横幅
+  bool debugShowMaterialGrid;
   TextDirection textDirection;
 
   OverlayMaterial({
@@ -37,39 +37,39 @@ class OverlayMaterial extends StatelessWidget {
     this.textDirection,
     this.navigatorKey,
     this.home,
-    this.routes = const <String, WidgetBuilder>{},
+    this.routes,
     this.initialRoute,
     this.onGenerateRoute,
     this.onUnknownRoute,
     this.navigatorObservers,
     this.builder,
-    this.title = '',
+    this.title,
     this.onGenerateTitle,
     this.color,
     this.theme,
     this.darkTheme,
-    this.themeMode = ThemeMode.system,
+    this.themeMode,
     this.locale,
     this.localizationsDelegates,
     this.localeListResolutionCallback,
     this.localeResolutionCallback,
-    this.supportedLocales = const <Locale>[Locale('en', 'US')],
-    this.debugShowMaterialGrid = false,
-    this.showPerformanceOverlay = false,
-    this.checkerboardRasterCacheImages = false,
-    this.checkerboardOffscreenLayers = false,
-    this.showSemanticsDebugger = false,
-    this.debugShowCheckedModeBanner = false,
-  })  : assert(routes != null),
-        assert(navigatorObservers != null),
-        assert(title != null),
-        assert(debugShowMaterialGrid != null),
-        assert(showPerformanceOverlay != null),
-        assert(checkerboardRasterCacheImages != null),
-        assert(checkerboardOffscreenLayers != null),
-        assert(showSemanticsDebugger != null),
-        assert(debugShowCheckedModeBanner != null),
-        super(key: key) {
+    this.supportedLocales,
+    this.debugShowMaterialGrid,
+    this.showPerformanceOverlay,
+    this.checkerboardRasterCacheImages,
+    this.checkerboardOffscreenLayers,
+    this.showSemanticsDebugger,
+    this.debugShowCheckedModeBanner,
+  }) : super(key: key) {
+    if (debugShowMaterialGrid == null) debugShowMaterialGrid = false;
+    if (showPerformanceOverlay == null) showPerformanceOverlay = false;
+    if (checkerboardRasterCacheImages == null) checkerboardRasterCacheImages = false;
+    if (checkerboardOffscreenLayers == null) checkerboardOffscreenLayers = false;
+    if (showSemanticsDebugger == null) showSemanticsDebugger = false;
+    if (debugShowCheckedModeBanner == null) debugShowCheckedModeBanner = false;
+    if (themeMode == null) themeMode = ThemeMode.system;
+    if (title == null) title = "";
+    if (routes == null) routes = const <String, WidgetBuilder>{};
     if (textDirection == null) textDirection = TextDirection.ltr;
     if (navigatorObservers == null) navigatorObservers = [BaseNavigatorUtils.getInstance()];
     if (locale == null) locale = const Locale('zh');

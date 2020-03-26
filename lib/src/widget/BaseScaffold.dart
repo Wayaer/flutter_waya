@@ -1,22 +1,23 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/waya.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/src/utils/BaseUtils.dart';
 import 'package:flutter_waya/src/utils/MediaQueryUtils.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:flutter_waya/src/widget/Refreshed.dart';
+import 'package:flutter_waya/waya.dart';
+
 
 class BaseScaffold extends StatelessWidget {
   final EdgeInsetsGeometry padding;
-  final bool isScroll;
-  final bool isolationBody;
-  final bool paddingStatusBar;
   final Color backgroundColor;
   final Widget body;
-  final bool enablePullDown;
+  bool isScroll;
+  bool isolationBody;
+  bool paddingStatusBar;
+  bool enablePullDown;
 
   //刷新组件相关
-  RefreshController refreshController;
+  RefreshController controller;
   final VoidCallback onRefresh;
   final Widget child;
   final Widget header;
@@ -35,27 +36,27 @@ class BaseScaffold extends StatelessWidget {
   final Widget drawer;
   final List<Widget> persistentFooterButtons;
   final bool resizeToAvoidBottomPadding;
-  final bool extendBody;
   final bool resizeToAvoidBottomInset;
-  final bool primary;
-  final DragStartBehavior drawerDragStartBehavior;
+  bool primary;
+  bool extendBody;
+  DragStartBehavior drawerDragStartBehavior;
 
   //isScroll  和isolationBody（body隔离出一个横条目）  不可同时使用
   BaseScaffold({
     Key key,
     this.appBar,
-    this.isScroll: false,
-    this.isolationBody: false,
+    this.isScroll,
+    this.isolationBody,
     this.body,
-    this.paddingStatusBar: false,
+    this.paddingStatusBar,
     this.padding,
-    this.refreshController,
+    this.controller,
     this.onRefresh,
     this.child,
     this.header,
     this.footer,
     this.footerTextStyle,
-    this.enablePullDown: false,
+    this.enablePullDown,
     //
     this.floatingActionButton, //悬浮按钮
     this.floatingActionButtonLocation, //悬浮按钮位置
@@ -68,14 +69,18 @@ class BaseScaffold extends StatelessWidget {
     this.backgroundColor, //内容的背景颜色，默认使用的是 ThemeData.scaffoldBackgroundColor 的值
     this.resizeToAvoidBottomPadding, //类似于 Android 中的 android:windowSoftInputMode=”adjustResize”，控制界面内容 body 是否重新布局来避免底部被覆盖了，比如当键盘显示的时候，重新布局避免被键盘盖住内容。默认值为 true。
     this.resizeToAvoidBottomInset,
-    this.primary = true, //试用使用primary主色
-    this.drawerDragStartBehavior = DragStartBehavior.start,
-    this.extendBody = false,
+    this.primary, //试用使用primary主色
+    this.drawerDragStartBehavior,
+    this.extendBody,
     this.appBarHeight,
   }) : super(key: key) {
-    if (refreshController == null) {
-      refreshController = RefreshController(initialRefresh: false);
-    }
+    if (isScroll == null) isScroll = false;
+    if (isolationBody == null) isolationBody = false;
+    if (paddingStatusBar == null) paddingStatusBar = false;
+    if (enablePullDown == null) enablePullDown = false;
+    if (primary == null) primary = true;
+    if (extendBody == null) extendBody = false;
+    if (drawerDragStartBehavior == null) drawerDragStartBehavior = DragStartBehavior.start;
   }
 
   @override
@@ -110,9 +115,9 @@ class BaseScaffold extends StatelessWidget {
   }
 
   Widget refresherContainer() {
-    return Refresher(
+    return Refreshed(
       enablePullDown: enablePullDown,
-      controller: refreshController,
+      controller: controller,
       onRefresh: onRefresh,
       child: container(),
       header: header,

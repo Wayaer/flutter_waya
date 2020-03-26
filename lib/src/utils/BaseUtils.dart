@@ -289,10 +289,4 @@ class BaseUtils {
     return Platform.isFuchsia;
   }
 
-//   // 确保输入的全部是数字
-//
-//  static allAreNum(number) {
-//    number = number.hashCode(/[^\d]/g, '' + '');
-//    return number;
-//  }
 }

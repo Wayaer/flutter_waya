@@ -14,31 +14,35 @@ class CustomNestedScrollView extends StatefulWidget {
   final Color backgroundColor;
   final double expandedHeight;
   final Size preferredSize;
-  final bool pinned;
-  final bool containsStatusBar;
-  final bool floating;
   final bool centerTitle;
   final ScrollPhysics physics;
-  final CollapseMode collapseMode;
+  CollapseMode collapseMode;
+  bool containsStatusBar;
+  bool pinned;
+  bool floating;
 
-  CustomNestedScrollView(
-      {Key key,
-      this.title,
-      this.pinned: true,
-      this.floating: true,
-      this.centerTitle,
-      this.backgroundColor,
-      this.topBody,
-      this.tabBarBody,
-      this.physics,
-      this.containsStatusBar: true,
-      this.expandedHeight,
-      this.preferredSize,
-      this.collapseMode: CollapseMode.parallax,
-      this.body,
-      this.leading,
-      this.controller})
-      : super(key: key);
+  CustomNestedScrollView({Key key,
+    this.title,
+    this.pinned,
+    this.floating,
+    this.centerTitle,
+    this.backgroundColor,
+    this.topBody,
+    this.tabBarBody,
+    this.physics,
+    this.containsStatusBar,
+    this.expandedHeight,
+    this.preferredSize,
+    this.collapseMode,
+    this.body,
+    this.leading,
+    this.controller})
+      : super(key: key) {
+    if (pinned == null) pinned = true;
+    if (floating == null) floating = true;
+    if (containsStatusBar == null) containsStatusBar = true;
+    if (collapseMode == null) collapseMode = CollapseMode.parallax;
+  }
 
   @override
   State<StatefulWidget> createState() {
@@ -56,8 +60,16 @@ class CustomNestedScrollViewState extends State<CustomNestedScrollView> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((callback) {
-      double containerHeight = containerKey.currentContext.findRenderObject().paintBounds.size.height;
-      double preferredSizeHeight = preferredSizeKey.currentContext.findRenderObject().paintBounds.size.height;
+      double containerHeight = containerKey.currentContext
+          .findRenderObject()
+          .paintBounds
+          .size
+          .height;
+      double preferredSizeHeight = preferredSizeKey.currentContext
+          .findRenderObject()
+          .paintBounds
+          .size
+          .height;
       expandedHeight = widget.containsStatusBar
           ? containerHeight + preferredSizeHeight - MediaQueryUtils.getStatusBarHeight()
           : containerHeight + preferredSizeHeight;
@@ -71,30 +83,30 @@ class CustomNestedScrollViewState extends State<CustomNestedScrollView> {
   Widget build(BuildContext context) {
     return showNestedScrollView
         ? NestedScrollView(
-            controller: widget.controller,
-            headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-              return <Widget>[
-                SliverAppBar(
-                  leading: widget.leading ?? Container(),
-                  pinned: widget.pinned,
-                  floating: widget.floating,
-                  centerTitle: widget.centerTitle ?? true,
-                  title: widget.title,
-                  backgroundColor: widget.backgroundColor ?? getColors(background),
-                  expandedHeight: expandedHeight,
-                  flexibleSpace: FlexibleSpaceBar(collapseMode: widget.collapseMode, background: widget.topBody),
-                  bottom: PreferredSize(child: widget.tabBarBody, preferredSize: widget.preferredSize),
-                ),
-              ];
-            },
-            body: widget.body,
-          )
+      controller: widget.controller,
+      headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+        return <Widget>[
+          SliverAppBar(
+            leading: widget.leading ?? Container(),
+            pinned: widget.pinned,
+            floating: widget.floating,
+            centerTitle: widget.centerTitle ?? true,
+            title: widget.title,
+            backgroundColor: widget.backgroundColor ?? getColors(background),
+            expandedHeight: expandedHeight,
+            flexibleSpace: FlexibleSpaceBar(collapseMode: widget.collapseMode, background: widget.topBody),
+            bottom: PreferredSize(child: widget.tabBarBody, preferredSize: widget.preferredSize),
+          ),
+        ];
+      },
+      body: widget.body,
+    )
         : Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Container(key: containerKey, child: widget.topBody),
-              PreferredSize(key: preferredSizeKey, child: widget.tabBarBody, preferredSize: widget.preferredSize)
-            ],
-          );
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Container(key: containerKey, child: widget.topBody),
+        PreferredSize(key: preferredSizeKey, child: widget.tabBarBody, preferredSize: widget.preferredSize)
+      ],
+    );
   }
 }

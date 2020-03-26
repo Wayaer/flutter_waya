@@ -72,3 +72,13 @@ enum DateTimePickerType {
   minute,
   second
 }
+//刷新类型
+enum RefreshCompletedType {
+  refresh,
+  refreshFailed,
+  refreshToIdle,
+  onLoading,
+  loadFailed,
+  loadNoData,
+  twoLevel,
+}

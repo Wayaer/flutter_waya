@@ -52,6 +52,10 @@ sendMessage(dynamic message) {
   MessageFactory.instance.messageEvent.send(message);
 }
 
-messageEventListen([Function listen]) {
+messageEventDestroy() {
+  MessageFactory.instance.messageEvent.destroy();
+}
+
+messageEventListen(listen) {
   return MessageFactory.instance.messageEvent.on().listen(listen);
 }

@@ -3,21 +3,20 @@ import 'package:flutter_waya/waya.dart';
 
 class CustomDrawer extends StatefulWidget {
   final Color backgroundColor;
-  final double elevation;
   final Widget child;
-  double width;
   final DrawerCallback callback;
+  double width;
+  double elevation;
 
   CustomDrawer({
     this.backgroundColor,
-    this.elevation: 16.0,
+    this.elevation,
     @required this.child,
     this.width,
     this.callback,
   }) {
-    if (width == null) {
-      width = BaseUtils.getWidth() * 0.7;
-    }
+    if (width == null) width = BaseUtils.getWidth() * 0.7;
+    if (elevation == null) elevation = 16.0;
   }
 
   @override
@@ -27,17 +26,15 @@ class CustomDrawer extends StatefulWidget {
 class CustomDrawerState extends State<CustomDrawer> {
   @override
   void initState() {
-    if (widget.callback != null) {
-      widget.callback(true);
-    }
+    if (widget.callback != null) widget.callback(true);
+
     super.initState();
   }
 
   @override
   void dispose() {
-    if (widget.callback != null) {
-      widget.callback(false);
-    }
+    if (widget.callback != null) widget.callback(false);
+
     super.dispose();
   }
 

@@ -15,9 +15,7 @@ class ListItem extends StatelessWidget {
   final GestureTapCallback onTap;
   final EdgeInsetsGeometry padding;
   final EdgeInsetsGeometry margin;
-  final bool arrowShow;
   final bool inkWell;
-  final bool underlineShow;
   final Color underlineColor;
   final Widget child;
   final Color backgroundColor;
@@ -28,32 +26,36 @@ class ListItem extends StatelessWidget {
   final Color iconColor;
   final IconData icon;
   final Image iconImage;
+  bool arrowShow;
+  bool underlineShow;
 
-  ListItem(
-      {Key key,
-      this.title,
-      this.height,
-      this.titleLeftSpacing,
-      this.inkWell: false,
-      this.onTap,
-      this.arrowShow: true,
-      this.underlineShow: false,
-      this.padding,
-      this.margin,
-      this.decoration,
-      this.child,
-      this.backgroundColor,
-      this.titleText,
-      this.titleTextStyle,
-      this.arrowSize,
-      this.arrowColor,
-      this.iconSize,
-      this.iconColor,
-      this.icon,
-      this.iconImage,
-      this.underlineColor,
-      this.arrowLeftSpacing})
-      : super(key: key);
+  ListItem({Key key,
+    this.title,
+    this.height,
+    this.titleLeftSpacing,
+    this.inkWell,
+    this.onTap,
+    this.arrowShow,
+    this.underlineShow,
+    this.padding,
+    this.margin,
+    this.decoration,
+    this.child,
+    this.backgroundColor,
+    this.titleText,
+    this.titleTextStyle,
+    this.arrowSize,
+    this.arrowColor,
+    this.iconSize,
+    this.iconColor,
+    this.icon,
+    this.iconImage,
+    this.underlineColor,
+    this.arrowLeftSpacing})
+      : super(key: key) {
+    if (arrowShow == null) arrowShow = true;
+    if (underlineShow == null) underlineShow = false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,33 +76,33 @@ class ListItem extends StatelessWidget {
           child: iconImage != null
               ? iconImage
               : Icon(
-                  icon,
-                  size: iconSize ?? BaseUtils.getWidth(17),
-                  color: iconColor ?? getColors(black),
-                ),
+            icon,
+            size: iconSize ?? BaseUtils.getWidth(17),
+            color: iconColor ?? getColors(black),
+          ),
         ),
         Container(
           width: titleLeftSpacing ?? BaseUtils.getWidth(10),
         ),
         Expanded(
             child: Flex(
-          direction: Axis.horizontal,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Offstage(
-              offstage: !((title != null && title is Text) || titleText != null),
-              child: title == null ? Text(titleText, style: titleTextStyle) : title,
-            ),
-            Expanded(
-                child: Offstage(
-              offstage: !(child != null && child is Widget),
-              child: Container(
-                child: child,
-                alignment: Alignment.centerRight,
-              ),
-            ))
-          ],
-        )),
+              direction: Axis.horizontal,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Offstage(
+                  offstage: !((title != null && title is Text) || titleText != null),
+                  child: title == null ? Text(titleText, style: titleTextStyle) : title,
+                ),
+                Expanded(
+                    child: Offstage(
+                      offstage: !(child != null && child is Widget),
+                      child: Container(
+                        child: child,
+                        alignment: Alignment.centerRight,
+                      ),
+                    ))
+              ],
+            )),
         Container(
           width: arrowLeftSpacing ?? BaseUtils.getWidth(10),
         ),

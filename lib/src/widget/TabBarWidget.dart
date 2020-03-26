@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_waya/waya.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/src/constant/WayStyles.dart';
 import 'package:flutter_waya/src/utils/BaseUtils.dart';
+import 'package:flutter_waya/waya.dart';
 
 class TabBarWidget extends StatelessWidget {
   TabController controller;
@@ -18,20 +18,21 @@ class TabBarWidget extends StatelessWidget {
   final TabBarIndicatorSize indicatorSize;
   final TextStyle labelStyle;
   final double indicatorWeight;
-  final double tabBarViewHeight;
-  final Color underlineBackgroundColor;
   final double underlineHeight;
   final EdgeInsetsGeometry tabBarViewPadding;
   final EdgeInsetsGeometry tabBarMargin;
   final EdgeInsetsGeometry tabBarPadding;
   final EdgeInsetsGeometry tabBarViewMargin;
-  final EdgeInsetsGeometry indicatorPadding;
   final ScrollPhysics physics;
   final Widget tabBarViewWidget;
   final Decoration decoration;
   final Decoration indicator;
+  double tabBarViewHeight;
+  Color underlineBackgroundColor;
+  EdgeInsetsGeometry indicatorPadding;
 
   TabBarWidget({
+    Key key,
     this.controller,
     this.indicator,
     this.decoration,
@@ -42,27 +43,26 @@ class TabBarWidget extends StatelessWidget {
     this.indicatorSize,
     this.labelStyle,
     this.indicatorWeight,
-    this.underlineBackgroundColor: Colors.transparent,
+    this.underlineBackgroundColor,
     this.underlineHeight,
-    this.indicatorPadding: EdgeInsets.zero,
+    this.indicatorPadding,
     this.tabBarView,
     this.amongWidget,
     this.tabBarViewMargin,
     this.tabBarViewPadding,
     this.tabBarMargin,
     this.tabBarPadding,
-    this.tabBarViewHeight: 0,
+    this.tabBarViewHeight,
     this.physics,
     this.tabBarViewWidget,
     this.headWidget,
     this.footWidget,
-  });
+  }) :super(key: key) {
+    if (underlineBackgroundColor == null) underlineBackgroundColor = Colors.transparent;
+    if (tabBarViewHeight == null) tabBarViewHeight = 0;
+    if (indicatorPadding == null) indicatorPadding = EdgeInsets.zero;
+  }
 
-  //if（tabBarViewHeight==0）{
-  // tabBarViewWidget 必须传
-  // }else{
-  //
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -97,15 +97,15 @@ class TabBarWidget extends StatelessWidget {
       ),
       tabBarViewHeight == 0
           ? Expanded(
-              child: Container(
-                  margin: tabBarViewMargin,
-                  padding: tabBarViewPadding,
-                  child: TabBarView(controller: controller, children: tabBarView)))
-          : Container(
+          child: Container(
               margin: tabBarViewMargin,
               padding: tabBarViewPadding,
-              height: tabBarViewHeight,
-              child: TabBarView(controller: controller, children: tabBarView)),
+              child: TabBarView(controller: controller, children: tabBarView)))
+          : Container(
+          margin: tabBarViewMargin,
+          padding: tabBarViewPadding,
+          height: tabBarViewHeight,
+          child: TabBarView(controller: controller, children: tabBarView)),
       Offstage(
         offstage: footWidget == null,
         child: footWidget,

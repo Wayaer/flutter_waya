@@ -6,8 +6,8 @@ class CustomRichText extends StatelessWidget {
   final GestureTapCallback onTap;
   final InlineSpan text;
   final Color background;
-  final TextAlign textAlign;
   final AlignmentGeometry alignment;
+  TextAlign textAlign;
 
   CustomRichText({
     Key key,
@@ -16,18 +16,20 @@ class CustomRichText extends StatelessWidget {
     this.alignment,
     this.text,
     this.textAlign: TextAlign.center,
-  }) : super(key: key);
+  }) : super(key: key) {
+    if (textAlign == null) textAlign = TextAlign.center;
+  }
 
   @override
   Widget build(BuildContext context) {
     return onTap == null
         ? richText()
         : CustomFlex(
-            alignment: alignment,
-            color: background,
-            onTap: onTap,
-            child: richText(),
-          );
+      alignment: alignment,
+      color: background,
+      onTap: onTap,
+      child: richText(),
+    );
   }
 
   Widget richText() {

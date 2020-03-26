@@ -27,27 +27,6 @@ class TabNavigationPageState extends State<TabNavigationPage> {
     super.initState();
     pageList = widget.pageList;
     currentPage = widget.defaultTabIndex ?? pageList[tabIndex];
-//
-//    //监听行情页面的事件，直接切换到交易页面
-//    MsgCenter.instance.eventBus.on<TradeEvent>().listen((TradeEvent evt) {
-//      if (evt.type == TradeEvent.DATACHARTPAGE_CLICK_BUYSELL) {
-//        if (evt.data["from"] == PAGE_QUOTES) {
-//          setState(() {
-//            tabIndex = 1;
-//            currentPage = list[tabIndex];
-//            print("tabIndex:" + tabIndex.toString());
-//            if (tabIndex == 1) {
-//              print("............ TradeEvent:" + evt.data["tradeSubType"]);
-//              MsgCenter.instance.eventBus.fire(new TradeEvent(
-//                  TradeEvent.Update_TradeHomePageBody,
-//                  {"tradeSubType": "homePage", "tradeMainType": "homePage"}));
-//              // currentPage.changeType(evt.data["tradeSubType"],
-//              //     evt.data["tradeMainType"], evt.data["type"]);
-//            }
-//          });
-//        }
-//      }
-//    });
   }
 
   @override
