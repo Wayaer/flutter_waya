@@ -57,7 +57,12 @@ class DioBaseUtils {
       // 这样请求将被中止并触发异常，上层catchError会被调用。
     }, onResponse: (Response response) async {
       if (response.statusCode == 200) {
-        return response.data;
+        if (response.data is Map) {
+          return response.data;
+        } else {
+          return ResponseModel(data: response.data, statusCode: 200, statusMessage: 'success',
+              statusMessageT: 'success').toJson();
+        }
       } else {
         responseModel.statusCode = response.statusCode;
         responseModel.statusMessage = response.statusMessage;
@@ -93,7 +98,7 @@ class DioBaseUtils {
         responseModel.statusMessageT = WayConstant.errorMessageT960;
       }
       log(responseModel.toJson());
-      return jsonEncode(responseModel);
+      return responseModel.toJson();
     }));
   }
 
