@@ -24,7 +24,7 @@
 
 ### 5、[屏幕相关参数](./lib/src/utils/MediaQueryUtils.dart)
 
-### 6、[全局消息发送监听](./lib/src/utils/MessageEvent.dart)
+### 6、[全局消息发送监听](./lib/src/utils/Event.dart)
 
 ### 7、[本地持久化存储](./lib/src/utils/StorageUtils.dart)
 

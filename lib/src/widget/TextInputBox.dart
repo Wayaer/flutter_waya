@@ -137,14 +137,43 @@ class TextInputBox extends StatelessWidget {
     if (textAlign == null) textAlign = TextAlign.left;
   }
 
-//  解决光标左移问题
+//  解决切换后台 再切换前台输入框为null
 //  @override
 //  void initState() {
 //    super.initState();
-//    if ( controller == null) {
-//      textController = TextEditingController.fromValue(TextEditingValue(
-//          text: value.trim(), selection: TextSelection.fromPosition(TextPosition(offset: value.length))));
+//    WidgetsBinding.instance.addObserver(this);
+//    controller = widget.controller ?? TextEditingController();
+//    setController(widget.value);
+//  }
+//
+//  setController(String value) {
+//    if (value.length > 0) {
+//      controller.text = value;
+//      解决光标左移问题
+//      controller.selection = TextSelection.fromPosition(TextPosition(offset: value.length));
 //    }
+//  }
+//
+//  @override
+//  void didChangeAppLifecycleState(AppLifecycleState state) {
+//    super.didChangeAppLifecycleState(state);
+//    switch (state) {
+//      case AppLifecycleState.inactive: //处于这种状态的应用程序应该假设它们可能在任何时候暂停。前台
+//        break;
+//      case AppLifecycleState.paused: // 应用程序不可见，后台  切换后台
+//        break;
+//      case AppLifecycleState.resumed: // 应用程序可见，前台  从后台切换前台
+//        setController(text);
+//        break;
+//      case AppLifecycleState.detached: // 申请将暂时暂停
+//        break;
+//    }
+//  }
+//
+//  @override
+//  void dispose() {
+//    WidgetsBinding.instance.removeObserver(this);
+//    super.dispose();
 //  }
 
   @override
