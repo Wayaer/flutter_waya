@@ -40,7 +40,7 @@
 
 ### 5、[二次封装Loading组件](./lib/src/widget/Loading.dart)
 
-## 4.快捷打包命令 [widget](./builds)
+## 4.快捷打包命令 [builds](./builds)
 sh android.sh  //即可打包命令 可拷贝builds至自己的项目目录 并修改
 
 
