@@ -16,28 +16,28 @@ class ListWheel extends StatefulWidget {
   final int itemCount;
 
   /// 半径大小,越大则越平面,越小则间距越大
-  final double diameterRatio;
+  double diameterRatio;
 
   /// 选中item偏移
-  final double offAxisFraction;
+  double offAxisFraction;
 
   ///表示车轮水平偏离中心的程度  范围[0,0.01]
-  final double perspective;
+  double perspective;
 
   /// 初始选中的Item
-  final int initialIndex;
+  int initialIndex;
 
   /// 回调监听
   final WheelChangedListener onItemSelected;
 
   /// ///放大倍率
-  final double magnification;
+  double magnification;
 
   ///是否启用放大镜
-  final bool useMagnifier;
+  bool useMagnifier;
 
   ///1或者2
-  final double squeeze;
+  double squeeze;
 
   ///
   ScrollPhysics physics;
@@ -48,12 +48,19 @@ class ListWheel extends StatefulWidget {
     @required this.itemBuilder,
     @required this.itemCount,
     this.itemExtent,
-    this.diameterRatio = 1,
-    this.offAxisFraction = 0,
-    this.initialIndex = 0,
+    this.diameterRatio,
+    this.offAxisFraction,
+    this.initialIndex,
     this.controller,
-    this.onItemSelected, this.perspective: 0.01, this.magnification: 1.5, this.useMagnifier: true, this.squeeze: 1, this.physics,
+    this.onItemSelected, this.perspective, this.magnification, this.useMagnifier, this.squeeze, this.physics,
   }) {
+    if (diameterRatio == null) diameterRatio = 1;
+    if (offAxisFraction == null) offAxisFraction = 0;
+    if (initialIndex == null) initialIndex = 0;
+    if (perspective == null) perspective = 0.01;
+    if (magnification == null) magnification = 1.5;
+    if (useMagnifier == null) useMagnifier = true;
+    if (squeeze == null) squeeze = 1;
     if (itemExtent == null) itemExtent = BaseUtils.getHeight(12);
     if (physics == null) physics = FixedExtentScrollPhysics();
     if (controller == null) controller = FixedExtentScrollController(initialItem: initialIndex);
