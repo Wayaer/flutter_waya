@@ -1,3 +1,5 @@
+import 'package:dio/dio.dart';
+
 class ResponseModel {
   int statusCode; //error状态
   String statusMessage; //error 状态消息
@@ -14,15 +16,15 @@ class ResponseModel {
   });
 
   ResponseModel.fromJson(Map<String, dynamic> json) {
-    type = json['type'].toString();
+    type = json['type'];
     statusCode = json['statusCode'];
     statusMessage = json['statusMessage'].toString();
     statusMessageT = json['statusMessageT'].toString();
     data = json['data'];
   }
 
-  Map<String, dynamic> toJson() {
-    Map<String, dynamic> data = new Map<String, dynamic>();
+  Map<String, dynamic> toMap() {
+    Map<String, dynamic> data = Map<String, dynamic>();
     data['type'] = this.type;
     data['data'] = this.data;
     data['statusCode'] = this.statusCode;

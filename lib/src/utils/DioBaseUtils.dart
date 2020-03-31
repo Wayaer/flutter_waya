@@ -61,15 +61,16 @@ class DioBaseUtils {
           return response.data;
         } else {
           return ResponseModel(data: response.data, statusCode: 200, statusMessage: 'success',
-              statusMessageT: 'success').toJson();
+              statusMessageT: 'success').toMap();
         }
       } else {
         responseModel.statusCode = response.statusCode;
         responseModel.statusMessage = response.statusMessage;
-        log(responseModel.toJson());
+        log(responseModel.toMap());
         return responseModel;
       }
     }, onError: (DioError e) async {
+//      log(e.type.runtimeType);
       // 当请求失败时做一些预处理
       responseModel.type = e.type.toString();
       if (e.type == DioErrorType.DEFAULT) {
@@ -97,12 +98,12 @@ class DioBaseUtils {
         responseModel.statusMessage = WayConstant.errorMessage960 + e.response.statusCode.toString();
         responseModel.statusMessageT = WayConstant.errorMessageT960;
       }
-      log(responseModel.toJson());
-      return responseModel.toJson();
+      log(responseModel.toMap());
+      return jsonEncode(responseModel.toMap());
     }));
   }
 
-  Future get(String url, {Map<String, dynamic> params}) async {
+  Future<Map<String, dynamic>> get(String url, {Map<String, dynamic> params}) async {
     try {
       log("GET url:" + url + "  params:" + params.toString());
       Response response = await dio.get(url, queryParameters: params, cancelToken: cancelToken);
@@ -110,11 +111,12 @@ class DioBaseUtils {
       return jsonDecode(response.toString());
     } catch (e) {
       error = e;
+      log(error);
       return jsonDecode(error.message);
     }
   }
 
-  Future post(String url, {Map<String, dynamic> params, data}) async {
+  Future<Map<String, dynamic>> post(String url, {Map<String, dynamic> params, data}) async {
     try {
       log("POST url:" + url + "  params:" + params.toString() + "  data:" + data.toString());
       Response response = await dio.post(url, queryParameters: params, data: data, cancelToken: cancelToken);
@@ -126,7 +128,7 @@ class DioBaseUtils {
     }
   }
 
-  Future put(String url, Map<String, dynamic> param) async {
+  Future<Map<String, dynamic>> put(String url, Map<String, dynamic> param) async {
     try {
       log("PUT url:" + url + "  params:" + param.toString());
       Response response = await dio.put(url, queryParameters: param, cancelToken: cancelToken);
@@ -138,7 +140,7 @@ class DioBaseUtils {
     }
   }
 
-  Future delete(String url, Map<String, dynamic> param) async {
+  Future<Map<String, dynamic>> delete(String url, Map<String, dynamic> param) async {
     try {
       log("DELETE url:" + url + "  params:" + param.toString());
       Response response = await dio.delete(url, queryParameters: param, cancelToken: cancelToken);
