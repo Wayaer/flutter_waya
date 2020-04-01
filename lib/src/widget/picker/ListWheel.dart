@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_waya/waya.dart';
 
-typedef WheelChangedListener = Function(int index, double pixels);
+typedef WheelChangedListener = Function(int newIndex);
 
 class ListWheel extends StatefulWidget {
   /// 每个Item的高度,固定的
@@ -132,10 +132,11 @@ class ListWheelState extends State<ListWheel> {
       );
 
   bool onNotification(ScrollEndNotification notification) {
+    //   滚动结束的监听事件
     if (notification is ScrollEndNotification && widget.onItemSelected != null) {
       var pixels = notification.metrics.pixels;
-      var index = (pixels / widget.itemExtent).round();
-      widget.onItemSelected(index, pixels);
+      var newIndex = (pixels / widget.itemExtent).round();
+      widget.onItemSelected(newIndex);
       return true;
     }
     return false;
