@@ -30,6 +30,7 @@ class CustomFlex extends StatelessWidget {
   final Decoration decoration;
   final BoxConstraints constraints;
   final Matrix4 transform;
+  bool enabled;
   bool isScroll;
 
   //  HitTestBehavior.opaque 自己处理事件 
@@ -40,6 +41,7 @@ class CustomFlex extends StatelessWidget {
   CustomFlex({
     Key key,
     this.onTap,
+    this.enabled,
     this.onDoubleTap,
     this.onLongPress,
     this.isScroll,
@@ -64,6 +66,7 @@ class CustomFlex extends StatelessWidget {
     this.transform,
     this.behavior,
   }) : super(key: key) {
+    if (enabled == null) enabled = true;
     if (isScroll == null) isScroll = false;
     if (mainAxisAlignment == null) mainAxisAlignment = MainAxisAlignment.start;
     if (crossAxisAlignment == null) crossAxisAlignment = CrossAxisAlignment.center;
@@ -90,7 +93,7 @@ class CustomFlex extends StatelessWidget {
             )))
         : GestureDetector(
       behavior: behavior,
-      onTap: onTap,
+      onTap: enabled ? onTap : null,
       onDoubleTap: onDoubleTap,
       onLongPress: onLongPress,
       child: childBody(),
