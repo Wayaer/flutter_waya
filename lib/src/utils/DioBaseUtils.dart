@@ -32,9 +32,9 @@ class DioBaseUtils {
   }
 
   DioBaseUtils.internal({BaseOptions options}) {
+    dio = Dio();
     if (options != null) {
       Map<String, dynamic> _headers = {};
-      dio = Dio();
       _options = dio.options;
       _options.connectTimeout = options?.connectTimeout ?? HTTP_TIMEOUT_CONNECT;
       _options.receiveTimeout = options?.receiveTimeout ?? HTTP_TIMEOUT_RECEIVE;
@@ -156,7 +156,7 @@ class DioBaseUtils {
   Future download(String url, String savePath, [ProgressCallback onReceiveProgress]) async {
     try {
       log("url:" + url + "  savePath:" + savePath.toString());
-      return await dio.download(url, savePath, cancelToken: cancelToken, onReceiveProgress: (int received, int total) {
+      return await Dio().download(url, savePath, cancelToken: cancelToken, onReceiveProgress: (int received, int total) {
         onReceiveProgress(received, total);
       });
     } catch (e) {
