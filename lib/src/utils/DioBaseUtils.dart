@@ -57,7 +57,7 @@ class DioBaseUtils {
       // 这样请求将被中止并触发异常，上层catchError会被调用。
     }, onResponse: (Response response) async {
       if (response.statusCode == 200) {
-        if (response.data is Map) {
+        if (response.data is Map || jsonDecode(response.data) is Map) {
           return response.data;
         } else {
           return ResponseModel(data: response.data, statusCode: 200, statusMessage: 'success',
