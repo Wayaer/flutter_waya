@@ -1,32 +1,44 @@
 import 'dart:async';
 
-class Event<S> {
-  // ignore: close_sinks
-  StreamController streamController;
+class EventBus<S> {
+  StreamController _streamController;
 
-  Event({bool sync: false}) : streamController = StreamController.broadcast(sync: sync);
+  StreamController get streamController => _streamController;
+
+  EventBus({bool sync = false})
+      : _streamController = StreamController.broadcast(sync: sync);
+
+  EventBus.customController(StreamController controller)
+      : _streamController = controller;
+
+  Stream<T> on<T>() {
+    if (T == dynamic) {
+      return streamController.stream;
+    } else {
+      return streamController.stream.where((event) => event is T).cast<T>();
+    }
+  }
 
   void send(event) {
-    streamController.add(event);
+    _streamController.add(event);
   }
 
   void close() {
-    streamController.close();
+    _streamController.close();
   }
 
   void listen(listen) {
-    streamController.stream.listen(listen);
+    _streamController.stream.listen(listen);
   }
 
   void error(error) {
-    streamController.addError(error);
+    _streamController.addError(error);
   }
 
   void stream(Stream<S> stream) {
-    streamController.addStream(stream);
+    _streamController.addStream(stream);
   }
 }
-
 
 class EventFactory {
   // 工厂模式
@@ -36,11 +48,11 @@ class EventFactory {
 
   static EventFactory _instance;
 
-  Event event;
+  EventBus event;
 
   EventFactory._internal() {
     // 初始化
-    this.event = Event();
+    this.event = EventBus();
   }
 
   static EventFactory _getInstance() {

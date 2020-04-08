@@ -63,19 +63,26 @@ class OverlayMaterial extends StatelessWidget {
   }) : super(key: key) {
     if (debugShowMaterialGrid == null) debugShowMaterialGrid = false;
     if (showPerformanceOverlay == null) showPerformanceOverlay = false;
-    if (checkerboardRasterCacheImages == null) checkerboardRasterCacheImages = false;
-    if (checkerboardOffscreenLayers == null) checkerboardOffscreenLayers = false;
+    if (checkerboardRasterCacheImages == null)
+      checkerboardRasterCacheImages = false;
+    if (checkerboardOffscreenLayers == null)
+      checkerboardOffscreenLayers = false;
     if (showSemanticsDebugger == null) showSemanticsDebugger = false;
     if (debugShowCheckedModeBanner == null) debugShowCheckedModeBanner = false;
     if (themeMode == null) themeMode = ThemeMode.system;
     if (title == null) title = "";
     if (routes == null) routes = const <String, WidgetBuilder>{};
     if (textDirection == null) textDirection = TextDirection.ltr;
-    if (navigatorObservers == null) navigatorObservers = [BaseNavigatorUtils.getInstance()];
+    if (navigatorObservers == null)
+      navigatorObservers = [BaseNavigatorUtils.getInstance()];
     if (locale == null) locale = const Locale('zh');
-    if (supportedLocales == null) supportedLocales = [const Locale('zh', 'CH')];
+    if (supportedLocales == null) supportedLocales = [Locale('zh', 'CH')];
     if (localizationsDelegates == null)
-      localizationsDelegates = [GlobalMaterialLocalizations.delegate, GlobalWidgetsLocalizations.delegate];
+      localizationsDelegates = [
+        CustomLocalizationsDelegate(), //解决ios 长按输入框报错
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate
+      ];
   }
 
   @override
