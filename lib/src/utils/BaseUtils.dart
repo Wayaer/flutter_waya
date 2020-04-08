@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
 
-import 'package:crypto/crypto.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +11,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_waya/src/constant/BaseEnum.dart';
 import 'package:flutter_waya/src/utils/MediaQueryUtils.dart';
 import 'package:flutter_waya/waya.dart';
+import 'package:crypto/crypto.dart';
 
 isDebug() {
   return !kReleaseMode;
@@ -99,13 +99,8 @@ class BaseUtils {
 //  * @returns {number} 返回全面屏对应的16：9 屏幕高度
 
   static phoneFitHeight(BuildContext context) {
-    double h = MediaQuery
-        .of(context)
-        .size
-        .height;
-    double s = MediaQuery
-        .of(context)
-        .devicePixelRatio;
+    double h = MediaQuery.of(context).size.height;
+    double s = MediaQuery.of(context).devicePixelRatio;
     double y = s * h;
 
     if (Platform.isAndroid) {
@@ -159,9 +154,7 @@ class BaseUtils {
   static getHeight([double height, bool intType]) {
     double h;
     if (height == null || height == 0) {
-      h = MediaQueryUtils
-          .getSize()
-          .height;
+      h = MediaQueryUtils.getSize().height;
     } else {
       //  h = (height / designHeight) * phoneFitHeight(context);
       h = (height / designHeight) * MediaQueryUtils.getHeight();
@@ -173,9 +166,7 @@ class BaseUtils {
   static getWidth([double width, bool intType]) {
     double w;
     if (width == null || width == 0) {
-      w = MediaQueryUtils
-          .getSize()
-          .width;
+      w = MediaQueryUtils.getSize().width;
     } else {
       w = (width / designWidth) * MediaQueryUtils.getWidth();
     }
@@ -231,26 +222,28 @@ class BaseUtils {
 
   static setStatusBarLight(bool isLight) {
     const color = Color(0x00000000);
+    SystemUiOverlayStyle systemUiOverlayStyle;
     if (isLight is bool) {
       if (isLight) {
-        SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        systemUiOverlayStyle = SystemUiOverlayStyle(
           systemNavigationBarColor: Colors.black,
           systemNavigationBarDividerColor: color,
           statusBarColor: color,
           systemNavigationBarIconBrightness: Brightness.light,
           statusBarIconBrightness: Brightness.light,
           statusBarBrightness: Brightness.dark,
-        ));
+        );
       } else {
-        SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        systemUiOverlayStyle = SystemUiOverlayStyle(
           systemNavigationBarColor: Colors.black,
           systemNavigationBarDividerColor: color,
           statusBarColor: color,
           systemNavigationBarIconBrightness: Brightness.light,
           statusBarIconBrightness: Brightness.dark,
           statusBarBrightness: Brightness.light,
-        ));
+        );
       }
+      SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
     }
   }
 
@@ -288,5 +281,4 @@ class BaseUtils {
   static isFuchsia() {
     return Platform.isFuchsia;
   }
-
 }
