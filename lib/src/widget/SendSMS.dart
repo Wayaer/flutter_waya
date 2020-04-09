@@ -74,11 +74,13 @@ class SendSMSState extends State<SendSMS> {
       decoration: widget.decoration ??
           BoxDecoration(
               color: widget.background,
-              border: Border.all(
-                  width: widget.borderWidth ?? BaseUtils.getWidth(0),
-                  color: seconds == 0
-                      ? (widget.defaultBorderColor ?? getColors(blue))
-                      : (widget.notTapBorderColor ?? getColors(black70))),
+              border: !(widget.defaultBorderColor != null || widget.notTapBorderColor != null)
+                  ? null
+                  : Border.all(
+                      width: widget.borderWidth ?? 0,
+                      color: seconds == 0
+                          ? (widget.defaultBorderColor ?? getColors(blue))
+                          : (widget.notTapBorderColor ?? getColors(black70))),
               borderRadius: widget.borderRadius ?? BorderRadius.circular(20)),
       child: Text(
         '$verifyStr',

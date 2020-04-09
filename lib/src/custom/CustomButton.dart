@@ -7,7 +7,7 @@ class CustomButton extends StatelessWidget {
   final TextStyle textStyle;
   final EdgeInsetsGeometry padding;
   final EdgeInsetsGeometry margin;
-  final Color color;
+  final Color background;
   final double height;
   final double width;
   final Decoration decoration;
@@ -27,7 +27,7 @@ class CustomButton extends StatelessWidget {
     this.padding,
     this.margin,
     this.width,
-    this.color,
+    this.background,
     this.height,
     this.decoration,
     this.alignment,
@@ -59,8 +59,7 @@ class CustomButton extends StatelessWidget {
       height: height,
       onTap: onTap,
       margin: margin,
-      color: color,
-      decoration: decoration,
+      decoration: decoration ?? BoxDecoration(color: background),
       padding: padding,
       alignment: alignment,
     );

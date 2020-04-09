@@ -17,10 +17,10 @@ class CustomIcon extends StatelessWidget {
   final Decoration decoration;
   final GestureTapCallback onTap;
   final IconData icon;
-  final double iconSize;
+
   final TextDirection textDirection;
   final String semanticLabel;
-  final Image image;
+  final ImageProvider imageProvider;
   Axis direction;
   MainAxisAlignment mainAxisAlignment;
   CrossAxisAlignment crossAxisAlignment;
@@ -28,6 +28,7 @@ class CustomIcon extends StatelessWidget {
   bool reversal;
   TextOverflow overflow;
   double spacing;
+  double iconSize;
   AlignmentGeometry alignment;
 
   CustomIcon({
@@ -55,48 +56,52 @@ class CustomIcon extends StatelessWidget {
     this.crossAxisAlignment,
     this.maxLines,
     this.overflow,
-    this.image,
+    this.imageProvider,
   }) : super(key: key) {
     if (maxLines == null) maxLines = 1;
     if (overflow == null) overflow = TextOverflow.ellipsis;
+    if (iconSize == null) iconSize = BaseUtils.getWidth(15);
     if (reversal == null) reversal = false;
-    if (spacing == null) spacing = 4;
-    if (overflow == null) overflow = TextOverflow.ellipsis;
+    if (spacing == null) spacing = 0;
     if (crossAxisAlignment == null) crossAxisAlignment = CrossAxisAlignment.center;
     if (mainAxisAlignment == null) mainAxisAlignment = MainAxisAlignment.center;
-    if (alignment == null) alignment = Alignment.center;
-    if (direction == null) direction = Axis.horizontal;
   }
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> listWidget = [];
+    if (text != null && icon != null) {
+      if (reversal) {
+        listWidget.add(textWidget());
+        listWidget.add(spacingWidget());
+        listWidget.add(iconWidget());
+      } else {
+        listWidget.add(iconWidget());
+        listWidget.add(spacingWidget());
+        listWidget.add(textWidget());
+      }
+    }
     return CustomFlex(
       inkWell: inkWell,
-      child: text == null ? iconWidget() : null,
+      child: (text != null && icon != null) ? null : iconWidget(),
       direction: direction,
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: crossAxisAlignment,
       mainAxisAlignment: mainAxisAlignment,
-      children: text == null
-          ? null
-          : <Widget>[
-        reversal ? textWidget() : iconWidget(),
-        direction == Axis.horizontal
-            ? Container(width: spacing ?? BaseUtils.getWidth(spacing))
-            : Container(
-          height: spacing ?? BaseUtils.getHeight(spacing),
-        ),
-        reversal ? iconWidget() : textWidget(),
-      ],
+      children: (text != null && icon != null) ? listWidget : null,
       width: width,
       height: height,
       onTap: onTap,
       margin: margin,
-      color: background,
-      decoration: decoration,
+      decoration: decoration ?? BoxDecoration(color: background),
       padding: padding,
       alignment: alignment,
     );
+  }
+
+  Widget spacingWidget() {
+    return Container(
+        width: direction == Axis.horizontal ? spacing : 0, height: direction == Axis.vertical ? spacing : 0);
   }
 
   Widget textWidget() {
@@ -111,12 +116,15 @@ class CustomIcon extends StatelessWidget {
   }
 
   Widget iconWidget() {
-    return image == null
+    return imageProvider == null
         ? Icon(icon,
-        color: iconColor,
-        size: iconSize ?? BaseUtils.getWidth(15),
-        textDirection: textDirection,
-        semanticLabel: semanticLabel)
-        : image;
+            color: iconColor,
+            size: iconSize,
+            textDirection: textDirection,
+            semanticLabel: semanticLabel //帮助盲人或者视力有障碍的用户提供语言辅助描述
+            )
+        : ImageIcon(imageProvider,
+            color: iconColor, size: iconSize, semanticLabel: semanticLabel //帮助盲人或者视力有障碍的用户提供语言辅助描述
+            );
   }
 }
