@@ -5,6 +5,11 @@ import 'CustomFlex.dart';
 
 class CustomIcon extends StatelessWidget {
   //需要什么属性  自行添加
+  final IconData icon; //icon
+  final ImageProvider imageProvider; //图片转icon
+  final Image image; //显示图片
+  final TextDirection textDirection; //仅支持icon
+  final String semanticLabel;
   final String text;
   final bool inkWell;
   final TextStyle textStyle;
@@ -16,11 +21,7 @@ class CustomIcon extends StatelessWidget {
   final double width;
   final Decoration decoration;
   final GestureTapCallback onTap;
-  final IconData icon;
 
-  final TextDirection textDirection;
-  final String semanticLabel;
-  final ImageProvider imageProvider;
   Axis direction;
   MainAxisAlignment mainAxisAlignment;
   CrossAxisAlignment crossAxisAlignment;
@@ -56,7 +57,7 @@ class CustomIcon extends StatelessWidget {
     this.crossAxisAlignment,
     this.maxLines,
     this.overflow,
-    this.imageProvider,
+    this.imageProvider, this.image,
   }) : super(key: key) {
     if (maxLines == null) maxLines = 1;
     if (overflow == null) overflow = TextOverflow.ellipsis;
@@ -70,7 +71,7 @@ class CustomIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Widget> listWidget = [];
-    if (text != null && icon != null) {
+    if (text != null && haveIcon()) {
       if (reversal) {
         listWidget.add(textWidget());
         listWidget.add(spacingWidget());
@@ -83,12 +84,12 @@ class CustomIcon extends StatelessWidget {
     }
     return CustomFlex(
       inkWell: inkWell,
-      child: (text != null && icon != null) ? null : iconWidget(),
+      child: (text != null && haveIcon()) ? null : iconWidget(),
       direction: direction,
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: crossAxisAlignment,
       mainAxisAlignment: mainAxisAlignment,
-      children: (text != null && icon != null) ? listWidget : null,
+      children: (text != null && haveIcon()) ? listWidget : null,
       width: width,
       height: height,
       onTap: onTap,
@@ -115,16 +116,28 @@ class CustomIcon extends StatelessWidget {
     );
   }
 
+  bool haveIcon() {
+    return (icon != null || image != null || imageProvider != null);
+  }
+
   Widget iconWidget() {
-    return imageProvider == null
-        ? Icon(icon,
-            color: iconColor,
-            size: iconSize,
-            textDirection: textDirection,
-            semanticLabel: semanticLabel //帮助盲人或者视力有障碍的用户提供语言辅助描述
-            )
-        : ImageIcon(imageProvider,
-            color: iconColor, size: iconSize, semanticLabel: semanticLabel //帮助盲人或者视力有障碍的用户提供语言辅助描述
-            );
+    List<Widget> listWidget = [];
+    if (icon != null) {
+      listWidget.add(Icon(icon,
+          color: iconColor,
+          size: iconSize,
+          textDirection: textDirection,
+          semanticLabel: semanticLabel)); //帮助盲人或者视力有障碍的用户提供语言辅助描述
+    }
+    if (imageProvider != null) {
+      listWidget.add(ImageIcon(imageProvider,
+          color: iconColor,
+          size: iconSize,
+          semanticLabel: semanticLabel));
+    }
+    if (image != null) {
+      listWidget.add(image);
+    }
+    return Row(mainAxisSize: MainAxisSize.min, children: listWidget);
   }
 }

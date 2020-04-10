@@ -51,9 +51,8 @@ class AutoScrollItem extends StatefulWidget {
     int itemDuration,
     this.child,
     bool singleLine,
-  })  :
-        // assert(modeListener != null),
-        this.modeListener = modeListener ?? ValueNotifier(false),
+  })
+      :this.modeListener = modeListener ?? ValueNotifier(false),
         this.textColor = textColor ?? Colors.black,
         this.textSize = textSize ?? 14.0,
         this.autoScrollAnimation = autoScrollAnimation ?? AutoScrollAnimation.b2t,

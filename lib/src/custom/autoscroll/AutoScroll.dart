@@ -43,21 +43,20 @@ class AutoScroll extends StatefulWidget {
   final bool singleLine;
 
   ///点击事件回调
-  ValueChanged<int> onChange;
+  final ValueChanged<int> onChange;
 
-  AutoScroll(
-      {this.children,
-      this.texts,
-      bool center,
-      Color selectTextColor,
-      Color textColor,
-      int duration,
-      double itemDuration,
-      bool autoStart,
-      AutoScrollAnimation autoScrollAnimation,
-      this.animateDistance,
-      this.onChange,
-      bool singleLine})
+  AutoScroll({this.children,
+    this.texts,
+    bool center,
+    Color selectTextColor,
+    Color textColor,
+    int duration,
+    double itemDuration,
+    bool autoStart,
+    AutoScrollAnimation autoScrollAnimation,
+    this.animateDistance,
+    this.onChange,
+    bool singleLine})
       : this.center = center ?? true,
         this.duration = duration ?? 4,
         this.itemDuration = itemDuration ?? 500,
@@ -124,16 +123,22 @@ class AutoScrollState extends State<AutoScroll> {
           if (currentPage >= items.length) {
             //last item
             currentPage = 0;
-            firstItem = items[items.length - 1]..modeListener.value = true;
-            secondItem = items[currentPage]..modeListener.value = false;
+            firstItem = items[items.length - 1]
+              ..modeListener.value = true;
+            secondItem = items[currentPage]
+              ..modeListener.value = false;
           } else if (currentPage <= 0) {
             // first item
             currentPage = items.length - 1;
-            firstItem = items[0]..modeListener.value = true;
-            secondItem = items[currentPage]..modeListener.value = false;
+            firstItem = items[0]
+              ..modeListener.value = true;
+            secondItem = items[currentPage]
+              ..modeListener.value = false;
           } else {
-            firstItem = items[currentPage - 1]..modeListener.value = true;
-            secondItem = items[currentPage]..modeListener.value = false;
+            firstItem = items[currentPage - 1]
+              ..modeListener.value = true;
+            secondItem = items[currentPage]
+              ..modeListener.value = false;
           }
         });
       });
@@ -146,13 +151,19 @@ class AutoScrollState extends State<AutoScroll> {
     if (widget.animateDistance == null) {
       if (widget.autoScrollAnimation == AutoScrollAnimation.l2r ||
           widget.autoScrollAnimation == AutoScrollAnimation.l2r) {
-        double width = MediaQuery.of(context).size.width;
+        double width = MediaQuery
+            .of(context)
+            .size
+            .width;
         firstItem.animateDistance = width;
         if (secondItem != null) {
           secondItem.animateDistance = width;
         }
       } else {
-        double height = MediaQuery.of(context).size.height;
+        double height = MediaQuery
+            .of(context)
+            .size
+            .height;
         firstItem.animateDistance = height;
         if (secondItem != null) {
           secondItem.animateDistance = height;
@@ -166,13 +177,13 @@ class AutoScrollState extends State<AutoScroll> {
     return ClipRect(
         child: widget.center
             ? Center(
-                child: Stack(
-                  children: items,
-                ),
-              )
+          child: Stack(
+            children: items,
+          ),
+        )
             : Stack(
-                children: items,
-              ));
+          children: items,
+        ));
   }
 
   @override

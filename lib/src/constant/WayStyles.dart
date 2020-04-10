@@ -54,9 +54,8 @@ class WayStyles {
   static Decoration containerUnderlineBackground({Color color, double width, Color underlineColor}) {
     return BoxDecoration(
         color: color,
-        border: Border(
-            bottom:
-                BorderSide(width: width ?? BaseUtils.getHeight(1), color: underlineColor ?? getColors(background))));
+        border: underlineColor == null ? null : Border(
+            bottom: BorderSide(width: width ?? BaseUtils.getHeight(1), color: underlineColor ?? getColors(background))));
   }
 
   //统一上划线样式
