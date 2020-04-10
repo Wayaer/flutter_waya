@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/src/constant/WayIcon.dart';
 import 'package:flutter_waya/src/constant/WayStyles.dart';
@@ -20,9 +21,11 @@ class ListItem extends StatelessWidget {
   final String titleText;
   final TextStyle titleStyle;
   final double height;
+  final Widget prefix;
 
   final EdgeInsetsGeometry padding;
   final EdgeInsetsGeometry margin;
+  final EdgeInsetsGeometry prefixMargin;
   final bool inkWell;
   final Color underlineColor;
 
@@ -35,27 +38,36 @@ class ListItem extends StatelessWidget {
   final bool arrow;
   final bool enabled;
 
-  ListItem({Key key,
-    this.title,
-    this.height,
-    this.inkWell,
-    this.onTap,
-    this.arrow: true,
-    this.padding,
-    this.margin,
-    this.decoration,
-    this.child,
-    this.backgroundColor,
-    this.titleText,
-    this.titleStyle,
-    this.arrowSize,
-    this.arrowColor,
-    this.underlineColor,
-    this.leading, this.subtitle,
-    this.dense, this.onLongPress,
-    this.contentPadding, this.enabled: true,
-    this.isThreeLine, this.selected,
-    this.onDoubleTap, this.arrowIcon, this.arrowMargin})
+  ListItem(
+      {Key key,
+      this.title,
+      this.height,
+      this.inkWell,
+      this.onTap,
+      this.arrow: true,
+      this.padding,
+      this.margin,
+      this.decoration,
+      this.child,
+      this.backgroundColor,
+      this.titleText,
+      this.titleStyle,
+      this.arrowSize,
+      this.arrowColor,
+      this.underlineColor,
+      this.leading,
+      this.subtitle,
+      this.dense,
+      this.onLongPress,
+      this.contentPadding,
+      this.enabled: true,
+      this.isThreeLine,
+      this.selected,
+      this.onDoubleTap,
+      this.arrowIcon,
+      this.arrowMargin,
+      this.prefix,
+      this.prefixMargin})
       : super(key: key);
 
   @override
@@ -69,10 +81,14 @@ class ListItem extends StatelessWidget {
       onDoubleTap: enabled ? onDoubleTap : null,
       onTap: enabled ? onTap : null,
       direction: Axis.horizontal,
-      decoration: decoration ??
-          WayStyles.containerUnderlineBackground(underlineColor: underlineColor, color: backgroundColor),
+      mainAxisAlignment: MainAxisAlignment.center,
+//      crossAxisAlignment: CrossAxisAlignment.center,
+      decoration:
+          decoration ?? WayStyles.containerUnderlineBackground(underlineColor: underlineColor, color: backgroundColor),
       children: <Widget>[
-        Expanded(child: ListTile(
+        Container(margin: prefixMargin, child: prefix),
+        Expanded(
+            child: ListTile(
           contentPadding: contentPadding,
           title: title ?? Text(titleText, style: titleStyle),
           subtitle: subtitle,
@@ -87,14 +103,14 @@ class ListItem extends StatelessWidget {
           offstage: !arrow,
           child: Container(
               margin: arrowMargin,
-              child: arrowIcon ?? Icon(
-                WayIcon.iconsRight,
-                size: arrowSize ?? BaseUtils.getWidth(16),
-                color: arrowColor ?? getColors(black),
-              )),
+              child: arrowIcon ??
+                  Icon(
+                    WayIcon.iconsRight,
+                    size: arrowSize ?? BaseUtils.getWidth(16),
+                    color: arrowColor ?? getColors(black),
+                  )),
         ),
       ],
-
     );
   }
 }
