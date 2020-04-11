@@ -71,7 +71,7 @@ class ListItem extends StatelessWidget {
       : this.arrowSize = arrowSize ?? BaseUtils.getWidth(16),
         this.arrowColor = arrowColor ?? getColors(black),
         this.isThreeLine = isThreeLine ?? false,
-        this.arrow = arrow ?? false,
+        this.arrow = arrow ?? true,
         this.enabled = enabled ?? true,
         super(key: key);
 
