@@ -3,7 +3,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_waya/src/custom/OverlayBase.dart';
 import 'package:flutter_waya/waya.dart';
 
-// ignore: must_be_immutable
 class OverlayMaterial extends StatelessWidget {
   final GlobalKey<NavigatorState> navigatorKey; //导航键
   final Widget home; //主页
@@ -17,73 +16,69 @@ class OverlayMaterial extends StatelessWidget {
   final ThemeData theme; //主题
   final ThemeData darkTheme;
   final Color color; //颜色
-  Map<String, WidgetBuilder> routes; //路由
-  List<NavigatorObserver> navigatorObservers; //导航观察器
-  Iterable<LocalizationsDelegate<dynamic>> localizationsDelegates; //本地化委托
-  String title; //标题
-  ThemeMode themeMode;
-  Locale locale; //地点
-  Iterable<Locale> supportedLocales; //支持区域
-  bool showPerformanceOverlay; //显示性能叠加
-  bool checkerboardRasterCacheImages; //棋盘格光栅缓存图像
-  bool checkerboardOffscreenLayers;
-  bool showSemanticsDebugger; //显示语义调试器
-  bool debugShowCheckedModeBanner; //调试显示检查模式横幅
-  bool debugShowMaterialGrid;
-  TextDirection textDirection;
+  final Map<String, WidgetBuilder> routes; //路由
+  final List<NavigatorObserver> navigatorObservers; //导航观察器
+  final Iterable<LocalizationsDelegate<dynamic>> localizationsDelegates; //本地化委托
+  final String title; //标题
+  final ThemeMode themeMode;
+  final Locale locale; //地点
+  final Iterable<Locale> supportedLocales; //支持区域
+  final bool showPerformanceOverlay; //显示性能叠加
+  final bool checkerboardRasterCacheImages; //棋盘格光栅缓存图像
+  final bool checkerboardOffscreenLayers;
+  final bool showSemanticsDebugger; //显示语义调试器
+  final bool debugShowCheckedModeBanner; //调试显示检查模式横幅
+  final bool debugShowMaterialGrid;
+  final TextDirection textDirection;
 
   OverlayMaterial({
     Key key,
-    this.textDirection,
+    TextDirection textDirection,
+    Map<String, WidgetBuilder> routes,
+    String title,
+    List<NavigatorObserver> navigatorObservers,
+    ThemeMode themeMode,
+    Locale locale,
+    Iterable<LocalizationsDelegate<dynamic>> localizationsDelegates,
+    Iterable<Locale> supportedLocales,
+    bool debugShowMaterialGrid,
+    bool showPerformanceOverlay,
+    bool checkerboardRasterCacheImages,
+    bool checkerboardOffscreenLayers,
+    bool showSemanticsDebugger,
+    bool debugShowCheckedModeBanner,
     this.navigatorKey,
     this.home,
-    this.routes,
     this.initialRoute,
     this.onGenerateRoute,
     this.onUnknownRoute,
-    this.navigatorObservers,
     this.builder,
-    this.title,
     this.onGenerateTitle,
     this.color,
     this.theme,
     this.darkTheme,
-    this.themeMode,
-    this.locale,
-    this.localizationsDelegates,
     this.localeListResolutionCallback,
     this.localeResolutionCallback,
-    this.supportedLocales,
-    this.debugShowMaterialGrid,
-    this.showPerformanceOverlay,
-    this.checkerboardRasterCacheImages,
-    this.checkerboardOffscreenLayers,
-    this.showSemanticsDebugger,
-    this.debugShowCheckedModeBanner,
-  }) : super(key: key) {
-    if (debugShowMaterialGrid == null) debugShowMaterialGrid = false;
-    if (showPerformanceOverlay == null) showPerformanceOverlay = false;
-    if (checkerboardRasterCacheImages == null)
-      checkerboardRasterCacheImages = false;
-    if (checkerboardOffscreenLayers == null)
-      checkerboardOffscreenLayers = false;
-    if (showSemanticsDebugger == null) showSemanticsDebugger = false;
-    if (debugShowCheckedModeBanner == null) debugShowCheckedModeBanner = false;
-    if (themeMode == null) themeMode = ThemeMode.system;
-    if (title == null) title = "";
-    if (routes == null) routes = const <String, WidgetBuilder>{};
-    if (textDirection == null) textDirection = TextDirection.ltr;
-    if (navigatorObservers == null)
-      navigatorObservers = [BaseNavigatorUtils.getInstance()];
-    if (locale == null) locale = const Locale('zh');
-    if (supportedLocales == null) supportedLocales = [Locale('zh', 'CH')];
-    if (localizationsDelegates == null)
-      localizationsDelegates = [
-        CustomLocalizationsDelegate(), //解决ios 长按输入框报错
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate
-      ];
-  }
+  })  : this.debugShowMaterialGrid = debugShowMaterialGrid ?? false,
+        this.showPerformanceOverlay = showPerformanceOverlay ?? false,
+        this.checkerboardRasterCacheImages = checkerboardRasterCacheImages ?? false,
+        this.checkerboardOffscreenLayers = checkerboardOffscreenLayers ?? false,
+        this.showSemanticsDebugger = showSemanticsDebugger ?? false,
+        this.debugShowCheckedModeBanner = debugShowCheckedModeBanner ?? false,
+        this.themeMode = themeMode ?? ThemeMode.system,
+        this.title = title ?? "",
+        this.routes = routes = const <String, WidgetBuilder>{},
+        this.textDirection = textDirection ?? TextDirection.ltr,
+        this.navigatorObservers = navigatorObservers ?? [BaseNavigatorUtils.getInstance()],
+        this.locale = locale ?? Locale('zh'),
+        this.supportedLocales = supportedLocales ?? [Locale('zh', 'CH')],
+        this.localizationsDelegates = localizationsDelegates ??
+            [
+              CustomLocalizationsDelegate(), //解决ios 长按输入框报错
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate
+            ],
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {

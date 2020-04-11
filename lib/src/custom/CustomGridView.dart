@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/src/utils/BaseUtils.dart';
-import 'package:flutter_waya/src/widget/CommonWidget.dart';
+import 'package:flutter_waya/src/common/CommonWidget.dart';
 
 class CustomGridView extends StatelessWidget {
   final ScrollController controller;
@@ -53,6 +53,6 @@ class CustomGridView extends StatelessWidget {
       childAspectRatio: childAspectRatio,
       children: children,
     )
-        : noData == null ? CommonWidget.noDataWidget(margin: EdgeInsets.all(BaseUtils.getWidth(10))) : noData;
+        : noData == null ? CommonWidget.notDataWidget(margin: EdgeInsets.all(BaseUtils.getWidth(10))) : noData;
   }
 }

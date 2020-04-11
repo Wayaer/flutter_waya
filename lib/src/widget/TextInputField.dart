@@ -7,14 +7,14 @@ import 'package:flutter_waya/src/constant/WayConstant.dart';
 import 'package:flutter_waya/src/constant/WayStyles.dart';
 import 'package:flutter_waya/waya.dart';
 
-class TextInputBox extends StatelessWidget {
+class TextInputField extends StatelessWidget {
   final TextEditingController controller;
   final ValueChanged<String> onChanged;
   final List<TextInputFormatter> inputFormatter;
   final int maxLength; //最大长度
   final TextDirection textDirection;
-  int maxLines;
-  TextAlign textAlign; // 对齐方式
+  final int maxLines;
+  final TextAlign textAlign; // 对齐方式
 
   final int minLines;
   final TextInputType keyboardType;
@@ -28,7 +28,7 @@ class TextInputBox extends StatelessWidget {
   final TextStyle counterStyle;
   final Widget counter;
 
-  bool obscureText; //隐藏文字
+  final bool obscureText; //隐藏文字
   final Widget header;
   final Widget footer;
   final FocusNode focusNode;
@@ -76,8 +76,11 @@ class TextInputBox extends StatelessWidget {
   final int hintMaxLines;
   final EdgeInsetsGeometry contentPadding;
 
-  TextInputBox({
+  TextInputField({
     Key key,
+    int maxLines,
+    TextAlign textAlign,
+    bool obscureText,
     this.icon,
     this.controller,
     this.enabled,
@@ -85,10 +88,8 @@ class TextInputBox extends StatelessWidget {
     this.onSubmitted,
     this.inputStyle,
     this.keyboardType,
-    this.maxLines,
     this.minLines,
     this.textDirection,
-    this.textAlign,
     this.maxLength,
     this.onChanged,
     this.cursorColor,
@@ -126,16 +127,14 @@ class TextInputBox extends StatelessWidget {
     this.focusNode,
     this.header,
     this.footer,
-    this.obscureText,
     this.hintMaxLines,
     this.counterText,
     this.counterStyle,
     this.counter,
-  }) : super(key: key) {
-    if (obscureText == null) obscureText = false;
-    if (maxLines == null) maxLines = 1;
-    if (textAlign == null) textAlign = TextAlign.left;
-  }
+  })  : this.obscureText = obscureText ?? false,
+        this.maxLines = maxLines ?? 1,
+        this.textAlign = textAlign ?? TextAlign.left,
+        super(key: key);
 
 //  解决切换后台 再切换前台输入框为null
 //  @override
@@ -180,12 +179,12 @@ class TextInputBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return header != null || footer != null
         ? Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-      //输入框头部
-      Offstage(offstage: header == null, child: header),
-      textField(context),
-      //输入框底部
-      Offstage(offstage: footer == null, child: footer)
-    ])
+            //输入框头部
+            Offstage(offstage: header == null, child: header),
+            textField(context),
+            //输入框底部
+            Offstage(offstage: footer == null, child: footer)
+          ])
         : textField(context);
   }
 

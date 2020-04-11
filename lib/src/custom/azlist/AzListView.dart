@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/src/utils/BaseUtils.dart';
 
 import '../CustomListView.dart';
@@ -201,7 +202,7 @@ class AzListViewState extends State<AzListView> {
       indexHint = widget.indexHintBuilder(context, '$indexBarHint');
     } else {
       indexHint = Container(
-        decoration: BoxDecoration(color: Colors.black26, borderRadius: BorderRadius.circular(10)),
+        decoration: BoxDecoration(color: getColors(black30), borderRadius: BorderRadius.circular(10)),
         alignment: Alignment.center,
         width: BaseUtils.getWidth(60),
         height: BaseUtils.getWidth(60),
@@ -209,7 +210,7 @@ class AzListViewState extends State<AzListView> {
           '$indexBarHint',
           style: TextStyle(
             fontSize: 32.0,
-            color: Colors.white,
+            color: getColors(white),
           ),
         ),
       );

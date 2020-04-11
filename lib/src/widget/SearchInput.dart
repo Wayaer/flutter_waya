@@ -7,9 +7,9 @@ import 'package:flutter_waya/waya.dart';
 
 class SearchInput extends StatelessWidget {
   final String searchText;
+  final Widget search;
   final TextStyle searchStyle;
   final GestureTapCallback searchTap;
-  final EdgeInsetsGeometry searchPadding;
 
   final double iconSize;
   final Color iconColor;
@@ -17,7 +17,7 @@ class SearchInput extends StatelessWidget {
   final Widget prefixIcon;
 
   final double labelSpacing;
-  LineType lineType;
+  final LineType lineType;
   final EdgeInsetsGeometry margin;
 
   final TextEditingController controller;
@@ -32,25 +32,26 @@ class SearchInput extends StatelessWidget {
   final Color focusedBorderColor;
   final Color enabledBorderColor;
   final Widget extraPrefix;
+  final EdgeInsetsGeometry contentPadding;
 
   SearchInput({
     Key key,
+    IconData icon,
+    LineType lineType,
+    EdgeInsetsGeometry contentPadding,
     this.controller,
     this.onChanged,
     this.hintText,
     this.hintStyle,
     this.iconColor,
-    this.icon,
     this.iconSize,
     this.borderRadius,
     this.inputStyle,
     this.cursorColor,
     this.labelSpacing,
     this.searchText,
-    this.searchPadding,
     this.defaultBorder,
     this.focusedBorder,
-    this.lineType,
     this.focusedBorderColor,
     this.enabledBorderColor,
     this.margin,
@@ -58,9 +59,11 @@ class SearchInput extends StatelessWidget {
     this.prefixIcon,
     this.searchStyle,
     this.searchTap,
-  }) : super(key: key) {
-    if (lineType == null) lineType = LineType.outline;
-  }
+    this.search,
+  })  : this.icon = icon ?? WayIcon.iconsSearch,
+        this.lineType = lineType ?? LineType.outline,
+        this.contentPadding = contentPadding ?? EdgeInsets.all(BaseUtils.getWidth(5)),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -69,38 +72,55 @@ class SearchInput extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       margin: margin,
-      child: textInputBox(),
+      child: textInput(),
     );
   }
 
-  Widget textInputBox() {
-    return TextInputBox(
+  Widget textInput() {
+    return TextInputField(
       controller: controller,
       isDense: true,
       focusedBorder: inputBorder(focusedBorderColor ?? enabledBorderColor ?? getColors(blue)),
       enabledBorder: inputBorder(enabledBorderColor ?? getColors(white50)),
       inputStyle: inputStyle,
-      contentPadding: EdgeInsets.all(BaseUtils.getWidth(5)),
+      contentPadding: contentPadding,
       hintStyle: hintStyle,
       hintText: hintText,
       cursorColor: cursorColor ?? enabledBorderColor ?? getColors(blue),
-      prefixIcon: prefixIcon ??
-          Icon(
-            icon ?? WayIcon.iconsSearch,
-            size: iconSize,
-            color: iconColor,
-          ),
+      prefixIcon: prefix(),
       onChanged: onChanged,
       icon: extraPrefix,
-      suffix: searchText == null
+      suffix: suffix(),
+    );
+  }
+
+  Widget prefix() {
+    if (prefixIcon == null) {
+      return icon == null
+          ? null
+          : Icon(
+              icon,
+              size: iconSize,
+              color: iconColor,
+            );
+    } else {
+      return prefixIcon;
+    }
+  }
+
+  Widget suffix() {
+    if (search == null) {
+      return searchText == null
           ? null
           : CustomButton(
-        text: '搜索',
-        onTap: searchTap,
-        padding: searchPadding ?? EdgeInsets.symmetric(horizontal: BaseUtils.getWidth(3)),
-        textStyle: searchStyle ?? TextStyle(color: getColors(white)),
-      ),
-    );
+              text: '搜索',
+              onTap: searchTap,
+              padding: EdgeInsets.symmetric(horizontal: BaseUtils.getWidth(4)),
+              textStyle: searchStyle ?? TextStyle(color: getColors(white)),
+            );
+    } else {
+      return search;
+    }
   }
 
   InputBorder inputBorder(Color color) {

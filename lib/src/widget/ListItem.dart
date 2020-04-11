@@ -40,11 +40,17 @@ class ListItem extends StatelessWidget {
 
   ListItem(
       {Key key,
+      double arrowSize,
+      Color arrowColor,
+      bool isThreeLine,
+      bool arrow,
+      bool enabled,
+      this.onTap,
+      this.onDoubleTap,
+      this.onLongPress,
       this.title,
       this.height,
       this.inkWell,
-      this.onTap,
-      this.arrow: true,
       this.padding,
       this.margin,
       this.decoration,
@@ -52,23 +58,22 @@ class ListItem extends StatelessWidget {
       this.backgroundColor,
       this.titleText,
       this.titleStyle,
-      this.arrowSize,
-      this.arrowColor,
       this.underlineColor,
       this.leading,
       this.subtitle,
       this.dense,
-      this.onLongPress,
       this.contentPadding,
-      this.enabled: true,
-      this.isThreeLine,
       this.selected,
-      this.onDoubleTap,
       this.arrowIcon,
       this.arrowMargin,
       this.prefix,
       this.prefixMargin})
-      : super(key: key);
+      : this.arrowSize = arrowSize ?? BaseUtils.getWidth(16),
+        this.arrowColor = arrowColor ?? getColors(black),
+        this.isThreeLine = isThreeLine ?? false,
+        this.arrow = arrow ?? false,
+        this.enabled = enabled ?? true,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +99,7 @@ class ListItem extends StatelessWidget {
           subtitle: subtitle,
           leading: leading,
           trailing: child,
-          isThreeLine: isThreeLine ?? false,
+          isThreeLine: isThreeLine,
           dense: dense,
           enabled: false,
           selected: false, //展示是否默认显示选中
@@ -106,8 +111,8 @@ class ListItem extends StatelessWidget {
               child: arrowIcon ??
                   Icon(
                     WayIcon.iconsRight,
-                    size: arrowSize ?? BaseUtils.getWidth(16),
-                    color: arrowColor ?? getColors(black),
+                    size: arrowSize,
+                    color: arrowColor,
                   )),
         ),
       ],

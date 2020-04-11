@@ -5,19 +5,19 @@ class CustomDrawer extends StatefulWidget {
   final Color backgroundColor;
   final Widget child;
   final DrawerCallback callback;
-  double width;
-  double elevation;
+  final double width;
+  final double elevation;
 
   CustomDrawer({
-    this.backgroundColor,
-    this.elevation,
+    Key key,
+    double elevation,
+    double width,
     @required this.child,
-    this.width,
+    this.backgroundColor,
     this.callback,
-  }) {
-    if (width == null) width = BaseUtils.getWidth() * 0.7;
-    if (elevation == null) elevation = 16.0;
-  }
+  })  : this.width = width ?? BaseUtils.getWidth() * 0.7,
+        this.elevation = elevation ?? 16.0,
+        super(key: key);
 
   @override
   CustomDrawerState createState() => CustomDrawerState();
@@ -27,14 +27,12 @@ class CustomDrawerState extends State<CustomDrawer> {
   @override
   void initState() {
     if (widget.callback != null) widget.callback(true);
-
     super.initState();
   }
 
   @override
   void dispose() {
     if (widget.callback != null) widget.callback(false);
-
     super.dispose();
   }
 

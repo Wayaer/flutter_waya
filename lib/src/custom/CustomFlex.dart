@@ -1,23 +1,33 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_waya/src/constant/WayColor.dart';
 
 class CustomFlex extends StatelessWidget {
   //自定义横向竖向布局 加入了点击事件
-  //公用 点击时间
-  bool inkWell;
+  //公用 点击事件
+  final bool inkWell;
   final GestureTapCallback onTap;
   final GestureTapCallback onDoubleTap;
   final GestureLongPressCallback onLongPress;
+  final Color focusColor;
+  final Color hoverColor;
+  final Color highlightColor;
+  final Color splashColor;
+  final double radius;
+  final BorderRadius borderRadius;
+  final ShapeBorder customBorder;
+  final FocusNode focusNode;
 
   //横竖 布局 List<Widget>   children
   final List<Widget> children;
   final MainAxisSize mainAxisSize;
   final TextDirection textDirection;
   final TextBaseline textBaseline;
-  MainAxisAlignment mainAxisAlignment;
-  CrossAxisAlignment crossAxisAlignment;
-  Axis direction; //布局横竖
-  VerticalDirection verticalDirection;
+  final MainAxisAlignment mainAxisAlignment;
+  final CrossAxisAlignment crossAxisAlignment;
+  final Axis direction; //布局横竖
+  final VerticalDirection verticalDirection;
 
   //容器 布局
   final Widget child;
@@ -30,30 +40,31 @@ class CustomFlex extends StatelessWidget {
   final Decoration decoration;
   final BoxConstraints constraints;
   final Matrix4 transform;
-  bool enabled;
-  bool isScroll;
+  final bool enabled;
+  final bool isScroll;
 
   //  HitTestBehavior.opaque 自己处理事件 
   //  HitTestBehavior.deferToChild child处理事件
   //  HitTestBehavior.translucent 自己和child都可以接收事件
-  HitTestBehavior behavior;
+  final HitTestBehavior behavior;
 
   CustomFlex({
     Key key,
-    this.onTap,
-    this.enabled,
-    this.onDoubleTap,
-    this.onLongPress,
-    this.isScroll,
+    bool enabled,
+    HitTestBehavior behavior,
+    MainAxisAlignment mainAxisAlignment,
+    CrossAxisAlignment crossAxisAlignment,
+    VerticalDirection verticalDirection,
+    Axis direction,
+    bool inkWell,
+    bool isScroll,
+    GestureTapCallback onTap,
+    GestureTapCallback onDoubleTap,
+    GestureLongPressCallback onLongPress,
     this.children,
-    this.mainAxisAlignment,
-    this.crossAxisAlignment,
     this.mainAxisSize,
     this.textDirection,
     this.textBaseline,
-    this.verticalDirection,
-    this.direction,
-    this.inkWell,
     this.child,
     this.padding,
     this.margin,
@@ -64,41 +75,62 @@ class CustomFlex extends StatelessWidget {
     this.decoration,
     this.constraints,
     this.transform,
-    this.behavior,
-  }) : super(key: key) {
-    if (enabled == null) enabled = true;
-    if (isScroll == null) isScroll = false;
-    if (mainAxisAlignment == null) mainAxisAlignment = MainAxisAlignment.start;
-    if (crossAxisAlignment == null) crossAxisAlignment = CrossAxisAlignment.center;
-    if (verticalDirection == null) verticalDirection = VerticalDirection.down;
-    if (direction == null) direction = Axis.vertical;
-    if (inkWell == null) inkWell = false;
-    if (behavior == null) behavior = HitTestBehavior.opaque;
-  }
+    this.focusColor,
+    this.hoverColor,
+    this.highlightColor,
+    this.splashColor,
+    this.radius,
+    this.borderRadius,
+    this.customBorder,
+    this.focusNode,
+  })
+      : this.enabled = enabled ?? true,
+        this.isScroll = isScroll ?? false,
+        this.mainAxisAlignment = mainAxisAlignment ?? MainAxisAlignment.start,
+        this.crossAxisAlignment = crossAxisAlignment ?? CrossAxisAlignment.center,
+        this.verticalDirection = verticalDirection ?? VerticalDirection.down,
+        this.direction = direction ?? Axis.vertical,
+        this.inkWell = inkWell ?? false,
+        this.onTap = (enabled == null ? true : enabled) ? onTap : null,
+        this.onLongPress = (enabled == null ? true : enabled) ? onLongPress : null,
+        this.onDoubleTap = (enabled == null ? true : enabled) ? onDoubleTap : null,
+        this.behavior = behavior ?? HitTestBehavior.opaque,
+        super(key: key);
 
-  List<Widget> list;
 
   @override
   Widget build(BuildContext context) {
-    return onTap != null || onLongPress != null
-        ? (inkWell
-        ? Material(
-        color: Colors.transparent,
-        child: Ink(
-            child: InkWell(
-              onTap: onTap,
-              onLongPress: onLongPress,
-              onDoubleTap: onDoubleTap,
-              child: childBody(),
-            )))
-        : GestureDetector(
-      behavior: behavior,
-      onTap: enabled ? onTap : null,
-      onDoubleTap: onDoubleTap,
-      onLongPress: onLongPress,
-      child: childBody(),
-    ))
-        : childBody();
+    if (onTap != null || onLongPress != null) {
+      if (inkWell) {
+        return Material(
+            color: getColors(transparent),
+            child: Ink(
+                child: InkWell(
+                  onTap: onTap,
+                  onLongPress: onLongPress,
+                  onDoubleTap: onDoubleTap,
+                  child: childBody(),
+                  focusNode: focusNode,
+                  focusColor: focusColor,
+                  hoverColor: hoverColor,
+                  highlightColor: highlightColor,
+                  splashColor: splashColor,
+                  radius: radius,
+                  borderRadius: borderRadius,
+                  customBorder: customBorder,
+                )));
+      } else {
+        return GestureDetector(
+          behavior: behavior,
+          onTap: onTap,
+          onDoubleTap: onDoubleTap,
+          onLongPress: onLongPress,
+          child: childBody(),
+        );
+      }
+    } else {
+      return childBody();
+    }
   }
 
   Widget childBody() {

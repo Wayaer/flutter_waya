@@ -6,13 +6,13 @@ import 'package:flutter_waya/src/utils/BaseUtils.dart';
 import 'package:flutter_waya/waya.dart';
 
 class TabBarWidget extends StatelessWidget {
-  TabController controller;
+  final TabController controller;
   final EdgeInsetsGeometry labelPadding;
   final List<Widget> tabBar;
-  final Widget amongWidget;
-  final Widget headWidget;
-  final Widget footWidget;
-  final List<Widget> tabBarView;
+  final Widget among; //tabBar和tabBarView中间层
+  final Widget header; //最顶部
+  final Widget footer; //最底部
+  final List<Widget> tabBarView; //底部tabBarView
   final Color labelColor;
   final Color unselectedLabelColor;
   final TabBarIndicatorSize indicatorSize;
@@ -24,93 +24,96 @@ class TabBarWidget extends StatelessWidget {
   final EdgeInsetsGeometry tabBarPadding;
   final EdgeInsetsGeometry tabBarViewMargin;
   final ScrollPhysics physics;
-  final Widget tabBarViewWidget;
   final Decoration decoration;
-  final Decoration indicator;
-  double tabBarViewHeight;
-  Color underlineBackgroundColor;
-  EdgeInsetsGeometry indicatorPadding;
+  final Decoration indicator; //tabBar 指示器
+  final double tabBarViewHeight;
+  final Color underlineBackgroundColor;
+  final EdgeInsetsGeometry indicatorPadding;
 
   TabBarWidget({
     Key key,
+    double tabBarViewHeight,
+    Color underlineBackgroundColor,
+    EdgeInsetsGeometry indicatorPadding,
+    @required this.tabBar,
     this.controller,
     this.indicator,
     this.decoration,
     this.labelPadding,
-    this.tabBar,
     this.labelColor,
     this.unselectedLabelColor,
     this.indicatorSize,
     this.labelStyle,
     this.indicatorWeight,
-    this.underlineBackgroundColor,
     this.underlineHeight,
-    this.indicatorPadding,
     this.tabBarView,
-    this.amongWidget,
+    this.among,
     this.tabBarViewMargin,
     this.tabBarViewPadding,
     this.tabBarMargin,
     this.tabBarPadding,
-    this.tabBarViewHeight,
     this.physics,
-    this.tabBarViewWidget,
-    this.headWidget,
-    this.footWidget,
-  }) :super(key: key) {
-    if (underlineBackgroundColor == null) underlineBackgroundColor = Colors.transparent;
-    if (tabBarViewHeight == null) tabBarViewHeight = 0;
-    if (indicatorPadding == null) indicatorPadding = EdgeInsets.zero;
-  }
-
+    this.header,
+    this.footer,
+  })  : this.underlineBackgroundColor = underlineBackgroundColor ?? getColors(transparent),
+        this.tabBarViewHeight = tabBarViewHeight ?? 0,
+        this.indicatorPadding = indicatorPadding ?? EdgeInsets.zero,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: <Widget>[
-      Offstage(
-        offstage: headWidget == null,
-        child: headWidget,
-      ),
-      Container(
-        margin: tabBarMargin,
-        padding: tabBarPadding,
-        decoration: decoration ??
-            BoxDecoration(
-                border: Border(bottom: BorderSide(width: underlineHeight ?? 0, color: underlineBackgroundColor))),
-        child: TabBar(
-          controller: controller,
-          labelPadding: labelPadding,
-          tabs: tabBar,
-          indicator: indicator,
-          labelColor: labelColor ?? getColors(blue),
-          unselectedLabelColor: unselectedLabelColor ?? getColors(background),
-          indicatorColor: labelColor ?? getColors(blue),
-          indicatorWeight: indicatorWeight ?? BaseUtils.getWidth(1),
-          indicatorPadding: indicatorPadding,
-          labelStyle: labelStyle ?? WayStyles.textStyleBlack70(fontSize: 13),
-          indicatorSize: indicatorSize ?? TabBarIndicatorSize.label,
-        ),
-      ),
-      Offstage(
-        offstage: amongWidget == null,
-        child: amongWidget,
-      ),
-      Container(
-        child: tabBarView == null ? null : tabBarViewHeight == 0
-            ? Expanded(
+    List<Widget> children = [];
+    if (header != null) {
+      children.add(header);
+    }
+    children.add(tabBarWidget());
+    if (among != null) {
+      children.add(among);
+    }
+    if (tabBarView != null) {
+      children.add(tabBarViewWidget());
+    }
+    if (footer != null) {
+      children.add(footer);
+    }
+    return Column(children: children);
+  }
+
+  Widget tabBarViewWidget() {
+    return tabBarViewHeight == 0
+        ? Expanded(
             child: Container(
                 margin: tabBarViewMargin,
                 padding: tabBarViewPadding,
                 child: TabBarView(controller: controller, children: tabBarView)))
-            : Container(
+        : Container(
             margin: tabBarViewMargin,
             padding: tabBarViewPadding,
             height: tabBarViewHeight,
-            child: TabBarView(controller: controller, children: tabBarView)),),
-      Offstage(
-        offstage: footWidget == null,
-        child: footWidget,
+            child: TabBarView(controller: controller, children: tabBarView),
+          );
+  }
+
+  Widget tabBarWidget() {
+    return Container(
+      margin: tabBarMargin,
+      padding: tabBarPadding,
+      decoration: decoration ??
+          BoxDecoration(
+              border: Border(bottom: BorderSide(width: underlineHeight ?? 0, color: underlineBackgroundColor))),
+      child: TabBar(
+        controller: controller,
+        labelPadding: labelPadding,
+        tabs: tabBar,
+        indicator: indicator,
+        labelColor: labelColor ?? getColors(blue),
+        unselectedLabelColor: unselectedLabelColor ?? getColors(background),
+        indicatorColor: labelColor ?? getColors(blue),
+        indicatorWeight: indicatorWeight ?? BaseUtils.getWidth(1),
+        indicatorPadding: indicatorPadding,
+        labelStyle: labelStyle ?? WayStyles.textStyleBlack70(fontSize: 13),
+        indicatorSize: indicatorSize ?? TabBarIndicatorSize.label,
       ),
-    ]);
+    );
   }
 }

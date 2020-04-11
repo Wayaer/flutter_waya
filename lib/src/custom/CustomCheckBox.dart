@@ -2,19 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/src/constant/WayIcon.dart';
 import 'package:flutter_waya/src/utils/BaseUtils.dart';
-
-import 'CustomFlex.dart';
-import 'CustomIcon.dart';
+import 'package:flutter_waya/waya.dart';
 
 class CustomCheckBox extends StatefulWidget {
   final ValueChanged<bool> onChange;
-  final String label;
-
   final Color checkColor;
   final Color background;
   final Color unCheckColor;
-
-  final TextStyle textStyle;
+  final TextStyle titleStyle;
+  final String titleText;
+  final Widget title;
   final double iconSize;
   final double width;
   final double height;
@@ -24,34 +21,38 @@ class CustomCheckBox extends StatefulWidget {
   final Widget uncheckWidget;
   final IconData checkIcon;
   final IconData uncheckIcon;
-  bool value;
-  MainAxisAlignment mainAxisAlignment;
-  CrossAxisAlignment crossAxisAlignment;
+  final bool value;
+  final MainAxisAlignment mainAxisAlignment;
+  final CrossAxisAlignment crossAxisAlignment;
 
-  CustomCheckBox({Key key,
-    this.value,
-    this.onChange,
-    this.checkWidget,
-    this.checkIcon,
-    this.uncheckIcon,
-    this.uncheckWidget,
-    this.background,
-    this.padding,
-    this.margin,
-    this.label,
-    this.iconSize,
-    this.width,
-    this.height,
-    this.unCheckColor,
-    this.checkColor,
-    this.mainAxisAlignment,
-    this.crossAxisAlignment,
-    this.textStyle})
-      : super(key: key) {
-    if (value == null) value = false;
-    if (mainAxisAlignment == null) mainAxisAlignment = MainAxisAlignment.center;
-    if (crossAxisAlignment == null) crossAxisAlignment = CrossAxisAlignment.center;
-  }
+  CustomCheckBox(
+      {Key key,
+      bool value,
+      double iconSize,
+      MainAxisAlignment mainAxisAlignment,
+      CrossAxisAlignment crossAxisAlignment,
+      this.onChange,
+      this.checkWidget,
+      this.checkIcon,
+      this.uncheckIcon,
+      this.uncheckWidget,
+      this.background,
+      this.padding,
+      this.margin,
+      this.width,
+      this.height,
+      Color unCheckColor,
+      Color checkColor,
+      this.titleStyle,
+      this.titleText,
+      this.title})
+      : this.value = value ?? false,
+        this.iconSize = iconSize ?? BaseUtils.getWidth(17),
+        this.unCheckColor = unCheckColor ?? getColors(blue),
+        this.checkColor = checkColor ?? getColors(blue),
+        this.mainAxisAlignment = mainAxisAlignment ?? MainAxisAlignment.center,
+        this.crossAxisAlignment = crossAxisAlignment ?? CrossAxisAlignment.center,
+        super(key: key);
 
   @override
   CustomCheckBoxState createState() => CustomCheckBoxState();
@@ -100,7 +101,7 @@ class CustomCheckBoxState extends State<CustomCheckBox> {
   Widget customIcon({IconData uncheckIcon, IconData checkIcon}) {
     return CustomIcon(
         icon: value ? checkIcon ?? WayIcon.iconsChecked : uncheckIcon ?? WayIcon.iconsUnChecked,
-        iconSize: widget.iconSize ?? BaseUtils.getWidth(17.5),
+        iconSize: widget.iconSize,
         width: widget.width,
         height: widget.height,
         background: widget.background,
@@ -108,9 +109,10 @@ class CustomCheckBoxState extends State<CustomCheckBox> {
         padding: widget.padding,
         mainAxisAlignment: widget.mainAxisAlignment,
         crossAxisAlignment: widget.crossAxisAlignment,
-        iconColor: value ? widget.checkColor ?? getColors(blue) : widget.unCheckColor ?? getColors(black),
-        textStyle: widget.textStyle,
-        text: widget.label,
+        iconColor: value ? widget.checkColor : widget.unCheckColor,
+        titleStyle: widget.titleStyle,
+        titleText: widget.titleText,
+        title: widget.title,
         onTap: () {
           setState(() {
             value = !value;
@@ -122,40 +124,46 @@ class CustomCheckBoxState extends State<CustomCheckBox> {
   }
 
   Widget checkBox() {
-    return widget.label != null
-        ? CustomFlex(
-      onTap: () {
-        setState(() {
-          value = !value;
-        });
-        if (widget.onChange is ValueChanged<bool>) {
-          widget.onChange(value);
-        }
-      },
-      direction: Axis.horizontal,
-      children: <Widget>[
-        checkBoxWidget(),
-        Text(
-          widget.label,
-          style: widget.textStyle != null
-              ? widget.textStyle
+    if (widget.title != null || widget.titleText != null) {
+      List<Widget> children = [];
+      children.add(checkBoxWidget());
+      if (widget.title != null) {
+        children.add(widget.title);
+      } else {
+        children.add(Text(
+          widget.titleText,
+          style: widget.titleStyle != null
+              ? widget.titleStyle
               : TextStyle(
-            fontSize: 12,
-            color: getColors(black70),
-          ),
-        ),
-      ],
-    )
-        : checkBoxWidget();
+                  fontSize: 12,
+                  color: getColors(black70),
+                ),
+        ));
+      }
+      return CustomFlex(
+        onTap: () {
+          setState(() {
+            value = !value;
+          });
+          if (widget.onChange is ValueChanged<bool>) {
+            widget.onChange(value);
+          }
+        },
+        direction: Axis.horizontal,
+        children: children,
+      );
+    } else {
+      return checkBoxWidget();
+    }
   }
 
   Widget checkBoxWidget() {
     return Checkbox(
 //      tristate: widget.tristate,
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-      activeColor: widget.unCheckColor ?? getColors(blue),
+      activeColor: widget.unCheckColor,
       value: value,
-      checkColor: widget.checkColor ?? getColors(black),
+      checkColor: widget.checkColor,
       onChanged: (bool v) {
         if (value != v) {
           setState(() {

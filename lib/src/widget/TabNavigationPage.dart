@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/src/utils/BaseUtils.dart';
 
-// ignore: must_be_immutable
 class TabNavigationPage extends StatefulWidget {
   final Map<String, Object> arguments;
   final List<BottomNavigationBarItem> navigationBarItem;

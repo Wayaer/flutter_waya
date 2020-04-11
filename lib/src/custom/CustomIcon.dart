@@ -10,9 +10,10 @@ class CustomIcon extends StatelessWidget {
   final Image image; //显示图片
   final TextDirection textDirection; //仅支持icon
   final String semanticLabel;
-  final String text;
+  final String titleText;
+  final Widget title;
   final bool inkWell;
-  final TextStyle textStyle;
+  final TextStyle titleStyle;
   final EdgeInsetsGeometry padding;
   final EdgeInsetsGeometry margin;
   final Color background;
@@ -41,9 +42,9 @@ class CustomIcon extends StatelessWidget {
     this.iconColor,
     this.semanticLabel,
     this.textDirection,
-    this.text,
+    this.titleText,
     this.inkWell,
-    this.textStyle,
+    this.titleStyle,
     this.onTap,
     this.padding,
     this.margin,
@@ -57,13 +58,16 @@ class CustomIcon extends StatelessWidget {
     this.crossAxisAlignment,
     this.maxLines,
     this.overflow,
-    this.imageProvider, this.image,
+    this.imageProvider,
+    this.image,
+    this.title,
   }) : super(key: key) {
     if (maxLines == null) maxLines = 1;
     if (overflow == null) overflow = TextOverflow.ellipsis;
     if (iconSize == null) iconSize = BaseUtils.getWidth(15);
     if (reversal == null) reversal = false;
-    if (spacing == null) spacing = 0;
+    if (direction == null) direction = Axis.horizontal;
+    if (spacing == null) spacing = BaseUtils.getWidth(4);
     if (crossAxisAlignment == null) crossAxisAlignment = CrossAxisAlignment.center;
     if (mainAxisAlignment == null) mainAxisAlignment = MainAxisAlignment.center;
   }
@@ -71,25 +75,25 @@ class CustomIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Widget> listWidget = [];
-    if (text != null && haveIcon()) {
+    if (isChildren()) {
       if (reversal) {
-        listWidget.add(textWidget());
+        listWidget.add(titleWidget());
         listWidget.add(spacingWidget());
         listWidget.add(iconWidget());
       } else {
         listWidget.add(iconWidget());
         listWidget.add(spacingWidget());
-        listWidget.add(textWidget());
+        listWidget.add(titleWidget());
       }
     }
     return CustomFlex(
       inkWell: inkWell,
-      child: (text != null && haveIcon()) ? null : iconWidget(),
+      child: (isChildren()) ? null : iconWidget(),
       direction: direction,
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: crossAxisAlignment,
       mainAxisAlignment: mainAxisAlignment,
-      children: (text != null && haveIcon()) ? listWidget : null,
+      children: (isChildren()) ? listWidget : null,
       width: width,
       height: height,
       onTap: onTap,
@@ -105,19 +109,21 @@ class CustomIcon extends StatelessWidget {
         width: direction == Axis.horizontal ? spacing : 0, height: direction == Axis.vertical ? spacing : 0);
   }
 
-  Widget textWidget() {
-    return Text(
-      text,
-      style: textStyle,
-      textAlign: TextAlign.start,
-      maxLines: maxLines,
-      textDirection: textDirection,
-      overflow: overflow,
-    );
+  Widget titleWidget() {
+    return title != null
+        ? title
+        : Text(
+            titleText ?? '',
+            style: titleStyle,
+            textAlign: TextAlign.start,
+            maxLines: maxLines,
+            textDirection: textDirection,
+            overflow: overflow,
+          );
   }
 
-  bool haveIcon() {
-    return (icon != null || image != null || imageProvider != null);
+  bool isChildren() {
+    return (titleText != null || title != null) && (icon != null || image != null || imageProvider != null);
   }
 
   Widget iconWidget() {
@@ -130,10 +136,7 @@ class CustomIcon extends StatelessWidget {
           semanticLabel: semanticLabel)); //帮助盲人或者视力有障碍的用户提供语言辅助描述
     }
     if (imageProvider != null) {
-      listWidget.add(ImageIcon(imageProvider,
-          color: iconColor,
-          size: iconSize,
-          semanticLabel: semanticLabel));
+      listWidget.add(ImageIcon(imageProvider, color: iconColor, size: iconSize, semanticLabel: semanticLabel));
     }
     if (image != null) {
       listWidget.add(image);

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/src/widget/CommonWidget.dart';
+import 'package:flutter_waya/src/common/CommonWidget.dart';
 import 'package:flutter_waya/src/widget/Refreshed.dart';
 import 'package:flutter_waya/waya.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -65,7 +65,7 @@ class CustomListView extends StatelessWidget {
             itemExtent: itemExtent,
             padding: padding,
           )
-        : noData ?? CommonWidget.noDataWidget();
+        : noData ?? CommonWidget.notDataWidget();
   }
 
   Widget refresherListView() {

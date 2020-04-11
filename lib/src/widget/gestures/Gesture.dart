@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_waya/src/constant/WayColor.dart';
 
 import 'CanvasLine.dart';
 import 'CanvasPoint.dart';
@@ -7,8 +8,8 @@ import 'Point.dart';
 // ignore: must_be_immutable
 class Gesture extends StatefulWidget {
   final double size;
-  final selectColor;
-  final unSelectColor;
+  Color selectColor;
+  Color unSelectColor;
   final double ringWidth;
   final double ringRadius;
   final double circleRadius;
@@ -22,8 +23,8 @@ class Gesture extends StatefulWidget {
   Gesture(
       {Key key,
       @required this.size,
-      this.selectColor = Colors.greenAccent,
-      this.unSelectColor = Colors.grey,
+      this.selectColor,
+      this.unSelectColor,
       this.ringWidth: 2,
       this.ringRadius: 35,
       this.showUnSelectRing: false,
@@ -35,6 +36,8 @@ class Gesture extends StatefulWidget {
       : super(key: key) {
     // 减少刷新频率
     points = [];
+    if (selectColor == null) selectColor = getColors(greenAccent);
+    if (unSelectColor == null) unSelectColor = getColors(black30);
     final realRingSize = this.ringRadius + this.ringWidth / 2;
     final gapWidth = size / 6 - realRingSize;
     for (int i = 0; i < 9; i++) {
@@ -91,61 +94,58 @@ class GestureState extends State<Gesture> {
       children: <Widget>[
         Container(
           child: CustomPaint(
-            size: Size(this.size, this.size),
+            size: Size(size, size),
             painter: CanvasPoint(
-                ringWidth: this.ringWidth,
-                ringRadius: this.ringRadius,
-                showUnSelectRing: this.showUnSelectRing,
-                circleRadius: this.circleRadius,
-                selectColor: this.selectColor,
-                unSelectColor: this.unSelectColor,
+                ringWidth: ringWidth,
+                ringRadius: ringRadius,
+                showUnSelectRing: showUnSelectRing,
+                circleRadius: circleRadius,
+                selectColor: selectColor,
+                unSelectColor: unSelectColor,
                 points: points),
           ),
         ),
         GestureDetector(
             child: CustomPaint(
-              size: Size(this.size, this.size),
+              size: Size(size, size),
               painter: CanvasLine(
-                  pathPoints: this.pathPoints,
-                  selectColor: this.selectColor,
-                  lineWidth: this.lineWidth,
-                  curPoint: this.curPoint),
+                  pathPoints: pathPoints, selectColor: selectColor, lineWidth: lineWidth, curPoint: curPoint),
             ),
-            onPanDown: this._onPanDown,
-            onPanUpdate: (DragUpdateDetails e) => this._onPanUpdate(e, context),
-            onPanEnd: (DragEndDetails e) => this._onPanEnd(e, context))
+            onPanDown: onPanDownVoid,
+            onPanUpdate: (DragUpdateDetails e) => onPanUpdate(e, context),
+            onPanEnd: (DragEndDetails e) => onPanEnd(e, context))
       ],
     );
   }
 
-  _onPanDown(DragDownDetails e) {
-    this._clearAllData();
-    if (this.onPanDown != null) this.onPanDown();
+  onPanDownVoid(DragDownDetails e) {
+    clearAllData();
+    if (onPanDown != null) onPanDown();
   }
 
-  _onPanUpdate(DragUpdateDetails e, BuildContext context) {
+  onPanUpdate(DragUpdateDetails e, BuildContext context) {
     RenderBox box = context.findRenderObject();
     Offset offset = box.globalToLocal(e.globalPosition);
-    _slideDealt(offset);
+    slideDealt(offset);
     setState(() {
       curPoint = Point(x: offset.dx, y: offset.dy, position: -1);
     });
   }
 
-  _onPanEnd(DragEndDetails e, BuildContext context) {
+  onPanEnd(DragEndDetails e, BuildContext context) {
     if (pathPoints.length > 0) {
       setState(() {
         curPoint = pathPoints[pathPoints.length - 1];
       });
-      if (this.onPanUp != null) {
+      if (onPanUp != null) {
         List<int> items = pathPoints.map((item) => item.position).toList();
-        this.onPanUp(items);
+        onPanUp(items);
       }
-      if (this.immediatelyClear) this._clearAllData(); //clear data
+      if (immediatelyClear) clearAllData(); //clear data
     }
   }
 
-  _slideDealt(Offset offSet) {
+  slideDealt(Offset offSet) {
     int xPosition = -1;
     int yPosition = -1;
     for (int i = 0; i < 3; i++) {
@@ -165,7 +165,7 @@ class GestureState extends State<Gesture> {
     }
   }
 
-  _clearAllData() {
+  clearAllData() {
     for (int i = 0; i < 9; i++) {
       points[i].isSelect = false;
     }

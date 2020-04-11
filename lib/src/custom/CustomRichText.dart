@@ -1,13 +1,12 @@
 import 'package:flutter/cupertino.dart';
-
-import 'CustomFlex.dart';
+import 'package:flutter_waya/src/custom/CustomFlex.dart';
 
 class CustomRichText extends StatelessWidget {
   final GestureTapCallback onTap;
   final InlineSpan text;
   final Color background;
   final AlignmentGeometry alignment;
-  TextAlign textAlign;
+  final TextAlign textAlign;
 
   CustomRichText({
     Key key,
@@ -15,21 +14,20 @@ class CustomRichText extends StatelessWidget {
     this.onTap,
     this.alignment,
     this.text,
-    this.textAlign: TextAlign.center,
-  }) : super(key: key) {
-    if (textAlign == null) textAlign = TextAlign.center;
-  }
+    TextAlign textAlign,
+  })  : this.textAlign = textAlign ?? TextAlign.center,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return onTap == null
         ? richText()
         : CustomFlex(
-      alignment: alignment,
-      color: background,
-      onTap: onTap,
-      child: richText(),
-    );
+            alignment: alignment,
+            color: background,
+            onTap: onTap,
+            child: richText(),
+          );
   }
 
   Widget richText() {

@@ -6,18 +6,17 @@ import 'package:flutter_waya/src/utils/MediaQueryUtils.dart';
 import 'package:flutter_waya/src/widget/Refreshed.dart';
 import 'package:flutter_waya/waya.dart';
 
-
 class BaseScaffold extends StatelessWidget {
   final EdgeInsetsGeometry padding;
   final Color backgroundColor;
   final Widget body;
-  bool isScroll;
-  bool isolationBody;
-  bool paddingStatusBar;
-  bool enablePullDown;
+  final bool isScroll;
+  final bool isolationBody;
+  final bool paddingStatusBar;
+  final bool enablePullDown;
 
   //刷新组件相关
-  RefreshController controller;
+  final RefreshController controller;
   final VoidCallback onRefresh;
   final Widget child;
   final Widget header;
@@ -37,18 +36,23 @@ class BaseScaffold extends StatelessWidget {
   final List<Widget> persistentFooterButtons;
   final bool resizeToAvoidBottomPadding;
   final bool resizeToAvoidBottomInset;
-  bool primary;
-  bool extendBody;
-  DragStartBehavior drawerDragStartBehavior;
+  final bool primary;
+  final bool extendBody;
+  final DragStartBehavior drawerDragStartBehavior;
 
-  //isScroll  和isolationBody（body隔离出一个横条目）  不可同时使用
+  //isScroll 和isolationBody（body隔离出一个横条目）  不可同时使用
   BaseScaffold({
     Key key,
+    bool isScroll,
+    bool isolationBody,
+    bool paddingStatusBar,
+    bool enablePullDown,
+    bool primary, //试用使用primary主色
+    bool extendBody,
+    DragStartBehavior drawerDragStartBehavior,
+    double appBarHeight,
     this.appBar,
-    this.isScroll,
-    this.isolationBody,
     this.body,
-    this.paddingStatusBar,
     this.padding,
     this.controller,
     this.onRefresh,
@@ -56,8 +60,6 @@ class BaseScaffold extends StatelessWidget {
     this.header,
     this.footer,
     this.footerTextStyle,
-    this.enablePullDown,
-    //
     this.floatingActionButton, //悬浮按钮
     this.floatingActionButtonLocation, //悬浮按钮位置
     this.floatingActionButtonAnimator, //悬浮按钮动画
@@ -69,19 +71,15 @@ class BaseScaffold extends StatelessWidget {
     this.backgroundColor, //内容的背景颜色，默认使用的是 ThemeData.scaffoldBackgroundColor 的值
     this.resizeToAvoidBottomPadding, //类似于 Android 中的 android:windowSoftInputMode=”adjustResize”，控制界面内容 body 是否重新布局来避免底部被覆盖了，比如当键盘显示的时候，重新布局避免被键盘盖住内容。默认值为 true。
     this.resizeToAvoidBottomInset,
-    this.primary, //试用使用primary主色
-    this.drawerDragStartBehavior,
-    this.extendBody,
-    this.appBarHeight,
-  }) : super(key: key) {
-    if (isScroll == null) isScroll = false;
-    if (isolationBody == null) isolationBody = false;
-    if (paddingStatusBar == null) paddingStatusBar = false;
-    if (enablePullDown == null) enablePullDown = false;
-    if (primary == null) primary = true;
-    if (extendBody == null) extendBody = false;
-    if (drawerDragStartBehavior == null) drawerDragStartBehavior = DragStartBehavior.start;
-  }
+  })  : this.isScroll = isScroll = false,
+        this.appBarHeight = appBarHeight ?? BaseUtils.getHeight(45),
+        this.isolationBody = isolationBody ?? false,
+        this.paddingStatusBar = paddingStatusBar ?? false,
+        this.enablePullDown = enablePullDown ?? false,
+        this.primary = primary ?? true,
+        this.extendBody = extendBody ?? false,
+        this.drawerDragStartBehavior = drawerDragStartBehavior ?? DragStartBehavior.start,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -99,9 +97,12 @@ class BaseScaffold extends StatelessWidget {
       floatingActionButton: floatingActionButton,
       floatingActionButtonAnimator: floatingActionButtonAnimator,
       backgroundColor: backgroundColor ?? getColors(background),
-      appBar: appBarHeight == null ? appBar : (appBar == null ? null : PreferredSize(
-          child: appBar,
-          preferredSize: Size.fromHeight(MediaQueryUtils.getStatusBarHeight() + appBarHeight))),
+      appBar: appBarHeight == null
+          ? appBar
+          : (appBar == null
+              ? null
+              : PreferredSize(
+                  child: appBar, preferredSize: Size.fromHeight(MediaQueryUtils.getStatusBarHeight() + appBarHeight))),
       bottomNavigationBar: bottomNavigationBar,
       body: bodyWidget(context),
     );

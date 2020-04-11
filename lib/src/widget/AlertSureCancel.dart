@@ -8,56 +8,59 @@ class AlertSureCancel extends StatelessWidget {
   final Widget showWidget;
   final GestureTapCallback sureTap;
   final GestureTapCallback cancelTap;
-  String cancelText;
-  String sureText;
-  final Widget sure;
-  final Widget cancel;
-  Color backgroundColor;
+  final String cancelText;
+  final String sureText;
+  final Color backgroundColor;
   final TextStyle cancelTextStyle;
   final TextStyle sureTextStyle;
   final EdgeInsetsGeometry padding;
+  final Widget sure;
+  final Widget cancel;
   final GestureTapCallback backsideTap;
   final double width;
   final double height;
 
   AlertSureCancel({
+    Key key,
+    String cancelText,
+    String sureText,
+    Color backgroundColor,
+    TextStyle cancelTextStyle,
+    TextStyle sureTextStyle,
+    EdgeInsetsGeometry padding,
+    double width,
+    double height,
     this.showWidget,
     this.sureTap,
     this.cancelTap,
-    this.cancelText,
-    this.sureText,
-    this.cancelTextStyle,
-    this.sureTextStyle,
     this.sure,
     this.cancel,
-    this.backgroundColor,
-    this.padding,
     this.backsideTap,
-    this.width,
-    this.height,
-  }) {
-    if (cancelText == null) cancelText = 'cancle';
-    if (sureText == null) sureText = 'sure';
-    if (backgroundColor == null) backgroundColor = getColors(white);
-    if (padding == null) EdgeInsets.all(BaseUtils.getWidth(20));
-    if (sureTextStyle == null)
-      TextStyle(decoration: TextDecoration.none, fontSize: 13, fontWeight: FontWeight.w500, color: getColors(blue));
-    if (cancelTextStyle == null)
-      TextStyle(decoration: TextDecoration.none, fontSize: 13, fontWeight: FontWeight.w500, color: getColors(black30));
-  }
+  })  : this.cancelText = cancelText ?? 'cancle',
+        this.sureText = sureText ?? 'sure',
+        this.backgroundColor = backgroundColor ?? getColors(white),
+        this.width = width ?? BaseUtils.getWidth() - BaseUtils.getWidth(40),
+        this.height = height ?? BaseUtils.getHeight(200),
+        this.padding = padding ?? EdgeInsets.symmetric(vertical: BaseUtils.getHeight(10)),
+        this.sureTextStyle = sureTextStyle ??
+            TextStyle(
+                decoration: TextDecoration.none, fontSize: 13, fontWeight: FontWeight.w500, color: getColors(blue)),
+        this.cancelTextStyle = cancelTextStyle ??
+            TextStyle(
+                decoration: TextDecoration.none, fontSize: 13, fontWeight: FontWeight.w500, color: getColors(black30)),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AlertBase(
         onTap: backsideTap,
         child: CustomFlex(
-          width: width ?? BaseUtils.getWidth() - BaseUtils.getWidth(40),
-          height: height ?? BaseUtils.getHeight(200),
-          onTap: () {},
+          width: width,
+          height: height,
           mainAxisAlignment: MainAxisAlignment.end,
           color: backgroundColor,
           margin: EdgeInsets.symmetric(horizontal: BaseUtils.getWidth(40)),
-          padding: padding ?? EdgeInsets.symmetric(vertical: BaseUtils.getHeight(10)),
+          padding: padding,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Expanded(child: showWidget),
@@ -67,7 +70,7 @@ class AlertSureCancel extends StatelessWidget {
                 CustomButton(
                     padding: EdgeInsets.symmetric(horizontal: BaseUtils.getWidth(20), vertical: BaseUtils.getHeight(5)),
                     onTap: cancelTap ??
-                            () {
+                        () {
                           BaseNavigatorUtils.getInstance().pop();
                         },
                     child: cancel,
@@ -75,7 +78,7 @@ class AlertSureCancel extends StatelessWidget {
                     textStyle: cancelTextStyle),
                 CustomButton(
                     onTap: sureTap ??
-                            () {
+                        () {
                           BaseNavigatorUtils.getInstance().pop();
                         },
                     padding: EdgeInsets.symmetric(horizontal: BaseUtils.getWidth(20), vertical: BaseUtils.getHeight(5)),

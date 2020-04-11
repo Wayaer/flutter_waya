@@ -3,15 +3,16 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:crypto/crypto.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_waya/src/constant/BaseEnum.dart';
+import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/src/utils/MediaQueryUtils.dart';
 import 'package:flutter_waya/waya.dart';
-import 'package:crypto/crypto.dart';
 
 isDebug() {
   return !kReleaseMode;
@@ -221,13 +222,13 @@ class BaseUtils {
   }
 
   static setStatusBarLight(bool isLight) {
-    const color = Color(0x00000000);
+    Color color = getColors(transparent);
     SystemUiOverlayStyle systemUiOverlayStyle;
     if (isLight is bool) {
       if (isLight) {
         systemUiOverlayStyle = SystemUiOverlayStyle(
-          systemNavigationBarColor: Colors.black,
-          systemNavigationBarDividerColor: color,
+          systemNavigationBarColor: getColors(black70),
+          systemNavigationBarDividerColor: getColors(transparent),
           statusBarColor: color,
           systemNavigationBarIconBrightness: Brightness.light,
           statusBarIconBrightness: Brightness.light,
@@ -235,7 +236,7 @@ class BaseUtils {
         );
       } else {
         systemUiOverlayStyle = SystemUiOverlayStyle(
-          systemNavigationBarColor: Colors.black,
+          systemNavigationBarColor: getColors(black70),
           systemNavigationBarDividerColor: color,
           statusBarColor: color,
           systemNavigationBarIconBrightness: Brightness.light,

@@ -11,35 +11,37 @@ class CustomClipRRect extends StatelessWidget {
   final double height;
   final double width;
   final Decoration decoration;
-  Clip clipBehavior;
+  final Clip clipBehavior;
 
   CustomClipRRect({
     Key key,
-    this.borderRadius,
-    this.padding,
+    Decoration decoration,
+    Clip clipBehavior,
+    EdgeInsetsGeometry padding,
+    BorderRadius borderRadius,
     this.margin,
     this.clipper,
     this.width,
     this.height,
-    this.decoration,
-    this.clipBehavior,
     this.child,
-  }) :super(key: key) {
-    if (clipBehavior == null) clipBehavior = Clip.antiAlias;
-  }
+  })  : this.clipBehavior = clipBehavior ?? Clip.antiAlias,
+        this.borderRadius = borderRadius ?? BorderRadius.circular(5),
+        this.padding = padding ?? EdgeInsets.all(BaseUtils.getWidth(1)),
+        this.decoration = decoration ?? WayStyles.containerRadiusWidth(),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: width,
       height: height,
-      padding: padding ?? EdgeInsets.all(BaseUtils.getWidth(1)),
+      padding: padding,
       margin: margin,
-      decoration: decoration ?? WayStyles.containerRadiusWidth(),
+      decoration: decoration,
       child: ClipRRect(
         clipBehavior: clipBehavior,
         clipper: clipper,
-        borderRadius: borderRadius ?? BorderRadius.circular(5),
+        borderRadius: borderRadius,
         child: child,
       ),
     );

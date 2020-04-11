@@ -7,7 +7,7 @@ typedef WheelChangedListener = Function(int newIndex);
 
 class ListWheel extends StatefulWidget {
   /// 每个Item的高度,固定的
-  double itemExtent;
+  final double itemExtent;
 
   /// 条目构造器
   final IndexedWidgetBuilder itemBuilder;
@@ -16,55 +16,60 @@ class ListWheel extends StatefulWidget {
   final int itemCount;
 
   /// 半径大小,越大则越平面,越小则间距越大
-  double diameterRatio;
+  final double diameterRatio;
 
   /// 选中item偏移
-  double offAxisFraction;
+  final double offAxisFraction;
 
   ///表示车轮水平偏离中心的程度  范围[0,0.01]
-  double perspective;
+  final double perspective;
 
   /// 初始选中的Item
-  int initialIndex;
+  final int initialIndex;
 
   /// 回调监听
   final WheelChangedListener onItemSelected;
 
   /// ///放大倍率
-  double magnification;
+  final double magnification;
 
   ///是否启用放大镜
-  bool useMagnifier;
+  final bool useMagnifier;
 
   ///1或者2
-  double squeeze;
+  final double squeeze;
 
   ///
-  ScrollPhysics physics;
+  final ScrollPhysics physics;
 
-  FixedExtentScrollController controller;
+  final FixedExtentScrollController controller;
 
   ListWheel({
+    Key key,
     @required this.itemBuilder,
     @required this.itemCount,
-    this.itemExtent,
-    this.diameterRatio,
-    this.offAxisFraction,
-    this.initialIndex,
-    this.controller,
-    this.onItemSelected, this.perspective, this.magnification, this.useMagnifier, this.squeeze, this.physics,
-  }) {
-    if (diameterRatio == null) diameterRatio = 1;
-    if (offAxisFraction == null) offAxisFraction = 0;
-    if (initialIndex == null) initialIndex = 0;
-    if (perspective == null) perspective = 0.01;
-    if (magnification == null) magnification = 1.5;
-    if (useMagnifier == null) useMagnifier = true;
-    if (squeeze == null) squeeze = 1;
-    if (itemExtent == null) itemExtent = BaseUtils.getHeight(12);
-    if (physics == null) physics = FixedExtentScrollPhysics();
-    if (controller == null) controller = FixedExtentScrollController(initialItem: initialIndex);
-  }
+    double itemExtent,
+    double diameterRatio,
+    double offAxisFraction,
+    double perspective,
+    int initialIndex,
+    double magnification,
+    bool useMagnifier,
+    double squeeze,
+    ScrollPhysics physics,
+    FixedExtentScrollController controller,
+    this.onItemSelected,
+  })  : this.diameterRatio = diameterRatio ?? 1,
+        this.offAxisFraction = offAxisFraction ?? 0,
+        this.initialIndex = initialIndex ?? 0,
+        this.perspective = perspective ?? 0.01,
+        this.magnification = magnification ?? 1.5,
+        this.useMagnifier = useMagnifier ?? true,
+        this.squeeze = squeeze ?? 1,
+        this.itemExtent = itemExtent ?? BaseUtils.getHeight(12),
+        this.physics = physics ?? FixedExtentScrollPhysics(),
+        this.controller = controller ?? FixedExtentScrollController(initialItem: initialIndex),
+        super(key: key);
 
   @override
   ListWheelState createState() => ListWheelState();
@@ -81,8 +86,7 @@ class ListWheelState extends State<ListWheel> {
         } else if (index > this.widget.itemCount - 1) {
           index = this.widget.itemCount - 1;
         }
-        controller.animateToItem(index,
-            duration: Duration(milliseconds: 100), curve: Curves.linear);
+        controller.animateToItem(index, duration: Duration(milliseconds: 100), curve: Curves.linear);
       }
     }
   }
@@ -91,8 +95,7 @@ class ListWheelState extends State<ListWheel> {
   void initState() {
     super.initState();
     controller = widget.controller;
-    if (widget.controller != null &&
-        widget.initialIndex > widget.controller.initialItem) {
+    if (widget.controller != null && widget.initialIndex > widget.controller.initialItem) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         animateToItem(widget.initialIndex);
       });
@@ -110,8 +113,7 @@ class ListWheelState extends State<ListWheel> {
   }
 
   @override
-  Widget build(BuildContext context) =>
-      NotificationListener<ScrollEndNotification>(
+  Widget build(BuildContext context) => NotificationListener<ScrollEndNotification>(
         onNotification: onNotification,
         child: ListWheelScrollView.useDelegate(
           controller: controller,

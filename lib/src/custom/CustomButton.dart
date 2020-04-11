@@ -13,15 +13,15 @@ class CustomButton extends StatelessWidget {
   final Decoration decoration;
   final GestureTapCallback onTap;
   final AlignmentGeometry alignment;
-  int maxLines;
-  TextOverflow overflow;
-  String text;
-  bool inkWell;
+  final int maxLines;
+  final TextOverflow overflow;
+  final String text;
+  final bool inkWell;
 
   CustomButton({
     Key key,
-    this.text,
-    this.inkWell,
+    String text,
+    bool inkWell,
     this.textStyle,
     this.onTap,
     this.padding,
@@ -31,15 +31,14 @@ class CustomButton extends StatelessWidget {
     this.height,
     this.decoration,
     this.alignment,
-    this.maxLines,
+    int maxLines,
     this.child,
-    this.overflow: TextOverflow.ellipsis,
-  }) : super(key: key) {
-    if (text == null) text = 'Button';
-    if (inkWell == null) inkWell = false;
-    if (maxLines == null) maxLines = 1;
-    if (overflow == null) overflow = TextOverflow.ellipsis;
-  }
+    TextOverflow overflow,
+  })  : this.text = text ?? 'Button',
+        this.inkWell = inkWell ?? false,
+        this.maxLines = maxLines ?? 1,
+        this.overflow = overflow ?? TextOverflow.ellipsis,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -49,12 +48,12 @@ class CustomButton extends StatelessWidget {
       child: child != null
           ? child
           : Text(
-        text,
-        textAlign: TextAlign.start,
-        style: textStyle,
-        maxLines: maxLines,
-        overflow: overflow,
-      ),
+              text,
+              textAlign: TextAlign.start,
+              style: textStyle,
+              maxLines: maxLines,
+              overflow: overflow,
+            ),
       width: width,
       height: height,
       onTap: onTap,

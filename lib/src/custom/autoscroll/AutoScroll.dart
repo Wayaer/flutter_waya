@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/waya.dart';
 
 typedef Widget WidgetMaker<T>(BuildContext context, T item);
@@ -45,25 +46,26 @@ class AutoScroll extends StatefulWidget {
   ///点击事件回调
   final ValueChanged<int> onChange;
 
-  AutoScroll({this.children,
-    this.texts,
-    bool center,
-    Color selectTextColor,
-    Color textColor,
-    int duration,
-    double itemDuration,
-    bool autoStart,
-    AutoScrollAnimation autoScrollAnimation,
-    this.animateDistance,
-    this.onChange,
-    bool singleLine})
+  AutoScroll(
+      {this.children,
+      this.texts,
+      bool center,
+      Color selectTextColor,
+      Color textColor,
+      int duration,
+      double itemDuration,
+      bool autoStart,
+      AutoScrollAnimation autoScrollAnimation,
+      this.animateDistance,
+      this.onChange,
+      bool singleLine})
       : this.center = center ?? true,
         this.duration = duration ?? 4,
         this.itemDuration = itemDuration ?? 500,
         this.autoStart = autoStart ?? true,
         this.singleLine = singleLine ?? true,
-        this.textColor = textColor ?? Colors.black,
-        this.selectTextColor = selectTextColor ?? Colors.black,
+        this.textColor = textColor ?? getColors(black),
+        this.selectTextColor = selectTextColor ?? getColors(black),
         this.autoScrollAnimation = autoScrollAnimation ?? AutoScrollAnimation.b2t;
 
   @override
@@ -123,22 +125,16 @@ class AutoScrollState extends State<AutoScroll> {
           if (currentPage >= items.length) {
             //last item
             currentPage = 0;
-            firstItem = items[items.length - 1]
-              ..modeListener.value = true;
-            secondItem = items[currentPage]
-              ..modeListener.value = false;
+            firstItem = items[items.length - 1]..modeListener.value = true;
+            secondItem = items[currentPage]..modeListener.value = false;
           } else if (currentPage <= 0) {
             // first item
             currentPage = items.length - 1;
-            firstItem = items[0]
-              ..modeListener.value = true;
-            secondItem = items[currentPage]
-              ..modeListener.value = false;
+            firstItem = items[0]..modeListener.value = true;
+            secondItem = items[currentPage]..modeListener.value = false;
           } else {
-            firstItem = items[currentPage - 1]
-              ..modeListener.value = true;
-            secondItem = items[currentPage]
-              ..modeListener.value = false;
+            firstItem = items[currentPage - 1]..modeListener.value = true;
+            secondItem = items[currentPage]..modeListener.value = false;
           }
         });
       });
@@ -151,19 +147,13 @@ class AutoScrollState extends State<AutoScroll> {
     if (widget.animateDistance == null) {
       if (widget.autoScrollAnimation == AutoScrollAnimation.l2r ||
           widget.autoScrollAnimation == AutoScrollAnimation.l2r) {
-        double width = MediaQuery
-            .of(context)
-            .size
-            .width;
+        double width = MediaQuery.of(context).size.width;
         firstItem.animateDistance = width;
         if (secondItem != null) {
           secondItem.animateDistance = width;
         }
       } else {
-        double height = MediaQuery
-            .of(context)
-            .size
-            .height;
+        double height = MediaQuery.of(context).size.height;
         firstItem.animateDistance = height;
         if (secondItem != null) {
           secondItem.animateDistance = height;
@@ -177,13 +167,13 @@ class AutoScrollState extends State<AutoScroll> {
     return ClipRect(
         child: widget.center
             ? Center(
-          child: Stack(
-            children: items,
-          ),
-        )
+                child: Stack(
+                  children: items,
+                ),
+              )
             : Stack(
-          children: items,
-        ));
+                children: items,
+              ));
   }
 
   @override

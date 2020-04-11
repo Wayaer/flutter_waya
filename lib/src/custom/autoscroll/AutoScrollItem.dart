@@ -1,39 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/waya.dart';
 
 class AutoScrollItem extends StatefulWidget {
-  Key key;
+  final Key key;
 
   ///这是text的具体内容
-  String text;
+  final String text;
 
   ///文字的颜色
   Color textColor;
 
   ///文字的大小
-  double textSize;
+  final double textSize;
 
   ///如果没有文字，也可以自定义内容
-  Widget child;
+  final Widget child;
 
   ///这个是为了监听值变化来刷新页面的，否则页面的state只会初始化一遍
   ///必须指定，否则不会执行动画，或者动画只执行一次
-  ValueNotifier<bool> modeListener;
+  final ValueNotifier<bool> modeListener;
 
   ///按钮事件
-  VoidCallback onPress;
+  final VoidCallback onPress;
 
   ///动画的方向
-  AutoScrollAnimation autoScrollAnimation;
+  final AutoScrollAnimation autoScrollAnimation;
 
   ///移动的距离
   double animateDistance;
 
   /// 跑马灯的切换时长 默认是500毫秒
-  int itemDuration;
+  final int itemDuration;
 
   ///是否单行显示，默认是多行的
-  bool singleLine;
+  final bool singleLine;
 
   bool get mode => this.modeListener.value;
 
@@ -51,9 +52,8 @@ class AutoScrollItem extends StatefulWidget {
     int itemDuration,
     this.child,
     bool singleLine,
-  })
-      :this.modeListener = modeListener ?? ValueNotifier(false),
-        this.textColor = textColor ?? Colors.black,
+  })  : this.modeListener = modeListener ?? ValueNotifier(false),
+        this.textColor = textColor ?? getColors(black),
         this.textSize = textSize ?? 14.0,
         this.autoScrollAnimation = autoScrollAnimation ?? AutoScrollAnimation.b2t,
         this.itemDuration = itemDuration ?? 500,
@@ -77,7 +77,7 @@ class AutoScrollItemState extends State<AutoScrollItem> with SingleTickerProvide
   Tween outTween;
 
   ///是否是x轴移动
-  bool isXAniamation = false;
+  bool isXAnimation = false;
 
   @override
   void initState() {
@@ -86,28 +86,28 @@ class AutoScrollItemState extends State<AutoScrollItem> with SingleTickerProvide
       case AutoScrollAnimation.t2b:
         inTween = Tween(begin: -widget.animateDistance, end: 0.0);
         outTween = Tween(begin: 0.0, end: widget.animateDistance);
-        isXAniamation = false;
+        isXAnimation = false;
         break;
       case AutoScrollAnimation.b2t:
         inTween = Tween(begin: widget.animateDistance, end: 0.0);
         outTween = Tween(begin: 0.0, end: -widget.animateDistance);
-        isXAniamation = false;
+        isXAnimation = false;
         break;
       case AutoScrollAnimation.l2r:
         inTween = Tween(begin: -widget.animateDistance, end: 0.0);
         outTween = Tween(begin: 0.0, end: widget.animateDistance);
-        isXAniamation = true;
+        isXAnimation = true;
         break;
 
       case AutoScrollAnimation.r2l:
         inTween = Tween(begin: widget.animateDistance, end: 0.0);
         outTween = Tween(begin: 0.0, end: -widget.animateDistance);
-        isXAniamation = true;
+        isXAnimation = true;
         break;
       default:
         inTween = Tween(begin: widget.animateDistance, end: 0.0);
         outTween = Tween(begin: 0.0, end: -widget.animateDistance);
-        isXAniamation = false;
+        isXAnimation = false;
         break;
     }
     _updateListener = () {
@@ -141,7 +141,7 @@ class AutoScrollItemState extends State<AutoScrollItem> with SingleTickerProvide
   @override
   Widget build(BuildContext context) {
     Widget current;
-    Matrix4 transform = isXAniamation
+    Matrix4 transform = isXAnimation
         ? new Matrix4.translationValues(transformAnimation.value, 0, 0)
         : new Matrix4.translationValues(0, transformAnimation.value, 0);
 

@@ -1,13 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_waya/src/common/CommonWidget.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/src/custom/CustomButton.dart';
 import 'package:flutter_waya/src/utils/BaseUtils.dart';
 
 class CountDownSkip extends StatefulWidget {
-  String skipText;
-  int seconds;
+  final String skipText;
+  final int seconds;
   final TextStyle textStyle;
   final ValueChanged<int> onChange;
   final GestureTapCallback onTap;
@@ -15,16 +16,15 @@ class CountDownSkip extends StatefulWidget {
 
   CountDownSkip({
     Key key,
-    this.skipText,
-    this.seconds,
+    String skipText,
+    int seconds,
     this.textStyle,
     this.onChange,
     this.onTap,
     this.decoration,
-  }) :super(key: key) {
-    if (skipText == null) skipText = '';
-    if (seconds == null) seconds = 5;
-  }
+  })  : this.skipText = skipText ?? '',
+        this.seconds = seconds ?? 5,
+        super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -64,9 +64,7 @@ class CountDownSkipState extends State<CountDownSkip> {
       onTap: widget.onTap,
       decoration: widget.decoration ?? BoxDecoration(color: getColors(white50), borderRadius: BorderRadius.circular(5)),
       padding: EdgeInsets.symmetric(horizontal: BaseUtils.getHeight(5), vertical: BaseUtils.getWidth(4)),
-      text: seconds.toString() +
-          's' + widget.skipText,
-      textStyle: widget.textStyle ?? TextStyle(fontSize: 13, color: getColors(black70)),
+      child: CommonWidget.textSmall(seconds.toString() + 's' + widget.skipText),
     );
   }
 

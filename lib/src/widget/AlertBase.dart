@@ -4,57 +4,13 @@ import 'package:flutter_waya/waya.dart';
 
 class AlertBase extends StatelessWidget {
   final Widget child;
-  EdgeInsetsGeometry padding;
+  final EdgeInsetsGeometry padding;
   final GestureTapCallback onTap;
   final Color backgroundColor;
-  AlertPosition position;
-  MainAxisAlignment mainAxisAlignment;
-  CrossAxisAlignment crossAxisAlignment;
+  final AlertPosition position;
 
-  AlertBase({this.child, this.padding, this.onTap, this.backgroundColor, this.position}) {
-    switch (position) {
-      case AlertPosition.top:
-        mainAxisAlignment = MainAxisAlignment.start;
-        crossAxisAlignment = CrossAxisAlignment.center;
-        break;
-      case AlertPosition.topLeft:
-        mainAxisAlignment = MainAxisAlignment.start;
-        crossAxisAlignment = CrossAxisAlignment.start;
-        break;
-      case AlertPosition.topRight:
-        mainAxisAlignment = MainAxisAlignment.start;
-        crossAxisAlignment = CrossAxisAlignment.end;
-        break;
-      case AlertPosition.center:
-        mainAxisAlignment = MainAxisAlignment.center;
-        crossAxisAlignment = CrossAxisAlignment.center;
-        break;
-      case AlertPosition.centerLeft:
-        mainAxisAlignment = MainAxisAlignment.center;
-        crossAxisAlignment = CrossAxisAlignment.start;
-        break;
-      case AlertPosition.centerRight:
-        mainAxisAlignment = MainAxisAlignment.center;
-        crossAxisAlignment = CrossAxisAlignment.end;
-        break;
-      case AlertPosition.bottom:
-        mainAxisAlignment = MainAxisAlignment.end;
-        crossAxisAlignment = CrossAxisAlignment.center;
-        break;
-      case AlertPosition.bottomLeft:
-        mainAxisAlignment = MainAxisAlignment.end;
-        crossAxisAlignment = CrossAxisAlignment.start;
-        break;
-      case AlertPosition.bottomRight:
-        mainAxisAlignment = MainAxisAlignment.end;
-        crossAxisAlignment = CrossAxisAlignment.end;
-        break;
-      default:
-        mainAxisAlignment = MainAxisAlignment.center;
-        crossAxisAlignment = CrossAxisAlignment.center;
-        break;
-    }
-  }
+  const AlertBase({Key key, this.child, this.padding, this.onTap, this.backgroundColor, this.position})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -64,10 +20,36 @@ class AlertBase extends StatelessWidget {
         width: BaseUtils.getWidth(),
         onTap: onTap,
         padding: padding,
-        mainAxisAlignment: mainAxisAlignment,
-        crossAxisAlignment: crossAxisAlignment,
+        mainAxisAlignment: mainAxisAlignment(),
+        crossAxisAlignment: crossAxisAlignment(),
         children: <Widget>[
           child,
         ]);
+  }
+
+  CrossAxisAlignment crossAxisAlignment() {
+    if (position == AlertPosition.topLeft ||
+        position == AlertPosition.centerLeft ||
+        position == AlertPosition.bottomLeft) {
+      return CrossAxisAlignment.start;
+    } else if (position == AlertPosition.topRight ||
+        position == AlertPosition.centerRight ||
+        position == AlertPosition.bottomRight) {
+      return CrossAxisAlignment.end;
+    } else {
+      return CrossAxisAlignment.center;
+    }
+  }
+
+  MainAxisAlignment mainAxisAlignment() {
+    if (position == AlertPosition.top || position == AlertPosition.topLeft || position == AlertPosition.topRight) {
+      return MainAxisAlignment.start;
+    } else if (position == AlertPosition.bottom ||
+        position == AlertPosition.bottomLeft ||
+        position == AlertPosition.bottomRight) {
+      return MainAxisAlignment.end;
+    } else {
+      return MainAxisAlignment.center;
+    }
   }
 }

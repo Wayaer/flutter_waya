@@ -7,8 +7,8 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class Refresh extends StatelessWidget {
   final RefreshController controller;
-  bool enablePullDown;
-  bool enablePullUp;
+  final bool enablePullDown;
+  final bool enablePullUp;
   final VoidCallback onLoading;
   final VoidCallback onRefresh;
   final Widget child;
@@ -17,7 +17,7 @@ class Refresh extends StatelessWidget {
   final TextStyle footerTextStyle;
 
   //
-  bool enableTwoLevel; //二楼是否开启
+  final bool enableTwoLevel; //二楼是否开启
   final VoidCallback onTwoLevel;
   final OnOffsetChange onOffsetChange;
   final Axis scrollDirection;
@@ -28,19 +28,20 @@ class Refresh extends StatelessWidget {
   final double cacheExtent;
   final int semanticChildCount;
   final DragStartBehavior dragStartBehavior;
+  final RefreshController refreshController;
 
   Refresh({
     Key key,
+    bool enablePullDown,
+    bool enablePullUp,
+    bool enableTwoLevel, //二楼是否开启
     this.controller,
     this.footerTextStyle,
-    this.enablePullDown,
-    this.enablePullUp,
     this.onLoading,
     this.onRefresh,
     this.child,
     this.footer,
     this.header,
-    this.enableTwoLevel,
     this.onTwoLevel,
     this.onOffsetChange,
     this.dragStartBehavior,
@@ -51,13 +52,11 @@ class Refresh extends StatelessWidget {
     this.physics,
     this.scrollDirection,
     this.scrollController,
-  }) : super(key: key) {
-    if (enablePullDown == null) enablePullDown = false;
-    if (enablePullUp == null) enablePullUp = false;
-    if (enableTwoLevel == null) enableTwoLevel = false;
-  }
-
-  RefreshController refreshController = RefreshController(initialRefresh: false);
+  })  : this.enablePullDown = enablePullDown ?? false,
+        this.enablePullUp = enablePullUp ?? false,
+        this.enableTwoLevel = enableTwoLevel ?? false,
+        this.refreshController = RefreshController(initialRefresh: false),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -65,10 +64,7 @@ class Refresh extends StatelessWidget {
       controller: controller ?? refreshController,
       enablePullDown: enablePullDown,
       enablePullUp: enablePullUp,
-      header: header ??
-          BezierCircleHeader(
-            bezierColor: Colors.transparent,
-          ),
+      header: header ?? BezierCircleHeader(bezierColor: getColors(transparent)),
       footer: footer ??
           CustomFooter(
             builder: (BuildContext context, LoadStatus mode) {
@@ -120,7 +116,6 @@ class Refresh extends StatelessWidget {
       refreshController.twoLevelComplete();
     });
   }
-
 
   onRefreshVoid() {
     log('onRefresh');

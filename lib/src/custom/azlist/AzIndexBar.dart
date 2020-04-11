@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/src/utils/BaseUtils.dart';
 
 /// IndexBar touch callback IndexModel.
@@ -79,8 +80,8 @@ class AzIndexBar extends StatefulWidget {
       this.margin,
       this.radius,
       this.touchDownRadius,
-      this.color: Colors.white,
-      this.onTouchColor: Colors.lightBlue,
+      this.color,
+      this.onTouchColor,
       this.touchDownTextStyle})
       : assert(onTouch != null),
         assert(size >= 15),
@@ -98,6 +99,16 @@ class AzIndexBarState extends State<AzIndexBar> {
   double radius = 60;
   bool widgetTopChange = false;
   AzIndexBarDetails indexModel = AzIndexBarDetails();
+  Color color;
+  Color onTouchColor;
+
+  @override
+  void initState() {
+    super.initState();
+    color = widget.color ?? getColors(white);
+    onTouchColor = widget.onTouchColor ?? getColors(blue);
+    init();
+  }
 
   /// get index.
   int getIndex(int offset) {
@@ -130,12 +141,11 @@ class AzIndexBarState extends State<AzIndexBar> {
 
   @override
   Widget build(BuildContext context) {
-    init();
     List<Widget> children = List();
     widget.data.forEach((v) {
       children.add(Container(
         decoration: BoxDecoration(
-            color: indexModel.isTouchDown == true && v == indexModel.tag ? widget.onTouchColor : widget.color,
+            color: indexModel.isTouchDown == true && v == indexModel.tag ? onTouchColor : color,
             borderRadius: widget.touchDownRadius ?? BorderRadius.circular(radius)),
         alignment: Alignment.center,
         width: widget.size.toDouble(),
@@ -150,7 +160,7 @@ class AzIndexBarState extends State<AzIndexBar> {
     return Container(
         padding: widget.padding,
         margin: EdgeInsets.only(right: BaseUtils.getWidth(10)),
-        decoration: BoxDecoration(color: widget.color, borderRadius: widget.radius ?? BorderRadius.circular(radius)),
+        decoration: BoxDecoration(color: color, borderRadius: widget.radius ?? BorderRadius.circular(radius)),
         child: GestureDetector(
           onVerticalDragDown: (DragDownDetails details) {
             if (widgetTop == -1 || widgetTopChange) {

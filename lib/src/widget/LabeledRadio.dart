@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
 class LabeledRadio extends StatelessWidget {
-
-  EdgeInsets padding;
-  EdgeInsets titlePadding;
+  final EdgeInsets padding;
+  final EdgeInsets titlePadding;
   final Widget label;
   final dynamic groupValue;
   final Color activeColor;
@@ -12,17 +11,16 @@ class LabeledRadio extends StatelessWidget {
 
   LabeledRadio({
     Key key,
+    EdgeInsets padding,
+    EdgeInsets titlePadding,
     this.label,
-    this.padding,
-    this.titlePadding,
     this.groupValue,
     this.activeColor,
     this.value,
     this.onChanged,
-  }) :super(key: key) {
-    if (padding == null) padding = EdgeInsets.zero;
-    if (titlePadding == null) titlePadding = EdgeInsets.zero;
-  }
+  })  : this.padding = padding ?? EdgeInsets.zero,
+        this.titlePadding = titlePadding ?? EdgeInsets.zero,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
