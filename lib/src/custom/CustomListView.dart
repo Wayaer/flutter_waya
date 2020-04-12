@@ -42,7 +42,8 @@ class CustomListView extends StatelessWidget {
     this.header,
     this.footer,
     this.footerTextStyle,
-  })  : assert(itemCount != null),
+  })
+      : assert(itemCount != null),
         assert(itemBuilder != null),
         super(key: key);
 
@@ -57,14 +58,14 @@ class CustomListView extends StatelessWidget {
   Widget listViewBuilder() {
     return itemCount > 0
         ? ListView.builder(
-            physics: physics,
-            shrinkWrap: shrinkWrap,
-            controller: controller,
-            itemBuilder: itemBuilder,
-            itemCount: itemCount,
-            itemExtent: itemExtent,
-            padding: padding,
-          )
+      physics: physics,
+      shrinkWrap: shrinkWrap,
+      controller: controller,
+      itemBuilder: itemBuilder,
+      itemCount: itemCount,
+      itemExtent: itemExtent,
+      padding: padding,
+    )
         : noData ?? CommonWidget.notDataWidget();
   }
 

@@ -182,7 +182,7 @@ class BaseUtils {
   }
 
   //关闭键盘
-  static focusScope(BuildContext context) {
+  static closeKeyboard(BuildContext context) {
     FocusScope.of(context).requestFocus(FocusNode());
   }
 

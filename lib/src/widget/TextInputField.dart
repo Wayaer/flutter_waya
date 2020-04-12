@@ -18,16 +18,22 @@ class TextInputField extends StatelessWidget {
 
   final int minLines;
   final TextInputType keyboardType;
-  final ValueChanged<String> onSubmitted;
   final InputDecoration inputDecoration;
   final Color cursorColor; //光标颜色
   final InputTextType inputTextType;
+
+  //点击事件
+  final GestureTapCallback onTap;
+  final VoidCallback onEditingComplete;
+  final ValueChanged<String> onSubmitted;
 
   //显示在输入框右下方
   final String counterText;
   final TextStyle counterStyle;
   final Widget counter;
 
+  final bool maxLengthEnforced; // //是否自动获取焦点  跳转到该页面后 光标自动显示到该输入框  键盘弹起
+  final bool autoFocus; // //是否自动获取焦点  跳转到该页面后 光标自动显示到该输入框  键盘弹起
   final bool obscureText; //隐藏文字
   final Widget header;
   final Widget footer;
@@ -69,38 +75,61 @@ class TextInputField extends StatelessWidget {
   final InputBorder focusedErrorBorder; //获取焦点时，error时下划线显示的边框样式，不设置则使用默认的的下划线
   final InputBorder focusedBorder; //获取焦点输入框
   final InputBorder defaultBorder; //以上都未设置时 默认输入框
-  final GestureTapCallback onTap;
+
   final Color fillColor;
   final TextStyle hintStyle;
   final String hintText;
   final int hintMaxLines;
   final EdgeInsetsGeometry contentPadding;
+  final TextInputAction textInputAction;
+  final double cursorWidth;
+  final Radius cursorRadius;
+  final Brightness keyboardAppearance;
+
+  //长按输入的文字时，true显示系统的粘贴板  false不显示
+  final bool enableInteractiveSelection;
+
+// 控制键盘大小写切换的   试过了 但是好像没有效果？？
+// textCapitalization: TextCapitalization.characters,  // 输入时键盘的英文都是大写
+// textCapitalization: TextCapitalization.none,  //  键盘英文默认显示小写
+// textCapitalization: TextCapitalization.sentences, // 在输入每个句子的第一个字母时，键盘大写形式，输入后续字母时键盘小写形式
+// textCapitalization: TextCapitalization.words,// 在输入每个单词的第一个字母时，键盘大写形式，输入其他字母时键盘小写形式
+  final TextCapitalization textCapitalization;
+
+// 自定义数字显示   指定maxLength后 右下角会出现字数，flutter有默认实现  可以通过这个自定义
+  final InputCounterWidgetBuilder buildCounter;
 
   TextInputField({
     Key key,
     int maxLines,
     TextAlign textAlign,
     bool obscureText,
+    bool autoFocus,
+    bool enabled,
+    bool enableInteractiveSelection,
+    bool maxLengthEnforced,
+    TextInputAction textInputAction,
+    TextDirection textDirection,
+    Color cursorColor,
+    Radius cursorRadius,
+    double cursorWidth,
+    Brightness keyboardAppearance,
+    TextCapitalization textCapitalization,
     this.icon,
     this.controller,
-    this.enabled,
     this.inputDecoration,
     this.onSubmitted,
     this.inputStyle,
     this.keyboardType,
     this.minLines,
-    this.textDirection,
     this.maxLength,
     this.onChanged,
-    this.cursorColor,
     this.hintText,
     this.hintStyle,
     this.contentPadding,
     this.inputFormatter,
     this.fillColor,
     this.inputTextType,
-    this.prefixText,
-    this.prefixIcon,
     this.isDense,
     this.disabledBorder,
     this.enabledBorder,
@@ -108,6 +137,8 @@ class TextInputField extends StatelessWidget {
     this.defaultBorder,
     this.labelText,
     this.labelStyle,
+    this.prefixText,
+    this.prefixIcon,
     this.prefix,
     this.prefixStyle,
     this.suffixIcon,
@@ -131,8 +162,46 @@ class TextInputField extends StatelessWidget {
     this.counterText,
     this.counterStyle,
     this.counter,
+    this.buildCounter,
+    this.onEditingComplete,
   })  : this.obscureText = obscureText ?? false,
+        this.textCapitalization = textCapitalization ?? TextCapitalization.none,
+        //长按输入的文字时，true显示系统的粘贴板  false不显示
+        this.enableInteractiveSelection = enableInteractiveSelection ?? true,
+        //自定义数字显示   指定maxLength后 右下角会出现字数，flutter有默认实现  可以通过这个自定义
+        //光标颜色
+        this.cursorColor = cursorColor ?? getColors(black70),
+        //光标圆角
+        this.cursorRadius = cursorRadius ?? Radius.circular(1),
+        //光标宽度
+        this.cursorWidth = cursorWidth ?? 2,
+        // 键盘外观  仅ios有效
+        this.keyboardAppearance = keyboardAppearance ?? Brightness.dark,
+//      默认true  超过长度后输入无效  右下角数字 显示10/10   此时onchange方法依然会调用，返回值就是限制了长度的值 超过后的输入不显示
+//      false 超过后可继续输入  右下角数字显示，比如 23/10
+        this.maxLengthEnforced = maxLengthEnforced ?? true,
+//       设置键盘上enter键的显示内容
+//       textInputAction: TextInputAction.search, //搜索
+//       textInputAction: TextInputAction.none,//默认回车符号
+//       textInputAction: TextInputAction.done,//安卓显示 回车符号
+//       textInputAction: TextInputAction.go,//开始
+//       textInputAction: TextInputAction.next,//下一步
+//       textInputAction: TextInputAction.send,//发送
+//       textInputAction: TextInputAction.continueAction,//android  不支持
+//       textInputAction: TextInputAction.emergencyCall,//android  不支持
+//       textInputAction: TextInputAction.newline,//安卓显示 回车符号
+//       textInputAction: TextInputAction.route,//android  不支持
+//       textInputAction: TextInputAction.join,//android  不支持
+//       textInputAction: TextInputAction.previous,//安卓显示 回车符号
+//       textInputAction: TextInputAction.unspecified,//安卓显示 回车符号
+        this.textInputAction = textInputAction ?? TextInputAction.none,
+        this.autoFocus = autoFocus ?? false,
         this.maxLines = maxLines ?? 1,
+        //从左边输入  光标在左边
+        //从右边输入  光标在右边
+//      this.textDirection = textDirection ?? TextDirection.rtl,
+        this.textDirection = textDirection ?? TextDirection.ltr,
+        this.enabled = enabled ?? true,
         this.textAlign = textAlign ?? TextAlign.left,
         super(key: key);
 
@@ -190,25 +259,29 @@ class TextInputField extends StatelessWidget {
 
   Widget textField(BuildContext context) {
     return TextField(
+      //长按输入的文字时，true显示系统的粘贴板  false不显示
+      enableInteractiveSelection: enableInteractiveSelection,
+      //自定义数字显示   指定maxLength后 右下角会出现字数，flutter有默认实现  可以通过这个自定义
+      buildCounter: buildCounter,
       maxLines: maxLines,
       minLines: minLines,
       maxLength: maxLength,
-      keyboardAppearance: Brightness.dark,
+      maxLengthEnforced: maxLengthEnforced,
+      keyboardAppearance: keyboardAppearance,
       textDirection: textDirection,
+      textCapitalization: textCapitalization,
       textAlign: textAlign,
       focusNode: focusNode,
+      autofocus: autoFocus,
+      textInputAction: textInputAction,
       inputFormatters: inputFormatter ?? inputType(),
-      //光标颜色
-      cursorColor: cursorColor ?? getColors(black70),
-      //光标圆角
-      cursorRadius: Radius.circular(1),
-      //光标宽度
-      cursorWidth: 2,
+      cursorColor: cursorColor,
+      cursorRadius: cursorRadius,
+      cursorWidth: cursorWidth,
       obscureText: obscureText,
       keyboardType: keyboardType,
       style: inputStyle ?? WayStyles.textStyleBlack70(fontSize: 16),
       controller: controller,
-      onTap: onTap,
       decoration: inputDecoration ??
           InputDecoration(
             //显示在输入框前面的图标，在文字和下划线前面
@@ -280,7 +353,7 @@ class TextInputField extends StatelessWidget {
             //输入框启用时，下划线的样式
             enabledBorder: enabledBorder,
             //是否启用输入框
-            enabled: enabled ?? true,
+            enabled: enabled,
             //获取焦点时，下划线的样式
             focusedBorder: focusedBorder,
             //级别最低的border，没有设置其他border时显示的border
@@ -288,8 +361,11 @@ class TextInputField extends StatelessWidget {
 //            border: InputBorder.none,
           ),
       onChanged: onChanged,
+      onTap: onTap,
       onSubmitted: onSubmitted,
-      enabled: enabled ?? true,
+      enabled: enabled,
+      //按回车时调用 先调用此方法  然后调用onSubmitted方法
+      onEditingComplete: onEditingComplete,
     );
   }
 

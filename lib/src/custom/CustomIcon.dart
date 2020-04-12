@@ -113,13 +113,13 @@ class CustomIcon extends StatelessWidget {
     return title != null
         ? title
         : Text(
-            titleText ?? '',
-            style: titleStyle,
-            textAlign: TextAlign.start,
-            maxLines: maxLines,
-            textDirection: textDirection,
-            overflow: overflow,
-          );
+      titleText ?? '',
+      style: titleStyle,
+      textAlign: TextAlign.start,
+      maxLines: maxLines,
+      textDirection: textDirection,
+      overflow: overflow,
+    );
   }
 
   bool isChildren() {
@@ -141,6 +141,10 @@ class CustomIcon extends StatelessWidget {
     if (image != null) {
       listWidget.add(image);
     }
-    return Row(mainAxisSize: MainAxisSize.min, children: listWidget);
+    if (listWidget.length == 1) {
+      return listWidget[0];
+    } else {
+      return Row(mainAxisSize: MainAxisSize.min, children: listWidget);
+    }
   }
 }

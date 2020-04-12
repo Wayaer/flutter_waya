@@ -59,4 +59,4 @@ export 'src/widget/TextInputField.dart';
 export 'src/widget/gestures/Gesture.dart';
 export 'src/widget/picker/DateTimePicker.dart';
 export 'src/widget/picker/ListWheel.dart';
-export 'src/widget/picker/SingleRowPicker.dart';
+export 'src/widget/picker/MultipleChoicePicker.dart';

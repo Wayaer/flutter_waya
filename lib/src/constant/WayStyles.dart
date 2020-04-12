@@ -8,6 +8,9 @@ const double radiusLocal = WayConstant.Radius;
 const double fontSize = WayConstant.fontSize;
 
 class WayStyles {
+  static FontWeight defaultFontWeight = FontWeight.w500;
+  static TextDecoration defaultDecoration = TextDecoration.none;
+
   //统一所有阴影效果
   static List<BoxShadow> boxShadow() {
     return [
@@ -67,23 +70,34 @@ class WayStyles {
   }
 
   static TextStyle textStyleWhite({double fontSize, TextStyle textStyle}) {
-    return mergeTextStyle(
-        textStyle, TextStyle(color: getColors(white), fontSize: fontSize, decoration: TextDecoration.none));
+    return mergeTextStyle(textStyle, WayStyles.textStyle(color: getColors(white), fontSize: fontSize));
   }
 
   static TextStyle textStyleBlack70({double fontSize, TextStyle textStyle}) {
-    return mergeTextStyle(
-        textStyle, TextStyle(color: getColors(black70), fontSize: fontSize, decoration: TextDecoration.none));
+    return mergeTextStyle(textStyle, WayStyles.textStyle(color: getColors(black70), fontSize: fontSize));
   }
 
   static TextStyle textStyleBlue({double fontSize, TextStyle textStyle}) {
-    return mergeTextStyle(
-        textStyle, TextStyle(color: getColors(blue), fontSize: fontSize, decoration: TextDecoration.none));
+    return mergeTextStyle(textStyle, WayStyles.textStyle(color: getColors(blue), fontSize: fontSize));
   }
 
   static TextStyle textStyleBlack30({double fontSize, TextStyle textStyle}) {
     return mergeTextStyle(
-        textStyle, TextStyle(color: getColors(black30), fontSize: fontSize, decoration: TextDecoration.none));
+        textStyle,
+        WayStyles.textStyle(
+          color: getColors(black30),
+          fontSize: fontSize,
+        ));
+  }
+
+  static TextStyle textStyle(
+      {Color color, double fontSize, double height, FontWeight fontWeight, TextDecoration decoration}) {
+    return TextStyle(
+        decoration: defaultDecoration,
+        fontWeight: defaultFontWeight,
+        fontSize: fontSize ?? 14,
+        height: height,
+        color: color ?? getColors(black70));
   }
 
   //以上是多种颜色字体 样式
