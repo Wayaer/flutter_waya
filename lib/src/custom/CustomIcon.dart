@@ -23,21 +23,27 @@ class CustomIcon extends StatelessWidget {
   final Decoration decoration;
   final GestureTapCallback onTap;
 
-  Axis direction;
-  MainAxisAlignment mainAxisAlignment;
-  CrossAxisAlignment crossAxisAlignment;
-  int maxLines;
-  bool reversal;
-  TextOverflow overflow;
-  double spacing;
-  double iconSize;
-  AlignmentGeometry alignment;
+  final Axis direction;
+  final MainAxisAlignment mainAxisAlignment;
+  final CrossAxisAlignment crossAxisAlignment;
+  final int maxLines;
+  final bool reversal;
+  final TextOverflow overflow;
+  final double spacing;
+  final double iconSize;
+  final AlignmentGeometry alignment;
 
   CustomIcon({
     Key key,
+    Axis direction,
+    MainAxisAlignment mainAxisAlignment,
+    CrossAxisAlignment crossAxisAlignment,
+    int maxLines,
+    bool reversal,
+    TextOverflow overflow,
+    double spacing,
+    double iconSize,
     this.icon,
-    this.iconSize,
-    this.reversal,
     this.background,
     this.iconColor,
     this.semanticLabel,
@@ -49,28 +55,21 @@ class CustomIcon extends StatelessWidget {
     this.padding,
     this.margin,
     this.width,
-    this.spacing,
     this.height,
     this.decoration,
-    this.direction,
     this.alignment,
-    this.mainAxisAlignment,
-    this.crossAxisAlignment,
-    this.maxLines,
-    this.overflow,
     this.imageProvider,
     this.image,
-    this.title,
-  }) : super(key: key) {
-    if (maxLines == null) maxLines = 1;
-    if (overflow == null) overflow = TextOverflow.ellipsis;
-    if (iconSize == null) iconSize = BaseUtils.getWidth(15);
-    if (reversal == null) reversal = false;
-    if (direction == null) direction = Axis.horizontal;
-    if (spacing == null) spacing = BaseUtils.getWidth(4);
-    if (crossAxisAlignment == null) crossAxisAlignment = CrossAxisAlignment.center;
-    if (mainAxisAlignment == null) mainAxisAlignment = MainAxisAlignment.center;
-  }
+    this.title,})
+      : this.maxLines = maxLines ?? 1,
+        this.overflow = overflow ?? TextOverflow.ellipsis,
+        this.iconSize = iconSize ?? BaseUtils.getWidth(15),
+        this.reversal = reversal ?? false,
+        this.direction = direction ?? Axis.horizontal,
+        this.spacing = spacing ?? BaseUtils.getWidth(4),
+        this.crossAxisAlignment = crossAxisAlignment ?? CrossAxisAlignment.center,
+        this.mainAxisAlignment = mainAxisAlignment ?? MainAxisAlignment.center,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
