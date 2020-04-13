@@ -71,7 +71,8 @@ class BaseScaffold extends StatelessWidget {
     this.backgroundColor, //内容的背景颜色，默认使用的是 ThemeData.scaffoldBackgroundColor 的值
     this.resizeToAvoidBottomPadding, //类似于 Android 中的 android:windowSoftInputMode=”adjustResize”，控制界面内容 body 是否重新布局来避免底部被覆盖了，比如当键盘显示的时候，重新布局避免被键盘盖住内容。默认值为 true。
     this.resizeToAvoidBottomInset,
-  })  : this.isScroll = isScroll = false,
+  })
+      : this.isScroll = isScroll ?? false,
         this.appBarHeight = appBarHeight ?? BaseUtils.getHeight(45),
         this.isolationBody = isolationBody ?? false,
         this.paddingStatusBar = paddingStatusBar ?? false,
@@ -100,9 +101,9 @@ class BaseScaffold extends StatelessWidget {
       appBar: appBarHeight == null
           ? appBar
           : (appBar == null
-              ? null
-              : PreferredSize(
-                  child: appBar, preferredSize: Size.fromHeight(MediaQueryUtils.getStatusBarHeight() + appBarHeight))),
+          ? null
+          : PreferredSize(
+          child: appBar, preferredSize: Size.fromHeight(MediaQueryUtils.getStatusBarHeight() + appBarHeight))),
       bottomNavigationBar: bottomNavigationBar,
       body: bodyWidget(context),
     );
