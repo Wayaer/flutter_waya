@@ -164,19 +164,25 @@ class TextInputField extends StatelessWidget {
     this.counter,
     this.buildCounter,
     this.onEditingComplete,
-  })  : this.obscureText = obscureText ?? false,
+  })
+      : this.obscureText = obscureText ?? false,
+  //键盘大小写的显示 Only supports text keyboards  但是好像不起作用？
+  //characters 默认为每个字符使用大写键盘
+  //sentence 默认为每个句子的第一个字母使用大写键盘
+  //word 默认为每个单词的第一个字母使用大写键盘。
+  //none 默认使用小写
         this.textCapitalization = textCapitalization ?? TextCapitalization.none,
-        //长按输入的文字时，true显示系统的粘贴板  false不显示
+  //长按输入的文字时，true显示系统的粘贴板  false不显示
         this.enableInteractiveSelection = enableInteractiveSelection ?? true,
-        //自定义数字显示   指定maxLength后 右下角会出现字数，flutter有默认实现  可以通过这个自定义
-        //光标颜色
+  //自定义数字显示   指定maxLength后 右下角会出现字数，flutter有默认实现  可以通过这个自定义
+  //光标颜色
         this.cursorColor = cursorColor ?? getColors(black70),
-        //光标圆角
+  //光标圆角
         this.cursorRadius = cursorRadius ?? Radius.circular(1),
-        //光标宽度
+  //光标宽度
         this.cursorWidth = cursorWidth ?? 2,
-        // 键盘外观  仅ios有效
-        this.keyboardAppearance = keyboardAppearance ?? Brightness.dark,
+  // 键盘外观  仅ios有效
+        this.keyboardAppearance = keyboardAppearance,
 //      默认true  超过长度后输入无效  右下角数字 显示10/10   此时onchange方法依然会调用，返回值就是限制了长度的值 超过后的输入不显示
 //      false 超过后可继续输入  右下角数字显示，比如 23/10
         this.maxLengthEnforced = maxLengthEnforced ?? true,
@@ -194,11 +200,11 @@ class TextInputField extends StatelessWidget {
 //       textInputAction: TextInputAction.join,//android  不支持
 //       textInputAction: TextInputAction.previous,//安卓显示 回车符号
 //       textInputAction: TextInputAction.unspecified,//安卓显示 回车符号
-        this.textInputAction = textInputAction ?? TextInputAction.none,
+        this.textInputAction = textInputAction ?? TextInputAction.done,
         this.autoFocus = autoFocus ?? false,
         this.maxLines = maxLines ?? 1,
-        //从左边输入  光标在左边
-        //从右边输入  光标在右边
+  //从左边输入  光标在左边
+  //从右边输入  光标在右边
 //      this.textDirection = textDirection ?? TextDirection.rtl,
         this.textDirection = textDirection ?? TextDirection.ltr,
         this.enabled = enabled ?? true,
@@ -248,12 +254,12 @@ class TextInputField extends StatelessWidget {
   Widget build(BuildContext context) {
     return header != null || footer != null
         ? Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-            //输入框头部
-            Offstage(offstage: header == null, child: header),
-            textField(context),
-            //输入框底部
-            Offstage(offstage: footer == null, child: footer)
-          ])
+      //输入框头部
+      Offstage(offstage: header == null, child: header),
+      textField(context),
+      //输入框底部
+      Offstage(offstage: footer == null, child: footer)
+    ])
         : textField(context);
   }
 
