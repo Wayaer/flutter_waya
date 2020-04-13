@@ -1,43 +1,41 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/src/utils/BaseUtils.dart';
 import 'package:flutter_waya/src/common/CommonWidget.dart';
+import 'package:flutter_waya/src/utils/BaseUtils.dart';
 
 class CustomGridView extends StatelessWidget {
   final ScrollController controller;
   final EdgeInsetsGeometry padding;
   final List<Widget> children;
   final Widget noData;
-  bool shrinkWrap;
-  int itemCount;
-  ScrollPhysics physics;
-  double mainAxisSpacing;
-  int crossAxisCount;
-  double crossAxisSpacing;
-  double childAspectRatio;
+  final bool shrinkWrap;
+  final int itemCount;
+  final ScrollPhysics physics;
+  final double mainAxisSpacing;
+  final int crossAxisCount;
+  final double crossAxisSpacing;
+  final double childAspectRatio;
 
   CustomGridView({
     Key key,
-    this.itemCount,
-    this.physics,
+    bool shrinkWrap,
+    int itemCount,
+    double mainAxisSpacing,
+    int crossAxisCount,
+    double crossAxisSpacing,
+    double childAspectRatio,
     this.noData,
     this.controller,
     this.padding,
-    this.children,
-    this.crossAxisCount,
-    this.shrinkWrap,
-    this.mainAxisSpacing,
-    this.crossAxisSpacing,
-    this.childAspectRatio,
+    this.children, this.physics,
   })
       : assert(children != null),
-        super(key: key) {
-    if (itemCount == null) itemCount = 0;
-    if (crossAxisCount == null) crossAxisCount = 0;
-    if (shrinkWrap == null) shrinkWrap = true;
-    if (crossAxisSpacing == null) crossAxisSpacing = 0.0;
-    if (childAspectRatio == null) childAspectRatio = 1.0;
-    if (mainAxisSpacing == null) mainAxisSpacing = 1;
-  }
+        this.itemCount = itemCount ?? 0,
+        this.crossAxisCount = crossAxisCount ?? 0,
+        this.shrinkWrap = shrinkWrap = true,
+        this.crossAxisSpacing = crossAxisSpacing ?? 0.0,
+        this.childAspectRatio = childAspectRatio ?? 1.0,
+        this.mainAxisSpacing = mainAxisSpacing ?? 1,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
