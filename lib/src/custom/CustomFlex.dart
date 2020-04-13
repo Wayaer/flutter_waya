@@ -58,11 +58,11 @@ class CustomFlex extends StatelessWidget {
     Axis direction,
     bool inkWell,
     bool isScroll,
+    MainAxisSize mainAxisSize,
     GestureTapCallback onTap,
     GestureTapCallback onDoubleTap,
     GestureLongPressCallback onLongPress,
     this.children,
-    this.mainAxisSize,
     this.textDirection,
     this.textBaseline,
     this.child,
@@ -86,6 +86,7 @@ class CustomFlex extends StatelessWidget {
   })
       : this.enabled = enabled ?? true,
         this.isScroll = isScroll ?? false,
+        this.mainAxisSize = mainAxisSize ?? MainAxisSize.max,
         this.mainAxisAlignment = mainAxisAlignment ?? MainAxisAlignment.start,
         this.crossAxisAlignment = crossAxisAlignment ?? CrossAxisAlignment.center,
         this.verticalDirection = verticalDirection ?? VerticalDirection.down,
@@ -180,7 +181,7 @@ class CustomFlex extends StatelessWidget {
       textBaseline: textBaseline,
       verticalDirection: verticalDirection,
       textDirection: textDirection,
-      mainAxisSize: mainAxisSize ?? MainAxisSize.max,
+      mainAxisSize: mainAxisSize,
     );
   }
 }
