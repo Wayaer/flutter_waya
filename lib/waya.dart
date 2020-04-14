@@ -33,7 +33,7 @@ export 'src/model/MapModel.dart';
 export 'src/utils/AlertUtils.dart';
 export 'src/utils/BaseNavigatorUtils.dart';
 export 'src/utils/BaseUtils.dart';
-export 'src/utils/DioBaseUtils.dart';
+export 'src/utils/dio/DioBaseUtils.dart';
 export 'src/utils/Event.dart';
 export 'src/utils/LogUtils.dart';
 export 'src/utils/MediaQueryUtils.dart';

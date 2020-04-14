@@ -17,6 +17,7 @@ dependencies:
   dio: ^3.0.9
   synchronized: ^2.2.0
   pull_to_refresh: ^1.5.8
+  cookie_jar: ^1.0.1
 
 dev_dependencies:
   flutter_test:

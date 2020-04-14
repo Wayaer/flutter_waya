@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_waya/src/constant/WayConstant.dart';
 import 'package:flutter_waya/src/model/ResponseModel.dart';
@@ -23,11 +25,14 @@ class DioBaseUtils {
   static CancelToken cancelToken = CancelToken();
   static BaseOptions _options;
   static int errorCode = 911;
+  static bool cookie = false;
+  static var cookieJar = CookieJar();
 
   //单例模式
   factory DioBaseUtils() => getHttp();
 
-  static DioBaseUtils getHttp({BaseOptions options}) {
+  static DioBaseUtils getHttp({BaseOptions options, bool addCookie: false}) {
+    cookie = addCookie;
     return DioBaseUtils.internal(options: options);
   }
 
@@ -45,9 +50,35 @@ class DioBaseUtils {
     addInterceptors();
   }
 
+  saveCookies(Response response, ResponseModel responseModel) {
+    if (response != null && response.headers != null) {
+      List<String> cookies = response.headers[HttpHeaders.setCookieHeader];
+      log(cookies);
+      responseModel.cookie = cookies;
+      if (cookies != null) {
+        cookieJar.saveFromResponse(
+          response.request.uri,
+          cookies.map((str) => Cookie.fromSetCookieValue(str)).toList(),
+        );
+      }
+    }
+  }
+
   addInterceptors() {
     ResponseModel responseModel = ResponseModel(statusCode: WayConstant.errorCode911);
     dio.interceptors.add(InterceptorsWrapper(onRequest: (RequestOptions options) async {
+      if (cookie) {
+        log(options.uri);
+        var cookies = cookieJar.loadForRequest(options.uri);
+        cookies.removeWhere((cookie) {
+          if (cookie.expires != null) {
+            return cookie.expires.isBefore(DateTime.now());
+          }
+          return false;
+        });
+        String cookie = getCookies(cookies);
+        if (cookie.isNotEmpty) options.headers[HttpHeaders.cookieHeader] = cookie;
+      }
       // 在请求被发送之前做一些事情
       return options; //continue
       // 如果你想完成请求并返回一些自定义数据，可以返回一个`Response`对象或返回`dio.resolve(data)`。
@@ -56,12 +87,17 @@ class DioBaseUtils {
       // 如果你想终止请求并触发一个错误,你可以返回一个`DioError`对象，或返回`dio.reject(errMsg)`，
       // 这样请求将被中止并触发异常，上层catchError会被调用。
     }, onResponse: (Response response) async {
+      saveCookies(response, responseModel);
       if (response.statusCode == 200) {
         if (response.data is Map || jsonDecode(response.data) is Map) {
-          return response.data;
+          responseModel.data = response.data;
+          return responseModel.toMap();
         } else {
-          return ResponseModel(data: response.data, statusCode: 200, statusMessage: 'success',
-              statusMessageT: 'success').toMap();
+          responseModel.data = response.data;
+          responseModel.statusCode = 200;
+          responseModel.statusMessage = 'success';
+          responseModel.statusMessageT = 'success';
+          return responseModel.toMap();
         }
       } else {
         responseModel.statusCode = response.statusCode;
@@ -70,6 +106,7 @@ class DioBaseUtils {
         return responseModel;
       }
     }, onError: (DioError e) async {
+      saveCookies(e.response, responseModel);
 //      log(e.type.runtimeType);
       // 当请求失败时做一些预处理
       responseModel.type = e.type.toString();
@@ -156,7 +193,8 @@ class DioBaseUtils {
   Future download(String url, String savePath, [ProgressCallback onReceiveProgress]) async {
     try {
       log("url:" + url + "  savePath:" + savePath.toString());
-      return await Dio().download(url, savePath, cancelToken: cancelToken, onReceiveProgress: (int received, int total) {
+      return await Dio().download(url, savePath, cancelToken: cancelToken,
+          onReceiveProgress: (int received, int total) {
         onReceiveProgress(received, total);
       });
     } catch (e) {
@@ -167,5 +205,9 @@ class DioBaseUtils {
 
   cancel() {
     cancelToken.cancelError;
+  }
+
+  static String getCookies(List<Cookie> cookies) {
+    return cookies.map((cookie) => "${cookie.name}=${cookie.value}").join('; ');
   }
 }
