@@ -25,7 +25,7 @@ class BaseScaffold extends StatelessWidget {
 
   //Scaffold相关属性
   final Widget bottomNavigationBar;
-  final AppBar appBar;
+  final Widget appBar;
   final double appBarHeight;
   final Widget floatingActionButton;
   final FloatingActionButtonAnimator floatingActionButtonAnimator;
