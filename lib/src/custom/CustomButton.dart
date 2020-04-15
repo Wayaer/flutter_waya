@@ -31,12 +31,12 @@ class CustomButton extends StatelessWidget {
     this.height,
     this.decoration,
     this.alignment,
-    int maxLines,
+    this.maxLines,
     this.child,
     TextOverflow overflow,
-  })  : this.text = text ?? 'Button',
+  })
+      : this.text = text ?? 'Button',
         this.inkWell = inkWell ?? false,
-        this.maxLines = maxLines ?? 1,
         this.overflow = overflow ?? TextOverflow.ellipsis,
         super(key: key);
 
@@ -48,12 +48,12 @@ class CustomButton extends StatelessWidget {
       child: child != null
           ? child
           : Text(
-              text,
-              textAlign: TextAlign.start,
-              style: textStyle,
-              maxLines: maxLines,
-              overflow: overflow,
-            ),
+        text,
+        textAlign: TextAlign.start,
+        style: textStyle,
+        maxLines: maxLines,
+        overflow: overflow,
+      ),
       width: width,
       height: height,
       onTap: onTap,

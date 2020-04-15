@@ -68,7 +68,6 @@ class DioBaseUtils {
     ResponseModel responseModel = ResponseModel();
     dio.interceptors.add(InterceptorsWrapper(onRequest: (RequestOptions options) async {
       if (cookie) {
-        log(options.uri);
         var cookies = cookieJar.loadForRequest(options.uri);
         cookies.removeWhere((cookie) {
           if (cookie.expires != null) {
@@ -87,9 +86,10 @@ class DioBaseUtils {
       // 如果你想终止请求并触发一个错误,你可以返回一个`DioError`对象，或返回`dio.reject(errMsg)`，
       // 这样请求将被中止并触发异常，上层catchError会被调用。
     }, onResponse: (Response response) async {
-      saveCookies(response, responseModel);
+      if (cookie) {
+        saveCookies(response, responseModel);
+      }
       responseModel.statusCode = response.statusCode;
-
       if (response.statusCode == 200) {
         responseModel.statusMessage = 'success';
         responseModel.statusMessageT = 'success';

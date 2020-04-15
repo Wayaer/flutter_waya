@@ -26,8 +26,8 @@ class CustomListView extends StatelessWidget {
 
   CustomListView({
     Key key,
-    this.itemBuilder,
-    this.itemCount,
+    @required this.itemBuilder,
+    @required this.itemCount,
     this.physics,
     this.controller,
     this.itemExtent,
@@ -43,8 +43,7 @@ class CustomListView extends StatelessWidget {
     this.footer,
     this.footerTextStyle,
   })
-      : assert(itemCount != null),
-        assert(itemBuilder != null),
+      : assert(itemCount > 0),
         super(key: key);
 
   @override
