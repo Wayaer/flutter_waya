@@ -65,7 +65,7 @@ class DioBaseUtils {
   }
 
   addInterceptors() {
-    ResponseModel responseModel = ResponseModel(statusCode: WayConstant.errorCode911);
+    ResponseModel responseModel = ResponseModel();
     dio.interceptors.add(InterceptorsWrapper(onRequest: (RequestOptions options) async {
       if (cookie) {
         log(options.uri);
@@ -88,20 +88,22 @@ class DioBaseUtils {
       // 这样请求将被中止并触发异常，上层catchError会被调用。
     }, onResponse: (Response response) async {
       saveCookies(response, responseModel);
+      responseModel.statusCode = response.statusCode;
+
       if (response.statusCode == 200) {
+        responseModel.statusMessage = 'success';
+        responseModel.statusMessageT = 'success';
         if (response.data is Map || jsonDecode(response.data) is Map) {
           responseModel.data = response.data;
           return responseModel.toMap();
         } else {
           responseModel.data = response.data;
-          responseModel.statusCode = 200;
-          responseModel.statusMessage = 'success';
-          responseModel.statusMessageT = 'success';
           return responseModel.toMap();
         }
       } else {
         responseModel.statusCode = response.statusCode;
         responseModel.statusMessage = response.statusMessage;
+        responseModel.statusMessageT = response.statusMessage;
         log(responseModel.toMap());
         return responseModel;
       }
@@ -111,29 +113,29 @@ class DioBaseUtils {
       // 当请求失败时做一些预处理
       responseModel.type = e.type.toString();
       if (e.type == DioErrorType.DEFAULT) {
-        responseModel.statusCode = WayConstant.errorCode911;
-        responseModel.statusMessage = WayConstant.errorMessage911;
-        responseModel.statusMessageT = WayConstant.errorMessageT911;
+        responseModel.statusCode = WayConstant.errorCode404;
+        responseModel.statusMessage = WayConstant.errorMessage404;
+        responseModel.statusMessageT = WayConstant.errorMessageT404;
       } else if (e.type == DioErrorType.CANCEL) {
-        responseModel.statusCode = WayConstant.errorCode920;
-        responseModel.statusMessage = WayConstant.errorMessage920;
-        responseModel.statusMessageT = WayConstant.errorMessageT920;
+        responseModel.statusCode = WayConstant.errorCode420;
+        responseModel.statusMessage = WayConstant.errorMessage420;
+        responseModel.statusMessageT = WayConstant.errorMessageT420;
       } else if (e.type == DioErrorType.CONNECT_TIMEOUT) {
-        responseModel.statusCode = WayConstant.errorCode930;
-        responseModel.statusMessage = WayConstant.errorMessage930;
-        responseModel.statusMessageT = WayConstant.errorMessageT930;
+        responseModel.statusCode = WayConstant.errorCode408;
+        responseModel.statusMessage = WayConstant.errorMessage408;
+        responseModel.statusMessageT = WayConstant.errorMessageT408;
       } else if (e.type == DioErrorType.RECEIVE_TIMEOUT) {
-        responseModel.statusCode = WayConstant.errorCode940;
-        responseModel.statusMessage = WayConstant.errorMessage940;
-        responseModel.statusMessageT = WayConstant.errorMessageT940;
+        responseModel.statusCode = WayConstant.errorCode502;
+        responseModel.statusMessage = WayConstant.errorMessage502;
+        responseModel.statusMessageT = WayConstant.errorMessageT502;
       } else if (e.type == DioErrorType.SEND_TIMEOUT) {
-        responseModel.statusCode = WayConstant.errorCode950;
-        responseModel.statusMessage = WayConstant.errorMessage950;
-        responseModel.statusMessageT = WayConstant.errorMessageT950;
+        responseModel.statusCode = WayConstant.errorCode450;
+        responseModel.statusMessage = WayConstant.errorMessage450;
+        responseModel.statusMessageT = WayConstant.errorMessageT450;
       } else if (e.type == DioErrorType.RESPONSE) {
         responseModel.statusCode = e.response.statusCode;
-        responseModel.statusMessage = WayConstant.errorMessage960 + e.response.statusCode.toString();
-        responseModel.statusMessageT = WayConstant.errorMessageT960;
+        responseModel.statusMessage = WayConstant.errorMessage500 + e.response.statusCode.toString();
+        responseModel.statusMessageT = WayConstant.errorMessageT500;
       }
       log(responseModel.toMap());
       return jsonEncode(responseModel.toMap());
@@ -195,8 +197,8 @@ class DioBaseUtils {
       log("url:" + url + "  savePath:" + savePath.toString());
       return await Dio().download(url, savePath, cancelToken: cancelToken,
           onReceiveProgress: (int received, int total) {
-        onReceiveProgress(received, total);
-      });
+            onReceiveProgress(received, total);
+          });
     } catch (e) {
       error = e;
       return jsonDecode(error.message);
