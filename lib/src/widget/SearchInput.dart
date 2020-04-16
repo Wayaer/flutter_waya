@@ -6,20 +6,21 @@ import 'package:flutter_waya/src/utils/BaseUtils.dart';
 import 'package:flutter_waya/waya.dart';
 
 class SearchInput extends StatelessWidget {
+  final EdgeInsetsGeometry margin;
+  final EdgeInsetsGeometry padding;
+  final AlignmentGeometry alignment;
+  final Decoration decoration;
+
   final String searchText;
   final Widget search;
   final TextStyle searchStyle;
   final GestureTapCallback searchTap;
-
   final double iconSize;
   final Color iconColor;
   final IconData icon;
   final Widget prefixIcon;
-
   final double labelSpacing;
   final LineType lineType;
-  final EdgeInsetsGeometry margin;
-
   final TextEditingController controller;
   final ValueChanged<String> onChanged;
   final String hintText;
@@ -33,18 +34,18 @@ class SearchInput extends StatelessWidget {
   final Color enabledBorderColor;
   final Widget extraPrefix;
   final EdgeInsetsGeometry contentPadding;
+  final Color fillColor;
 
   SearchInput({
     Key key,
     IconData icon,
-    LineType lineType,
     EdgeInsetsGeometry contentPadding,
     this.controller,
     this.onChanged,
     this.hintText,
     this.hintStyle,
     this.iconColor,
-    this.iconSize,
+    double iconSize,
     this.borderRadius,
     this.inputStyle,
     this.cursorColor,
@@ -60,18 +61,23 @@ class SearchInput extends StatelessWidget {
     this.searchStyle,
     this.searchTap,
     this.search,
+    this.lineType,
+    this.decoration,
+    this.padding,
+    this.alignment,
+    this.fillColor,
   })  : this.icon = icon ?? WayIcon.iconsSearch,
-        this.lineType = lineType ?? LineType.outline,
+        this.iconSize = BaseUtils.getWidth(16),
         this.contentPadding = contentPadding ?? EdgeInsets.all(BaseUtils.getWidth(5)),
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return CustomFlex(
-      direction: Axis.horizontal,
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
+      decoration: decoration,
       margin: margin,
+      alignment: alignment,
+      padding: padding,
       child: textInput(),
     );
   }
@@ -80,6 +86,8 @@ class SearchInput extends StatelessWidget {
     return TextInputField(
       controller: controller,
       isDense: true,
+      fillColor: fillColor,
+      filled: true,
       focusedBorder: inputBorder(focusedBorderColor ?? enabledBorderColor ?? getColors(blue)),
       enabledBorder: inputBorder(enabledBorderColor ?? getColors(white50)),
       inputStyle: inputStyle,
@@ -96,13 +104,15 @@ class SearchInput extends StatelessWidget {
 
   Widget prefix() {
     if (prefixIcon == null) {
-      return icon == null
-          ? null
-          : Icon(
-              icon,
-              size: iconSize,
-              color: iconColor,
-            );
+      return Container(
+        width: iconSize,
+        alignment: Alignment.center,
+        child: Icon(
+          icon,
+          size: iconSize,
+          color: iconColor,
+        ),
+      );
     } else {
       return prefixIcon;
     }
