@@ -35,6 +35,8 @@ class SearchInput extends StatelessWidget {
   final Widget extraPrefix;
   final EdgeInsetsGeometry contentPadding;
   final Color fillColor;
+  final double height;
+  final double width;
 
   SearchInput({
     Key key,
@@ -66,9 +68,11 @@ class SearchInput extends StatelessWidget {
     this.padding,
     this.alignment,
     this.fillColor,
+    this.height,
+    this.width,
   })  : this.icon = icon ?? WayIcon.iconsSearch,
-        this.iconSize = BaseUtils.getWidth(16),
-        this.contentPadding = contentPadding ?? EdgeInsets.all(BaseUtils.getWidth(5)),
+        this.iconSize = iconSize ?? BaseUtils.getWidth(14),
+        this.contentPadding = contentPadding ?? EdgeInsets.all(BaseUtils.getWidth(6)),
         super(key: key);
 
   @override
@@ -76,6 +80,8 @@ class SearchInput extends StatelessWidget {
     return CustomFlex(
       decoration: decoration,
       margin: margin,
+      height: height,
+      width: width,
       alignment: alignment,
       padding: padding,
       child: textInput(),
@@ -104,14 +110,10 @@ class SearchInput extends StatelessWidget {
 
   Widget prefix() {
     if (prefixIcon == null) {
-      return Container(
-        width: iconSize,
-        alignment: Alignment.center,
-        child: Icon(
-          icon,
-          size: iconSize,
-          color: iconColor,
-        ),
+      return Icon(
+        icon,
+        size: iconSize,
+        color: iconColor,
       );
     } else {
       return prefixIcon;
@@ -123,7 +125,7 @@ class SearchInput extends StatelessWidget {
       return searchText == null
           ? null
           : CustomButton(
-              text: '搜索',
+              text: searchText,
               onTap: searchTap,
               padding: EdgeInsets.symmetric(horizontal: BaseUtils.getWidth(4)),
               textStyle: searchStyle ?? TextStyle(color: getColors(white)),
