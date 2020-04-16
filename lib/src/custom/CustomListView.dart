@@ -42,9 +42,7 @@ class CustomListView extends StatelessWidget {
     this.header,
     this.footer,
     this.footerTextStyle,
-  })
-      : assert(itemCount > 0),
-        super(key: key);
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
