@@ -23,6 +23,7 @@ class NavigatorExample {
   }
 }
 
+
 class BaseNavigatorUtils extends NavigatorObserver {
   // ignore: close_sinks
   static StreamController _streamController;
@@ -84,6 +85,9 @@ class BaseNavigatorUtils extends NavigatorObserver {
     返回当前route传递过来的参数
    */
   static getParams(context) {
-    return ModalRoute.of(context).settings.arguments;
+    return ModalRoute
+        .of(context)
+        .settings
+        .arguments;
   }
 }

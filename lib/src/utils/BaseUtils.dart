@@ -37,7 +37,7 @@ class BaseUtils {
   }
 
   //分页 计算总页数
-  static totalPageCount(int recordCount, int pageSize) {
+  static int totalPageCount(int recordCount, int pageSize) {
     int totalPage = recordCount ~/ pageSize;
     if (recordCount % pageSize != 0) {
       totalPage += 1;
@@ -46,7 +46,7 @@ class BaseUtils {
   }
 
   //时间戳转换
-  static stampToDate(int s, {DateType dateType, bool micro}) {
+  static String stampToDate(int s, {DateType dateType, bool micro}) {
     if (micro == null) {
       micro = false;
     }
@@ -59,7 +59,7 @@ class BaseUtils {
     }
   }
 
-  static formatDate(String date, [DateType dateType]) {
+  static String formatDate(String date, [DateType dateType]) {
     if (dateType == null) dateType = DateType.yearSecond;
     DateTime time = DateTime.parse(date);
     String year = time.year.toString();
@@ -94,16 +94,16 @@ class BaseUtils {
         return '$hour:$minute';
         break;
     }
+    return date;
   }
 
 //  * 全面屏适配
 //  * @returns {number} 返回全面屏对应的16：9 屏幕高度
 
-  static phoneFitHeight(BuildContext context) {
-    double h = MediaQuery.of(context).size.height;
-    double s = MediaQuery.of(context).devicePixelRatio;
+  static double phoneFitHeight(BuildContext context) {
+    double h = MediaQueryUtils.getHeight();
+    double s = MediaQueryUtils.getDevicePixelRatio();
     double y = s * h;
-
     if (Platform.isAndroid) {
       if (y < 1000) {
         //720p以下手机
@@ -126,8 +126,6 @@ class BaseUtils {
       } else if (y > 2560 && y < 3300) {
         //2k 18:9  19.5:9
         return 2560 / s;
-      } else {
-        return h;
       }
     } else if (Platform.isIOS) {
       if (y < 1400) {
@@ -146,16 +144,17 @@ class BaseUtils {
         //iphone x  18:9
         return 2208 / s;
       }
-    } else {
-      return h;
     }
+    return h;
   }
 
   //相对iphone 6s 尺寸设计稿 高
   static getHeight([double height, bool intType]) {
     double h;
     if (height == null || height == 0) {
-      h = MediaQueryUtils.getSize().height;
+      h = MediaQueryUtils
+          .getSize()
+          .height;
     } else {
       //  h = (height / designHeight) * phoneFitHeight(context);
       h = (height / designHeight) * MediaQueryUtils.getHeight();
@@ -167,7 +166,9 @@ class BaseUtils {
   static getWidth([double width, bool intType]) {
     double w;
     if (width == null || width == 0) {
-      w = MediaQueryUtils.getSize().width;
+      w = MediaQueryUtils
+          .getSize()
+          .width;
     } else {
       w = (width / designWidth) * MediaQueryUtils.getWidth();
     }
@@ -186,7 +187,7 @@ class BaseUtils {
     FocusScope.of(context).requestFocus(FocusNode());
   }
 
-  static timerUtils(Duration duration, [Function function]) {
+  static Timer timerUtils(Duration duration, [Function function]) {
     timerInfo = Timer(duration, () {
       if (function != null) function();
       timerInfo.cancel();
@@ -194,7 +195,7 @@ class BaseUtils {
     return timerInfo;
   }
 
-  static timerPeriodic(Duration duration, [void callback(Timer timer)]) {
+  static Timer timerPeriodic(Duration duration, [void callback(Timer timer)]) {
     //需要手动释放timer
     timerInfo = Timer.periodic(duration, (time) {
       callback(time);
@@ -207,7 +208,7 @@ class BaseUtils {
   }
 
   // md5 加密
-  static setMd5(String data) {
+  static String setMd5(String data) {
     return md5.convert(utf8.encode(data)).toString();
   }
 
@@ -259,19 +260,19 @@ class BaseUtils {
     });
   }
 
-  static isAndroid() {
+  static bool isAndroid() {
     return Platform.isAndroid;
   }
 
-  static isIOS() {
+  static bool isIOS() {
     return Platform.isIOS;
   }
 
-  static isMacOS() {
+  static bool isMacOS() {
     return Platform.isMacOS;
   }
 
-  static isWindows() {
+  static bool isWindows() {
     return Platform.isWindows;
   }
 
@@ -279,7 +280,7 @@ class BaseUtils {
     return Platform.isLinux;
   }
 
-  static isFuchsia() {
+  static bool isFuchsia() {
     return Platform.isFuchsia;
   }
 }
