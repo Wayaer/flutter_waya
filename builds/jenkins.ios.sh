@@ -27,6 +27,7 @@ flutter packages get
 echo "开始flutter build"
 flutter build ios -t lib/main.dart  --release --flavor ${env}
 
+# shellcheck disable=SC2164
 cd ios
 
 mkdir -p "${ipa}"
@@ -36,7 +37,8 @@ xcodebuild archive -workspace Runner.xcworkspace -scheme ${env} -configuration R
 echo "开始导出ipa"
 #xcodebuild -exportArchive -archivePath ${archive} -exportOptionsPlist ./iosExportOptions.plist -exportPath ipa-${env}/
 xcodebuild -exportArchive -archivePath ${archive} -exportPath $ipa/
+# shellcheck disable=SC2103
 cd ..
-mv ./ios/ipa/${env}.ipa ./${app}v${version}-"${env}".ipa
+mv ./ios/ipa/${env}.ipa ./${app}v"${version}"-"${env}".ipa
 
 echo "打包完成😄"

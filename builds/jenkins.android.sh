@@ -24,6 +24,7 @@ echo "开始打包apk"
 flutter build apk --"${env}" --target-platform android-arm -t lib/main.dart   #--no-codesign
 echo "打包apk已完成"
 
-mv ./build/app/outputs/apk/${env}/app-${env}.apk ./$app/${env}/APPv${version}.$(date "+%Y%m%d%H%M").apk
+# shellcheck disable=SC2046
+mv ./build/app/outputs/apk/${env}/app-${env}.apk ./$app/${env}/APPv"${version}".$(date "+%Y%m%d%H%M").apk
 
 echo "打包完成😄"
