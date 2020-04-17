@@ -386,49 +386,27 @@ class TextInputField extends StatelessWidget {
       case InputTextType.decimal:
         return [WhitelistingTextInputFormatter(RegExp(WayConstant.regExpDecimal))]; //只允许输入小数
       case InputTextType.letter:
-        return [
-          WhitelistingTextInputFormatter(RegExp(WayConstant.regExpLetter)),
-        ]; //只允许输入字母
+        return [WhitelistingTextInputFormatter(RegExp(WayConstant.regExpLetter))]; //只允许输入字母
       case InputTextType.chinese:
-        return [
-          WhitelistingTextInputFormatter(RegExp(WayConstant.regExpLetter)),
-        ];
+        return [WhitelistingTextInputFormatter(RegExp(WayConstant.regExpChinese))];
       case InputTextType.email:
-        return [
-          WhitelistingTextInputFormatter(RegExp(WayConstant.regExpChinese)),
-        ];
+        return [WhitelistingTextInputFormatter(RegExp(WayConstant.regExpEmail))];
       case InputTextType.phoneNumber:
-        return [
-          WhitelistingTextInputFormatter(RegExp(WayConstant.regExpPhoneNumber)),
-        ];
+        return [WhitelistingTextInputFormatter(RegExp(WayConstant.regExpPhoneNumber))];
       case InputTextType.mobilePhoneNumber:
-        return [
-          WhitelistingTextInputFormatter(RegExp(WayConstant.regExpMobilePhoneNumber)),
-        ];
+        return [WhitelistingTextInputFormatter(RegExp(WayConstant.regExpMobilePhoneNumber))];
       case InputTextType.dateTime:
-        return [
-          WhitelistingTextInputFormatter(RegExp(WayConstant.regExpDateTime)),
-        ];
+        return [WhitelistingTextInputFormatter(RegExp(WayConstant.regExpDateTime))];
       case InputTextType.idCard:
-        return [
-          WhitelistingTextInputFormatter(RegExp(WayConstant.regExpIdCard)),
-        ];
+        return [WhitelistingTextInputFormatter(RegExp(WayConstant.regExpIdCard))];
       case InputTextType.ip:
-        return [
-          WhitelistingTextInputFormatter(RegExp(WayConstant.regExpIP)),
-        ];
+        return [WhitelistingTextInputFormatter(RegExp(WayConstant.regExpIP))];
       case InputTextType.url:
-        return [
-          WhitelistingTextInputFormatter(RegExp(WayConstant.regExpUrl)),
-        ];
+        return [WhitelistingTextInputFormatter(RegExp(WayConstant.regExpUrl))];
       case InputTextType.positive:
-        return [
-          WhitelistingTextInputFormatter(RegExp(WayConstant.regExpPassword)),
-        ];
+        return [WhitelistingTextInputFormatter(RegExp(WayConstant.regExpPassword))];
       case InputTextType.negative:
-        return [
-          WhitelistingTextInputFormatter(RegExp(WayConstant.regExpNegative)),
-        ];
+        return [WhitelistingTextInputFormatter(RegExp(WayConstant.regExpNegative))];
       default:
         return inputFormatter;
     }
