@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/src/common/CommonWidget.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
-import 'package:flutter_waya/src/custom/CustomButton.dart';
-import 'package:flutter_waya/src/utils/BaseUtils.dart';
+import 'package:flutter_waya/src/tools/Tools.dart';
+import 'package:flutter_waya/src/widget/custom/CustomButton.dart';
 
 class CountDownSkip extends StatefulWidget {
   final String skipText;
@@ -22,7 +22,8 @@ class CountDownSkip extends StatefulWidget {
     this.onChange,
     this.onTap,
     this.decoration,
-  })  : this.skipText = skipText ?? '',
+  })
+      : this.skipText = skipText ?? '',
         this.seconds = seconds ?? 5,
         super(key: key);
 
@@ -47,7 +48,7 @@ class CountDownSkipState extends State<CountDownSkip> {
 
   startTime() {
     if (seconds > 0) {
-      timer = BaseUtils.timerPeriodic(Duration(seconds: 1), (time) {
+      timer = Tools.timerPeriodic(Duration(seconds: 1), (time) {
         seconds -= 1;
         setState(() {});
         if (widget.onChange is ValueChanged<int>) {
@@ -63,7 +64,7 @@ class CountDownSkipState extends State<CountDownSkip> {
     return CustomButton(
       onTap: widget.onTap,
       decoration: widget.decoration ?? BoxDecoration(color: getColors(white50), borderRadius: BorderRadius.circular(5)),
-      padding: EdgeInsets.symmetric(horizontal: BaseUtils.getHeight(5), vertical: BaseUtils.getWidth(4)),
+      padding: EdgeInsets.symmetric(horizontal: Tools.getHeight(5), vertical: Tools.getWidth(4)),
       child: CommonWidget.textSmall(seconds.toString() + 's' + widget.skipText),
     );
   }
@@ -71,6 +72,6 @@ class CountDownSkipState extends State<CountDownSkip> {
   @override
   void dispose() {
     super.dispose();
-    BaseUtils.timerCancel();
+    Tools.timerCancel();
   }
 }

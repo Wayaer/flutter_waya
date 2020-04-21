@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/src/constant/WayStyles.dart';
-import 'package:flutter_waya/src/utils/BaseUtils.dart';
+import 'package:flutter_waya/src/tools/Tools.dart';
 import 'package:flutter_waya/waya.dart';
 
 class TabBarWidget extends StatelessWidget {
@@ -109,7 +109,7 @@ class TabBarWidget extends StatelessWidget {
         labelColor: labelColor ?? getColors(blue),
         unselectedLabelColor: unselectedLabelColor ?? getColors(background),
         indicatorColor: labelColor ?? getColors(blue),
-        indicatorWeight: indicatorWeight ?? BaseUtils.getWidth(1),
+        indicatorWeight: indicatorWeight ?? Tools.getWidth(1),
         indicatorPadding: indicatorPadding,
         labelStyle: labelStyle ?? WayStyles.textStyleBlack70(fontSize: 13),
         indicatorSize: indicatorSize ?? TabBarIndicatorSize.label,

@@ -66,7 +66,7 @@ class ListWheel extends StatefulWidget {
         this.magnification = magnification ?? 1.5,
         this.useMagnifier = useMagnifier ?? true,
         this.squeeze = squeeze ?? 1,
-        this.itemExtent = itemExtent ?? BaseUtils.getHeight(12),
+        this.itemExtent = itemExtent ?? Tools.getHeight(12),
         this.physics = physics ?? FixedExtentScrollPhysics(),
         this.controller = controller ?? FixedExtentScrollController(initialItem: initialIndex),
         super(key: key);

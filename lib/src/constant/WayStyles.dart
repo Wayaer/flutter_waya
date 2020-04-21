@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/src/utils/BaseUtils.dart';
+import 'package:flutter_waya/src/tools/Tools.dart';
 
 import 'WayColor.dart';
 import 'WayConstant.dart';
@@ -20,7 +20,7 @@ class WayStyles {
 
   //left right  margin or padding 20
   static EdgeInsetsGeometry edgeInsetsHorizontal({double width: 20}) {
-    return EdgeInsets.symmetric(horizontal: BaseUtils.getWidth(width));
+    return EdgeInsets.symmetric(horizontal: Tools.getWidth(width));
   }
 
   static Decoration borderRadiusTop({Color color, double radius}) {
@@ -33,7 +33,7 @@ class WayStyles {
 
   //top bottom  margin or padding 20
   static EdgeInsetsGeometry edgeInsetsVertical({double height: 20}) {
-    return EdgeInsets.symmetric(vertical: BaseUtils.getHeight(height));
+    return EdgeInsets.symmetric(vertical: Tools.getHeight(height));
   }
 
   //统一白色背景 圆角
@@ -50,7 +50,7 @@ class WayStyles {
     return BoxDecoration(
         color: color ?? getColors(white),
         borderRadius: BorderRadius.circular(radius ?? radiusLocal),
-        border: Border.all(width: width ?? BaseUtils.getWidth(1), color: widthColor ?? getColors(background)));
+        border: Border.all(width: width ?? Tools.getWidth(1), color: widthColor ?? getColors(background)));
   }
 
   //统一下划线样式
@@ -61,7 +61,7 @@ class WayStyles {
             ? null
             : Border(
                 bottom: BorderSide(
-                    width: width ?? BaseUtils.getHeight(1), color: underlineColor ?? getColors(background))));
+                    width: width ?? Tools.getHeight(1), color: underlineColor ?? getColors(background))));
   }
 
   //统一上划线样式

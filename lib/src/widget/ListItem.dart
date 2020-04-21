@@ -3,8 +3,8 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/src/constant/WayIcon.dart';
 import 'package:flutter_waya/src/constant/WayStyles.dart';
-import 'package:flutter_waya/src/custom/CustomFlex.dart';
-import 'package:flutter_waya/src/utils/BaseUtils.dart';
+import 'package:flutter_waya/src/widget/custom/CustomFlex.dart';
+import 'package:flutter_waya/src/tools/Tools.dart';
 
 class ListItem extends StatelessWidget {
   final GestureTapCallback onTap;
@@ -68,7 +68,7 @@ class ListItem extends StatelessWidget {
       this.arrowMargin,
       this.prefix,
       this.prefixMargin})
-      : this.arrowSize = arrowSize ?? BaseUtils.getWidth(16),
+      : this.arrowSize = arrowSize ?? Tools.getWidth(16),
         this.arrowColor = arrowColor ?? getColors(black),
         this.isThreeLine = isThreeLine ?? false,
         this.arrow = arrow ?? true,

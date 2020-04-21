@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/src/constant/WayIcon.dart';
-import 'package:flutter_waya/src/utils/BaseUtils.dart';
+import 'package:flutter_waya/src/tools/Tools.dart';
 import 'package:flutter_waya/waya.dart';
 
 class SearchInput extends StatelessWidget {
@@ -71,8 +71,8 @@ class SearchInput extends StatelessWidget {
     this.height,
     this.width,
   })  : this.icon = icon ?? WayIcon.iconsSearch,
-        this.iconSize = iconSize ?? BaseUtils.getWidth(14),
-        this.contentPadding = contentPadding ?? EdgeInsets.all(BaseUtils.getWidth(6)),
+        this.iconSize = iconSize ?? Tools.getWidth(14),
+        this.contentPadding = contentPadding ?? EdgeInsets.all(Tools.getWidth(6)),
         super(key: key);
 
   @override
@@ -127,7 +127,7 @@ class SearchInput extends StatelessWidget {
           : CustomButton(
               text: searchText,
               onTap: searchTap,
-              padding: EdgeInsets.symmetric(horizontal: BaseUtils.getWidth(4)),
+              padding: EdgeInsets.symmetric(horizontal: Tools.getWidth(4)),
               textStyle: searchStyle ?? TextStyle(color: getColors(white)),
             );
     } else {
@@ -139,11 +139,11 @@ class SearchInput extends StatelessWidget {
     if (lineType == LineType.outline) {
       return OutlineInputBorder(
           borderRadius: BorderRadius.circular(borderRadius),
-          borderSide: BorderSide(width: BaseUtils.getWidth(0.5), color: color));
+          borderSide: BorderSide(width: Tools.getWidth(0.5), color: color));
     } else if (lineType == LineType.underline) {
       return UnderlineInputBorder(
           borderRadius: BorderRadius.circular(borderRadius),
-          borderSide: BorderSide(width: BaseUtils.getWidth(0.5), color: color));
+          borderSide: BorderSide(width: Tools.getWidth(0.5), color: color));
     } else {
       return InputBorder.none;
     }

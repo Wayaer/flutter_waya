@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
-import 'package:flutter_waya/src/utils/BaseUtils.dart';
+import 'package:flutter_waya/src/tools/Tools.dart';
 
 class CommonWidget {
   static Widget titleWidget(String title) {
@@ -13,7 +13,7 @@ class CommonWidget {
       {EdgeInsetsGeometry padding, double width, Color color, EdgeInsetsGeometry margin}) {
     return Container(
       height: height,
-      width: width ?? BaseUtils.getWidth(1),
+      width: width ?? Tools.getWidth(1),
       margin: margin,
       padding: padding,
       color: color ?? getColors(background),
@@ -24,9 +24,9 @@ class CommonWidget {
   static Widget lineHorizontal(double width,
       {EdgeInsetsGeometry padding, double height, Color color, EdgeInsetsGeometry margin}) {
     return Container(
-      height: height ?? BaseUtils.getWidth(1),
+      height: height ?? Tools.getWidth(1),
       padding: padding,
-      width: width ?? BaseUtils.getWidth(),
+      width: width ?? Tools.getWidth(),
       margin: margin,
       color: color ?? getColors(background),
     );
