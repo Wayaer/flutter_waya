@@ -41,6 +41,7 @@ class DioTools {
       _options.contentType = options?.contentType ?? HTTP_CONTENT_TYPE[2];
       _options.responseType = options?.responseType ?? ResponseType.json;
       _options.headers = options?.headers ?? _headers;
+      log('header=> ' + options.headers.toString());
     }
     dio.interceptors.add(InterceptorWrap(cookie: cookie));
   }
