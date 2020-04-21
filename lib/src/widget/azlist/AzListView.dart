@@ -4,6 +4,7 @@ import 'package:flutter_waya/src/tools/Tools.dart';
 import 'package:flutter_waya/src/widget/azlist/AzCommon.dart';
 import 'package:flutter_waya/src/widget/azlist/AzIndexBar.dart';
 import 'package:flutter_waya/src/widget/azlist/Suspension.dart';
+import 'package:flutter_waya/src/widget/ListBuilder.dart';
 import 'package:flutter_waya/waya.dart';
 
 
@@ -157,7 +158,7 @@ class AzListViewState extends State<AzListView> {
     List<Widget> children = <Widget>[
       Suspension(
         data: widget.header == null ? cityList : cityList.sublist(1),
-        contentWidget: CustomListView(
+        contentWidget: ListBuilder(
             controller: scrollController,
             padding: widget.padding,
             shrinkWrap: widget.shrinkWrap,

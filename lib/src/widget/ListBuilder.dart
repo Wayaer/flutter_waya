@@ -4,7 +4,7 @@ import 'package:flutter_waya/src/widget/refresh/Refreshed.dart';
 import 'package:flutter_waya/waya.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class CustomListView extends StatelessWidget {
+class ListBuilder extends StatelessWidget {
   final bool shrinkWrap;
   final IndexedWidgetBuilder itemBuilder;
   final int itemCount;
@@ -24,7 +24,7 @@ class CustomListView extends StatelessWidget {
   final Widget footer;
   final TextStyle footerTextStyle;
 
-  CustomListView({
+  ListBuilder({
     Key key,
     @required this.itemBuilder,
     @required this.itemCount,
