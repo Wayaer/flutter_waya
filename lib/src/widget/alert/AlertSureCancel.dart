@@ -19,6 +19,9 @@ class AlertSureCancel extends StatelessWidget {
   final GestureTapCallback backsideTap;
   final double width;
   final double height;
+  final AlertPosition position;
+  final EdgeInsetsGeometry margin;
+  final Decoration decoration;
 
   AlertSureCancel({
     Key key,
@@ -30,14 +33,17 @@ class AlertSureCancel extends StatelessWidget {
     EdgeInsetsGeometry padding,
     double width,
     double height,
+    EdgeInsetsGeometry margin,
     this.showWidget,
     this.sureTap,
     this.cancelTap,
     this.sure,
     this.cancel,
-    this.backsideTap,
-  })  : this.cancelText = cancelText ?? 'cancle',
+    this.backsideTap, this.position, this.decoration,
+  })
+      : this.cancelText = cancelText ?? 'cancle',
         this.sureText = sureText ?? 'sure',
+        this.margin = margin ?? EdgeInsets.symmetric(horizontal: Tools.getWidth(40)),
         this.backgroundColor = backgroundColor ?? getColors(white),
         this.width = width ?? Tools.getWidth() - Tools.getWidth(40),
         this.height = height ?? Tools.getHeight(200),
@@ -54,12 +60,13 @@ class AlertSureCancel extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertBase(
         onTap: backsideTap,
+        position: position,
         child: CustomFlex(
           width: width,
           height: height,
           mainAxisAlignment: MainAxisAlignment.end,
-          color: backgroundColor,
-          margin: EdgeInsets.symmetric(horizontal: Tools.getWidth(40)),
+          decoration: decoration ?? BoxDecoration(color: backgroundColor),
+          margin: margin,
           padding: padding,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
@@ -70,7 +77,7 @@ class AlertSureCancel extends StatelessWidget {
                 CustomButton(
                     padding: EdgeInsets.symmetric(horizontal: Tools.getWidth(20), vertical: Tools.getHeight(5)),
                     onTap: cancelTap ??
-                        () {
+                            () {
                           NavigatorTools.getInstance().pop();
                         },
                     child: cancel,
@@ -78,7 +85,7 @@ class AlertSureCancel extends StatelessWidget {
                     textStyle: cancelTextStyle),
                 CustomButton(
                     onTap: sureTap ??
-                        () {
+                            () {
                           NavigatorTools.getInstance().pop();
                         },
                     padding: EdgeInsets.symmetric(horizontal: Tools.getWidth(20), vertical: Tools.getHeight(5)),

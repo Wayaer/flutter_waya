@@ -14,7 +14,7 @@
 
 ## 2.多个工具类 [utils](lib/src/tools)
 
-### 1、[弹窗工具](lib/src/tools/AlertTools.dart)
+### 1、[弹窗工具](lib/src/widget/alert/AlertTools.dart)
 
 ### 2、[全局无Context路由跳转](lib/src/tools/NavigatorTools.dart)
 
