@@ -2,7 +2,7 @@ class WayConstant {
   static const double Radius = 5; //全局圆角大小
   static const double fontSize = 14; //全局默认字体大小
   static const double appBarHeight = 43; //导航栏高度
-  static const int errorCode404 = 404; //网络请求失败
+  static const int errorCode404 = 404; //网络请求失败ƒwƒ
   static const int errorCode420 = 420; //网络请求已取消
   static const int errorCode408 = 408; //网络连接超时
   static const int errorCode502 = 502; //网络接收超时
@@ -19,19 +19,15 @@ class WayConstant {
   static const String errorMessageT502 = 'Receive Timeout'; //网络接收超时
   static const String errorMessageT450 = 'Send Timeout'; //网络发送超时
   static const String errorMessageT500 = 'Response'; //服务器错误
-  static const String regExpNumber = '-?[1-9]\d*'; //整数
-  static const String regExpPositive = '-?[1-9]\d*'; //正数
-  static const String regExpNegative = '-?[1-9.]\d*'; //负数
+  static const String regExpPositive = '[+0-9.]'; //正数
+  static const String regExpNegative = '[-0-9.]'; //负数
   static const String regExpPassword = '[a-zA-Z0-9.]'; //密码
   static const String regExpDecimal = '[0-9.]'; //小数
   static const String regExpLetter = '[a-zA-Z]'; //字母
   static const String regExpChinese = '[\u4e00-\u9fa5]'; //中文
-  static const String regExpEmail = '\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}'; //邮箱
-  static const String regExpPhoneNumber = '[0-9-()（）]{7,18}'; //国内电话号
-  static const String regExpMobilePhoneNumber = '0?(13|14|15|17|18|19)[0-9]{9}'; //国内手机号
-  static const String regExpDateTime = '\d{4}(\-|\/|.)\d{1,2}\1\d{1,2}'; //日期时间
-  static const String regExpIdCard = '\d{17}[\d|x]|\d{15}'; //身份证
-  static const String regExpIP =
-      '(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)'; //ip
-  static const String regExpUrl = '^((https|http|ftp|rtsp|mms)?:\/\/)[^\s]+'; //
+  static const String regExpEmail = '[a-zA-Z0-9.@]'; //邮箱
+  static const String regExpPhone = '[0-9-]'; //国内电话号
+  static const String regExpMobilePhone = '[0-9]'; //国内手机号
+  static const String regExpIdCard = '[0-9Xx]'; //身份证
+  static const String regExpIP = '[0-9:.]'; //ip
 }

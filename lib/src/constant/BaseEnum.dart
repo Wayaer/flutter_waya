@@ -41,12 +41,10 @@ enum InputTextType {
   letter, //字母
   chinese, //中文
   email, //邮箱
-  mobilePhoneNumber, //国内手机号码
-  phoneNumber, //国内电话号码
-  dateTime, //日期格式
+  mobilePhone, //手机号码
+  phone, //电话号码
   idCard, //身份证
   ip, //ip地址
-  url, //网址url
   positive, //正数
   negative, //负数
 }

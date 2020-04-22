@@ -381,32 +381,28 @@ class TextInputField extends StatelessWidget {
         return [WhitelistingTextInputFormatter.digitsOnly];
       case InputTextType.password:
         return [WhitelistingTextInputFormatter(RegExp(WayConstant.regExpPassword))]; //密码常见类型
-      case InputTextType.text:
-        return inputFormatter;
       case InputTextType.decimal:
         return [WhitelistingTextInputFormatter(RegExp(WayConstant.regExpDecimal))]; //只允许输入小数
       case InputTextType.letter:
         return [WhitelistingTextInputFormatter(RegExp(WayConstant.regExpLetter))]; //只允许输入字母
       case InputTextType.chinese:
-        return [WhitelistingTextInputFormatter(RegExp(WayConstant.regExpChinese))];
+        return [WhitelistingTextInputFormatter(RegExp(WayConstant.regExpChinese))]; //只允许输入汉字
       case InputTextType.email:
-        return [WhitelistingTextInputFormatter(RegExp(WayConstant.regExpEmail))];
-      case InputTextType.phoneNumber:
-        return [WhitelistingTextInputFormatter(RegExp(WayConstant.regExpPhoneNumber))];
-      case InputTextType.mobilePhoneNumber:
-        return [WhitelistingTextInputFormatter(RegExp(WayConstant.regExpMobilePhoneNumber))];
-      case InputTextType.dateTime:
-        return [WhitelistingTextInputFormatter(RegExp(WayConstant.regExpDateTime))];
+        return [WhitelistingTextInputFormatter(RegExp(WayConstant.regExpEmail))]; //只允许输入邮箱
+      case InputTextType.phone:
+        return [WhitelistingTextInputFormatter(RegExp(WayConstant.regExpPhone))]; //只允许输入国内电话号
+      case InputTextType.mobilePhone:
+        return [WhitelistingTextInputFormatter(RegExp(WayConstant.regExpMobilePhone))]; //只允许输入国内手机号
       case InputTextType.idCard:
-        return [WhitelistingTextInputFormatter(RegExp(WayConstant.regExpIdCard))];
+        return [WhitelistingTextInputFormatter(RegExp(WayConstant.regExpIdCard))]; //只允许输入身份证
       case InputTextType.ip:
-        return [WhitelistingTextInputFormatter(RegExp(WayConstant.regExpIP))];
-      case InputTextType.url:
-        return [WhitelistingTextInputFormatter(RegExp(WayConstant.regExpUrl))];
+        return [WhitelistingTextInputFormatter(RegExp(WayConstant.regExpIP))]; //只允许输入IP
       case InputTextType.positive:
-        return [WhitelistingTextInputFormatter(RegExp(WayConstant.regExpPassword))];
+        return [WhitelistingTextInputFormatter(RegExp(WayConstant.regExpPositive))]; //只允许输入正数
       case InputTextType.negative:
-        return [WhitelistingTextInputFormatter(RegExp(WayConstant.regExpNegative))];
+        return [WhitelistingTextInputFormatter(RegExp(WayConstant.regExpNegative))]; //只允许输入负数
+      case InputTextType.text:
+        return inputFormatter;
       default:
         return inputFormatter;
     }
