@@ -31,14 +31,14 @@ class NavigatorTools extends NavigatorObserver {
   StreamController get streamController => _streamController;
 
   /* 单例给出WayNavigatorTools */
-  static NavigatorTools navigatorManager;
+  static NavigatorTools _navigatorManager;
 
   static NavigatorTools getInstance() {
-    if (navigatorManager == null) {
-      navigatorManager = NavigatorTools();
+    if (_navigatorManager == null) {
+      _navigatorManager = NavigatorTools();
       _streamController = StreamController.broadcast();
     }
-    return navigatorManager;
+    return _navigatorManager;
   }
 
   // replace 页面(pop and push) 右侧进入

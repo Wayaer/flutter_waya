@@ -3,33 +3,33 @@ log(message) {
 }
 
 class LogTools {
-  static var separator = "=";
-  static var split = "$separator$separator$separator$separator$separator$separator$separator$separator$separator";
-  static var title = "Yl-Log";
-  static var isDebug = true;
-  static int limitLength = 800;
-  static String startLine = "$split$title$split";
-  static String endLine = "$split$separator$separator$separator$split";
+  static var _separator = "=";
+  static var _split = "$_separator$_separator$_separator$_separator$_separator$_separator$_separator$_separator$_separator";
+  static var _title = "Yl-Log";
+  static var _isDebug = true;
+  static int _limitLength = 800;
+  static String _startLine = "$_split$_title$_split";
+  static String _endLine = "$_split$_separator$_separator$_separator$_split";
 
   static void init({String title, bool isDebug, int limitLength}) {
-    title = title;
-    isDebug = isDebug;
-    limitLength = limitLength ??= limitLength;
-    startLine = "$split$title$split";
+    _title = title;
+    _isDebug = isDebug;
+    _limitLength = limitLength ??= limitLength;
+    _startLine = "$_split$_title$_split";
     var endLineStr = StringBuffer();
     var cnCharReg = RegExp("[\u4e00-\u9fa5]");
-    for (int i = 0; i < startLine.length; i++) {
-      if (cnCharReg.stringMatch(startLine[i]) != null) {
-        endLineStr.write(separator);
+    for (int i = 0; i < _startLine.length; i++) {
+      if (cnCharReg.stringMatch(_startLine[i]) != null) {
+        endLineStr.write(_separator);
       }
-      endLineStr.write(separator);
+      endLineStr.write(_separator);
     }
-    endLine = endLineStr.toString();
+    _endLine = endLineStr.toString();
   }
 
   //仅Debug模式可见
   static void d(dynamic obj) {
-    if (isDebug) {
+    if (_isDebug) {
       log(obj.toString());
     }
   }
@@ -39,7 +39,7 @@ class LogTools {
   }
 
   static void log(String msg) {
-    if (msg.length < limitLength) {
+    if (msg.length < _limitLength) {
       print(msg);
     } else {
       segmentationLog(msg);
@@ -50,11 +50,11 @@ class LogTools {
     var outStr = StringBuffer();
     for (var index = 0; index < msg.length; index++) {
       outStr.write(msg[index]);
-      if (index % limitLength == 0 && index != 0) {
+      if (index % _limitLength == 0 && index != 0) {
         print(outStr);
         outStr.clear();
         var lastIndex = index + 1;
-        if (msg.length - lastIndex < limitLength) {
+        if (msg.length - lastIndex < _limitLength) {
           var remainderStr = msg.substring(lastIndex, msg.length);
           print(remainderStr);
           break;

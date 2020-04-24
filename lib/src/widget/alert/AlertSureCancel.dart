@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
+import 'package:flutter_waya/src/constant/WayStyles.dart';
 import 'package:flutter_waya/src/widget/alert/AlertBase.dart';
 import 'package:flutter_waya/waya.dart';
 
 class AlertSureCancel extends StatelessWidget {
-  final Widget showWidget;
+  final Widget content;
   final GestureTapCallback sureTap;
   final GestureTapCallback cancelTap;
   final String cancelText;
@@ -34,7 +35,7 @@ class AlertSureCancel extends StatelessWidget {
     double width,
     double height,
     EdgeInsetsGeometry margin,
-    this.showWidget,
+    this.content,
     this.sureTap,
     this.cancelTap,
     this.sure,
@@ -48,12 +49,8 @@ class AlertSureCancel extends StatelessWidget {
         this.width = width ?? Tools.getWidth() - Tools.getWidth(40),
         this.height = height ?? Tools.getHeight(200),
         this.padding = padding ?? EdgeInsets.symmetric(vertical: Tools.getHeight(10)),
-        this.sureTextStyle = sureTextStyle ??
-            TextStyle(
-                decoration: TextDecoration.none, fontSize: 13, fontWeight: FontWeight.w500, color: getColors(blue)),
-        this.cancelTextStyle = cancelTextStyle ??
-            TextStyle(
-                decoration: TextDecoration.none, fontSize: 13, fontWeight: FontWeight.w500, color: getColors(black30)),
+        this.sureTextStyle = sureTextStyle ?? WayStyles.textStyleBlack30(),
+        this.cancelTextStyle = cancelTextStyle ?? WayStyles.textStyleBlack30(),
         super(key: key);
 
   @override
@@ -70,24 +67,18 @@ class AlertSureCancel extends StatelessWidget {
           padding: padding,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Expanded(child: showWidget),
+            Expanded(child: content),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 CustomButton(
                     padding: EdgeInsets.symmetric(horizontal: Tools.getWidth(20), vertical: Tools.getHeight(5)),
-                    onTap: cancelTap ??
-                            () {
-                          NavigatorTools.getInstance().pop();
-                        },
+                    onTap: cancelTap,
                     child: cancel,
                     text: cancelText,
                     textStyle: cancelTextStyle),
                 CustomButton(
-                    onTap: sureTap ??
-                            () {
-                          NavigatorTools.getInstance().pop();
-                        },
+                    onTap: sureTap,
                     padding: EdgeInsets.symmetric(horizontal: Tools.getWidth(20), vertical: Tools.getHeight(5)),
                     text: sureText,
                     child: sure,

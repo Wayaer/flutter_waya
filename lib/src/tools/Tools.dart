@@ -19,9 +19,9 @@ isDebug() {
 }
 
 class Tools {
-  static Timer timerInfo;
-  static double designWidth = 375;
-  static double designHeight = 667;
+  static Timer _timerInfo;
+  static double _designWidth = 375;
+  static double _designHeight = 667;
 
   // 截屏
   static capture(GlobalKey globalKey) async {
@@ -157,7 +157,7 @@ class Tools {
           .height;
     } else {
       //  h = (height / designHeight) * phoneFitHeight(context);
-      h = (height / designHeight) * MediaQueryTools.getHeight();
+      h = (height / _designHeight) * MediaQueryTools.getHeight();
     }
     return intType == true ? h.toInt() : h;
   }
@@ -170,7 +170,7 @@ class Tools {
           .getSize()
           .width;
     } else {
-      w = (width / designWidth) * MediaQueryTools.getWidth();
+      w = (width / _designWidth) * MediaQueryTools.getWidth();
     }
     return intType == true ? w.toInt() : w;
   }
@@ -178,8 +178,8 @@ class Tools {
   //初始化设置 设计稿宽高
   //默认为 667*375
   static setDesignSize(Size size) {
-    designHeight = size.height;
-    designWidth = size.width;
+    _designHeight = size.height;
+    _designWidth = size.width;
   }
 
   //关闭键盘
@@ -188,23 +188,23 @@ class Tools {
   }
 
   static Timer timerTools(Duration duration, [Function function]) {
-    timerInfo = Timer(duration, () {
+    _timerInfo = Timer(duration, () {
       if (function != null) function();
-      timerInfo.cancel();
+      _timerInfo.cancel();
     });
-    return timerInfo;
+    return _timerInfo;
   }
 
   static Timer timerPeriodic(Duration duration, [void callback(Timer timer)]) {
     //需要手动释放timer
-    timerInfo = Timer.periodic(duration, (time) {
+    _timerInfo = Timer.periodic(duration, (time) {
       callback(time);
     });
-    return timerInfo;
+    return _timerInfo;
   }
 
   static timerCancel() {
-    if (timerInfo != null) timerInfo.cancel();
+    if (_timerInfo != null) _timerInfo.cancel();
   }
 
   // md5 加密

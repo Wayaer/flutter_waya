@@ -8,8 +8,6 @@ const double radiusLocal = WayConstant.Radius;
 const double fontSize = WayConstant.fontSize;
 
 class WayStyles {
-  static FontWeight defaultFontWeight = FontWeight.w500;
-  static TextDecoration defaultDecoration = TextDecoration.none;
 
   //统一所有阴影效果
   static List<BoxShadow> boxShadow() {
@@ -60,8 +58,8 @@ class WayStyles {
         border: underlineColor == null
             ? null
             : Border(
-                bottom: BorderSide(
-                    width: width ?? Tools.getHeight(1), color: underlineColor ?? getColors(background))));
+            bottom: BorderSide(
+                width: width ?? Tools.getHeight(1), color: underlineColor ?? getColors(background))));
   }
 
   //统一上划线样式
@@ -90,11 +88,10 @@ class WayStyles {
         ));
   }
 
-  static TextStyle textStyle(
-      {Color color, double fontSize, double height, FontWeight fontWeight, TextDecoration decoration}) {
+  static TextStyle textStyle({Color color, double fontSize, double height, FontWeight fontWeight, TextDecoration decoration}) {
     return TextStyle(
-        decoration: defaultDecoration,
-        fontWeight: defaultFontWeight,
+        decoration: TextDecoration.none,
+        fontWeight: fontWeight ?? FontWeight.w500,
         fontSize: fontSize ?? 14,
         height: height,
         color: color ?? getColors(black70));

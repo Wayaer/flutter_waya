@@ -17,25 +17,25 @@ const List<String> HTTP_CONTENT_TYPE = [
 ];
 
 class DioTools {
-  static Dio dio;
-  static DioError error;
-  static CancelToken cancelToken = CancelToken();
+  static Dio _dio;
+  static DioError _error;
+  static CancelToken _cancelToken = CancelToken();
   static BaseOptions _options;
-  static bool cookie = false;
+  static bool _cookie = false;
 
   //单例模式
   factory DioTools() => getHttp();
 
   static DioTools getHttp({BaseOptions options, bool addCookie: false}) {
-    cookie = addCookie;
+    _cookie = addCookie;
     return DioTools.internal(options: options);
   }
 
   DioTools.internal({BaseOptions options}) {
-    dio = Dio();
+    _dio = Dio();
     if (options != null) {
       Map<String, dynamic> _headers = {};
-      _options = dio.options;
+      _options = _dio.options;
       _options.connectTimeout = options?.connectTimeout ?? HTTP_TIMEOUT_CONNECT;
       _options.receiveTimeout = options?.receiveTimeout ?? HTTP_TIMEOUT_RECEIVE;
       _options.contentType = options?.contentType ?? HTTP_CONTENT_TYPE[2];
@@ -43,56 +43,56 @@ class DioTools {
       _options.headers = options?.headers ?? _headers;
       log('header=> ' + options.headers.toString());
     }
-    dio.interceptors.add(InterceptorWrap(cookie: cookie));
+    _dio.interceptors.add(InterceptorWrap(cookie: _cookie));
   }
 
 
   Future<Map<String, dynamic>> get(String url, {Map<String, dynamic> params}) async {
     try {
       log("GET url:" + url + "  params:" + params.toString());
-      Response response = await dio.get(url, queryParameters: params, cancelToken: cancelToken);
+      Response response = await _dio.get(url, queryParameters: params, cancelToken: _cancelToken);
       log("GET url:" + url + '  responseData==  ' + response.toString());
       return jsonDecode(response.toString());
     } catch (e) {
-      error = e;
-      log(error);
-      return jsonDecode(error.message);
+      _error = e;
+      log(_error);
+      return jsonDecode(_error.message);
     }
   }
 
   Future<Map<String, dynamic>> post(String url, {Map<String, dynamic> params, data}) async {
     try {
       log("POST url:" + url + "  params:" + params.toString() + "  data:" + data.toString());
-      Response response = await dio.post(url, queryParameters: params, data: data, cancelToken: cancelToken);
+      Response response = await _dio.post(url, queryParameters: params, data: data, cancelToken: _cancelToken);
       log("POST url:" + url + '  responseData==  ' + response.toString());
       return jsonDecode(response.toString());
     } catch (e) {
-      error = e;
-      return jsonDecode(error.message);
+      _error = e;
+      return jsonDecode(_error.message);
     }
   }
 
   Future<Map<String, dynamic>> put(String url, Map<String, dynamic> param) async {
     try {
       log("PUT url:" + url + "  params:" + param.toString());
-      Response response = await dio.put(url, queryParameters: param, cancelToken: cancelToken);
+      Response response = await _dio.put(url, queryParameters: param, cancelToken: _cancelToken);
       log("PUT url:" + url + '  responseData==  ' + response.toString());
       return jsonDecode(response.toString());
     } catch (e) {
-      error = e;
-      return jsonDecode(error.message);
+      _error = e;
+      return jsonDecode(_error.message);
     }
   }
 
   Future<Map<String, dynamic>> delete(String url, Map<String, dynamic> param) async {
     try {
       log("DELETE url:" + url + "  params:" + param.toString());
-      Response response = await dio.delete(url, queryParameters: param, cancelToken: cancelToken);
+      Response response = await _dio.delete(url, queryParameters: param, cancelToken: _cancelToken);
       log("DELETE url:" + url + '  responseData==  ' + response.toString());
       return jsonDecode(response.toString());
     } catch (e) {
-      error = e;
-      return jsonDecode(error.message);
+      _error = e;
+      return jsonDecode(_error.message);
     }
   }
 
@@ -100,18 +100,18 @@ class DioTools {
   Future download(String url, String savePath, [ProgressCallback onReceiveProgress]) async {
     try {
       log("url:" + url + "  savePath:" + savePath.toString());
-      return await Dio().download(url, savePath, cancelToken: cancelToken,
+      return await Dio().download(url, savePath, cancelToken: _cancelToken,
           onReceiveProgress: (int received, int total) {
             onReceiveProgress(received, total);
           });
     } catch (e) {
-      error = e;
-      return jsonDecode(error.message);
+      _error = e;
+      return jsonDecode(_error.message);
     }
   }
 
   cancel() {
-    cancelToken.cancelError;
+    _cancelToken.cancelError;
   }
 
 
