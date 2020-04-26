@@ -72,10 +72,10 @@ class DioTools {
     }
   }
 
-  Future<Map<String, dynamic>> put(String url, Map<String, dynamic> param) async {
+  Future<Map<String, dynamic>> put(String url, {Map<String, dynamic> params, data}) async {
     try {
-      log("PUT url:" + url + "  params:" + param.toString());
-      Response response = await _dio.put(url, queryParameters: param, cancelToken: _cancelToken);
+      log("PUT url:" + url + "  params:" + params.toString() + "  data:" + data.toString());
+      Response response = await _dio.put(url, data: data, queryParameters: params, cancelToken: _cancelToken);
       log("PUT url:" + url + '  responseData==  ' + response.toString());
       return jsonDecode(response.toString());
     } catch (e) {
@@ -84,10 +84,10 @@ class DioTools {
     }
   }
 
-  Future<Map<String, dynamic>> delete(String url, Map<String, dynamic> param) async {
+  Future<Map<String, dynamic>> delete(String url, {Map<String, dynamic> params, data}) async {
     try {
-      log("DELETE url:" + url + "  params:" + param.toString());
-      Response response = await _dio.delete(url, queryParameters: param, cancelToken: _cancelToken);
+      log("DELETE url:" + url + "  params:" + params.toString() + "  data:" + data.toString());
+      Response response = await _dio.delete(url, queryParameters: params, data: data, cancelToken: _cancelToken);
       log("DELETE url:" + url + '  responseData==  ' + response.toString());
       return jsonDecode(response.toString());
     } catch (e) {
