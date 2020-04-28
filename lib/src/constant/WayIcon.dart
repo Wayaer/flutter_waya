@@ -16,7 +16,7 @@ class WayIcon {
   static const IconData copy = const IconInfo(0xe8b0); //复制
   static const IconData share = const IconInfo(0xe8b1); //分享
   static const IconData man = const IconInfo(0xe8b3); //男
-  static const IconData woman = const IconInfo(0xe8b4); //女
+  static const IconData woman = const IconInfo(0xe60d); //女
   static const IconData scanner = const IconInfo(0xe8b5); //扫描
   static const IconData upload = const IconInfo(0xe60c); //上传
   static const IconData horn = const IconInfo(0xe8b8); //小喇叭
@@ -27,6 +27,8 @@ class WayIcon {
   static const IconData message = const IconInfo(0xe8bd); //消息
   static const IconData heart = const IconInfo(0xe8c3); //心
   static const IconData comment = const IconInfo(0xe8c5); //评论
+  static const IconData menu = const IconInfo(0xe644); //菜单
+  static const IconData modify = const IconInfo(0xe63e); //修改
 }
 
 class IconInfo extends IconData {
