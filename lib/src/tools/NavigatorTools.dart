@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/src/constant/BaseEnum.dart';
+import 'package:flutter_waya/src/constant/WayEnum.dart';
 
 //例子  自行封装utils
 class NavigatorExample {

@@ -70,7 +70,7 @@ class SearchInput extends StatelessWidget {
     this.fillColor,
     this.height,
     this.width,
-  })  : this.icon = icon ?? WayIcon.iconsSearch,
+  })  : this.icon = icon ?? WayIcon.search,
         this.iconSize = iconSize ?? Tools.getWidth(14),
         this.contentPadding = contentPadding ?? EdgeInsets.all(Tools.getWidth(6)),
         super(key: key);

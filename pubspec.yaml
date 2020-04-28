@@ -10,7 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_localizations: # 添加
+  flutter_localizations:
     sdk: flutter
   shared_preferences: ^0.5.6+3
   provider: ^4.0.4
@@ -23,12 +23,13 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 flutter:
-#  fonts:
-#    - family: Icons
-#      fonts:
-#        - asset: lib/res/icons.ttf
+  uses-material-design: true
+  fonts:
+    - family: Icons
+      fonts:
+        - asset: lib/fonts/icons.ttf
 
-# assets:
+#  assets:
 #  - images/a_dot_burr.jpeg
 #  - images/a_dot_ham.jpeg
 

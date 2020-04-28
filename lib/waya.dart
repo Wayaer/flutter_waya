@@ -4,12 +4,13 @@ library flutter_waya;
 //内部常量勿用
 //export 'src/constant/WayColor.dart';
 //export 'src/constant/WayConstant.dart';
-//export 'src/constant/WayIcon.dart';
+//export 'src/constant/IconsInfo.dart';
 //export 'src/constant/WayStyles.dart';
 //可调用常量
 export 'package:pull_to_refresh/pull_to_refresh.dart';
 
-export 'src/constant/BaseEnum.dart';
+export 'src/constant/WayEnum.dart';
+export 'src/constant/WayIcon.dart';
 export 'src/model/MapModel.dart';
 export 'src/tools/Event.dart';
 export 'src/tools/LogTools.dart';

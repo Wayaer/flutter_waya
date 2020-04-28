@@ -110,7 +110,7 @@ class ListItem extends StatelessWidget {
               margin: arrowMargin,
               child: arrowIcon ??
                   Icon(
-                    WayIcon.iconsRight,
+                    WayIcon.arrowRight,
                     size: arrowSize,
                     color: arrowColor,
                   )),

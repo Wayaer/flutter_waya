@@ -100,7 +100,7 @@ class CustomCheckBoxState extends State<CustomCheckBox> {
 
   Widget customIcon({IconData uncheckIcon, IconData checkIcon}) {
     return CustomIcon(
-        icon: value ? checkIcon ?? WayIcon.iconsChecked : uncheckIcon ?? WayIcon.iconsUnChecked,
+        icon: value ? checkIcon ?? WayIcon.checked : uncheckIcon ?? WayIcon.unChecked,
         iconSize: widget.iconSize,
         width: widget.width,
         height: widget.height,
