@@ -9,8 +9,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_waya/src/constant/WayEnum.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
+import 'package:flutter_waya/src/constant/WayEnum.dart';
 import 'package:flutter_waya/src/tools/MediaQueryTools.dart';
 import 'package:flutter_waya/waya.dart';
 
@@ -24,16 +24,17 @@ class Tools {
   static double _designHeight = 667;
 
   // 截屏
-  static capture(GlobalKey globalKey) async {
+  static Future<ByteData> screenshots(GlobalKey globalKey, {ImageByteFormat format}) async {
     RenderRepaintBoundary boundary = globalKey.currentContext.findRenderObject();
     var image = await boundary.toImage();
-    ByteData byteData = await image.toByteData(format: ImageByteFormat.png);
+    ByteData byteData = await image.toByteData(format: format ?? ImageByteFormat.rawRgba);
+//    Uint8List uint8list = byteData.buffer.asUint8List();
     return byteData;
   }
 
   // 复制到粘贴板
-  static copy(text) {
-    Clipboard.setData(new ClipboardData(text: text));
+  static void copy(text) {
+    Clipboard.setData(ClipboardData(text: text));
   }
 
   //分页 计算总页数
@@ -52,23 +53,21 @@ class Tools {
     }
     if (micro) {
       //微秒
-      return formatDate(DateTime.fromMicrosecondsSinceEpoch(s).toString(), dateType);
+      return formatDate(DateTime.fromMicrosecondsSinceEpoch(s), dateType);
     } else {
       //毫秒
-      return formatDate(DateTime.fromMillisecondsSinceEpoch(s).toString(), dateType);
+      return formatDate(DateTime.fromMillisecondsSinceEpoch(s), dateType);
     }
   }
 
-  static String formatDate(String date, [DateType dateType]) {
+  static String formatDate(DateTime date, [DateType dateType]) {
     if (dateType == null) dateType = DateType.yearSecond;
-    DateTime time = DateTime.parse(date);
-    String year = time.year.toString();
-    String month = time.month.toString().padLeft(2, '0');
-    String day = time.day.toString().padLeft(2, '0');
-    String hour = time.hour.toString().padLeft(2, '0');
-    String minute = time.minute.toString().padLeft(2, '0');
-    String second = time.second.toString().padLeft(2, '0');
-
+    String year = date.year.toString();
+    String month = date.month.toString().padLeft(2, '0');
+    String day = date.day.toString().padLeft(2, '0');
+    String hour = date.hour.toString().padLeft(2, '0');
+    String minute = date.minute.toString().padLeft(2, '0');
+    String second = date.second.toString().padLeft(2, '0');
     switch (dateType) {
       case DateType.yearSecond:
         return '$year-$month-$day $hour:$minute:$second';
@@ -94,7 +93,7 @@ class Tools {
         return '$hour:$minute';
         break;
     }
-    return date;
+    return date.toString();
   }
 
 //  * 全面屏适配
