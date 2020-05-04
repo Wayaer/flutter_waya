@@ -22,6 +22,7 @@ class DioTools {
   static CancelToken _cancelToken = CancelToken();
   static BaseOptions _options;
   static bool _cookie = false;
+  static InterceptorWrap _interceptorWrap;
 
   //单例模式
   factory DioTools() => getHttp();
@@ -41,11 +42,10 @@ class DioTools {
       _options.contentType = options?.contentType ?? HTTP_CONTENT_TYPE[2];
       _options.responseType = options?.responseType ?? ResponseType.json;
       _options.headers = options?.headers ?? _headers;
-      log('header=> ' + options.headers.toString());
     }
-    _dio.interceptors.add(InterceptorWrap(cookie: _cookie));
+    _interceptorWrap = InterceptorWrap(cookie: _cookie);
+    _dio.interceptors.add(_interceptorWrap);
   }
-
 
   Future<Map<String, dynamic>> get(String url, {Map<String, dynamic> params}) async {
     try {
@@ -99,11 +99,29 @@ class DioTools {
   //下载文件需要申请文件储存权限
   Future download(String url, String savePath, [ProgressCallback onReceiveProgress]) async {
     try {
-      log("url:" + url + "  savePath:" + savePath.toString());
-      return await Dio().download(url, savePath, cancelToken: _cancelToken,
+      log("Download url:" + url + "  savePath:" + savePath.toString());
+      _dio.interceptors.remove(_interceptorWrap);
+      return await _dio.download(url, savePath, cancelToken: _cancelToken,
           onReceiveProgress: (int received, int total) {
-            onReceiveProgress(received, total);
-          });
+        onReceiveProgress(received, total);
+      });
+    } catch (e) {
+      _error = e;
+      return jsonDecode(_error.message);
+    }
+  }
+
+  Future upload(String url,
+      {Map<String, dynamic> params, data, ProgressCallback onSendProgress, ProgressCallback onReceiveProgress}) async {
+    try {
+      _dio.interceptors.remove(_interceptorWrap);
+      log("Upload url:" + url + "  params:" + params.toString() + "  data:" + data.toString());
+      return await _dio.post(url,
+          queryParameters: params,
+          data: data,
+          cancelToken: _cancelToken,
+          onSendProgress: onSendProgress,
+          onReceiveProgress: onReceiveProgress);
     } catch (e) {
       _error = e;
       return jsonDecode(_error.message);
@@ -113,6 +131,4 @@ class DioTools {
   cancel() {
     _cancelToken.cancelError;
   }
-
-
 }
