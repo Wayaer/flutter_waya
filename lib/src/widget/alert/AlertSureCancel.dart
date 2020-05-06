@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/src/constant/WayStyles.dart';
 import 'package:flutter_waya/src/widget/alert/AlertBase.dart';
-import 'package:flutter_waya/waya.dart';
 
 class AlertSureCancel extends StatelessWidget {
   final Widget content;
@@ -44,11 +44,13 @@ class AlertSureCancel extends StatelessWidget {
   })
       : this.cancelText = cancelText ?? 'cancle',
         this.sureText = sureText ?? 'sure',
-        this.margin = margin ?? EdgeInsets.symmetric(horizontal: Tools.getWidth(40)),
+        this.margin = margin ??
+            EdgeInsets.symmetric(horizontal: Tools.getWidth(40)),
         this.backgroundColor = backgroundColor ?? getColors(white),
         this.width = width ?? Tools.getWidth() - Tools.getWidth(40),
         this.height = height ?? Tools.getHeight(200),
-        this.padding = padding ?? EdgeInsets.symmetric(vertical: Tools.getHeight(10)),
+        this.padding = padding ??
+            EdgeInsets.symmetric(vertical: Tools.getHeight(10)),
         this.sureTextStyle = sureTextStyle ?? WayStyles.textStyleBlack30(),
         this.cancelTextStyle = cancelTextStyle ?? WayStyles.textStyleBlack30(),
         super(key: key);
@@ -72,14 +74,18 @@ class AlertSureCancel extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 CustomButton(
-                    padding: EdgeInsets.symmetric(horizontal: Tools.getWidth(20), vertical: Tools.getHeight(5)),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: Tools.getWidth(20),
+                        vertical: Tools.getHeight(5)),
                     onTap: cancelTap,
                     child: cancel,
                     text: cancelText,
                     textStyle: cancelTextStyle),
                 CustomButton(
                     onTap: sureTap,
-                    padding: EdgeInsets.symmetric(horizontal: Tools.getWidth(20), vertical: Tools.getHeight(5)),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: Tools.getWidth(20),
+                        vertical: Tools.getHeight(5)),
                     text: sureText,
                     child: sure,
                     textStyle: sureTextStyle),

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/src/constant/WayStyles.dart';
 import 'package:flutter_waya/src/tools/Tools.dart';
-import 'package:flutter_waya/waya.dart';
 
 class TabBarWidget extends StatelessWidget {
   final TabController controller;
@@ -55,7 +55,9 @@ class TabBarWidget extends StatelessWidget {
     this.physics,
     this.header,
     this.footer,
-  })  : this.underlineBackgroundColor = underlineBackgroundColor ?? getColors(transparent),
+  })
+      : this.underlineBackgroundColor = underlineBackgroundColor ??
+      getColors(transparent),
         this.tabBarViewHeight = tabBarViewHeight ?? 0,
         this.indicatorPadding = indicatorPadding ?? EdgeInsets.zero,
         super(key: key);
@@ -82,16 +84,16 @@ class TabBarWidget extends StatelessWidget {
   Widget tabBarViewWidget() {
     return tabBarViewHeight == 0
         ? Expanded(
-            child: Container(
-                margin: tabBarViewMargin,
-                padding: tabBarViewPadding,
-                child: TabBarView(controller: controller, children: tabBarView)))
-        : Container(
+        child: Container(
             margin: tabBarViewMargin,
             padding: tabBarViewPadding,
-            height: tabBarViewHeight,
-            child: TabBarView(controller: controller, children: tabBarView),
-          );
+            child: TabBarView(controller: controller, children: tabBarView)))
+        : Container(
+      margin: tabBarViewMargin,
+      padding: tabBarViewPadding,
+      height: tabBarViewHeight,
+      child: TabBarView(controller: controller, children: tabBarView),
+    );
   }
 
   Widget tabBarWidget() {
@@ -100,7 +102,8 @@ class TabBarWidget extends StatelessWidget {
       padding: tabBarPadding,
       decoration: decoration ??
           BoxDecoration(
-              border: Border(bottom: BorderSide(width: underlineHeight ?? 0, color: underlineBackgroundColor))),
+              border: Border(bottom: BorderSide(width: underlineHeight ?? 0,
+                  color: underlineBackgroundColor))),
       child: TabBar(
         controller: controller,
         labelPadding: labelPadding,

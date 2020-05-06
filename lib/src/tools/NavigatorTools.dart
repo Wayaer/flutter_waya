@@ -11,11 +11,13 @@ class NavigatorExample {
   }
 
   static pushReplacement(Function function, {PushMode pushMode}) {
-    return NavigatorTools.getInstance().pushReplacement(function, pushMode: pushMode);
+    return NavigatorTools.getInstance().pushReplacement(
+        function, pushMode: pushMode);
   }
 
   static pushAndRemoveUntil(Function function, {PushMode pushMode}) {
-    return NavigatorTools.getInstance().pushAndRemoveUntil(function, pushMode: pushMode);
+    return NavigatorTools.getInstance().pushAndRemoveUntil(
+        function, pushMode: pushMode);
   }
 
   static pop<T extends Object>([T result]) {
@@ -53,7 +55,8 @@ class NavigatorTools extends NavigatorObserver {
 
   // push一个页面， 移除该页面下面所有页面
   pushAndRemoveUntil(Function function, {PushMode pushMode}) {
-    return navigator.pushAndRemoveUntil(pageRoute(function, pushMode), (route) => false);
+    return navigator.pushAndRemoveUntil(
+        pageRoute(function, pushMode), (route) => false);
   }
 
   pageRoute(Function function, PushMode pushMode) {

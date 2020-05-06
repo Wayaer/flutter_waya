@@ -67,7 +67,8 @@ class CustomIcon extends StatelessWidget {
         this.reversal = reversal ?? false,
         this.direction = direction ?? Axis.horizontal,
         this.spacing = spacing ?? Tools.getWidth(4),
-        this.crossAxisAlignment = crossAxisAlignment ?? CrossAxisAlignment.center,
+        this.crossAxisAlignment = crossAxisAlignment ??
+            CrossAxisAlignment.center,
         this.mainAxisAlignment = mainAxisAlignment ?? MainAxisAlignment.center,
         super(key: key);
 
@@ -105,7 +106,8 @@ class CustomIcon extends StatelessWidget {
 
   Widget spacingWidget() {
     return Container(
-        width: direction == Axis.horizontal ? spacing : 0, height: direction == Axis.vertical ? spacing : 0);
+        width: direction == Axis.horizontal ? spacing : 0,
+        height: direction == Axis.vertical ? spacing : 0);
   }
 
   Widget titleWidget() {
@@ -122,7 +124,8 @@ class CustomIcon extends StatelessWidget {
   }
 
   bool isChildren() {
-    return (titleText != null || title != null) && (icon != null || image != null || imageProvider != null);
+    return (titleText != null || title != null) &&
+        (icon != null || image != null || imageProvider != null);
   }
 
   Widget iconWidget() {
@@ -135,7 +138,9 @@ class CustomIcon extends StatelessWidget {
           semanticLabel: semanticLabel)); //帮助盲人或者视力有障碍的用户提供语言辅助描述
     }
     if (imageProvider != null) {
-      listWidget.add(ImageIcon(imageProvider, color: iconColor, size: iconSize, semanticLabel: semanticLabel));
+      listWidget.add(ImageIcon(imageProvider, color: iconColor,
+          size: iconSize,
+          semanticLabel: semanticLabel));
     }
     if (image != null) {
       listWidget.add(image);

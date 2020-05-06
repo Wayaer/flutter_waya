@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_waya/waya.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 
 typedef WheelChangedListener = Function(int newIndex);
 
@@ -59,7 +59,8 @@ class ListWheel extends StatefulWidget {
     ScrollPhysics physics,
     FixedExtentScrollController controller,
     this.onItemSelected,
-  })  : this.diameterRatio = diameterRatio ?? 1,
+  })
+      : this.diameterRatio = diameterRatio ?? 1,
         this.offAxisFraction = offAxisFraction ?? 0,
         this.initialIndex = initialIndex ?? 0,
         this.perspective = perspective ?? 0.01,
@@ -68,7 +69,8 @@ class ListWheel extends StatefulWidget {
         this.squeeze = squeeze ?? 1,
         this.itemExtent = itemExtent ?? Tools.getHeight(12),
         this.physics = physics ?? FixedExtentScrollPhysics(),
-        this.controller = controller ?? FixedExtentScrollController(initialItem: initialIndex),
+        this.controller = controller ??
+            FixedExtentScrollController(initialItem: initialIndex),
         super(key: key);
 
   @override
@@ -86,7 +88,8 @@ class ListWheelState extends State<ListWheel> {
         } else if (index > this.widget.itemCount - 1) {
           index = this.widget.itemCount - 1;
         }
-        controller.animateToItem(index, duration: Duration(milliseconds: 100), curve: Curves.linear);
+        controller.animateToItem(
+            index, duration: Duration(milliseconds: 100), curve: Curves.linear);
       }
     }
   }
@@ -95,7 +98,8 @@ class ListWheelState extends State<ListWheel> {
   void initState() {
     super.initState();
     controller = widget.controller;
-    if (widget.controller != null && widget.initialIndex > widget.controller.initialItem) {
+    if (widget.controller != null &&
+        widget.initialIndex > widget.controller.initialItem) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         animateToItem(widget.initialIndex);
       });
@@ -113,7 +117,8 @@ class ListWheelState extends State<ListWheel> {
   }
 
   @override
-  Widget build(BuildContext context) => NotificationListener<ScrollEndNotification>(
+  Widget build(BuildContext context) =>
+      NotificationListener<ScrollEndNotification>(
         onNotification: onNotification,
         child: ListWheelScrollView.useDelegate(
           controller: controller,
@@ -135,7 +140,8 @@ class ListWheelState extends State<ListWheel> {
 
   bool onNotification(ScrollEndNotification notification) {
     //   滚动结束的监听事件
-    if (notification is ScrollEndNotification && widget.onItemSelected != null) {
+    if (notification is ScrollEndNotification &&
+        widget.onItemSelected != null) {
       var pixels = notification.metrics.pixels;
       var newIndex = (pixels / widget.itemExtent).round();
       widget.onItemSelected(newIndex);

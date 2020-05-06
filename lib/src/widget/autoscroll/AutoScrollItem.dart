@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
-import 'package:flutter_waya/waya.dart';
 
 class AutoScrollItem extends StatefulWidget {
   final Key key;
@@ -8,8 +8,6 @@ class AutoScrollItem extends StatefulWidget {
   ///这是text的具体内容
   final String text;
 
-  ///文字的颜色
-  Color textColor;
 
   ///文字的大小
   final double textSize;
@@ -30,6 +28,9 @@ class AutoScrollItem extends StatefulWidget {
   ///移动的距离
   double animateDistance;
 
+  ///文字的颜色
+  Color textColor;
+
   /// 跑马灯的切换时长 默认是500毫秒
   final int itemDuration;
 
@@ -38,7 +39,12 @@ class AutoScrollItem extends StatefulWidget {
 
   bool get mode => this.modeListener.value;
 
+
   set mode(bool mode) => this.modeListener.value = mode;
+
+  set setAnimateDistance(double distance) => animateDistance = distance;
+
+  set setTextColor(Color color) => textColor = color;
 
   AutoScrollItem({
     Key key, //必须传key，否则动画只会走一次
@@ -52,10 +58,12 @@ class AutoScrollItem extends StatefulWidget {
     int itemDuration,
     this.child,
     bool singleLine,
-  })  : this.modeListener = modeListener ?? ValueNotifier(false),
+  })
+      : this.modeListener = modeListener ?? ValueNotifier(false),
         this.textColor = textColor ?? getColors(black),
         this.textSize = textSize ?? 14.0,
-        this.autoScrollAnimation = autoScrollAnimation ?? AutoScrollAnimation.b2t,
+        this.autoScrollAnimation = autoScrollAnimation ??
+            AutoScrollAnimation.b2t,
         this.itemDuration = itemDuration ?? 500,
         this.key = key ?? GlobalKey(),
         this.singleLine = !singleLine ?? true,
@@ -67,7 +75,8 @@ class AutoScrollItem extends StatefulWidget {
   }
 }
 
-class AutoScrollItemState extends State<AutoScrollItem> with SingleTickerProviderStateMixin {
+class AutoScrollItemState extends State<AutoScrollItem>
+    with SingleTickerProviderStateMixin {
   Animation animation;
   Animation transformAnimation;
   AnimationController animationController;
@@ -113,7 +122,8 @@ class AutoScrollItemState extends State<AutoScrollItem> with SingleTickerProvide
     _updateListener = () {
       setState(() {
         if (widget.modeListener.value) {
-          transformAnimation = outTween.animate(CurvedAnimation(parent: animationController, curve: Curves.easeInOut));
+          transformAnimation = outTween.animate(CurvedAnimation(
+              parent: animationController, curve: Curves.easeInOut));
 
           animationController.reset();
           animationController.forward();
@@ -122,10 +132,12 @@ class AutoScrollItemState extends State<AutoScrollItem> with SingleTickerProvide
     };
     widget.modeListener.addListener(_updateListener);
 
-    animationController = AnimationController(vsync: this, duration: Duration(milliseconds: widget.itemDuration))
+    animationController = AnimationController(
+        vsync: this, duration: Duration(milliseconds: widget.itemDuration))
       ..addListener(() {});
 
-    transformAnimation = inTween.animate(CurvedAnimation(parent: animationController, curve: Curves.easeInOut))
+    transformAnimation = inTween.animate(
+        CurvedAnimation(parent: animationController, curve: Curves.easeInOut))
       ..addListener(() => setState(() {}));
 
     animationController.forward();
@@ -154,7 +166,8 @@ class AutoScrollItemState extends State<AutoScrollItem> with SingleTickerProvide
     //     0, 0, 0, 1, 0, 0, transformAnimation.value, 0, 1)
     if (widget.child != null) {
       if (widget.onPress != null) {
-        current = GestureDetector(onTap: widget.onPress, child: Container(child: widget.child, transform: transform));
+        current = GestureDetector(onTap: widget.onPress,
+            child: Container(child: widget.child, transform: transform));
       } else {
         current = Container(child: widget.child, transform: transform);
       }
@@ -165,7 +178,8 @@ class AutoScrollItemState extends State<AutoScrollItem> with SingleTickerProvide
             child: Text(
               widget.text,
               softWrap: widget.singleLine,
-              style: TextStyle(fontSize: widget.textSize, color: widget.textColor),
+              style: TextStyle(
+                  fontSize: widget.textSize, color: widget.textColor),
             ),
             transform: transform,
           ));

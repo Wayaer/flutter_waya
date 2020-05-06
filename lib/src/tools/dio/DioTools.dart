@@ -47,10 +47,12 @@ class DioTools {
     _dio.interceptors.add(_interceptorWrap);
   }
 
-  Future<Map<String, dynamic>> get(String url, {Map<String, dynamic> params}) async {
+  Future<Map<String, dynamic>> get(String url,
+      {Map<String, dynamic> params}) async {
     try {
       log("GET url:" + url + "  params:" + params.toString());
-      Response response = await _dio.get(url, queryParameters: params, cancelToken: _cancelToken);
+      Response response = await _dio.get(
+          url, queryParameters: params, cancelToken: _cancelToken);
       log("GET url:" + url + '  responseData==  ' + response.toString());
       return jsonDecode(response.toString());
     } catch (e) {
@@ -60,10 +62,13 @@ class DioTools {
     }
   }
 
-  Future<Map<String, dynamic>> post(String url, {Map<String, dynamic> params, data}) async {
+  Future<Map<String, dynamic>> post(String url,
+      {Map<String, dynamic> params, data}) async {
     try {
-      log("POST url:" + url + "  params:" + params.toString() + "  data:" + data.toString());
-      Response response = await _dio.post(url, queryParameters: params, data: data, cancelToken: _cancelToken);
+      log("POST url:" + url + "  params:" + params.toString() + "  data:" +
+          data.toString());
+      Response response = await _dio.post(
+          url, queryParameters: params, data: data, cancelToken: _cancelToken);
       log("POST url:" + url + '  responseData==  ' + response.toString());
       return jsonDecode(response.toString());
     } catch (e) {
@@ -72,10 +77,13 @@ class DioTools {
     }
   }
 
-  Future<Map<String, dynamic>> put(String url, {Map<String, dynamic> params, data}) async {
+  Future<Map<String, dynamic>> put(String url,
+      {Map<String, dynamic> params, data}) async {
     try {
-      log("PUT url:" + url + "  params:" + params.toString() + "  data:" + data.toString());
-      Response response = await _dio.put(url, data: data, queryParameters: params, cancelToken: _cancelToken);
+      log("PUT url:" + url + "  params:" + params.toString() + "  data:" +
+          data.toString());
+      Response response = await _dio.put(
+          url, data: data, queryParameters: params, cancelToken: _cancelToken);
       log("PUT url:" + url + '  responseData==  ' + response.toString());
       return jsonDecode(response.toString());
     } catch (e) {
@@ -84,10 +92,13 @@ class DioTools {
     }
   }
 
-  Future<Map<String, dynamic>> delete(String url, {Map<String, dynamic> params, data}) async {
+  Future<Map<String, dynamic>> delete(String url,
+      {Map<String, dynamic> params, data}) async {
     try {
-      log("DELETE url:" + url + "  params:" + params.toString() + "  data:" + data.toString());
-      Response response = await _dio.delete(url, queryParameters: params, data: data, cancelToken: _cancelToken);
+      log("DELETE url:" + url + "  params:" + params.toString() + "  data:" +
+          data.toString());
+      Response response = await _dio.delete(
+          url, queryParameters: params, data: data, cancelToken: _cancelToken);
       log("DELETE url:" + url + '  responseData==  ' + response.toString());
       return jsonDecode(response.toString());
     } catch (e) {
@@ -97,14 +108,15 @@ class DioTools {
   }
 
   //下载文件需要申请文件储存权限
-  Future download(String url, String savePath, [ProgressCallback onReceiveProgress]) async {
+  Future download(String url, String savePath,
+      [ProgressCallback onReceiveProgress]) async {
     try {
       log("Download url:" + url + "  savePath:" + savePath.toString());
       _dio.interceptors.remove(_interceptorWrap);
       return await _dio.download(url, savePath, cancelToken: _cancelToken,
           onReceiveProgress: (int received, int total) {
-        onReceiveProgress(received, total);
-      });
+            onReceiveProgress(received, total);
+          });
     } catch (e) {
       _error = e;
       return jsonDecode(_error.message);
@@ -112,10 +124,12 @@ class DioTools {
   }
 
   Future upload(String url,
-      {Map<String, dynamic> params, data, ProgressCallback onSendProgress, ProgressCallback onReceiveProgress}) async {
+      {Map<String,
+          dynamic> params, data, ProgressCallback onSendProgress, ProgressCallback onReceiveProgress}) async {
     try {
       _dio.interceptors.remove(_interceptorWrap);
-      log("Upload url:" + url + "  params:" + params.toString() + "  data:" + data.toString());
+      log("Upload url:" + url + "  params:" + params.toString() + "  data:" +
+          data.toString());
       return await _dio.post(url,
           queryParameters: params,
           data: data,

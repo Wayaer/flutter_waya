@@ -15,7 +15,8 @@ class CustomRichText extends StatelessWidget {
     this.alignment,
     this.text,
     TextAlign textAlign,
-  })  : this.textAlign = textAlign ?? TextAlign.center,
+  })
+      : this.textAlign = textAlign ?? TextAlign.center,
         super(key: key);
 
   @override
@@ -23,11 +24,11 @@ class CustomRichText extends StatelessWidget {
     return onTap == null
         ? richText()
         : CustomFlex(
-            alignment: alignment,
-            color: background,
-            onTap: onTap,
-            child: richText(),
-          );
+      alignment: alignment,
+      color: background,
+      onTap: onTap,
+      child: richText(),
+    );
   }
 
   Widget richText() {

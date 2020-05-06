@@ -32,5 +32,7 @@ class WayIcon {
 }
 
 class IconInfo extends IconData {
-  const IconInfo(int codePoint) : super(codePoint, fontFamily: 'Icons', matchTextDirection: true, fontPackage: "flutter_waya");
+  const IconInfo(int codePoint) : super(codePoint, fontFamily: 'Icons',
+      matchTextDirection: true,
+      fontPackage: "flutter_waya");
 }

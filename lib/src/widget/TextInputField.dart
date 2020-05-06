@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_waya/src/constant/WayEnum.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/src/constant/WayConstant.dart';
+import 'package:flutter_waya/src/constant/WayEnum.dart';
 import 'package:flutter_waya/src/constant/WayStyles.dart';
-import 'package:flutter_waya/waya.dart';
 
 class TextInputField extends StatelessWidget {
   final TextEditingController controller;
@@ -380,27 +380,49 @@ class TextInputField extends StatelessWidget {
       case InputTextType.number:
         return [WhitelistingTextInputFormatter.digitsOnly];
       case InputTextType.password:
-        return [WhitelistingTextInputFormatter(RegExp(WayConstant.regExpPassword))]; //密码常见类型
+        return [
+          WhitelistingTextInputFormatter(RegExp(WayConstant.regExpPassword))
+        ]; //密码常见类型
       case InputTextType.decimal:
-        return [WhitelistingTextInputFormatter(RegExp(WayConstant.regExpDecimal))]; //只允许输入小数
+        return [
+          WhitelistingTextInputFormatter(RegExp(WayConstant.regExpDecimal))
+        ]; //只允许输入小数
       case InputTextType.letter:
-        return [WhitelistingTextInputFormatter(RegExp(WayConstant.regExpLetter))]; //只允许输入字母
+        return [
+          WhitelistingTextInputFormatter(RegExp(WayConstant.regExpLetter))
+        ]; //只允许输入字母
       case InputTextType.chinese:
-        return [WhitelistingTextInputFormatter(RegExp(WayConstant.regExpChinese))]; //只允许输入汉字
+        return [
+          WhitelistingTextInputFormatter(RegExp(WayConstant.regExpChinese))
+        ]; //只允许输入汉字
       case InputTextType.email:
-        return [WhitelistingTextInputFormatter(RegExp(WayConstant.regExpEmail))]; //只允许输入邮箱
+        return [
+          WhitelistingTextInputFormatter(RegExp(WayConstant.regExpEmail))
+        ]; //只允许输入邮箱
       case InputTextType.phone:
-        return [WhitelistingTextInputFormatter(RegExp(WayConstant.regExpPhone))]; //只允许输入国内电话号
+        return [
+          WhitelistingTextInputFormatter(RegExp(WayConstant.regExpPhone))
+        ]; //只允许输入国内电话号
       case InputTextType.mobilePhone:
-        return [WhitelistingTextInputFormatter(RegExp(WayConstant.regExpMobilePhone))]; //只允许输入国内手机号
+        return [
+          WhitelistingTextInputFormatter(RegExp(WayConstant.regExpMobilePhone))
+        ]; //只允许输入国内手机号
       case InputTextType.idCard:
-        return [WhitelistingTextInputFormatter(RegExp(WayConstant.regExpIdCard))]; //只允许输入身份证
+        return [
+          WhitelistingTextInputFormatter(RegExp(WayConstant.regExpIdCard))
+        ]; //只允许输入身份证
       case InputTextType.ip:
-        return [WhitelistingTextInputFormatter(RegExp(WayConstant.regExpIP))]; //只允许输入IP
+        return [
+          WhitelistingTextInputFormatter(RegExp(WayConstant.regExpIP))
+        ]; //只允许输入IP
       case InputTextType.positive:
-        return [WhitelistingTextInputFormatter(RegExp(WayConstant.regExpPositive))]; //只允许输入正数
+        return [
+          WhitelistingTextInputFormatter(RegExp(WayConstant.regExpPositive))
+        ]; //只允许输入正数
       case InputTextType.negative:
-        return [WhitelistingTextInputFormatter(RegExp(WayConstant.regExpNegative))]; //只允许输入负数
+        return [
+          WhitelistingTextInputFormatter(RegExp(WayConstant.regExpNegative))
+        ]; //只允许输入负数
       case InputTextType.text:
         return inputFormatter;
       default:

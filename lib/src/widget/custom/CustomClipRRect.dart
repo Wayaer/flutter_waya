@@ -24,7 +24,8 @@ class CustomClipRRect extends StatelessWidget {
     this.width,
     this.height,
     this.child,
-  })  : this.clipBehavior = clipBehavior ?? Clip.antiAlias,
+  })
+      : this.clipBehavior = clipBehavior ?? Clip.antiAlias,
         this.borderRadius = borderRadius ?? BorderRadius.circular(5),
         this.padding = padding ?? EdgeInsets.all(Tools.getWidth(1)),
         this.decoration = decoration ?? WayStyles.containerRadiusWidth(),

@@ -89,7 +89,8 @@ class CustomNestedScrollView extends StatefulWidget {
         this.primary = primary ?? true,
         this.brightness = brightness ?? Brightness.light,
         this.containsStatusBar = containsStatusBar ?? true,
-        this.stretchModes = stretchModes ?? const <StretchMode>[StretchMode.zoomBackground],
+        this.stretchModes = stretchModes ??
+            const <StretchMode>[StretchMode.zoomBackground],
         this.collapseMode = collapseMode ?? CollapseMode.parallax,
         super(key: key);
 
@@ -120,7 +121,8 @@ class CustomNestedScrollViewState extends State<CustomNestedScrollView> {
           .size
           .height;
       expandedHeight = widget.containsStatusBar
-          ? containerHeight + preferredSizeHeight - MediaQueryTools.getStatusBarHeight()
+          ? containerHeight + preferredSizeHeight -
+          MediaQueryTools.getStatusBarHeight()
           : containerHeight + preferredSizeHeight;
       setState(() {
         showNestedScrollView = true;
@@ -139,7 +141,9 @@ class CustomNestedScrollViewState extends State<CustomNestedScrollView> {
         sliverWidget.add(value);
       }).toList();
     }
-    return !showNestedScrollView ? calculateFlexibleSpaceHeight() : NestedScrollView(
+    return !showNestedScrollView
+        ? calculateFlexibleSpaceHeight()
+        : NestedScrollView(
       scrollDirection: widget.scrollDirection ?? Axis.vertical,
       reverse: widget.reverse,
       physics: widget.physics,

@@ -11,14 +11,13 @@ class CanvasPoint extends CustomPainter {
   final Color unSelectColor;
   final List<Point> points;
 
-  CanvasPoint(
-      {@required this.ringWidth,
-      @required this.ringRadius,
-      @required this.showUnSelectRing,
-      @required this.circleRadius,
-      @required this.selectColor,
-      @required this.unSelectColor,
-      @required this.points});
+  CanvasPoint({@required this.ringWidth,
+    @required this.ringRadius,
+    @required this.showUnSelectRing,
+    @required this.circleRadius,
+    @required this.selectColor,
+    @required this.unSelectColor,
+    @required this.points});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -42,7 +41,9 @@ class CanvasPoint extends CustomPainter {
       ringPaint.color = color;
       canvas.drawCircle(offSet, this.circleRadius, circlePaint);
       if (this.showUnSelectRing || point.isSelect) {
-        canvas.drawArc(Rect.fromCircle(center: offSet, radius: this.ringRadius), 0, 360, false, ringPaint);
+        canvas.drawArc(
+            Rect.fromCircle(center: offSet, radius: this.ringRadius), 0, 360,
+            false, ringPaint);
       }
     }
   }

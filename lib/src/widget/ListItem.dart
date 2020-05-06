@@ -3,8 +3,8 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/src/constant/WayIcon.dart';
 import 'package:flutter_waya/src/constant/WayStyles.dart';
-import 'package:flutter_waya/src/widget/custom/CustomFlex.dart';
 import 'package:flutter_waya/src/tools/Tools.dart';
+import 'package:flutter_waya/src/widget/custom/CustomFlex.dart';
 
 class ListItem extends StatelessWidget {
   final GestureTapCallback onTap;
@@ -38,36 +38,35 @@ class ListItem extends StatelessWidget {
   final bool arrow;
   final bool enabled;
 
-  ListItem(
-      {Key key,
-      double arrowSize,
-      Color arrowColor,
-      bool isThreeLine,
-      bool arrow,
-      bool enabled,
-      this.onTap,
-      this.onDoubleTap,
-      this.onLongPress,
-      this.title,
-      this.height,
-      this.inkWell,
-      this.padding,
-      this.margin,
-      this.decoration,
-      this.child,
-      this.backgroundColor,
-      this.titleText,
-      this.titleStyle,
-      this.underlineColor,
-      this.leading,
-      this.subtitle,
-      this.dense,
-      this.contentPadding,
-      this.selected,
-      this.arrowIcon,
-      this.arrowMargin,
-      this.prefix,
-      this.prefixMargin})
+  ListItem({Key key,
+    double arrowSize,
+    Color arrowColor,
+    bool isThreeLine,
+    bool arrow,
+    bool enabled,
+    this.onTap,
+    this.onDoubleTap,
+    this.onLongPress,
+    this.title,
+    this.height,
+    this.inkWell,
+    this.padding,
+    this.margin,
+    this.decoration,
+    this.child,
+    this.backgroundColor,
+    this.titleText,
+    this.titleStyle,
+    this.underlineColor,
+    this.leading,
+    this.subtitle,
+    this.dense,
+    this.contentPadding,
+    this.selected,
+    this.arrowIcon,
+    this.arrowMargin,
+    this.prefix,
+    this.prefixMargin})
       : this.arrowSize = arrowSize ?? Tools.getWidth(16),
         this.arrowColor = arrowColor ?? getColors(black),
         this.isThreeLine = isThreeLine ?? false,
@@ -89,21 +88,22 @@ class ListItem extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
 //      crossAxisAlignment: CrossAxisAlignment.center,
       decoration:
-          decoration ?? WayStyles.containerUnderlineBackground(underlineColor: underlineColor, color: backgroundColor),
+      decoration ?? WayStyles.containerUnderlineBackground(
+          underlineColor: underlineColor, color: backgroundColor),
       children: <Widget>[
         Container(margin: prefixMargin, child: prefix),
         Expanded(
             child: ListTile(
-          contentPadding: contentPadding,
-          title: title ?? Text(titleText, style: titleStyle),
-          subtitle: subtitle,
-          leading: leading,
-          trailing: child,
-          isThreeLine: isThreeLine,
-          dense: dense,
-          enabled: false,
-          selected: false, //展示是否默认显示选中
-        )),
+              contentPadding: contentPadding,
+              title: title ?? Text(titleText, style: titleStyle),
+              subtitle: subtitle,
+              leading: leading,
+              trailing: child,
+              isThreeLine: isThreeLine,
+              dense: dense,
+              enabled: false,
+              selected: false, //展示是否默认显示选中
+            )),
         Offstage(
           offstage: !arrow,
           child: Container(

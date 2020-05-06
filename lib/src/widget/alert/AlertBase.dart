@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
-import 'package:flutter_waya/waya.dart';
 
 class AlertBase extends StatelessWidget {
   final Widget child;
@@ -9,7 +9,8 @@ class AlertBase extends StatelessWidget {
   final Color backgroundColor;
   final AlertPosition position;
 
-  const AlertBase({Key key, this.child, this.padding, this.onTap, this.backgroundColor, this.position})
+  const AlertBase(
+      {Key key, this.child, this.padding, this.onTap, this.backgroundColor, this.position})
       : super(key: key);
 
   @override
@@ -42,7 +43,8 @@ class AlertBase extends StatelessWidget {
   }
 
   MainAxisAlignment mainAxisAlignment() {
-    if (position == AlertPosition.top || position == AlertPosition.topLeft || position == AlertPosition.topRight) {
+    if (position == AlertPosition.top || position == AlertPosition.topLeft ||
+        position == AlertPosition.topRight) {
       return MainAxisAlignment.start;
     } else if (position == AlertPosition.bottom ||
         position == AlertPosition.bottomLeft ||

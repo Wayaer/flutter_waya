@@ -10,6 +10,7 @@ class ProviderConsumer<T extends ChangeNotifier> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(create: create, child: Consumer<T>(builder: builder));
+    return ChangeNotifierProvider(
+        create: create, child: Consumer<T>(builder: builder));
   }
 }

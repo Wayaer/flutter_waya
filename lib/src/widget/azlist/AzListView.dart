@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/src/tools/Tools.dart';
+import 'package:flutter_waya/src/widget/ListBuilder.dart';
 import 'package:flutter_waya/src/widget/azlist/AzCommon.dart';
 import 'package:flutter_waya/src/widget/azlist/AzIndexBar.dart';
 import 'package:flutter_waya/src/widget/azlist/Suspension.dart';
-import 'package:flutter_waya/src/widget/ListBuilder.dart';
-import 'package:flutter_waya/waya.dart';
 
 
 /// Called to build children for the listview.
 typedef Widget ItemWidgetBuilder(BuildContext context, SuspensionModel model);
 
 /// Called to build IndexBar.
-typedef Widget IndexBarBuilder(BuildContext context, List<String> tags, IndexBarTouchCallback onTouch);
+typedef Widget IndexBarBuilder(BuildContext context, List<String> tags,
+    IndexBarTouchCallback onTouch);
 
 /// Called to build index hint.
 typedef Widget IndexHintBuilder(BuildContext context, String hint);
@@ -122,7 +123,8 @@ class AzListViewState extends State<AzListView> {
       isShowIndexBarHint = model.isTouchDown;
       int offset = suspensionSectionMap[model.tag];
       if (offset != null) {
-        scrollController.jumpTo(offset.toDouble().clamp(.0, scrollController.position.maxScrollExtent));
+        scrollController.jumpTo(offset.toDouble().clamp(
+            .0, scrollController.position.maxScrollExtent));
       }
     });
   }
@@ -166,7 +168,8 @@ class AzListViewState extends State<AzListView> {
             itemCount: cityList.length,
             itemBuilder: (BuildContext context, int index) {
               if (index == 0 && cityList[index] is Header) {
-                return SizedBox(height: widget.header.height.toDouble(), child: widget.header.builder(context));
+                return SizedBox(height: widget.header.height.toDouble(),
+                    child: widget.header.builder(context));
               }
               return widget.itemBuilder(context, cityList[index]);
             }),
@@ -176,7 +179,8 @@ class AzListViewState extends State<AzListView> {
         itemHeight: widget.itemHeight ?? Tools.getHeight(40, true),
         onSusTagChanged: widget.onSusTagChanged,
         header: widget.header,
-        onSusSectionInited: (Map<String, int> map) => suspensionSectionMap = map,
+        onSusSectionInited: (Map<String, int> map) =>
+        suspensionSectionMap = map,
       )
     ];
 
@@ -203,7 +207,8 @@ class AzListViewState extends State<AzListView> {
       indexHint = widget.indexHintBuilder(context, '$indexBarHint');
     } else {
       indexHint = Container(
-        decoration: BoxDecoration(color: getColors(black30), borderRadius: BorderRadius.circular(10)),
+        decoration: BoxDecoration(
+            color: getColors(black30), borderRadius: BorderRadius.circular(10)),
         alignment: Alignment.center,
         width: Tools.getWidth(60),
         height: Tools.getWidth(60),

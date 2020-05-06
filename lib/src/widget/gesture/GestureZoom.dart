@@ -27,7 +27,8 @@ class GestureZoom extends StatefulWidget {
   }
 }
 
-class _GestureZoomState extends State<GestureZoom> with TickerProviderStateMixin {
+class _GestureZoomState extends State<GestureZoom>
+    with TickerProviderStateMixin {
   // 缩放动画控制器
   AnimationController _scaleAnimController;
 
@@ -142,8 +143,10 @@ class _GestureZoomState extends State<GestureZoom> with TickerProviderStateMixin
     double scaleOffsetX = context.size.width * (_scale - 1.0) / 2;
     double scaleOffsetY = context.size.height * (_scale - 1.0) / 2;
     // 将缩放前的触摸点映射到缩放后的内容上
-    double scalePointDX = (details.localFocalPoint.dx + scaleOffsetX - _offset.dx) / _scale;
-    double scalePointDY = (details.localFocalPoint.dy + scaleOffsetY - _offset.dy) / _scale;
+    double scalePointDX = (details.localFocalPoint.dx + scaleOffsetX -
+        _offset.dx) / _scale;
+    double scalePointDY = (details.localFocalPoint.dy + scaleOffsetY -
+        _offset.dy) / _scale;
     // 计算偏移，使缩放中心在屏幕上的位置保持不变
     _offset += Offset(
       (context.size.width / 2 - scalePointDX) * scaleIncrement,
@@ -166,17 +169,21 @@ class _GestureZoomState extends State<GestureZoom> with TickerProviderStateMixin
 
     // 计算本次拖动增量
     double offsetXIncrement =
-        (details.localFocalPoint.dx - _latestScaleUpdateDetails.localFocalPoint.dx) * _scale;
+        (details.localFocalPoint.dx -
+            _latestScaleUpdateDetails.localFocalPoint.dx) * _scale;
     double offsetYIncrement =
-        (details.localFocalPoint.dy - _latestScaleUpdateDetails.localFocalPoint.dy) * _scale;
+        (details.localFocalPoint.dy -
+            _latestScaleUpdateDetails.localFocalPoint.dy) * _scale;
     // 处理 X 轴边界
     double scaleOffsetX = context.size.width * (_scale - 1.0) / 2;
     if (scaleOffsetX <= 0) {
       offsetXIncrement = 0;
     } else if (_offset.dx > scaleOffsetX) {
-      offsetXIncrement *= (_maxDragOver - (_offset.dx - scaleOffsetX)) / _maxDragOver;
+      offsetXIncrement *=
+          (_maxDragOver - (_offset.dx - scaleOffsetX)) / _maxDragOver;
     } else if (_offset.dx < -scaleOffsetX) {
-      offsetXIncrement *= (_maxDragOver - (-scaleOffsetX - _offset.dx)) / _maxDragOver;
+      offsetXIncrement *=
+          (_maxDragOver - (-scaleOffsetX - _offset.dx)) / _maxDragOver;
     }
     // 处理 Y 轴边界
     double scaleOffsetY = (context.size.height * _scale - MediaQuery
@@ -186,9 +193,11 @@ class _GestureZoomState extends State<GestureZoom> with TickerProviderStateMixin
     if (scaleOffsetY <= 0) {
       offsetYIncrement = 0;
     } else if (_offset.dy > scaleOffsetY) {
-      offsetYIncrement *= (_maxDragOver - (_offset.dy - scaleOffsetY)) / _maxDragOver;
+      offsetYIncrement *=
+          (_maxDragOver - (_offset.dy - scaleOffsetY)) / _maxDragOver;
     } else if (_offset.dy < -scaleOffsetY) {
-      offsetYIncrement *= (_maxDragOver - (-scaleOffsetY - _offset.dy)) / _maxDragOver;
+      offsetYIncrement *=
+          (_maxDragOver - (-scaleOffsetY - _offset.dy)) / _maxDragOver;
     }
 
     _offset += Offset(offsetXIncrement, offsetYIncrement);
@@ -240,8 +249,10 @@ class _GestureZoomState extends State<GestureZoom> with TickerProviderStateMixin
         _animationOffset(Offset(targetOffsetX, targetOffsetY));
       } else {
         // 处理 X 轴边界
-        double duration = (widget.duration.inSeconds + widget.duration.inMilliseconds / 1000);
-        Offset targetOffset = _offset + details.velocity.pixelsPerSecond * duration;
+        double duration = (widget.duration.inSeconds +
+            widget.duration.inMilliseconds / 1000);
+        Offset targetOffset = _offset +
+            details.velocity.pixelsPerSecond * duration;
         targetOffsetX = targetOffset.dx;
         if (targetOffsetX > scaleOffsetX) {
           targetOffsetX = scaleOffsetX;
@@ -268,8 +279,10 @@ class _GestureZoomState extends State<GestureZoom> with TickerProviderStateMixin
   /// 执行动画缩放内容到 [targetScale]
   _animationScale(double targetScale) {
     _scaleAnimController?.dispose();
-    _scaleAnimController = AnimationController(vsync: this, duration: widget.duration);
-    Animation anim = Tween<double>(begin: _scale, end: targetScale).animate(_scaleAnimController);
+    _scaleAnimController =
+        AnimationController(vsync: this, duration: widget.duration);
+    Animation anim = Tween<double>(begin: _scale, end: targetScale).animate(
+        _scaleAnimController);
     anim.addListener(() {
       setState(() {
         _scaling(ScaleUpdateDetails(
@@ -292,8 +305,10 @@ class _GestureZoomState extends State<GestureZoom> with TickerProviderStateMixin
   /// 执行动画偏移内容到 [targetOffset]
   _animationOffset(Offset targetOffset) {
     _offsetAnimController?.dispose();
-    _offsetAnimController = AnimationController(vsync: this, duration: widget.duration);
-    Animation anim = _offsetAnimController.drive(Tween<Offset>(begin: _offset, end: targetOffset));
+    _offsetAnimController =
+        AnimationController(vsync: this, duration: widget.duration);
+    Animation anim = _offsetAnimController.drive(
+        Tween<Offset>(begin: _offset, end: targetOffset));
     anim.addListener(() {
       setState(() {
         _offset = anim.value;

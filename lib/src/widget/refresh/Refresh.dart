@@ -1,8 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
-import 'package:flutter_waya/src/tools/Tools.dart';
 import 'package:flutter_waya/src/tools/LogTools.dart';
+import 'package:flutter_waya/src/tools/Tools.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class Refresh extends StatelessWidget {
@@ -52,7 +52,8 @@ class Refresh extends StatelessWidget {
     this.physics,
     this.scrollDirection,
     this.scrollController,
-  })  : this.enablePullDown = enablePullDown ?? false,
+  })
+      : this.enablePullDown = enablePullDown ?? false,
         this.enablePullUp = enablePullUp ?? false,
         this.enableTwoLevel = enableTwoLevel ?? false,
         this.refreshController = RefreshController(initialRefresh: false),
@@ -106,7 +107,8 @@ class Refresh extends StatelessWidget {
   Widget footerText(String text) {
     return Text(
       text,
-      style: footerTextStyle ?? TextStyle(fontSize: 13, color: getColors(black70)),
+      style: footerTextStyle ??
+          TextStyle(fontSize: 13, color: getColors(black70)),
     );
   }
 

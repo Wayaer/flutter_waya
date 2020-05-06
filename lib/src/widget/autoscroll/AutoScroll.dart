@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/src/widget/autoscroll/AutoScrollItem.dart';
-import 'package:flutter_waya/waya.dart';
 
 typedef Widget WidgetMaker<T>(BuildContext context, T item);
 
@@ -66,7 +66,8 @@ class AutoScroll extends StatefulWidget {
         this.singleLine = singleLine ?? true,
         this.textColor = textColor ?? getColors(black),
         this.selectTextColor = selectTextColor ?? getColors(black),
-        this.autoScrollAnimation = autoScrollAnimation ?? AutoScrollAnimation.b2t;
+        this.autoScrollAnimation = autoScrollAnimation ??
+            AutoScrollAnimation.b2t;
 
   @override
   State<StatefulWidget> createState() {
@@ -157,24 +158,27 @@ class AutoScrollState extends State<AutoScroll> {
             .of(context)
             .size
             .width;
-        firstItem.animateDistance = width;
+        firstItem.setAnimateDistance = width;
         if (secondItem != null) {
-          secondItem.animateDistance = width;
+          secondItem.setAnimateDistance = width;
         }
       } else {
         double height = MediaQuery
             .of(context)
             .size
             .height;
-        firstItem.animateDistance = height;
+        firstItem.setAnimateDistance = height;
         if (secondItem != null) {
-          secondItem.animateDistance = height;
+          secondItem.setAnimateDistance = height;
         }
       }
     }
     List<AutoScrollItem> items = secondItem == null
-        ? <AutoScrollItem>[firstItem..textColor = widget.selectTextColor]
-        : <AutoScrollItem>[secondItem..textColor = widget.selectTextColor, firstItem..textColor = widget.textColor];
+        ? <AutoScrollItem>[firstItem..setTextColor = widget.selectTextColor]
+        : <AutoScrollItem>[
+      secondItem..setTextColor = widget.selectTextColor,
+      firstItem..setTextColor = widget.textColor
+    ];
 
     return ClipRect(
         child: widget.center

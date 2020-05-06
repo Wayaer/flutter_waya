@@ -1,10 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
-import 'package:flutter_waya/src/tools/Tools.dart';
 import 'package:flutter_waya/src/tools/MediaQueryTools.dart';
+import 'package:flutter_waya/src/tools/Tools.dart';
 import 'package:flutter_waya/src/widget/refresh/Refreshed.dart';
-import 'package:flutter_waya/waya.dart';
 
 class BaseScaffold extends StatelessWidget {
   final EdgeInsetsGeometry padding;
@@ -79,7 +79,8 @@ class BaseScaffold extends StatelessWidget {
         this.enablePullDown = enablePullDown ?? false,
         this.primary = primary ?? true,
         this.extendBody = extendBody ?? false,
-        this.drawerDragStartBehavior = drawerDragStartBehavior ?? DragStartBehavior.start,
+        this.drawerDragStartBehavior = drawerDragStartBehavior ??
+            DragStartBehavior.start,
         super(key: key);
 
   @override
@@ -103,7 +104,9 @@ class BaseScaffold extends StatelessWidget {
           : (appBar == null
           ? null
           : PreferredSize(
-          child: appBar, preferredSize: Size.fromHeight(MediaQueryTools.getStatusBarHeight() + appBarHeight))),
+          child: appBar,
+          preferredSize: Size.fromHeight(
+              MediaQueryTools.getStatusBarHeight() + appBarHeight))),
       bottomNavigationBar: bottomNavigationBar,
       body: bodyWidget(context),
     );
@@ -129,8 +132,11 @@ class BaseScaffold extends StatelessWidget {
   Widget container() {
     return Container(
       color: backgroundColor,
-      margin: isolationBody ? EdgeInsets.only(top: Tools.getHeight(10)) : EdgeInsets.zero,
-      padding: paddingStatusBar ? EdgeInsets.only(top: MediaQueryTools.getStatusBarHeight()) : padding,
+      margin: isolationBody
+          ? EdgeInsets.only(top: Tools.getHeight(10))
+          : EdgeInsets.zero,
+      padding: paddingStatusBar ? EdgeInsets.only(
+          top: MediaQueryTools.getStatusBarHeight()) : padding,
       width: double.infinity,
       height: double.infinity,
       child: isScroll ? SingleChildScrollView(child: body) : body,

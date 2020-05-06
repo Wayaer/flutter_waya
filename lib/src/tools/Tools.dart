@@ -9,10 +9,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/src/constant/WayEnum.dart';
 import 'package:flutter_waya/src/tools/MediaQueryTools.dart';
-import 'package:flutter_waya/waya.dart';
 
 isDebug() {
   return !kReleaseMode;
@@ -24,10 +24,13 @@ class Tools {
   static double _designHeight = 667;
 
   // 截屏
-  static Future<ByteData> screenshots(GlobalKey globalKey, {ImageByteFormat format}) async {
-    RenderRepaintBoundary boundary = globalKey.currentContext.findRenderObject();
+  static Future<ByteData> screenshots(GlobalKey globalKey,
+      {ImageByteFormat format}) async {
+    RenderRepaintBoundary boundary = globalKey.currentContext
+        .findRenderObject();
     var image = await boundary.toImage();
-    ByteData byteData = await image.toByteData(format: format ?? ImageByteFormat.rawRgba);
+    ByteData byteData = await image.toByteData(
+        format: format ?? ImageByteFormat.rawRgba);
 //    Uint8List uint8list = byteData.buffer.asUint8List();
     return byteData;
   }

@@ -18,7 +18,8 @@ class LabeledRadio extends StatelessWidget {
     this.activeColor,
     this.value,
     this.onChanged,
-  })  : this.padding = padding ?? EdgeInsets.zero,
+  })
+      : this.padding = padding ?? EdgeInsets.zero,
         this.titlePadding = titlePadding ?? EdgeInsets.zero,
         super(key: key);
 

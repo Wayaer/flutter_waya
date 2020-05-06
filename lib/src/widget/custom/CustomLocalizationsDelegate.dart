@@ -1,5 +1,5 @@
-import 'package:flutter/foundation.dart' show SynchronousFuture;
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart' show SynchronousFuture;
 
 class CustomLocalizationsDelegate
     extends LocalizationsDelegate<CupertinoLocalizations> {

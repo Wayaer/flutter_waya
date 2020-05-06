@@ -59,7 +59,8 @@ class StorageTools {
   }
 
   /// get obj list.
-  static List<T> getObjList<T>(String key, T f(Map v), {List<T> defValue = const []}) {
+  static List<T> getObjList<T>(String key, T f(Map v),
+      {List<T> defValue = const []}) {
     List<Map> dataList = getObjectList(key);
     List<T> list = dataList?.map((value) {
       return f(value);
@@ -126,7 +127,8 @@ class StorageTools {
   }
 
   /// get string list.
-  static List<String> getStringList(String key, {List<String> defValue = const []}) {
+  static List<String> getStringList(String key,
+      {List<String> defValue = const []}) {
     if (_preferences == null) return defValue;
     return _preferences.getStringList(key) ?? defValue;
   }

@@ -115,7 +115,8 @@ class TouchDetector {
     this.onScaleEnd,
     this.behavior,
     this.dragStartBehavior = DragStartBehavior.start,
-  })  : this.containedInkWell = containedInkWell ?? true,
+  })
+      : this.containedInkWell = containedInkWell ?? true,
         this.highlightShape = highlightShape ?? BoxShape.rectangle,
         this.enableFeedback = enableFeedback ?? true,
         this.excludeFromSemantics = excludeFromSemantics ?? false,

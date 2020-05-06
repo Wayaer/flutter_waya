@@ -26,7 +26,8 @@ class CanvasLine extends CustomPainter {
 
     for (int i = 0; i < length - 1; i++) {
       canvas.drawLine(
-          Offset(pathPoints[i].x, pathPoints[i].y), Offset(pathPoints[i + 1].x, pathPoints[i + 1].y), linePaint);
+          Offset(pathPoints[i].x, pathPoints[i].y),
+          Offset(pathPoints[i + 1].x, pathPoints[i + 1].y), linePaint);
     }
 
     double endX = curPoint.x;
@@ -42,7 +43,8 @@ class CanvasLine extends CustomPainter {
       endY = size.height;
     }
 
-    canvas.drawLine(Offset(pathPoints[length - 1].x, pathPoints[length - 1].y), Offset(endX, endY), linePaint);
+    canvas.drawLine(Offset(pathPoints[length - 1].x, pathPoints[length - 1].y),
+        Offset(endX, endY), linePaint);
   }
 
   @override

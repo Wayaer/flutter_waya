@@ -51,6 +51,7 @@ class CustomGridView extends StatelessWidget {
       childAspectRatio: childAspectRatio,
       children: children,
     )
-        : noData == null ? CommonWidget.notDataWidget(margin: EdgeInsets.all(Tools.getWidth(10))) : noData;
+        : noData == null ? CommonWidget.notDataWidget(
+        margin: EdgeInsets.all(Tools.getWidth(10))) : noData;
   }
 }

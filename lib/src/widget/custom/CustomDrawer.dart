@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/waya.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 
 class CustomDrawer extends StatefulWidget {
   final Color backgroundColor;
@@ -15,7 +15,8 @@ class CustomDrawer extends StatefulWidget {
     @required this.child,
     this.backgroundColor,
     this.callback,
-  })  : this.width = width ?? Tools.getWidth() * 0.7,
+  })
+      : this.width = width ?? Tools.getWidth() * 0.7,
         this.elevation = elevation ?? 16.0,
         super(key: key);
 

@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
 
@@ -88,13 +86,18 @@ class CustomFlex extends StatelessWidget {
         this.isScroll = isScroll ?? false,
         this.mainAxisSize = mainAxisSize ?? MainAxisSize.max,
         this.mainAxisAlignment = mainAxisAlignment ?? MainAxisAlignment.start,
-        this.crossAxisAlignment = crossAxisAlignment ?? CrossAxisAlignment.center,
+        this.crossAxisAlignment = crossAxisAlignment ??
+            CrossAxisAlignment.center,
         this.verticalDirection = verticalDirection ?? VerticalDirection.down,
         this.direction = direction ?? Axis.vertical,
         this.inkWell = inkWell ?? false,
         this.onTap = (enabled == null ? true : enabled) ? onTap : null,
-        this.onLongPress = (enabled == null ? true : enabled) ? onLongPress : null,
-        this.onDoubleTap = (enabled == null ? true : enabled) ? onDoubleTap : null,
+        this.onLongPress = (enabled == null ? true : enabled)
+            ? onLongPress
+            : null,
+        this.onDoubleTap = (enabled == null ? true : enabled)
+            ? onDoubleTap
+            : null,
         this.behavior = behavior ?? HitTestBehavior.opaque,
         super(key: key);
 

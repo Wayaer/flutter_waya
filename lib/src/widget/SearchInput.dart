@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/src/constant/WayIcon.dart';
 import 'package:flutter_waya/src/tools/Tools.dart';
-import 'package:flutter_waya/waya.dart';
 
 class SearchInput extends StatelessWidget {
   final EdgeInsetsGeometry margin;
@@ -70,9 +70,11 @@ class SearchInput extends StatelessWidget {
     this.fillColor,
     this.height,
     this.width,
-  })  : this.icon = icon ?? WayIcon.search,
+  })
+      : this.icon = icon ?? WayIcon.search,
         this.iconSize = iconSize ?? Tools.getWidth(14),
-        this.contentPadding = contentPadding ?? EdgeInsets.all(Tools.getWidth(6)),
+        this.contentPadding = contentPadding ??
+            EdgeInsets.all(Tools.getWidth(6)),
         super(key: key);
 
   @override
@@ -94,7 +96,8 @@ class SearchInput extends StatelessWidget {
       isDense: true,
       fillColor: fillColor,
       filled: true,
-      focusedBorder: inputBorder(focusedBorderColor ?? enabledBorderColor ?? getColors(blue)),
+      focusedBorder: inputBorder(
+          focusedBorderColor ?? enabledBorderColor ?? getColors(blue)),
       enabledBorder: inputBorder(enabledBorderColor ?? getColors(white50)),
       inputStyle: inputStyle,
       contentPadding: contentPadding,
@@ -125,11 +128,11 @@ class SearchInput extends StatelessWidget {
       return searchText == null
           ? null
           : CustomButton(
-              text: searchText,
-              onTap: searchTap,
-              padding: EdgeInsets.symmetric(horizontal: Tools.getWidth(4)),
-              textStyle: searchStyle ?? TextStyle(color: getColors(white)),
-            );
+        text: searchText,
+        onTap: searchTap,
+        padding: EdgeInsets.symmetric(horizontal: Tools.getWidth(4)),
+        textStyle: searchStyle ?? TextStyle(color: getColors(white)),
+      );
     } else {
       return search;
     }
