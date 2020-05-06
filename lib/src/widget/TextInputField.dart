@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_waya/flutter_waya.dart';
@@ -11,70 +10,107 @@ class TextInputField extends StatelessWidget {
   final TextEditingController controller;
   final ValueChanged<String> onChanged;
   final List<TextInputFormatter> inputFormatter;
-  final int maxLength; //最大长度
+
+  ///最大长度
+  final int maxLength;
   final TextDirection textDirection;
   final int maxLines;
-  final TextAlign textAlign; // 对齐方式
 
+  /// 对齐方式
+  final TextAlign textAlign;
   final int minLines;
   final TextInputType keyboardType;
   final InputDecoration inputDecoration;
-  final Color cursorColor; //光标颜色
+
+  ///光标颜色
+  final Color cursorColor;
   final InputTextType inputTextType;
 
-  //点击事件
+  ///点击事件
   final GestureTapCallback onTap;
   final VoidCallback onEditingComplete;
   final ValueChanged<String> onSubmitted;
 
-  //显示在输入框右下方
+  ///显示在输入框右下方
   final String counterText;
   final TextStyle counterStyle;
   final Widget counter;
 
-  final bool maxLengthEnforced; // //是否自动获取焦点  跳转到该页面后 光标自动显示到该输入框  键盘弹起
-  final bool autoFocus; // //是否自动获取焦点  跳转到该页面后 光标自动显示到该输入框  键盘弹起
-  final bool obscureText; //隐藏文字
+  final bool maxLengthEnforced;
+
+  /// ///是否自动获取焦点  跳转到该页面后 光标自动显示到该输入框  键盘弹起
+  final bool autoFocus;
+
+  /// ///是否自动获取焦点  跳转到该页面后 光标自动显示到该输入框  键盘弹起
+  final bool obscureText;
+
+  ///隐藏文字
   final Widget header;
   final Widget footer;
   final FocusNode focusNode;
   final TextStyle inputStyle;
 
-  //输入框左边下划线外面
+  ///输入框左边下划线外面
   final Widget icon;
 
-  //输入框左边
-  final Widget prefixIcon; //前缀
+  ///输入框左边
+  final Widget prefixIcon;
+
+  ///前缀
   final String prefixText;
   final Widget prefix;
   final TextStyle prefixStyle;
 
-  //输入框右边
-  final Widget suffixIcon; //后缀
+  ///输入框右边
+  final Widget suffixIcon;
+
+  ///后缀
   final String suffixText;
   final Widget suffix;
   final TextStyle suffixStyle;
 
-  //显示在输入框左下角的文字提示
+  ///显示在输入框左下角的文字提示
   final TextStyle errorStyle;
   final String errorText;
   final int errorMaxLines;
 
-  //显示在输入框下划线下面的提示语，提示使用
+  ///显示在输入框下划线下面的提示语，提示使用
   final String helperText;
   final TextStyle helperStyle;
-  final String labelText; //显示在输入框内的提示语，一旦输入框获取焦点就字体缩小并上移到输入上方，作为提示使用
+  final String labelText;
+
+  ///显示在输入框内的提示语，一旦输入框获取焦点就字体缩小并上移到输入上方，作为提示使用
   final TextStyle labelStyle;
-  final bool labelFloating; //默认为true，表示labelText是否上浮，true上浮，false表示获取焦点后labelText消失
-  final bool isDense; //是否开启紧密
-  final bool filled; //输入框颜色
-  final bool enabled; //开始输入
-  final InputBorder disabledBorder; //不能输入状态框
-  final InputBorder enabledBorder; //开启输入状态框
-  final InputBorder errorBorder; //失去焦点时，error时下划线显示的边框样式，不设置则使用默认的的下划线
-  final InputBorder focusedErrorBorder; //获取焦点时，error时下划线显示的边框样式，不设置则使用默认的的下划线
-  final InputBorder focusedBorder; //获取焦点输入框
-  final InputBorder defaultBorder; //以上都未设置时 默认输入框
+  final bool labelFloating;
+
+  ///默认为true，表示labelText是否上浮，true上浮，false表示获取焦点后labelText消失
+  final bool isDense;
+
+  ///是否开启紧密
+  final bool filled;
+
+  ///输入框颜色
+  final bool enabled;
+
+  ///开始输入
+  final InputBorder disabledBorder;
+
+  ///不能输入状态框
+  final InputBorder enabledBorder;
+
+  ///开启输入状态框
+  final InputBorder errorBorder;
+
+  ///失去焦点时，error时下划线显示的边框样式，不设置则使用默认的的下划线
+  final InputBorder focusedErrorBorder;
+
+  ///获取焦点时，error时下划线显示的边框样式，不设置则使用默认的的下划线
+  final InputBorder focusedBorder;
+
+  ///获取焦点输入框
+  final InputBorder defaultBorder;
+
+  ///以上都未设置时 默认输入框
 
   final Color fillColor;
   final TextStyle hintStyle;
@@ -86,17 +122,17 @@ class TextInputField extends StatelessWidget {
   final Radius cursorRadius;
   final Brightness keyboardAppearance;
 
-  //长按输入的文字时，true显示系统的粘贴板  false不显示
+  ///长按输入的文字时，true显示系统的粘贴板  false不显示
   final bool enableInteractiveSelection;
 
-// 控制键盘大小写切换的   试过了 但是好像没有效果？？
-// textCapitalization: TextCapitalization.characters,  // 输入时键盘的英文都是大写
-// textCapitalization: TextCapitalization.none,  //  键盘英文默认显示小写
-// textCapitalization: TextCapitalization.sentences, // 在输入每个句子的第一个字母时，键盘大写形式，输入后续字母时键盘小写形式
-// textCapitalization: TextCapitalization.words,// 在输入每个单词的第一个字母时，键盘大写形式，输入其他字母时键盘小写形式
+  /// 控制键盘大小写切换的   试过了 但是好像没有效果？？
+  /// textCapitalization: TextCapitalization.characters,  /// 输入时键盘的英文都是大写
+  /// textCapitalization: TextCapitalization.none,  ///  键盘英文默认显示小写
+  /// textCapitalization: TextCapitalization.sentences, /// 在输入每个句子的第一个字母时，键盘大写形式，输入后续字母时键盘小写形式
+  /// textCapitalization: TextCapitalization.words,/// 在输入每个单词的第一个字母时，键盘大写形式，输入其他字母时键盘小写形式
   final TextCapitalization textCapitalization;
 
-// 自定义数字显示   指定maxLength后 右下角会出现字数，flutter有默认实现  可以通过这个自定义
+  /// 自定义数字显示   指定maxLength后 右下角会出现字数，flutter有默认实现  可以通过这个自定义
   final InputCounterWidgetBuilder buildCounter;
 
   TextInputField({
@@ -166,87 +202,96 @@ class TextInputField extends StatelessWidget {
     this.onEditingComplete,
   })
       : this.obscureText = obscureText ?? false,
-  //键盘大小写的显示 Only supports text keyboards  但是好像不起作用？
-  //characters 默认为每个字符使用大写键盘
-  //sentence 默认为每个句子的第一个字母使用大写键盘
-  //word 默认为每个单词的第一个字母使用大写键盘。
-  //none 默认使用小写
+
+  ///键盘大小写的显示 Only supports text keyboards  但是好像不起作用？
+  ///characters 默认为每个字符使用大写键盘
+  ///sentence 默认为每个句子的第一个字母使用大写键盘
+  ///word 默认为每个单词的第一个字母使用大写键盘。
+  ///none 默认使用小写
         this.textCapitalization = textCapitalization ?? TextCapitalization.none,
-  //长按输入的文字时，true显示系统的粘贴板  false不显示
+
+  ///长按输入的文字时，true显示系统的粘贴板  false不显示
         this.enableInteractiveSelection = enableInteractiveSelection ?? true,
-  //自定义数字显示   指定maxLength后 右下角会出现字数，flutter有默认实现  可以通过这个自定义
-  //光标颜色
+
+  ///自定义数字显示   指定maxLength后 右下角会出现字数，flutter有默认实现  可以通过这个自定义
+  ///光标颜色
         this.cursorColor = cursorColor ?? getColors(black70),
-  //光标圆角
+
+  ///光标圆角
         this.cursorRadius = cursorRadius ?? Radius.circular(1),
-  //光标宽度
+
+  ///光标宽度
         this.cursorWidth = cursorWidth ?? 2,
-  // 键盘外观  仅ios有效
+
+  /// 键盘外观  仅ios有效
         this.keyboardAppearance = keyboardAppearance,
-//      默认true  超过长度后输入无效  右下角数字 显示10/10   此时onchange方法依然会调用，返回值就是限制了长度的值 超过后的输入不显示
-//      false 超过后可继续输入  右下角数字显示，比如 23/10
+
+  ///      默认true  超过长度后输入无效  右下角数字 显示10/10   此时onchange方法依然会调用，返回值就是限制了长度的值 超过后的输入不显示
+  ///      false 超过后可继续输入  右下角数字显示，比如 23/10
         this.maxLengthEnforced = maxLengthEnforced ?? true,
-//       设置键盘上enter键的显示内容
-//       textInputAction: TextInputAction.search, //搜索
-//       textInputAction: TextInputAction.none,//默认回车符号
-//       textInputAction: TextInputAction.done,//安卓显示 回车符号
-//       textInputAction: TextInputAction.go,//开始
-//       textInputAction: TextInputAction.next,//下一步
-//       textInputAction: TextInputAction.send,//发送
-//       textInputAction: TextInputAction.continueAction,//android  不支持
-//       textInputAction: TextInputAction.emergencyCall,//android  不支持
-//       textInputAction: TextInputAction.newline,//安卓显示 回车符号
-//       textInputAction: TextInputAction.route,//android  不支持
-//       textInputAction: TextInputAction.join,//android  不支持
-//       textInputAction: TextInputAction.previous,//安卓显示 回车符号
-//       textInputAction: TextInputAction.unspecified,//安卓显示 回车符号
+
+  ///       设置键盘上enter键的显示内容
+  ///       textInputAction: TextInputAction.search, ///搜索
+  ///       textInputAction: TextInputAction.none,///默认回车符号
+  ///       textInputAction: TextInputAction.done,///安卓显示 回车符号
+  ///       textInputAction: TextInputAction.go,///开始
+  ///       textInputAction: TextInputAction.next,///下一步
+  ///       textInputAction: TextInputAction.send,///发送
+  ///       textInputAction: TextInputAction.continueAction,///android  不支持
+  ///       textInputAction: TextInputAction.emergencyCall,///android  不支持
+  ///       textInputAction: TextInputAction.newline,///安卓显示 回车符号
+  ///       textInputAction: TextInputAction.route,///android  不支持
+  ///       textInputAction: TextInputAction.join,///android  不支持
+  ///       textInputAction: TextInputAction.previous,///安卓显示 回车符号
+  ///       textInputAction: TextInputAction.unspecified,///安卓显示 回车符号
         this.textInputAction = textInputAction ?? TextInputAction.done,
         this.autoFocus = autoFocus ?? false,
         this.maxLines = maxLines ?? 1,
-  //从左边输入  光标在左边
-  //从右边输入  光标在右边
-//      this.textDirection = textDirection ?? TextDirection.rtl,
+
+  ///从左边输入  光标在左边
+  ///从右边输入  光标在右边
+  ///      this.textDirection = textDirection ?? TextDirection.rtl,
         this.textDirection = textDirection ?? TextDirection.ltr,
         this.enabled = enabled ?? true,
         this.textAlign = textAlign ?? TextAlign.left,
         super(key: key);
 
-//  解决切换后台 再切换前台输入框为null
-//  @override
-//  void initState() {
-//    super.initState();
-//    WidgetsBinding.instance.addObserver(this);
-//    controller = widget.controller ?? TextEditingController();
-//    setController(widget.value);
-//  }
-//
-//  setController(String value) {
-//    if (value.length > 0) {
-//      controller.text = value;
-//      解决光标左移问题
-//      controller.selection = TextSelection.fromPosition(TextPosition(offset: value.length));
-//    }
-//  }
-//
-//  @override
-//  void didChangeAppLifecycleState(AppLifecycleState state) {
-//    super.didChangeAppLifecycleState(state);
-//    switch (state) {
-//      case AppLifecycleState.inactive: //处于这种状态的应用程序应该假设它们可能在任何时候暂停。前台
-//        break;
-//      case AppLifecycleState.paused: // 应用程序不可见，后台  切换后台
-//        break;
-//      case AppLifecycleState.resumed: // 应用程序可见，前台  从后台切换前台
-//        setController(text);
-//        break;
-//      case AppLifecycleState.detached: // 申请将暂时暂停
-//        break;
-//    }
-//  }
-//
-//  @override
-//  void dispose() {
-//    WidgetsBinding.instance.removeObserver(this);
+  ///  解决切换后台 再切换前台输入框为null
+  ///  @override
+  ///  void initState() {
+  ///    super.initState();
+  ///    WidgetsBinding.instance.addObserver(this);
+  ///    controller = widget.controller ?? TextEditingController();
+  ///    setController(widget.value);
+  ///  }
+  ///
+  ///  setController(String value) {
+  ///    if (value.length > 0) {
+  ///      controller.text = value;
+  ///      解决光标左移问题
+  ///      controller.selection = TextSelection.fromPosition(TextPosition(offset: value.length));
+  ///    }
+  ///  }
+  ///
+  ///  @override
+  ///  void didChangeAppLifecycleState(AppLifecycleState state) {
+  ///    super.didChangeAppLifecycleState(state);
+  ///    switch (state) {
+  ///      case AppLifecycleState.inactive: ///处于这种状态的应用程序应该假设它们可能在任何时候暂停。前台
+  ///        break;
+  ///      case AppLifecycleState.paused: /// 应用程序不可见，后台  切换后台
+  ///        break;
+  ///      case AppLifecycleState.resumed: /// 应用程序可见，前台  从后台切换前台
+  ///        setController(text);
+  ///        break;
+  ///      case AppLifecycleState.detached: /// 申请将暂时暂停
+  ///        break;
+  ///    }
+  ///  }
+  ///
+  ///  @override
+  ///  void dispose() {
+  ///    WidgetsBinding.instance.removeObserver(this);
 //    super.dispose();
 //  }
 

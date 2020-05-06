@@ -14,7 +14,7 @@ class ListBuilder extends StatelessWidget {
   final EdgeInsetsGeometry padding;
   final Widget noData;
 
-  //刷新组件相关
+  ///刷新组件相关
   final bool enablePullDown;
   final bool enablePullUp;
   final RefreshController refreshController;

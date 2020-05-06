@@ -25,7 +25,7 @@ class LogTools {
     }
   }
 
-  //仅Debug模式可见
+  ///仅Debug模式可见
   static void d(dynamic obj) {
     if (_isDebug) {
       log(obj.toString());

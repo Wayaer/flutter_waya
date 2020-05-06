@@ -41,7 +41,7 @@ class EventBus<S> {
 }
 
 class EventFactory {
-  // 工厂模式
+  /// 工厂模式
   factory EventFactory() => _getInstance();
 
   static EventFactory get instance => _getInstance();
@@ -51,7 +51,7 @@ class EventFactory {
   EventBus event;
 
   EventFactory._internal() {
-    // 初始化
+    /// 初始化
     this.event = EventBus();
   }
 

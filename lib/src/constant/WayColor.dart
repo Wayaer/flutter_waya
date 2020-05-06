@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' show Color, Colors;
 
 const String transparent = 'transparent';
 const String white50 = 'white50';

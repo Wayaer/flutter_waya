@@ -4,7 +4,9 @@ import 'package:flutter/widgets.dart';
 abstract class SuspensionModel {
   bool isShowSuspension;
 
-  String getSuspensionTag(); //Suspension Tag
+  String getSuspensionTag();
+
+///Suspension Tag
 }
 
 /// AzListView Header.

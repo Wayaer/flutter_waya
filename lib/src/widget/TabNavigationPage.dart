@@ -53,7 +53,8 @@ class TabNavigationPageState extends State<TabNavigationPage> {
                   )),
             ],
         type: BottomNavigationBarType.fixed,
-        // 超过5个页面，需加上此行，不然会无法显示颜色
+
+        /// 超过5个页面，需加上此行，不然会无法显示颜色
         onTap: (index) {
           setState(() {
             tabIndex = index;

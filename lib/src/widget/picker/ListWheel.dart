@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_waya/flutter_waya.dart';
@@ -139,7 +138,7 @@ class ListWheelState extends State<ListWheel> {
       );
 
   bool onNotification(ScrollEndNotification notification) {
-    //   滚动结束的监听事件
+    ///   滚动结束的监听事件
     if (notification is ScrollEndNotification &&
         widget.onItemSelected != null) {
       var pixels = notification.metrics.pixels;

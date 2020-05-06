@@ -136,7 +136,7 @@ class AzListViewState extends State<AzListView> {
     }
     List<SuspensionModel> list = widget.data;
     if (list != null && list.isNotEmpty) {
-//      SuspensionUtil.sortListBySuspensionTag(list);
+      ///      SuspensionUtil.sortListBySuspensionTag(list);
       cityList.addAll(list);
     }
 

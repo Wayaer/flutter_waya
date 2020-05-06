@@ -4,11 +4,19 @@ import 'package:flutter_waya/src/tools/Tools.dart';
 import 'CustomFlex.dart';
 
 class CustomIcon extends StatelessWidget {
-  //需要什么属性  自行添加
-  final IconData icon; //icon
-  final ImageProvider imageProvider; //图片转icon
-  final Image image; //显示图片
-  final TextDirection textDirection; //仅支持icon
+  ///需要什么属性  自行添加
+  final IconData icon;
+
+  ///icon
+  final ImageProvider imageProvider;
+
+  ///图片转icon
+  final Image image;
+
+  ///显示图片
+  final TextDirection textDirection;
+
+  ///仅支持icon
   final String semanticLabel;
   final String titleText;
   final Widget title;
@@ -135,7 +143,9 @@ class CustomIcon extends StatelessWidget {
           color: iconColor,
           size: iconSize,
           textDirection: textDirection,
-          semanticLabel: semanticLabel)); //帮助盲人或者视力有障碍的用户提供语言辅助描述
+          semanticLabel: semanticLabel));
+
+      ///帮助盲人或者视力有障碍的用户提供语言辅助描述
     }
     if (imageProvider != null) {
       listWidget.add(ImageIcon(imageProvider, color: iconColor,

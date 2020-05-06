@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_waya/src/widget/custom/CustomFlex.dart';
 
 class CustomRichText extends StatelessWidget {

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
 
 class CustomFlex extends StatelessWidget {
-  //自定义横向竖向布局 加入了点击事件
-  //公用 点击事件
+  ///自定义横向竖向布局 加入了点击事件
+  ///公用 点击事件
   final bool inkWell;
   final GestureTapCallback onTap;
   final GestureTapCallback onDoubleTap;
@@ -17,17 +17,19 @@ class CustomFlex extends StatelessWidget {
   final ShapeBorder customBorder;
   final FocusNode focusNode;
 
-  //横竖 布局 List<Widget>   children
+  ///横竖 布局 List<Widget>   children
   final List<Widget> children;
   final MainAxisSize mainAxisSize;
   final TextDirection textDirection;
   final TextBaseline textBaseline;
   final MainAxisAlignment mainAxisAlignment;
   final CrossAxisAlignment crossAxisAlignment;
-  final Axis direction; //布局横竖
+  final Axis direction;
+
+  ///布局横竖
   final VerticalDirection verticalDirection;
 
-  //容器 布局
+  ///容器 布局
   final Widget child;
   final EdgeInsetsGeometry padding;
   final EdgeInsetsGeometry margin;
@@ -41,9 +43,9 @@ class CustomFlex extends StatelessWidget {
   final bool enabled;
   final bool isScroll;
 
-  //  HitTestBehavior.opaque 自己处理事件 
-  //  HitTestBehavior.deferToChild child处理事件
-  //  HitTestBehavior.translucent 自己和child都可以接收事件
+  ///  HitTestBehavior.opaque 自己处理事件 
+  ///  HitTestBehavior.deferToChild child处理事件
+  ///  HitTestBehavior.translucent 自己和child都可以接收事件
   final HitTestBehavior behavior;
 
   CustomFlex({

@@ -4,30 +4,70 @@ import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/widget/custom/OverlayBase.dart';
 
 class OverlayMaterial extends StatelessWidget {
-  final GlobalKey<NavigatorState> navigatorKey; //导航键
-  final Widget home; //主页
-  final String initialRoute; //初始路由
-  final RouteFactory onGenerateRoute; //生成路由
-  final RouteFactory onUnknownRoute; //未知路由
-  final TransitionBuilder builder; //建造者
-  final LocaleListResolutionCallback localeListResolutionCallback; //区域分辨回调
+  final GlobalKey<NavigatorState> navigatorKey;
+
+  ///导航键
+  final Widget home;
+
+  ///主页
+  final String initialRoute;
+
+  ///初始路由
+  final RouteFactory onGenerateRoute;
+
+  ///生成路由
+  final RouteFactory onUnknownRoute;
+
+  ///未知路由
+  final TransitionBuilder builder;
+
+  ///建造者
+  final LocaleListResolutionCallback localeListResolutionCallback;
+
+  ///区域分辨回调
   final LocaleResolutionCallback localeResolutionCallback;
-  final GenerateAppTitle onGenerateTitle; //生成标题
-  final ThemeData theme; //主题
+  final GenerateAppTitle onGenerateTitle;
+
+  ///生成标题
+  final ThemeData theme;
+
+  ///主题
   final ThemeData darkTheme;
-  final Color color; //颜色
-  final Map<String, WidgetBuilder> routes; //路由
-  final List<NavigatorObserver> navigatorObservers; //导航观察器
-  final Iterable<LocalizationsDelegate<dynamic>> localizationsDelegates; //本地化委托
-  final String title; //标题
+  final Color color;
+
+  ///颜色
+  final Map<String, WidgetBuilder> routes;
+
+  ///路由
+  final List<NavigatorObserver> navigatorObservers;
+
+  ///导航观察器
+  final Iterable<LocalizationsDelegate<dynamic>> localizationsDelegates;
+
+  ///本地化委托
+  final String title;
+
+  ///标题
   final ThemeMode themeMode;
-  final Locale locale; //地点
-  final Iterable<Locale> supportedLocales; //支持区域
-  final bool showPerformanceOverlay; //显示性能叠加
-  final bool checkerboardRasterCacheImages; //棋盘格光栅缓存图像
+  final Locale locale;
+
+  ///地点
+  final Iterable<Locale> supportedLocales;
+
+  ///支持区域
+  final bool showPerformanceOverlay;
+
+  ///显示性能叠加
+  final bool checkerboardRasterCacheImages;
+
+  ///棋盘格光栅缓存图像
   final bool checkerboardOffscreenLayers;
-  final bool showSemanticsDebugger; //显示语义调试器
-  final bool debugShowCheckedModeBanner; //调试显示检查模式横幅
+  final bool showSemanticsDebugger;
+
+  ///显示语义调试器
+  final bool debugShowCheckedModeBanner;
+
+  ///调试显示检查模式横幅
   final bool debugShowMaterialGrid;
   final TextDirection textDirection;
 
@@ -77,7 +117,9 @@ class OverlayMaterial extends StatelessWidget {
         this.supportedLocales = supportedLocales ?? [Locale('zh', 'CH')],
         this.localizationsDelegates = localizationsDelegates ??
             [
-              CustomLocalizationsDelegate(), //解决ios 长按输入框报错
+              CustomLocalizationsDelegate(),
+
+              ///解决ios 长按输入框报错
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate
             ],

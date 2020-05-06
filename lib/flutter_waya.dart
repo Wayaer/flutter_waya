@@ -1,12 +1,12 @@
 library flutter_waya;
 
-//constant
-//内部常量勿用
-//export 'src/constant/WayColor.dart';
-//export 'src/constant/WayConstant.dart';
-//export 'src/constant/IconsInfo.dart';
-//export 'src/constant/WayStyles.dart';
-//可调用常量
+///constant
+///内部常量勿用
+///export 'src/constant/WayColor.dart';
+///export 'src/constant/WayConstant.dart';
+///export 'src/constant/IconsInfo.dart';
+///export 'src/constant/WayStyles.dart';
+///可调用常量
 export 'package:pull_to_refresh/pull_to_refresh.dart';
 
 export 'src/constant/WayEnum.dart';

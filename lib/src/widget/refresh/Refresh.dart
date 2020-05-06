@@ -16,8 +16,10 @@ class Refresh extends StatelessWidget {
   final Widget footer;
   final TextStyle footerTextStyle;
 
-  //
-  final bool enableTwoLevel; //二楼是否开启
+  ///
+  final bool enableTwoLevel;
+
+  ///二楼是否开启
   final VoidCallback onTwoLevel;
   final OnOffsetChange onOffsetChange;
   final Axis scrollDirection;
@@ -34,7 +36,9 @@ class Refresh extends StatelessWidget {
     Key key,
     bool enablePullDown,
     bool enablePullUp,
-    bool enableTwoLevel, //二楼是否开启
+    bool enableTwoLevel,
+
+    ///二楼是否开启
     this.controller,
     this.footerTextStyle,
     this.onLoading,

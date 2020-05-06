@@ -7,9 +7,15 @@ typedef void IndexBarTouchCallback(AzIndexBarDetails model);
 
 /// IndexModel.
 class AzIndexBarDetails {
-  String tag; //current touch tag.
-  int position; //current touch position.
-  bool isTouchDown; //is touch down.
+  String tag;
+
+  ///current touch tag.
+  int position;
+
+  ///current touch position.
+  bool isTouchDown;
+
+  ///is touch down.
 
   AzIndexBarDetails({this.tag, this.position, this.isTouchDown});
 }
@@ -54,7 +60,7 @@ class AzIndexBar extends StatefulWidget {
   final int size;
 
   /// IndexBar item height(def:16).
-//  final int itemHeight;
+  ///  final int itemHeight;
   final Color onTouchColor;
   final Color color;
 

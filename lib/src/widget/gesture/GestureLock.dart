@@ -5,7 +5,7 @@ import 'gusturelock/CanvasLine.dart';
 import 'gusturelock/CanvasPoint.dart';
 import 'gusturelock/Point.dart';
 
-// ignore: must_be_immutable
+/// ignore: must_be_immutable
 class GestureLock extends StatefulWidget {
   final double size;
   Color selectColor;
@@ -33,7 +33,7 @@ class GestureLock extends StatefulWidget {
     this.onPanDown,
     this.immediatelyClear: true})
       : super(key: key) {
-    // 减少刷新频率
+    /// 减少刷新频率
     points = [];
     if (selectColor == null) selectColor = getColors(greenAccent);
     if (unSelectColor == null) unSelectColor = getColors(black30);
@@ -59,7 +59,9 @@ class GestureLockState extends State<GestureLock> {
   double ringRadius;
   bool showUnSelectRing;
   double circleRadius;
-  Color selectColor; // open only
+  Color selectColor;
+
+  /// open only
   Color unSelectColor;
   double lineWidth;
   List<Point> points;
@@ -144,7 +146,9 @@ class GestureLockState extends State<GestureLock> {
         List<int> items = pathPoints.map((item) => item.position).toList();
         onPanUp(items);
       }
-      if (immediatelyClear) clearAllData(); //clear data
+      if (immediatelyClear) clearAllData();
+
+      ///clear data
     }
   }
 

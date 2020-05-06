@@ -10,13 +10,23 @@ class ListItem extends StatelessWidget {
   final GestureTapCallback onTap;
   final GestureTapCallback onDoubleTap;
   final GestureLongPressCallback onLongPress;
-  final bool isThreeLine; //是否默认3行高度，subtitle不为空时才能使用
+  final bool isThreeLine;
+
+  ///是否默认3行高度，subtitle不为空时才能使用
   final bool selected;
-  final bool dense; //设置为true后字体变小
+  final bool dense;
+
+  ///设置为true后字体变小
   final EdgeInsetsGeometry contentPadding;
-  final Widget leading; //左侧widget
-  final Widget subtitle; //副标题
-  final Widget child; //右侧widget
+  final Widget leading;
+
+  ///左侧widget
+  final Widget subtitle;
+
+  ///副标题
+  final Widget child;
+
+  ///右侧widget
   final Widget title;
   final String titleText;
   final TextStyle titleStyle;
@@ -86,7 +96,8 @@ class ListItem extends StatelessWidget {
       onTap: enabled ? onTap : null,
       direction: Axis.horizontal,
       mainAxisAlignment: MainAxisAlignment.center,
-//      crossAxisAlignment: CrossAxisAlignment.center,
+
+      ///      crossAxisAlignment: CrossAxisAlignment.center,
       decoration:
       decoration ?? WayStyles.containerUnderlineBackground(
           underlineColor: underlineColor, color: backgroundColor),
@@ -102,7 +113,9 @@ class ListItem extends StatelessWidget {
               isThreeLine: isThreeLine,
               dense: dense,
               enabled: false,
-              selected: false, //展示是否默认显示选中
+              selected: false,
+
+              ///展示是否默认显示选中
             )),
         Offstage(
           offstage: !arrow,

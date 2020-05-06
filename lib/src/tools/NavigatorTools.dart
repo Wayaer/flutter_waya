@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/src/constant/WayEnum.dart';
 
-//例子  自行封装utils
+///例子  自行封装utils
 class NavigatorExample {
   static push(Function function, {PushMode pushMode}) {
     return NavigatorTools.getInstance().push(function, pushMode: pushMode);
@@ -27,7 +27,7 @@ class NavigatorExample {
 
 
 class NavigatorTools extends NavigatorObserver {
-  // ignore: close_sinks
+  /// ignore: close_sinks
   static StreamController _streamController;
 
   StreamController get streamController => _streamController;
@@ -43,17 +43,17 @@ class NavigatorTools extends NavigatorObserver {
     return _navigatorManager;
   }
 
-  // replace 页面(pop and push) 右侧进入
+  /// replace 页面(pop and push) 右侧进入
   pushReplacement(Function function, {PushMode pushMode}) {
     return navigator.pushReplacement(pageRoute(function, pushMode));
   }
 
-  // push 页面 右侧进入
+  /// push 页面 右侧进入
   push(Function function, {PushMode pushMode}) {
     return navigator.push(pageRoute(function, pushMode));
   }
 
-  // push一个页面， 移除该页面下面所有页面
+  /// push一个页面， 移除该页面下面所有页面
   pushAndRemoveUntil(Function function, {PushMode pushMode}) {
     return navigator.pushAndRemoveUntil(
         pageRoute(function, pushMode), (route) => false);
@@ -66,7 +66,8 @@ class NavigatorTools extends NavigatorObserver {
         builder: (BuildContext context) {
           return function(context);
         },
-        // settings: RouteSettings(name: routeName, arguments: arguments),
+
+        /// settings: RouteSettings(name: routeName, arguments: arguments),
       );
     }
     if (pushMode == PushMode.material) {
@@ -74,12 +75,13 @@ class NavigatorTools extends NavigatorObserver {
         builder: (BuildContext context) {
           return function(context);
         },
-        // settings: RouteSettings(name: routeName, arguments: arguments),
+
+        /// settings: RouteSettings(name: routeName, arguments: arguments),
       );
     }
   }
 
-  // pop 页面
+  /// pop 页面
   pop<T extends Object>([T result]) {
     navigator.pop(result);
   }

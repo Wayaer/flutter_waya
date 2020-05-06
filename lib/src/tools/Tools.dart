@@ -4,7 +4,6 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:crypto/crypto.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -23,7 +22,7 @@ class Tools {
   static double _designWidth = 375;
   static double _designHeight = 667;
 
-  // 截屏
+  /// 截屏
   static Future<ByteData> screenshots(GlobalKey globalKey,
       {ImageByteFormat format}) async {
     RenderRepaintBoundary boundary = globalKey.currentContext
@@ -31,7 +30,8 @@ class Tools {
     var image = await boundary.toImage();
     ByteData byteData = await image.toByteData(
         format: format ?? ImageByteFormat.rawRgba);
-//    Uint8List uint8list = byteData.buffer.asUint8List();
+
+    ///    Uint8List uint8list = byteData.buffer.asUint8List();
     return byteData;
   }
 

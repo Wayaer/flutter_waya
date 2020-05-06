@@ -18,7 +18,7 @@ class AutoScroll extends StatefulWidget {
   /// 只在texts有值时生效
   final Color selectTextColor;
 
-  //是否居中
+  ///是否居中
   final bool center;
 
   /// 正常的文字颜色
@@ -76,7 +76,9 @@ class AutoScroll extends StatefulWidget {
 }
 
 class AutoScrollState extends State<AutoScroll> {
-  Timer _timer; // 定时器timer
+  Timer _timer;
+
+  /// 定时器timer
   int currentPage = 0;
   bool lastPage = false;
   List<AutoScrollItem> items = <AutoScrollItem>[];
@@ -92,7 +94,8 @@ class AutoScrollState extends State<AutoScroll> {
           child: Text(
             widget.texts[i],
           ),
-          // text: widget.texts[i],
+
+          /// text: widget.texts[i],
           onPress: () {
             widget.onChange(i);
           },
@@ -106,7 +109,8 @@ class AutoScrollState extends State<AutoScroll> {
       for (var i = 0; i < widget.children.length; i++) {
         items.add(new AutoScrollItem(
           child: widget.children[i],
-          // text: widget.texts[i],
+
+          /// text: widget.texts[i],
           onPress: () {
             widget.onChange(i);
           },
@@ -124,14 +128,14 @@ class AutoScrollState extends State<AutoScroll> {
         this.setState(() {
           currentPage++;
           if (currentPage >= items.length) {
-            //last item
+            ///last item
             currentPage = 0;
             firstItem = items[items.length - 1]
               ..modeListener.value = true;
             secondItem = items[currentPage]
               ..modeListener.value = false;
           } else if (currentPage <= 0) {
-            // first item
+            /// first item
             currentPage = items.length - 1;
             firstItem = items[0]
               ..modeListener.value = true;

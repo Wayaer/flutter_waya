@@ -29,28 +29,28 @@ class GestureZoom extends StatefulWidget {
 
 class _GestureZoomState extends State<GestureZoom>
     with TickerProviderStateMixin {
-  // 缩放动画控制器
+  /// 缩放动画控制器
   AnimationController _scaleAnimController;
 
-  // 偏移动画控制器
+  /// 偏移动画控制器
   AnimationController _offsetAnimController;
 
-  // 上次缩放变化数据
+  /// 上次缩放变化数据
   ScaleUpdateDetails _latestScaleUpdateDetails;
 
-  // 当前缩放值
+  /// 当前缩放值
   double _scale = 1.0;
 
-  // 当前偏移值
+  /// 当前偏移值
   Offset _offset = Offset.zero;
 
-  // 双击缩放的点击位置
+  /// 双击缩放的点击位置
   Offset _doubleTapPosition;
 
   bool _isScaling = false;
   bool _isDragging = false;
 
-  // 拖动超出边界的最大值
+  /// 拖动超出边界的最大值
   double _maxDragOver = 100;
 
   @override
@@ -127,7 +127,7 @@ class _GestureZoomState extends State<GestureZoom>
       return;
     }
 
-    // 计算缩放比例
+    /// 计算缩放比例
     double scaleIncrement = details.scale - _latestScaleUpdateDetails.scale;
     if (details.scale < 1.0 && _scale > 1.0) {
       scaleIncrement *= _scale;
@@ -139,15 +139,17 @@ class _GestureZoomState extends State<GestureZoom>
     }
     _scale += scaleIncrement;
 
-    // 计算缩放后偏移前（缩放前后的内容中心对齐）的左上角坐标变化
+    /// 计算缩放后偏移前（缩放前后的内容中心对齐）的左上角坐标变化
     double scaleOffsetX = context.size.width * (_scale - 1.0) / 2;
     double scaleOffsetY = context.size.height * (_scale - 1.0) / 2;
-    // 将缩放前的触摸点映射到缩放后的内容上
+
+    /// 将缩放前的触摸点映射到缩放后的内容上
     double scalePointDX = (details.localFocalPoint.dx + scaleOffsetX -
         _offset.dx) / _scale;
     double scalePointDY = (details.localFocalPoint.dy + scaleOffsetY -
         _offset.dy) / _scale;
-    // 计算偏移，使缩放中心在屏幕上的位置保持不变
+
+    /// 计算偏移，使缩放中心在屏幕上的位置保持不变
     _offset += Offset(
       (context.size.width / 2 - scalePointDX) * scaleIncrement,
       (context.size.height / 2 - scalePointDY) * scaleIncrement,
@@ -167,14 +169,15 @@ class _GestureZoomState extends State<GestureZoom>
       return;
     }
 
-    // 计算本次拖动增量
+    /// 计算本次拖动增量
     double offsetXIncrement =
         (details.localFocalPoint.dx -
             _latestScaleUpdateDetails.localFocalPoint.dx) * _scale;
     double offsetYIncrement =
         (details.localFocalPoint.dy -
             _latestScaleUpdateDetails.localFocalPoint.dy) * _scale;
-    // 处理 X 轴边界
+
+    /// 处理 X 轴边界
     double scaleOffsetX = context.size.width * (_scale - 1.0) / 2;
     if (scaleOffsetX <= 0) {
       offsetXIncrement = 0;
@@ -185,7 +188,8 @@ class _GestureZoomState extends State<GestureZoom>
       offsetXIncrement *=
           (_maxDragOver - (-scaleOffsetX - _offset.dx)) / _maxDragOver;
     }
-    // 处理 Y 轴边界
+
+    /// 处理 Y 轴边界
     double scaleOffsetY = (context.size.height * _scale - MediaQuery
         .of(context)
         .size
@@ -208,21 +212,22 @@ class _GestureZoomState extends State<GestureZoom>
   /// 缩放/拖动结束
   _onScaleEnd(ScaleEndDetails details) {
     if (_scale < 1.0) {
-      // 缩放值过小，恢复到 1.0
+      /// 缩放值过小，恢复到 1.0
       _animationScale(1.0);
     } else if (_scale > widget.maxScale) {
-      // 缩放值过大，恢复到最大值
+      /// 缩放值过大，恢复到最大值
       _animationScale(widget.maxScale);
     }
     if (_scale <= 1.0) {
-      // 缩放值过小，修改偏移值，使内容居中
+      /// 缩放值过小，修改偏移值，使内容居中
       _animationOffset(Offset.zero);
     } else if (_isDragging) {
-      // 处理拖动超过边界的情况（自动回弹到边界）
+      /// 处理拖动超过边界的情况（自动回弹到边界）
       double realScale = _scale > widget.maxScale ? widget.maxScale : _scale;
       double targetOffsetX = _offset.dx,
           targetOffsetY = _offset.dy;
-      // 处理 X 轴边界
+
+      /// 处理 X 轴边界
       double scaleOffsetX = context.size.width * (realScale - 1.0) / 2;
       if (scaleOffsetX <= 0) {
         targetOffsetX = 0;
@@ -231,7 +236,8 @@ class _GestureZoomState extends State<GestureZoom>
       } else if (_offset.dx < -scaleOffsetX) {
         targetOffsetX = -scaleOffsetX;
       }
-      // 处理 Y 轴边界
+
+      /// 处理 Y 轴边界
       double scaleOffsetY =
           (context.size.height * realScale - MediaQuery
               .of(context)
@@ -245,10 +251,10 @@ class _GestureZoomState extends State<GestureZoom>
         targetOffsetY = -scaleOffsetY;
       }
       if (_offset.dx != targetOffsetX || _offset.dy != targetOffsetY) {
-        // 启动越界回弹
+        /// 启动越界回弹
         _animationOffset(Offset(targetOffsetX, targetOffsetY));
       } else {
-        // 处理 X 轴边界
+        /// 处理 X 轴边界
         double duration = (widget.duration.inSeconds +
             widget.duration.inMilliseconds / 1000);
         Offset targetOffset = _offset +
@@ -259,14 +265,16 @@ class _GestureZoomState extends State<GestureZoom>
         } else if (targetOffsetX < -scaleOffsetX) {
           targetOffsetX = -scaleOffsetX;
         }
-        // 处理 X 轴边界
+
+        /// 处理 X 轴边界
         targetOffsetY = targetOffset.dy;
         if (targetOffsetY > scaleOffsetY) {
           targetOffsetY = scaleOffsetY;
         } else if (targetOffsetY < -scaleOffsetY) {
           targetOffsetY = -scaleOffsetY;
         }
-        // 启动惯性滚动
+
+        /// 启动惯性滚动
         _animationOffset(Offset(targetOffsetX, targetOffsetY));
       }
     }

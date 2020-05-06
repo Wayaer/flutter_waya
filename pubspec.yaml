@@ -1,7 +1,7 @@
 name: flutter_waya
 description: The Flutter UI library contains multiple custom components.
-version: 0.0.2
-author: Wayaer <wayaer@foxmail.com>
+version: 0.0.4
+author: wayaer <wayaer@foxmail.com>
 homepage: https://github.com/Wayaer/flutter_waya
 
 environment:

@@ -1,7 +1,13 @@
 class ResponseModel {
-  int statusCode; //error状态
-  String statusMessage; //error 状态消息
-  String statusMessageT; //error 语言翻译版 消息
+  int statusCode;
+
+  ///error状态
+  String statusMessage;
+
+  ///error 状态消息
+  String statusMessageT;
+
+  ///error 语言翻译版 消息
   String type;
   Object data;
   List<String> cookie;

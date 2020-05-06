@@ -47,7 +47,9 @@ class AutoScrollItem extends StatefulWidget {
   set setTextColor(Color color) => textColor = color;
 
   AutoScrollItem({
-    Key key, //必须传key，否则动画只会走一次
+    Key key,
+
+    ///必须传key，否则动画只会走一次
     this.text,
     Color textColor,
     double textSize,
@@ -157,13 +159,13 @@ class AutoScrollItemState extends State<AutoScrollItem>
         ? new Matrix4.translationValues(transformAnimation.value, 0, 0)
         : new Matrix4.translationValues(0, transformAnimation.value, 0);
 
-    // ..scale(Vector3(
-    //     animation.value, animation.value, animation.value)),
+    /// ..scale(Vector3(
+    ///     animation.value, animation.value, animation.value)),
     ///也可以用下面的矩阵的用法，可以参考我的文章：
-    /// https://www.jianshu.com/p/cc2f9a088fc9
-    /// https://juejin.im/post/5be2fd9e6fb9a04a0e2cace0
-    //  Matrix4(animation.value, 0, 0, 0, 0, animation.value, 0,
-    //     0, 0, 0, 1, 0, 0, transformAnimation.value, 0, 1)
+    /// https:///www.jianshu.com/p/cc2f9a088fc9
+    /// https:///juejin.im/post/5be2fd9e6fb9a04a0e2cace0
+    ///  Matrix4(animation.value, 0, 0, 0, 0, animation.value, 0,
+    ///     0, 0, 0, 1, 0, 0, transformAnimation.value, 0, 1)
     if (widget.child != null) {
       if (widget.onPress != null) {
         current = GestureDetector(onTap: widget.onPress,

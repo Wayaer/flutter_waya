@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/src/tools/Tools.dart';
@@ -9,7 +8,7 @@ class CommonWidget {
         color: getColors(white), fontSize: 16, fontWeight: FontWeight.w700));
   }
 
-  //垂直线
+  ///垂直线
   static Widget lineVertical(double height,
       {EdgeInsetsGeometry padding, double width, Color color, EdgeInsetsGeometry margin}) {
     return Container(
@@ -21,7 +20,7 @@ class CommonWidget {
     );
   }
 
-  //横线
+  ///横线
   static Widget lineHorizontal(double width,
       {EdgeInsetsGeometry padding, double height, Color color, EdgeInsetsGeometry margin}) {
     return Container(

@@ -13,8 +13,8 @@ class StorageTools {
     if (_singleton == null) {
       await _lock.synchronized(() async {
         if (_singleton == null) {
-          // keep local instance till it is fully initialized.
-          // 保持本地实例直到完全初始化。
+          /// keep local instance till it is fully initialized.
+          /// 保持本地实例直到完全初始化。
           var singleton = StorageTools();
           await singleton.init();
           singleton = singleton;
