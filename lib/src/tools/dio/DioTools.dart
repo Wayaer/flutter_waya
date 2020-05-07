@@ -118,8 +118,7 @@ class DioTools {
             onReceiveProgress(received, total);
           });
     } catch (e) {
-      _error = e;
-      return jsonDecode(_error.message);
+      return e;
     }
   }
 
@@ -137,8 +136,7 @@ class DioTools {
           onSendProgress: onSendProgress,
           onReceiveProgress: onReceiveProgress);
     } catch (e) {
-      _error = e;
-      return jsonDecode(_error.message);
+      return e;
     }
   }
 
