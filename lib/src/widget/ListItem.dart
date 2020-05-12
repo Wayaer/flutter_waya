@@ -14,16 +14,16 @@ class ListItem extends StatelessWidget {
 
   ///是否默认3行高度，subtitle不为空时才能使用
   final bool selected;
-  final bool dense;
 
   ///设置为true后字体变小
+  final bool dense;
   final EdgeInsetsGeometry contentPadding;
-  final Widget leading;
 
   ///左侧widget
-  final Widget subtitle;
+  final Widget leading;
 
   ///副标题
+  final Widget subtitle;
   final Widget child;
 
   ///右侧widget
