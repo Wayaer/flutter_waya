@@ -87,3 +87,8 @@ enum RefreshCompletedType {
   loadNoData,
   twoLevel,
 }
+enum StretchyHeaderAlignment {
+  bottom,
+  center,
+  top,
+}
