@@ -11,10 +11,16 @@ class TextInputField extends StatelessWidget {
   final ValueChanged<String> onChanged;
   final List<TextInputFormatter> inputFormatter;
 
+  ///工具栏 cut, copy, paste,
+  final ToolbarOptions toolbarOptions;
+
   ///最大长度
   final int maxLength;
   final TextDirection textDirection;
   final int maxLines;
+
+  ///文本是否可修改  当这个设置为true时，文本不能被修改
+  final bool readOnly;
 
   /// 对齐方式
   final TextAlign textAlign;
@@ -43,6 +49,9 @@ class TextInputField extends StatelessWidget {
 
   /// ///是否自动获取焦点  跳转到该页面后 光标自动显示到该输入框  键盘弹起
   final bool obscureText;
+
+  //label自动上浮
+  final FloatingLabelBehavior floatingLabelBehavior;
 
   ///隐藏文字
   final Widget header;
@@ -81,7 +90,8 @@ class TextInputField extends StatelessWidget {
 
   ///显示在输入框内的提示语，一旦输入框获取焦点就字体缩小并上移到输入上方，作为提示使用
   final TextStyle labelStyle;
-  final bool labelFloating;
+
+//  final bool labelFloating;
 
   ///默认为true，表示labelText是否上浮，true上浮，false表示获取焦点后labelText消失
   final bool isDense;
@@ -151,7 +161,10 @@ class TextInputField extends StatelessWidget {
     double cursorWidth,
     Brightness keyboardAppearance,
     TextCapitalization textCapitalization,
+    FloatingLabelBehavior floatingLabelBehavior,
+    bool readOnly,
     this.icon,
+    this.toolbarOptions,
     this.controller,
     this.inputDecoration,
     this.onSubmitted,
@@ -190,7 +203,7 @@ class TextInputField extends StatelessWidget {
     this.errorMaxLines,
     this.helperText,
     this.helperStyle,
-    this.labelFloating,
+//    this.labelFloating,
     this.focusNode,
     this.header,
     this.footer,
@@ -202,6 +215,9 @@ class TextInputField extends StatelessWidget {
     this.onEditingComplete,
   })
       : this.obscureText = obscureText ?? false,
+        this.readOnly=readOnly ?? false,
+        this.floatingLabelBehavior=floatingLabelBehavior ??
+            FloatingLabelBehavior.always,
 
   ///键盘大小写的显示 Only supports text keyboards  但是好像不起作用？
   ///characters 默认为每个字符使用大写键盘
@@ -331,7 +347,7 @@ class TextInputField extends StatelessWidget {
       cursorWidth: cursorWidth,
       obscureText: obscureText,
       keyboardType: keyboardType,
-      style: inputStyle ?? WayStyles.textStyleBlack70(fontSize: 16),
+      style: inputStyle ?? WayStyles.textStyleBlack70(),
       controller: controller,
       decoration: inputDecoration ??
           InputDecoration(
@@ -367,7 +383,8 @@ class TextInputField extends StatelessWidget {
             labelText: labelText,
             //显示在输入框内的提示语，一旦输入框获取焦点就字体缩小并上移到输入上方，作为提示使用
             labelStyle: labelStyle,
-            hasFloatingPlaceholder: labelFloating,
+//            hasFloatingPlaceholder: labelFloating,
+            floatingLabelBehavior: floatingLabelBehavior,
             //默认为true，表示labelText是否上浮，true上浮，false表示获取焦点后labelText消失
             helperText: helperText,
             //显示在输入框下划线下面的提示语，提示使用
@@ -413,8 +430,10 @@ class TextInputField extends StatelessWidget {
           ),
       onChanged: onChanged,
       onTap: onTap,
+      toolbarOptions: toolbarOptions,
       onSubmitted: onSubmitted,
       enabled: enabled,
+      readOnly: readOnly,
       //按回车时调用 先调用此方法  然后调用onSubmitted方法
       onEditingComplete: onEditingComplete,
     );

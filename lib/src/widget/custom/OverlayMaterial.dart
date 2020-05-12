@@ -1,7 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:flutter_waya/src/widget/custom/OverlayBase.dart';
+import 'package:flutter_waya/src/widget/custom/overlay/OverlayBase.dart';
 
 class OverlayMaterial extends StatelessWidget {
   final GlobalKey<NavigatorState> navigatorKey;
@@ -117,8 +118,9 @@ class OverlayMaterial extends StatelessWidget {
         this.supportedLocales = supportedLocales ?? [Locale('zh', 'CH')],
         this.localizationsDelegates = localizationsDelegates ??
             [
-              CustomLocalizationsDelegate(),
-
+//              ChineseCupertinoLocalizations.delegate,
+//              DefaultCupertinoLocalizations.delegate,
+//              CustomLocalizationsDelegate(),
               ///解决ios 长按输入框报错
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate

@@ -49,7 +49,7 @@ export 'src/widget/custom/CustomDrawer.dart';
 export 'src/widget/custom/CustomFlex.dart';
 export 'src/widget/custom/CustomGridView.dart';
 export 'src/widget/custom/CustomIcon.dart';
-export 'src/widget/custom/CustomLocalizationsDelegate.dart';
+export 'src/widget/custom/delegate/CustomLocalizationsDelegate.dart';
 export 'src/widget/custom/CustomNestedScrollView.dart';
 export 'src/widget/custom/CustomRichText.dart';
 export 'src/widget/custom/OverlayCupertino.dart';
