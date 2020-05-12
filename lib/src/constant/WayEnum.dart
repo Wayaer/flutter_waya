@@ -8,7 +8,14 @@ enum AutoScrollAnimation {
   t2b, //从上往下执行动画
   b2t //从下往上执行动画 默认是从下往上的
 }
-
+enum IndicatorType {
+  none,
+  slide,
+  warm,
+  color,
+  scale,
+  drop,
+}
 enum DateType {
   yearSecond, //2020-1-1 00:00:00
   yearMinute, //2020-1-1 00:00
