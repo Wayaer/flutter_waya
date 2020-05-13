@@ -56,18 +56,7 @@ enum InputTextType {
   negative, //负数
 }
 
-//弹窗位置
-enum AlertPosition {
-  top, //头部居中
-  topLeft, //头部居左
-  topRight, //头部居右
-  center, //中间居中
-  centerLeft, //中间居左
-  centerRight, //中间居右
-  bottom, //底部居中
-  bottomLeft, //底部居左
-  bottomRight, //底部居右
-}
+
 //时间选择器 类型
 enum DateTimePickerType {
   year,

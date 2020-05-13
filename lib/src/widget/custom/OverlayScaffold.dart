@@ -4,9 +4,10 @@ import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/src/tools/MediaQueryTools.dart';
 import 'package:flutter_waya/src/tools/Tools.dart';
+import 'package:flutter_waya/src/widget/custom/overlay/OverlayBase.dart';
 import 'package:flutter_waya/src/widget/refresh/Refreshed.dart';
 
-class BaseScaffold extends StatelessWidget {
+class OverlayScaffold extends StatelessWidget {
   final EdgeInsetsGeometry padding;
   final Color backgroundColor;
   final Widget body;
@@ -14,6 +15,9 @@ class BaseScaffold extends StatelessWidget {
   final bool isolationBody;
   final bool paddingStatusBar;
   final bool enablePullDown;
+
+  ///hero 动画标记
+  final String heroTag;
 
   //刷新组件相关
   final RefreshController controller;
@@ -41,7 +45,7 @@ class BaseScaffold extends StatelessWidget {
   final DragStartBehavior drawerDragStartBehavior;
 
   //isScroll 和isolationBody（body隔离出一个横条目）  不可同时使用
-  BaseScaffold({
+  OverlayScaffold({
     Key key,
     bool isScroll,
     bool isolationBody,
@@ -70,7 +74,7 @@ class BaseScaffold extends StatelessWidget {
     this.bottomSheet,
     this.backgroundColor, //内容的背景颜色，默认使用的是 ThemeData.scaffoldBackgroundColor 的值
     this.resizeToAvoidBottomPadding, //类似于 Android 中的 android:windowSoftInputMode=”adjustResize”，控制界面内容 body 是否重新布局来避免底部被覆盖了，比如当键盘显示的时候，重新布局避免被键盘盖住内容。默认值为 true。
-    this.resizeToAvoidBottomInset,
+    this.resizeToAvoidBottomInset, this.heroTag,
   })
       : this.isScroll = isScroll ?? false,
         this.appBarHeight = appBarHeight ?? Tools.getHeight(45),
@@ -85,31 +89,41 @@ class BaseScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      primary: primary,
-      resizeToAvoidBottomInset: resizeToAvoidBottomInset,
-      drawerDragStartBehavior: drawerDragStartBehavior,
-      bottomSheet: bottomSheet,
-      extendBody: extendBody,
-      resizeToAvoidBottomPadding: resizeToAvoidBottomPadding,
-      endDrawer: endDrawer,
-      drawer: drawer,
-      persistentFooterButtons: persistentFooterButtons,
-      floatingActionButtonLocation: floatingActionButtonLocation,
-      floatingActionButton: floatingActionButton,
-      floatingActionButtonAnimator: floatingActionButtonAnimator,
-      backgroundColor: backgroundColor ?? getColors(background),
-      appBar: appBarHeight == null
-          ? appBar
-          : (appBar == null
-          ? null
-          : PreferredSize(
-          child: appBar,
-          preferredSize: Size.fromHeight(
-              MediaQueryTools.getStatusBarHeight() + appBarHeight))),
-      bottomNavigationBar: bottomNavigationBar,
-      body: bodyWidget(context),
-    );
+    return WillPopScope(
+        onWillPop: () async {
+          print(overlayState.overlayEntries.length);
+          if (overlayState.overlayEntries.length > 1) {
+            AlertTools.close();
+            return false;
+          } else {
+            return true;
+          }
+        },
+        child: Scaffold(
+          primary: primary,
+          resizeToAvoidBottomInset: resizeToAvoidBottomInset,
+          drawerDragStartBehavior: drawerDragStartBehavior,
+          bottomSheet: bottomSheet,
+          extendBody: extendBody,
+          resizeToAvoidBottomPadding: resizeToAvoidBottomPadding,
+          endDrawer: endDrawer,
+          drawer: drawer,
+          persistentFooterButtons: persistentFooterButtons,
+          floatingActionButtonLocation: floatingActionButtonLocation,
+          floatingActionButton: floatingActionButton,
+          floatingActionButtonAnimator: floatingActionButtonAnimator,
+          backgroundColor: backgroundColor ?? getColors(background),
+          appBar: appBarHeight == null
+              ? appBar
+              : (appBar == null
+              ? null
+              : PreferredSize(
+              child: appBar,
+              preferredSize: Size.fromHeight(
+                  MediaQueryTools.getStatusBarHeight() + appBarHeight))),
+          bottomNavigationBar: bottomNavigationBar,
+          body: bodyWidget(context),
+        ));
   }
 
   Widget bodyWidget(BuildContext context) {
@@ -129,8 +143,12 @@ class BaseScaffold extends StatelessWidget {
     );
   }
 
+  Widget hero(Widget child) {
+    return heroTag == null ? child : Hero(tag: heroTag, child: child);
+  }
+
   Widget container() {
-    return Container(
+    return hero(Container(
       color: backgroundColor,
       margin: isolationBody
           ? EdgeInsets.only(top: Tools.getHeight(10))
@@ -140,6 +158,6 @@ class BaseScaffold extends StatelessWidget {
       width: double.infinity,
       height: double.infinity,
       child: isScroll ? SingleChildScrollView(child: body) : body,
-    );
+    ));
   }
 }

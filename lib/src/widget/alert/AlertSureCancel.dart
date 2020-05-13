@@ -19,9 +19,11 @@ class AlertSureCancel extends StatelessWidget {
   final GestureTapCallback backsideTap;
   final double width;
   final double height;
-  final AlertPosition position;
   final EdgeInsetsGeometry margin;
   final Decoration decoration;
+  final AlignmentGeometry alignment;
+  final bool animatedOpacity;
+  final bool gaussian;
 
   AlertSureCancel({
     Key key,
@@ -39,7 +41,8 @@ class AlertSureCancel extends StatelessWidget {
     this.cancelTap,
     this.sure,
     this.cancel,
-    this.backsideTap, this.position, this.decoration,
+    this.backsideTap, this.alignment, this.decoration,
+    this.animatedOpacity, this.gaussian,
   })
       : this.cancelText = cancelText ?? 'cancle',
         this.sureText = sureText ?? 'sure',
@@ -57,8 +60,9 @@ class AlertSureCancel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertBase(
+        gaussian: gaussian,
         onTap: backsideTap,
-        position: position,
+        alignment: alignment,
         child: CustomFlex(
           width: width,
           height: height,

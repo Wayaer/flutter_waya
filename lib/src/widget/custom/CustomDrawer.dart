@@ -39,9 +39,8 @@ class CustomDrawerState extends State<CustomDrawer> {
 
   @override
   Widget build(BuildContext context) {
-    assert(debugCheckHasMaterialLocalizations(context));
     return ConstrainedBox(
-      constraints: BoxConstraints.expand(width: widget.width),
+      constraints: BoxConstraints(maxWidth: widget.width),
       child: AlertBase(
         backgroundColor: widget.backgroundColor,
         child: widget.child,

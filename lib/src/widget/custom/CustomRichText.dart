@@ -1,39 +1,44 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/src/widget/custom/CustomFlex.dart';
 
 class CustomRichText extends StatelessWidget {
-  final GestureTapCallback onTap;
-  final InlineSpan text;
-  final Color background;
-  final AlignmentGeometry alignment;
   final TextAlign textAlign;
+  final List<String> text;
+  final List<TextStyle> textStyle;
 
   CustomRichText({
     Key key,
-    this.background,
-    this.onTap,
-    this.alignment,
     this.text,
-    TextAlign textAlign,
+    TextAlign textAlign, this.textStyle,
   })
       : this.textAlign = textAlign ?? TextAlign.center,
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return onTap == null
-        ? richText()
-        : CustomFlex(
-      alignment: alignment,
-      color: background,
-      onTap: onTap,
-      child: richText(),
-    );
+    return richText();
   }
 
   Widget richText() {
+    List<TextSpan> children = List();
+    List<TextStyle> styles = List();
+
+    if (textStyle == null) {
+      styles.add(TextStyle(fontSize: 14));
+    } else {
+      styles.addAll(textStyle);
+    }
+    if (text.length > styles.length) {
+      int poor = text.length - styles.length;
+      print(poor);
+      for (int i = 0; i <= poor; i++) {
+        styles.add(styles.last);
+      }
+    }
+    text.map((value) {
+      children.add(TextSpan(text: value, style: styles[text.indexOf(value)]));
+    }).toList();
     return RichText(
-      text: text,
+      text: TextSpan(text: '', children: children),
       textAlign: textAlign,
     );
   }

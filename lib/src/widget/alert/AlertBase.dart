@@ -1,57 +1,145 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
 
-class AlertBase extends StatelessWidget {
+class AlertBase extends StatefulWidget {
   final Widget child;
   final EdgeInsetsGeometry padding;
   final GestureTapCallback onTap;
   final Color backgroundColor;
-  final AlertPosition position;
+  final AlignmentGeometry alignment;
 
-  const AlertBase(
-      {Key key, this.child, this.padding, this.onTap, this.backgroundColor, this.position})
-      : super(key: key);
+  ///是否开始背景模糊
+  final bool gaussian;
+  final bool animatedOpacity;
+
+  ///模糊程度
+  final double fuzzyDegree;
+
+
+  const AlertBase({Key key, this.child,
+    this.padding,
+    this.onTap,
+    this.alignment,
+    int fuzzyDegree,
+    bool gaussian,
+    bool animatedOpacity,
+    this.backgroundColor,
+    bool popup})
+      :this.gaussian=gaussian ?? false,
+        this.animatedOpacity=animatedOpacity ?? false,
+        this.fuzzyDegree=fuzzyDegree ?? 2,
+        super(key: key);
+
+  @override
+  State<StatefulWidget> createState() {
+    return AlertBaseState();
+  }
+}
+
+class AlertBaseState extends State<AlertBase> {
+  Color backgroundColor = getColors(transparent);
+  double opacity = 0;
+  double popupDistance = -Tools.getHeight();
+  double fuzzyDegree = 0;
+  AlignmentGeometry alignment;
+  int index;
+
+  @override
+  void initState() {
+    super.initState();
+    alignment = widget.alignment ?? Alignment.center;
+    if (alignment == Alignment.centerLeft ||
+        alignment == Alignment.topLeft ||
+        alignment == Alignment.bottomLeft) {
+      popupDistance = -Tools.getWidth();
+      //左边推出
+      index = 0;
+    } else if (
+    alignment == Alignment.centerRight ||
+        alignment == Alignment.topRight ||
+        alignment == Alignment.bottomRight) {
+      popupDistance = -Tools.getWidth();
+      //右边弹出
+      index = 2;
+    } else if (
+    alignment == Alignment.topCenter) {
+      popupDistance = -Tools.getHeight();
+      //头部弹出
+      index = 1;
+    } else if (
+    alignment == Alignment.bottomCenter) {
+      popupDistance = -Tools.getHeight();
+      //底部弹出
+      index = 3;
+    } else {
+      //其他或中间渐变
+      index = 5;
+    }
+    WidgetsBinding.instance.addPostFrameCallback((callback) {
+      setState(() {
+        opacity = 1;
+        popupDistance = 0;
+        backgroundColor = widget.backgroundColor ?? getColors(black70);
+        if (widget.gaussian) fuzzyDegree = widget.fuzzyDegree;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    Widget child = childWidget();
+    if (widget.gaussian) {
+      child = backdropFilter(child);
+    }
+    if (index == 5) {
+      if (widget.animatedOpacity) child = animatedOpacity(child);
+    } else {
+      child = animatedPositioned(child);
+    }
+    return child;
+  }
+
+  Widget animatedPositioned(Widget child) {
+    return AnimatedPositioned(
+      left: index == 0 ? popupDistance : 0,
+      top: index == 1 ? popupDistance : 0,
+      right: index == 2 ? popupDistance : 0,
+      bottom: index == 3 ? popupDistance : 0,
+      curve: Curves.easeIn,
+      duration: Duration(milliseconds: 200),
+      child: child,
+    );
+  }
+
+  Widget backdropFilter(Widget child) {
+    return BackdropFilter(
+      filter: ImageFilter.blur(
+          sigmaX: fuzzyDegree, sigmaY: fuzzyDegree),
+      child: child,
+    );
+  }
+
+  Widget animatedOpacity(Widget child) {
+    return AnimatedOpacity(
+      opacity: opacity,
+      curve: Curves.slowMiddle,
+      duration: Duration(milliseconds: 200),
+      child: child,
+    );
+  }
+
+  Widget childWidget() {
     return CustomFlex(
-        color: backgroundColor ?? getColors(black70),
+        color: backgroundColor,
         height: Tools.getHeight(),
         width: Tools.getWidth(),
-        onTap: onTap,
-        padding: padding,
-        mainAxisAlignment: mainAxisAlignment(),
-        crossAxisAlignment: crossAxisAlignment(),
-        children: <Widget>[
-          child,
-        ]);
+        alignment: alignment,
+        onTap: widget.onTap,
+        padding: widget.padding,
+        child: widget.child);
   }
 
-  CrossAxisAlignment crossAxisAlignment() {
-    if (position == AlertPosition.topLeft ||
-        position == AlertPosition.centerLeft ||
-        position == AlertPosition.bottomLeft) {
-      return CrossAxisAlignment.start;
-    } else if (position == AlertPosition.topRight ||
-        position == AlertPosition.centerRight ||
-        position == AlertPosition.bottomRight) {
-      return CrossAxisAlignment.end;
-    } else {
-      return CrossAxisAlignment.center;
-    }
-  }
-
-  MainAxisAlignment mainAxisAlignment() {
-    if (position == AlertPosition.top || position == AlertPosition.topLeft ||
-        position == AlertPosition.topRight) {
-      return MainAxisAlignment.start;
-    } else if (position == AlertPosition.bottom ||
-        position == AlertPosition.bottomLeft ||
-        position == AlertPosition.bottomRight) {
-      return MainAxisAlignment.end;
-    } else {
-      return MainAxisAlignment.center;
-    }
-  }
 }
