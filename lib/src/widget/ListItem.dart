@@ -29,6 +29,7 @@ class ListItem extends StatelessWidget {
   ///右侧widget
   final Widget title;
   final String titleText;
+  final String heroTag;
   final TextStyle titleStyle;
   final double height;
   final Widget prefix;
@@ -55,6 +56,7 @@ class ListItem extends StatelessWidget {
     bool arrow,
     bool enabled,
     this.onTap,
+    this.heroTag,
     this.onDoubleTap,
     this.onLongPress,
     this.title,
@@ -87,6 +89,7 @@ class ListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomFlex(
+      heroTag: heroTag,
       height: height,
       inkWell: inkWell,
       margin: margin,
@@ -114,8 +117,6 @@ class ListItem extends StatelessWidget {
               dense: dense,
               enabled: false,
               selected: false,
-
-              ///展示是否默认显示选中
             )),
         Offstage(
           offstage: !arrow,

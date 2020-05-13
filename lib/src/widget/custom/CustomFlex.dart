@@ -43,6 +43,9 @@ class CustomFlex extends StatelessWidget {
   final bool enabled;
   final bool isScroll;
 
+  ///hero 动画标记
+  final String heroTag;
+
   ///  HitTestBehavior.opaque 自己处理事件 
   ///  HitTestBehavior.deferToChild child处理事件
   ///  HitTestBehavior.translucent 自己和child都可以接收事件
@@ -82,7 +85,7 @@ class CustomFlex extends StatelessWidget {
     this.radius,
     this.borderRadius,
     this.customBorder,
-    this.focusNode,
+    this.focusNode, this.heroTag,
   })
       : this.enabled = enabled ?? true,
         this.isScroll = isScroll ?? false,
@@ -106,37 +109,44 @@ class CustomFlex extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Widget child = childBody();
     if (onTap != null || onLongPress != null) {
-      if (inkWell) {
-        return Material(
-            color: getColors(transparent),
-            child: Ink(
-                child: InkWell(
-                  onTap: onTap,
-                  onLongPress: onLongPress,
-                  onDoubleTap: onDoubleTap,
-                  child: childBody(),
-                  focusNode: focusNode,
-                  focusColor: focusColor,
-                  hoverColor: hoverColor,
-                  highlightColor: highlightColor,
-                  splashColor: splashColor,
-                  radius: radius,
-                  borderRadius: borderRadius,
-                  customBorder: customBorder,
-                )));
-      } else {
-        return GestureDetector(
-          behavior: behavior,
-          onTap: onTap,
-          onDoubleTap: onDoubleTap,
-          onLongPress: onLongPress,
-          child: childBody(),
-        );
-      }
-    } else {
-      return childBody();
+      child = inkWell ? inkWellWidget(child) : gestureDetector(child);
     }
+    if (heroTag != null) {
+      child = Hero(tag: heroTag, child: child);
+    }
+    return child;
+  }
+
+  Widget gestureDetector(Widget child) {
+    return GestureDetector(
+      behavior: behavior,
+      onTap: onTap,
+      onDoubleTap: onDoubleTap,
+      onLongPress: onLongPress,
+      child: child,
+    );
+  }
+
+  Widget inkWellWidget(Widget child) {
+    return Material(
+        color: getColors(transparent),
+        child: Ink(
+            child: InkWell(
+              onTap: onTap,
+              onLongPress: onLongPress,
+              onDoubleTap: onDoubleTap,
+              child: child,
+              focusNode: focusNode,
+              focusColor: focusColor,
+              hoverColor: hoverColor,
+              highlightColor: highlightColor,
+              splashColor: splashColor,
+              radius: radius,
+              borderRadius: borderRadius,
+              customBorder: customBorder,
+            )));
   }
 
   Widget childBody() {
@@ -154,7 +164,7 @@ class CustomFlex extends StatelessWidget {
     }
   }
 
-  Widget containerWidget(Widget childWidget) {
+  Widget containerWidget(Widget child) {
     return Container(
         transform: transform,
         constraints: constraints,
@@ -165,16 +175,14 @@ class CustomFlex extends StatelessWidget {
         padding: padding,
         margin: margin,
         decoration: decoration,
-        child: childWidget);
+        child: child);
   }
 
   Widget singleChildScrollView() {
     return isScroll
-        ? Expanded(
-        child: SingleChildScrollView(
-          child: flex(),
-        ))
-        : flex();
+        ? SingleChildScrollView(
+      child: flex(),
+    ) : flex();
   }
 
   Widget flex() {
