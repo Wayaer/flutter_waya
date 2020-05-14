@@ -56,16 +56,6 @@ enum InputTextType {
   negative, //负数
 }
 
-
-//时间选择器 类型
-enum DateTimePickerType {
-  year,
-  month,
-  day,
-  hour,
-  minute,
-  second
-}
 //刷新类型
 enum RefreshCompletedType {
   refresh,
