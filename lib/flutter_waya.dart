@@ -22,6 +22,7 @@ export 'src/tools/date/DateFormat.dart';
 export 'src/tools/date/EnglishLocale.dart';
 export 'src/tools/dio/DioTools.dart';
 export 'src/widget/CountDownSkip.dart';
+export 'src/widget/DottedLine.dart';
 export 'src/widget/LabeledRadio.dart';
 export 'src/widget/ListBuilder.dart';
 export 'src/widget/ListItem.dart';
