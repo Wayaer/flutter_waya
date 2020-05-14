@@ -32,8 +32,7 @@ class CommonWidget {
     );
   }
 
-  static Widget notDataWidget(
-      {double size, String showText, TextStyle textStyle, double, margin}) {
+  static Widget notDataWidget({double size, String showText, TextStyle textStyle, double, margin}) {
     return Container(
       margin: margin ?? EdgeInsets.all(100),
       child: Center(

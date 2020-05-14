@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_waya/src/tools/LogTools.dart';
 import 'package:flutter_waya/src/tools/dio/InterceptorWrap.dart';
@@ -21,18 +22,17 @@ class DioTools {
   static DioError _error;
   static CancelToken _cancelToken = CancelToken();
   static BaseOptions _options;
-  static bool _cookie = false;
   static InterceptorWrap _interceptorWrap;
 
   //单例模式
   factory DioTools() => getHttp();
 
-  static DioTools getHttp({BaseOptions options, bool addCookie: false}) {
-    _cookie = addCookie;
-    return DioTools.internal(options: options);
+  ///安装  cookie_jar  cookieJar:CookieJar()
+  static DioTools getHttp({BaseOptions options, CookieJar cookieJar}) {
+    return DioTools.internal(options: options, cookieJar: cookieJar);
   }
 
-  DioTools.internal({BaseOptions options}) {
+  DioTools.internal({BaseOptions options, CookieJar cookieJar}) {
     _dio = Dio();
     if (options != null) {
       Map<String, dynamic> _headers = {};
@@ -43,7 +43,7 @@ class DioTools {
       _options.responseType = options?.responseType ?? ResponseType.json;
       _options.headers = options?.headers ?? _headers;
     }
-    _interceptorWrap = InterceptorWrap(cookie: _cookie);
+    _interceptorWrap = InterceptorWrap(cookieJar);
     _dio.interceptors.add(_interceptorWrap);
   }
 

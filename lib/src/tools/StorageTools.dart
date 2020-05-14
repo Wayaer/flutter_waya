@@ -1,22 +1,22 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:synchronized/synchronized.dart';
 
 class StorageTools {
   static StorageTools _singleton;
-  static SharedPreferences _preferences;
+  static var _preferences;
   static Lock _lock = Lock();
 
-  static Future<StorageTools> getInstance() async {
+  ///传入 SharedPreferences.getInstance()
+  static Future<StorageTools> getInstance(var preferences) async {
     if (_singleton == null) {
       await _lock.synchronized(() async {
         if (_singleton == null) {
           /// keep local instance till it is fully initialized.
           /// 保持本地实例直到完全初始化。
           var singleton = StorageTools();
-          await singleton.init();
+          if (preferences != null) _preferences = preferences;
           singleton = singleton;
         }
       });
@@ -24,11 +24,6 @@ class StorageTools {
     return _singleton;
   }
 
-  StorageTools();
-
-  Future init() async {
-    _preferences = await SharedPreferences.getInstance();
-  }
 
   /// put object.
   static Future<bool> putObject(String key, Object value) {
@@ -71,8 +66,8 @@ class StorageTools {
   /// get object list.
   static List<Map> getObjectList(String key) {
     if (_preferences == null) return null;
-    List<String> dataLis = _preferences.getStringList(key);
-    return dataLis?.map((value) {
+    List<String> data = _preferences.getStringList(key);
+    return data?.map((value) {
       Map dataMap = json.decode(value);
       return dataMap;
     })?.toList();

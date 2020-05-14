@@ -21,7 +21,7 @@ rm -rf ./ios/${ipa}
 echo "开始获取 packages 插件资源"
 flutter packages get
 echo "开始flutter build"
-flutter build ios -t lib/main.dart  --release --flavor ${env}
+flutter build ios -t lib/main.dart --release --flavor ${env}
 
 # shellcheck disable=SC2164
 cd ios
