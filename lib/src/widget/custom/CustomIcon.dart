@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/src/tools/Tools.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 
-import 'CustomFlex.dart';
 
 class CustomIcon extends StatelessWidget {
   ///需要什么属性  自行添加

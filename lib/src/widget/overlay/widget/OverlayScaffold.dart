@@ -2,10 +2,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
-import 'package:flutter_waya/src/tools/MediaQueryTools.dart';
-import 'package:flutter_waya/src/tools/Tools.dart';
-import 'package:flutter_waya/src/widget/custom/overlay/OverlayBase.dart';
-import 'package:flutter_waya/src/widget/refresh/Refreshed.dart';
 
 class OverlayScaffold extends StatelessWidget {
   final EdgeInsetsGeometry padding;

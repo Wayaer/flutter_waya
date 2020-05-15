@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/src/constant/WayIcon.dart';
-import 'package:flutter_waya/src/tools/Tools.dart';
 
 class CustomCheckBox extends StatefulWidget {
   final ValueChanged<bool> onChange;

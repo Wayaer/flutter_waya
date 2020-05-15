@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'AzCommon.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 
 /// on all sus section callback(map: Used to scroll the list to the specified tag location).
 typedef void OnSusSectionCallBack(Map<String, int> map);

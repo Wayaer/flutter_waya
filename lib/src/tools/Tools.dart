@@ -11,7 +11,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/src/constant/WayEnum.dart';
-import 'package:flutter_waya/src/tools/MediaQueryTools.dart';
 
 isDebug() {
   return !kReleaseMode;

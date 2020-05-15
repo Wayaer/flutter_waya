@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_waya/src/tools/MediaQueryTools.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 
 class CustomNestedScrollView extends StatefulWidget {
   final ScrollController controller;
