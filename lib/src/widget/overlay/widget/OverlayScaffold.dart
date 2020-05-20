@@ -12,6 +12,12 @@ class OverlayScaffold extends StatelessWidget {
   final bool paddingStatusBar;
   final bool enablePullDown;
 
+  ///点击返回是否关闭叠层
+  final bool onWillPopOverlayClose;
+
+  ///返回按键监听
+  final WillPopCallback onWillPop;
+
   ///hero 动画标记
   final String heroTag;
 
@@ -51,6 +57,7 @@ class OverlayScaffold extends StatelessWidget {
     bool extendBody,
     DragStartBehavior drawerDragStartBehavior,
     double appBarHeight,
+    bool onWillPopOverlayClose,
     this.appBar,
     this.body,
     this.padding,
@@ -70,11 +77,14 @@ class OverlayScaffold extends StatelessWidget {
     this.bottomSheet,
     this.backgroundColor, //内容的背景颜色，默认使用的是 ThemeData.scaffoldBackgroundColor 的值
     this.resizeToAvoidBottomPadding, //类似于 Android 中的 android:windowSoftInputMode=”adjustResize”，控制界面内容 body 是否重新布局来避免底部被覆盖了，比如当键盘显示的时候，重新布局避免被键盘盖住内容。默认值为 true。
-    this.resizeToAvoidBottomInset, this.heroTag,
+    this.resizeToAvoidBottomInset,
+    this.heroTag,
+    this.onWillPop,
   })
       : this.isScroll = isScroll ?? false,
         this.appBarHeight = appBarHeight ?? Tools.getHeight(45),
         this.isolationBody = isolationBody ?? false,
+        this.onWillPopOverlayClose = onWillPopOverlayClose ?? true,
         this.paddingStatusBar = paddingStatusBar ?? false,
         this.enablePullDown = enablePullDown ?? false,
         this.primary = primary ?? true,
@@ -86,13 +96,16 @@ class OverlayScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-        onWillPop: () async {
-          print(overlayState.overlayEntries.length);
-          if (overlayState.overlayEntries.length > 1) {
-            AlertTools.close();
-            return false;
+        onWillPop: onWillPop ?? () async {
+          if (onWillPopOverlayClose) {
+            if (overlayState.overlayEntries.length > 1) {
+              AlertTools.close();
+              return false;
+            } else {
+              return true;
+            }
           } else {
-            return true;
+            return false;
           }
         },
         child: Scaffold(

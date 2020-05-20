@@ -313,15 +313,19 @@ class TextInputField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return header != null || footer != null
-        ? Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-      //输入框头部
-      Offstage(offstage: header == null, child: header),
-      textField(context),
-      //输入框底部
-      Offstage(offstage: footer == null, child: footer)
-    ])
-        : textField(context);
+    Widget child = textField(context);
+    if (header != null || footer != null) {
+      List<Widget> children = List();
+      if (header != null) {
+        children.add(header);
+      }
+      children.add(child);
+      if (footer != null) {
+        children.add(footer);
+      }
+      child = Column(mainAxisSize: MainAxisSize.min, children: children);
+    }
+    return child;
   }
 
   Widget textField(BuildContext context) {
@@ -378,7 +382,6 @@ class TextInputField extends StatelessWidget {
             counterStyle: counterStyle,
             //显示在输入的下划线外右下角的提示,可以是任何Widget ，counterText与counter只能存在一个
             counter: counter,
-
             // 输入框的文字提示
             labelText: labelText,
             //显示在输入框内的提示语，一旦输入框获取焦点就字体缩小并上移到输入上方，作为提示使用

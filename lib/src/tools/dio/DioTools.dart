@@ -63,7 +63,7 @@ class DioTools {
   }
 
   Future<Map<String, dynamic>> post(String url,
-      {Map<String, dynamic> params, data}) async {
+      {Map<String, dynamic> params,  data}) async {
     try {
       log("POST url:" + url + "  params:" + params.toString() + "  data:" +
           data.toString());
@@ -73,6 +73,7 @@ class DioTools {
       return jsonDecode(response.toString());
     } catch (e) {
       _error = e;
+      log(_error);
       return jsonDecode(_error.message);
     }
   }

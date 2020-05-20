@@ -23,6 +23,7 @@ class AlertSureCancel extends StatelessWidget {
   final AlignmentGeometry alignment;
   final bool animatedOpacity;
   final bool gaussian;
+  final bool addMaterial;
 
   AlertSureCancel({
     Key key,
@@ -41,7 +42,7 @@ class AlertSureCancel extends StatelessWidget {
     this.sure,
     this.cancel,
     this.backsideTap, this.alignment, this.decoration,
-    this.animatedOpacity, this.gaussian,
+    this.animatedOpacity, this.gaussian, this.addMaterial,
   })
       : this.cancelText = cancelText ?? 'cancle',
         this.sureText = sureText ?? 'sure',
@@ -59,6 +60,7 @@ class AlertSureCancel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertBase(
+        addMaterial: addMaterial,
         gaussian: gaussian,
         onTap: backsideTap,
         alignment: alignment,

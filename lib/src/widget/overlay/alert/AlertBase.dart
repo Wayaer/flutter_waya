@@ -10,6 +10,7 @@ class AlertBase extends StatefulWidget {
   final GestureTapCallback onTap;
   final Color backgroundColor;
   final AlignmentGeometry alignment;
+  final bool addMaterial;
 
   ///是否开始背景模糊
   final bool gaussian;
@@ -27,8 +28,9 @@ class AlertBase extends StatefulWidget {
     bool gaussian,
     bool animatedOpacity,
     this.backgroundColor,
-    bool popup})
+    bool popup, bool addMaterial})
       :this.gaussian=gaussian ?? false,
+        this.addMaterial=addMaterial ?? false,
         this.animatedOpacity=animatedOpacity ?? false,
         this.fuzzyDegree=fuzzyDegree ?? 2,
         super(key: key);
@@ -98,6 +100,12 @@ class AlertBaseState extends State<AlertBase> {
       if (widget.animatedOpacity) child = animatedOpacity(child);
     } else {
       child = animatedPositioned(child);
+    }
+    if (widget.addMaterial) {
+      child = Material(color: getColors(transparent),
+          child: MediaQuery(
+              data: MediaQueryData.fromWindow(window),
+              child: child));
     }
     return child;
   }
