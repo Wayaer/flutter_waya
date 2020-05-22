@@ -36,6 +36,8 @@ class SearchInput extends StatelessWidget {
   final Color fillColor;
   final double height;
   final double width;
+  final bool autoFocus;
+  final FocusNode focusNode;
 
   SearchInput({
     Key key,
@@ -68,7 +70,7 @@ class SearchInput extends StatelessWidget {
     this.alignment,
     this.fillColor,
     this.height,
-    this.width,
+    this.width, this.autoFocus, this.focusNode,
   })
       : this.icon = icon ?? WayIcon.search,
         this.iconSize = iconSize ?? Tools.getWidth(14),
@@ -78,6 +80,13 @@ class SearchInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> children = List();
+    if (extraPrefix != null) {
+      children.add(extraPrefix);
+      children.add(Expanded(child: textInput()));
+    } else {
+      children = null;
+    }
     return CustomFlex(
       decoration: decoration,
       margin: margin,
@@ -85,7 +94,9 @@ class SearchInput extends StatelessWidget {
       width: width,
       alignment: alignment,
       padding: padding,
-      child: textInput(),
+      direction: Axis.horizontal,
+      children: children,
+      child: extraPrefix == null ? textInput() : null,
     );
   }
 
@@ -93,6 +104,7 @@ class SearchInput extends StatelessWidget {
     return TextInputField(
       controller: controller,
       isDense: true,
+      focusNode: focusNode,
       fillColor: fillColor,
       filled: true,
       focusedBorder: inputBorder(
@@ -105,7 +117,7 @@ class SearchInput extends StatelessWidget {
       cursorColor: cursorColor ?? enabledBorderColor ?? getColors(blue),
       prefixIcon: prefix(),
       onChanged: onChanged,
-      icon: extraPrefix,
+      autoFocus: autoFocus,
       suffix: suffix(),
     );
   }
