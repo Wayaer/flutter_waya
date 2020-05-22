@@ -98,8 +98,8 @@ class Tools {
     return date.toString();
   }
 
-///  * 全面屏适配
-///  * @returns {number} 返回全面屏对应的16：9 屏幕高度
+  ///  * 全面屏适配
+  ///  * @returns {number} 返回全面屏对应的16：9 屏幕高度
 
   static double phoneFitHeight(BuildContext context) {
     double h = MediaQueryTools.getHeight();
@@ -255,11 +255,11 @@ class Tools {
     }
   }
 
-  static popBack(navigator) {
+  static popBack(navigator, {bool nullBack: true}) {
     Future future = navigator;
     future.then((value) {
       if (value == null) {
-        NavigatorTools.getInstance().pop();
+        if (nullBack) NavigatorTools.getInstance().pop();
       } else {
         NavigatorTools.getInstance().pop(value);
       }
