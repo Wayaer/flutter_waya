@@ -24,11 +24,13 @@ class TabBarWidget extends StatelessWidget {
   final EdgeInsetsGeometry tabBarPadding;
   final EdgeInsetsGeometry tabBarViewMargin;
   final ScrollPhysics physics;
-  final Decoration decoration;
+  final Decoration tabBarDecoration;
   final Decoration indicator; //tabBar 指示器
   final double tabBarViewHeight;
   final Color underlineBackgroundColor;
   final EdgeInsetsGeometry indicatorPadding;
+  final BoxConstraints tabBarViewConstraints;
+  final Decoration tabBarViewDecoration;
 
   TabBarWidget({
     Key key,
@@ -38,7 +40,7 @@ class TabBarWidget extends StatelessWidget {
     @required this.tabBar,
     this.controller,
     this.indicator,
-    this.decoration,
+    this.tabBarDecoration,
     this.labelPadding,
     this.labelColor,
     this.unselectedLabelColor,
@@ -54,7 +56,7 @@ class TabBarWidget extends StatelessWidget {
     this.tabBarPadding,
     this.physics,
     this.header,
-    this.footer,
+    this.footer, this.tabBarViewConstraints, this.tabBarViewDecoration,
   })
       : this.underlineBackgroundColor = underlineBackgroundColor ??
       getColors(transparent),
@@ -87,10 +89,14 @@ class TabBarWidget extends StatelessWidget {
         child: Container(
             margin: tabBarViewMargin,
             padding: tabBarViewPadding,
+            decoration: tabBarViewDecoration,
+            constraints: tabBarViewConstraints,
             child: TabBarView(controller: controller, children: tabBarView)))
         : Container(
       margin: tabBarViewMargin,
       padding: tabBarViewPadding,
+      decoration: tabBarViewDecoration,
+      constraints: tabBarViewConstraints,
       height: tabBarViewHeight,
       child: TabBarView(controller: controller, children: tabBarView),
     );
@@ -100,7 +106,7 @@ class TabBarWidget extends StatelessWidget {
     return Container(
       margin: tabBarMargin,
       padding: tabBarPadding,
-      decoration: decoration ??
+      decoration: tabBarDecoration ??
           BoxDecoration(
               border: Border(bottom: BorderSide(width: underlineHeight ?? 0,
                   color: underlineBackgroundColor))),
