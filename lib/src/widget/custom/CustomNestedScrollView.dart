@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_waya/flutter_waya.dart';
+import 'package:flutter_waya/src/constant/WayColor.dart';
 
 class CustomNestedScrollView extends StatefulWidget {
   final ScrollController controller;
@@ -42,6 +43,8 @@ class CustomNestedScrollView extends StatefulWidget {
   final DragStartBehavior dragStartBehavior;
   final Axis scrollDirection;
   final bool reverse;
+
+  ///整个头部 是否显示
   final bool sliverAppBar;
   final List<StretchMode> stretchModes;
 
@@ -61,7 +64,7 @@ class CustomNestedScrollView extends StatefulWidget {
     bool automaticallyImplyLeading,
     List<StretchMode> stretchModes,
     this.title,
-    this.backgroundColor,
+    Color backgroundColor,
     this.tabBarBody,
     this.physics,
     this.expandedHeight,
@@ -77,6 +80,7 @@ class CustomNestedScrollView extends StatefulWidget {
     this.slivers, this.dragStartBehavior,
     this.scrollDirection, bool sliverAppBar, this.flexibleSpaceTitle, this.flexibleSpaceTitlePadding})
       : this.pinned = pinned ?? true,
+        this.backgroundColor=backgroundColor ?? getColors(white),
         this.sliverAppBar = sliverAppBar ?? true,
         this.automaticallyImplyLeading = automaticallyImplyLeading ?? true,
         this.floating = floating ?? true,

@@ -71,3 +71,7 @@ enum StretchyHeaderAlignment {
   center,
   top,
 }
+enum TabBarLevelPosition {
+  right,
+  left,
+}
