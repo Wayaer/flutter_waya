@@ -31,7 +31,7 @@ class ListBuilder extends StatelessWidget {
     this.physics,
     this.controller,
     this.itemExtent,
-    this.padding,
+    EdgeInsetsGeometry padding,
     this.noData,
     this.shrinkWrap: true,
     this.enablePullDown: false,
@@ -42,7 +42,9 @@ class ListBuilder extends StatelessWidget {
     this.header,
     this.footer,
     this.footerTextStyle,
-  }) : super(key: key);
+  })
+      : this.padding=padding ?? EdgeInsets.zero,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -53,8 +55,12 @@ class ListBuilder extends StatelessWidget {
   }
 
   Widget listViewBuilder() {
-    return itemCount > 0
-        ? ListView.builder(
+    if (itemCount == 0) {
+      return noData ??
+          CommonWidget.notDataWidget(
+              margin: EdgeInsets.all(Tools.getWidth(10)));
+    }
+    return ListView.builder(
       physics: physics,
       shrinkWrap: shrinkWrap,
       controller: controller,
@@ -62,8 +68,7 @@ class ListBuilder extends StatelessWidget {
       itemCount: itemCount,
       itemExtent: itemExtent,
       padding: padding,
-    )
-        : noData ?? CommonWidget.notDataWidget();
+    );
   }
 
   Widget refresherListView() {

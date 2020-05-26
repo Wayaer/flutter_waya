@@ -42,6 +42,7 @@ class CustomFlex extends StatelessWidget {
   final Matrix4 transform;
   final bool enabled;
   final bool isScroll;
+  final ScrollPhysics physics;
 
   ///hero 动画标记
   final String heroTag;
@@ -85,7 +86,7 @@ class CustomFlex extends StatelessWidget {
     this.radius,
     this.borderRadius,
     this.customBorder,
-    this.focusNode, this.heroTag,
+    this.focusNode, this.heroTag, this.physics,
   })
       : this.enabled = enabled ?? true,
         this.isScroll = isScroll ?? false,
@@ -181,6 +182,7 @@ class CustomFlex extends StatelessWidget {
   Widget singleChildScrollView() {
     return isScroll
         ? SingleChildScrollView(
+      physics: physics,
       child: flex(),
     ) : flex();
   }
