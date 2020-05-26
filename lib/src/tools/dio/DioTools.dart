@@ -57,7 +57,6 @@ class DioTools {
       return jsonDecode(response.toString());
     } catch (e) {
       _error = e;
-      log(_error);
       return jsonDecode(_error.message);
     }
   }
@@ -73,7 +72,6 @@ class DioTools {
       return jsonDecode(response.toString());
     } catch (e) {
       _error = e;
-      log(_error);
       return jsonDecode(_error.message);
     }
   }
