@@ -16,7 +16,7 @@ class TabBarMerge extends StatelessWidget {
   final Widget footer;
   final ScrollPhysics physics;
   final List<Widget> tabBarView;
-  final double tabBarViewHeight;
+  final double viewHeight;
   final TabController controller;
 
   ///以下属性主要针对 tabBarView
@@ -24,7 +24,6 @@ class TabBarMerge extends StatelessWidget {
   final EdgeInsetsGeometry padding;
   final Decoration decoration;
   final BoxConstraints constraints;
-  final double height;
   final double width;
 
   TabBarMerge({
@@ -33,19 +32,18 @@ class TabBarMerge extends StatelessWidget {
     this.physics,
     this.header,
     this.footer,
-    double tabBarViewHeight,
+    double viewHeight,
     @required this.tabBar,
     this.tabBarView,
-    this.controller,
+    @required this.controller,
     this.margin,
     this.padding,
     this.decoration,
     this.constraints,
-    this.height,
     this.width,
   })
       :
-        this.tabBarViewHeight=tabBarViewHeight ?? 0,
+        this.viewHeight=viewHeight ?? 0,
         super(key: key);
 
   @override
@@ -68,7 +66,7 @@ class TabBarMerge extends StatelessWidget {
   }
 
   Widget tabBarViewWidget() {
-    return tabBarViewHeight == 0
+    return viewHeight == 0
         ? Expanded(
         child: Container(
             margin: margin,
@@ -83,7 +81,7 @@ class TabBarMerge extends StatelessWidget {
         decoration: decoration,
         constraints: constraints,
         width: width,
-        height: height,
+        height: viewHeight,
         child: TabBarView(controller: controller, children: tabBarView));
   }
 
