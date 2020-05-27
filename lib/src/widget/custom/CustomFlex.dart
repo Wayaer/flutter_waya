@@ -183,6 +183,7 @@ class CustomFlex extends StatelessWidget {
     return isScroll
         ? SingleChildScrollView(
       physics: physics,
+      scrollDirection: direction,
       child: flex(),
     ) : flex();
   }

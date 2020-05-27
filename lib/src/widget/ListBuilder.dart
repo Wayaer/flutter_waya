@@ -24,6 +24,9 @@ class ListBuilder extends StatelessWidget {
   final Widget footer;
   final TextStyle footerTextStyle;
 
+  ///是否逆转
+  final bool reverse;
+
   ListBuilder({
     Key key,
     @required this.itemBuilder,
@@ -32,6 +35,7 @@ class ListBuilder extends StatelessWidget {
     this.controller,
     this.itemExtent,
     EdgeInsetsGeometry padding,
+    bool reverse,
     this.noData,
     this.shrinkWrap: true,
     this.enablePullDown: false,
@@ -44,6 +48,7 @@ class ListBuilder extends StatelessWidget {
     this.footerTextStyle,
   })
       : this.padding=padding ?? EdgeInsets.zero,
+        this.reverse=reverse ?? false,
         super(key: key);
 
   @override
@@ -62,6 +67,7 @@ class ListBuilder extends StatelessWidget {
     }
     return ListView.builder(
       physics: physics,
+      reverse: reverse,
       shrinkWrap: shrinkWrap,
       controller: controller,
       itemBuilder: itemBuilder,
