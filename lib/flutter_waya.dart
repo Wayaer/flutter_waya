@@ -18,6 +18,7 @@ export 'src/tools/dio/DioTools.dart';
 export 'src/widget/CountDownSkip.dart';
 export 'src/widget/DottedLine.dart';
 export 'src/widget/GridBuilder.dart';
+export 'src/widget/HintPoint.dart';
 export 'src/widget/LabeledRadio.dart';
 export 'src/widget/ListBuilder.dart';
 export 'src/widget/ListItem.dart';

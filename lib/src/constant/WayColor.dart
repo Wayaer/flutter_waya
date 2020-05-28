@@ -11,6 +11,7 @@ const String boxShadowColor = 'boxShadowColor';
 const String black70 = 'black70';
 const String black90 = 'black90';
 const String greenAccent = 'greenAccent';
+const String red = 'red';
 
 Color getColors(String color) {
   return ColorInfo[color];
@@ -19,6 +20,7 @@ Color getColors(String color) {
 const ColorInfo = {
   '$transparent': Colors.transparent,
   '$white': Colors.white,
+  '$red': Colors.red,
   '$white50': Color(0x50FFFFFF),
   '$black': Color(0xFF000000),
   '$black70': Color(0x70000000),
