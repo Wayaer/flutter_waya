@@ -23,6 +23,7 @@ class ListBuilder extends StatelessWidget {
   final Widget header;
   final Widget footer;
   final TextStyle footerTextStyle;
+  final Axis scrollDirection;
 
   ///是否逆转
   final bool reverse;
@@ -34,6 +35,7 @@ class ListBuilder extends StatelessWidget {
     this.physics,
     this.controller,
     this.itemExtent,
+    Axis scrollDirection,
     EdgeInsetsGeometry padding,
     bool reverse,
     this.noData,
@@ -48,6 +50,7 @@ class ListBuilder extends StatelessWidget {
     this.footerTextStyle,
   })
       : this.padding=padding ?? EdgeInsets.zero,
+        this.scrollDirection=scrollDirection ?? Axis.vertical,
         this.reverse=reverse ?? false,
         super(key: key);
 
@@ -66,6 +69,7 @@ class ListBuilder extends StatelessWidget {
               margin: EdgeInsets.all(Tools.getWidth(10)));
     }
     return ListView.builder(
+      scrollDirection: scrollDirection,
       physics: physics,
       reverse: reverse,
       shrinkWrap: shrinkWrap,

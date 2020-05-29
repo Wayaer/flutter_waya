@@ -12,6 +12,9 @@ class AlertBase extends StatefulWidget {
   final AlignmentGeometry alignment;
   final bool addMaterial;
 
+  ///是否开启动画
+  final bool animated;
+
   ///是否开始背景模糊
   final bool gaussian;
   final bool animatedOpacity;
@@ -28,9 +31,11 @@ class AlertBase extends StatefulWidget {
     bool gaussian,
     bool animatedOpacity,
     this.backgroundColor,
-    bool popup, bool addMaterial})
+    bool popup, bool addMaterial,
+    bool animated})
       :this.gaussian=gaussian ?? false,
         this.addMaterial=addMaterial ?? false,
+        this.animated=animated ?? true,
         this.animatedOpacity=animatedOpacity ?? false,
         this.fuzzyDegree=fuzzyDegree ?? 2,
         super(key: key);
@@ -48,45 +53,51 @@ class AlertBaseState extends State<AlertBase> {
   double fuzzyDegree = 0;
   AlignmentGeometry alignment;
   int index;
+  bool animated = true;
 
   @override
   void initState() {
     super.initState();
-    alignment = widget.alignment ?? Alignment.center;
-    if (alignment == Alignment.centerLeft ||
-        alignment == Alignment.topLeft ||
-        alignment == Alignment.bottomLeft) {
-      popupDistance = -Tools.getWidth();
-      //左边推出
-      index = 0;
-    } else if (
-    alignment == Alignment.centerRight ||
-        alignment == Alignment.topRight ||
-        alignment == Alignment.bottomRight) {
-      popupDistance = -Tools.getWidth();
-      //右边弹出
-      index = 2;
-    } else if (
-    alignment == Alignment.topCenter) {
-      popupDistance = -Tools.getHeight();
-      //头部弹出
-      index = 1;
-    } else if (
-    alignment == Alignment.bottomCenter) {
-      popupDistance = -Tools.getHeight();
-      //底部弹出
-      index = 3;
-    } else {
-      //其他或中间渐变
-      index = 5;
+    animated = widget.animated ?? true;
+    if (animated) {
+      alignment = widget.alignment ?? Alignment.center;
+      if (alignment == Alignment.centerLeft ||
+          alignment == Alignment.topLeft ||
+          alignment == Alignment.bottomLeft) {
+        popupDistance = -Tools.getWidth();
+        //左边推出
+        index = 0;
+      } else if (
+      alignment == Alignment.centerRight ||
+          alignment == Alignment.topRight ||
+          alignment == Alignment.bottomRight) {
+        popupDistance = -Tools.getWidth();
+        //右边弹出
+        index = 2;
+      } else if (
+      alignment == Alignment.topCenter) {
+        popupDistance = -Tools.getHeight();
+        //头部弹出
+        index = 1;
+      } else if (
+      alignment == Alignment.bottomCenter) {
+        popupDistance = -Tools.getHeight();
+        //底部弹出
+        index = 3;
+      } else {
+        //其他或中间渐变
+        index = 5;
+      }
     }
     WidgetsBinding.instance.addPostFrameCallback((callback) {
-      setState(() {
-        opacity = 1;
-        popupDistance = 0;
-        backgroundColor = widget.backgroundColor ?? getColors(black70);
-        if (widget.gaussian) fuzzyDegree = widget.fuzzyDegree;
-      });
+      if (animated) {
+        setState(() {
+          opacity = 1;
+          popupDistance = 0;
+          backgroundColor = widget.backgroundColor ?? getColors(black70);
+          if (widget.gaussian) fuzzyDegree = widget.fuzzyDegree;
+        });
+      }
     });
   }
 
@@ -96,10 +107,12 @@ class AlertBaseState extends State<AlertBase> {
     if (widget.gaussian) {
       child = backdropFilter(child);
     }
-    if (index == 5) {
-      if (widget.animatedOpacity) child = animatedOpacity(child);
-    } else {
-      child = animatedPositioned(child);
+    if (animated) {
+      if (index == 5) {
+        if (widget.animatedOpacity) child = animatedOpacity(child);
+      } else {
+        child = animatedPositioned(child);
+      }
     }
     if (widget.addMaterial) {
       child = Material(color: getColors(transparent),
