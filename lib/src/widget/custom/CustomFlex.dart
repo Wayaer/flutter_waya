@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
 
 class CustomFlex extends StatelessWidget {
-  ///自定义横向竖向布局 加入了点击事件
-  ///公用 点击事件
   final bool inkWell;
   final GestureTapCallback onTap;
   final GestureTapCallback onDoubleTap;
