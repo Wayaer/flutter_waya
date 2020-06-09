@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-
 class CustomIcon extends StatelessWidget {
   ///需要什么属性  自行添加
   final IconData icon;
@@ -10,7 +9,7 @@ class CustomIcon extends StatelessWidget {
   final ImageProvider imageProvider;
 
   ///图片转icon
-  final Image image;
+  final Widget image;
 
   ///显示图片
   final TextDirection textDirection;
@@ -67,15 +66,15 @@ class CustomIcon extends StatelessWidget {
     this.alignment,
     this.imageProvider,
     this.image,
-    this.title,})
-      : this.maxLines = maxLines ?? 1,
+    this.title,
+  })  : this.maxLines = maxLines ?? 1,
         this.overflow = overflow ?? TextOverflow.ellipsis,
         this.iconSize = iconSize ?? Tools.getWidth(15),
         this.reversal = reversal ?? false,
         this.direction = direction ?? Axis.horizontal,
         this.spacing = spacing ?? Tools.getWidth(4),
-        this.crossAxisAlignment = crossAxisAlignment ??
-            CrossAxisAlignment.center,
+        this.crossAxisAlignment =
+            crossAxisAlignment ?? CrossAxisAlignment.center,
         this.mainAxisAlignment = mainAxisAlignment ?? MainAxisAlignment.center,
         super(key: key);
 
@@ -121,13 +120,13 @@ class CustomIcon extends StatelessWidget {
     return title != null
         ? title
         : Text(
-      titleText ?? '',
-      style: titleStyle,
-      textAlign: TextAlign.start,
-      maxLines: maxLines,
-      textDirection: textDirection,
-      overflow: overflow,
-    );
+            titleText ?? '',
+            style: titleStyle,
+            textAlign: TextAlign.start,
+            maxLines: maxLines,
+            textDirection: textDirection,
+            overflow: overflow,
+          );
   }
 
   bool isChildren() {
@@ -147,9 +146,8 @@ class CustomIcon extends StatelessWidget {
       ///帮助盲人或者视力有障碍的用户提供语言辅助描述
     }
     if (imageProvider != null) {
-      listWidget.add(ImageIcon(imageProvider, color: iconColor,
-          size: iconSize,
-          semanticLabel: semanticLabel));
+      listWidget.add(ImageIcon(imageProvider,
+          color: iconColor, size: iconSize, semanticLabel: semanticLabel));
     }
     if (image != null) {
       listWidget.add(image);

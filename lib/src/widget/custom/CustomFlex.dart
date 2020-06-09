@@ -49,6 +49,7 @@ class CustomFlex extends StatelessWidget {
   ///  HitTestBehavior.deferToChild child处理事件
   ///  HitTestBehavior.translucent 自己和child都可以接收事件
   final HitTestBehavior behavior;
+  final ScrollController scrollController;
 
   CustomFlex({
     Key key,
@@ -65,6 +66,7 @@ class CustomFlex extends StatelessWidget {
     GestureTapCallback onDoubleTap,
     GestureLongPressCallback onLongPress,
     this.children,
+    this.scrollController,
     this.textDirection,
     this.textBaseline,
     this.child,
@@ -108,14 +110,30 @@ class CustomFlex extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget child = childBody();
-    if (onTap != null || onLongPress != null) {
-      child = inkWell ? inkWellWidget(child) : gestureDetector(child);
+    Widget widget;
+    if (children != null) {
+      widget = flex();
+      if (isScroll) {
+        widget = singleChildScrollView(child: widget);
+      }
+    } else {
+      widget = child;
+    }
+    if (padding != null ||
+        margin != null ||
+        height != null ||
+        width != null ||
+        color != null ||
+        decoration != null) {
+      widget = container(child: widget);
+    }
+    if (onTap != null || onDoubleTap != null || onLongPress != null) {
+      widget = inkWell ? inkWellWidget(widget) : gestureDetector(widget);
     }
     if (heroTag != null) {
-      child = Hero(tag: heroTag, child: child);
+      widget = Hero(tag: heroTag, child: widget);
     }
-    return child;
+    return widget ?? Container(child: child);
   }
 
   Widget gestureDetector(Widget child) {
@@ -148,22 +166,8 @@ class CustomFlex extends StatelessWidget {
             )));
   }
 
-  Widget childBody() {
-    if (children != null && children.length > 0) {
-      return padding != null ||
-          margin != null ||
-          height != null ||
-          width != null ||
-          color != null ||
-          decoration != null
-          ? containerWidget(singleChildScrollView())
-          : singleChildScrollView();
-    } else {
-      return containerWidget(child);
-    }
-  }
 
-  Widget containerWidget(Widget child) {
+  Widget container({Widget child}) {
     return Container(
         transform: transform,
         constraints: constraints,
@@ -177,13 +181,12 @@ class CustomFlex extends StatelessWidget {
         child: child);
   }
 
-  Widget singleChildScrollView() {
-    return isScroll
-        ? SingleChildScrollView(
-      physics: physics,
-      scrollDirection: direction,
-      child: flex(),
-    ) : flex();
+  Widget singleChildScrollView({Widget child}) {
+    return SingleChildScrollView(
+        physics: physics,
+        controller: scrollController,
+        scrollDirection: direction,
+        child: child);
   }
 
   Widget flex() {
