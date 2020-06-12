@@ -64,7 +64,7 @@ class AlertSureCancel extends StatelessWidget {
         gaussian: gaussian,
         onTap: backsideTap,
         alignment: alignment,
-        child: CustomFlex(
+        child: Universal(
           width: width,
           height: height,
           mainAxisAlignment: MainAxisAlignment.end,

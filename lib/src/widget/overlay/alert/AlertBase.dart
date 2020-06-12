@@ -153,7 +153,7 @@ class AlertBaseState extends State<AlertBase> {
   }
 
   Widget childWidget() {
-    return CustomFlex(
+    return Universal(
         color: backgroundColor,
         height: Tools.getHeight(),
         width: Tools.getWidth(),

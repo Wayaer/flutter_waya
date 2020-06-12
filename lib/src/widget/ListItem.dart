@@ -5,7 +5,7 @@ import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/src/constant/WayIcon.dart';
 import 'package:flutter_waya/src/constant/WayStyles.dart';
 import 'package:flutter_waya/src/tools/Tools.dart';
-import 'package:flutter_waya/src/widget/custom/CustomFlex.dart';
+import 'package:flutter_waya/src/widget/custom/Universal.dart';
 
 class ListItem extends StatelessWidget {
   final GestureTapCallback onTap;
@@ -96,10 +96,10 @@ class ListItem extends StatelessWidget {
     children.add(listTile());
 //    if (child != null) children.add(child);
     if (arrow) children.add(arrowWidget());
-    return CustomFlex(
+    return Universal(
         heroTag: heroTag,
         height: height,
-        inkWell: inkWell,
+        addInkWell: inkWell,
         margin: margin,
         padding: padding,
         onLongPress: enabled ? onLongPress : null,

@@ -5,7 +5,7 @@ import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/src/constant/WayStyles.dart';
 import 'package:flutter_waya/src/tools/Tools.dart';
-import 'package:flutter_waya/src/widget/custom/CustomFlex.dart';
+import 'package:flutter_waya/src/widget/custom/Universal.dart';
 
 class SendSMS extends StatefulWidget {
   final Function onTap;
@@ -65,7 +65,7 @@ class SendSMSState extends State<SendSMS> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomFlex(
+    return Universal(
       onTap: (seconds == 0 && widget.onTap != null) ? onTap : null,
       alignment: Alignment.center,
       width: widget.width ?? Tools.getWidth(86),

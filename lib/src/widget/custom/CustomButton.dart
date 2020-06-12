@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'CustomFlex.dart';
+import 'package:flutter_waya/src/widget/custom/Universal.dart';
 
 class CustomButton extends StatelessWidget {
   final child;
@@ -16,7 +15,7 @@ class CustomButton extends StatelessWidget {
   final int maxLines;
   final TextOverflow overflow;
   final String text;
-  final bool inkWell;
+  final bool addInkWell;
 
   CustomButton({
     Key key,
@@ -34,26 +33,25 @@ class CustomButton extends StatelessWidget {
     this.maxLines,
     this.child,
     TextOverflow overflow,
-  })
-      : this.text = text ?? 'Button',
-        this.inkWell = inkWell ?? false,
+    this.addInkWell,
+  })  : this.text = text ?? 'Button',
         this.overflow = overflow ?? TextOverflow.ellipsis,
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return CustomFlex(
-      inkWell: inkWell,
+    return Universal(
+      addInkWell: addInkWell,
       mainAxisSize: MainAxisSize.min,
       child: child != null
           ? child
           : Text(
-        text,
-        textAlign: TextAlign.start,
-        style: textStyle,
-        maxLines: maxLines,
-        overflow: overflow,
-      ),
+              text,
+              textAlign: TextAlign.start,
+              style: textStyle,
+              maxLines: maxLines,
+              overflow: overflow,
+            ),
       width: width,
       height: height,
       onTap: onTap,

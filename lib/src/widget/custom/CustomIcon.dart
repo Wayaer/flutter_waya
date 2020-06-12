@@ -18,7 +18,7 @@ class CustomIcon extends StatelessWidget {
   final String semanticLabel;
   final String titleText;
   final Widget title;
-  final bool inkWell;
+  final bool addInkWell;
   final TextStyle titleStyle;
   final EdgeInsetsGeometry padding;
   final EdgeInsetsGeometry margin;
@@ -55,7 +55,7 @@ class CustomIcon extends StatelessWidget {
     this.semanticLabel,
     this.textDirection,
     this.titleText,
-    this.inkWell,
+    this.addInkWell,
     this.titleStyle,
     this.onTap,
     this.padding,
@@ -92,14 +92,21 @@ class CustomIcon extends StatelessWidget {
         listWidget.add(titleWidget());
       }
     }
-    return CustomFlex(
-      inkWell: inkWell,
-      child: (isChildren()) ? null : iconWidget(),
+    if (isChildren()) {
+      return universal(children: listWidget);
+    }
+    return universal(child: iconWidget());
+  }
+
+  Widget universal({List<Widget> children, Widget child}) {
+    return Universal(
+      addInkWell: addInkWell,
+      child: child,
       direction: direction,
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: crossAxisAlignment,
       mainAxisAlignment: mainAxisAlignment,
-      children: (isChildren()) ? listWidget : null,
+      children: children,
       width: width,
       height: height,
       onTap: onTap,

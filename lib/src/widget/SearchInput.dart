@@ -96,7 +96,7 @@ class SearchInput extends StatelessWidget {
         children.add(extraSuffix);
       }
     }
-    return CustomFlex(
+    return Universal(
       decoration: decoration,
       margin: margin,
       height: height,

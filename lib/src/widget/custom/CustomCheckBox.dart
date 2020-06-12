@@ -24,33 +24,34 @@ class CustomCheckBox extends StatefulWidget {
   final MainAxisAlignment mainAxisAlignment;
   final CrossAxisAlignment crossAxisAlignment;
 
-  CustomCheckBox({Key key,
-    bool value,
-    double iconSize,
-    MainAxisAlignment mainAxisAlignment,
-    CrossAxisAlignment crossAxisAlignment,
-    this.onChange,
-    this.checkWidget,
-    this.checkIcon,
-    this.uncheckIcon,
-    this.uncheckWidget,
-    this.background,
-    this.padding,
-    this.margin,
-    this.width,
-    this.height,
-    Color unCheckColor,
-    Color checkColor,
-    this.titleStyle,
-    this.titleText,
-    this.title})
+  CustomCheckBox(
+      {Key key,
+      bool value,
+      double iconSize,
+      MainAxisAlignment mainAxisAlignment,
+      CrossAxisAlignment crossAxisAlignment,
+      this.onChange,
+      this.checkWidget,
+      this.checkIcon,
+      this.uncheckIcon,
+      this.uncheckWidget,
+      this.background,
+      this.padding,
+      this.margin,
+      this.width,
+      this.height,
+      Color unCheckColor,
+      Color checkColor,
+      this.titleStyle,
+      this.titleText,
+      this.title})
       : this.value = value ?? false,
         this.iconSize = iconSize ?? Tools.getWidth(17),
         this.unCheckColor = unCheckColor ?? getColors(blue),
         this.checkColor = checkColor ?? getColors(blue),
         this.mainAxisAlignment = mainAxisAlignment ?? MainAxisAlignment.center,
-        this.crossAxisAlignment = crossAxisAlignment ??
-            CrossAxisAlignment.center,
+        this.crossAxisAlignment =
+            crossAxisAlignment ?? CrossAxisAlignment.center,
         super(key: key);
 
   @override
@@ -80,7 +81,7 @@ class CustomCheckBoxState extends State<CustomCheckBox> {
   }
 
   Widget customWidget({Widget uncheckWidget, Widget checkWidget}) {
-    return CustomFlex(
+    return Universal(
         width: widget.width,
         height: widget.height,
         color: widget.background,
@@ -101,8 +102,9 @@ class CustomCheckBoxState extends State<CustomCheckBox> {
 
   Widget customIcon({IconData uncheckIcon, IconData checkIcon}) {
     return CustomIcon(
-        icon: value ? checkIcon ?? WayIcon.checked : uncheckIcon ??
-            WayIcon.unChecked,
+        icon: value
+            ? checkIcon ?? WayIcon.checked
+            : uncheckIcon ?? WayIcon.unChecked,
         iconSize: widget.iconSize,
         width: widget.width,
         height: widget.height,
@@ -137,12 +139,12 @@ class CustomCheckBoxState extends State<CustomCheckBox> {
           style: widget.titleStyle != null
               ? widget.titleStyle
               : TextStyle(
-            fontSize: 12,
-            color: getColors(black70),
-          ),
+                  fontSize: 12,
+                  color: getColors(black70),
+                ),
         ));
       }
-      return CustomFlex(
+      return Universal(
         onTap: () {
           setState(() {
             value = !value;
