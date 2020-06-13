@@ -11,20 +11,19 @@ class NavigatorExample {
   }
 
   static pushReplacement(Function function, {PushMode pushMode}) {
-    return NavigatorTools.getInstance().pushReplacement(
-        function, pushMode: pushMode);
+    return NavigatorTools.getInstance()
+        .pushReplacement(function, pushMode: pushMode);
   }
 
   static pushAndRemoveUntil(Function function, {PushMode pushMode}) {
-    return NavigatorTools.getInstance().pushAndRemoveUntil(
-        function, pushMode: pushMode);
+    return NavigatorTools.getInstance()
+        .pushAndRemoveUntil(function, pushMode: pushMode);
   }
 
   static pop<T extends Object>([T result]) {
     return NavigatorTools.getInstance().pop(result);
   }
 }
-
 
 class NavigatorTools extends NavigatorObserver {
   /// ignore: close_sinks
@@ -90,9 +89,6 @@ class NavigatorTools extends NavigatorObserver {
     返回当前route传递过来的参数
    */
   static getParams(context) {
-    return ModalRoute
-        .of(context)
-        .settings
-        .arguments;
+    return ModalRoute.of(context).settings.arguments;
   }
 }

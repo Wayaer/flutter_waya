@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -382,25 +381,27 @@ class Universal extends StatelessWidget {
   }
 
   Widget clipWidget({Widget widget}) {
+    Clip behavior = clipBehavior;
+    if (clipBehavior == Clip.none) behavior = null;
     if (clipperRect != null) {
       return ClipRect(
         child: widget,
         clipper: clipperRect,
-        clipBehavior: clipBehavior ?? Clip.hardEdge,
+        clipBehavior: behavior ?? Clip.hardEdge,
       );
     }
     if (clipperPath != null) {
       return ClipPath(
         child: widget,
         clipper: clipperPath,
-        clipBehavior: clipBehavior ?? Clip.antiAlias,
+        clipBehavior: behavior ?? Clip.antiAlias,
       );
     }
     return ClipRRect(
       child: widget,
       borderRadius: borderRadius,
       clipper: clipperRRect,
-      clipBehavior: clipBehavior ?? Clip.antiAlias,
+      clipBehavior: behavior ?? Clip.antiAlias,
     );
   }
 

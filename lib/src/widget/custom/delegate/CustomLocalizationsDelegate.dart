@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart' show SynchronousFuture;
 
-class CustomLocalizationsDelegate extends LocalizationsDelegate<CupertinoLocalizations> {
+class CustomLocalizationsDelegate
+    extends LocalizationsDelegate<CupertinoLocalizations> {
   @override
   bool isSupported(Locale locale) =>
       <String>['en', 'zh'].contains(locale.languageCode);
