@@ -27,6 +27,10 @@ class Universal extends StatelessWidget {
   //****** children ******//
   final List<Widget> children;
 
+  //****** Card ******//
+  final addCard;
+  final bool semanticContainer;
+
   //****** Flexible ******//
   final int flex;
   final FlexFit flexFit;
@@ -205,7 +209,9 @@ class Universal extends StatelessWidget {
     bool expanded,
     bool isCircleAvatar,
     bool isClip,
+    bool addCard,
     bool transitionOnUserGestures,
+    bool semanticContainer,
 
     MaterialType type,
     double elevation,
@@ -304,6 +310,8 @@ class Universal extends StatelessWidget {
     this.clipperPath,
   })
       : this.isScroll = isScroll ?? false,
+        this.addCard = addCard ?? false,
+        this.semanticContainer = semanticContainer ?? true,
         this.maintainState = maintainState ?? false,
         this.transitionOnUserGestures = transitionOnUserGestures ?? false,
         this.expanded = expanded ?? false,
@@ -376,8 +384,23 @@ class Universal extends StatelessWidget {
     if (sizedBoxExpand) widget = SizedBox.expand(child: widget);
     if (flex != null || expanded) widget = flexibleWidget(widget: widget);
     if (heroTag != null) widget = heroWidget(widget: widget);
+    if (addCard) widget = cardWidget(widget: widget);
     if (!visible) widget = visibilityWidget(widget: widget);
     return widget;
+  }
+
+  Widget cardWidget({Widget widget}) {
+    return Card(
+      child: widget,
+      color: color,
+      clipBehavior: clipBehavior,
+      shadowColor: shadowColor,
+      elevation: elevation,
+      shape: shape,
+      borderOnForeground: borderOnForeground ?? true,
+      margin: margin,
+      semanticContainer: semanticContainer ?? true,
+    );
   }
 
   Widget clipWidget({Widget widget}) {
@@ -537,7 +560,7 @@ class Universal extends StatelessWidget {
         transform: transform,
         constraints: constraints,
         alignment: alignment,
-//        color: color,
+        color: decoration == null ? color : null,
         width: width,
         height: height,
         padding: padding,
