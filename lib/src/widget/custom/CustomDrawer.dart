@@ -15,8 +15,7 @@ class CustomDrawer extends StatefulWidget {
     @required this.child,
     this.backgroundColor,
     this.callback,
-  })
-      : this.width = width ?? Tools.getWidth() * 0.7,
+  })  : this.width = width ?? Tools.getWidth() * 0.7,
         this.elevation = elevation ?? 16.0,
         super(key: key);
 
@@ -42,7 +41,7 @@ class CustomDrawerState extends State<CustomDrawer> {
     return ConstrainedBox(
       constraints: BoxConstraints(maxWidth: widget.width),
       child: AlertBase(
-        backgroundColor: widget.backgroundColor,
+        color: widget.backgroundColor,
         child: widget.child,
       ),
     );

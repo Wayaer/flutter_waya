@@ -368,6 +368,7 @@ class Universal extends StatelessWidget {
         margin != null ||
         height != null ||
         width != null ||
+        color != null ||
         constraints != null ||
         alignment != null ||
         decoration != null) {

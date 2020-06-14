@@ -16,12 +16,14 @@ class CustomButton extends StatelessWidget {
   final TextOverflow overflow;
   final String text;
   final bool addInkWell;
+  final bool visible;
 
   CustomButton({
     Key key,
     String text,
     bool inkWell,
     this.textStyle,
+    this.visible,
     this.onTap,
     this.padding,
     this.margin,
@@ -41,6 +43,7 @@ class CustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Universal(
+      visible: visible,
       addInkWell: addInkWell,
       mainAxisSize: MainAxisSize.min,
       child: child != null

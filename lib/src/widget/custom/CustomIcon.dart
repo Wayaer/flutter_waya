@@ -2,14 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 class CustomIcon extends StatelessWidget {
-  ///需要什么属性  自行添加
+  ///icon > image > imageProvider > widget
+  final Widget widget;
   final IconData icon;
-
-  ///icon
-  final ImageProvider imageProvider;
-
-  ///图片转icon
   final Widget image;
+  final ImageProvider imageProvider;
 
   ///显示图片
   final TextDirection textDirection;
@@ -34,6 +31,7 @@ class CustomIcon extends StatelessWidget {
   final CrossAxisAlignment crossAxisAlignment;
   final int maxLines;
   final bool reversal;
+  final bool visible;
   final TextOverflow overflow;
   final double spacing;
   final double iconSize;
@@ -67,6 +65,8 @@ class CustomIcon extends StatelessWidget {
     this.imageProvider,
     this.image,
     this.title,
+    this.visible,
+    this.widget,
   })  : this.maxLines = maxLines ?? 1,
         this.overflow = overflow ?? TextOverflow.ellipsis,
         this.iconSize = iconSize ?? Tools.getWidth(15),
@@ -85,23 +85,25 @@ class CustomIcon extends StatelessWidget {
       if (reversal) {
         listWidget.add(titleWidget());
         listWidget.add(spacingWidget());
-        listWidget.add(iconWidget());
+        listWidget.addAll(iconWidget());
       } else {
-        listWidget.add(iconWidget());
+        listWidget.addAll(iconWidget());
         listWidget.add(spacingWidget());
         listWidget.add(titleWidget());
       }
-    }
-    if (isChildren()) {
       return universal(children: listWidget);
     }
-    return universal(child: iconWidget());
+    if (iconWidget().length > 0) {
+      return universal(child: iconWidget()[0]);
+    }
+    return Container();
   }
 
   Widget universal({List<Widget> children, Widget child}) {
     return Universal(
       addInkWell: addInkWell,
       child: child,
+      visible: visible,
       direction: direction,
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: crossAxisAlignment,
@@ -124,24 +126,28 @@ class CustomIcon extends StatelessWidget {
   }
 
   Widget titleWidget() {
-    return title != null
-        ? title
-        : Text(
-            titleText ?? '',
-            style: titleStyle,
-            textAlign: TextAlign.start,
-            maxLines: maxLines,
-            textDirection: textDirection,
-            overflow: overflow,
-          );
+    if (title != null) {
+      return title;
+    }
+    return Text(
+      titleText ?? '',
+      style: titleStyle,
+      textAlign: TextAlign.start,
+      maxLines: maxLines,
+      textDirection: textDirection,
+      overflow: overflow,
+    );
   }
 
   bool isChildren() {
     return (titleText != null || title != null) &&
-        (icon != null || image != null || imageProvider != null);
+        (icon != null ||
+            image != null ||
+            widget != null ||
+            imageProvider != null);
   }
 
-  Widget iconWidget() {
+  List<Widget> iconWidget() {
     List<Widget> listWidget = [];
     if (icon != null) {
       listWidget.add(Icon(icon,
@@ -152,17 +158,16 @@ class CustomIcon extends StatelessWidget {
 
       ///帮助盲人或者视力有障碍的用户提供语言辅助描述
     }
+    if (image != null) {
+      listWidget.add(image);
+    }
     if (imageProvider != null) {
       listWidget.add(ImageIcon(imageProvider,
           color: iconColor, size: iconSize, semanticLabel: semanticLabel));
     }
-    if (image != null) {
-      listWidget.add(image);
+    if (widget != null) {
+      listWidget.add(widget);
     }
-    if (listWidget.length == 1) {
-      return listWidget[0];
-    } else {
-      return Row(mainAxisSize: MainAxisSize.min, children: listWidget);
-    }
+    return listWidget;
   }
 }

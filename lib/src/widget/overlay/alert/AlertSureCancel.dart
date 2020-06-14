@@ -4,12 +4,13 @@ import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/src/constant/WayStyles.dart';
 
 class AlertSureCancel extends StatelessWidget {
-  final Widget content;
+  final List<Widget> children;
   final GestureTapCallback sureTap;
   final GestureTapCallback cancelTap;
   final String cancelText;
   final String sureText;
   final Color backgroundColor;
+  final Color backsideColor;
   final TextStyle cancelTextStyle;
   final TextStyle sureTextStyle;
   final EdgeInsetsGeometry padding;
@@ -18,7 +19,6 @@ class AlertSureCancel extends StatelessWidget {
   final GestureTapCallback backsideTap;
   final double width;
   final double height;
-  final EdgeInsetsGeometry margin;
   final Decoration decoration;
   final AlignmentGeometry alignment;
   final bool animatedOpacity;
@@ -30,72 +30,74 @@ class AlertSureCancel extends StatelessWidget {
     String cancelText,
     String sureText,
     Color backgroundColor,
+    Color backsideColor,
     TextStyle cancelTextStyle,
     TextStyle sureTextStyle,
-    EdgeInsetsGeometry padding,
     double width,
     double height,
-    EdgeInsetsGeometry margin,
-    this.content,
+    this.children,
     this.sureTap,
+    this.padding,
     this.cancelTap,
     this.sure,
     this.cancel,
-    this.backsideTap, this.alignment, this.decoration,
-    this.animatedOpacity, this.gaussian, this.addMaterial,
-  })
-      : this.cancelText = cancelText ?? 'cancle',
+    this.backsideTap,
+    this.alignment,
+    this.decoration,
+    this.animatedOpacity,
+    this.gaussian,
+    this.addMaterial,
+  })  : this.cancelText = cancelText ?? 'cancel',
         this.sureText = sureText ?? 'sure',
-        this.margin = margin ??
-            EdgeInsets.symmetric(horizontal: Tools.getWidth(40)),
         this.backgroundColor = backgroundColor ?? getColors(white),
-        this.width = width ?? Tools.getWidth() - Tools.getWidth(40),
-        this.height = height ?? Tools.getHeight(200),
-        this.padding = padding ??
-            EdgeInsets.symmetric(vertical: Tools.getHeight(10)),
+        this.backsideColor = backsideColor ?? getColors(black50),
+        this.width = width ?? Tools.getWidth() * 0.85,
+        this.height = height,
         this.sureTextStyle = sureTextStyle ?? WayStyles.textStyleBlack30(),
         this.cancelTextStyle = cancelTextStyle ?? WayStyles.textStyleBlack30(),
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> widgets = [];
+    widgets.addAll(children);
+    widgets.add(sureCancel());
     return AlertBase(
         addMaterial: addMaterial,
         gaussian: gaussian,
         onTap: backsideTap,
+        color: backsideColor,
         alignment: alignment,
         child: Universal(
           width: width,
           height: height,
-          mainAxisAlignment: MainAxisAlignment.end,
           decoration: decoration ?? BoxDecoration(color: backgroundColor),
-          margin: margin,
           padding: padding,
           mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Expanded(child: content),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                CustomButton(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: Tools.getWidth(20),
-                        vertical: Tools.getHeight(5)),
-                    onTap: cancelTap,
-                    child: cancel,
-                    text: cancelText,
-                    textStyle: cancelTextStyle),
-                CustomButton(
-                    onTap: sureTap,
-                    padding: EdgeInsets.symmetric(
-                        horizontal: Tools.getWidth(20),
-                        vertical: Tools.getHeight(5)),
-                    text: sureText,
-                    child: sure,
-                    textStyle: sureTextStyle),
-              ],
-            )
-          ],
+          children: widgets,
         ));
+  }
+
+  Widget sureCancel() {
+    return Universal(
+      direction: Axis.horizontal,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: <Widget>[
+        CustomButton(
+            padding: EdgeInsets.symmetric(
+                horizontal: Tools.getWidth(20), vertical: Tools.getHeight(5)),
+            onTap: cancelTap,
+            child: cancel,
+            text: cancelText,
+            textStyle: cancelTextStyle),
+        CustomButton(
+            onTap: sureTap,
+            padding: EdgeInsets.symmetric(
+                horizontal: Tools.getWidth(20), vertical: Tools.getHeight(5)),
+            text: sureText,
+            child: sure,
+            textStyle: sureTextStyle),
+      ],
+    );
   }
 }

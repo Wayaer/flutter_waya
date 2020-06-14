@@ -6,9 +6,8 @@ import 'package:flutter_waya/src/constant/WayColor.dart';
 
 class AlertBase extends StatefulWidget {
   final Widget child;
-  final EdgeInsetsGeometry padding;
   final GestureTapCallback onTap;
-  final Color backgroundColor;
+  final Color color;
   final AlignmentGeometry alignment;
   final bool addMaterial;
 
@@ -22,22 +21,23 @@ class AlertBase extends StatefulWidget {
   ///模糊程度
   final double fuzzyDegree;
 
-
-  const AlertBase({Key key, this.child,
-    this.padding,
-    this.onTap,
-    this.alignment,
-    int fuzzyDegree,
-    bool gaussian,
-    bool animatedOpacity,
-    this.backgroundColor,
-    bool popup, bool addMaterial,
-    bool animated})
-      :this.gaussian=gaussian ?? false,
-        this.addMaterial=addMaterial ?? false,
-        this.animated=animated ?? true,
-        this.animatedOpacity=animatedOpacity ?? false,
-        this.fuzzyDegree=fuzzyDegree ?? 2,
+  const AlertBase(
+      {Key key,
+      this.child,
+      this.onTap,
+      AlignmentGeometry alignment,
+      int fuzzyDegree,
+      bool gaussian,
+      bool animatedOpacity,
+      this.color,
+      bool addMaterial,
+      bool animated})
+      : this.gaussian = gaussian ?? false,
+        this.addMaterial = addMaterial ?? false,
+        this.alignment = alignment ?? Alignment.center,
+        this.animated = animated ?? true,
+        this.animatedOpacity = animatedOpacity ?? false,
+        this.fuzzyDegree = fuzzyDegree ?? 2,
         super(key: key);
 
   @override
@@ -51,36 +51,33 @@ class AlertBaseState extends State<AlertBase> {
   double opacity = 0;
   double popupDistance = -Tools.getHeight();
   double fuzzyDegree = 0;
-  AlignmentGeometry alignment;
+
   int index;
-  bool animated = true;
+  bool animated;
 
   @override
   void initState() {
     super.initState();
     animated = widget.animated ?? true;
     if (animated) {
-      alignment = widget.alignment ?? Alignment.center;
+      AlignmentGeometry alignment = widget.alignment;
       if (alignment == Alignment.centerLeft ||
           alignment == Alignment.topLeft ||
           alignment == Alignment.bottomLeft) {
         popupDistance = -Tools.getWidth();
         //左边推出
         index = 0;
-      } else if (
-      alignment == Alignment.centerRight ||
+      } else if (alignment == Alignment.centerRight ||
           alignment == Alignment.topRight ||
           alignment == Alignment.bottomRight) {
         popupDistance = -Tools.getWidth();
         //右边弹出
         index = 2;
-      } else if (
-      alignment == Alignment.topCenter) {
+      } else if (alignment == Alignment.topCenter) {
         popupDistance = -Tools.getHeight();
         //头部弹出
         index = 1;
-      } else if (
-      alignment == Alignment.bottomCenter) {
+      } else if (alignment == Alignment.bottomCenter) {
         popupDistance = -Tools.getHeight();
         //底部弹出
         index = 3;
@@ -94,7 +91,6 @@ class AlertBaseState extends State<AlertBase> {
         setState(() {
           opacity = 1;
           popupDistance = 0;
-          backgroundColor = widget.backgroundColor ?? getColors(black70);
           if (widget.gaussian) fuzzyDegree = widget.fuzzyDegree;
         });
       }
@@ -115,10 +111,10 @@ class AlertBaseState extends State<AlertBase> {
       }
     }
     if (widget.addMaterial) {
-      child = Material(color: getColors(transparent),
+      child = Material(
+          color: getColors(transparent),
           child: MediaQuery(
-              data: MediaQueryData.fromWindow(window),
-              child: child));
+              data: MediaQueryData.fromWindow(window), child: child));
     }
     return child;
   }
@@ -137,8 +133,7 @@ class AlertBaseState extends State<AlertBase> {
 
   Widget backdropFilter(Widget child) {
     return BackdropFilter(
-      filter: ImageFilter.blur(
-          sigmaX: fuzzyDegree, sigmaY: fuzzyDegree),
+      filter: ImageFilter.blur(sigmaX: fuzzyDegree, sigmaY: fuzzyDegree),
       child: child,
     );
   }
@@ -153,14 +148,18 @@ class AlertBaseState extends State<AlertBase> {
   }
 
   Widget childWidget() {
+    Widget align = Align(alignment: widget.alignment, child: widget.child);
+    if (widget.color == null && widget.onTap == null) {
+      return Universal(
+        isStack: true,
+        children: <Widget>[align],
+      );
+    }
     return Universal(
-        color: backgroundColor,
-        height: Tools.getHeight(),
-        width: Tools.getWidth(),
-        alignment: alignment,
-        onTap: widget.onTap,
-        padding: widget.padding,
-        child: widget.child);
+      color: widget.color,
+      isStack: true,
+      onTap: widget.onTap,
+      child: align,
+    );
   }
-
 }
