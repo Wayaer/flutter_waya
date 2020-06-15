@@ -179,17 +179,11 @@ class AlertBaseState extends State<AlertBase> {
         widget.alignment == null) {
       child = Align(alignment: Alignment.center, child: child);
     }
-    if (widget.color == null && widget.onTap == null) {
-      return Universal(
-        isStack: true,
-        children: <Widget>[child],
-      );
-    }
     return Universal(
       color: widget.color,
-      isStack: true,
       onTap: widget.onTap,
-      child: child,
+      isStack: true,
+      children: <Widget>[child],
     );
   }
 }
