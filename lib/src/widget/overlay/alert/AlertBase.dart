@@ -8,35 +8,50 @@ class AlertBase extends StatefulWidget {
   final Widget child;
   final GestureTapCallback onTap;
   final Color color;
-  final AlignmentGeometry alignment;
+
   final bool addMaterial;
 
   ///是否开启动画
-  final bool animated;
+  final bool animation;
+  final bool animationOpacity;
+  final PopupMode popupMode;
 
   ///是否开始背景模糊
   final bool gaussian;
-  final bool animatedOpacity;
 
   ///模糊程度
   final double fuzzyDegree;
+
+  ///Positioned
+  final double left;
+  final double top;
+  final double right;
+  final double bottom;
+
+  ///Align
+  final AlignmentGeometry alignment;
 
   const AlertBase(
       {Key key,
       this.child,
       this.onTap,
-      AlignmentGeometry alignment,
       int fuzzyDegree,
       bool gaussian,
-      bool animatedOpacity,
+      bool animationOpacity,
       this.color,
       bool addMaterial,
-      bool animated})
+      bool animation,
+      PopupMode popupMode,
+      this.left,
+      this.top,
+      this.right,
+      this.bottom,
+      this.alignment})
       : this.gaussian = gaussian ?? false,
         this.addMaterial = addMaterial ?? false,
-        this.alignment = alignment ?? Alignment.center,
-        this.animated = animated ?? true,
-        this.animatedOpacity = animatedOpacity ?? false,
+        this.popupMode = popupMode ?? PopupMode.center,
+        this.animation = animation ?? true,
+        this.animationOpacity = animationOpacity ?? false,
         this.fuzzyDegree = fuzzyDegree ?? 2,
         super(key: key);
 
@@ -51,43 +66,39 @@ class AlertBaseState extends State<AlertBase> {
   double opacity = 0;
   double popupDistance = -Tools.getHeight();
   double fuzzyDegree = 0;
-
-  int index;
-  bool animated;
+  PopupMode popupMode;
+  bool animation;
 
   @override
   void initState() {
     super.initState();
-    animated = widget.animated ?? true;
-    if (animated) {
-      AlignmentGeometry alignment = widget.alignment;
-      if (alignment == Alignment.centerLeft ||
-          alignment == Alignment.topLeft ||
-          alignment == Alignment.bottomLeft) {
-        popupDistance = -Tools.getWidth();
-        //左边推出
-        index = 0;
-      } else if (alignment == Alignment.centerRight ||
-          alignment == Alignment.topRight ||
-          alignment == Alignment.bottomRight) {
-        popupDistance = -Tools.getWidth();
-        //右边弹出
-        index = 2;
-      } else if (alignment == Alignment.topCenter) {
-        popupDistance = -Tools.getHeight();
-        //头部弹出
-        index = 1;
-      } else if (alignment == Alignment.bottomCenter) {
-        popupDistance = -Tools.getHeight();
-        //底部弹出
-        index = 3;
-      } else {
-        //其他或中间渐变
-        index = 5;
+    animation = widget.animation;
+    if (animation) {
+      popupMode = widget.popupMode;
+      switch (popupMode) {
+        case PopupMode.left:
+          popupDistance = -Tools.getWidth();
+          break;
+        case PopupMode.top:
+          popupDistance = -Tools.getHeight();
+          //头部弹出
+          break;
+        case PopupMode.right:
+          popupDistance = -Tools.getWidth();
+          //右边弹出
+          break;
+        case PopupMode.bottom:
+          popupDistance = -Tools.getHeight();
+          //底部弹出
+          break;
+        default: //PopupMode.center
+          popupDistance = 0;
+          //中间渐变
+          break;
       }
     }
     WidgetsBinding.instance.addPostFrameCallback((callback) {
-      if (animated) {
+      if (animation) {
         setState(() {
           opacity = 1;
           popupDistance = 0;
@@ -103,11 +114,11 @@ class AlertBaseState extends State<AlertBase> {
     if (widget.gaussian) {
       child = backdropFilter(child);
     }
-    if (animated) {
-      if (index == 5) {
-        if (widget.animatedOpacity) child = animatedOpacity(child);
+    if (animation) {
+      if (popupMode == PopupMode.center) {
+        if (widget.animationOpacity) child = animationOpacity(child);
       } else {
-        child = animatedPositioned(child);
+        child = animationOpacity(child);
       }
     }
     if (widget.addMaterial) {
@@ -119,12 +130,12 @@ class AlertBaseState extends State<AlertBase> {
     return child;
   }
 
-  Widget animatedPositioned(Widget child) {
+  Widget animationOpacity(Widget child) {
     return AnimatedPositioned(
-      left: index == 0 ? popupDistance : 0,
-      top: index == 1 ? popupDistance : 0,
-      right: index == 2 ? popupDistance : 0,
-      bottom: index == 3 ? popupDistance : 0,
+      left: popupMode == PopupMode.left ? popupDistance : 0,
+      top: popupMode == PopupMode.top ? popupDistance : 0,
+      right: popupMode == PopupMode.right ? popupDistance : 0,
+      bottom: popupMode == PopupMode.bottom ? popupDistance : 0,
       curve: Curves.easeIn,
       duration: Duration(milliseconds: 200),
       child: child,
@@ -148,18 +159,37 @@ class AlertBaseState extends State<AlertBase> {
   }
 
   Widget childWidget() {
-    Widget align = Align(alignment: widget.alignment, child: widget.child);
+    Widget child = widget.child;
+    if (widget.alignment != null)
+      child = Align(alignment: widget.alignment, child: child);
+    if (widget.top != null ||
+        widget.left != null ||
+        widget.right != null ||
+        widget.bottom != null)
+      child = Positioned(
+          left: widget.left,
+          top: widget.top,
+          right: widget.right,
+          bottom: widget.bottom,
+          child: child);
+    if (widget.top == null &&
+        widget.left == null &&
+        widget.right == null &&
+        widget.bottom == null &&
+        widget.alignment == null) {
+      child = Align(alignment: Alignment.center, child: child);
+    }
     if (widget.color == null && widget.onTap == null) {
       return Universal(
         isStack: true,
-        children: <Widget>[align],
+        children: <Widget>[child],
       );
     }
     return Universal(
       color: widget.color,
       isStack: true,
       onTap: widget.onTap,
-      child: align,
+      child: child,
     );
   }
 }

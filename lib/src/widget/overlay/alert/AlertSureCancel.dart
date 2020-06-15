@@ -24,6 +24,7 @@ class AlertSureCancel extends StatelessWidget {
   final bool animatedOpacity;
   final bool gaussian;
   final bool addMaterial;
+  final PopupMode popupMode;
 
   AlertSureCancel({
     Key key,
@@ -47,6 +48,7 @@ class AlertSureCancel extends StatelessWidget {
     this.animatedOpacity,
     this.gaussian,
     this.addMaterial,
+    this.popupMode,
   })  : this.cancelText = cancelText ?? 'cancel',
         this.sureText = sureText ?? 'sure',
         this.backgroundColor = backgroundColor ?? getColors(white),
@@ -63,6 +65,7 @@ class AlertSureCancel extends StatelessWidget {
     widgets.addAll(children);
     widgets.add(sureCancel());
     return AlertBase(
+        popupMode: popupMode,
         addMaterial: addMaterial,
         gaussian: gaussian,
         onTap: backsideTap,

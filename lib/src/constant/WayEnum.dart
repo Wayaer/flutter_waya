@@ -75,3 +75,10 @@ enum TabBarLevelPosition {
   right,
   left,
 }
+enum PopupMode {
+  left,
+  top,
+  right,
+  bottom,
+  center
+}
