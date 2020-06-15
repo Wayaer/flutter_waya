@@ -58,8 +58,7 @@ class ListWheel extends StatefulWidget {
     ScrollPhysics physics,
     FixedExtentScrollController controller,
     this.onItemSelected,
-  })
-      : this.diameterRatio = diameterRatio ?? 1,
+  })  : this.diameterRatio = diameterRatio ?? 1,
         this.offAxisFraction = offAxisFraction ?? 0,
         this.initialIndex = initialIndex ?? 0,
         this.perspective = perspective ?? 0.01,
@@ -87,8 +86,8 @@ class ListWheelState extends State<ListWheel> {
         } else if (index > this.widget.itemCount - 1) {
           index = this.widget.itemCount - 1;
         }
-        controller.animateToItem(
-            index, duration: Duration(milliseconds: 100), curve: Curves.linear);
+        controller.animateToItem(index,
+            duration: Duration(milliseconds: 100), curve: Curves.linear);
       }
     }
   }
