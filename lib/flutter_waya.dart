@@ -20,7 +20,6 @@ export 'src/widget/DottedLine.dart';
 export 'src/widget/overlay/alert/DropdownMenu.dart';
 export 'src/widget/GridBuilder.dart';
 export 'src/widget/HintPoint.dart';
-export 'src/widget/LabeledRadio.dart';
 export 'src/widget/ListBuilder.dart';
 export 'src/widget/ListEntry.dart';
 export 'src/widget/SearchBox.dart';
