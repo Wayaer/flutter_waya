@@ -36,7 +36,6 @@ export 'src/widget/custom/SimpleButton.dart';
 export 'src/widget/custom/CheckBox.dart';
 export 'src/widget/custom/CustomDismissible.dart';
 export 'src/widget/custom/CustomDrawer.dart';
-//export 'src/widget/custom/CustomFlex.dart';
 export 'src/widget/custom/IconBox.dart';
 export 'src/widget/custom/NestedScroll.dart';
 export 'src/widget/custom/RichSpan.dart';
