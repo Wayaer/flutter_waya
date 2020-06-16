@@ -378,8 +378,7 @@ class Universal extends StatelessWidget {
         decoration != null) {
       widget = containerWidget(widget: widget);
     }
-    if (isCircleAvatar) widget = circleAvatarWidget(widget: widget);
-    if (isClip) widget = clipWidget(widget: widget);
+
     if (enabled || onTap != null) {
       if (addInkWell)
         widget = inkWellWidget(widget: widget);
@@ -390,6 +389,8 @@ class Universal extends StatelessWidget {
     if (isFlexible || expanded) widget = flexibleWidget(widget: widget);
     if (heroTag != null) widget = heroWidget(widget: widget);
     if (addCard) widget = cardWidget(widget: widget);
+    if (isCircleAvatar) widget = circleAvatarWidget(widget: widget);
+    if (isClip) widget = clipWidget(widget: widget);
     if (!visible) widget = visibilityWidget(widget: widget);
     return widget;
   }

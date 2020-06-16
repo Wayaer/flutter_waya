@@ -14,6 +14,7 @@ class AlertSureCancel extends StatelessWidget {
   final TextStyle cancelTextStyle;
   final TextStyle sureTextStyle;
   final EdgeInsetsGeometry padding;
+  final EdgeInsetsGeometry margin;
   final Widget sure;
   final Widget cancel;
   final GestureTapCallback backsideTap;
@@ -39,6 +40,7 @@ class AlertSureCancel extends StatelessWidget {
     this.children,
     this.sureTap,
     this.padding,
+    this.margin,
     this.cancelTap,
     this.sure,
     this.cancel,
@@ -49,7 +51,8 @@ class AlertSureCancel extends StatelessWidget {
     this.gaussian,
     this.addMaterial,
     this.popupMode,
-  })  : this.cancelText = cancelText ?? 'cancel',
+  })
+      : this.cancelText = cancelText ?? 'cancel',
         this.sureText = sureText ?? 'sure',
         this.backgroundColor = backgroundColor ?? getColors(white),
         this.backsideColor = backsideColor ?? getColors(black50),
@@ -72,10 +75,12 @@ class AlertSureCancel extends StatelessWidget {
         color: backsideColor,
         alignment: alignment,
         child: Universal(
+          onTap: () {},
           width: width,
           height: height,
           decoration: decoration ?? BoxDecoration(color: backgroundColor),
           padding: padding,
+          margin: margin,
           mainAxisSize: MainAxisSize.min,
           children: widgets,
         ));
