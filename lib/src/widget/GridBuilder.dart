@@ -48,8 +48,7 @@ class GridBuilder extends StatelessWidget {
     this.maxCrossAxisExtent,
     Axis scrollDirection,
     int crossAxisCount,
-  })
-      : this.itemCount = itemCount ?? 0,
+  })  : this.itemCount = itemCount ?? 0,
         this.scrollDirection = scrollDirection ?? Axis.vertical,
         this.reverse = reverse ?? false,
         this.shrinkWrap = shrinkWrap = true,
@@ -57,7 +56,7 @@ class GridBuilder extends StatelessWidget {
         this.childAspectRatio = childAspectRatio ?? 1.0,
         this.mainAxisSpacing = mainAxisSpacing ?? 0.0,
         this.crossAxisCount = crossAxisCount ?? 1,
-        this.padding=padding ?? EdgeInsets.zero,
+        this.padding = padding ?? EdgeInsets.zero,
         super(key: key);
 
   @override

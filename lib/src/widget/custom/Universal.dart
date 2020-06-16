@@ -12,7 +12,12 @@ class Universal extends StatelessWidget {
 
   //****** child ******//
   final Widget child;
+
+  //****** Flexible ******//
   final bool expanded;
+  final int flex;
+  final bool isFlexible;
+  final FlexFit flexFit;
 
   //****** Container ******//
   final Decoration foregroundDecoration;
@@ -30,10 +35,6 @@ class Universal extends StatelessWidget {
   //****** Card ******//
   final addCard;
   final bool semanticContainer;
-
-  //****** Flexible ******//
-  final int flex;
-  final FlexFit flexFit;
 
   //****** Flex ******//
   final MainAxisAlignment mainAxisAlignment;
@@ -207,12 +208,12 @@ class Universal extends StatelessWidget {
     bool maintainSemantics,
     bool maintainInteractivity,
     bool expanded,
+    bool isFlexible,
     bool isCircleAvatar,
     bool isClip,
     bool addCard,
     bool transitionOnUserGestures,
     bool semanticContainer,
-
     MaterialType type,
     double elevation,
     Clip clipBehavior,
@@ -229,8 +230,10 @@ class Universal extends StatelessWidget {
     MainAxisSize mainAxisSize,
     HitTestBehavior behavior,
     BorderRadius borderRadius,
+    Color color,
+    int flex,
+    FlexFit flexFit,
     this.child,
-    this.flex,
     this.children,
     this.padding,
     this.physics,
@@ -239,7 +242,6 @@ class Universal extends StatelessWidget {
     this.foregroundDecoration,
     this.transform,
     this.constraints,
-    Color color,
     this.width,
     this.height,
     this.margin,
@@ -295,7 +297,6 @@ class Universal extends StatelessWidget {
     this.customBorder,
     this.focusNode,
     this.onFocusChange,
-    this.flexFit,
     this.heroTag,
     this.createRectTween,
     this.flightShuttleBuilder,
@@ -315,6 +316,7 @@ class Universal extends StatelessWidget {
         this.maintainState = maintainState ?? false,
         this.transitionOnUserGestures = transitionOnUserGestures ?? false,
         this.expanded = expanded ?? false,
+        this.isFlexible = isFlexible ?? false,
         this.isStack = isStack ?? false,
         this.isCircleAvatar = isCircleAvatar ?? false,
         this.isClip = isClip ?? false,
@@ -335,6 +337,7 @@ class Universal extends StatelessWidget {
         this.dragStartBehavior = dragStartBehavior ?? DragStartBehavior.start,
         this.type = type ?? MaterialType.canvas,
         this.elevation = elevation ?? 0.0,
+        this.flex = flex ?? 1,
         this.clipBehavior = clipBehavior ?? Clip.none,
         this.shadowColor = shadowColor ?? Colors.transparent,
         this.animationDuration = animationDuration ?? kThemeChangeDuration,
@@ -350,6 +353,7 @@ class Universal extends StatelessWidget {
         this.behavior = behavior ?? HitTestBehavior.opaque,
         this.borderRadius = borderRadius ?? BorderRadius.zero,
         this.color = color ?? Colors.transparent,
+        this.flexFit = flexFit ?? FlexFit.loose,
         super(key: key);
 
   @override
@@ -383,7 +387,7 @@ class Universal extends StatelessWidget {
         widget = gestureDetectorWidget(widget: widget);
     }
     if (sizedBoxExpand) widget = SizedBox.expand(child: widget);
-    if (flex != null || expanded) widget = flexibleWidget(widget: widget);
+    if (isFlexible || expanded) widget = flexibleWidget(widget: widget);
     if (heroTag != null) widget = heroWidget(widget: widget);
     if (addCard) widget = cardWidget(widget: widget);
     if (!visible) widget = visibilityWidget(widget: widget);
@@ -476,13 +480,21 @@ class Universal extends StatelessWidget {
   }
 
   Widget flexibleWidget({Widget widget}) {
-    FlexFit fit = flexFit ?? FlexFit.loose;
-    if (expanded) fit = FlexFit.tight;
-    return Flexible(
-      child: widget,
-      flex: flex,
-      fit: fit,
-    );
+    if (isFlexible) {
+      return Flexible(
+        child: widget,
+        flex: flex,
+        fit: flexFit,
+      );
+    }
+    if (expanded) {
+      return Flexible(
+        child: widget,
+        flex: 1,
+        fit: FlexFit.tight,
+      );
+    }
+    return widget;
   }
 
   Widget inkWellWidget({Widget widget}) {

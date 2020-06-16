@@ -48,10 +48,9 @@ class ListBuilder extends StatelessWidget {
     this.header,
     this.footer,
     this.footerTextStyle,
-  })
-      : this.padding=padding ?? EdgeInsets.zero,
-        this.scrollDirection=scrollDirection ?? Axis.vertical,
-        this.reverse=reverse ?? false,
+  })  : this.padding = padding ?? EdgeInsets.zero,
+        this.scrollDirection = scrollDirection ?? Axis.vertical,
+        this.reverse = reverse ?? false,
         super(key: key);
 
   @override

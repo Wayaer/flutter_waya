@@ -5,7 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
 
-class CustomNestedScrollView extends StatefulWidget {
+class NestedScroll extends StatefulWidget {
   final ScrollController controller;
   final Widget tabBarBody;
   final Widget body;
@@ -13,33 +13,63 @@ class CustomNestedScrollView extends StatefulWidget {
   final double expandedHeight;
   final Size preferredSize;
   final ScrollPhysics physics;
-  final CollapseMode collapseMode; //折叠模式
+
+  ///折叠模式
+  final CollapseMode collapseMode;
   final bool containsStatusBar;
   final List<Widget> slivers;
-  final Widget flexibleSpaceTitle; //flexibleSpace 底部有文字，向上滑动后自动缩小至顶部
+
+  ///flexibleSpace 底部有文字，向上滑动后自动缩小至顶部
+  final Widget flexibleSpaceTitle;
   final EdgeInsetsGeometry flexibleSpaceTitlePadding;
 
-  //
-  final Color backgroundColor; //背景色
-  final Widget leading; //左侧标题
+  ///背景色
+  final Color backgroundColor;
+
+  ///左侧标题
+  final Widget leading;
   final bool automaticallyImplyLeading;
-  final Widget title; //标题
-  final bool centerTitle; //标题是否居中
-  final bool pinned; //是否固定在顶部
-  final bool floating; //是否随着滑动隐藏标题
-  final Brightness brightness; //主题明亮
+
+  ///标题
+  final Widget title;
+
+  ///标题是否居中
+  final bool centerTitle;
+
+  ///是否固定在顶部
+  final bool pinned;
+
+  ///是否随着滑动隐藏标题
+  final bool floating;
+
+  ///主题明亮
+  final Brightness brightness;
   final AsyncCallback onStretchTrigger;
-  final List<Widget> actions; //右侧菜单
-  final double elevation; //阴影
-  final bool primary; //是否预留高度
-  final TextTheme textTheme; //文字主题
+
+  ///右侧菜单
+  final List<Widget> actions;
+
+  ///阴影
+  final double elevation;
+
+  ///是否预留高度
+  final bool primary;
+
+  ///文字主题
+  final TextTheme textTheme;
   final IconThemeData actionsIconTheme;
-  final IconThemeData iconTheme; //图标主题
+
+  ///图标主题
+  final IconThemeData iconTheme;
   final bool forceElevated;
-  final bool snap; //与floating结合使用
+
+  ///与floating结合使用
+  final bool snap;
   final bool stretch;
   final double stretchTriggerOffset;
-  final Widget flexibleSpace; //可以展开区域，可以填入tabBar
+
+  ///可以展开区域，可以填入tabBar
+  final Widget flexibleSpace;
   final DragStartBehavior dragStartBehavior;
   final Axis scrollDirection;
   final bool reverse;
@@ -48,39 +78,46 @@ class CustomNestedScrollView extends StatefulWidget {
   final bool sliverAppBar;
   final List<StretchMode> stretchModes;
 
-  CustomNestedScrollView({
-    Key key,
-    bool pinned,
-    bool floating,
-    Brightness brightness,
-    bool containsStatusBar,
-    CollapseMode collapseMode,
-    bool centerTitle,
-    bool snap,
-    bool primary,
-    bool reverse,
-    bool stretch,
-    bool forceElevated,
-    bool automaticallyImplyLeading,
-    List<StretchMode> stretchModes,
-    this.title,
-    Color backgroundColor,
-    this.tabBarBody,
-    this.physics,
-    this.expandedHeight,
-    this.preferredSize,
-    @required this.body,
-    this.leading,
-    this.controller,
-    this.onStretchTrigger, this.actions,
-    this.elevation,
-    this.textTheme, this.actionsIconTheme,
-    this.iconTheme,
-    this.stretchTriggerOffset, @required this.flexibleSpace,
-    this.slivers, this.dragStartBehavior,
-    this.scrollDirection, bool sliverAppBar, this.flexibleSpaceTitle, this.flexibleSpaceTitlePadding})
+  NestedScroll(
+      {Key key,
+      bool pinned,
+      bool floating,
+      Brightness brightness,
+      bool containsStatusBar,
+      CollapseMode collapseMode,
+      bool centerTitle,
+      bool snap,
+      bool primary,
+      bool reverse,
+      bool stretch,
+      bool forceElevated,
+      bool automaticallyImplyLeading,
+      List<StretchMode> stretchModes,
+      this.title,
+      Color backgroundColor,
+      this.tabBarBody,
+      this.physics,
+      this.expandedHeight,
+      this.preferredSize,
+      @required this.body,
+      this.leading,
+      this.controller,
+      this.onStretchTrigger,
+      this.actions,
+      this.elevation,
+      this.textTheme,
+      this.actionsIconTheme,
+      this.iconTheme,
+      this.stretchTriggerOffset,
+      @required this.flexibleSpace,
+      this.slivers,
+      this.dragStartBehavior,
+      this.scrollDirection,
+      bool sliverAppBar,
+      this.flexibleSpaceTitle,
+      this.flexibleSpaceTitlePadding})
       : this.pinned = pinned ?? true,
-        this.backgroundColor=backgroundColor ?? getColors(white),
+        this.backgroundColor = backgroundColor ?? getColors(white),
         this.sliverAppBar = sliverAppBar ?? true,
         this.automaticallyImplyLeading = automaticallyImplyLeading ?? true,
         this.floating = floating ?? true,
@@ -92,18 +129,18 @@ class CustomNestedScrollView extends StatefulWidget {
         this.primary = primary ?? true,
         this.brightness = brightness ?? Brightness.light,
         this.containsStatusBar = containsStatusBar ?? true,
-        this.stretchModes = stretchModes ??
-            const <StretchMode>[StretchMode.zoomBackground],
+        this.stretchModes =
+            stretchModes ?? const <StretchMode>[StretchMode.zoomBackground],
         this.collapseMode = collapseMode ?? CollapseMode.parallax,
         super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return CustomNestedScrollViewState();
+    return NestedScrollState();
   }
 }
 
-class CustomNestedScrollViewState extends State<CustomNestedScrollView> {
+class NestedScrollState extends State<NestedScroll> {
   GlobalKey containerKey = GlobalKey();
   GlobalKey preferredSizeKey = GlobalKey();
   bool showNestedScrollView = false;
@@ -124,8 +161,9 @@ class CustomNestedScrollViewState extends State<CustomNestedScrollView> {
           .size
           .height;
       expandedHeight = widget.containsStatusBar
-          ? containerHeight + preferredSizeHeight -
-          MediaQueryTools.getStatusBarHeight()
+          ? containerHeight +
+              preferredSizeHeight -
+              MediaQueryTools.getStatusBarHeight()
           : containerHeight + preferredSizeHeight;
       setState(() {
         showNestedScrollView = true;
@@ -147,16 +185,18 @@ class CustomNestedScrollViewState extends State<CustomNestedScrollView> {
     return !showNestedScrollView
         ? calculateFlexibleSpaceHeight()
         : NestedScrollView(
-      scrollDirection: widget.scrollDirection ?? Axis.vertical,
-      reverse: widget.reverse,
-      physics: widget.physics,
-      dragStartBehavior: widget.dragStartBehavior ?? DragStartBehavior.start,
-      body: widget.body,
-      controller: widget.controller,
-      headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-        return sliverWidget;
-      },
-    );
+            scrollDirection: widget.scrollDirection ?? Axis.vertical,
+            reverse: widget.reverse,
+            physics: widget.physics,
+            dragStartBehavior:
+                widget.dragStartBehavior ?? DragStartBehavior.start,
+            body: widget.body,
+            controller: widget.controller,
+            headerSliverBuilder:
+                (BuildContext context, bool innerBoxIsScrolled) {
+              return sliverWidget;
+            },
+          );
   }
 
   Widget calculateFlexibleSpaceHeight() {
@@ -166,8 +206,11 @@ class CustomNestedScrollViewState extends State<CustomNestedScrollView> {
         Container(key: containerKey, child: widget.flexibleSpace),
         Container(
             key: preferredSizeKey,
-            child: widget.tabBarBody == null ? null : PreferredSize(
-                child: widget.tabBarBody, preferredSize: widget.preferredSize))
+            child: widget.tabBarBody == null
+                ? null
+                : PreferredSize(
+                    child: widget.tabBarBody,
+                    preferredSize: widget.preferredSize))
       ],
     );
   }
@@ -202,9 +245,10 @@ class CustomNestedScrollViewState extends State<CustomNestedScrollView> {
           collapseMode: widget.collapseMode,
           stretchModes: widget.stretchModes,
           background: widget.flexibleSpace),
-      bottom: widget.tabBarBody == null ? null : PreferredSize(
-          child: widget.tabBarBody, preferredSize: widget.preferredSize),
+      bottom: widget.tabBarBody == null
+          ? null
+          : PreferredSize(
+              child: widget.tabBarBody, preferredSize: widget.preferredSize),
     );
   }
-
 }

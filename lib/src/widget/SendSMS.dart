@@ -25,23 +25,24 @@ class SendSMS extends StatefulWidget {
   final TextStyle notTapTextStyle;
   final int seconds;
 
-  SendSMS({Key key,
-    this.onTap,
-    this.decoration,
-    this.borderRadius,
-    this.borderWidth,
-    this.defaultBorderColor,
-    this.notTapBorderColor,
-    this.width,
-    this.height,
-    this.defaultText,
-    this.sendingText,
-    this.sentText,
-    this.notTapText,
-    this.defaultTextStyle,
-    this.notTapTextStyle,
-    this.background,
-    this.seconds})
+  SendSMS(
+      {Key key,
+      this.onTap,
+      this.decoration,
+      this.borderRadius,
+      this.borderWidth,
+      this.defaultBorderColor,
+      this.notTapBorderColor,
+      this.width,
+      this.height,
+      this.defaultText,
+      this.sendingText,
+      this.sentText,
+      this.notTapText,
+      this.defaultTextStyle,
+      this.notTapTextStyle,
+      this.background,
+      this.seconds})
       : super(key: key);
 
   @override
@@ -74,20 +75,20 @@ class SendSMSState extends State<SendSMS> {
           BoxDecoration(
               color: widget.background,
               border: !(widget.defaultBorderColor != null ||
-                  widget.notTapBorderColor != null)
+                      widget.notTapBorderColor != null)
                   ? null
                   : Border.all(
-                  width: widget.borderWidth ?? 0,
-                  color: seconds == 0
-                      ? (widget.defaultBorderColor ?? getColors(blue))
-                      : (widget.notTapBorderColor ?? getColors(black70))),
+                      width: widget.borderWidth ?? 0,
+                      color: seconds == 0
+                          ? (widget.defaultBorderColor ?? getColors(blue))
+                          : (widget.notTapBorderColor ?? getColors(black70))),
               borderRadius: widget.borderRadius ?? BorderRadius.circular(20)),
       child: Text(
         '$verifyStr',
         style: seconds == 0
             ? widget.defaultTextStyle ?? WayStyles.textStyleBlue(fontSize: 13)
             : widget.notTapTextStyle ??
-            WayStyles.textStyleBlack70(fontSize: 13),
+                WayStyles.textStyleBlack70(fontSize: 13),
       ),
     );
   }

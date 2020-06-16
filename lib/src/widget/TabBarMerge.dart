@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class TabBarMerge extends StatelessWidget {
-
-  ///最好传入 CustomTabBar
+  ///最好传入 TabBarBox
   final Widget tabBar;
 
   ///tabBar和tabBarView中间层
@@ -41,9 +40,7 @@ class TabBarMerge extends StatelessWidget {
     this.decoration,
     this.constraints,
     this.width,
-  })
-      :
-        this.viewHeight=viewHeight ?? 0,
+  })  : this.viewHeight = viewHeight ?? 0,
         super(key: key);
 
   @override
@@ -68,21 +65,21 @@ class TabBarMerge extends StatelessWidget {
   Widget tabBarViewWidget() {
     return viewHeight == 0
         ? Expanded(
-        child: Container(
+            child: Container(
+                margin: margin,
+                padding: padding,
+                decoration: decoration,
+                constraints: constraints,
+                width: width,
+                child:
+                    TabBarView(controller: controller, children: tabBarView)))
+        : Container(
             margin: margin,
             padding: padding,
             decoration: decoration,
             constraints: constraints,
             width: width,
-            child: TabBarView(controller: controller, children: tabBarView)))
-        : Container(
-        margin: margin,
-        padding: padding,
-        decoration: decoration,
-        constraints: constraints,
-        width: width,
-        height: viewHeight,
-        child: TabBarView(controller: controller, children: tabBarView));
+            height: viewHeight,
+            child: TabBarView(controller: controller, children: tabBarView));
   }
-
 }

@@ -8,7 +8,12 @@ class TabNavigationPage extends StatefulWidget {
   final List<Widget> pageList;
   final int defaultTabIndex;
 
-  TabNavigationPage({Key key, this.arguments, this.defaultTabIndex, this.pageList, this.navigationBarItem})
+  TabNavigationPage(
+      {Key key,
+      this.arguments,
+      this.defaultTabIndex,
+      this.pageList,
+      this.navigationBarItem})
       : assert(navigationBarItem != null),
         super(key: key);
 

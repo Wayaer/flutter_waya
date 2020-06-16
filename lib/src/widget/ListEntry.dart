@@ -7,7 +7,7 @@ import 'package:flutter_waya/src/constant/WayStyles.dart';
 import 'package:flutter_waya/src/tools/Tools.dart';
 import 'package:flutter_waya/src/widget/custom/Universal.dart';
 
-class ListItem extends StatelessWidget {
+class ListEntry extends StatelessWidget {
   final GestureTapCallback onTap;
   final GestureTapCallback onDoubleTap;
   final GestureLongPressCallback onLongPress;
@@ -51,7 +51,7 @@ class ListItem extends StatelessWidget {
   final bool arrow;
   final bool enabled;
 
-  ListItem(
+  ListEntry(
       {Key key,
       double arrowSize,
       Color arrowColor,
@@ -129,7 +129,7 @@ class ListItem extends StatelessWidget {
   }
 
   Widget arrowWidget() {
-    return CustomIcon(
+    return IconBox(
         icon: WayIcon.arrowRight,
         iconSize: arrowSize,
         iconColor: arrowColor,

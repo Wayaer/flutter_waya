@@ -2,7 +2,7 @@ import 'dart:ui' as ui show TextHeightBehavior;
 
 import 'package:flutter/material.dart';
 
-class CustomRichText extends StatelessWidget {
+class RichSpan extends StatelessWidget {
   final TextAlign textAlign;
   final List<String> text;
   final List<TextStyle> textStyle;
@@ -16,7 +16,7 @@ class CustomRichText extends StatelessWidget {
   final ui.TextHeightBehavior textHeightBehavior;
   final double textScaleFactor;
 
-  CustomRichText({
+  RichSpan({
     Key key,
     this.text,
     TextAlign textAlign,

@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/WayColor.dart';
 
-class CustomCheckBox extends StatefulWidget {
+class CheckBox extends StatefulWidget {
   final ValueChanged<bool> onChange;
   final Color checkColor;
   final Color activeColor;
   final Color background;
-  final Color unCheckColor;
+  final Color uncheckColor;
   final TextStyle titleStyle;
   final String titleText;
   final Widget title;
@@ -23,10 +23,12 @@ class CustomCheckBox extends StatefulWidget {
   final MainAxisAlignment mainAxisAlignment;
   final CrossAxisAlignment crossAxisAlignment;
 
-  CustomCheckBox(
+  CheckBox(
       {Key key,
       bool value,
       double iconSize,
+      Color uncheckColor,
+      Color checkColor,
       MainAxisAlignment mainAxisAlignment,
       CrossAxisAlignment crossAxisAlignment,
       this.onChange,
@@ -37,8 +39,6 @@ class CustomCheckBox extends StatefulWidget {
       this.background,
       this.padding,
       this.margin,
-      Color unCheckColor,
-      Color checkColor,
       this.titleStyle,
       this.titleText,
       this.title,
@@ -46,7 +46,7 @@ class CustomCheckBox extends StatefulWidget {
       this.activeColor})
       : this.value = value ?? false,
         this.iconSize = iconSize ?? Tools.getWidth(17),
-        this.unCheckColor = unCheckColor ?? getColors(black70),
+        this.uncheckColor = uncheckColor ?? getColors(black70),
         this.checkColor = checkColor ?? getColors(white),
         this.mainAxisAlignment = mainAxisAlignment ?? MainAxisAlignment.center,
         this.crossAxisAlignment =
@@ -54,20 +54,15 @@ class CustomCheckBox extends StatefulWidget {
         super(key: key);
 
   @override
-  CustomCheckBoxState createState() => CustomCheckBoxState();
+  CheckBoxState createState() => CheckBoxState();
 }
 
-class CustomCheckBoxState extends State<CustomCheckBox> {
+class CheckBoxState extends State<CheckBox> {
   bool value;
 
   @override
-  void initState() {
-    super.initState();
-    value = widget.value;
-  }
-
-  @override
   Widget build(BuildContext context) {
+    value = widget.value;
     IconData icon;
     if (widget.checkIcon != null && widget.uncheckIcon != null)
       icon = value ? widget.checkIcon : widget.uncheckIcon;
@@ -77,12 +72,11 @@ class CustomCheckBoxState extends State<CustomCheckBox> {
     } else {
       check = checkBoxWidget();
     }
-
-    return CustomIcon(
+    return IconBox(
         visible: widget.visible,
         icon: icon,
         iconSize: widget.iconSize,
-        iconColor: value ? widget.checkColor : widget.unCheckColor,
+        iconColor: value ? widget.checkColor : widget.uncheckColor,
         widget: check,
         background: widget.background,
         margin: widget.margin,

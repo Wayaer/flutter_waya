@@ -86,14 +86,14 @@ class AlertSureCancel extends StatelessWidget {
       direction: Axis.horizontal,
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
-        CustomButton(
+        SimpleButton(
             padding: EdgeInsets.symmetric(
                 horizontal: Tools.getWidth(20), vertical: Tools.getHeight(5)),
             onTap: cancelTap,
             child: cancel,
             text: cancelText,
             textStyle: cancelTextStyle),
-        CustomButton(
+        SimpleButton(
             onTap: sureTap,
             padding: EdgeInsets.symmetric(
                 horizontal: Tools.getWidth(20), vertical: Tools.getHeight(5)),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/src/widget/custom/Universal.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 
-class CustomButton extends StatelessWidget {
+class SimpleButton extends StatelessWidget {
   final child;
   final TextStyle textStyle;
   final EdgeInsetsGeometry padding;
@@ -18,7 +18,7 @@ class CustomButton extends StatelessWidget {
   final bool addInkWell;
   final bool visible;
 
-  CustomButton({
+  SimpleButton({
     Key key,
     String text,
     bool inkWell,

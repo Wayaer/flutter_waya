@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 
 class LabeledRadio extends StatelessWidget {
   final EdgeInsets padding;
@@ -18,37 +19,33 @@ class LabeledRadio extends StatelessWidget {
     this.activeColor,
     this.value,
     this.onChanged,
-  })
-      : this.padding = padding ?? EdgeInsets.zero,
+  })  : this.padding = padding ?? EdgeInsets.zero,
         this.titlePadding = titlePadding ?? EdgeInsets.zero,
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return Universal(
+      direction: Axis.horizontal,
+      padding: padding,
       onTap: () {
         if (value != groupValue && onChanged != null) onChanged(value);
       },
-      child: Padding(
-        padding: padding,
-        child: Row(
-          children: <Widget>[
-            Radio(
-              groupValue: groupValue,
-              value: value,
-              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              activeColor: activeColor,
-              onChanged: (dynamic newValue) {
-                onChanged(newValue);
-              },
-            ),
-            Padding(
-              padding: titlePadding,
-              child: label,
-            ),
-          ],
+      children: <Widget>[
+        Radio(
+          groupValue: groupValue,
+          value: value,
+          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          activeColor: activeColor,
+          onChanged: (dynamic newValue) {
+            onChanged(newValue);
+          },
         ),
-      ),
+        Padding(
+          padding: titlePadding,
+          child: label,
+        ),
+      ],
     );
   }
 }

@@ -6,7 +6,7 @@ import 'package:flutter_waya/src/constant/WayConstant.dart';
 import 'package:flutter_waya/src/constant/WayEnum.dart';
 import 'package:flutter_waya/src/constant/WayStyles.dart';
 
-class TextInputField extends StatelessWidget {
+class InputField extends StatelessWidget {
   final TextEditingController controller;
   final ValueChanged<String> onChanged;
   final List<TextInputFormatter> inputFormatter;
@@ -145,7 +145,7 @@ class TextInputField extends StatelessWidget {
   /// 自定义数字显示   指定maxLength后 右下角会出现字数，flutter有默认实现  可以通过这个自定义
   final InputCounterWidgetBuilder buildCounter;
 
-  TextInputField({
+  InputField({
     Key key,
     int maxLines,
     TextAlign textAlign,
@@ -213,60 +213,59 @@ class TextInputField extends StatelessWidget {
     this.counter,
     this.buildCounter,
     this.onEditingComplete,
-  })
-      : this.obscureText = obscureText ?? false,
-        this.readOnly=readOnly ?? false,
-        this.floatingLabelBehavior=floatingLabelBehavior ??
-            FloatingLabelBehavior.always,
+  })  : this.obscureText = obscureText ?? false,
+        this.readOnly = readOnly ?? false,
+        this.floatingLabelBehavior =
+            floatingLabelBehavior ?? FloatingLabelBehavior.always,
 
-  ///键盘大小写的显示 Only supports text keyboards  但是好像不起作用？
-  ///characters 默认为每个字符使用大写键盘
-  ///sentence 默认为每个句子的第一个字母使用大写键盘
-  ///word 默认为每个单词的第一个字母使用大写键盘。
-  ///none 默认使用小写
+        ///键盘大小写的显示 Only supports text keyboards  但是好像不起作用？
+        ///characters 默认为每个字符使用大写键盘
+        ///sentence 默认为每个句子的第一个字母使用大写键盘
+        ///word 默认为每个单词的第一个字母使用大写键盘。
+        ///none 默认使用小写
         this.textCapitalization = textCapitalization ?? TextCapitalization.none,
 
-  ///长按输入的文字时，true显示系统的粘贴板  false不显示
+        ///长按输入的文字时，true显示系统的粘贴板  false不显示
         this.enableInteractiveSelection = enableInteractiveSelection ?? true,
 
-  ///自定义数字显示   指定maxLength后 右下角会出现字数，flutter有默认实现  可以通过这个自定义
-  ///光标颜色
+        ///自定义数字显示   指定maxLength后 右下角会出现字数，flutter有默认实现  可以通过这个自定义
+        ///光标颜色
         this.cursorColor = cursorColor ?? getColors(black70),
 
-  ///光标圆角
+        ///光标圆角
         this.cursorRadius = cursorRadius ?? Radius.circular(1),
 
-  ///光标宽度
+        ///光标宽度
         this.cursorWidth = cursorWidth ?? 2,
 
-  /// 键盘外观  仅ios有效
+        /// 键盘外观  仅ios有效
         this.keyboardAppearance = keyboardAppearance,
 
-  ///      默认true  超过长度后输入无效  右下角数字 显示10/10   此时onchange方法依然会调用，返回值就是限制了长度的值 超过后的输入不显示
-  ///      false 超过后可继续输入  右下角数字显示，比如 23/10
+        ///      默认true  超过长度后输入无效  右下角数字 显示10/10   此时onchange方法依然会调用，返回值就是限制了长度的值 超过后的输入不显示
+        ///      false 超过后可继续输入  右下角数字显示，比如 23/10
         this.maxLengthEnforced = maxLengthEnforced ?? true,
 
-  ///       设置键盘上enter键的显示内容
-  ///       textInputAction: TextInputAction.search, ///搜索
-  ///       textInputAction: TextInputAction.none,///默认回车符号
-  ///       textInputAction: TextInputAction.done,///安卓显示 回车符号
-  ///       textInputAction: TextInputAction.go,///开始
-  ///       textInputAction: TextInputAction.next,///下一步
-  ///       textInputAction: TextInputAction.send,///发送
-  ///       textInputAction: TextInputAction.continueAction,///android  不支持
-  ///       textInputAction: TextInputAction.emergencyCall,///android  不支持
-  ///       textInputAction: TextInputAction.newline,///安卓显示 回车符号
-  ///       textInputAction: TextInputAction.route,///android  不支持
-  ///       textInputAction: TextInputAction.join,///android  不支持
-  ///       textInputAction: TextInputAction.previous,///安卓显示 回车符号
-  ///       textInputAction: TextInputAction.unspecified,///安卓显示 回车符号
+        ///       设置键盘上enter键的显示内容
+        ///       textInputAction: TextInputAction.search, ///搜索
+        ///       textInputAction: TextInputAction.none,///默认回车符号
+        ///       textInputAction: TextInputAction.done,///安卓显示 回车符号
+        ///       textInputAction: TextInputAction.go,///开始
+        ///       textInputAction: TextInputAction.next,///下一步
+        ///       textInputAction: TextInputAction.send,///发送
+        ///       textInputAction: TextInputAction.continueAction,///android  不支持
+        ///       textInputAction: TextInputAction.emergencyCall,///android  不支持
+        ///       textInputAction: TextInputAction.newline,///安卓显示 回车符号
+        ///       textInputAction: TextInputAction.route,///android  不支持
+        ///       textInputAction: TextInputAction.join,///android  不支持
+        ///       textInputAction: TextInputAction.previous,///安卓显示 回车符号
+        ///       textInputAction: TextInputAction.unspecified,///安卓显示 回车符号
         this.textInputAction = textInputAction ?? TextInputAction.done,
         this.autoFocus = autoFocus ?? false,
         this.maxLines = maxLines ?? 1,
 
-  ///从左边输入  光标在左边
-  ///从右边输入  光标在右边
-  ///      this.textDirection = textDirection ?? TextDirection.rtl,
+        ///从左边输入  光标在左边
+        ///从右边输入  光标在右边
+        ///      this.textDirection = textDirection ?? TextDirection.rtl,
         this.textDirection = textDirection ?? TextDirection.ltr,
         this.enabled = enabled ?? true,
         this.textAlign = textAlign ?? TextAlign.left,

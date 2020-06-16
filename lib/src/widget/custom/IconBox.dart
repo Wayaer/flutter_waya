@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-class CustomIcon extends StatelessWidget {
+class IconBox extends StatelessWidget {
   ///icon > image > imageProvider > widget
   final Widget widget;
   final IconData icon;
@@ -37,7 +37,7 @@ class CustomIcon extends StatelessWidget {
   final double iconSize;
   final AlignmentGeometry alignment;
 
-  CustomIcon({
+  IconBox({
     Key key,
     Axis direction,
     MainAxisAlignment mainAxisAlignment,

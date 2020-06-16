@@ -4,7 +4,7 @@ import 'package:flutter_waya/src/constant/WayColor.dart';
 import 'package:flutter_waya/src/constant/WayIcon.dart';
 import 'package:flutter_waya/src/tools/Tools.dart';
 
-class SearchInput extends StatelessWidget {
+class SearchBox extends StatelessWidget {
   final EdgeInsetsGeometry margin;
   final EdgeInsetsGeometry padding;
   final AlignmentGeometry alignment;
@@ -41,7 +41,7 @@ class SearchInput extends StatelessWidget {
   final FocusNode focusNode;
   final Widget suffixIcon;
 
-  SearchInput({
+  SearchBox({
     Key key,
     IconData icon,
     EdgeInsetsGeometry contentPadding,
@@ -74,12 +74,13 @@ class SearchInput extends StatelessWidget {
     this.alignment,
     this.fillColor,
     this.height,
-    this.width, this.autoFocus, this.focusNode,
-  })
-      : this.icon = icon ?? WayIcon.search,
+    this.width,
+    this.autoFocus,
+    this.focusNode,
+  })  : this.icon = icon ?? WayIcon.search,
         this.iconSize = iconSize ?? Tools.getWidth(14),
-        this.contentPadding = contentPadding ??
-            EdgeInsets.all(Tools.getWidth(6)),
+        this.contentPadding =
+            contentPadding ?? EdgeInsets.all(Tools.getWidth(6)),
         super(key: key);
 
   @override
@@ -110,7 +111,7 @@ class SearchInput extends StatelessWidget {
   }
 
   Widget textInput() {
-    return TextInputField(
+    return InputField(
       controller: controller,
       isDense: true,
       focusNode: focusNode,
@@ -148,12 +149,12 @@ class SearchInput extends StatelessWidget {
     if (search == null) {
       return searchText == null
           ? null
-          : CustomButton(
-        text: searchText,
-        onTap: searchTap,
-        padding: EdgeInsets.symmetric(horizontal: Tools.getWidth(4)),
-        textStyle: searchStyle ?? TextStyle(color: getColors(white)),
-      );
+          : SimpleButton(
+              text: searchText,
+              onTap: searchTap,
+              padding: EdgeInsets.symmetric(horizontal: Tools.getWidth(4)),
+              textStyle: searchStyle ?? TextStyle(color: getColors(white)),
+            );
     } else {
       return search;
     }
