@@ -42,19 +42,19 @@ class SimpleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Widget widget = Text(
+      text,
+      textAlign: TextAlign.start,
+      style: textStyle,
+      maxLines: maxLines,
+      overflow: overflow,
+    );
+    if (child != null) widget = child;
     return Universal(
       visible: visible,
       addInkWell: addInkWell,
       mainAxisSize: MainAxisSize.min,
-      child: child != null
-          ? child
-          : Text(
-              text,
-              textAlign: TextAlign.start,
-              style: textStyle,
-              maxLines: maxLines,
-              overflow: overflow,
-            ),
+      child: widget,
       width: width,
       height: height,
       onTap: onTap,

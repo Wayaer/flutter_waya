@@ -94,7 +94,6 @@ class ListEntry extends StatelessWidget {
     List<Widget> children = List();
     if (prefix != null) children.add(prefix);
     children.add(listTile());
-//    if (child != null) children.add(child);
     if (arrow) children.add(arrowWidget());
     return Universal(
         heroTag: heroTag,
