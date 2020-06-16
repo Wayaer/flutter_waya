@@ -25,7 +25,6 @@ class CheckBox extends StatefulWidget {
 
   CheckBox(
       {Key key,
-      bool value,
       double iconSize,
       Color uncheckColor,
       Color checkColor,
@@ -43,9 +42,9 @@ class CheckBox extends StatefulWidget {
       this.titleText,
       this.title,
       this.visible,
-      this.activeColor})
-      : this.value = value ?? false,
-        this.iconSize = iconSize ?? Tools.getWidth(17),
+      this.activeColor,
+      this.value})
+      : this.iconSize = iconSize ?? Tools.getWidth(17),
         this.uncheckColor = uncheckColor ?? getColors(black70),
         this.checkColor = checkColor ?? getColors(white),
         this.mainAxisAlignment = mainAxisAlignment ?? MainAxisAlignment.center,
@@ -58,11 +57,11 @@ class CheckBox extends StatefulWidget {
 }
 
 class CheckBoxState extends State<CheckBox> {
-  bool value;
+  bool value = false;
 
   @override
   Widget build(BuildContext context) {
-    value = widget.value;
+    if (widget.value != null) value = widget.value;
     IconData icon;
     if (widget.checkIcon != null && widget.uncheckIcon != null)
       icon = value ? widget.checkIcon : widget.uncheckIcon;
