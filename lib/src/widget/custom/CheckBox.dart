@@ -11,7 +11,7 @@ class CheckBox extends StatefulWidget {
   final TextStyle titleStyle;
   final String titleText;
   final Widget title;
-  final double iconSize;
+  final double size;
   final EdgeInsetsGeometry margin;
   final EdgeInsetsGeometry padding;
   final Widget checkWidget;
@@ -25,7 +25,7 @@ class CheckBox extends StatefulWidget {
 
   CheckBox(
       {Key key,
-      double iconSize,
+      double size,
       Color uncheckColor,
       Color checkColor,
       MainAxisAlignment mainAxisAlignment,
@@ -44,7 +44,7 @@ class CheckBox extends StatefulWidget {
       this.visible,
       this.activeColor,
       this.value})
-      : this.iconSize = iconSize ?? Tools.getWidth(17),
+      : this.size = size ?? Tools.getWidth(17),
         this.uncheckColor = uncheckColor ?? getColors(black70),
         this.checkColor = checkColor ?? getColors(white),
         this.mainAxisAlignment = mainAxisAlignment ?? MainAxisAlignment.center,
@@ -74,8 +74,8 @@ class CheckBoxState extends State<CheckBox> {
     return IconBox(
         visible: widget.visible,
         icon: icon,
-        iconSize: widget.iconSize,
-        iconColor: value ? widget.checkColor : widget.uncheckColor,
+        size: widget.size,
+        color: value ? widget.checkColor : widget.uncheckColor,
         widget: check,
         background: widget.background,
         margin: widget.margin,

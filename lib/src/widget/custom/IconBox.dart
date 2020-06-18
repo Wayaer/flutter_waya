@@ -20,7 +20,7 @@ class IconBox extends StatelessWidget {
   final EdgeInsetsGeometry padding;
   final EdgeInsetsGeometry margin;
   final Color background;
-  final Color iconColor;
+  final Color color;
   final double height;
   final double width;
   final Decoration decoration;
@@ -34,8 +34,9 @@ class IconBox extends StatelessWidget {
   final bool visible;
   final TextOverflow overflow;
   final double spacing;
-  final double iconSize;
+  final double size;
   final AlignmentGeometry alignment;
+  final TextAlign textAlign;
 
   IconBox({
     Key key,
@@ -46,10 +47,11 @@ class IconBox extends StatelessWidget {
     bool reversal,
     TextOverflow overflow,
     double spacing,
-    double iconSize,
+    double size,
+    TextAlign textAlign,
     this.icon,
     this.background,
-    this.iconColor,
+    this.color,
     this.semanticLabel,
     this.textDirection,
     this.titleText,
@@ -69,7 +71,8 @@ class IconBox extends StatelessWidget {
     this.widget,
   })  : this.maxLines = maxLines ?? 1,
         this.overflow = overflow ?? TextOverflow.ellipsis,
-        this.iconSize = iconSize ?? Tools.getWidth(15),
+        this.textAlign = textAlign ?? TextAlign.start,
+        this.size = size ?? Tools.getWidth(15),
         this.reversal = reversal ?? false,
         this.direction = direction ?? Axis.horizontal,
         this.spacing = spacing ?? Tools.getWidth(4),
@@ -132,7 +135,7 @@ class IconBox extends StatelessWidget {
     return Text(
       titleText ?? '',
       style: titleStyle,
-      textAlign: TextAlign.start,
+      textAlign: textAlign,
       maxLines: maxLines,
       textDirection: textDirection,
       overflow: overflow,
@@ -151,8 +154,8 @@ class IconBox extends StatelessWidget {
     List<Widget> listWidget = [];
     if (icon != null) {
       listWidget.add(Icon(icon,
-          color: iconColor,
-          size: iconSize,
+          color: color,
+          size: size,
           textDirection: textDirection,
           semanticLabel: semanticLabel));
 
@@ -163,7 +166,7 @@ class IconBox extends StatelessWidget {
     }
     if (imageProvider != null) {
       listWidget.add(ImageIcon(imageProvider,
-          color: iconColor, size: iconSize, semanticLabel: semanticLabel));
+          color: color, size: size, semanticLabel: semanticLabel));
     }
     if (widget != null) {
       listWidget.add(widget);

@@ -14,8 +14,8 @@ class SearchBox extends StatelessWidget {
   final Widget search;
   final TextStyle searchStyle;
   final GestureTapCallback searchTap;
-  final double iconSize;
-  final Color iconColor;
+  final double size;
+  final Color color;
   final IconData icon;
   final Widget prefixIcon;
   final double labelSpacing;
@@ -51,8 +51,8 @@ class SearchBox extends StatelessWidget {
     this.onChanged,
     this.hintText,
     this.hintStyle,
-    this.iconColor,
-    double iconSize,
+    this.color,
+    double size,
     this.borderRadius,
     this.inputStyle,
     this.cursorColor,
@@ -78,7 +78,7 @@ class SearchBox extends StatelessWidget {
     this.autoFocus,
     this.focusNode,
   })  : this.icon = icon ?? WayIcon.search,
-        this.iconSize = iconSize ?? Tools.getWidth(14),
+        this.size = size ?? Tools.getWidth(14),
         this.contentPadding =
             contentPadding ?? EdgeInsets.all(Tools.getWidth(6)),
         super(key: key);
@@ -137,8 +137,8 @@ class SearchBox extends StatelessWidget {
     if (prefixIcon == null) {
       return Icon(
         icon,
-        size: iconSize,
-        color: iconColor,
+        size: size,
+        color: color,
       );
     } else {
       return prefixIcon;

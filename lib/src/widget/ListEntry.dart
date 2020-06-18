@@ -130,8 +130,8 @@ class ListEntry extends StatelessWidget {
   Widget arrowWidget() {
     return IconBox(
         icon: WayIcon.arrowRight,
-        iconSize: arrowSize,
-        iconColor: arrowColor,
+        size: arrowSize,
+        color: arrowColor,
         margin: arrowMargin);
   }
 }
