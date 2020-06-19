@@ -6,7 +6,7 @@ class SimpleButton extends StatelessWidget {
   final TextStyle textStyle;
   final EdgeInsetsGeometry padding;
   final EdgeInsetsGeometry margin;
-  final Color background;
+  final Color color;
   final double height;
   final double width;
   final Decoration decoration;
@@ -28,7 +28,7 @@ class SimpleButton extends StatelessWidget {
     this.padding,
     this.margin,
     this.width,
-    this.background,
+    this.color,
     this.height,
     this.decoration,
     this.alignment,
@@ -59,7 +59,7 @@ class SimpleButton extends StatelessWidget {
       height: height,
       onTap: onTap,
       margin: margin,
-      decoration: decoration ?? BoxDecoration(color: background),
+      decoration: decoration ?? BoxDecoration(color: color),
       padding: padding,
       alignment: alignment,
     );

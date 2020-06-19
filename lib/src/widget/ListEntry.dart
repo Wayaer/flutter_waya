@@ -43,7 +43,7 @@ class ListEntry extends StatelessWidget {
   final Color underlineColor;
 
   final EdgeInsetsGeometry arrowMargin;
-  final Color backgroundColor;
+  final Color color;
   final BoxDecoration decoration;
   final double arrowSize;
   final Color arrowColor;
@@ -69,7 +69,7 @@ class ListEntry extends StatelessWidget {
       this.margin,
       this.decoration,
       this.child,
-      this.backgroundColor,
+      this.color,
       this.titleText,
       this.titleStyle,
       this.underlineColor,
@@ -108,7 +108,7 @@ class ListEntry extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         decoration: decoration ??
             WayStyles.containerUnderlineBackground(
-                underlineColor: underlineColor, color: backgroundColor),
+                underlineColor: underlineColor, color: color),
         children: children);
   }
 
