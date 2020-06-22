@@ -24,11 +24,11 @@ class Tools {
   /// 截屏
   static Future<ByteData> screenshots(GlobalKey globalKey,
       {ImageByteFormat format}) async {
-    RenderRepaintBoundary boundary = globalKey.currentContext
-        .findRenderObject();
+    RenderRepaintBoundary boundary =
+        globalKey.currentContext.findRenderObject();
     var image = await boundary.toImage();
-    ByteData byteData = await image.toByteData(
-        format: format ?? ImageByteFormat.rawRgba);
+    ByteData byteData =
+        await image.toByteData(format: format ?? ImageByteFormat.rawRgba);
 
     ///    Uint8List uint8list = byteData.buffer.asUint8List();
     return byteData;
@@ -153,9 +153,7 @@ class Tools {
   static getHeight([double height, bool intType]) {
     double h;
     if (height == null || height == 0) {
-      h = MediaQueryTools
-          .getSize()
-          .height;
+      h = MediaQueryTools.getSize().height;
     } else {
       ///  h = (height / designHeight) * phoneFitHeight(context);
       h = (height / _designHeight) * MediaQueryTools.getHeight();
@@ -167,9 +165,7 @@ class Tools {
   static getWidth([double width, bool intType]) {
     double w;
     if (width == null || width == 0) {
-      w = MediaQueryTools
-          .getSize()
-          .width;
+      w = MediaQueryTools.getSize().width;
     } else {
       w = (width / _designWidth) * MediaQueryTools.getWidth();
     }
