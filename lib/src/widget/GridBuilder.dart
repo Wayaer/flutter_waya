@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:flutter_waya/src/common/CommonWidget.dart';
+import 'package:flutter_waya/src/constant/widgets.dart';
 
 class GridBuilder extends StatelessWidget {
   final ScrollController controller;
@@ -63,7 +63,7 @@ class GridBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     if (itemCount == 0) {
       return noData ??
-          CommonWidget.notDataWidget(
+          Widgets.notDataWidget(
               margin: EdgeInsets.all(Tools.getWidth(10)));
     }
     return GridView.builder(

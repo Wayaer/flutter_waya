@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:flutter_waya/src/constant/WayColor.dart';
-import 'package:flutter_waya/src/constant/WayStyles.dart';
+import 'package:flutter_waya/src/constant/colors.dart';
+import 'package:flutter_waya/src/constant/styles.dart';
 
 class AlertSureCancel extends StatelessWidget {
   final List<Widget> children;

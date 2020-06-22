@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:flutter_waya/src/constant/WayColor.dart';
+import 'package:flutter_waya/src/constant/colors.dart';
 
 class AlertBase extends StatefulWidget {
   final Widget child;

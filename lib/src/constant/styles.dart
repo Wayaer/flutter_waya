@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/src/constant/WayColor.dart';
-import 'package:flutter_waya/src/constant/WayConstant.dart';
+import 'package:flutter_waya/src/constant/colors.dart';
+import 'package:flutter_waya/src/constant/constant.dart';
 import 'package:flutter_waya/src/tools/Tools.dart';
 
 const double radiusLocal = WayConstant.Radius;

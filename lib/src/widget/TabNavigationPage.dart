@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/src/constant/WayColor.dart';
+import 'package:flutter_waya/src/constant/colors.dart';
 import 'package:flutter_waya/src/tools/Tools.dart';
 
 class TabNavigationPage extends StatefulWidget {

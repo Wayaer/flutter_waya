@@ -1,6 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/src/constant/WayColor.dart';
+import 'package:flutter_waya/src/constant/colors.dart';
 import 'package:flutter_waya/src/tools/LogTools.dart';
 import 'package:flutter_waya/src/tools/Tools.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';

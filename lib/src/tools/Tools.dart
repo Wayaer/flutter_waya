@@ -9,8 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:flutter_waya/src/constant/WayColor.dart';
-import 'package:flutter_waya/src/constant/WayEnum.dart';
+import 'package:flutter_waya/src/constant/colors.dart';
+import 'package:flutter_waya/src/constant/enums.dart';
 
 isDebug() {
   return !kReleaseMode;
@@ -25,10 +25,10 @@ class Tools {
   static Future<ByteData> screenshots(GlobalKey globalKey,
       {ImageByteFormat format}) async {
     RenderRepaintBoundary boundary =
-        globalKey.currentContext.findRenderObject();
-    var image = await boundary.toImage();
+    globalKey.currentContext.findRenderObject();
+    var image = await boundary.toImage(pixelRatio: window.devicePixelRatio);
     ByteData byteData =
-        await image.toByteData(format: format ?? ImageByteFormat.rawRgba);
+    await image.toByteData(format: format ?? ImageByteFormat.rawRgba);
 
     ///    Uint8List uint8list = byteData.buffer.asUint8List();
     return byteData;
@@ -153,7 +153,9 @@ class Tools {
   static getHeight([double height, bool intType]) {
     double h;
     if (height == null || height == 0) {
-      h = MediaQueryTools.getSize().height;
+      h = MediaQueryTools
+          .getSize()
+          .height;
     } else {
       ///  h = (height / designHeight) * phoneFitHeight(context);
       h = (height / _designHeight) * MediaQueryTools.getHeight();
@@ -165,7 +167,9 @@ class Tools {
   static getWidth([double width, bool intType]) {
     double w;
     if (width == null || width == 0) {
-      w = MediaQueryTools.getSize().width;
+      w = MediaQueryTools
+          .getSize()
+          .width;
     } else {
       w = (width / _designWidth) * MediaQueryTools.getWidth();
     }

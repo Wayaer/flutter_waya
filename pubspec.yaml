@@ -21,8 +21,11 @@ dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - lib/res/
   fonts:
     - family: Icons
       fonts:
-        - asset: lib/fonts/icons.ttf
+        - asset: lib/res/icons.ttf
+
 

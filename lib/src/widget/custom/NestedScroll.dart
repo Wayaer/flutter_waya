@@ -3,7 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:flutter_waya/src/constant/WayColor.dart';
+import 'package:flutter_waya/src/constant/colors.dart';
 
 class NestedScroll extends StatefulWidget {
   final ScrollController controller;

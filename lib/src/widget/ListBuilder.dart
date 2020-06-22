@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:flutter_waya/src/common/CommonWidget.dart';
+import 'package:flutter_waya/src/constant/widgets.dart';
 import 'package:flutter_waya/src/widget/refresh/Refreshed.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -64,7 +64,7 @@ class ListBuilder extends StatelessWidget {
   Widget listViewBuilder() {
     if (itemCount == 0) {
       return noData ??
-          CommonWidget.notDataWidget(
+          Widgets.notDataWidget(
               margin: EdgeInsets.all(Tools.getWidth(10)));
     }
     return ListView.builder(

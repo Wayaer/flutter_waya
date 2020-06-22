@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:flutter_waya/src/constant/WayColor.dart';
+import 'package:flutter_waya/src/constant/colors.dart';
 
 class AutoScrollItem extends StatefulWidget {
   final Key key;

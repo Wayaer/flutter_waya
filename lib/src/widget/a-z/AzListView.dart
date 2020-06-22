@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:flutter_waya/src/constant/WayColor.dart';
-import 'package:flutter_waya/src/widget/azlist/Suspension.dart';
-
+import 'package:flutter_waya/src/constant/colors.dart';
+import 'package:flutter_waya/src/widget/a-z/Suspension.dart';
 
 /// Called to build children for the listview.
 typedef Widget ItemWidgetBuilder(BuildContext context, SuspensionModel model);
 
 /// Called to build IndexBar.
-typedef Widget IndexBarBuilder(BuildContext context, List<String> tags,
-    IndexBarTouchCallback onTouch);
+typedef Widget IndexBarBuilder(
+    BuildContext context, List<String> tags, IndexBarTouchCallback onTouch);
 
 /// Called to build index hint.
 typedef Widget IndexHintBuilder(BuildContext context, String hint);
@@ -27,23 +26,24 @@ class Header extends SuspensionModel {
 
 /// AzListView.
 class AzListView extends StatefulWidget {
-  AzListView({Key key,
-    this.data,
-    this.topData,
-    this.itemBuilder,
-    this.controller,
-    this.physics,
-    this.shrinkWrap = true,
-    this.padding = EdgeInsets.zero,
-    this.suspensionWidget,
-    this.isUseRealIndex = true,
-    this.itemHeight,
-    this.suspensionHeight,
-    this.onSusTagChanged,
-    this.header,
-    this.indexBarBuilder,
-    this.indexHintBuilder,
-    this.showIndexHint = true})
+  AzListView(
+      {Key key,
+      this.data,
+      this.topData,
+      this.itemBuilder,
+      this.controller,
+      this.physics,
+      this.shrinkWrap = true,
+      this.padding = EdgeInsets.zero,
+      this.suspensionWidget,
+      this.isUseRealIndex = true,
+      this.itemHeight,
+      this.suspensionHeight,
+      this.onSusTagChanged,
+      this.header,
+      this.indexBarBuilder,
+      this.indexHintBuilder,
+      this.showIndexHint = true})
       : assert(itemBuilder != null),
         super(key: key);
 
@@ -119,8 +119,9 @@ class AzListViewState extends State<AzListView> {
       isShowIndexBarHint = model.isTouchDown;
       int offset = suspensionSectionMap[model.tag];
       if (offset != null) {
-        scrollController.jumpTo(offset.toDouble().clamp(
-            .0, scrollController.position.maxScrollExtent));
+        scrollController.jumpTo(offset
+            .toDouble()
+            .clamp(.0, scrollController.position.maxScrollExtent));
       }
     });
   }
@@ -139,8 +140,7 @@ class AzListViewState extends State<AzListView> {
     SuspensionUtil.setShowSuspensionStatus(cityList);
 
     if (widget.header != null) {
-      cityList.insert(0, Header()
-        ..tag = widget.header.tag);
+      cityList.insert(0, Header()..tag = widget.header.tag);
     }
     indexTagList.clear();
     if (widget.isUseRealIndex) {
@@ -164,7 +164,8 @@ class AzListViewState extends State<AzListView> {
             itemCount: cityList.length,
             itemBuilder: (BuildContext context, int index) {
               if (index == 0 && cityList[index] is Header) {
-                return SizedBox(height: widget.header.height.toDouble(),
+                return SizedBox(
+                    height: widget.header.height.toDouble(),
                     child: widget.header.builder(context));
               }
               return widget.itemBuilder(context, cityList[index]);
@@ -176,7 +177,7 @@ class AzListViewState extends State<AzListView> {
         onSusTagChanged: widget.onSusTagChanged,
         header: widget.header,
         onSusSectionInited: (Map<String, int> map) =>
-        suspensionSectionMap = map,
+            suspensionSectionMap = map,
       )
     ];
 

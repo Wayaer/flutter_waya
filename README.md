@@ -8,7 +8,7 @@
 
 ### 1、全局弹窗 全局无Context路由跳转 根组件使用 [OverlayCupertino](lib/src/widget/overlay/widget/OverlayCupertino.dart) 或 [OverlayMaterial](lib/src/widget/overlay/widget/OverlayMaterial.dart) 
 
-### 2、[A-Z 侧边栏](lib/src/widget/azlist)
+### 2、[A-Z 侧边栏](lib/src/widget/a-z)
 
 ### 3、[自定义广告滚动](lib/src/widget/autoscroll)
 
