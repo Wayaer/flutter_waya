@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 typedef WheelChangedListener = Function(int newIndex);
@@ -27,7 +26,7 @@ class ListWheel extends StatefulWidget {
   final int initialIndex;
 
   /// 回调监听
-  final WheelChangedListener onItemSelected;
+  final WheelChangedListener onChanged;
 
   /// ///放大倍率
   final double magnification;
@@ -40,6 +39,7 @@ class ListWheel extends StatefulWidget {
 
   ///
   final ScrollPhysics physics;
+  final bool forceRefresh;
 
   final FixedExtentScrollController controller;
 
@@ -56,19 +56,19 @@ class ListWheel extends StatefulWidget {
     bool useMagnifier,
     double squeeze,
     ScrollPhysics physics,
-    FixedExtentScrollController controller,
-    this.onItemSelected,
+    this.controller,
+    this.onChanged,
+    bool forceRefresh,
   })  : this.diameterRatio = diameterRatio ?? 1,
         this.offAxisFraction = offAxisFraction ?? 0,
         this.initialIndex = initialIndex ?? 0,
         this.perspective = perspective ?? 0.01,
         this.magnification = magnification ?? 1.5,
         this.useMagnifier = useMagnifier ?? true,
+        this.forceRefresh = forceRefresh ?? false,
         this.squeeze = squeeze ?? 1,
         this.itemExtent = itemExtent ?? Tools.getHeight(12),
         this.physics = physics ?? FixedExtentScrollPhysics(),
-        this.controller = controller ??
-            FixedExtentScrollController(initialItem: initialIndex),
         super(key: key);
 
   @override
@@ -78,74 +78,30 @@ class ListWheel extends StatefulWidget {
 class ListWheelState extends State<ListWheel> {
   FixedExtentScrollController controller;
 
-  void animateToItem(int index) {
-    if (controller != null && controller.hasClients) {
-      if (widget.onItemSelected != null && widget.itemCount > 0) {
-        if (index == null || index < 0) {
-          index = 0;
-        } else if (index > this.widget.itemCount - 1) {
-          index = this.widget.itemCount - 1;
-        }
-        controller.animateToItem(index,
-            duration: Duration(milliseconds: 100), curve: Curves.linear);
-      }
-    }
-  }
-
   @override
   void initState() {
     super.initState();
-    controller = widget.controller;
-    if (widget.controller != null &&
-        widget.initialIndex > widget.controller.initialItem) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        animateToItem(widget.initialIndex);
-      });
-    }
+    controller = widget.controller ??
+        FixedExtentScrollController(initialItem: widget.initialIndex);
   }
 
   @override
-  void didUpdateWidget(ListWheel oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget != widget) {
-      SchedulerBinding.instance.addPostFrameCallback((_) {
-        animateToItem(widget.initialIndex);
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) =>
-      NotificationListener<ScrollEndNotification>(
-        onNotification: onNotification,
-        child: ListWheelScrollView.useDelegate(
-          controller: controller,
-          itemExtent: widget.itemExtent,
-          physics: widget.physics,
-          diameterRatio: widget.diameterRatio,
-          onSelectedItemChanged: (_) {},
-          offAxisFraction: widget.offAxisFraction,
-          perspective: widget.perspective,
-          useMagnifier: widget.useMagnifier,
-          squeeze: widget.squeeze,
-          magnification: widget.magnification,
-          childDelegate: ListWheelChildBuilderDelegate(
-            builder: widget.itemBuilder,
-            childCount: widget.itemCount,
-          ),
-        ),
-      );
-
-  bool onNotification(ScrollEndNotification notification) {
-    ///   滚动结束的监听事件
-    if (notification is ScrollEndNotification &&
-        widget.onItemSelected != null) {
-      var pixels = notification.metrics.pixels;
-      var newIndex = (pixels / widget.itemExtent).round();
-      widget.onItemSelected(newIndex);
-      return true;
-    }
-    return false;
+  Widget build(BuildContext context) {
+    var childDelegate = ListWheelChildBuilderDelegate(
+        builder: widget.itemBuilder, childCount: widget.itemCount);
+    return ListWheelScrollView.useDelegate(
+      controller: controller,
+      itemExtent: widget.itemExtent,
+      physics: widget.physics,
+      diameterRatio: widget.diameterRatio,
+      onSelectedItemChanged: (int index) => widget.onChanged(index),
+      offAxisFraction: widget.offAxisFraction,
+      perspective: widget.perspective,
+      useMagnifier: widget.useMagnifier,
+      squeeze: widget.squeeze,
+      magnification: widget.magnification,
+      childDelegate: childDelegate,
+    );
   }
 
   @override
