@@ -105,9 +105,7 @@ class AreaPickerState extends State<AreaPicker> {
   int districtIndex = 0;
   int streetIndex = 0;
 
-  FixedExtentScrollController controllerCity =
-          FixedExtentScrollController(initialItem: 0),
-      controllerDistrict = FixedExtentScrollController(initialItem: 0);
+  FixedExtentScrollController controllerCity, controllerDistrict;
 
   StateSetter cityState;
   StateSetter districtState;
@@ -116,6 +114,9 @@ class AreaPickerState extends State<AreaPicker> {
   void initState() {
     super.initState();
     initData();
+    controllerCity = FixedExtentScrollController(initialItem: cityIndex);
+    controllerDistrict =
+        FixedExtentScrollController(initialItem: districtIndex);
   }
 
   initData() {
@@ -131,24 +132,24 @@ class AreaPickerState extends State<AreaPicker> {
 
     ///省
     province = areaData?.keys?.toList();
+    if (province.contains(widget.defaultProvince))
+      provinceIndex = province.indexOf(widget.defaultProvince);
     var provinceData = areaData[province[provinceIndex]];
 
     ///市
     city = provinceData?.keys?.toList();
+    if (city.contains(widget.defaultCity))
+      cityIndex = city.indexOf(widget.defaultCity);
     var cityData = provinceData[city[cityIndex]];
 
     ///区
     district = cityData?.keys?.toList();
+    if (district.contains(widget.defaultDistrict))
+      districtIndex = district.indexOf(widget.defaultDistrict);
 //    var districtData = cityData[districtIndex];
 
     ///街道
 //    street = districtData[districtIndex];
-    if (province.contains(widget.defaultProvince))
-      provinceIndex = province.indexOf(widget.defaultProvince);
-    if (city.contains(widget.defaultCity))
-      cityIndex = city.indexOf(widget.defaultCity);
-    if (district.contains(widget.defaultDistrict))
-      districtIndex = district.indexOf(widget.defaultDistrict);
   }
 
   ///点击确定返回选择的地区
