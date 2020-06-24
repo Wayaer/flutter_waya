@@ -46,6 +46,9 @@ class AreaPicker extends StatefulWidget {
   ///1或者2
   final double squeeze;
   final ScrollPhysics physics;
+  final String defaultProvince;
+  final String defaultCity;
+  final String defaultDistrict;
 
   AreaPicker(
       {Key key,
@@ -66,7 +69,10 @@ class AreaPicker extends StatefulWidget {
       double magnification,
       this.useMagnifier,
       this.squeeze,
-      this.physics})
+      this.physics,
+      this.defaultProvince,
+      this.defaultCity,
+      this.defaultDistrict})
       : this.titleBottom = titleBottom ?? Container(),
         this.sure = sure ?? Widgets.textDefault('sure'),
         this.title = title ?? Widgets.textDefault('title'),
@@ -137,6 +143,12 @@ class AreaPickerState extends State<AreaPicker> {
 
     ///街道
 //    street = districtData[districtIndex];
+    if (province.contains(widget.defaultProvince))
+      provinceIndex = province.indexOf(widget.defaultProvince);
+    if (city.contains(widget.defaultCity))
+      cityIndex = city.indexOf(widget.defaultCity);
+    if (district.contains(widget.defaultDistrict))
+      districtIndex = district.indexOf(widget.defaultDistrict);
   }
 
   ///点击确定返回选择的地区
@@ -154,12 +166,15 @@ class AreaPickerState extends State<AreaPicker> {
     var cityData = provinceData[city[cityIndex]];
     district = cityData?.keys?.toList();
     districtState(() {});
+    controllerCity.jumpTo(0);
+    controllerDistrict.jumpTo(0);
   }
 
   refreshDistrict() {
     var cityData = areaData[province[provinceIndex]][city[cityIndex]];
     district = cityData?.keys?.toList();
     districtState(() {});
+    controllerDistrict.jumpTo(0);
   }
 
   @override
@@ -170,11 +185,15 @@ class AreaPickerState extends State<AreaPicker> {
       provinceIndex = newIndex;
       refreshCity();
     }));
+
     children.add(
         StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
       cityState = setState;
-      return wheelItem(city, controller: controllerCity,
-          onChanged: (int newIndex) {
+      return wheelItem(city,
+          childDelegateType: city.length < 5
+              ? ListWheelChildDelegateType.looping
+              : ListWheelChildDelegateType.builder,
+          controller: controllerCity, onChanged: (int newIndex) {
         cityIndex = newIndex;
         refreshDistrict();
       });
@@ -182,8 +201,11 @@ class AreaPickerState extends State<AreaPicker> {
     children.add(
         StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
       districtState = setState;
-      return wheelItem(district, controller: controllerDistrict,
-          onChanged: (int newIndex) {
+      return wheelItem(district,
+          childDelegateType: district.length < 5
+              ? ListWheelChildDelegateType.looping
+              : ListWheelChildDelegateType.builder,
+          controller: controllerDistrict, onChanged: (int newIndex) {
         districtIndex = newIndex;
       });
     }));
@@ -217,45 +239,38 @@ class AreaPickerState extends State<AreaPicker> {
   Widget wheelItem(List<String> list,
       {FixedExtentScrollController controller,
       int initialIndex,
+      ListWheelChildDelegateType childDelegateType,
       WheelChangedListener onChanged}) {
     return Universal(
         direction: Axis.horizontal,
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         width: itemWidth,
-        child: listWheel(
-            list: list,
+        child: ListWheel(
             controller: controller,
             initialIndex: initialIndex,
+            itemExtent: itemHeight,
+            diameterRatio: widget.diameterRatio,
+            offAxisFraction: widget.offAxisFraction,
+            perspective: widget.perspective,
+            magnification: widget.magnification,
+            useMagnifier: widget.useMagnifier,
+            squeeze: widget.squeeze,
+            physics: widget.physics,
+            childDelegateType: childDelegateType,
+            children: list.map((value) => item(value)).toList(),
+            itemBuilder: (BuildContext context, int index) => item(list[index]),
+            itemCount: list.length,
             onChanged: onChanged));
   }
 
-  Widget listWheel(
-      {List<String> list,
-      int initialIndex,
-      FixedExtentScrollController controller,
-      WheelChangedListener onChanged}) {
-    return ListWheel(
-        controller: controller,
-        initialIndex: initialIndex,
-        itemExtent: itemHeight,
-        diameterRatio: widget.diameterRatio,
-        offAxisFraction: widget.offAxisFraction,
-        perspective: widget.perspective,
-        magnification: widget.magnification,
-        useMagnifier: widget.useMagnifier,
-        squeeze: widget.squeeze,
-        physics: widget.physics,
-        itemBuilder: (BuildContext context, int index) {
-          return Container(
-            width: itemWidth,
-            alignment: Alignment.center,
-            child: Widgets.textSmall(list[index].toString(),
-                overflow: TextOverflow.ellipsis, style: contentStyle),
-          );
-        },
-        itemCount: list.length,
-        onChanged: onChanged);
+  Widget item(String value) {
+    return Container(
+      width: itemWidth,
+      alignment: Alignment.center,
+      child: Widgets.textSmall(value,
+          overflow: TextOverflow.ellipsis, style: contentStyle),
+    );
   }
 
   jumpToIndex(int index, FixedExtentScrollController controller,

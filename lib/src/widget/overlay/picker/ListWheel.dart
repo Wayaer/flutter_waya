@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 typedef WheelChangedListener = Function(int newIndex);
@@ -39,14 +40,13 @@ class ListWheel extends StatefulWidget {
 
   ///
   final ScrollPhysics physics;
-  final bool forceRefresh;
 
+  final ListWheelChildDelegateType childDelegateType;
   final FixedExtentScrollController controller;
+  final List<Widget> children;
 
   ListWheel({
     Key key,
-    @required this.itemBuilder,
-    @required this.itemCount,
     double itemExtent,
     double diameterRatio,
     double offAxisFraction,
@@ -56,16 +56,18 @@ class ListWheel extends StatefulWidget {
     bool useMagnifier,
     double squeeze,
     ScrollPhysics physics,
+    this.itemBuilder,
+    this.itemCount,
+    this.childDelegateType,
     this.controller,
     this.onChanged,
-    bool forceRefresh,
+    this.children,
   })  : this.diameterRatio = diameterRatio ?? 1,
         this.offAxisFraction = offAxisFraction ?? 0,
         this.initialIndex = initialIndex ?? 0,
         this.perspective = perspective ?? 0.01,
         this.magnification = magnification ?? 1.5,
         this.useMagnifier = useMagnifier ?? true,
-        this.forceRefresh = forceRefresh ?? false,
         this.squeeze = squeeze ?? 1,
         this.itemExtent = itemExtent ?? Tools.getHeight(12),
         this.physics = physics ?? FixedExtentScrollPhysics(),
@@ -77,18 +79,39 @@ class ListWheel extends StatefulWidget {
 
 class ListWheelState extends State<ListWheel> {
   FixedExtentScrollController controller;
+  ListWheelChildDelegateType childDelegateType;
 
   @override
   void initState() {
     super.initState();
     controller = widget.controller ??
         FixedExtentScrollController(initialItem: widget.initialIndex);
+    childDelegateType =
+        widget.childDelegateType ?? ListWheelChildDelegateType.builder;
   }
 
   @override
   Widget build(BuildContext context) {
-    var childDelegate = ListWheelChildBuilderDelegate(
-        builder: widget.itemBuilder, childCount: widget.itemCount);
+    ListWheelChildDelegate childDelegate;
+    switch (childDelegateType) {
+      case ListWheelChildDelegateType.builder:
+        assert(widget.itemCount != null);
+        assert(widget.itemBuilder != null);
+        childDelegate = ListWheelChildBuilderDelegate(
+            builder: widget.itemBuilder, childCount: widget.itemCount);
+        break;
+      case ListWheelChildDelegateType.list:
+        assert(widget.children != null);
+        childDelegate = ListWheelChildListDelegate(children: widget.children);
+        break;
+      case ListWheelChildDelegateType.looping:
+        assert(widget.children != null);
+        childDelegate =
+            ListWheelChildLoopingListDelegate(children: widget.children);
+        break;
+    }
+    if (childDelegate == null) return Container();
+
     return ListWheelScrollView.useDelegate(
       controller: controller,
       itemExtent: widget.itemExtent,
