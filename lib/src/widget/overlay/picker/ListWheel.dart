@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 typedef WheelChangedListener = Function(int newIndex);
