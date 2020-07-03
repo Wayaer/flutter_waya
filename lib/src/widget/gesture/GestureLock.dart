@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/src/constant/colors.dart';
-
-import 'gusturelock/CanvasLine.dart';
-import 'gusturelock/CanvasPoint.dart';
-import 'gusturelock/Point.dart';
+import 'package:flutter_waya/src/widget/gesture/lock/CanvasLine.dart';
+import 'package:flutter_waya/src/widget/gesture/lock/CanvasPoint.dart';
 
 /// ignore: must_be_immutable
 class GestureLock extends StatefulWidget {
@@ -20,18 +18,19 @@ class GestureLock extends StatefulWidget {
   final Function() onPanDown;
   final Function(List<int>) onPanUp;
 
-  GestureLock({Key key,
-    @required this.size,
-    this.selectColor,
-    this.unSelectColor,
-    this.ringWidth: 2,
-    this.ringRadius: 35,
-    this.showUnSelectRing: false,
-    this.circleRadius: 10,
-    this.lineWidth: 3,
-    this.onPanUp,
-    this.onPanDown,
-    this.immediatelyClear: true})
+  GestureLock(
+      {Key key,
+      @required this.size,
+      this.selectColor,
+      this.unSelectColor,
+      this.ringWidth: 2,
+      this.ringRadius: 35,
+      this.showUnSelectRing: false,
+      this.circleRadius: 10,
+      this.lineWidth: 3,
+      this.onPanUp,
+      this.onPanDown,
+      this.immediatelyClear: true})
       : super(key: key) {
     /// 减少刷新频率
     points = [];
@@ -156,11 +155,13 @@ class GestureLockState extends State<GestureLock> {
     int xPosition = -1;
     int yPosition = -1;
     for (int i = 0; i < 3; i++) {
-      if (xPosition == -1 && points[i].x + realRadius >= offSet.dx &&
+      if (xPosition == -1 &&
+          points[i].x + realRadius >= offSet.dx &&
           offSet.dx >= points[i].x - realRadius) {
         xPosition = i;
       }
-      if (yPosition == -1 && points[i * 3].y + realRadius >= offSet.dy &&
+      if (yPosition == -1 &&
+          points[i * 3].y + realRadius >= offSet.dy &&
           offSet.dy >= points[i * 3].y - realRadius) {
         yPosition = i;
       }

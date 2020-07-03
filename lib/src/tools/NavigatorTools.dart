@@ -1,10 +1,8 @@
-import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/src/constant/enums.dart';
 
-///例子  自行封装utils
+///例子
 class NavigatorExample {
   static push(Function function, {PushMode pushMode}) {
     return NavigatorTools.getInstance().push(function, pushMode: pushMode);
@@ -26,18 +24,12 @@ class NavigatorExample {
 }
 
 class NavigatorTools extends NavigatorObserver {
-  /// ignore: close_sinks
-  static StreamController _streamController;
-
-  StreamController get streamController => _streamController;
-
-  /* 单例给出WayNavigatorTools */
+  /* 单例给出NavigatorTools */
   static NavigatorTools _navigatorManager;
 
   static NavigatorTools getInstance() {
     if (_navigatorManager == null) {
       _navigatorManager = NavigatorTools();
-      _streamController = StreamController.broadcast();
     }
     return _navigatorManager;
   }
@@ -85,7 +77,7 @@ class NavigatorTools extends NavigatorObserver {
     navigator.pop(result);
   }
 
-  /* 
+  /*
     返回当前route传递过来的参数
    */
   static getParams(context) {

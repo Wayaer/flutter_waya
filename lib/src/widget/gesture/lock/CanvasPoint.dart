@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/src/widget/gesture/gusturelock/Point.dart';
-
 
 class CanvasPoint extends CustomPainter {
   final double ringWidth;
@@ -11,13 +9,14 @@ class CanvasPoint extends CustomPainter {
   final Color unSelectColor;
   final List<Point> points;
 
-  CanvasPoint({@required this.ringWidth,
-    @required this.ringRadius,
-    @required this.showUnSelectRing,
-    @required this.circleRadius,
-    @required this.selectColor,
-    @required this.unSelectColor,
-    @required this.points});
+  CanvasPoint(
+      {@required this.ringWidth,
+      @required this.ringRadius,
+      @required this.showUnSelectRing,
+      @required this.circleRadius,
+      @required this.selectColor,
+      @required this.unSelectColor,
+      @required this.points});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -41,13 +40,21 @@ class CanvasPoint extends CustomPainter {
       ringPaint.color = color;
       canvas.drawCircle(offSet, this.circleRadius, circlePaint);
       if (this.showUnSelectRing || point.isSelect) {
-        canvas.drawArc(
-            Rect.fromCircle(center: offSet, radius: this.ringRadius), 0, 360,
-            false, ringPaint);
+        canvas.drawArc(Rect.fromCircle(center: offSet, radius: this.ringRadius),
+            0, 360, false, ringPaint);
       }
     }
   }
 
   @override
   bool shouldRepaint(CustomPainter oldDelegate) => true;
+}
+
+class Point {
+  double x;
+  double y;
+  bool isSelect = false;
+  int position;
+
+  Point({@required this.x, @required this.y, @required this.position});
 }

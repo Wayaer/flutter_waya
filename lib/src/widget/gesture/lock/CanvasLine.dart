@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/src/widget/gesture/gusturelock/Point.dart';
-
+import 'package:flutter_waya/src/widget/gesture/lock/CanvasPoint.dart';
 
 class CanvasLine extends CustomPainter {
   final List<Point> pathPoints;
@@ -8,7 +7,11 @@ class CanvasLine extends CustomPainter {
   final double lineWidth;
   final Point curPoint;
 
-  CanvasLine({@required this.pathPoints, @required this.selectColor, @required this.lineWidth, @required this.curPoint});
+  CanvasLine(
+      {@required this.pathPoints,
+      @required this.selectColor,
+      @required this.lineWidth,
+      @required this.curPoint});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -24,8 +27,7 @@ class CanvasLine extends CustomPainter {
       ..strokeWidth = this.lineWidth;
 
     for (int i = 0; i < length - 1; i++) {
-      canvas.drawLine(
-          Offset(pathPoints[i].x, pathPoints[i].y),
+      canvas.drawLine(Offset(pathPoints[i].x, pathPoints[i].y),
           Offset(pathPoints[i + 1].x, pathPoints[i + 1].y), linePaint);
     }
 
