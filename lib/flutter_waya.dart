@@ -60,3 +60,4 @@ export 'src/widget/overlay/widget/OverlayScaffold.dart';
 export 'src/widget/refresh/ProviderConsumer.dart';
 export 'src/widget/refresh/Refresh.dart';
 export 'src/widget/refresh/Refreshed.dart';
+export 'src/widget/FixedSizeText.dart';
