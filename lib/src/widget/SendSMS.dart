@@ -24,6 +24,8 @@ class SendSMS extends StatefulWidget {
   final TextStyle defaultTextStyle;
   final TextStyle notTapTextStyle;
   final int seconds;
+  final EdgeInsetsGeometry margin;
+  final EdgeInsetsGeometry padding;
 
   SendSMS(
       {Key key,
@@ -42,7 +44,9 @@ class SendSMS extends StatefulWidget {
       this.defaultTextStyle,
       this.notTapTextStyle,
       this.background,
-      this.seconds})
+      this.seconds,
+      this.margin,
+      this.padding})
       : super(key: key);
 
   @override
@@ -67,6 +71,8 @@ class SendSMSState extends State<SendSMS> {
   @override
   Widget build(BuildContext context) {
     return Universal(
+      margin: widget.margin,
+      padding: widget.padding,
       onTap: (seconds == 0 && widget.onTap != null) ? onTap : null,
       alignment: Alignment.center,
       width: widget.width ?? Tools.getWidth(86),

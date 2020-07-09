@@ -120,6 +120,12 @@ class InputField extends StatelessWidget {
   ///获取焦点输入框
   final InputBorder defaultBorder;
 
+  ///跟输入框同水平
+  final Widget extraSuffix;
+
+  ///跟输入框同水平
+  final Widget extraPrefix;
+
   ///以上都未设置时 默认输入框
 
   final Color fillColor;
@@ -144,6 +150,7 @@ class InputField extends StatelessWidget {
 
   /// 自定义数字显示   指定maxLength后 右下角会出现字数，flutter有默认实现  可以通过这个自定义
   final InputCounterWidgetBuilder buildCounter;
+  final CrossAxisAlignment crossAxisAlignment;
 
   InputField({
     Key key,
@@ -163,6 +170,7 @@ class InputField extends StatelessWidget {
     TextCapitalization textCapitalization,
     FloatingLabelBehavior floatingLabelBehavior,
     bool readOnly,
+    CrossAxisAlignment crossAxisAlignment,
     this.icon,
     this.toolbarOptions,
     this.controller,
@@ -203,7 +211,6 @@ class InputField extends StatelessWidget {
     this.errorMaxLines,
     this.helperText,
     this.helperStyle,
-//    this.labelFloating,
     this.focusNode,
     this.header,
     this.footer,
@@ -213,8 +220,12 @@ class InputField extends StatelessWidget {
     this.counter,
     this.buildCounter,
     this.onEditingComplete,
+    this.extraSuffix,
+    this.extraPrefix,
   })  : this.obscureText = obscureText ?? false,
         this.readOnly = readOnly ?? false,
+        this.crossAxisAlignment =
+            crossAxisAlignment ?? CrossAxisAlignment.center,
         this.floatingLabelBehavior =
             floatingLabelBehavior ?? FloatingLabelBehavior.always,
 
@@ -313,15 +324,18 @@ class InputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget child = textField(context);
+    if (extraPrefix != null || extraSuffix != null) {
+      List<Widget> row = List();
+      if (extraPrefix != null) row.add(extraPrefix);
+      row.add(Expanded(child: child));
+      if (extraSuffix != null) row.add(extraSuffix);
+      child = Row(crossAxisAlignment: crossAxisAlignment, children: row);
+    }
     if (header != null || footer != null) {
       List<Widget> children = List();
-      if (header != null) {
-        children.add(header);
-      }
+      if (header != null) children.add(header);
       children.add(child);
-      if (footer != null) {
-        children.add(footer);
-      }
+      if (footer != null) children.add(footer);
       child = Column(mainAxisSize: MainAxisSize.min, children: children);
     }
     return child;
