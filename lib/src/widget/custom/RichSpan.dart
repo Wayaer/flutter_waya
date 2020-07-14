@@ -52,7 +52,6 @@ class RichSpan extends StatelessWidget {
     }
     if (text.length > styles.length) {
       int poor = text.length - styles.length;
-      print(poor);
       for (int i = 0; i <= poor; i++) {
         styles.add(styles.last);
       }
