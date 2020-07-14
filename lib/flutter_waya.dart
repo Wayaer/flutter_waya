@@ -19,6 +19,7 @@ export 'src/widget/CountDownSkip.dart';
 export 'src/widget/DottedLine.dart';
 export 'src/widget/GridBuilder.dart';
 export 'src/widget/HintDot.dart';
+export 'src/widget/GifControl.dart';
 export 'src/widget/InputField.dart';
 export 'src/widget/ListBuilder.dart';
 export 'src/widget/ListEntry.dart';
