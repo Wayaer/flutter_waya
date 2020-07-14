@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/colors.dart';
-import 'package:flutter_waya/src/tools/Tools.dart';
 
 class TabNavigationPage extends StatefulWidget {
   final Map<String, Object> arguments;
@@ -73,7 +73,7 @@ class TabNavigationPageState extends State<TabNavigationPage> {
   Widget barIcon(IconData icons) {
     return Icon(
       icons,
-      size: Tools.getWidth(24),
+      size: ScreenFit.getWidth(24),
     );
   }
 }

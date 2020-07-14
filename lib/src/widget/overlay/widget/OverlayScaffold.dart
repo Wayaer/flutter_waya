@@ -82,7 +82,7 @@ class OverlayScaffold extends StatelessWidget {
     this.onWillPop,
   })
       : this.isScroll = isScroll ?? false,
-        this.appBarHeight = appBarHeight ?? Tools.getHeight(45),
+        this.appBarHeight = appBarHeight ?? ScreenFit.getHeight(45),
         this.isolationBody = isolationBody ?? false,
         this.onWillPopOverlayClose = onWillPopOverlayClose ?? true,
         this.paddingStatusBar = paddingStatusBar ?? false,
@@ -160,7 +160,7 @@ class OverlayScaffold extends StatelessWidget {
     return hero(Container(
       color: backgroundColor,
       margin: isolationBody
-          ? EdgeInsets.only(top: Tools.getHeight(10))
+          ? EdgeInsets.only(top: ScreenFit.getHeight(10))
           : EdgeInsets.zero,
       padding: paddingStatusBar ? EdgeInsets.only(
           top: MediaQueryTools.getStatusBarHeight()) : padding,

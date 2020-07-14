@@ -10,6 +10,7 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return OverlayScaffold(
+      appBarHeight: MediaQueryTools.getStatusBarHeight(),
       appBar: AppBar(title: Text('Waya Demo'), centerTitle: true),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,

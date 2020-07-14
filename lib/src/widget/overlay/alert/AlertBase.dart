@@ -64,7 +64,7 @@ class AlertBase extends StatefulWidget {
 class AlertBaseState extends State<AlertBase> {
   Color backgroundColor = getColors(transparent);
   double opacity = 0;
-  double popupDistance = -Tools.getHeight();
+  double popupDistance = -ScreenFit.getHeight(0);
   double fuzzyDegree = 0;
   PopupMode popupMode;
   bool animation;
@@ -77,18 +77,18 @@ class AlertBaseState extends State<AlertBase> {
       popupMode = widget.popupMode;
       switch (popupMode) {
         case PopupMode.left:
-          popupDistance = -Tools.getWidth();
+          popupDistance = -ScreenFit.getWidth(0);
           break;
         case PopupMode.top:
-          popupDistance = -Tools.getHeight();
+          popupDistance = -ScreenFit.getHeight(0);
           //头部弹出
           break;
         case PopupMode.right:
-          popupDistance = -Tools.getWidth();
+          popupDistance = -ScreenFit.getWidth(0);
           //右边弹出
           break;
         case PopupMode.bottom:
-          popupDistance = -Tools.getHeight();
+          popupDistance = -ScreenFit.getHeight(0);
           //底部弹出
           break;
         default: //PopupMode.center

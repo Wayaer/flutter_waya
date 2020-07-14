@@ -64,7 +64,7 @@ class GridBuilder extends StatelessWidget {
     if (itemCount == 0) {
       return noData ??
           Widgets.notDataWidget(
-              margin: EdgeInsets.all(Tools.getWidth(10)));
+              margin: EdgeInsets.all(ScreenFit.getWidth(10)));
     }
     return GridView.builder(
       physics: physics,

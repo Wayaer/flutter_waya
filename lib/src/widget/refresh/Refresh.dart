@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/colors.dart';
 import 'package:flutter_waya/src/tools/LogTools.dart';
 import 'package:flutter_waya/src/tools/Tools.dart';
@@ -86,7 +87,7 @@ class Refresh extends StatelessWidget {
                 body = footerText('load not data');
               }
               return Container(
-                height: Tools.getHeight(40),
+                height: ScreenFit.getHeight(40),
                 child: Center(child: body),
               );
             },

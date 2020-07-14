@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/colors.dart';
-import 'package:flutter_waya/src/tools/Tools.dart';
 
 /// IndexBar touch callback IndexModel.
 typedef void IndexBarTouchCallback(AzIndexBarDetails model);
@@ -76,18 +76,19 @@ class AzIndexBar extends StatefulWidget {
   final BorderRadius radius;
   final BorderRadius touchDownRadius;
 
-  AzIndexBar({Key key,
-    this.data = AzIndexData,
-    @required this.onTouch,
-    this.size = 23,
-    this.textStyle,
-    this.padding,
-    this.margin,
-    this.radius,
-    this.touchDownRadius,
-    this.color,
-    this.onTouchColor,
-    this.touchDownTextStyle})
+  AzIndexBar(
+      {Key key,
+      this.data = AzIndexData,
+      @required this.onTouch,
+      this.size = 23,
+      this.textStyle,
+      this.padding,
+      this.margin,
+      this.radius,
+      this.touchDownRadius,
+      this.color,
+      this.onTouchColor,
+      this.touchDownTextStyle})
       : assert(onTouch != null),
         assert(size >= 15),
         assert(size <= 24),
@@ -153,23 +154,24 @@ class AzIndexBarState extends State<AzIndexBar> {
             color: indexModel.isTouchDown == true && v == indexModel.tag
                 ? onTouchColor
                 : color,
-            borderRadius: widget.touchDownRadius ??
-                BorderRadius.circular(radius)),
+            borderRadius:
+                widget.touchDownRadius ?? BorderRadius.circular(radius)),
         alignment: Alignment.center,
         width: widget.size.toDouble(),
         height: widget.size.toDouble(),
         child: Text(v,
             textAlign: TextAlign.center,
-            style:
-            indexModel.isTouchDown == true && v == indexModel.tag ? widget
-                .touchDownTextStyle : widget.textStyle),
+            style: indexModel.isTouchDown == true && v == indexModel.tag
+                ? widget.touchDownTextStyle
+                : widget.textStyle),
       ));
     });
 
     return Container(
         padding: widget.padding,
-        margin: EdgeInsets.only(right: Tools.getWidth(10)),
-        decoration: BoxDecoration(color: color,
+        margin: EdgeInsets.only(right: ScreenFit.getWidth(10)),
+        decoration: BoxDecoration(
+            color: color,
             borderRadius: widget.radius ?? BorderRadius.circular(radius)),
         child: GestureDetector(
           onVerticalDragDown: (DragDownDetails details) {

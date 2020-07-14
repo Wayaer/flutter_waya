@@ -56,7 +56,7 @@ class AlertSureCancel extends StatelessWidget {
         this.sureText = sureText ?? 'sure',
         this.backgroundColor = backgroundColor ?? getColors(white),
         this.backsideColor = backsideColor ?? getColors(black50),
-        this.width = width ?? Tools.getWidth() * 0.85,
+        this.width = width ?? ScreenFit.getWidth(0) * 0.85,
         this.height = height,
         this.sureTextStyle = sureTextStyle ?? WayStyles.textStyleBlack30(),
         this.cancelTextStyle = cancelTextStyle ?? WayStyles.textStyleBlack30(),
@@ -93,7 +93,7 @@ class AlertSureCancel extends StatelessWidget {
       children: <Widget>[
         SimpleButton(
             padding: EdgeInsets.symmetric(
-                horizontal: Tools.getWidth(20), vertical: Tools.getHeight(5)),
+                horizontal: ScreenFit.getWidth(20), vertical: ScreenFit.getHeight(5)),
             onTap: cancelTap,
             child: cancel,
             text: cancelText,
@@ -101,7 +101,7 @@ class AlertSureCancel extends StatelessWidget {
         SimpleButton(
             onTap: sureTap,
             padding: EdgeInsets.symmetric(
-                horizontal: Tools.getWidth(20), vertical: Tools.getHeight(5)),
+                horizontal: ScreenFit.getWidth(20), vertical: ScreenFit.getHeight(5)),
             text: sureText,
             child: sure,
             textStyle: sureTextStyle),

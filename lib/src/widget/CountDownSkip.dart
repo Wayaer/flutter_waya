@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/widgets.dart';
 import 'package:flutter_waya/src/constant/colors.dart';
 import 'package:flutter_waya/src/tools/Tools.dart';
-import 'package:flutter_waya/src/widget/custom/SimpleButton.dart';
 
 class CountDownSkip extends StatefulWidget {
   final String skipText;
@@ -67,7 +67,7 @@ class CountDownSkipState extends State<CountDownSkip> {
               color: getColors(white50),
               borderRadius: BorderRadius.circular(5)),
       padding: EdgeInsets.symmetric(
-          horizontal: Tools.getHeight(5), vertical: Tools.getWidth(4)),
+          horizontal: ScreenFit.getHeight(5), vertical: ScreenFit.getWidth(4)),
       child: Widgets.textSmall(seconds.toString() + 's' + widget.skipText),
     );
   }

@@ -12,6 +12,7 @@ export 'src/tools/MediaQueryTools.dart';
 export 'src/tools/NavigatorTools.dart';
 export 'src/tools/StorageTools.dart';
 export 'src/tools/Tools.dart';
+export 'src/tools/ScreenFit.dart';
 export 'src/tools/date/DateFormat.dart';
 export 'src/tools/date/EnglishLocale.dart';
 export 'src/tools/dio/DioTools.dart';

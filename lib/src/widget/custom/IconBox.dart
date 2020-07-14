@@ -72,10 +72,10 @@ class IconBox extends StatelessWidget {
   })  : this.maxLines = maxLines ?? 1,
         this.overflow = overflow ?? TextOverflow.ellipsis,
         this.textAlign = textAlign ?? TextAlign.start,
-        this.size = size ?? Tools.getWidth(15),
+        this.size = size ?? ScreenFit.getWidth(15),
         this.reversal = reversal ?? false,
         this.direction = direction ?? Axis.horizontal,
-        this.spacing = spacing ?? Tools.getWidth(4),
+        this.spacing = spacing ?? ScreenFit.getWidth(4),
         this.crossAxisAlignment =
             crossAxisAlignment ?? CrossAxisAlignment.center,
         this.mainAxisAlignment = mainAxisAlignment ?? MainAxisAlignment.center,

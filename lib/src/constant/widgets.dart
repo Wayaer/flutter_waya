@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/colors.dart';
-import 'package:flutter_waya/src/tools/Tools.dart';
 
 class Widgets {
   static Widget titleWidget(String title) {
@@ -19,7 +19,7 @@ class Widgets {
       EdgeInsetsGeometry margin}) {
     return Container(
       height: height,
-      width: width ?? Tools.getWidth(1),
+      width: width ?? ScreenFit.getWidth(1),
       margin: margin,
       padding: padding,
       color: color ?? getColors(background),
@@ -33,9 +33,9 @@ class Widgets {
       Color color,
       EdgeInsetsGeometry margin}) {
     return Container(
-      height: height ?? Tools.getWidth(1),
+      height: height ?? ScreenFit.getWidth(1),
       padding: padding,
-      width: width ?? Tools.getWidth(),
+      width: width ?? ScreenFit.getWidth(0),
       margin: margin,
       color: color ?? getColors(background),
     );

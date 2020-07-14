@@ -43,7 +43,7 @@ class AutoScrollEntryState extends State<AutoScrollEntry> {
   FixedExtentScrollController controller;
   Timer timer;
   int index = 0;
-  double itemHeight = Tools.getHeight(30);
+  double itemHeight = ScreenFit.getHeight(30);
 
   @override
   void initState() {

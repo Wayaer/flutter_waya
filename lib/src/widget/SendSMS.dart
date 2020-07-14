@@ -75,8 +75,8 @@ class SendSMSState extends State<SendSMS> {
       padding: widget.padding,
       onTap: (seconds == 0 && widget.onTap != null) ? onTap : null,
       alignment: Alignment.center,
-      width: widget.width ?? Tools.getWidth(86),
-      height: widget.height ?? Tools.getHeight(25),
+      width: widget.width ?? ScreenFit.getWidth(86),
+      height: widget.height ?? ScreenFit.getHeight(25),
       decoration: widget.decoration ??
           BoxDecoration(
               color: widget.background,

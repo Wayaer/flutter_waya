@@ -77,7 +77,7 @@ class AreaPicker extends StatefulWidget {
         this.sure = sure ?? Widgets.textDefault('sure'),
         this.title = title ?? Widgets.textDefault('title'),
         this.cancel = cancel ?? Widgets.textDefault('cancel'),
-        this.height = height ?? Tools.getHeight() / 4,
+        this.height = height ?? ScreenFit.getHeight(0) / 4,
         this.magnification = magnification ?? 1.3,
         super(key: key);
 
@@ -127,8 +127,8 @@ class AreaPickerState extends State<AreaPicker> {
             color: getColors(black),
             decoration: TextDecoration.none,
             decorationStyle: TextDecorationStyle.dashed);
-    itemWidth = widget.itemWidth ?? (Tools.getWidth() - Tools.getWidth(10)) / 3;
-    itemHeight = widget.itemHeight ?? Tools.getWidth(16);
+    itemWidth = widget.itemWidth ?? (ScreenFit.getWidth(0) - ScreenFit.getWidth(10)) / 3;
+    itemHeight = widget.itemHeight ?? ScreenFit.getWidth(16);
 
     ///省
     province = areaData?.keys?.toList();
@@ -219,7 +219,7 @@ class AreaPickerState extends State<AreaPicker> {
       children: <Widget>[
         Universal(
           direction: Axis.horizontal,
-          padding: EdgeInsets.all(Tools.getWidth(10)),
+          padding: EdgeInsets.all(ScreenFit.getWidth(10)),
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Universal(child: widget.cancel, onTap: widget.cancelTap),

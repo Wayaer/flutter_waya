@@ -82,7 +82,7 @@ class ListEntry extends StatelessWidget {
       this.arrowMargin,
       this.prefix,
       this.prefixMargin})
-      : this.arrowSize = arrowSize ?? Tools.getWidth(16),
+      : this.arrowSize = arrowSize ?? ScreenFit.getWidth(16),
         this.arrowColor = arrowColor ?? getColors(black),
         this.isThreeLine = isThreeLine ?? false,
         this.arrow = arrow ?? true,

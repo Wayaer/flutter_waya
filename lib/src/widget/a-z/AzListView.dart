@@ -172,8 +172,9 @@ class AzListViewState extends State<AzListView> {
             }),
         suspensionWidget: widget.suspensionWidget,
         controller: scrollController,
-        suspensionHeight: widget.suspensionHeight ?? Tools.getWidth(80, true),
-        itemHeight: widget.itemHeight ?? Tools.getHeight(40, true),
+        suspensionHeight:
+            widget.suspensionHeight ?? ScreenFit.getWidth(80, intType: true),
+        itemHeight: widget.itemHeight ?? ScreenFit.getHeight(40, intType: true),
         onSusTagChanged: widget.onSusTagChanged,
         header: widget.header,
         onSusSectionInited: (Map<String, int> map) =>
@@ -185,7 +186,7 @@ class AzListViewState extends State<AzListView> {
     if (widget.indexBarBuilder == null) {
       indexBar = AzIndexBar(
         data: indexTagList,
-        size: Tools.getWidth(23, true),
+        size: ScreenFit.getWidth(23, intType: true),
         onTouch: onIndexBarTouch,
       );
     } else {
@@ -207,8 +208,8 @@ class AzListViewState extends State<AzListView> {
         decoration: BoxDecoration(
             color: getColors(black30), borderRadius: BorderRadius.circular(10)),
         alignment: Alignment.center,
-        width: Tools.getWidth(60),
-        height: Tools.getWidth(60),
+        width: ScreenFit.getWidth(60),
+        height: ScreenFit.getWidth(60),
         child: Text(
           '$indexBarHint',
           style: TextStyle(
