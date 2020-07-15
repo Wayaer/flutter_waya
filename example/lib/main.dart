@@ -17,7 +17,12 @@ class Home extends StatelessWidget {
         children: <Widget>[
           AreaPicker(),
           Container(height: 100),
-          DateTimePicker(),
+          DateTimePicker(
+            unit: DateTimePickerUnit(year: 'Y', month: 'M'),
+            sureTap: (date) {
+              log(date);
+            },
+          ),
         ],
       ),
     );
