@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/widgets.dart';
-import 'package:flutter_waya/src/widget/refresh/Refreshed.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class ListBuilder extends StatelessWidget {
@@ -64,8 +63,7 @@ class ListBuilder extends StatelessWidget {
   Widget listViewBuilder() {
     if (itemCount == 0) {
       return noData ??
-          Widgets.notDataWidget(
-              margin: EdgeInsets.all(ScreenFit.getWidth(10)));
+          Widgets.notDataWidget(margin: EdgeInsets.all(ScreenFit.getWidth(10)));
     }
     return ListView.builder(
       scrollDirection: scrollDirection,

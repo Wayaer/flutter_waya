@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:flutter_waya/src/constant/colors.dart';
 import 'package:flutter_waya/src/constant/constant.dart';
 
-const double radiusLocal = WayConstant.Radius;
-const double fontSize = WayConstant.fontSize;
+const double radiusLocal = ConstConstant.Radius;
+const double fontSize = ConstConstant.fontSize;
 
 class WayStyles {
   //统一所有阴影效果

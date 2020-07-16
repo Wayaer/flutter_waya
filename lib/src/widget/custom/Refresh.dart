@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:flutter_waya/src/constant/colors.dart';
+import 'package:flutter_waya/src/constant/constant.dart';
 import 'package:flutter_waya/src/tools/LogTools.dart';
 import 'package:flutter_waya/src/tools/Tools.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -57,8 +57,7 @@ class Refresh extends StatelessWidget {
     this.physics,
     this.scrollDirection,
     this.scrollController,
-  })
-      : this.enablePullDown = enablePullDown ?? false,
+  })  : this.enablePullDown = enablePullDown ?? false,
         this.enablePullUp = enablePullUp ?? false,
         this.enableTwoLevel = enableTwoLevel ?? false,
         this.refreshController = RefreshController(initialRefresh: false),
@@ -112,8 +111,8 @@ class Refresh extends StatelessWidget {
   Widget footerText(String text) {
     return Text(
       text,
-      style: footerTextStyle ??
-          TextStyle(fontSize: 13, color: getColors(black70)),
+      style:
+          footerTextStyle ?? TextStyle(fontSize: 13, color: getColors(black70)),
     );
   }
 
@@ -136,5 +135,129 @@ class Refresh extends StatelessWidget {
     Tools.timerTools(Duration(seconds: 2), () {
       refreshController.loadComplete();
     });
+  }
+}
+
+class Refreshed extends StatefulWidget {
+  ///可不传controller，
+  ///若想关闭刷新组件可以通过发送消息
+  ///sendMessage(RefreshCompletedType.refresh);
+  final RefreshController controller;
+  final VoidCallback onRefresh;
+  final VoidCallback onLoading;
+  final VoidCallback onTwoLevel;
+  final Widget child;
+  final bool enablePullDown;
+  final bool enablePullUp;
+  final bool enableTwoLevel;
+  final Widget header;
+  final Widget footer;
+
+  final OnOffsetChange onOffsetChange;
+  final Axis scrollDirection;
+  final bool reverse;
+  final ScrollController scrollController;
+  final bool primary;
+  final ScrollPhysics physics;
+  final double cacheExtent;
+  final int semanticChildCount;
+  final DragStartBehavior dragStartBehavior;
+  final TextStyle footerTextStyle;
+
+  Refreshed(
+      {Key key,
+      this.child,
+      this.onTwoLevel,
+      this.enablePullDown,
+      this.onLoading,
+      this.enablePullUp,
+      this.onRefresh,
+      this.header,
+      this.footer,
+      this.controller,
+      this.onOffsetChange,
+      this.scrollDirection,
+      this.reverse,
+      this.scrollController,
+      this.primary,
+      this.physics,
+      this.cacheExtent,
+      this.semanticChildCount,
+      this.dragStartBehavior,
+      this.footerTextStyle,
+      this.enableTwoLevel})
+      : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() {
+    return RefreshedState();
+  }
+}
+
+class RefreshedState extends State<Refreshed> {
+  RefreshController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = widget.controller ?? RefreshController(initialRefresh: false);
+    if (widget.controller == null) {
+      WidgetsBinding.instance.addPostFrameCallback((callback) {
+        messageListen((data) {
+          if (data == null) return;
+          if (data != null && data is RefreshCompletedType) {
+            switch (data) {
+              case RefreshCompletedType.refresh:
+                controller.refreshCompleted();
+                break;
+              case RefreshCompletedType.refreshFailed:
+                controller.refreshFailed();
+                break;
+              case RefreshCompletedType.refreshToIdle:
+                controller.refreshToIdle();
+                break;
+              case RefreshCompletedType.onLoading:
+                controller.loadComplete();
+                break;
+              case RefreshCompletedType.loadFailed:
+                controller.loadFailed();
+                break;
+              case RefreshCompletedType.loadNoData:
+                controller.loadNoData();
+                break;
+              case RefreshCompletedType.twoLevel:
+                controller.twoLevelComplete();
+                break;
+            }
+          }
+        });
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Refresh(
+      controller: controller,
+      enablePullUp: widget.enablePullUp,
+      enablePullDown: widget.enablePullDown,
+      enableTwoLevel: widget.enableTwoLevel,
+      onLoading: widget.onLoading,
+      onRefresh: widget.onRefresh,
+      header: widget.header,
+      footer: widget.footer,
+      child: widget.child,
+      onTwoLevel: widget.onTwoLevel,
+      onOffsetChange: widget.onOffsetChange,
+      dragStartBehavior: widget.dragStartBehavior,
+      primary: widget.primary,
+      cacheExtent: widget.cacheExtent,
+      semanticChildCount: widget.semanticChildCount,
+      reverse: widget.reverse,
+      physics: widget.physics,
+      scrollDirection: widget.scrollDirection,
+      scrollController: widget.scrollController,
+      footerTextStyle: widget.footerTextStyle,
+    );
   }
 }

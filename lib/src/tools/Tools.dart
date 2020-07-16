@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:flutter_waya/src/constant/colors.dart';
+import 'package:flutter_waya/src/constant/constant.dart';
 import 'package:flutter_waya/src/constant/enums.dart';
 
 isDebug() {
@@ -18,7 +18,6 @@ isDebug() {
 
 class Tools {
   static Timer _timerInfo;
-
 
   static exitApp() async {
     await SystemNavigator.pop();
@@ -113,7 +112,6 @@ class Tools {
     }
     return date.toString();
   }
-
 
   ///关闭键盘
   static closeKeyboard(BuildContext context) {

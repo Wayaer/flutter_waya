@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/src/constant/colors.dart';
+import 'package:flutter_waya/src/constant/constant.dart';
 import 'package:flutter_waya/src/widget/gesture/lock/CanvasLine.dart';
 import 'package:flutter_waya/src/widget/gesture/lock/CanvasPoint.dart';
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:flutter_waya/src/constant/colors.dart';
+import 'package:flutter_waya/src/constant/constant.dart';
 
 /// IndexBar touch callback IndexModel.
 typedef void IndexBarTouchCallback(AzIndexBarDetails model);

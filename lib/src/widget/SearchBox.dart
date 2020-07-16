@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:flutter_waya/src/constant/colors.dart';
-import 'package:flutter_waya/src/constant/icons.dart';
-import 'package:flutter_waya/src/tools/Tools.dart';
+import 'package:flutter_waya/src/constant/constant.dart';
 
 class SearchBox extends StatelessWidget {
   final EdgeInsetsGeometry margin;
@@ -77,7 +75,7 @@ class SearchBox extends StatelessWidget {
     this.width,
     this.autoFocus,
     this.focusNode,
-  })  : this.icon = icon ?? WayIcon.search,
+  })  : this.icon = icon ?? ConstIcon.search,
         this.size = size ?? ScreenFit.getWidth(14),
         this.contentPadding =
             contentPadding ?? EdgeInsets.all(ScreenFit.getWidth(6)),

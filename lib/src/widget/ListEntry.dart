@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:flutter_waya/src/constant/colors.dart';
-import 'package:flutter_waya/src/constant/icons.dart';
+import 'package:flutter_waya/src/constant/constant.dart';
 import 'package:flutter_waya/src/constant/styles.dart';
-import 'package:flutter_waya/src/tools/Tools.dart';
 import 'package:flutter_waya/src/widget/custom/Universal.dart';
 
 class ListEntry extends StatelessWidget {
@@ -94,7 +92,7 @@ class ListEntry extends StatelessWidget {
     List<Widget> children = List();
     if (prefix != null) children.add(prefix);
     children.add(listTile());
-    if(arrowIcon!=null)children.add(arrowIcon);
+    if (arrowIcon != null) children.add(arrowIcon);
     if (arrow) children.add(arrowWidget());
     return Universal(
         heroTag: heroTag,
@@ -130,7 +128,7 @@ class ListEntry extends StatelessWidget {
 
   Widget arrowWidget() {
     return IconBox(
-        icon: WayIcon.arrowRight,
+        icon: ConstIcon.arrowRight,
         size: arrowSize,
         color: arrowColor,
         margin: arrowMargin);

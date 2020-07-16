@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:flutter_waya/src/constant/colors.dart';
+import 'package:flutter_waya/src/constant/constant.dart';
 import 'package:flutter_waya/src/constant/styles.dart';
 import 'package:flutter_waya/src/tools/Tools.dart';
 import 'package:flutter_waya/src/widget/custom/Universal.dart';
