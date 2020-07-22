@@ -1,7 +1,7 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_waya/flutter_waya.dart';
+import 'package:flutter_waya/src/widget/custom/delegate/ChineseCupertinoLocalizations.dart';
 
 class OverlayMaterial extends StatelessWidget {
   final GlobalKey<NavigatorState> navigatorKey;
@@ -99,11 +99,10 @@ class OverlayMaterial extends StatelessWidget {
     this.darkTheme,
     this.localeListResolutionCallback,
     this.localeResolutionCallback,
-  })
-      : this.debugShowMaterialGrid = debugShowMaterialGrid ?? false,
+  })  : this.debugShowMaterialGrid = debugShowMaterialGrid ?? false,
         this.showPerformanceOverlay = showPerformanceOverlay ?? false,
-        this.checkerboardRasterCacheImages = checkerboardRasterCacheImages ??
-            false,
+        this.checkerboardRasterCacheImages =
+            checkerboardRasterCacheImages ?? false,
         this.checkerboardOffscreenLayers = checkerboardOffscreenLayers ?? false,
         this.showSemanticsDebugger = showSemanticsDebugger ?? false,
         this.debugShowCheckedModeBanner = debugShowCheckedModeBanner ?? false,
@@ -111,16 +110,15 @@ class OverlayMaterial extends StatelessWidget {
         this.title = title ?? "",
         this.routes = routes = const <String, WidgetBuilder>{},
         this.textDirection = textDirection ?? TextDirection.ltr,
-        this.navigatorObservers = navigatorObservers ??
-            [NavigatorTools.getInstance()],
+        this.navigatorObservers =
+            navigatorObservers ?? [NavigatorTools.getInstance()],
         this.locale = locale ?? Locale('zh'),
         this.supportedLocales = supportedLocales ?? [Locale('zh', 'CH')],
         this.localizationsDelegates = localizationsDelegates ??
             [
-//              ChineseCupertinoLocalizations.delegate,
-//              DefaultCupertinoLocalizations.delegate,
-//              CustomLocalizationsDelegate(),
               ///解决ios 长按输入框报错
+              ChineseCupertinoLocalizations.delegate,
+              CustomLocalizationsDelegate(),
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate
             ],
