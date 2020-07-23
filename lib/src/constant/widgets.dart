@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:flutter_waya/src/constant/constant.dart';
-import 'package:flutter_waya/src/constant/constant.dart';
 
 class Widgets {
   static Widget titleWidget(String title) {

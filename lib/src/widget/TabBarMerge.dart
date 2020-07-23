@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:flutter_waya/src/constant/constant.dart';
 import 'package:flutter_waya/src/constant/styles.dart';
-import 'package:flutter_waya/src/tools/ScreenFit.dart';
 
 class TabBarMerge extends StatelessWidget {
   ///最好传入 TabBarBox

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/src/constant/enums.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 
 ///例子
 class NavigatorExample {

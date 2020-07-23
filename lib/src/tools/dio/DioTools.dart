@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter_waya/src/tools/LogTools.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/tools/dio/InterceptorWrap.dart';
 
 //网络链接超时时间

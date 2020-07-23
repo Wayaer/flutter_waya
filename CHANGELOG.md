@@ -1,9 +1,8 @@
+## [1.1.1]
+* 优化类文件
 ## [1.1.0]
 * 拆分部分工具类
 * 新加一些组件【GifControl】【DropdownMenu】【Universal】...
-* 
-## [1.0.5]
-* 优化部分组件
 ## [1.0.4]
 * 拆分TabBarWidget 
 * 优化部分代码 
@@ -19,7 +18,5 @@
 * 修改crypto与flutter_test冲突
 ## [1.0.0]
 * 发布正式版
-## [0.0.2]
-* add example;
 ## [0.0.1]
 * create lib

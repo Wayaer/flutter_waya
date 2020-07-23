@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:flutter_waya/src/constant/constant.dart';
 
 class TabNavigationPage extends StatefulWidget {
   final Map<String, Object> arguments;

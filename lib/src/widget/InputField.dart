@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:flutter_waya/src/constant/constant.dart';
-import 'package:flutter_waya/src/constant/constant.dart';
-import 'package:flutter_waya/src/constant/enums.dart';
 import 'package:flutter_waya/src/constant/styles.dart';
 
 class InputField extends StatelessWidget {
@@ -485,7 +482,8 @@ class InputField extends StatelessWidget {
         ]; //只允许输入国内电话号
       case InputTextType.mobilePhone:
         return [
-          WhitelistingTextInputFormatter(RegExp(ConstConstant.regExpMobilePhone))
+          WhitelistingTextInputFormatter(
+              RegExp(ConstConstant.regExpMobilePhone))
         ]; //只允许输入国内手机号
       case InputTextType.idCard:
         return [

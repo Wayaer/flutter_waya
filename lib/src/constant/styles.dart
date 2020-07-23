@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:flutter_waya/src/constant/constant.dart';
 
 const double radiusLocal = ConstConstant.Radius;
 const double fontSize = ConstConstant.fontSize;

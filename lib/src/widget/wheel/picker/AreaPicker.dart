@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/area.dart';
-import 'package:flutter_waya/src/constant/constant.dart';
 import 'package:flutter_waya/src/constant/widgets.dart';
-import 'package:flutter_waya/src/widget/custom/Universal.dart';
 
 class AreaPicker extends StatefulWidget {
   ///容器属性
@@ -127,7 +125,8 @@ class AreaPickerState extends State<AreaPicker> {
             color: getColors(black),
             decoration: TextDecoration.none,
             decorationStyle: TextDecorationStyle.dashed);
-    itemWidth = widget.itemWidth ?? (ScreenFit.getWidth(0) - ScreenFit.getWidth(10)) / 3;
+    itemWidth = widget.itemWidth ??
+        (ScreenFit.getWidth(0) - ScreenFit.getWidth(10)) / 3;
     itemHeight = widget.itemHeight ?? ScreenFit.getWidth(16);
 
     ///省

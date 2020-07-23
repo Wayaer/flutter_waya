@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:flutter_waya/src/constant/constant.dart';
 import 'package:flutter_waya/src/constant/styles.dart';
-import 'package:flutter_waya/src/widget/custom/Universal.dart';
 
 class ListEntry extends StatelessWidget {
   final GestureTapCallback onTap;
