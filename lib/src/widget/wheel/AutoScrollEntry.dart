@@ -12,7 +12,7 @@ class AutoScrollEntry extends StatefulWidget {
   final Duration animateDuration;
 
   /// 回调监听
-  final WheelChangedListener onChanged;
+  final ValueChanged<int> onChanged;
 
   ///以下为滚轮属性
   ///高度

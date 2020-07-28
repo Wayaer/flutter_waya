@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-typedef WheelChangedListener = Function(int newIndex);
-
 class ListWheel extends StatefulWidget {
   /// 每个Item的高度,固定的
   final double itemExtent;
@@ -26,7 +24,7 @@ class ListWheel extends StatefulWidget {
   final int initialIndex;
 
   /// 回调监听
-  final WheelChangedListener onChanged;
+  final ValueChanged<int> onChanged;
 
   /// ///放大倍率
   final double magnification;
@@ -116,7 +114,9 @@ class ListWheelState extends State<ListWheel> {
       itemExtent: widget.itemExtent,
       physics: widget.physics,
       diameterRatio: widget.diameterRatio,
-      onSelectedItemChanged: (int index) => widget.onChanged(index),
+      onSelectedItemChanged: (int index) {
+        if (widget?.onChanged != null) widget.onChanged(index);
+      },
       offAxisFraction: widget.offAxisFraction,
       perspective: widget.perspective,
       useMagnifier: widget.useMagnifier,

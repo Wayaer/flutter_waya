@@ -240,7 +240,7 @@ class AreaPickerState extends State<AreaPicker> {
       {FixedExtentScrollController controller,
       int initialIndex,
       ListWheelChildDelegateType childDelegateType,
-      WheelChangedListener onChanged}) {
+      ValueChanged<int> onChanged}) {
     return Universal(
         direction: Axis.horizontal,
         mainAxisAlignment: MainAxisAlignment.center,
