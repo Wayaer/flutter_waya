@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 
 class Universal extends StatelessWidget {
   final EdgeInsetsGeometry padding;
@@ -74,6 +75,7 @@ class Universal extends StatelessWidget {
   final bool maintainSize;
   final bool maintainSemantics;
   final bool maintainInteractivity;
+  final bool offstage;
 
   //****** 点击事件相关 ******//
   final bool addInkWell;
@@ -201,6 +203,7 @@ class Universal extends StatelessWidget {
     bool autoFocus,
     bool sizedBoxExpand,
     bool visible,
+    bool offstage,
     bool maintainState,
     bool maintainAnimation,
     bool maintainSize,
@@ -333,6 +336,7 @@ class Universal extends StatelessWidget {
         this.enableFeedback = enableFeedback ?? true,
         this.canRequestFocus = canRequestFocus ?? true,
         this.visible = visible ?? true,
+        this.offstage = offstage ?? false,
         this.dragStartBehavior = dragStartBehavior ?? DragStartBehavior.start,
         this.type = type ?? MaterialType.canvas,
         this.elevation = elevation ?? 0.0,
@@ -391,7 +395,15 @@ class Universal extends StatelessWidget {
     if (isCircleAvatar) widget = circleAvatarWidget(widget: widget);
     if (isClip) widget = clipWidget(widget: widget);
     if (!visible) widget = visibilityWidget(widget: widget);
+    if (offstage) widget = offstageWidget(widget: widget);
     return widget;
+  }
+
+  Widget offstageWidget({Widget widget}) {
+    return Offstage(
+      child: widget,
+      offstage: offstage,
+    );
   }
 
   Widget cardWidget({Widget widget}) {
