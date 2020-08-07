@@ -124,4 +124,14 @@ class CustomDefaultLocalizations extends CupertinoLocalizations {
 
   @override
   String get todayLabel => _get("today");
+
+  @override
+  // TODO: implement modalBarrierDismissLabel
+  String get modalBarrierDismissLabel => throw UnimplementedError();
+
+  @override
+  String tabSemanticsLabel({int tabIndex, int tabCount}) {
+    // TODO: implement tabSemanticsLabel
+    throw UnimplementedError();
+  }
 }
