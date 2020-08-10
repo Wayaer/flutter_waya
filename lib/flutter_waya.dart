@@ -37,6 +37,7 @@ export 'src/widget/custom/NestedScroll.dart';
 export 'src/widget/custom/RichSpan.dart';
 export 'src/widget/custom/SimpleButton.dart';
 export 'src/widget/custom/Universal.dart';
+export 'src/widget/custom/GText.dart';
 export 'src/widget/custom/delegate/CustomLocalizationsDelegate.dart';
 export 'src/widget/gesture/GestureLock.dart';
 export 'src/widget/gesture/GestureZoom.dart';
