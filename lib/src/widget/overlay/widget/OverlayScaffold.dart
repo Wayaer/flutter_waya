@@ -17,9 +17,6 @@ class OverlayScaffold extends StatelessWidget {
   ///返回按键监听
   final WillPopCallback onWillPop;
 
-  ///hero 动画标记
-  final String heroTag;
-
   //刷新组件相关
   final RefreshController controller;
   final VoidCallback onRefresh;
@@ -77,7 +74,6 @@ class OverlayScaffold extends StatelessWidget {
     this.backgroundColor, //内容的背景颜色，默认使用的是 ThemeData.scaffoldBackgroundColor 的值
     this.resizeToAvoidBottomPadding, //类似于 Android 中的 android:windowSoftInputMode=”adjustResize”，控制界面内容 body 是否重新布局来避免底部被覆盖了，比如当键盘显示的时候，重新布局避免被键盘盖住内容。默认值为 true。
     this.resizeToAvoidBottomInset,
-    this.heroTag,
     this.onWillPop,
   })  : this.isScroll = isScroll ?? false,
         this.appBarHeight = appBarHeight ?? ScreenFit.getHeight(45),
@@ -150,12 +146,8 @@ class OverlayScaffold extends StatelessWidget {
     );
   }
 
-  Widget hero(Widget child) {
-    return heroTag == null ? child : Hero(tag: heroTag, child: child);
-  }
-
   Widget container() {
-    return hero(Container(
+    return Container(
       color: backgroundColor,
       margin: isolationBody
           ? EdgeInsets.only(top: ScreenFit.getHeight(10))
@@ -166,6 +158,6 @@ class OverlayScaffold extends StatelessWidget {
       width: double.infinity,
       height: double.infinity,
       child: isScroll ? SingleChildScrollView(child: body) : body,
-    ));
+    );
   }
 }

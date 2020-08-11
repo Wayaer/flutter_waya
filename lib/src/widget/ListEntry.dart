@@ -93,7 +93,6 @@ class ListEntry extends StatelessWidget {
     if (arrowIcon != null) children.add(arrowIcon);
     if (arrow) children.add(arrowWidget());
     return Universal(
-        heroTag: heroTag,
         height: height,
         addInkWell: inkWell,
         margin: margin,
@@ -113,7 +112,7 @@ class ListEntry extends StatelessWidget {
     return Expanded(
         child: ListTile(
       contentPadding: contentPadding,
-      title: title ?? Text(titleText, style: titleStyle),
+      title: hero(title ?? Text(titleText, style: titleStyle)),
       subtitle: subtitle,
       leading: leading,
       trailing: child,
@@ -130,5 +129,10 @@ class ListEntry extends StatelessWidget {
         size: arrowSize,
         color: arrowColor,
         margin: arrowMargin);
+  }
+
+  Widget hero(Widget text) {
+    if (heroTag != null) return Hero(tag: heroTag, child: text);
+    return text;
   }
 }

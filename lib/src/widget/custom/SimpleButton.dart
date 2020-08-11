@@ -17,6 +17,7 @@ class SimpleButton extends StatelessWidget {
   final String text;
   final bool addInkWell;
   final bool visible;
+  final String heroTag;
 
   SimpleButton({
     Key key,
@@ -25,6 +26,7 @@ class SimpleButton extends StatelessWidget {
     this.textStyle,
     this.visible,
     this.onTap,
+    this.heroTag,
     this.padding,
     this.margin,
     this.width,
@@ -42,13 +44,11 @@ class SimpleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget widget = Text(
-      text,
-      textAlign: TextAlign.start,
-      style: textStyle,
-      maxLines: maxLines,
-      overflow: overflow,
-    );
+    Widget widget = hero(Text(text,
+        textAlign: TextAlign.start,
+        style: textStyle,
+        maxLines: maxLines,
+        overflow: overflow));
     if (child != null) widget = child;
     return Universal(
       visible: visible,
@@ -63,5 +63,10 @@ class SimpleButton extends StatelessWidget {
       padding: padding,
       alignment: alignment,
     );
+  }
+
+  Widget hero(Widget text) {
+    if (heroTag != null) return Hero(tag: heroTag, child: text);
+    return text;
   }
 }
