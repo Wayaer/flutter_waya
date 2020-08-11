@@ -37,6 +37,7 @@ class SearchBox extends StatelessWidget {
   final bool autoFocus;
   final FocusNode focusNode;
   final Widget suffixIcon;
+  final String heroTag;
 
   SearchBox({
     Key key,
@@ -49,6 +50,7 @@ class SearchBox extends StatelessWidget {
     this.hintText,
     this.hintStyle,
     this.color,
+    this.heroTag,
     double size,
     this.borderRadius,
     this.inputStyle,
@@ -89,7 +91,7 @@ class SearchBox extends StatelessWidget {
       if (extraPrefix != null) {
         children.add(extraPrefix);
       }
-      children.add(Expanded(child: textInput()));
+      children.add(Expanded(child: heroTextInput()));
       if (extraSuffix != null) {
         children.add(extraSuffix);
       }
@@ -103,8 +105,17 @@ class SearchBox extends StatelessWidget {
       padding: padding,
       direction: Axis.horizontal,
       children: children,
-      child: extraPrefix == null ? textInput() : null,
+      child: extraPrefix == null ? heroTextInput() : null,
     );
+  }
+
+  Widget heroTextInput() {
+    if (heroTag != null)
+      return Hero(
+        tag: heroTag,
+        child: textInput(),
+      );
+    return textInput();
   }
 
   Widget textInput() {

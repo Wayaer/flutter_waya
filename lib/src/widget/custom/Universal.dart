@@ -389,13 +389,13 @@ class Universal extends StatelessWidget {
         widget = gestureDetectorWidget(widget: widget);
     }
     if (sizedBoxExpand) widget = SizedBox.expand(child: widget);
-    if (isFlexible || expanded) widget = flexibleWidget(widget: widget);
     if (heroTag != null) widget = heroWidget(widget: widget);
     if (addCard) widget = cardWidget(widget: widget);
     if (isCircleAvatar) widget = circleAvatarWidget(widget: widget);
     if (isClip) widget = clipWidget(widget: widget);
     if (!visible) widget = visibilityWidget(widget: widget);
     if (offstage) widget = offstageWidget(widget: widget);
+    if (isFlexible || expanded) widget = flexibleWidget(widget: widget);
     return widget;
   }
 

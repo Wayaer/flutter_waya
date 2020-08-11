@@ -38,6 +38,8 @@ class IconBox extends StatelessWidget {
   final AlignmentGeometry alignment;
   final TextAlign textAlign;
 
+  final String heroTag;
+
   IconBox({
     Key key,
     Axis direction,
@@ -49,6 +51,7 @@ class IconBox extends StatelessWidget {
     double spacing,
     double size,
     TextAlign textAlign,
+    this.heroTag,
     this.icon,
     this.background,
     this.color,
@@ -104,6 +107,7 @@ class IconBox extends StatelessWidget {
 
   Widget universal({List<Widget> children, Widget child}) {
     return Universal(
+      heroTag: heroTag,
       addInkWell: addInkWell,
       child: child,
       visible: visible,
