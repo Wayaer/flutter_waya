@@ -3,6 +3,7 @@ library flutter_waya;
 export 'package:pull_to_refresh/pull_to_refresh.dart';
 
 export 'src/constant/enums.dart';
+export 'src/constant/area.dart';
 export 'src/constant/constant.dart';
 export 'src/model/MapModel.dart';
 export 'src/tools/Event.dart';
