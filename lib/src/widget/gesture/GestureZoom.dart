@@ -16,8 +16,9 @@ class GestureZoom extends StatefulWidget {
     this.doubleTapScale = 2.0,
     @required this.child,
     this.onPressed,
-    this.duration = const Duration(milliseconds: 200),
-  })  : assert(maxScale >= 1.0),
+    this.duration = const Duration(milliseconds: 20),
+  })
+      : assert(maxScale >= 1.0),
         assert(doubleTapScale >= 1.0 && doubleTapScale <= maxScale),
         super(key: key);
 
@@ -171,10 +172,10 @@ class _GestureZoomState extends State<GestureZoom>
 
     /// 计算本次拖动增量
     double offsetXIncrement = (details.localFocalPoint.dx -
-            _latestScaleUpdateDetails.localFocalPoint.dx) *
+        _latestScaleUpdateDetails.localFocalPoint.dx) *
         _scale;
     double offsetYIncrement = (details.localFocalPoint.dy -
-            _latestScaleUpdateDetails.localFocalPoint.dy) *
+        _latestScaleUpdateDetails.localFocalPoint.dy) *
         _scale;
 
     /// 处理 X 轴边界
@@ -222,7 +223,8 @@ class _GestureZoomState extends State<GestureZoom>
     } else if (_isDragging) {
       /// 处理拖动超过边界的情况（自动回弹到边界）
       double realScale = _scale > widget.maxScale ? widget.maxScale : _scale;
-      double targetOffsetX = _offset.dx, targetOffsetY = _offset.dy;
+      double targetOffsetX = _offset.dx,
+          targetOffsetY = _offset.dy;
 
       /// 处理 X 轴边界
       double scaleOffsetX = context.size.width * (realScale - 1.0) / 2;
@@ -250,7 +252,7 @@ class _GestureZoomState extends State<GestureZoom>
       } else {
         /// 处理 X 轴边界
         double duration =
-            (widget.duration.inSeconds + widget.duration.inMilliseconds / 1000);
+        (widget.duration.inSeconds + widget.duration.inMilliseconds / 1000);
         Offset targetOffset =
             _offset + details.velocity.pixelsPerSecond * duration;
         targetOffsetX = targetOffset.dx;
