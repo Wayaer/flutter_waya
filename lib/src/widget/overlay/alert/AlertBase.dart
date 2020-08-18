@@ -6,6 +6,7 @@ import 'package:flutter_waya/flutter_waya.dart';
 class AlertBase extends StatefulWidget {
   final Widget child;
   final GestureTapCallback onTap;
+  final HitTestBehavior behavior;
   final Color color;
 
   final bool addMaterial;
@@ -45,7 +46,8 @@ class AlertBase extends StatefulWidget {
       this.top,
       this.right,
       this.bottom,
-      this.alignment})
+      this.alignment,
+      this.behavior})
       : this.gaussian = gaussian ?? false,
         this.addMaterial = addMaterial ?? false,
         this.popupMode = popupMode ?? PopupMode.center,
@@ -182,6 +184,7 @@ class AlertBaseState extends State<AlertBase> {
       color: widget.color,
       onTap: widget.onTap,
       isStack: true,
+      behavior: widget.behavior,
       children: <Widget>[child],
     );
   }
