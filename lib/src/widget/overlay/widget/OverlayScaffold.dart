@@ -83,26 +83,13 @@ class OverlayScaffold extends StatelessWidget {
         this.enablePullDown = enablePullDown ?? false,
         this.primary = primary ?? true,
         this.extendBody = extendBody ?? false,
-        this.drawerDragStartBehavior =
-            drawerDragStartBehavior ?? DragStartBehavior.start,
+        this.drawerDragStartBehavior = drawerDragStartBehavior ?? DragStartBehavior.start,
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-        onWillPop: onWillPop ??
-            () async {
-              if (onWillPopOverlayClose) {
-                if (overlayState.overlayEntries.length > 1) {
-                  AlertTools.close();
-                  return false;
-                } else {
-                  return true;
-                }
-              } else {
-                return false;
-              }
-            },
+        onWillPop: onWillPop,
         child: Scaffold(
           primary: primary,
           resizeToAvoidBottomInset: resizeToAvoidBottomInset,
@@ -123,9 +110,7 @@ class OverlayScaffold extends StatelessWidget {
                   ? null
                   : PreferredSize(
                       child: appBar,
-                      preferredSize: Size.fromHeight(
-                          MediaQueryTools.getStatusBarHeight() +
-                              appBarHeight))),
+                      preferredSize: Size.fromHeight(MediaQueryTools.getStatusBarHeight() + appBarHeight))),
           bottomNavigationBar: bottomNavigationBar,
           body: bodyWidget(context),
         ));
@@ -149,12 +134,8 @@ class OverlayScaffold extends StatelessWidget {
   Widget container() {
     return Container(
       color: backgroundColor,
-      margin: isolationBody
-          ? EdgeInsets.only(top: ScreenFit.getHeight(10))
-          : EdgeInsets.zero,
-      padding: paddingStatusBar
-          ? EdgeInsets.only(top: MediaQueryTools.getStatusBarHeight())
-          : padding,
+      margin: isolationBody ? EdgeInsets.only(top: ScreenFit.getHeight(10)) : EdgeInsets.zero,
+      padding: paddingStatusBar ? EdgeInsets.only(top: MediaQueryTools.getStatusBarHeight()) : padding,
       width: double.infinity,
       height: double.infinity,
       child: isScroll ? SingleChildScrollView(child: body) : body,

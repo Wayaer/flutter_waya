@@ -55,8 +55,6 @@ export 'src/widget/wheel/AutoScrollEntry.dart';
 export 'src/widget/wheel/ListWheel.dart';
 export 'src/widget/wheel/picker/MultipleChoicePicker.dart';
 export 'src/widget/overlay/alert/PickerTools.dart';
-export 'src/widget/overlay/widget/OverlayCupertino.dart';
-export 'src/widget/overlay/widget/OverlayMaterial.dart';
 export 'src/widget/overlay/widget/OverlayScaffold.dart';
 export 'src/widget/custom/Refresh.dart';
 export 'src/widget/FixedSizeText.dart';
