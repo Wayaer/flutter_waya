@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:flutter_waya/src/widget/a-z/Suspension.dart';
+import 'package:flutter_waya/src/widget/a-z/suspension.dart';
 
 /// Called to build children for the listview.
 typedef Widget ItemWidgetBuilder(BuildContext context, SuspensionModel model);

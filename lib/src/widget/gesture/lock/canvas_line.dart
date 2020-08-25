@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/src/widget/gesture/lock/CanvasPoint.dart';
+import 'package:flutter_waya/src/widget/gesture/lock/canvas_point.dart';
 
 class CanvasLine extends CustomPainter {
   final List<Point> pathPoints;
