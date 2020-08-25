@@ -48,6 +48,5 @@ export 'src/widget/wheel/picker/area.dart';
 export 'src/widget/wheel/picker/date_time.dart';
 export 'src/widget/wheel/list_wheel.dart';
 export 'src/widget/wheel/picker/multiple_choice.dart';
-export 'src/widget/custom/dialog/picker.dart';
 export 'src/widget/custom/refresh.dart';
 export 'src/widget/fixed_size_text.dart';

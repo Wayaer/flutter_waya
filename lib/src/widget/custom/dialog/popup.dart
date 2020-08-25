@@ -291,3 +291,261 @@ Future<T> showSimplePopup<T>(Widget widget) {
 Future<T> showSimpleBottomPopup<T>(Widget widget) {
   return showModalBottomPopup(builder: (BuildContext context) => widget);
 }
+
+///日期选择器
+Future<T> showDateTimePicker<T>({
+  ///背景色
+  Color backgroundColor,
+
+  ///头部
+  Widget titleBottom,
+  Widget title,
+
+  ///头部右侧 确定
+  Widget sure,
+
+  ///头部左侧 取消
+  Widget cancel,
+
+  ///内容文字样式
+  TextStyle contentStyle,
+
+  ///选择框内单位文字样式
+  TextStyle unitStyle,
+
+  ///取消点击事件
+  GestureTapCallback cancelTap,
+
+  ///确认点击事件
+  ValueChanged<String> sureTap,
+
+  ///单个item的高度
+  double itemHeight,
+
+  ///单个item的宽度
+  double itemWidth,
+
+  ///整个弹框高度
+  double height,
+
+  ///开始时间
+  DateTime startDate,
+
+  ///默认选中时间
+  DateTime defaultDate,
+
+  ///结束时间
+  DateTime endDate,
+
+  ///补全双位数
+  bool dual,
+
+  ///是否显示单位
+  bool showUnit,
+
+  ///单位设置
+  DateTimePickerUnit unit,
+
+  /// 半径大小,越大则越平面,越小则间距越大
+  double diameterRatio,
+
+  /// 选中item偏移
+  double offAxisFraction,
+
+  ///表示车轮水平偏离中心的程度  范围[0,0.01]
+  double perspective,
+
+  ///放大倍率
+  double magnification,
+
+  ///是否启用放大镜
+  bool useMagnifier,
+
+  ///1或者2
+  double squeeze,
+  ScrollPhysics physics,
+}) {
+  Tools.closeKeyboard(globalNavigatorKey.currentContext);
+  Widget widget = DateTimePicker(
+      diameterRatio: diameterRatio,
+      offAxisFraction: offAxisFraction,
+      perspective: perspective,
+      magnification: magnification,
+      useMagnifier: useMagnifier,
+      squeeze: squeeze,
+      itemHeight: itemHeight,
+      itemWidth: itemWidth,
+      height: height,
+      startDate: startDate,
+      endDate: endDate,
+      defaultDate: defaultDate,
+      dual: dual,
+      showUnit: showUnit,
+      unit: unit,
+      backgroundColor: backgroundColor,
+      sure: sure,
+      title: title,
+      cancel: cancel,
+      titleBottom: titleBottom,
+      contentStyle: contentStyle,
+      unitStyle: unitStyle,
+      cancelTap: cancelTap ?? () => popupClose(),
+      sureTap: sureTap ?? () => popupClose());
+  return showModalBottomPopup(backgroundColor: Colors.transparent, builder: (BuildContext context) => widget);
+}
+
+///地区选择器
+Future<T> showAreaPicker<T>({
+  ///背景色
+  Color backgroundColor,
+
+  ///头部
+  Widget titleBottom,
+  Widget title,
+
+  ///头部右侧 确定
+  Widget sure,
+
+  ///头部左侧 取消
+  Widget cancel,
+
+  ///内容文字样式
+  TextStyle contentStyle,
+
+  ///取消点击事件
+  GestureTapCallback cancelTap,
+
+  ///确认点击事件
+  ValueChanged<String> sureTap,
+
+  ///单个item的高度
+  double itemHeight,
+
+  ///单个item的宽度
+  double itemWidth,
+
+  ///整个弹框高度
+  double height,
+
+  /// 半径大小,越大则越平面,越小则间距越大
+  double diameterRatio,
+
+  /// 选中item偏移
+  double offAxisFraction,
+
+  ///表示车轮水平偏离中心的程度  范围[0,0.01]
+  double perspective,
+
+  ///放大倍率
+  double magnification,
+
+  ///是否启用放大镜
+  bool useMagnifier,
+
+  ///1或者2
+  double squeeze,
+  ScrollPhysics physics,
+  String defaultProvince,
+  String defaultCity,
+  String defaultDistrict,
+}) {
+  Tools.closeKeyboard(globalNavigatorKey.currentContext);
+  Widget widget = AreaPicker(
+      defaultProvince: defaultProvince,
+      defaultCity: defaultCity,
+      defaultDistrict: defaultDistrict,
+      diameterRatio: diameterRatio,
+      offAxisFraction: offAxisFraction,
+      perspective: perspective,
+      magnification: magnification,
+      useMagnifier: useMagnifier,
+      squeeze: squeeze,
+      itemHeight: itemHeight,
+      itemWidth: itemWidth,
+      height: height,
+      backgroundColor: backgroundColor,
+      sure: sure,
+      title: title,
+      cancel: cancel,
+      titleBottom: titleBottom,
+      contentStyle: contentStyle,
+      cancelTap: cancelTap ?? () => popupClose(),
+      sureTap: sureTap ?? () => popupClose());
+  return showModalBottomPopup(backgroundColor: Colors.transparent, builder: (BuildContext context) => widget);
+}
+
+///wheel 单列 取消确认 选择
+Future<T> showMultipleChoicePicker<T>({
+  ///默认选中
+  int initialIndex,
+
+  ///背景色
+  Color color,
+
+  ///确认按钮
+  Widget sure,
+
+  ///取消按钮
+  Widget cancel,
+
+  ///头部文字
+  Widget title,
+
+  ///取消点击事件
+  GestureTapCallback cancelTap,
+
+  ///确认点击事件
+  ValueChanged<int> sureTap,
+
+  ///单个item的高度
+  double itemHeight,
+
+  ///单个item的宽度
+  double itemWidth,
+
+  ///整个弹框高度
+  double height,
+
+  /// 半径大小,越大则越平面,越小则间距越大
+  double diameterRatio,
+
+  /// 选中item偏移
+  double offAxisFraction,
+
+  ///表示车轮水平偏离中心的程度  范围[0,0.01]
+  double perspective,
+
+  ///放大倍率
+  double magnification,
+
+  ///是否启用放大镜
+  bool useMagnifier,
+
+  ///1或者2
+  double squeeze,
+  ScrollPhysics physics,
+  @required int itemCount,
+  @required IndexedWidgetBuilder itemBuilder,
+}) {
+  Tools.closeKeyboard(globalNavigatorKey.currentContext);
+  Widget widget = MultipleChoicePicker(
+      itemCount: itemCount,
+      itemBuilder: itemBuilder,
+      diameterRatio: diameterRatio,
+      offAxisFraction: offAxisFraction,
+      perspective: perspective,
+      magnification: magnification,
+      useMagnifier: useMagnifier,
+      squeeze: squeeze,
+      itemHeight: itemHeight,
+      itemWidth: itemWidth,
+      height: height,
+      initialIndex: initialIndex,
+      sure: sure,
+      cancel: cancel,
+      title: title,
+      color: color,
+      cancelTap: cancelTap ?? () => popupClose(),
+      sureTap: sureTap ?? () => popupClose());
+  return showModalBottomPopup(backgroundColor: Colors.transparent, builder: (BuildContext context) => widget);
+}
