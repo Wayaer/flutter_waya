@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:flutter_waya/src/tools/dio/InterceptorWrap.dart';
+import 'package:flutter_waya/src/tools/dio/interceptor_wrap.dart';
 
 //网络链接超时时间
 const int HTTP_TIMEOUT_CONNECT = 5000;

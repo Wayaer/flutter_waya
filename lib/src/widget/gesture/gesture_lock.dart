@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:flutter_waya/src/widget/gesture/lock/canvas_line.dart';
-import 'package:flutter_waya/src/widget/gesture/lock/canvas_point.dart';
+import 'package:flutter_waya/src/widget/gesture/canvas.dart';
 
 /// ignore: must_be_immutable
 class GestureLock extends StatefulWidget {

@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-class AlertBase extends StatefulWidget {
+class PopupBase extends StatefulWidget {
   final Widget child;
   final GestureTapCallback onTap;
   final HitTestBehavior behavior;
@@ -31,7 +31,7 @@ class AlertBase extends StatefulWidget {
   ///Align
   final AlignmentGeometry alignment;
 
-  const AlertBase(
+  const PopupBase(
       {Key key,
       this.child,
       this.onTap,
@@ -58,11 +58,11 @@ class AlertBase extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return AlertBaseState();
+    return _PopupBaseState();
   }
 }
 
-class AlertBaseState extends State<AlertBase> {
+class _PopupBaseState extends State<PopupBase> {
   Color backgroundColor = getColors(transparent);
   double opacity = 0;
   double popupDistance = -ScreenFit.getHeight(0);
@@ -124,9 +124,7 @@ class AlertBaseState extends State<AlertBase> {
     }
     if (widget.addMaterial) {
       child = Material(
-          color: getColors(transparent),
-          child: MediaQuery(
-              data: MediaQueryData.fromWindow(window), child: child));
+          color: getColors(transparent), child: MediaQuery(data: MediaQueryData.fromWindow(window), child: child));
     }
     return child;
   }
@@ -161,18 +159,9 @@ class AlertBaseState extends State<AlertBase> {
 
   Widget childWidget() {
     Widget child = widget.child;
-    if (widget.alignment != null)
-      child = Align(alignment: widget.alignment, child: child);
-    if (widget.top != null ||
-        widget.left != null ||
-        widget.right != null ||
-        widget.bottom != null)
-      child = Positioned(
-          left: widget.left,
-          top: widget.top,
-          right: widget.right,
-          bottom: widget.bottom,
-          child: child);
+    if (widget.alignment != null) child = Align(alignment: widget.alignment, child: child);
+    if (widget.top != null || widget.left != null || widget.right != null || widget.bottom != null)
+      child = Positioned(left: widget.left, top: widget.top, right: widget.right, bottom: widget.bottom, child: child);
     if (widget.top == null &&
         widget.left == null &&
         widget.right == null &&

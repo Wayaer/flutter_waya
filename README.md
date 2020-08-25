@@ -23,13 +23,13 @@
 
 ### [本地持久化存储](lib/src/tools/storage.dart)
 
-### [弹窗工具](lib/src/widget/overlay/alert/alert.dart)
+### [弹窗工具](lib/src/widget/custom/dialog/alert.dart)
 
 ### [Picker选择器](lib/src/widget/wheel/picker)
 
 ### [自定义广告滚动](lib/src/widget/wheel/auto_scroll_entry.dart)
 
-### [AlertBase 弹窗底层组件](lib/src/widget/overlay/alert/alert_base.dart)
+### [PopupBase 弹窗底层组件](lib/src/widget/custom/dialog/popup_base.dart)
 
 ### [点击跳过](lib/src/widget/count_down_skip.dart)
 
@@ -37,7 +37,7 @@
 
 ### [二次封装刷新组件](lib/src/widget/custom/refresh.dart)
 
-### [二次封装Loading组件](lib/src/widget/overlay/alert/loading.dart)
+### [二次封装Loading组件](lib/src/widget/custom/dialog/loading.dart)
 
 ## 快捷打包命令 [builds](builds)
 

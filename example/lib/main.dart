@@ -27,29 +27,25 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return OverlayScaffold(
-      appBarHeight: MediaQueryTools.getStatusBarHeight(),
+//      appBarHeight: MediaQueryTools.getStatusBarHeight(),
       appBar: AppBar(title: Text('Waya Demo'), centerTitle: true),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           FlatButton(onPressed: () => showModalPopup(), child: Text('点击弹窗')),
-          FlatButton(onPressed: () => showModalToast(), child: Text('点击Toast')),
+          FlatButton(onPressed: () => showOverlayLoading(), child: Text('点击Loading')),
+          FlatButton(onPressed: () => showOverlayToast(), child: Text('点击Toast')),
         ],
       ),
     );
   }
 
-  showModalToast() {
-    showDialog(
-        context: _navigatorKey.currentContext,
-        builder: (BuildContext context) {
-          return Container(
-            margin: EdgeInsets.symmetric(horizontal: ScreenFit.getWidth(0) / 5, vertical: ScreenFit.getHeight(0) / 4),
-            decoration: BoxDecoration(color: getColors(black90), borderRadius: BorderRadius.circular(5)),
-            padding: EdgeInsets.all(ScreenFit.getWidth(10)),
-            child: Text("Toast"),
-          );
-        });
+  showOverlayLoading() {
+    showLoading(gaussian: true);
+  }
+
+  showOverlayToast() {
+    showToast("message");
   }
 
   showModalPopup() {

@@ -150,28 +150,22 @@ class AzIndexBarState extends State<AzIndexBar> {
     widget.data.forEach((v) {
       children.add(Container(
         decoration: BoxDecoration(
-            color: indexModel.isTouchDown == true && v == indexModel.tag
-                ? onTouchColor
-                : color,
-            borderRadius:
-                widget.touchDownRadius ?? BorderRadius.circular(radius)),
+            color: indexModel.isTouchDown == true && v == indexModel.tag ? onTouchColor : color,
+            borderRadius: widget.touchDownRadius ?? BorderRadius.circular(radius)),
         alignment: Alignment.center,
         width: widget.size.toDouble(),
         height: widget.size.toDouble(),
         child: Text(v,
             textAlign: TextAlign.center,
-            style: indexModel.isTouchDown == true && v == indexModel.tag
-                ? widget.touchDownTextStyle
-                : widget.textStyle),
+            style:
+                indexModel.isTouchDown == true && v == indexModel.tag ? widget.touchDownTextStyle : widget.textStyle),
       ));
     });
 
     return Container(
         padding: widget.padding,
         margin: EdgeInsets.only(right: ScreenFit.getWidth(10)),
-        decoration: BoxDecoration(
-            color: color,
-            borderRadius: widget.radius ?? BorderRadius.circular(radius)),
+        decoration: BoxDecoration(color: color, borderRadius: widget.radius ?? BorderRadius.circular(radius)),
         child: GestureDetector(
           onVerticalDragDown: (DragDownDetails details) {
             if (widgetTop == -1 || widgetTopChange) {

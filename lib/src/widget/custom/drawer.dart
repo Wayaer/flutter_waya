@@ -40,7 +40,7 @@ class CustomDrawerState extends State<CustomDrawer> {
   Widget build(BuildContext context) {
     return ConstrainedBox(
       constraints: BoxConstraints(maxWidth: widget.width),
-      child: AlertBase(
+      child: PopupBase(
         color: widget.backgroundColor,
         child: widget.child,
       ),
