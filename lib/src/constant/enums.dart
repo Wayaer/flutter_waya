@@ -144,3 +144,17 @@ enum ListWheelChildDelegateType {
   ///一个提供无限通过循环显式列表的子级
   looping
 }
+
+enum PopupFromType {
+  ///从左边进入
+  fromLeft,
+
+  ///从右边进入
+  fromRight,
+
+  ///从头部进入
+  fromTop,
+
+  ///从底部进入
+  fromBottom,
+}

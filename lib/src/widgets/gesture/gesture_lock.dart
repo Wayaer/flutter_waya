@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:flutter_waya/src/widget/gesture/canvas.dart';
+import 'package:flutter_waya/src/widgets/gesture/canvas.dart';
 
 /// ignore: must_be_immutable
 class GestureLock extends StatefulWidget {
@@ -40,8 +40,7 @@ class GestureLock extends StatefulWidget {
     for (int i = 0; i < 9; i++) {
       double x = gapWidth + realRingSize;
       double y = gapWidth + realRingSize;
-      points.add(
-          Point(x: (1 + i % 3 * 2) * x, y: (1 + i ~/ 3 * 2) * y, position: i));
+      points.add(Point(x: (1 + i % 3 * 2) * x, y: (1 + i ~/ 3 * 2) * y, position: i));
     }
   }
 
@@ -109,10 +108,7 @@ class GestureLockState extends State<GestureLock> {
             child: CustomPaint(
               size: Size(size, size),
               painter: CanvasLine(
-                  pathPoints: pathPoints,
-                  selectColor: selectColor,
-                  lineWidth: lineWidth,
-                  curPoint: curPoint),
+                  pathPoints: pathPoints, selectColor: selectColor, lineWidth: lineWidth, curPoint: curPoint),
             ),
             onPanDown: onPanDownVoid,
             onPanUpdate: (DragUpdateDetails e) => onPanUpdate(e, context),
@@ -154,14 +150,10 @@ class GestureLockState extends State<GestureLock> {
     int xPosition = -1;
     int yPosition = -1;
     for (int i = 0; i < 3; i++) {
-      if (xPosition == -1 &&
-          points[i].x + realRadius >= offSet.dx &&
-          offSet.dx >= points[i].x - realRadius) {
+      if (xPosition == -1 && points[i].x + realRadius >= offSet.dx && offSet.dx >= points[i].x - realRadius) {
         xPosition = i;
       }
-      if (yPosition == -1 &&
-          points[i * 3].y + realRadius >= offSet.dy &&
-          offSet.dy >= points[i * 3].y - realRadius) {
+      if (yPosition == -1 && points[i * 3].y + realRadius >= offSet.dy && offSet.dy >= points[i * 3].y - realRadius) {
         yPosition = i;
       }
     }
