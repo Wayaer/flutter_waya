@@ -27,27 +27,10 @@ Future<T> showPopup<T>({
   );
 }
 
-///showCupertinoDialog 去除context
-///关闭 closePopup()
-Future<T> showCupertinoPopup<T>({
-  @required WidgetBuilder builder,
-  bool useRootNavigator = true,
-  bool barrierDismissible = false,
-  RouteSettings routeSettings,
-}) {
-  return showCupertinoDialog(
-    context: globalNavigatorKey.currentContext,
-    builder: builder,
-    useRootNavigator: useRootNavigator,
-    barrierDismissible: barrierDismissible,
-    routeSettings: routeSettings,
-  );
-}
-
 ///showGeneralDialog 去除context
 ///添加popup进入方向属性
 ///关闭 closePopup()
-Future<T> showGeneralPopup<T>({
+Future<T> showSimpleGeneralPopup<T>({
   ///进入方向的距离
   double startOffset,
 
@@ -56,7 +39,8 @@ Future<T> showGeneralPopup<T>({
 
   ///这个参数是一个方法,入参是 context,animation,secondaryAnimation,返回一个 Widget
   ///这个 Widget 就是显示在页面上的 dialog
-  @required RoutePageBuilder pageBuilder,
+  RoutePageBuilder pageBuilder,
+  Widget widget,
 
   ///是否可以点击背景关闭
   bool barrierDismissible,
@@ -65,7 +49,7 @@ Future<T> showGeneralPopup<T>({
   String barrierLabel,
 
   ///背景颜色
-  Color barrierColor,
+  Color backgroundColor,
 
   ///这个是从开始到完全显示的时间
   Duration transitionDuration,
@@ -75,6 +59,7 @@ Future<T> showGeneralPopup<T>({
   bool useRootNavigator,
   RouteSettings routeSettings,
 }) {
+  assert(pageBuilder != null || widget != null);
   if (transitionBuilder == null && popupFromType != null) {
     transitionBuilder = (context, animation, _, child) {
       var translation = Offset(0, 1 - animation.value);
@@ -97,10 +82,10 @@ Future<T> showGeneralPopup<T>({
   }
   return showGeneralDialog(
     context: globalNavigatorKey.currentContext,
-    pageBuilder: pageBuilder,
+    pageBuilder: pageBuilder ?? (BuildContext context, Animation animation, Animation secondaryAnimation) => widget,
     barrierDismissible: barrierDismissible ?? true,
     barrierLabel: barrierLabel ?? '',
-    barrierColor: barrierColor,
+    barrierColor: backgroundColor,
     transitionDuration: transitionDuration ?? Duration(milliseconds: 80),
     transitionBuilder: transitionBuilder,
     useRootNavigator: useRootNavigator ?? true,
@@ -129,8 +114,9 @@ PersistentBottomSheetController<T> showBottomSheetPopup<T>({
 
 ///showModalBottomSheet 去除context
 ///关闭 closePopup()
-Future<T> showModalBottomPopup<T>({
-  @required WidgetBuilder builder,
+Future<T> showSimpleBottomPopup<T>({
+  WidgetBuilder builder,
+  Widget widget,
   Color backgroundColor,
   double elevation,
   ShapeBorder shape,
@@ -141,9 +127,10 @@ Future<T> showModalBottomPopup<T>({
   bool isDismissible = true,
   bool enableDrag = true,
 }) {
+  assert(builder != null || widget != null);
   return showModalBottomSheet(
     context: globalNavigatorKey.currentContext,
-    builder: builder,
+    builder: builder ?? (BuildContext context) => widget,
     backgroundColor: backgroundColor,
     elevation: elevation,
     shape: shape,
@@ -156,17 +143,40 @@ Future<T> showModalBottomPopup<T>({
   );
 }
 
-///showCupertinoModalPopup 去除context
+///showCupertinoDialog
+///去除context 简化参数
 ///关闭 closePopup()
-Future<T> showModalPopup<T>({
-  @required WidgetBuilder builder,
+Future<T> showSimpleDialog<T>({
+  WidgetBuilder builder,
+  Widget widget,
+  bool useRootNavigator = true,
+  bool barrierDismissible = false,
+  RouteSettings routeSettings,
+}) {
+  assert(builder != null || widget != null);
+  return showCupertinoDialog(
+    context: globalNavigatorKey.currentContext,
+    builder: builder ?? (BuildContext context) => widget,
+    useRootNavigator: useRootNavigator,
+    barrierDismissible: barrierDismissible,
+    routeSettings: routeSettings,
+  );
+}
+
+///showCupertinoModalPopup
+///去除context 简化参数
+///关闭 closePopup()
+Future<T> showSimpleModalPopup<T>({
+  WidgetBuilder builder,
+  Widget widget,
   ImageFilter filter,
   bool useRootNavigator = true,
   bool semanticsDismissible,
 }) {
+  assert(builder != null || widget != null);
   return showCupertinoModalPopup(
     context: globalNavigatorKey.currentContext,
-    builder: builder,
+    builder: builder ?? (BuildContext context) => widget,
     filter: filter,
     useRootNavigator: useRootNavigator,
     semanticsDismissible: semanticsDismissible,
@@ -292,40 +302,13 @@ Future<T> popupSureCancel<T>({
     padding: padding,
     margin: margin,
   );
-  return showGeneralPopup(
-      pageBuilder: (BuildContext context, Animation animation, Animation secondaryAnimation) => popup);
+  return showSimpleGeneralPopup(widget: popup);
 }
 
 ///关闭弹窗
 ///也可以通过 Navigator.of(context).pop()
 closePopup() {
   NavigatorTools.getInstance().pop();
-}
-
-///showCupertinoPopup 简化参数
-///关闭 closePopup()
-Future<T> showSimplePopup<T>(Widget widget) {
-  return showCupertinoPopup(builder: (BuildContext context) => widget);
-}
-
-///showModalBottomPopup 简化参数
-///关闭 closePopup()
-Future<T> showSimpleBottomPopup<T>(Widget widget) {
-  return showModalBottomPopup(builder: (BuildContext context) => widget);
-}
-
-///showGeneralPopup 简化参数
-///关闭 closePopup()
-Future<T> showSimpleGeneralPopup<T>(
-    {Duration transitionDuration, //这个是从开始到完全显示的时间
-    Widget widget,
-    Color backgroundColor,
-    PopupFromType popupFromType}) {
-  return showGeneralPopup(
-      transitionDuration: transitionDuration,
-      barrierColor: backgroundColor,
-      popupFromType: popupFromType,
-      pageBuilder: (BuildContext context, Animation animation, Animation secondaryAnimation) => widget);
 }
 
 ///日期选择器
@@ -428,7 +411,7 @@ Future<T> showDateTimePicker<T>({
       unitStyle: unitStyle,
       cancelTap: cancelTap ?? () => closePopup(),
       sureTap: sureTap ?? () => closePopup());
-  return showModalBottomPopup(backgroundColor: Colors.transparent, builder: (BuildContext context) => widget);
+  return showSimpleModalPopup(widget: widget);
 }
 
 ///地区选择器
@@ -509,7 +492,7 @@ Future<T> showAreaPicker<T>({
       contentStyle: contentStyle,
       cancelTap: cancelTap ?? () => closePopup(),
       sureTap: sureTap ?? () => closePopup());
-  return showModalBottomPopup(backgroundColor: Colors.transparent, builder: (BuildContext context) => widget);
+  return showSimpleModalPopup(widget: widget);
 }
 
 ///wheel 单列 取消确认 选择
@@ -586,5 +569,5 @@ Future<T> showMultipleChoicePicker<T>({
       color: color,
       cancelTap: cancelTap ?? () => closePopup(),
       sureTap: sureTap ?? () => closePopup());
-  return showModalBottomPopup(backgroundColor: Colors.transparent, builder: (BuildContext context) => widget);
+  return showSimpleModalPopup(widget: widget);
 }
