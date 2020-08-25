@@ -6,7 +6,8 @@ import 'package:flutter_waya/flutter_waya.dart';
 
 ///showDialog 去除context
 ///关闭 closePopup()
-Future<T> showPopup<T>({
+///Dialog
+Future<T> showSimpleDialog<T>({
   WidgetBuilder builder,
   bool barrierDismissible = true,
   Color barrierColor,
@@ -30,7 +31,8 @@ Future<T> showPopup<T>({
 ///showGeneralDialog 去除context
 ///添加popup进入方向属性
 ///关闭 closePopup()
-Future<T> showSimpleGeneralPopup<T>({
+///Dialog
+Future<T> showSimpleGeneralDialog<T>({
   ///进入方向的距离
   double startOffset,
 
@@ -93,27 +95,9 @@ Future<T> showSimpleGeneralPopup<T>({
   );
 }
 
-///showBottomSheet 去除context
-///关闭 closePopup()
-PersistentBottomSheetController<T> showBottomSheetPopup<T>({
-  @required WidgetBuilder builder,
-  Color backgroundColor,
-  double elevation,
-  ShapeBorder shape,
-  Clip clipBehavior,
-}) {
-  return showBottomSheet(
-    context: globalNavigatorKey.currentContext,
-    builder: builder,
-    backgroundColor: backgroundColor,
-    elevation: elevation,
-    shape: shape,
-    clipBehavior: clipBehavior,
-  );
-}
-
 ///showModalBottomSheet 去除context
 ///关闭 closePopup()
+///最高只有屏幕的一半
 Future<T> showSimpleBottomPopup<T>({
   WidgetBuilder builder,
   Widget widget,
@@ -146,7 +130,7 @@ Future<T> showSimpleBottomPopup<T>({
 ///showCupertinoDialog
 ///去除context 简化参数
 ///关闭 closePopup()
-Future<T> showSimpleDialog<T>({
+Future<T> showSimpleCupertinoDialog<T>({
   WidgetBuilder builder,
   Widget widget,
   bool useRootNavigator = true,
@@ -166,6 +150,7 @@ Future<T> showSimpleDialog<T>({
 ///showCupertinoModalPopup
 ///去除context 简化参数
 ///关闭 closePopup()
+///全屏显示
 Future<T> showSimpleModalPopup<T>({
   WidgetBuilder builder,
   Widget widget,
@@ -212,7 +197,7 @@ Future<T> showMenuPopup<T>({
 
 ///showAboutDialog 去除context
 ///关闭 closePopup()
-showAboutPopup({
+showSimpleAboutDialog({
   String applicationName,
   String applicationVersion,
   Widget applicationIcon,
@@ -254,7 +239,8 @@ showLicensePopup({
 
 ///关闭 closePopup()
 ///popup 确定和取消
-Future<T> popupSureCancel<T>({
+///Dialog
+Future<T> dialogSureCancel<T>({
   @required List<Widget> children,
   GestureTapCallback sureTap,
   GestureTapCallback cancelTap,
@@ -287,8 +273,8 @@ Future<T> popupSureCancel<T>({
     animatedOpacity: animatedOpacity,
     gaussian: gaussian,
     children: children,
-    sureTap: sureTap ?? closePopup(),
-    cancelTap: cancelTap ?? closePopup(),
+    sureTap: sureTap ?? () => closePopup(),
+    cancelTap: cancelTap ?? () => closePopup(),
     decoration: decoration,
     alignment: alignment,
     cancelText: cancelText,
@@ -302,7 +288,7 @@ Future<T> popupSureCancel<T>({
     padding: padding,
     margin: margin,
   );
-  return showSimpleGeneralPopup(widget: popup);
+  return showSimpleGeneralDialog(widget: popup);
 }
 
 ///关闭弹窗
@@ -411,7 +397,7 @@ Future<T> showDateTimePicker<T>({
       unitStyle: unitStyle,
       cancelTap: cancelTap ?? () => closePopup(),
       sureTap: sureTap ?? () => closePopup());
-  return showSimpleModalPopup(widget: widget);
+  return showSimpleBottomPopup(widget: widget);
 }
 
 ///地区选择器
@@ -492,7 +478,7 @@ Future<T> showAreaPicker<T>({
       contentStyle: contentStyle,
       cancelTap: cancelTap ?? () => closePopup(),
       sureTap: sureTap ?? () => closePopup());
-  return showSimpleModalPopup(widget: widget);
+  return showSimpleBottomPopup(widget: widget);
 }
 
 ///wheel 单列 取消确认 选择
@@ -569,5 +555,5 @@ Future<T> showMultipleChoicePicker<T>({
       color: color,
       cancelTap: cancelTap ?? () => closePopup(),
       sureTap: sureTap ?? () => closePopup());
-  return showSimpleModalPopup(widget: widget);
+  return showSimpleBottomPopup(widget: widget);
 }
