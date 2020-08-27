@@ -4,35 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-///showDialog 去除context
-///关闭 closePopup()
-///Dialog
-Future<T> showSimpleDialog<T>({
-  WidgetBuilder builder,
-  bool barrierDismissible = true,
-  Color barrierColor,
-  bool useSafeArea = true,
-  bool useRootNavigator = true,
-  RouteSettings routeSettings,
-  Widget child,
-}) {
-  return showDialog(
-    context: globalNavigatorKey.currentContext,
-    builder: builder,
-    barrierDismissible: barrierDismissible,
-    barrierColor: barrierColor,
-    useSafeArea: useSafeArea,
-    useRootNavigator: useRootNavigator,
-    routeSettings: routeSettings,
-    child: child,
-  );
-}
-
 ///showGeneralDialog 去除context
 ///添加popup进入方向属性
 ///关闭 closePopup()
 ///Dialog
-Future<T> showSimpleGeneralDialog<T>({
+Future<T> showDialogPopup<T>({
   ///进入方向的距离
   double startOffset,
 
@@ -98,7 +74,7 @@ Future<T> showSimpleGeneralDialog<T>({
 ///showModalBottomSheet 去除context
 ///关闭 closePopup()
 ///最高只有屏幕的一半
-Future<T> showSimpleBottomPopup<T>({
+Future<T> showBottomPopup<T>({
   WidgetBuilder builder,
   Widget widget,
   Color backgroundColor,
@@ -127,31 +103,11 @@ Future<T> showSimpleBottomPopup<T>({
   );
 }
 
-///showCupertinoDialog
-///去除context 简化参数
-///关闭 closePopup()
-Future<T> showSimpleCupertinoDialog<T>({
-  WidgetBuilder builder,
-  Widget widget,
-  bool useRootNavigator = true,
-  bool barrierDismissible = false,
-  RouteSettings routeSettings,
-}) {
-  assert(builder != null || widget != null);
-  return showCupertinoDialog(
-    context: globalNavigatorKey.currentContext,
-    builder: builder ?? (BuildContext context) => widget,
-    useRootNavigator: useRootNavigator,
-    barrierDismissible: barrierDismissible,
-    routeSettings: routeSettings,
-  );
-}
-
 ///showCupertinoModalPopup
 ///去除context 简化参数
 ///关闭 closePopup()
 ///全屏显示
-Future<T> showSimpleModalPopup<T>({
+Future<T> showBottomPagePopup<T>({
   WidgetBuilder builder,
   Widget widget,
   ImageFilter filter,
@@ -165,75 +121,6 @@ Future<T> showSimpleModalPopup<T>({
     filter: filter,
     useRootNavigator: useRootNavigator,
     semanticsDismissible: semanticsDismissible,
-  );
-}
-
-///showMenu 去除context
-///关闭 closePopup()
-Future<T> showMenuPopup<T>({
-  @required RelativeRect position,
-  @required List<PopupMenuEntry<T>> items,
-  T initialValue,
-  double elevation,
-  String semanticLabel,
-  ShapeBorder shape,
-  Color color,
-  bool captureInheritedThemes = true,
-  bool useRootNavigator = false,
-}) {
-  return showMenu(
-    context: globalNavigatorKey.currentContext,
-    items: items,
-    initialValue: initialValue,
-    elevation: elevation,
-    semanticLabel: semanticLabel,
-    shape: shape,
-    color: color,
-    captureInheritedThemes: captureInheritedThemes,
-    useRootNavigator: useRootNavigator,
-    position: position,
-  );
-}
-
-///showAboutDialog 去除context
-///关闭 closePopup()
-showSimpleAboutDialog({
-  String applicationName,
-  String applicationVersion,
-  Widget applicationIcon,
-  String applicationLegalese,
-  List<Widget> children,
-  bool useRootNavigator = true,
-  RouteSettings routeSettings,
-}) {
-  showAboutDialog(
-    context: globalNavigatorKey.currentContext,
-    applicationName: applicationName,
-    applicationVersion: applicationVersion,
-    applicationIcon: applicationIcon,
-    applicationLegalese: applicationLegalese,
-    children: children,
-    useRootNavigator: useRootNavigator,
-    routeSettings: routeSettings,
-  );
-}
-
-///showLicensePage 去除context
-///关闭 closePopup()
-showLicensePopup({
-  String applicationName,
-  String applicationVersion,
-  Widget applicationIcon,
-  String applicationLegalese,
-  bool useRootNavigator = false,
-}) {
-  showLicensePage(
-    context: globalNavigatorKey.currentContext,
-    applicationName: applicationName,
-    applicationVersion: applicationVersion,
-    applicationIcon: applicationIcon,
-    applicationLegalese: applicationLegalese,
-    useRootNavigator: useRootNavigator,
   );
 }
 
@@ -288,7 +175,7 @@ Future<T> dialogSureCancel<T>({
     padding: padding,
     margin: margin,
   );
-  return showSimpleGeneralDialog(widget: popup);
+  return showDialogPopup(widget: popup);
 }
 
 ///关闭弹窗
@@ -397,7 +284,7 @@ Future<T> showDateTimePicker<T>({
       unitStyle: unitStyle,
       cancelTap: cancelTap ?? () => closePopup(),
       sureTap: sureTap ?? () => closePopup());
-  return showSimpleBottomPopup(widget: widget);
+  return showBottomPopup(widget: widget);
 }
 
 ///地区选择器
@@ -478,7 +365,7 @@ Future<T> showAreaPicker<T>({
       contentStyle: contentStyle,
       cancelTap: cancelTap ?? () => closePopup(),
       sureTap: sureTap ?? () => closePopup());
-  return showSimpleBottomPopup(widget: widget);
+  return showBottomPopup(widget: widget);
 }
 
 ///wheel 单列 取消确认 选择
@@ -555,5 +442,120 @@ Future<T> showMultipleChoicePicker<T>({
       color: color,
       cancelTap: cancelTap ?? () => closePopup(),
       sureTap: sureTap ?? () => closePopup());
-  return showSimpleBottomPopup(widget: widget);
+  return showBottomPopup(widget: widget);
+}
+
+///不常用
+
+///showCupertinoDialog
+///去除context 简化参数
+///关闭 closePopup()
+Future<T> showSimpleCupertinoDialog<T>({
+  WidgetBuilder builder,
+  Widget widget,
+  bool useRootNavigator = true,
+  bool barrierDismissible = false,
+  RouteSettings routeSettings,
+}) {
+  assert(builder != null || widget != null);
+  return showCupertinoDialog(
+    context: globalNavigatorKey.currentContext,
+    builder: builder ?? (BuildContext context) => widget,
+    useRootNavigator: useRootNavigator,
+    barrierDismissible: barrierDismissible,
+    routeSettings: routeSettings,
+  );
+}
+
+///showDialog 去除context
+///关闭 closePopup()
+///Dialog
+Future<T> showSimpleDialog<T>({
+  WidgetBuilder builder,
+  bool barrierDismissible = true,
+  Color barrierColor,
+  bool useSafeArea = true,
+  bool useRootNavigator = true,
+  RouteSettings routeSettings,
+  Widget child,
+}) {
+  return showDialog(
+    context: globalNavigatorKey.currentContext,
+    builder: builder,
+    barrierDismissible: barrierDismissible,
+    barrierColor: barrierColor,
+    useSafeArea: useSafeArea,
+    useRootNavigator: useRootNavigator,
+    routeSettings: routeSettings,
+    child: child,
+  );
+}
+
+///showMenu 去除context
+///关闭 closePopup()
+Future<T> showMenuPopup<T>({
+  @required RelativeRect position,
+  @required List<PopupMenuEntry<T>> items,
+  T initialValue,
+  double elevation,
+  String semanticLabel,
+  ShapeBorder shape,
+  Color color,
+  bool captureInheritedThemes = true,
+  bool useRootNavigator = false,
+}) {
+  return showMenu(
+    context: globalNavigatorKey.currentContext,
+    items: items,
+    initialValue: initialValue,
+    elevation: elevation,
+    semanticLabel: semanticLabel,
+    shape: shape,
+    color: color,
+    captureInheritedThemes: captureInheritedThemes,
+    useRootNavigator: useRootNavigator,
+    position: position,
+  );
+}
+
+///showAboutDialog 去除context
+///关闭 closePopup()
+showSimpleAboutDialog({
+  String applicationName,
+  String applicationVersion,
+  Widget applicationIcon,
+  String applicationLegalese,
+  List<Widget> children,
+  bool useRootNavigator = true,
+  RouteSettings routeSettings,
+}) {
+  showAboutDialog(
+    context: globalNavigatorKey.currentContext,
+    applicationName: applicationName,
+    applicationVersion: applicationVersion,
+    applicationIcon: applicationIcon,
+    applicationLegalese: applicationLegalese,
+    children: children,
+    useRootNavigator: useRootNavigator,
+    routeSettings: routeSettings,
+  );
+}
+
+///showLicensePage 去除context
+///关闭 closePopup()
+showLicensePopup({
+  String applicationName,
+  String applicationVersion,
+  Widget applicationIcon,
+  String applicationLegalese,
+  bool useRootNavigator = false,
+}) {
+  showLicensePage(
+    context: globalNavigatorKey.currentContext,
+    applicationName: applicationName,
+    applicationVersion: applicationVersion,
+    applicationIcon: applicationIcon,
+    applicationLegalese: applicationLegalese,
+    useRootNavigator: useRootNavigator,
+  );
 }
