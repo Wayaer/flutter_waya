@@ -655,6 +655,7 @@ class SimpleButton extends StatelessWidget {
   final bool addInkWell;
   final bool visible;
   final String heroTag;
+  final BoxConstraints constraints;
 
   SimpleButton({
     Key key,
@@ -662,6 +663,7 @@ class SimpleButton extends StatelessWidget {
     bool inkWell,
     this.textStyle,
     this.visible,
+    this.constraints,
     this.onTap,
     this.heroTag,
     this.padding,
@@ -675,7 +677,8 @@ class SimpleButton extends StatelessWidget {
     this.child,
     TextOverflow overflow,
     this.addInkWell,
-  })  : this.text = text ?? 'Button',
+  })
+      : this.text = text ?? 'Button',
         this.overflow = overflow ?? TextOverflow.ellipsis,
         super(key: key);
 
@@ -689,6 +692,7 @@ class SimpleButton extends StatelessWidget {
     if (child != null) widget = child;
     return Universal(
       visible: visible,
+      constraints: constraints,
       addInkWell: addInkWell,
       mainAxisSize: MainAxisSize.min,
       child: widget,

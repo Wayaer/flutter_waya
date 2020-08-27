@@ -79,8 +79,7 @@ class IconBox extends StatelessWidget {
         this.reversal = reversal ?? false,
         this.direction = direction ?? Axis.horizontal,
         this.spacing = spacing ?? ScreenFit.getWidth(4),
-        this.crossAxisAlignment =
-            crossAxisAlignment ?? CrossAxisAlignment.center,
+        this.crossAxisAlignment = crossAxisAlignment ?? CrossAxisAlignment.center,
         this.mainAxisAlignment = mainAxisAlignment ?? MainAxisAlignment.center,
         super(key: key);
 
@@ -128,8 +127,7 @@ class IconBox extends StatelessWidget {
 
   Widget spacingWidget() {
     return Container(
-        width: direction == Axis.horizontal ? spacing : 0,
-        height: direction == Axis.vertical ? spacing : 0);
+        width: direction == Axis.horizontal ? spacing : 0, height: direction == Axis.vertical ? spacing : 0);
   }
 
   Widget titleWidget() {
@@ -148,20 +146,13 @@ class IconBox extends StatelessWidget {
 
   bool isChildren() {
     return (titleText != null || title != null) &&
-        (icon != null ||
-            image != null ||
-            widget != null ||
-            imageProvider != null);
+        (icon != null || image != null || widget != null || imageProvider != null);
   }
 
   List<Widget> iconWidget() {
     List<Widget> listWidget = [];
     if (icon != null) {
-      listWidget.add(Icon(icon,
-          color: color,
-          size: size,
-          textDirection: textDirection,
-          semanticLabel: semanticLabel));
+      listWidget.add(Icon(icon, color: color, size: size, textDirection: textDirection, semanticLabel: semanticLabel));
 
       ///帮助盲人或者视力有障碍的用户提供语言辅助描述
     }
@@ -169,8 +160,7 @@ class IconBox extends StatelessWidget {
       listWidget.add(image);
     }
     if (imageProvider != null) {
-      listWidget.add(ImageIcon(imageProvider,
-          color: color, size: size, semanticLabel: semanticLabel));
+      listWidget.add(ImageIcon(imageProvider, color: color, size: size, semanticLabel: semanticLabel));
     }
     if (widget != null) {
       listWidget.add(widget);
@@ -225,23 +215,21 @@ class CheckBox extends StatefulWidget {
         this.uncheckColor = uncheckColor ?? getColors(black70),
         this.checkColor = checkColor ?? getColors(white),
         this.mainAxisAlignment = mainAxisAlignment ?? MainAxisAlignment.center,
-        this.crossAxisAlignment =
-            crossAxisAlignment ?? CrossAxisAlignment.center,
+        this.crossAxisAlignment = crossAxisAlignment ?? CrossAxisAlignment.center,
         super(key: key);
 
   @override
-  CheckBoxState createState() => CheckBoxState();
+  _CheckBoxState createState() => _CheckBoxState();
 }
 
-class CheckBoxState extends State<CheckBox> {
+class _CheckBoxState extends State<CheckBox> {
   bool value = false;
 
   @override
   Widget build(BuildContext context) {
     if (widget.value != null) value = widget.value;
     IconData icon;
-    if (widget.checkIcon != null && widget.uncheckIcon != null)
-      icon = value ? widget.checkIcon : widget.uncheckIcon;
+    if (widget.checkIcon != null && widget.uncheckIcon != null) icon = value ? widget.checkIcon : widget.uncheckIcon;
     Widget check;
     if (widget.checkWidget != null && widget.uncheckWidget != null) {
       check = value ? widget.checkWidget : widget.uncheckWidget;
