@@ -472,6 +472,7 @@ Future<T> showSimpleCupertinoDialog<T>({
 ///Dialog
 Future<T> showSimpleDialog<T>({
   WidgetBuilder builder,
+  Widget widget,
   bool barrierDismissible = true,
   Color barrierColor,
   bool useSafeArea = true,
@@ -479,9 +480,10 @@ Future<T> showSimpleDialog<T>({
   RouteSettings routeSettings,
   Widget child,
 }) {
+  assert(builder != null || widget != null);
   return showDialog(
     context: globalNavigatorKey.currentContext,
-    builder: builder,
+    builder: builder ?? (BuildContext context) => widget,
     barrierDismissible: barrierDismissible,
     barrierColor: barrierColor,
     useSafeArea: useSafeArea,
