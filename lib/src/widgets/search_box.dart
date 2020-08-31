@@ -76,10 +76,11 @@ class SearchBox extends StatelessWidget {
     this.width,
     this.autoFocus,
     this.focusNode,
-  })  : this.icon = icon ?? ConstIcon.search,
-        this.size = size ?? ScreenFit.getWidth(14),
+  })
+      : this.icon = icon ?? ConstIcon.search,
+        this.size = size ?? 15,
         this.contentPadding =
-            contentPadding ?? EdgeInsets.all(ScreenFit.getWidth(6)),
+            contentPadding ?? 6,
         super(key: key);
 
   @override
@@ -158,11 +159,11 @@ class SearchBox extends StatelessWidget {
       return searchText == null
           ? null
           : SimpleButton(
-              text: searchText,
-              onTap: searchTap,
-              padding: EdgeInsets.symmetric(horizontal: ScreenFit.getWidth(4)),
-              textStyle: searchStyle ?? TextStyle(color: getColors(white)),
-            );
+        text: searchText,
+        onTap: searchTap,
+        padding: EdgeInsets.symmetric(horizontal: ScreenFit.getWidth(4)),
+        textStyle: searchStyle ?? TextStyle(color: getColors(white)),
+      );
     } else {
       return search;
     }

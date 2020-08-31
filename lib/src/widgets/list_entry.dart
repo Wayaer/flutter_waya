@@ -78,7 +78,7 @@ class ListEntry extends StatelessWidget {
       this.arrowMargin,
       this.prefix,
       this.prefixMargin})
-      : this.arrowSize = arrowSize ?? ScreenFit.getWidth(16),
+      : this.arrowSize = arrowSize ?? 16,
         this.arrowColor = arrowColor ?? getColors(black),
         this.isThreeLine = isThreeLine ?? false,
         this.arrow = arrow ?? true,
@@ -102,9 +102,7 @@ class ListEntry extends StatelessWidget {
         onTap: enabled ? onTap : null,
         direction: Axis.horizontal,
         mainAxisAlignment: MainAxisAlignment.center,
-        decoration: decoration ??
-            WayStyles.containerUnderlineBackground(
-                underlineColor: underlineColor, color: color),
+        decoration: decoration ?? WayStyles.containerUnderlineBackground(underlineColor: underlineColor, color: color),
         children: children);
   }
 
@@ -124,11 +122,7 @@ class ListEntry extends StatelessWidget {
   }
 
   Widget arrowWidget() {
-    return IconBox(
-        icon: ConstIcon.arrowRight,
-        size: arrowSize,
-        color: arrowColor,
-        margin: arrowMargin);
+    return IconBox(icon: ConstIcon.arrowRight, size: arrowSize, color: arrowColor, margin: arrowMargin);
   }
 
   Widget hero(Widget text) {
