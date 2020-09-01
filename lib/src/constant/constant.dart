@@ -49,9 +49,7 @@ const String black70 = 'black70';
 const String black50 = 'black50';
 const String black90 = 'black90';
 
-Color getColors(String color) {
-  return constColors[color];
-}
+Color getColors(String color) => constColors[color];
 
 const constColors = {
   '$transparent': Colors.transparent,
@@ -103,8 +101,5 @@ class ConstIcon {
 
 class IconCode extends IconData {
   const IconCode(int codePoint)
-      : super(codePoint,
-            fontFamily: 'Icons',
-            matchTextDirection: true,
-            fontPackage: "flutter_waya");
+      : super(codePoint, fontFamily: 'Icons', matchTextDirection: true, fontPackage: "flutter_waya");
 }

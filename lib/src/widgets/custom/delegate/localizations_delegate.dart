@@ -1,25 +1,23 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart' show SynchronousFuture;
-import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter/foundation.dart';
 
-class CustomLocalizationsDelegate extends LocalizationsDelegate<CupertinoLocalizations> {
-  @override
-  bool isSupported(Locale locale) => <String>['en', 'zh'].contains(locale.languageCode);
+///语言(主要解决cupertino控件不能显示中文的问题)
+class CommonLocalizationsDelegate extends LocalizationsDelegate<CupertinoLocalizations> {
+  const CommonLocalizationsDelegate();
 
   @override
-  SynchronousFuture<CustomDefaultLocalizations> load(Locale locale) {
-    return SynchronousFuture<CustomDefaultLocalizations>(CustomDefaultLocalizations(locale.languageCode));
-  }
+  bool isSupported(Locale locale) => <String>['zh', 'CN'].contains(locale.languageCode);
 
   @override
-  bool shouldReload(CustomLocalizationsDelegate old) => false;
+  SynchronousFuture<_DefaultCupertinoLocalizations> load(Locale locale) =>
+      SynchronousFuture<_DefaultCupertinoLocalizations>(_DefaultCupertinoLocalizations(locale.languageCode));
+
+  @override
+  bool shouldReload(CommonLocalizationsDelegate old) => false;
 }
 
-class CustomDefaultLocalizations extends CupertinoLocalizations {
-  CustomDefaultLocalizations(this._languageCode) : assert(_languageCode != null);
-
-  final DefaultCupertinoLocalizations _en = DefaultCupertinoLocalizations();
+class _DefaultCupertinoLocalizations extends CupertinoLocalizations {
+  _DefaultCupertinoLocalizations(this._languageCode) : assert(_languageCode != null);
   final String _languageCode;
 
   final Map<String, Map<String, String>> _dict = <String, Map<String, String>>{
@@ -29,19 +27,57 @@ class CustomDefaultLocalizations extends CupertinoLocalizations {
       'paste': 'Paste',
       'cut': 'Cut',
       'selectAll': 'Select all',
-      'today': 'today'
+      'today': 'Today',
+      'forenoon': 'Forenoon',
+      'afternoon': 'Afternoon'
     },
-    'zh': <String, String>{'alert': '警告', 'copy': '复制', 'paste': '粘贴', 'cut': '剪切', 'selectAll': '选择全部', 'today': '今天'}
+    'zh': <String, String>{
+      'forenoon': '上午',
+      'afternoon': '下午',
+      'alert': '提醒',
+      'copy': '复制',
+      'paste': '粘贴',
+      'cut': '剪切',
+      'selectAll': '选择全部',
+      'today': '今天'
+    }
   };
+  final Map<String, List> _months = <String, List>{
+    'en': ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    'enl': [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December'
+    ],
+    'zh': ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
+  };
+  final Map<String, List> _weekDays = <String, List>{
+    'en': ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'],
+    'enl': ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+    'zh': ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+  };
+
+  String _get(String key) => _dict[_languageCode][key];
+
+  String _getMonths(int index) => _months[_languageCode][index];
 
   @override
   String get alertDialogLabel => _get('alert');
 
   @override
-  String get anteMeridiemAbbreviation => _en.anteMeridiemAbbreviation;
+  String get anteMeridiemAbbreviation => _get('forenoon');
 
   @override
-  String get postMeridiemAbbreviation => _en.postMeridiemAbbreviation;
+  String get postMeridiemAbbreviation => _get('afternoon');
 
   @override
   String get copyButtonLabel => _get('copy');
@@ -56,231 +92,66 @@ class CustomDefaultLocalizations extends CupertinoLocalizations {
   String get selectAllButtonLabel => _get('selectAll');
 
   @override
-  DatePickerDateOrder get datePickerDateOrder => _en.datePickerDateOrder;
+  String get todayLabel => _get('today');
 
   @override
-  DatePickerDateTimeOrder get datePickerDateTimeOrder => _en.datePickerDateTimeOrder;
-
-  @override
-  String datePickerDayOfMonth(int dayIndex) => _en.datePickerDayOfMonth(dayIndex);
-
-  @override
-  String datePickerHour(int hour) => _en.datePickerHour(hour);
-
-  @override
-  String datePickerHourSemanticsLabel(int hour) => _en.datePickerHourSemanticsLabel(hour);
-
-  @override
-  String datePickerMediumDate(DateTime date) => _en.datePickerMediumDate(date);
-
-  @override
-  String datePickerMinute(int minute) => _en.datePickerMinute(minute);
-
-  @override
-  String datePickerMinuteSemanticsLabel(int minute) => _en.datePickerMinuteSemanticsLabel(minute);
-
-  @override
-  String datePickerMonth(int monthIndex) => _en.datePickerMonth(monthIndex);
-
-  @override
-  String datePickerYear(int yearIndex) => _en.datePickerYear(yearIndex);
-
-  @override
-  String timerPickerHour(int hour) => _en.timerPickerHour(hour);
-
-  @override
-  String timerPickerHourLabel(int hour) => _en.timerPickerHourLabel(hour);
-
-  @override
-  String timerPickerMinute(int minute) => _en.timerPickerMinute(minute);
-
-  @override
-  String timerPickerMinuteLabel(int minute) => _en.timerPickerMinuteLabel(minute);
-
-  @override
-  String timerPickerSecond(int second) => _en.timerPickerSecond(second);
-
-  @override
-  String timerPickerSecondLabel(int second) => _en.timerPickerSecondLabel(second);
-
-  String _get(String key) {
-    return _dict[_languageCode][key];
-  }
-
-  @override
-  String get todayLabel => _get("today");
-
-  @override
-  String get modalBarrierDismissLabel => throw UnimplementedError();
-
-  @override
-  String tabSemanticsLabel({int tabIndex, int tabCount}) {
-    throw UnimplementedError();
-  }
-}
-
-class ChineseCupertinoLocalizations implements CupertinoLocalizations {
-  final materialDelegate = GlobalMaterialLocalizations.delegate;
-  final widgetsDelegate = GlobalWidgetsLocalizations.delegate;
-  final local = const Locale('zh');
-
-  ChineseCupertinoLocalizations(this._languageCode) : assert(_languageCode != null);
-
-  final String _languageCode;
-  MaterialLocalizations ml;
-
-  final Map<String, Map<String, String>> _dict = <String, Map<String, String>>{
-    'en': <String, String>{
-      'alert': 'Alert',
-      'copy': 'Copy',
-      'paste': 'Paste',
-      'cut': 'Cut',
-      'selectAll': 'Select all',
-      'today': 'today'
-    },
-    'zh': <String, String>{'alert': '警告', 'copy': '复制', 'paste': '粘贴', 'cut': '剪切', 'selectAll': '选择全部', 'today': '今天'}
-  };
-
-  String _get(String key) {
-    return _dict[_languageCode][key];
-  }
-
-  @override
-  String get todayLabel => _get("today");
-
-  Future init() async {
-    ml = await materialDelegate.load(local);
-  }
-
-  @override
-  String get alertDialogLabel => ml.alertDialogLabel;
-
-  @override
-  String get anteMeridiemAbbreviation => ml.anteMeridiemAbbreviation;
-
-  @override
-  String get copyButtonLabel => ml.copyButtonLabel;
-
-  @override
-  String get cutButtonLabel => ml.cutButtonLabel;
-
-  @override
-  DatePickerDateOrder get datePickerDateOrder => DatePickerDateOrder.mdy;
+  DatePickerDateOrder get datePickerDateOrder => DatePickerDateOrder.ymd;
 
   @override
   DatePickerDateTimeOrder get datePickerDateTimeOrder => DatePickerDateTimeOrder.date_time_dayPeriod;
 
   @override
-  String datePickerDayOfMonth(int dayIndex) {
-    return dayIndex.toString();
-  }
+  String datePickerDayOfMonth(int dayIndex) => dayIndex.toString();
 
   @override
-  String datePickerHour(int hour) {
-    return hour.toString().padLeft(2, "0");
-  }
+  String datePickerHour(int hour) => hour.toString();
 
   @override
-  String datePickerHourSemanticsLabel(int hour) {
-    return "$hour" + "时";
-  }
+  String datePickerHourSemanticsLabel(int hour) => hour.toString();
 
   @override
   String datePickerMediumDate(DateTime date) {
-    return ml.formatMediumDate(date);
+    return '${_weekDays[_languageCode][date.weekday - DateTime.monday]} '
+        '${_months[_languageCode][date.month - DateTime.january]} '
+        '${date.day.toString().padRight(2)}';
   }
 
   @override
-  String datePickerMinute(int minute) {
-    return minute.toString().padLeft(2, '0');
-  }
+  String datePickerMinute(int minute) => minute.toString().padLeft(2, '0');
 
   @override
   String datePickerMinuteSemanticsLabel(int minute) {
-    return "$minute" + "分";
+    if (minute == 1) return '1 分钟';
+    return minute.toString() + ' 分钟';
   }
 
   @override
-  String datePickerMonth(int monthIndex) {
-    return "$monthIndex";
-  }
+  String datePickerMonth(int monthIndex) => _months[_languageCode][monthIndex - 1];
 
   @override
-  String datePickerYear(int yearIndex) {
-    return yearIndex.toString();
-  }
+  String datePickerYear(int yearIndex) => yearIndex.toString();
 
   @override
-  String get pasteButtonLabel => ml.pasteButtonLabel;
+  String timerPickerHour(int hour) => hour.toString();
 
   @override
-  String get postMeridiemAbbreviation => ml.postMeridiemAbbreviation;
+  String timerPickerHourLabel(int hour) => '时';
 
   @override
-  String get selectAllButtonLabel => ml.selectAllButtonLabel;
+  String timerPickerMinute(int minute) => minute.toString();
 
   @override
-  String timerPickerHour(int hour) {
-    return hour.toString().padLeft(2, "0");
-  }
+  String timerPickerMinuteLabel(int minute) => '分';
 
   @override
-  String timerPickerHourLabel(int hour) {
-    return "$hour".toString().padLeft(2, "0") + "时";
-  }
+  String timerPickerSecond(int second) => second.toString();
 
   @override
-  String timerPickerMinute(int minute) {
-    return minute.toString().padLeft(2, "0");
-  }
+  String timerPickerSecondLabel(int second) => '秒';
 
   @override
-  String timerPickerMinuteLabel(int minute) {
-    return minute.toString().padLeft(2, "0") + "分";
-  }
+  String get modalBarrierDismissLabel => "";
 
   @override
-  String timerPickerSecond(int second) {
-    return second.toString().padLeft(2, "0");
-  }
-
-  @override
-  String timerPickerSecondLabel(int second) {
-    return second.toString().padLeft(2, "0") + "秒";
-  }
-
-  static const LocalizationsDelegate<CupertinoLocalizations> delegate = _ChineseDelegate();
-
-  static Future<CupertinoLocalizations> load(Locale locale) async {
-    var delegate = ChineseCupertinoLocalizations(locale.languageCode);
-    await delegate.init();
-    return SynchronousFuture<CupertinoLocalizations>(delegate);
-  }
-
-  @override
-  String get modalBarrierDismissLabel => throw UnimplementedError();
-
-  @override
-  String tabSemanticsLabel({int tabIndex, int tabCount}) {
-    throw UnimplementedError();
-  }
-}
-
-class _ChineseDelegate extends LocalizationsDelegate<CupertinoLocalizations> {
-  const _ChineseDelegate();
-
-  @override
-  bool isSupported(Locale locale) {
-    return locale.languageCode == 'zh';
-  }
-
-  @override
-  Future<CupertinoLocalizations> load(Locale locale) {
-    return ChineseCupertinoLocalizations.load(locale);
-  }
-
-  @override
-  bool shouldReload(LocalizationsDelegate<CupertinoLocalizations> old) {
-    return false;
-  }
+  String tabSemanticsLabel({int tabIndex, int tabCount}) => "";
 }

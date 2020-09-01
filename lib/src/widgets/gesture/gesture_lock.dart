@@ -45,12 +45,10 @@ class GestureLock extends StatefulWidget {
   }
 
   @override
-  State<StatefulWidget> createState() {
-    return GestureLockState();
-  }
+  _GestureLockState createState() => _GestureLockState();
 }
 
-class GestureLockState extends State<GestureLock> {
+class _GestureLockState extends State<GestureLock> {
   double size;
   double ringWidth;
   double ringRadius;

@@ -1,21 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
+import 'package:flutter_waya/src/constant/styles.dart';
 
 class Widgets {
   static Widget titleWidget(String title) {
-    return Text(title,
-        style: TextStyle(
-            color: getColors(white),
-            fontSize: 16,
-            fontWeight: FontWeight.w700));
+    return Text(title, style: TextStyle(color: getColors(white), fontSize: 16, fontWeight: FontWeight.w700));
   }
 
   ///垂直线
   static Widget lineVertical(double height,
-      {EdgeInsetsGeometry padding,
-      double width,
-      Color color,
-      EdgeInsetsGeometry margin}) {
+      {EdgeInsetsGeometry padding, double width, Color color, EdgeInsetsGeometry margin}) {
     return Container(
       height: height,
       width: width ?? ScreenFit.getWidth(1),
@@ -27,10 +21,7 @@ class Widgets {
 
   ///横线
   static Widget lineHorizontal(double width,
-      {EdgeInsetsGeometry padding,
-      double height,
-      Color color,
-      EdgeInsetsGeometry margin}) {
+      {EdgeInsetsGeometry padding, double height, Color color, EdgeInsetsGeometry margin}) {
     return Container(
       height: height ?? ScreenFit.getWidth(1),
       padding: padding,
@@ -40,8 +31,7 @@ class Widgets {
     );
   }
 
-  static Widget notDataWidget(
-      {double size, String showText, TextStyle textStyle, double, margin}) {
+  static Widget notDataWidget({double size, String showText, TextStyle textStyle, double, margin}) {
     return Container(
       margin: margin ?? EdgeInsets.all(100),
       child: Center(
@@ -53,12 +43,7 @@ class Widgets {
   }
 
   static textDefault(String text,
-      {Color color,
-      int maxLines,
-      double height,
-      FontWeight fontWeight,
-      TextAlign textAlign,
-      TextOverflow overflow}) {
+      {Color color, int maxLines, double height, FontWeight fontWeight, TextAlign textAlign, TextOverflow overflow}) {
     return textWidget(text,
         textAlign: textAlign,
         maxLines: maxLines,
@@ -69,12 +54,7 @@ class Widgets {
   }
 
   static textSmall(String text,
-      {Color color,
-      int maxLines,
-      TextStyle style,
-      double height,
-      FontWeight fontWeight,
-      TextOverflow overflow}) {
+      {Color color, int maxLines, TextStyle style, double height, FontWeight fontWeight, TextOverflow overflow}) {
     return textWidget(text,
         maxLines: maxLines,
         color: color,
@@ -97,10 +77,9 @@ class Widgets {
     return Text(text,
         textAlign: textAlign ?? TextAlign.center,
         maxLines: maxLines == null ? 1 : (maxLines == 0 ? null : maxLines),
-        overflow: overflow ??
-            (maxLines == 0 ? TextOverflow.clip : TextOverflow.ellipsis),
+        overflow: overflow ?? (maxLines == 0 ? TextOverflow.clip : TextOverflow.ellipsis),
         style: style ??
-            TextStyle(
+            WayStyles.textStyle(
                 decoration: TextDecoration.none,
                 fontWeight: FontWeight.w500,
                 fontSize: fontSize ?? 14,

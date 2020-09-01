@@ -8,6 +8,7 @@ class PopupBase extends StatefulWidget {
   final GestureTapCallback onTap;
   final HitTestBehavior behavior;
   final Color color;
+  final bool handleTouch;
 
   final bool addMaterial;
 
@@ -40,6 +41,7 @@ class PopupBase extends StatefulWidget {
       bool animationOpacity,
       this.color,
       bool addMaterial,
+      bool handleTouch,
       bool animation,
       PopupMode popupMode,
       this.left,
@@ -50,6 +52,7 @@ class PopupBase extends StatefulWidget {
       this.behavior})
       : this.gaussian = gaussian ?? false,
         this.addMaterial = addMaterial ?? false,
+        this.handleTouch = handleTouch ?? true,
         this.popupMode = popupMode ?? PopupMode.center,
         this.animation = animation ?? true,
         this.animationOpacity = animationOpacity ?? false,
@@ -57,9 +60,7 @@ class PopupBase extends StatefulWidget {
         super(key: key);
 
   @override
-  State<StatefulWidget> createState() {
-    return _PopupBaseState();
-  }
+  _PopupBaseState createState() => _PopupBaseState();
 }
 
 class _PopupBaseState extends State<PopupBase> {
@@ -125,6 +126,13 @@ class _PopupBaseState extends State<PopupBase> {
     if (widget.addMaterial) {
       child = Material(
           color: getColors(transparent), child: MediaQuery(data: MediaQueryData.fromWindow(window), child: child));
+    }
+
+    if (!widget.handleTouch) {
+      child = IgnorePointer(
+        ignoring: widget.handleTouch,
+        child: child,
+      );
     }
     return child;
   }

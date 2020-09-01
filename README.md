@@ -33,7 +33,7 @@
 
 ### [点击跳过](lib/src/widgets/count_down_skip.dart)
 
-### [验证码发送](lib/src/widgets/send_sms.dart)
+### [验证码发送](lib/src/widgets/widgets.dart)
 
 ### [二次封装刷新组件](lib/src/widgets/custom/refresh.dart)
 

@@ -73,10 +73,10 @@ class ListWheel extends StatefulWidget {
         super(key: key);
 
   @override
-  ListWheelState createState() => ListWheelState();
+  _ListWheelState createState() => _ListWheelState();
 }
 
-class ListWheelState extends State<ListWheel> {
+class _ListWheelState extends State<ListWheel> {
   FixedExtentScrollController controller;
   ListWheelChildDelegateType childDelegateType;
 

@@ -114,15 +114,15 @@ class OverlayMaterial extends StatelessWidget {
         this.routes = routes = const <String, WidgetBuilder>{},
         this.textDirection = textDirection ?? TextDirection.ltr,
         this.navigatorObservers = navigatorObservers ?? [NavigatorTools.getInstance()],
-        this.locale = locale ?? Locale('zh'),
-        this.supportedLocales = supportedLocales ?? [Locale('zh', 'CH')],
+        this.locale = locale ?? Locale('zh', 'CN'),
+        this.supportedLocales = supportedLocales ?? [Locale('en', 'US'), Locale('zh', 'CH')],
         this.localizationsDelegates = localizationsDelegates ??
             [
               ///解决ios 长按输入框报错
-              ChineseCupertinoLocalizations.delegate,
-              CustomLocalizationsDelegate(),
+              ///自定义代理，见下段代码
+              CommonLocalizationsDelegate(),
               GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate
+              GlobalWidgetsLocalizations.delegate,
             ],
         super(key: key);
 
@@ -223,8 +223,13 @@ class OverlayCupertino extends StatelessWidget {
         this.navigatorObservers = navigatorObservers ?? [NavigatorTools.getInstance()],
         this.locale = locale ?? const Locale('zh'),
         this.supportedLocales = supportedLocales ?? [const Locale('zh', 'CH')],
-        this.localizationsDelegates =
-            localizationsDelegates ?? [GlobalMaterialLocalizations.delegate, GlobalWidgetsLocalizations.delegate],
+        this.localizationsDelegates = localizationsDelegates ??
+            [
+              ///解决ios 长按输入框报错
+              ///自定义代理，见下段代码
+              CommonLocalizationsDelegate(),
+              GlobalMaterialLocalizations.delegate, GlobalWidgetsLocalizations.delegate
+            ],
         super(key: key);
 
   @override

@@ -73,8 +73,7 @@ class TabBarMerge extends StatelessWidget {
                 decoration: decoration,
                 constraints: constraints,
                 width: width,
-                child:
-                    TabBarView(controller: controller, children: tabBarView)))
+                child: TabBarView(controller: controller, children: tabBarView)))
         : Container(
             margin: margin,
             padding: padding,
@@ -193,4 +192,69 @@ class TabBarBox extends StatelessWidget {
       indicatorSize: indicatorSize ?? TabBarIndicatorSize.label,
     );
   }
+}
+
+class TabNavigationPage extends StatefulWidget {
+  final Map<String, Object> arguments;
+  final List<BottomNavigationBarItem> navigationBarItem;
+  final List<Widget> pageList;
+  final int defaultTabIndex;
+
+  TabNavigationPage({Key key, this.arguments, this.defaultTabIndex, this.pageList, this.navigationBarItem})
+      : assert(navigationBarItem != null),
+        super(key: key);
+
+  @override
+  _TabNavigationPageState createState() => _TabNavigationPageState();
+}
+
+class _TabNavigationPageState extends State<TabNavigationPage> {
+  int tabIndex = 0;
+  var currentPage;
+  List<Widget> pageList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    pageList = widget.pageList;
+    currentPage = widget.defaultTabIndex ?? pageList[tabIndex];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: currentPage,
+      bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: getColors(blue),
+        unselectedItemColor: getColors(background),
+        backgroundColor: getColors(white),
+        items: widget.navigationBarItem ??
+            <BottomNavigationBarItem>[
+              BottomNavigationBarItem(icon: barIcon(Icons.home), title: Text('home')),
+              BottomNavigationBarItem(
+                  icon: barIcon(Icons.add_circle),
+                  title: Text(
+                    'center',
+                  )),
+              BottomNavigationBarItem(
+                  icon: barIcon(Icons.account_circle),
+                  title: Text(
+                    'mine',
+                  )),
+            ],
+        type: BottomNavigationBarType.fixed,
+
+        /// 超过5个页面，需加上此行，不然会无法显示颜色
+        onTap: (index) {
+          setState(() {
+            tabIndex = index;
+            currentPage = pageList[tabIndex];
+          });
+        },
+        currentIndex: tabIndex,
+      ),
+    );
+  }
+
+  Widget barIcon(IconData icons) => Icon(icons, size: ScreenFit.getWidth(24));
 }
