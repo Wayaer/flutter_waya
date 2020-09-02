@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
-///语言(主要解决cupertino控件不能显示中文的问题)
+///主要解决cupertino控件不能显示中文的问题
 class CommonLocalizationsDelegate extends LocalizationsDelegate<CupertinoLocalizations> {
   const CommonLocalizationsDelegate();
 
@@ -19,7 +21,7 @@ class CommonLocalizationsDelegate extends LocalizationsDelegate<CupertinoLocaliz
 class _DefaultCupertinoLocalizations extends CupertinoLocalizations {
   _DefaultCupertinoLocalizations(this._languageCode) : assert(_languageCode != null);
   final String _languageCode;
-
+  static const LocalizationsDelegate<CupertinoLocalizations> delegate = CommonLocalizationsDelegate();
   final Map<String, Map<String, String>> _dict = <String, Map<String, String>>{
     'en': <String, String>{
       'alert': 'Alert',
@@ -67,8 +69,6 @@ class _DefaultCupertinoLocalizations extends CupertinoLocalizations {
   };
 
   String _get(String key) => _dict[_languageCode][key];
-
-  String _getMonths(int index) => _months[_languageCode][index];
 
   @override
   String get alertDialogLabel => _get('alert');
@@ -154,4 +154,121 @@ class _DefaultCupertinoLocalizations extends CupertinoLocalizations {
 
   @override
   String tabSemanticsLabel({int tabIndex, int tabCount}) => "";
+}
+
+class ChineseCupertinoLocalizations implements CupertinoLocalizations {
+  final materialDelegate = GlobalMaterialLocalizations.delegate;
+  final widgetsDelegate = GlobalWidgetsLocalizations.delegate;
+  final local = const Locale('zh');
+
+  MaterialLocalizations ml;
+
+  Future init() async {
+    ml = await materialDelegate.load(local);
+    print(ml.pasteButtonLabel);
+  }
+
+  @override
+  String get alertDialogLabel => ml.alertDialogLabel;
+
+  @override
+  String get anteMeridiemAbbreviation => ml.anteMeridiemAbbreviation;
+
+  @override
+  String get copyButtonLabel => ml.copyButtonLabel;
+
+  @override
+  String get cutButtonLabel => ml.cutButtonLabel;
+
+  @override
+  String get pasteButtonLabel => ml.pasteButtonLabel;
+
+  @override
+  String get postMeridiemAbbreviation => ml.postMeridiemAbbreviation;
+
+  @override
+  String get selectAllButtonLabel => ml.selectAllButtonLabel;
+
+  @override
+  DatePickerDateOrder get datePickerDateOrder => DatePickerDateOrder.mdy;
+
+  @override
+  DatePickerDateTimeOrder get datePickerDateTimeOrder => DatePickerDateTimeOrder.date_time_dayPeriod;
+
+  @override
+  String datePickerDayOfMonth(int dayIndex) {
+    return dayIndex.toString();
+  }
+
+  @override
+  String datePickerHour(int hour) => hour.toString().padLeft(2, "0");
+
+  @override
+  String datePickerHourSemanticsLabel(int hour) => "$hour" + "时";
+
+  @override
+  String datePickerMediumDate(DateTime date) => ml.formatMediumDate(date);
+
+  @override
+  String datePickerMinute(int minute) => minute.toString().padLeft(2, '0');
+
+  @override
+  String datePickerMinuteSemanticsLabel(int minute) => "$minute" + "分";
+
+  @override
+  String datePickerMonth(int monthIndex) => "$monthIndex";
+
+  @override
+  String datePickerYear(int yearIndex) => yearIndex.toString();
+
+  @override
+  String timerPickerHour(int hour) => hour.toString().padLeft(2, "0");
+
+  @override
+  String timerPickerHourLabel(int hour) => "$hour".toString().padLeft(2, "0") + "时";
+
+  @override
+  String timerPickerMinute(int minute) => minute.toString().padLeft(2, "0");
+
+  @override
+  String timerPickerMinuteLabel(int minute) => minute.toString().padLeft(2, "0") + "分";
+
+  @override
+  String timerPickerSecond(int second) => second.toString().padLeft(2, "0");
+
+  @override
+  String timerPickerSecondLabel(int second) => second.toString().padLeft(2, "0") + "秒";
+
+  static const LocalizationsDelegate<CupertinoLocalizations> delegate = _ChineseDelegate();
+
+  static Future<CupertinoLocalizations> load(Locale locale) {
+    // var localizations = ChineseCupertinoLocalizations();
+    // await localizations.init();
+    return SynchronousFuture<CupertinoLocalizations>(ChineseCupertinoLocalizations());
+  }
+
+  @override
+  String get modalBarrierDismissLabel => '';
+
+  @override
+  String tabSemanticsLabel({int tabIndex, int tabCount}) => '';
+
+  @override
+  String get todayLabel => "今天";
+}
+
+class _ChineseDelegate extends LocalizationsDelegate<CupertinoLocalizations> {
+  const _ChineseDelegate();
+
+  @override
+  bool isSupported(Locale locale) => locale.languageCode == 'zh';
+
+  @override
+  Future<CupertinoLocalizations> load(Locale locale) => ChineseCupertinoLocalizations.load(locale);
+
+  @override
+  bool shouldReload(LocalizationsDelegate<CupertinoLocalizations> old) => false;
+
+  @override
+  String toString() => 'ChineseCupertinoLocalizations.delegate(zh_CH)';
 }

@@ -232,7 +232,7 @@ class InputField extends StatelessWidget {
         this.textCapitalization = textCapitalization ?? TextCapitalization.none,
 
         ///长按输入的文字时，true显示系统的粘贴板  false不显示
-        this.enableInteractiveSelection = enableInteractiveSelection ?? false,
+        this.enableInteractiveSelection = enableInteractiveSelection ?? true,
 
         ///自定义数字显示   指定maxLength后 右下角会出现字数，flutter有默认实现  可以通过这个自定义
         ///光标颜色
@@ -483,6 +483,7 @@ class InputField extends StatelessWidget {
     }
   }
 }
+
 class SearchBox extends StatelessWidget {
   final EdgeInsetsGeometry margin;
   final EdgeInsetsGeometry padding;
@@ -558,11 +559,9 @@ class SearchBox extends StatelessWidget {
     this.width,
     this.autoFocus,
     this.focusNode,
-  })
-      : this.icon = icon ?? ConstIcon.search,
+  })  : this.icon = icon ?? ConstIcon.search,
         this.size = size ?? 15,
-        this.contentPadding =
-            contentPadding ?? 6,
+        this.contentPadding = contentPadding ?? EdgeInsets.all(6),
         super(key: key);
 
   @override
@@ -608,8 +607,7 @@ class SearchBox extends StatelessWidget {
       focusNode: focusNode,
       fillColor: fillColor,
       filled: true,
-      focusedBorder: inputBorder(
-          focusedBorderColor ?? enabledBorderColor ?? getColors(blue)),
+      focusedBorder: inputBorder(focusedBorderColor ?? enabledBorderColor ?? getColors(blue)),
       enabledBorder: inputBorder(enabledBorderColor ?? getColors(white50)),
       inputStyle: inputStyle,
       contentPadding: contentPadding,
@@ -621,6 +619,7 @@ class SearchBox extends StatelessWidget {
       autoFocus: autoFocus,
       suffix: suffix(),
       suffixIcon: suffixIcon,
+      enableInteractiveSelection: true,
     );
   }
 
@@ -641,11 +640,11 @@ class SearchBox extends StatelessWidget {
       return searchText == null
           ? null
           : SimpleButton(
-        text: searchText,
-        onTap: searchTap,
-        padding: EdgeInsets.symmetric(horizontal: ScreenFit.getWidth(4)),
-        textStyle: searchStyle ?? TextStyle(color: getColors(white)),
-      );
+              text: searchText,
+              onTap: searchTap,
+              padding: EdgeInsets.symmetric(horizontal: ScreenFit.getWidth(4)),
+              textStyle: searchStyle ?? TextStyle(color: getColors(white)),
+            );
     } else {
       return search;
     }

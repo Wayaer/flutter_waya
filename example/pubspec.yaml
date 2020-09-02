@@ -9,7 +9,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^0.1.2
+  flutter_localizations:
+    sdk: flutter
+  oktoast: ^2.3.2
   flutter_waya:
     path: ../
 

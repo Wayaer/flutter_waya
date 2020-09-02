@@ -1,13 +1,20 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_waya/flutter_waya.dart';
+import 'package:flutter_waya/src/constant/widgets.dart';
 
-GlobalKey<NavigatorState> globalNavigatorKey = GlobalKey();
+GlobalKey<NavigatorState> _globalNavigatorKey = GlobalKey();
+GlobalKey<State> _scaffoldKey = GlobalKey();
+List<GlobalKey<State>> _scaffoldKeyList = [];
+List<OverlayEntryMap> _overlayEntryList = [];
+var _overlay;
 
 ///OverlayMaterial
-class OverlayMaterial extends StatelessWidget {
+class GlobalMaterial extends StatelessWidget {
   final GlobalKey<NavigatorState> navigatorKey;
 
   ///导航键
@@ -73,11 +80,12 @@ class OverlayMaterial extends StatelessWidget {
 
   ///调试显示检查模式横幅
   final bool debugShowMaterialGrid;
-  final TextDirection textDirection;
+  final Map<LogicalKeySet, Intent> shortcuts;
+  final Map<Type, Action<Intent>> actions;
+  final InitialRouteListFactory onGenerateInitialRoutes;
 
-  OverlayMaterial({
+  GlobalMaterial({
     Key key,
-    TextDirection textDirection,
     Map<String, WidgetBuilder> routes,
     String title,
     List<NavigatorObserver> navigatorObservers,
@@ -103,6 +111,9 @@ class OverlayMaterial extends StatelessWidget {
     this.darkTheme,
     this.localeListResolutionCallback,
     this.localeResolutionCallback,
+    this.shortcuts,
+    this.actions,
+    this.onGenerateInitialRoutes,
   })  : this.debugShowMaterialGrid = debugShowMaterialGrid ?? false,
         this.showPerformanceOverlay = showPerformanceOverlay ?? false,
         this.checkerboardRasterCacheImages = checkerboardRasterCacheImages ?? false,
@@ -112,15 +123,13 @@ class OverlayMaterial extends StatelessWidget {
         this.themeMode = themeMode ?? ThemeMode.system,
         this.title = title ?? "",
         this.routes = routes = const <String, WidgetBuilder>{},
-        this.textDirection = textDirection ?? TextDirection.ltr,
         this.navigatorObservers = navigatorObservers ?? [NavigatorTools.getInstance()],
-        this.locale = locale ?? Locale('zh', 'CN'),
-        this.supportedLocales = supportedLocales ?? [Locale('en', 'US'), Locale('zh', 'CH')],
+        this.locale = locale ?? Locale('zh'),
+        this.supportedLocales = supportedLocales ?? [Locale('zh', 'CH'), Locale('en', 'US')],
         this.localizationsDelegates = localizationsDelegates ??
             [
-              ///解决ios 长按输入框报错
-              ///自定义代理，见下段代码
-              CommonLocalizationsDelegate(),
+              DefaultCupertinoLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
             ],
@@ -128,42 +137,43 @@ class OverlayMaterial extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (navigatorKey != null) globalNavigatorKey = navigatorKey;
-    return OverlayBase(
-        textDirection: textDirection,
-        child: MaterialApp(
-          home: home,
-          navigatorObservers: navigatorObservers,
-          locale: locale,
-          localizationsDelegates: localizationsDelegates,
-          supportedLocales: supportedLocales,
-          navigatorKey: globalNavigatorKey,
-          routes: routes,
-          initialRoute: initialRoute,
-          onGenerateRoute: onGenerateRoute,
-          onUnknownRoute: onUnknownRoute,
-          builder: builder,
-          title: title,
-          onGenerateTitle: onGenerateTitle,
-          color: color,
-          theme: theme,
-          darkTheme: darkTheme,
-          themeMode: themeMode,
-          localeListResolutionCallback: localeListResolutionCallback,
-          localeResolutionCallback: localeResolutionCallback,
-          debugShowMaterialGrid: debugShowMaterialGrid,
-          showPerformanceOverlay: showPerformanceOverlay,
-          checkerboardRasterCacheImages: checkerboardRasterCacheImages,
-          checkerboardOffscreenLayers: checkerboardOffscreenLayers,
-          showSemanticsDebugger: showSemanticsDebugger,
-          debugShowCheckedModeBanner: debugShowCheckedModeBanner,
-        ));
+    if (navigatorKey != null) _globalNavigatorKey = navigatorKey;
+    return MaterialApp(
+      key: key,
+      navigatorKey: _globalNavigatorKey,
+      home: home,
+      routes: routes,
+      initialRoute: initialRoute,
+      onGenerateRoute: onGenerateRoute,
+      onGenerateInitialRoutes: onGenerateInitialRoutes,
+      onUnknownRoute: onUnknownRoute,
+      navigatorObservers: navigatorObservers,
+      builder: builder,
+      title: title,
+      onGenerateTitle: onGenerateTitle,
+      color: color,
+      theme: theme,
+      darkTheme: darkTheme,
+      themeMode: themeMode,
+      locale: locale,
+      localizationsDelegates: localizationsDelegates,
+      localeListResolutionCallback: localeListResolutionCallback,
+      localeResolutionCallback: localeResolutionCallback,
+      supportedLocales: supportedLocales,
+      debugShowMaterialGrid: debugShowMaterialGrid,
+      showPerformanceOverlay: showPerformanceOverlay,
+      checkerboardRasterCacheImages: checkerboardRasterCacheImages,
+      checkerboardOffscreenLayers: checkerboardOffscreenLayers,
+      showSemanticsDebugger: showSemanticsDebugger,
+      debugShowCheckedModeBanner: debugShowCheckedModeBanner,
+      shortcuts: shortcuts,
+      actions: actions,
+    );
   }
 }
 
-///OverlayCupertino
-class OverlayCupertino extends StatelessWidget {
-  final TextDirection textDirection;
+///GlobalCupertino
+class GlobalCupertino extends StatelessWidget {
   final Iterable<Locale> supportedLocales;
   final Locale locale;
   final Iterable<LocalizationsDelegate<dynamic>> localizationsDelegates;
@@ -187,9 +197,8 @@ class OverlayCupertino extends StatelessWidget {
   final LocaleListResolutionCallback localeListResolutionCallback;
   final LocaleResolutionCallback localeResolutionCallback;
 
-  OverlayCupertino({
+  GlobalCupertino({
     Key key,
-    TextDirection textDirection,
     Iterable<Locale> supportedLocales,
     Locale locale,
     Iterable<LocalizationsDelegate<dynamic>> localizationsDelegates,
@@ -219,53 +228,55 @@ class OverlayCupertino extends StatelessWidget {
         this.debugShowCheckedModeBanner = debugShowCheckedModeBanner ?? true,
         this.title = title ?? "",
         this.routes = routes ?? const <String, WidgetBuilder>{},
-        this.textDirection = textDirection ?? TextDirection.ltr,
         this.navigatorObservers = navigatorObservers ?? [NavigatorTools.getInstance()],
-        this.locale = locale ?? const Locale('zh'),
-        this.supportedLocales = supportedLocales ?? [const Locale('zh', 'CH')],
+        this.locale = locale ?? const Locale('zh', 'CN'),
+        this.supportedLocales = supportedLocales ?? [const Locale('zh', 'CN'), const Locale('en', 'US')],
         this.localizationsDelegates = localizationsDelegates ??
             [
               ///解决ios 长按输入框报错
               ///自定义代理，见下段代码
-              CommonLocalizationsDelegate(),
-              GlobalMaterialLocalizations.delegate, GlobalWidgetsLocalizations.delegate
+              // CommonLocalizationsDelegate(),
+              // DefaultCupertinoLocalizations.delegate,
+              // DefaultMaterialLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate
             ],
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    if (navigatorKey != null) globalNavigatorKey = navigatorKey;
-    return OverlayBase(
-        textDirection: textDirection,
-        child: CupertinoApp(
-          navigatorKey: globalNavigatorKey,
-          home: home,
-          theme: theme,
-          routes: routes,
-          initialRoute: initialRoute,
-          onGenerateRoute: onGenerateRoute,
-          onUnknownRoute: onUnknownRoute,
-          navigatorObservers: navigatorObservers,
-          builder: builder,
-          title: title,
-          onGenerateTitle: onGenerateTitle,
-          color: color,
-          locale: locale,
-          localizationsDelegates: localizationsDelegates,
-          localeListResolutionCallback: localeListResolutionCallback,
-          localeResolutionCallback: localeResolutionCallback,
-          supportedLocales: supportedLocales,
-          showPerformanceOverlay: showPerformanceOverlay,
-          checkerboardRasterCacheImages: checkerboardRasterCacheImages,
-          checkerboardOffscreenLayers: checkerboardOffscreenLayers,
-          showSemanticsDebugger: showSemanticsDebugger,
-          debugShowCheckedModeBanner: debugShowCheckedModeBanner,
-        ));
+    if (navigatorKey != null) _globalNavigatorKey = navigatorKey;
+    return CupertinoApp(
+      key: key,
+      navigatorKey: _globalNavigatorKey,
+      home: home,
+      theme: theme,
+      routes: routes,
+      initialRoute: initialRoute,
+      onGenerateRoute: onGenerateRoute,
+      onUnknownRoute: onUnknownRoute,
+      navigatorObservers: navigatorObservers,
+      builder: builder,
+      title: title,
+      onGenerateTitle: onGenerateTitle,
+      color: color,
+      locale: locale,
+      localizationsDelegates: localizationsDelegates,
+      localeListResolutionCallback: localeListResolutionCallback,
+      localeResolutionCallback: localeResolutionCallback,
+      supportedLocales: supportedLocales,
+      showPerformanceOverlay: showPerformanceOverlay,
+      checkerboardRasterCacheImages: checkerboardRasterCacheImages,
+      checkerboardOffscreenLayers: checkerboardOffscreenLayers,
+      showSemanticsDebugger: showSemanticsDebugger,
+      debugShowCheckedModeBanner: debugShowCheckedModeBanner,
+    );
   }
 }
 
-///Scaffold
-class OverlayScaffold extends StatelessWidget {
+///OverlayScaffold
+class OverlayScaffold extends StatefulWidget {
   final EdgeInsetsGeometry padding;
   final Color backgroundColor;
   final Widget body;
@@ -350,65 +361,747 @@ class OverlayScaffold extends StatelessWidget {
         super(key: key);
 
   @override
+  _OverlayScaffoldState createState() => _OverlayScaffoldState();
+}
+
+class _OverlayScaffoldState extends State<OverlayScaffold> {
+  GlobalKey<State> _globalKey = GlobalKey();
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.key != null) _globalKey = widget.key;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-        onWillPop: onWillPop ??
+    Widget scaffold = WillPopScope(
+        onWillPop: widget.onWillPop ??
             () async {
-              if (onWillPopOverlayClose && overlayEntryList.length > 0 && !overlayEntryList.last.isAutomaticOff) {
+              if (widget.onWillPopOverlayClose &&
+                  _overlayEntryList.length > 0 &&
+                  !_overlayEntryList.last.isAutomaticOff) {
                 closeOverlay();
                 return false;
               }
               return true;
             },
         child: Scaffold(
-          primary: primary,
-          resizeToAvoidBottomInset: resizeToAvoidBottomInset,
-          drawerDragStartBehavior: drawerDragStartBehavior,
-          bottomSheet: bottomSheet,
-          extendBody: extendBody,
-          resizeToAvoidBottomPadding: resizeToAvoidBottomPadding,
-          endDrawer: endDrawer,
-          drawer: drawer,
-          persistentFooterButtons: persistentFooterButtons,
-          floatingActionButtonLocation: floatingActionButtonLocation,
-          floatingActionButton: floatingActionButton,
-          floatingActionButtonAnimator: floatingActionButtonAnimator,
-          backgroundColor: backgroundColor ?? getColors(background),
-          appBar: appBarHeight == null
-              ? appBar
-              : (appBar == null
+          key: _globalKey,
+          primary: widget.primary,
+          resizeToAvoidBottomInset: widget.resizeToAvoidBottomInset,
+          drawerDragStartBehavior: widget.drawerDragStartBehavior,
+          bottomSheet: widget.bottomSheet,
+          extendBody: widget.extendBody,
+          resizeToAvoidBottomPadding: widget.resizeToAvoidBottomPadding,
+          endDrawer: widget.endDrawer,
+          drawer: widget.drawer,
+          persistentFooterButtons: widget.persistentFooterButtons,
+          floatingActionButtonLocation: widget.floatingActionButtonLocation,
+          floatingActionButton: widget.floatingActionButton,
+          floatingActionButtonAnimator: widget.floatingActionButtonAnimator,
+          backgroundColor: widget.backgroundColor ?? getColors(background),
+          appBar: widget.appBarHeight == null
+              ? widget.appBar
+              : (widget.appBar == null
                   ? null
                   : PreferredSize(
-                      child: appBar,
-                      preferredSize: Size.fromHeight(MediaQueryTools.getStatusBarHeight() + appBarHeight))),
-          bottomNavigationBar: bottomNavigationBar,
+                      child: widget.appBar,
+                      preferredSize: Size.fromHeight(MediaQueryTools.getStatusBarHeight() + widget.appBarHeight))),
+          bottomNavigationBar: widget.bottomNavigationBar,
           body: bodyWidget(context),
         ));
+    if (!_scaffoldKeyList.contains(_globalKey)) _scaffoldKeyList.add(_globalKey);
+    return scaffold;
   }
 
-  Widget bodyWidget(BuildContext context) {
-    if (enablePullDown) return refresherContainer();
-    return container();
-  }
+  Widget bodyWidget(BuildContext context) => widget.enablePullDown ? refresherContainer() : container();
 
-  Widget refresherContainer() {
-    return Refreshed(
-      enablePullDown: enablePullDown,
-      controller: controller,
-      onRefresh: onRefresh,
-      child: container(),
-      header: header,
-    );
-  }
+  Widget refresherContainer() => Refreshed(
+        enablePullDown: widget.enablePullDown,
+        controller: widget.controller,
+        onRefresh: widget.onRefresh,
+        child: container(),
+        header: widget.header,
+      );
 
-  Widget container() {
-    return Container(
-      color: backgroundColor,
-      margin: isolationBody ? EdgeInsets.only(top: ScreenFit.getHeight(10)) : EdgeInsets.zero,
-      padding: paddingStatusBar ? EdgeInsets.only(top: MediaQueryTools.getStatusBarHeight()) : padding,
-      width: double.infinity,
-      height: double.infinity,
-      child: isScroll ? SingleChildScrollView(child: body) : body,
-    );
+  Widget container() => Container(
+        color: widget.backgroundColor,
+        margin: widget.isolationBody ? EdgeInsets.only(top: ScreenFit.getHeight(10)) : EdgeInsets.zero,
+        padding: widget.paddingStatusBar ? EdgeInsets.only(top: MediaQueryTools.getStatusBarHeight()) : widget.padding,
+        width: double.infinity,
+        height: double.infinity,
+        child: widget.isScroll ? SingleChildScrollView(child: widget.body) : widget.body,
+      );
+
+  @override
+  void dispose() {
+    super.dispose();
+    if (_scaffoldKeyList.contains(_globalKey)) _scaffoldKeyList.remove(_globalKey);
   }
+}
+
+///************ 以下为Scaffold Overlay *****************///
+class OverlayEntryMap {
+  ///叠层
+  final OverlayEntry overlayEntry;
+
+  ///是否自动关闭
+  final bool isAutomaticOff;
+
+  OverlayEntryMap({this.overlayEntry, this.isAutomaticOff});
+}
+
+///自定义叠层
+OverlayEntryMap showOverlay(Widget widget, {bool isAutomaticOff}) {
+  if (_overlay != null) _overlay = null;
+  _overlay = Overlay.of(_scaffoldKeyList.last.currentContext, rootOverlay: false);
+  if (_overlay == null) return null;
+  OverlayEntry entry = OverlayEntry(builder: (context) => widget);
+  _overlay.insert(entry);
+  var entryMap = OverlayEntryMap(overlayEntry: entry, isAutomaticOff: isAutomaticOff ?? false);
+  _overlayEntryList.add(entryMap);
+  return entryMap;
+}
+
+///关闭最顶层的叠层
+void closeOverlay({OverlayEntryMap element}) {
+  try {
+    if (element != null) {
+      element.overlayEntry.remove();
+      if (_overlayEntryList.contains(element)) _overlayEntryList.remove(element);
+    } else {
+      if (_overlayEntryList.length > 0) {
+        _overlayEntryList.last.overlayEntry.remove();
+        _overlayEntryList.remove(_overlayEntryList.last);
+      }
+    }
+  } catch (e) {
+    log(e);
+  }
+}
+
+///关闭所有Overlay
+void closeAllOverlay() {
+  _overlayEntryList.forEach((element) => element.overlayEntry.remove());
+  _overlayEntryList = [];
+}
+
+///loading 加载框
+///关闭 closeOverlay();
+OverlayEntryMap showLoading({
+  String text,
+  double value,
+  bool gaussian,
+  Color backgroundColor,
+  Animation<Color> valueColor,
+  double strokeWidth,
+  String semanticsLabel,
+  String semanticsValue,
+  LoadingType loadingType,
+  TextStyle textStyle,
+}) {
+  var loading = Loading(
+    gaussian: gaussian,
+    text: text,
+    value: value,
+    backgroundColor: backgroundColor,
+    valueColor: valueColor,
+    strokeWidth: strokeWidth ?? 4.0,
+    semanticsLabel: semanticsLabel,
+    semanticsValue: semanticsValue,
+    loadingType: loadingType ?? LoadingType.circular,
+    textStyle: textStyle,
+  );
+  return showOverlay(loading);
+}
+
+///Toast
+Duration _duration = Duration(milliseconds: 1500);
+
+///设置全局弹窗时间
+void setToastDuration(Duration duration) {
+  _duration = duration;
+}
+
+///Toast
+///关闭 closeOverlay();
+void showToast(String message,
+    {Color backgroundColor,
+    BoxDecoration boxDecoration,
+    GestureTapCallback onTap,
+    TextStyle textStyle,
+    Duration closeDuration}) {
+  var entry = showOverlay(
+      PopupBase(
+          onTap: () => closeOverlay(),
+          child: Container(
+            margin: EdgeInsets.symmetric(horizontal: ScreenFit.getWidth(0) / 5, vertical: ScreenFit.getHeight(0) / 4),
+            decoration:
+                boxDecoration ?? BoxDecoration(color: getColors(black90), borderRadius: BorderRadius.circular(5)),
+            padding: EdgeInsets.all(ScreenFit.getWidth(10)),
+            child: Widgets.textDefault(message, color: getColors(white), maxLines: 4),
+          )),
+      isAutomaticOff: true);
+  Tools.timerTools(closeDuration ?? _duration, () => closeOverlay(element: entry));
+}
+
+///************ 以下为push Popup *****************///
+
+///showGeneralDialog 去除context
+///添加popup进入方向属性
+///关闭 closePopup()
+///Dialog
+Future<T> showDialogPopup<T>({
+  ///进入方向的距离
+  double startOffset,
+
+  ///popup 进入的方向
+  PopupFromType popupFromType,
+
+  ///这个参数是一个方法,入参是 context,animation,secondaryAnimation,返回一个 Widget
+  ///这个 Widget 就是显示在页面上的 dialog
+  RoutePageBuilder pageBuilder,
+  Widget widget,
+
+  ///是否可以点击背景关闭
+  bool barrierDismissible,
+
+  ///语义化
+  String barrierLabel,
+
+  ///背景颜色
+  Color backgroundColor,
+
+  ///这个是从开始到完全显示的时间
+  Duration transitionDuration,
+
+  ///路由显示和隐藏的过程,这里入参是 animation,secondaryAnimation 和 child, 其中 child 是 是 pageBuilder 构建的 widget
+  RouteTransitionsBuilder transitionBuilder,
+  bool useRootNavigator,
+  RouteSettings routeSettings,
+}) {
+  assert(pageBuilder != null || widget != null);
+  if (transitionBuilder == null && popupFromType != null) {
+    transitionBuilder = (context, animation, _, child) {
+      var translation = Offset(0, 1 - animation.value);
+      switch (popupFromType) {
+        case PopupFromType.fromLeft:
+          translation = Offset(animation.value - 1, 0);
+          break;
+        case PopupFromType.fromRight:
+          translation = Offset(1 - animation.value, 0);
+          break;
+        case PopupFromType.fromTop:
+          translation = Offset(0, animation.value - 1);
+          break;
+        case PopupFromType.fromBottom:
+          translation = Offset(0, 1 - animation.value);
+          break;
+      }
+      return FractionalTranslation(translation: translation, child: child);
+    };
+  }
+  return showGeneralDialog(
+    context: _globalNavigatorKey.currentContext,
+    pageBuilder: pageBuilder ?? (BuildContext context, Animation animation, Animation secondaryAnimation) => widget,
+    barrierDismissible: barrierDismissible ?? true,
+    barrierLabel: barrierLabel ?? '',
+    barrierColor: backgroundColor,
+    transitionDuration: transitionDuration ?? Duration(milliseconds: 80),
+    transitionBuilder: transitionBuilder,
+    useRootNavigator: useRootNavigator ?? true,
+    routeSettings: routeSettings,
+  );
+}
+
+///showModalBottomSheet 去除context
+///关闭 closePopup()
+///最高只有屏幕的一半
+Future<T> showBottomPopup<T>({
+  WidgetBuilder builder,
+  Widget widget,
+  Color backgroundColor,
+  double elevation,
+  ShapeBorder shape,
+  Clip clipBehavior,
+  Color barrierColor,
+  bool isScrollControlled = false,
+  bool useRootNavigator = false,
+  bool isDismissible = true,
+  bool enableDrag = true,
+}) {
+  assert(builder != null || widget != null);
+  return showModalBottomSheet(
+    context: _globalNavigatorKey.currentContext,
+    builder: builder ?? (BuildContext context) => widget,
+    backgroundColor: backgroundColor,
+    elevation: elevation,
+    shape: shape,
+    clipBehavior: clipBehavior,
+    barrierColor: barrierColor,
+    isScrollControlled: isScrollControlled,
+    useRootNavigator: useRootNavigator,
+    isDismissible: isDismissible,
+    enableDrag: enableDrag,
+  );
+}
+
+///showCupertinoModalPopup
+///去除context 简化参数
+///关闭 closePopup()
+///全屏显示
+Future<T> showBottomPagePopup<T>({
+  WidgetBuilder builder,
+  Widget widget,
+  ImageFilter filter,
+  bool useRootNavigator = true,
+  bool semanticsDismissible,
+}) {
+  assert(builder != null || widget != null);
+  return showCupertinoModalPopup(
+    context: _globalNavigatorKey.currentContext,
+    builder: builder ?? (BuildContext context) => widget,
+    filter: filter,
+    useRootNavigator: useRootNavigator,
+    semanticsDismissible: semanticsDismissible,
+  );
+}
+
+///关闭 closePopup()
+///popup 确定和取消
+///Dialog
+Future<T> dialogSureCancel<T>({
+  @required List<Widget> children,
+  GestureTapCallback sureTap,
+  GestureTapCallback cancelTap,
+  String cancelText,
+  String sureText,
+  Widget sure,
+  Widget cancel,
+  PopupMode popupMode,
+  Color backgroundColor,
+  TextStyle cancelTextStyle,
+  TextStyle sureTextStyle,
+  double height,
+  bool isDismissible: true,
+  EdgeInsetsGeometry padding,
+  EdgeInsetsGeometry margin,
+  AlignmentGeometry alignment,
+  Decoration decoration,
+  bool animatedOpacity,
+  bool gaussian,
+  double width,
+  bool addMaterial, //是否添加Material Widget 部分组件需要基于Material
+}) {
+  var popup = PopupSureCancel(
+    backsideTap: () {
+      if (isDismissible) closePopup();
+    },
+    width: width,
+    popupMode: popupMode,
+    addMaterial: addMaterial,
+    animatedOpacity: animatedOpacity,
+    gaussian: gaussian,
+    children: children,
+    sureTap: sureTap ?? () => closePopup(),
+    cancelTap: cancelTap ?? () => closePopup(),
+    decoration: decoration,
+    alignment: alignment,
+    cancelText: cancelText,
+    sureText: sureText,
+    height: height,
+    cancelTextStyle: cancelTextStyle,
+    sureTextStyle: sureTextStyle,
+    sure: sure,
+    cancel: cancel,
+    backgroundColor: backgroundColor,
+    padding: padding,
+    margin: margin,
+  );
+  return showDialogPopup(widget: popup);
+}
+
+///关闭弹窗
+///也可以通过 Navigator.of(context).pop()
+closePopup() {
+  NavigatorTools.getInstance().pop();
+}
+
+///日期选择器
+///关闭 closePopup()
+Future<T> showDateTimePicker<T>({
+  ///背景色
+  Color backgroundColor,
+
+  ///头部
+  Widget titleBottom,
+  Widget title,
+
+  ///头部右侧 确定
+  Widget sure,
+
+  ///头部左侧 取消
+  Widget cancel,
+
+  ///内容文字样式
+  TextStyle contentStyle,
+
+  ///选择框内单位文字样式
+  TextStyle unitStyle,
+
+  ///取消点击事件
+  GestureTapCallback cancelTap,
+
+  ///确认点击事件
+  ValueChanged<String> sureTap,
+
+  ///单个item的高度
+  double itemHeight,
+
+  ///单个item的宽度
+  double itemWidth,
+
+  ///整个弹框高度
+  double height,
+
+  ///开始时间
+  DateTime startDate,
+
+  ///默认选中时间
+  DateTime defaultDate,
+
+  ///结束时间
+  DateTime endDate,
+
+  ///补全双位数
+  bool dual,
+
+  ///是否显示单位
+  bool showUnit,
+
+  ///单位设置
+  DateTimePickerUnit unit,
+
+  /// 半径大小,越大则越平面,越小则间距越大
+  double diameterRatio,
+
+  /// 选中item偏移
+  double offAxisFraction,
+
+  ///表示车轮水平偏离中心的程度  范围[0,0.01]
+  double perspective,
+
+  ///放大倍率
+  double magnification,
+
+  ///是否启用放大镜
+  bool useMagnifier,
+
+  ///1或者2
+  double squeeze,
+  ScrollPhysics physics,
+}) {
+  Tools.closeKeyboard(_globalNavigatorKey.currentContext);
+  Widget widget = DateTimePicker(
+      diameterRatio: diameterRatio,
+      offAxisFraction: offAxisFraction,
+      perspective: perspective,
+      magnification: magnification,
+      useMagnifier: useMagnifier,
+      squeeze: squeeze,
+      itemHeight: itemHeight,
+      itemWidth: itemWidth,
+      height: height,
+      startDate: startDate,
+      endDate: endDate,
+      defaultDate: defaultDate,
+      dual: dual,
+      showUnit: showUnit,
+      unit: unit,
+      backgroundColor: backgroundColor,
+      sure: sure,
+      title: title,
+      cancel: cancel,
+      titleBottom: titleBottom,
+      contentStyle: contentStyle,
+      unitStyle: unitStyle,
+      cancelTap: cancelTap ?? () => closePopup(),
+      sureTap: sureTap ?? () => closePopup());
+  return showBottomPopup(widget: widget);
+}
+
+///地区选择器
+///关闭 closePopup()
+Future<T> showAreaPicker<T>({
+  ///背景色
+  Color backgroundColor,
+
+  ///头部
+  Widget titleBottom,
+  Widget title,
+
+  ///头部右侧 确定
+  Widget sure,
+
+  ///头部左侧 取消
+  Widget cancel,
+
+  ///内容文字样式
+  TextStyle contentStyle,
+
+  ///取消点击事件
+  GestureTapCallback cancelTap,
+
+  ///确认点击事件
+  ValueChanged<String> sureTap,
+
+  ///单个item的高度
+  double itemHeight,
+
+  ///单个item的宽度
+  double itemWidth,
+
+  ///整个弹框高度
+  double height,
+
+  /// 半径大小,越大则越平面,越小则间距越大
+  double diameterRatio,
+
+  /// 选中item偏移
+  double offAxisFraction,
+
+  ///表示车轮水平偏离中心的程度  范围[0,0.01]
+  double perspective,
+
+  ///放大倍率
+  double magnification,
+
+  ///是否启用放大镜
+  bool useMagnifier,
+
+  ///1或者2
+  double squeeze,
+  ScrollPhysics physics,
+  String defaultProvince,
+  String defaultCity,
+  String defaultDistrict,
+}) {
+  Tools.closeKeyboard(_globalNavigatorKey.currentContext);
+  Widget widget = AreaPicker(
+      defaultProvince: defaultProvince,
+      defaultCity: defaultCity,
+      defaultDistrict: defaultDistrict,
+      diameterRatio: diameterRatio,
+      offAxisFraction: offAxisFraction,
+      perspective: perspective,
+      magnification: magnification,
+      useMagnifier: useMagnifier,
+      squeeze: squeeze,
+      itemHeight: itemHeight,
+      itemWidth: itemWidth,
+      height: height,
+      backgroundColor: backgroundColor,
+      sure: sure,
+      title: title,
+      cancel: cancel,
+      titleBottom: titleBottom,
+      contentStyle: contentStyle,
+      cancelTap: cancelTap ?? () => closePopup(),
+      sureTap: sureTap ?? () => closePopup());
+  return showBottomPopup(widget: widget);
+}
+
+///wheel 单列 取消确认 选择
+///关闭 closePopup()
+Future<T> showMultipleChoicePicker<T>({
+  ///默认选中
+  int initialIndex,
+
+  ///背景色
+  Color color,
+
+  ///确认按钮
+  Widget sure,
+
+  ///取消按钮
+  Widget cancel,
+
+  ///头部文字
+  Widget title,
+
+  ///取消点击事件
+  GestureTapCallback cancelTap,
+
+  ///确认点击事件
+  ValueChanged<int> sureTap,
+
+  ///单个item的高度
+  double itemHeight,
+
+  ///单个item的宽度
+  double itemWidth,
+
+  ///整个弹框高度
+  double height,
+
+  /// 半径大小,越大则越平面,越小则间距越大
+  double diameterRatio,
+
+  /// 选中item偏移
+  double offAxisFraction,
+
+  ///表示车轮水平偏离中心的程度  范围[0,0.01]
+  double perspective,
+
+  ///放大倍率
+  double magnification,
+
+  ///是否启用放大镜
+  bool useMagnifier,
+
+  ///1或者2
+  double squeeze,
+  ScrollPhysics physics,
+  @required int itemCount,
+  @required IndexedWidgetBuilder itemBuilder,
+}) {
+  Tools.closeKeyboard(_globalNavigatorKey.currentContext);
+  Widget widget = MultipleChoicePicker(
+      itemCount: itemCount,
+      itemBuilder: itemBuilder,
+      diameterRatio: diameterRatio,
+      offAxisFraction: offAxisFraction,
+      perspective: perspective,
+      magnification: magnification,
+      useMagnifier: useMagnifier,
+      squeeze: squeeze,
+      itemHeight: itemHeight,
+      itemWidth: itemWidth,
+      height: height,
+      initialIndex: initialIndex,
+      sure: sure,
+      cancel: cancel,
+      title: title,
+      color: color,
+      cancelTap: cancelTap ?? () => closePopup(),
+      sureTap: sureTap ?? () => closePopup());
+  return showBottomPopup(widget: widget);
+}
+
+///不常用
+
+///showCupertinoDialog
+///去除context 简化参数
+///关闭 closePopup()
+Future<T> showSimpleCupertinoDialog<T>({
+  WidgetBuilder builder,
+  Widget widget,
+  bool useRootNavigator = true,
+  bool barrierDismissible = false,
+  RouteSettings routeSettings,
+}) {
+  assert(builder != null || widget != null);
+  return showCupertinoDialog(
+    context: _globalNavigatorKey.currentContext,
+    builder: builder ?? (BuildContext context) => widget,
+    useRootNavigator: useRootNavigator,
+    barrierDismissible: barrierDismissible,
+    routeSettings: routeSettings,
+  );
+}
+
+///showDialog 去除context
+///关闭 closePopup()
+///Dialog
+Future<T> showSimpleDialog<T>({
+  WidgetBuilder builder,
+  Widget widget,
+  bool barrierDismissible = true,
+  Color barrierColor,
+  bool useSafeArea = true,
+  bool useRootNavigator = true,
+  RouteSettings routeSettings,
+  Widget child,
+}) {
+  assert(builder != null || widget != null);
+  return showDialog(
+    context: _globalNavigatorKey.currentContext,
+    builder: builder ?? (BuildContext context) => widget,
+    barrierDismissible: barrierDismissible,
+    barrierColor: barrierColor,
+    useSafeArea: useSafeArea,
+    useRootNavigator: useRootNavigator,
+    routeSettings: routeSettings,
+    child: child,
+  );
+}
+
+///showMenu 去除context
+///关闭 closePopup()
+Future<T> showMenuPopup<T>({
+  @required RelativeRect position,
+  @required List<PopupMenuEntry<T>> items,
+  T initialValue,
+  double elevation,
+  String semanticLabel,
+  ShapeBorder shape,
+  Color color,
+  bool captureInheritedThemes = true,
+  bool useRootNavigator = false,
+}) {
+  return showMenu(
+    context: _globalNavigatorKey.currentContext,
+    items: items,
+    initialValue: initialValue,
+    elevation: elevation,
+    semanticLabel: semanticLabel,
+    shape: shape,
+    color: color,
+    captureInheritedThemes: captureInheritedThemes,
+    useRootNavigator: useRootNavigator,
+    position: position,
+  );
+}
+
+///showAboutDialog 去除context
+///关闭 closePopup()
+showSimpleAboutDialog({
+  String applicationName,
+  String applicationVersion,
+  Widget applicationIcon,
+  String applicationLegalese,
+  List<Widget> children,
+  bool useRootNavigator = true,
+  RouteSettings routeSettings,
+}) {
+  showAboutDialog(
+    context: _globalNavigatorKey.currentContext,
+    applicationName: applicationName,
+    applicationVersion: applicationVersion,
+    applicationIcon: applicationIcon,
+    applicationLegalese: applicationLegalese,
+    children: children,
+    useRootNavigator: useRootNavigator,
+    routeSettings: routeSettings,
+  );
+}
+
+///showLicensePage 去除context
+///关闭 closePopup()
+showLicensePopup({
+  String applicationName,
+  String applicationVersion,
+  Widget applicationIcon,
+  String applicationLegalese,
+  bool useRootNavigator = false,
+}) {
+  showLicensePage(
+    context: _globalNavigatorKey.currentContext,
+    applicationName: applicationName,
+    applicationVersion: applicationVersion,
+    applicationIcon: applicationIcon,
+    applicationLegalese: applicationLegalese,
+    useRootNavigator: useRootNavigator,
+  );
 }

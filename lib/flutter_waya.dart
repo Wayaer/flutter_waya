@@ -29,8 +29,6 @@ export 'src/widgets/custom/root.dart';
 export 'src/widgets/custom/nested_scroll.dart';
 export 'src/widgets/custom/text.dart';
 export 'src/widgets/custom/universal.dart';
-export 'src/widgets/custom/dialog/popup.dart';
-export 'src/widgets/custom/dialog/overlay.dart';
 export 'src/widgets/custom/delegate/localizations_delegate.dart';
 export 'src/widgets/gesture/gesture_lock.dart';
 export 'src/widgets/gesture/gesture_zoom.dart';
