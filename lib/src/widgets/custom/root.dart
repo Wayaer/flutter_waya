@@ -498,11 +498,10 @@ Future<T> pushAndRemoveUntil<T>(
 }
 
 pop<T extends Object>([T result]) => Navigator.of(_globalNavigatorKey.currentContext).pop(result);
+
 PushMode _pushMode;
 
-setGlobalPushMode(PushMode pushMode) {
-  _pushMode = pushMode;
-}
+setGlobalPushMode(PushMode pushMode) => _pushMode = pushMode;
 
 Route<T> _pageRoute<T>({
   WidgetBuilder builder,
