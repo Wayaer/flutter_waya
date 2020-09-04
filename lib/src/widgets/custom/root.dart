@@ -14,70 +14,74 @@ var _overlay;
 
 ///GlobalMaterial
 class GlobalMaterial extends StatelessWidget {
+  ///导航键
   final GlobalKey<NavigatorState> navigatorKey;
 
-  ///导航键
+  ///主页
   final Widget home;
 
-  ///主页
+  ///初始路由
   final String initialRoute;
 
-  ///初始路由
+  ///生成路由
   final RouteFactory onGenerateRoute;
 
-  ///生成路由
+  ///未知路由
   final RouteFactory onUnknownRoute;
 
-  ///未知路由
+  ///建造者
   final TransitionBuilder builder;
 
-  ///建造者
+  ///区域分辨回调
   final LocaleListResolutionCallback localeListResolutionCallback;
 
-  ///区域分辨回调
   final LocaleResolutionCallback localeResolutionCallback;
-  final GenerateAppTitle onGenerateTitle;
 
   ///生成标题
-  final ThemeData theme;
+  final GenerateAppTitle onGenerateTitle;
 
   ///主题
+  final ThemeData theme;
+
   final ThemeData darkTheme;
-  final Color color;
 
   ///颜色
-  final Map<String, WidgetBuilder> routes;
+  final Color color;
 
   ///路由
-  final List<NavigatorObserver> navigatorObservers;
+  final Map<String, WidgetBuilder> routes;
 
   ///导航观察器
-  final Iterable<LocalizationsDelegate<dynamic>> localizationsDelegates;
+  final List<NavigatorObserver> navigatorObservers;
 
   ///本地化委托
-  final String title;
+  final Iterable<LocalizationsDelegate<dynamic>> localizationsDelegates;
 
   ///标题
+  final String title;
+
   final ThemeMode themeMode;
-  final Locale locale;
 
   ///地点
-  final Iterable<Locale> supportedLocales;
+  final Locale locale;
 
   ///支持区域
-  final bool showPerformanceOverlay;
+  final Iterable<Locale> supportedLocales;
 
   ///显示性能叠加
-  final bool checkerboardRasterCacheImages;
+  final bool showPerformanceOverlay;
 
   ///棋盘格光栅缓存图像
+  final bool checkerboardRasterCacheImages;
+
   final bool checkerboardOffscreenLayers;
-  final bool showSemanticsDebugger;
 
   ///显示语义调试器
-  final bool debugShowCheckedModeBanner;
+  final bool showSemanticsDebugger;
 
   ///调试显示检查模式横幅
+  final bool debugShowCheckedModeBanner;
+
   final bool debugShowMaterialGrid;
   final Map<LogicalKeySet, Intent> shortcuts;
   final Map<Type, Action<Intent>> actions;
@@ -97,7 +101,7 @@ class GlobalMaterial extends StatelessWidget {
     bool checkerboardOffscreenLayers,
     bool showSemanticsDebugger,
     bool debugShowCheckedModeBanner,
-    this.navigatorObservers,
+    List<NavigatorObserver> navigatorObservers,
     this.navigatorKey,
     this.home,
     this.initialRoute,
@@ -122,6 +126,7 @@ class GlobalMaterial extends StatelessWidget {
         this.themeMode = themeMode ?? ThemeMode.system,
         this.title = title ?? "",
         this.routes = routes ?? const <String, WidgetBuilder>{},
+        this.navigatorObservers = navigatorObservers ?? [],
         this.locale = locale ?? Locale('zh'),
         this.supportedLocales = supportedLocales ?? [Locale('zh', 'CH'), Locale('en', 'US')],
         this.localizationsDelegates = localizationsDelegates ??
@@ -201,13 +206,13 @@ class GlobalCupertino extends StatelessWidget {
     Locale locale,
     Iterable<LocalizationsDelegate<dynamic>> localizationsDelegates,
     Map<String, WidgetBuilder> routes,
+    List<NavigatorObserver> navigatorObservers,
     String title,
     bool showPerformanceOverlay,
     bool checkerboardRasterCacheImages,
     bool checkerboardOffscreenLayers,
     bool showSemanticsDebugger,
     bool debugShowCheckedModeBanner,
-    this.navigatorObservers,
     this.navigatorKey,
     this.home,
     this.theme,
@@ -226,6 +231,7 @@ class GlobalCupertino extends StatelessWidget {
         this.debugShowCheckedModeBanner = debugShowCheckedModeBanner ?? true,
         this.title = title ?? "",
         this.routes = routes ?? const <String, WidgetBuilder>{},
+        this.navigatorObservers = navigatorObservers ?? [],
         this.locale = locale ?? const Locale('zh', 'CN'),
         this.supportedLocales = supportedLocales ?? [const Locale('zh', 'CN'), const Locale('en', 'US')],
         this.localizationsDelegates = localizationsDelegates ??
