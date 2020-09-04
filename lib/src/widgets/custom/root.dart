@@ -228,7 +228,7 @@ class GlobalCupertino extends StatelessWidget {
         this.checkerboardRasterCacheImages = checkerboardRasterCacheImages ?? false,
         this.checkerboardOffscreenLayers = checkerboardOffscreenLayers ?? false,
         this.showSemanticsDebugger = showSemanticsDebugger ?? false,
-        this.debugShowCheckedModeBanner = debugShowCheckedModeBanner ?? true,
+        this.debugShowCheckedModeBanner = debugShowCheckedModeBanner ?? false,
         this.title = title ?? "",
         this.routes = routes ?? const <String, WidgetBuilder>{},
         this.navigatorObservers = navigatorObservers ?? [],
@@ -454,6 +454,7 @@ Future<T> push<T>(
       fullscreenDialog: fullscreenDialog,
       settings: settings,
       builder: builder,
+      pushMode: pushMode,
       widget: widget);
   return Navigator.of(_globalNavigatorKey.currentContext).push(route);
 }
@@ -472,6 +473,7 @@ Future<T> pushReplacement<T>(
       fullscreenDialog: fullscreenDialog,
       settings: settings,
       builder: builder,
+      pushMode: pushMode,
       widget: widget);
   return Navigator.of(_globalNavigatorKey.currentContext).pushReplacement(route);
 }
@@ -490,12 +492,16 @@ Future<T> pushAndRemoveUntil<T>(
       fullscreenDialog: fullscreenDialog,
       settings: settings,
       builder: builder,
+      pushMode: pushMode,
       widget: widget);
   return Navigator.of(_globalNavigatorKey.currentContext).pushAndRemoveUntil(route, (route) => false);
 }
 
-pop<T extends Object>([T result]) {
-  Navigator.of(_globalNavigatorKey.currentContext).pop(result);
+pop<T extends Object>([T result]) => Navigator.of(_globalNavigatorKey.currentContext).pop(result);
+PushMode _pushMode;
+
+setGlobalPushMode(PushMode pushMode) {
+  _pushMode = pushMode;
 }
 
 Route<T> _pageRoute<T>({
@@ -508,14 +514,16 @@ Route<T> _pageRoute<T>({
   PushMode pushMode,
 }) {
   assert(builder != null || widget != null);
-  if (pushMode == PushMode.cupertino)
+  if (pushMode == null && _pushMode != null) pushMode = _pushMode;
+  if (pushMode == null) pushMode = PushMode.cupertino;
+  if (pushMode == PushMode.cupertino) {
     return CupertinoPageRoute(
         title: title,
         maintainState: maintainState ?? true,
         fullscreenDialog: fullscreenDialog ?? false,
         settings: settings,
         builder: builder ?? (BuildContext context) => widget);
-
+  }
   return MaterialPageRoute(
       maintainState: maintainState ?? true,
       fullscreenDialog: fullscreenDialog ?? false,
