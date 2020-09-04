@@ -8,7 +8,6 @@ export 'src/constant/constant.dart';
 export 'src/constant/model.dart';
 export 'src/tools/event.dart';
 export 'src/tools/log.dart';
-export 'src/tools/navigator.dart';
 export 'src/tools/storage.dart';
 export 'src/tools/tools.dart';
 export 'src/tools/screen_fit.dart';

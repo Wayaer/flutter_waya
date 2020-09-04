@@ -24,25 +24,19 @@ class Tools {
 
   ///手机号验证
   static bool isChinaPhoneLegal(String str) {
-    return RegExp(
-            r"^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$")
-        .hasMatch(str);
+    return RegExp(r"^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$").hasMatch(str);
   }
 
   ///邮箱验证
   static bool isEmail(String str) {
-    return RegExp(r"^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$")
-        .hasMatch(str);
+    return RegExp(r"^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$").hasMatch(str);
   }
 
   /// 截屏
-  static Future<ByteData> screenshots(GlobalKey globalKey,
-      {ImageByteFormat format}) async {
-    RenderRepaintBoundary boundary =
-        globalKey.currentContext.findRenderObject();
+  static Future<ByteData> screenshots(GlobalKey globalKey, {ImageByteFormat format}) async {
+    RenderRepaintBoundary boundary = globalKey.currentContext.findRenderObject();
     var image = await boundary.toImage(pixelRatio: window.devicePixelRatio);
-    ByteData byteData =
-        await image.toByteData(format: format ?? ImageByteFormat.rawRgba);
+    ByteData byteData = await image.toByteData(format: format ?? ImageByteFormat.rawRgba);
 
     ///    Uint8List uint8list = byteData.buffer.asUint8List();
     return byteData;
@@ -188,9 +182,9 @@ class Tools {
     Future future = navigator;
     future.then((value) {
       if (value == null) {
-        if (nullBack) NavigatorTools.getInstance().pop();
+        if (nullBack) pop();
       } else {
-        NavigatorTools.getInstance().pop(value);
+        pop(value);
       }
     });
   }

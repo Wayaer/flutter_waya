@@ -8,12 +8,11 @@ import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/widgets.dart';
 
 GlobalKey<NavigatorState> _globalNavigatorKey = GlobalKey();
-GlobalKey<State> _scaffoldKey = GlobalKey();
 List<GlobalKey<State>> _scaffoldKeyList = [];
 List<OverlayEntryMap> _overlayEntryList = [];
 var _overlay;
 
-///OverlayMaterial
+///GlobalMaterial
 class GlobalMaterial extends StatelessWidget {
   final GlobalKey<NavigatorState> navigatorKey;
 
@@ -88,7 +87,6 @@ class GlobalMaterial extends StatelessWidget {
     Key key,
     Map<String, WidgetBuilder> routes,
     String title,
-    List<NavigatorObserver> navigatorObservers,
     ThemeMode themeMode,
     Locale locale,
     Iterable<LocalizationsDelegate<dynamic>> localizationsDelegates,
@@ -99,6 +97,7 @@ class GlobalMaterial extends StatelessWidget {
     bool checkerboardOffscreenLayers,
     bool showSemanticsDebugger,
     bool debugShowCheckedModeBanner,
+    this.navigatorObservers,
     this.navigatorKey,
     this.home,
     this.initialRoute,
@@ -122,8 +121,7 @@ class GlobalMaterial extends StatelessWidget {
         this.debugShowCheckedModeBanner = debugShowCheckedModeBanner ?? false,
         this.themeMode = themeMode ?? ThemeMode.system,
         this.title = title ?? "",
-        this.routes = routes = const <String, WidgetBuilder>{},
-        this.navigatorObservers = navigatorObservers ?? [NavigatorTools.getInstance()],
+        this.routes = routes ?? const <String, WidgetBuilder>{},
         this.locale = locale ?? Locale('zh'),
         this.supportedLocales = supportedLocales ?? [Locale('zh', 'CH'), Locale('en', 'US')],
         this.localizationsDelegates = localizationsDelegates ??
@@ -202,7 +200,6 @@ class GlobalCupertino extends StatelessWidget {
     Iterable<Locale> supportedLocales,
     Locale locale,
     Iterable<LocalizationsDelegate<dynamic>> localizationsDelegates,
-    List<NavigatorObserver> navigatorObservers,
     Map<String, WidgetBuilder> routes,
     String title,
     bool showPerformanceOverlay,
@@ -210,6 +207,7 @@ class GlobalCupertino extends StatelessWidget {
     bool checkerboardOffscreenLayers,
     bool showSemanticsDebugger,
     bool debugShowCheckedModeBanner,
+    this.navigatorObservers,
     this.navigatorKey,
     this.home,
     this.theme,
@@ -228,16 +226,10 @@ class GlobalCupertino extends StatelessWidget {
         this.debugShowCheckedModeBanner = debugShowCheckedModeBanner ?? true,
         this.title = title ?? "",
         this.routes = routes ?? const <String, WidgetBuilder>{},
-        this.navigatorObservers = navigatorObservers ?? [NavigatorTools.getInstance()],
         this.locale = locale ?? const Locale('zh', 'CN'),
         this.supportedLocales = supportedLocales ?? [const Locale('zh', 'CN'), const Locale('en', 'US')],
         this.localizationsDelegates = localizationsDelegates ??
             [
-              ///解决ios 长按输入框报错
-              ///自定义代理，见下段代码
-              // CommonLocalizationsDelegate(),
-              // DefaultCupertinoLocalizations.delegate,
-              // DefaultMaterialLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate
@@ -441,6 +433,90 @@ class _OverlayScaffoldState extends State<OverlayScaffold> {
   }
 }
 
+///************ 以下为 路由跳转 *****************///
+Future<T> push<T>(
+    {WidgetBuilder builder,
+    Widget widget,
+    String title,
+    RouteSettings settings,
+    bool maintainState,
+    bool fullscreenDialog,
+    PushMode pushMode}) {
+  var route = _pageRoute(
+      title: title,
+      maintainState: maintainState,
+      fullscreenDialog: fullscreenDialog,
+      settings: settings,
+      builder: builder,
+      widget: widget);
+  return Navigator.of(_globalNavigatorKey.currentContext).push(route);
+}
+
+Future<T> pushReplacement<T>(
+    {WidgetBuilder builder,
+    Widget widget,
+    String title,
+    RouteSettings settings,
+    bool maintainState,
+    bool fullscreenDialog,
+    PushMode pushMode}) {
+  var route = _pageRoute(
+      title: title,
+      maintainState: maintainState,
+      fullscreenDialog: fullscreenDialog,
+      settings: settings,
+      builder: builder,
+      widget: widget);
+  return Navigator.of(_globalNavigatorKey.currentContext).pushReplacement(route);
+}
+
+Future<T> pushAndRemoveUntil<T>(
+    {WidgetBuilder builder,
+    Widget widget,
+    String title,
+    RouteSettings settings,
+    bool maintainState,
+    bool fullscreenDialog,
+    PushMode pushMode}) {
+  var route = _pageRoute(
+      title: title,
+      maintainState: maintainState,
+      fullscreenDialog: fullscreenDialog,
+      settings: settings,
+      builder: builder,
+      widget: widget);
+  return Navigator.of(_globalNavigatorKey.currentContext).pushAndRemoveUntil(route, (route) => false);
+}
+
+pop<T extends Object>([T result]) {
+  Navigator.of(_globalNavigatorKey.currentContext).pop(result);
+}
+
+Route<T> _pageRoute<T>({
+  WidgetBuilder builder,
+  Widget widget,
+  String title,
+  RouteSettings settings,
+  bool maintainState,
+  bool fullscreenDialog,
+  PushMode pushMode,
+}) {
+  assert(builder != null || widget != null);
+  if (pushMode == PushMode.cupertino)
+    return CupertinoPageRoute(
+        title: title,
+        maintainState: maintainState ?? true,
+        fullscreenDialog: fullscreenDialog ?? false,
+        settings: settings,
+        builder: builder ?? (BuildContext context) => widget);
+
+  return MaterialPageRoute(
+      maintainState: maintainState ?? true,
+      fullscreenDialog: fullscreenDialog ?? false,
+      settings: settings,
+      builder: builder ?? (BuildContext context) => widget);
+}
+
 ///************ 以下为Scaffold Overlay *****************///
 class OverlayEntryMap {
   ///叠层
@@ -455,7 +531,7 @@ class OverlayEntryMap {
 ///自定义叠层
 OverlayEntryMap showOverlay(Widget widget, {bool isAutomaticOff}) {
   if (_overlay != null) _overlay = null;
-  _overlay = Overlay.of(_scaffoldKeyList.last.currentContext, rootOverlay: false);
+  _overlay = Overlay.of(_scaffoldKeyList?.last?.currentContext, rootOverlay: false);
   if (_overlay == null) return null;
   OverlayEntry entry = OverlayEntry(builder: (context) => widget);
   _overlay.insert(entry);
@@ -524,6 +600,8 @@ void setToastDuration(Duration duration) {
   _duration = duration;
 }
 
+bool haveToast = false;
+
 ///Toast
 ///关闭 closeOverlay();
 void showToast(String message,
@@ -532,6 +610,7 @@ void showToast(String message,
     GestureTapCallback onTap,
     TextStyle textStyle,
     Duration closeDuration}) {
+  if (haveToast) return;
   var entry = showOverlay(
       PopupBase(
           onTap: () => closeOverlay(),
@@ -543,7 +622,11 @@ void showToast(String message,
             child: Widgets.textDefault(message, color: getColors(white), maxLines: 4),
           )),
       isAutomaticOff: true);
-  Tools.timerTools(closeDuration ?? _duration, () => closeOverlay(element: entry));
+  haveToast = true;
+  Tools.timerTools(closeDuration ?? _duration, () {
+    closeOverlay(element: entry);
+    haveToast = false;
+  });
 }
 
 ///************ 以下为push Popup *****************///
@@ -725,7 +808,7 @@ Future<T> dialogSureCancel<T>({
 ///关闭弹窗
 ///也可以通过 Navigator.of(context).pop()
 closePopup() {
-  NavigatorTools.getInstance().pop();
+  pop();
 }
 
 ///日期选择器
@@ -1061,47 +1144,5 @@ Future<T> showMenuPopup<T>({
     captureInheritedThemes: captureInheritedThemes,
     useRootNavigator: useRootNavigator,
     position: position,
-  );
-}
-
-///showAboutDialog 去除context
-///关闭 closePopup()
-showSimpleAboutDialog({
-  String applicationName,
-  String applicationVersion,
-  Widget applicationIcon,
-  String applicationLegalese,
-  List<Widget> children,
-  bool useRootNavigator = true,
-  RouteSettings routeSettings,
-}) {
-  showAboutDialog(
-    context: _globalNavigatorKey.currentContext,
-    applicationName: applicationName,
-    applicationVersion: applicationVersion,
-    applicationIcon: applicationIcon,
-    applicationLegalese: applicationLegalese,
-    children: children,
-    useRootNavigator: useRootNavigator,
-    routeSettings: routeSettings,
-  );
-}
-
-///showLicensePage 去除context
-///关闭 closePopup()
-showLicensePopup({
-  String applicationName,
-  String applicationVersion,
-  Widget applicationIcon,
-  String applicationLegalese,
-  bool useRootNavigator = false,
-}) {
-  showLicensePage(
-    context: _globalNavigatorKey.currentContext,
-    applicationName: applicationName,
-    applicationVersion: applicationVersion,
-    applicationIcon: applicationIcon,
-    applicationLegalese: applicationLegalese,
-    useRootNavigator: useRootNavigator,
   );
 }

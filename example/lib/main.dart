@@ -38,7 +38,9 @@ class Home extends StatelessWidget {
 
   showOverlayLoading() => showLoading(gaussian: true);
 
-  showOverlayToast(BuildContext context) => showToast("message");
+  showOverlayToast(BuildContext context) {
+    showToast("message");
+  }
 
   showModalPopup() {
     showBottomPagePopup(
