@@ -23,13 +23,10 @@ class PopupBase extends StatefulWidget {
   ///模糊程度
   final double fuzzyDegree;
 
-  ///Positioned
   final double left;
   final double top;
   final double right;
   final double bottom;
-
-  ///Align
   final AlignmentGeometry alignment;
 
   const PopupBase(
@@ -44,13 +41,18 @@ class PopupBase extends StatefulWidget {
       bool handleTouch,
       bool animation,
       PopupMode popupMode,
-      this.left,
-      this.top,
-      this.right,
-      this.bottom,
-      this.alignment,
+      double left,
+      double top,
+      double right,
+      double bottom,
+      AlignmentGeometry alignment,
       this.behavior})
-      : this.gaussian = gaussian ?? false,
+      : this.top = top ?? 0,
+        this.left = left ?? 0,
+        this.right = right ?? 0,
+        this.bottom = bottom ?? 0,
+        this.alignment = alignment ?? Alignment.center,
+        this.gaussian = gaussian ?? false,
         this.addMaterial = addMaterial ?? false,
         this.handleTouch = handleTouch ?? true,
         this.popupMode = popupMode ?? PopupMode.center,
@@ -113,9 +115,8 @@ class _PopupBaseState extends State<PopupBase> {
   @override
   Widget build(BuildContext context) {
     Widget child = childWidget();
-    if (widget.gaussian) {
-      child = backdropFilter(child);
-    }
+    if (widget.gaussian) child = backdropFilter(child);
+
     if (animation) {
       if (popupMode == PopupMode.center) {
         if (widget.animationOpacity) child = animationOpacity(child);
@@ -123,17 +124,12 @@ class _PopupBaseState extends State<PopupBase> {
         child = animationOpacity(child);
       }
     }
-    if (widget.addMaterial) {
+    if (widget.addMaterial)
       child = Material(
           color: getColors(transparent), child: MediaQuery(data: MediaQueryData.fromWindow(window), child: child));
-    }
 
-    if (!widget.handleTouch) {
-      child = IgnorePointer(
-        ignoring: widget.handleTouch,
-        child: child,
-      );
-    }
+    if (!widget.handleTouch) child = IgnorePointer(ignoring: widget.handleTouch, child: child);
+
     return child;
   }
 
@@ -150,10 +146,7 @@ class _PopupBaseState extends State<PopupBase> {
   }
 
   Widget backdropFilter(Widget child) {
-    return BackdropFilter(
-      filter: ImageFilter.blur(sigmaX: fuzzyDegree, sigmaY: fuzzyDegree),
-      child: child,
-    );
+    return BackdropFilter(filter: ImageFilter.blur(sigmaX: fuzzyDegree, sigmaY: fuzzyDegree), child: child);
   }
 
   Widget animatedOpacity(Widget child) {
@@ -166,23 +159,13 @@ class _PopupBaseState extends State<PopupBase> {
   }
 
   Widget childWidget() {
-    Widget child = widget.child;
-    if (widget.alignment != null) child = Align(alignment: widget.alignment, child: child);
-    if (widget.top != null || widget.left != null || widget.right != null || widget.bottom != null)
-      child = Positioned(left: widget.left, top: widget.top, right: widget.right, bottom: widget.bottom, child: child);
-    if (widget.top == null &&
-        widget.left == null &&
-        widget.right == null &&
-        widget.bottom == null &&
-        widget.alignment == null) {
-      child = Align(alignment: Alignment.center, child: child);
-    }
     return Universal(
       color: widget.color,
       onTap: widget.onTap,
-      isStack: true,
       behavior: widget.behavior,
-      children: <Widget>[child],
+      alignment: widget.alignment,
+      padding: EdgeInsets.fromLTRB(widget.left, widget.top, widget.right, widget.bottom),
+      child: widget.child,
     );
   }
 }

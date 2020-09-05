@@ -399,11 +399,7 @@ class _OverlayScaffoldState extends State<OverlayScaffold> {
           floatingActionButton: widget.floatingActionButton,
           floatingActionButtonAnimator: widget.floatingActionButtonAnimator,
           backgroundColor: widget.backgroundColor ?? getColors(background),
-          appBar: widget.appBar == null
-              ? null
-              : PreferredSize(
-                  child: widget.appBar,
-                  preferredSize: Size.fromHeight(MediaQueryTools.getStatusBarHeight() + widget.appBarHeight)),
+          appBar: appBar(),
           bottomNavigationBar: widget.bottomNavigationBar,
           body: bodyWidget(context),
         ));
@@ -420,6 +416,29 @@ class _OverlayScaffoldState extends State<OverlayScaffold> {
         child: container(),
         header: widget.header,
       );
+
+  PreferredSizeWidget appBar() {
+    log(widget.appBar.runtimeType);
+    if (widget.appBarHeight == null) {
+      if (widget.appBar != null) {
+        if (widget.appBar is PreferredSize) {
+          return widget.appBar;
+        } else {
+          return PreferredSize(
+            preferredSize: null,
+            child: widget.appBar,
+          );
+        }
+      }
+    } else {
+      return widget.appBar == null
+          ? null
+          : PreferredSize(
+              child: widget.appBar,
+              preferredSize: Size.fromHeight(MediaQueryTools.getStatusBarHeight() + widget.appBarHeight));
+    }
+    return null;
+  }
 
   Widget container() => Container(
         color: widget.backgroundColor,

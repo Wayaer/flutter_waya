@@ -398,12 +398,12 @@ class Universal extends StatelessWidget {
     return widget;
   }
 
-  Widget offstageWidget({Widget widget}) {
-    return Offstage(
-      child: widget,
-      offstage: offstage,
-    );
-  }
+  Widget offstageWidget({Widget widget}) =>
+      Offstage(
+          child: widget,
+          offstage: offstage
+      );
+
 
   Widget cardWidget({Widget widget}) {
     return Card(
