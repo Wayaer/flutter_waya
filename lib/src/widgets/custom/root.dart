@@ -324,7 +324,6 @@ class OverlayScaffold extends StatefulWidget {
     bool primary, //试用使用primary主色
     bool extendBody,
     DragStartBehavior drawerDragStartBehavior,
-    double appBarHeight,
     bool onWillPopOverlayClose,
     this.appBar,
     this.body,
@@ -347,8 +346,8 @@ class OverlayScaffold extends StatefulWidget {
     this.resizeToAvoidBottomPadding, //类似于 Android 中的 android:windowSoftInputMode=”adjustResize”，控制界面内容 body 是否重新布局来避免底部被覆盖了，比如当键盘显示的时候，重新布局避免被键盘盖住内容。默认值为 true。
     this.resizeToAvoidBottomInset,
     this.onWillPop,
+    this.appBarHeight,
   })  : this.isScroll = isScroll ?? false,
-        this.appBarHeight = appBarHeight ?? 35,
         this.isolationBody = isolationBody ?? false,
         this.onWillPopOverlayClose = onWillPopOverlayClose ?? true,
         this.paddingStatusBar = paddingStatusBar ?? false,
@@ -418,26 +417,12 @@ class _OverlayScaffoldState extends State<OverlayScaffold> {
       );
 
   PreferredSizeWidget appBar() {
-    log(widget.appBar.runtimeType);
-    if (widget.appBarHeight == null) {
-      if (widget.appBar != null) {
-        if (widget.appBar is PreferredSize) {
-          return widget.appBar;
-        } else {
-          return PreferredSize(
-            preferredSize: null,
+    if (widget.appBar is AppBar && widget.appBarHeight == null) return widget.appBar;
+    return widget.appBar == null
+        ? null
+        : PreferredSize(
             child: widget.appBar,
-          );
-        }
-      }
-    } else {
-      return widget.appBar == null
-          ? null
-          : PreferredSize(
-              child: widget.appBar,
-              preferredSize: Size.fromHeight(MediaQueryTools.getStatusBarHeight() + widget.appBarHeight));
-    }
-    return null;
+            preferredSize: Size.fromHeight(MediaQueryTools.getStatusBarHeight() + widget.appBarHeight ?? 30));
   }
 
   Widget container() => Container(
