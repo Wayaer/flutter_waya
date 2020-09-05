@@ -348,7 +348,7 @@ class OverlayScaffold extends StatefulWidget {
     this.resizeToAvoidBottomInset,
     this.onWillPop,
   })  : this.isScroll = isScroll ?? false,
-        this.appBarHeight = appBarHeight ?? ScreenFit.getHeight(45),
+        this.appBarHeight = appBarHeight ?? 35,
         this.isolationBody = isolationBody ?? false,
         this.onWillPopOverlayClose = onWillPopOverlayClose ?? true,
         this.paddingStatusBar = paddingStatusBar ?? false,
@@ -399,13 +399,11 @@ class _OverlayScaffoldState extends State<OverlayScaffold> {
           floatingActionButton: widget.floatingActionButton,
           floatingActionButtonAnimator: widget.floatingActionButtonAnimator,
           backgroundColor: widget.backgroundColor ?? getColors(background),
-          appBar: widget.appBarHeight == null
-              ? widget.appBar
-              : (widget.appBar == null
-                  ? null
-                  : PreferredSize(
-                      child: widget.appBar,
-                      preferredSize: Size.fromHeight(MediaQueryTools.getStatusBarHeight() + widget.appBarHeight))),
+          appBar: widget.appBar == null
+              ? null
+              : PreferredSize(
+                  child: widget.appBar,
+                  preferredSize: Size.fromHeight(MediaQueryTools.getStatusBarHeight() + widget.appBarHeight)),
           bottomNavigationBar: widget.bottomNavigationBar,
           body: bodyWidget(context),
         ));
@@ -631,7 +629,7 @@ void showToast(String message,
             margin: EdgeInsets.symmetric(horizontal: ScreenFit.getWidth(0) / 5, vertical: ScreenFit.getHeight(0) / 4),
             decoration:
                 boxDecoration ?? BoxDecoration(color: getColors(black90), borderRadius: BorderRadius.circular(5)),
-            padding: EdgeInsets.all(ScreenFit.getWidth(10)),
+            padding: EdgeInsets.all(10),
             child: Widgets.textDefault(message, color: getColors(white), maxLines: 4),
           )),
       isAutomaticOff: true);
