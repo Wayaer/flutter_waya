@@ -43,24 +43,18 @@ class Tools {
   }
 
   /// 复制到粘贴板
-  static void copy(text) {
-    Clipboard.setData(ClipboardData(text: text));
-  }
+  static void copy(text) => Clipboard.setData(ClipboardData(text: text));
 
   ///分页 计算总页数
   static int totalPageCount(int recordCount, int pageSize) {
     int totalPage = recordCount ~/ pageSize;
-    if (recordCount % pageSize != 0) {
-      totalPage += 1;
-    }
+    if (recordCount % pageSize != 0) totalPage += 1;
     return totalPage;
   }
 
   ///时间戳转换
   static String stampToDate(int s, {DateType dateType, bool micro}) {
-    if (micro == null) {
-      micro = false;
-    }
+    if (micro == null) micro = false;
     if (micro) {
       ///微秒
       return formatDate(DateTime.fromMicrosecondsSinceEpoch(s), dateType);
@@ -107,14 +101,13 @@ class Tools {
   }
 
   ///关闭键盘
-  static closeKeyboard(BuildContext context) {
-    FocusScope.of(context).requestFocus(FocusNode());
-  }
+  static closeKeyboard(BuildContext context) => FocusScope.of(context).requestFocus(FocusNode());
+
+  ///自动获取焦点
+  static autoFocus(BuildContext context) => FocusScope.of(context).autofocus(FocusNode());
 
   ///
-  static addPostFrameCallback(FrameCallback callback) {
-    WidgetsBinding.instance.addPostFrameCallback(callback);
-  }
+  static addPostFrameCallback(FrameCallback callback) => WidgetsBinding.instance.addPostFrameCallback(callback);
 
   static Timer timerTools(Duration duration, [Function function]) {
     _timerInfo = Timer(duration, () {
@@ -126,9 +119,7 @@ class Tools {
 
   static Timer timerPeriodic(Duration duration, [void callback(Timer timer)]) {
     ///需要手动释放timer
-    _timerInfo = Timer.periodic(duration, (time) {
-      callback(time);
-    });
+    _timerInfo = Timer.periodic(duration, (time) => callback(time));
     return _timerInfo;
   }
 
@@ -137,19 +128,13 @@ class Tools {
   }
 
   /// md5 加密
-  static String setMd5(String data) {
-    return md5.convert(utf8.encode(data)).toString();
-  }
+  static String setMd5(String data) => md5.convert(utf8.encode(data)).toString();
 
   /// Base64加密
-  static String encodeBase64(String data) {
-    return base64Encode(utf8.encode(data));
-  }
+  static String encodeBase64(String data) => base64Encode(utf8.encode(data));
 
   ///Base64解密
-  static String decodeBase64(String data) {
-    return String.fromCharCodes(base64Decode(data));
-  }
+  static String decodeBase64(String data) => String.fromCharCodes(base64Decode(data));
 
   static setStatusBarLight(bool isLight) {
     Color color = getColors(transparent);
@@ -189,27 +174,15 @@ class Tools {
     });
   }
 
-  static bool isAndroid() {
-    return Platform.isAndroid;
-  }
+  static bool isAndroid() => Platform.isAndroid;
 
-  static bool isIOS() {
-    return Platform.isIOS;
-  }
+  static bool isIOS() => Platform.isIOS;
 
-  static bool isMacOS() {
-    return Platform.isMacOS;
-  }
+  static bool isMacOS() => Platform.isMacOS;
 
-  static bool isWindows() {
-    return Platform.isWindows;
-  }
+  static bool isWindows() => Platform.isWindows;
 
-  static isLinux() {
-    return Platform.isLinux;
-  }
+  static isLinux() => Platform.isLinux;
 
-  static bool isFuchsia() {
-    return Platform.isFuchsia;
-  }
+  static bool isFuchsia() => Platform.isFuchsia;
 }
