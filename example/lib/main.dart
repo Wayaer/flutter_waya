@@ -1,21 +1,15 @@
-import 'dart:ui';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-// import 'package:flutter_waya/flutter_waya.dart' hide showToast;
-// import 'package:oktoast/oktoast.dart';
-
-void main() => runApp(App());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(App());
+}
 
 class App extends StatelessWidget {
   Widget build(BuildContext context) {
-    return GlobalMaterial(
-      title: 'Waya Demo',
-      home: Home(),
-    );
+    return GlobalMaterial(title: 'Waya Demo', home: Home());
   }
 }
 
@@ -39,7 +33,11 @@ class Home extends StatelessWidget {
   showOverlayLoading() => showLoading(gaussian: true);
 
   showOverlayToast(BuildContext context) {
-    showToast("message");
+    showToast("0");
+    showToast("1");
+    showToast("2");
+    showToast("3");
+    showToast("4");
   }
 
   showModalPopup() {

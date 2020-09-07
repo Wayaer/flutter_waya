@@ -18,6 +18,7 @@ dependencies:
   pull_to_refresh: ^1.6.1
   cookie_jar: ^1.0.1
 
+
 flutter:
   uses-material-design: true
   fonts:

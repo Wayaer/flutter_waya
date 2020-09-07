@@ -24,14 +24,13 @@ class StorageTools {
     return _singleton;
   }
 
-
   /// put object.
   static Future<bool> putObject(String key, Object value) {
     if (_preferences == null) return null;
     return _preferences.setString(key, value == null ? "" : json.encode(value));
   }
 
-  /// get obj.
+  /// get object.
   static T getObj<T>(String key, T f(Map v), {T defValue}) {
     Map map = getObject(key);
     return map == null ? defValue : f(map);
@@ -54,12 +53,9 @@ class StorageTools {
   }
 
   /// get obj list.
-  static List<T> getObjList<T>(String key, T f(Map v),
-      {List<T> defValue = const []}) {
+  static List<T> getObjList<T>(String key, T f(Map v), {List<T> defValue = const []}) {
     List<Map> dataList = getObjectList(key);
-    List<T> list = dataList?.map((value) {
-      return f(value);
-    })?.toList();
+    List<T> list = dataList?.map((value) => f(value))?.toList();
     return list ?? defValue;
   }
 
@@ -67,10 +63,7 @@ class StorageTools {
   static List<Map> getObjectList(String key) {
     if (_preferences == null) return null;
     List<String> data = _preferences.getStringList(key);
-    return data?.map((value) {
-      Map dataMap = json.decode(value);
-      return dataMap;
-    })?.toList();
+    return data?.map((value) => json.decode(value))?.toList();
   }
 
   /// get string.
@@ -122,8 +115,7 @@ class StorageTools {
   }
 
   /// get string list.
-  static List<String> getStringList(String key,
-      {List<String> defValue = const []}) {
+  static List<String> getStringList(String key, {List<String> defValue = const []}) {
     if (_preferences == null) return defValue;
     return _preferences.getStringList(key) ?? defValue;
   }
@@ -165,7 +157,5 @@ class StorageTools {
   }
 
   ///Sp is initialized.
-  static bool isInitialized() {
-    return _preferences != null;
-  }
+  static bool isInitialized() => _preferences != null;
 }

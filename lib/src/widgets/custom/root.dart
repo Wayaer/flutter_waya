@@ -556,11 +556,11 @@ OverlayEntryMap showOverlay(Widget widget, {bool isAutomaticOff}) {
 }
 
 ///关闭最顶层的叠层
-void closeOverlay({OverlayEntryMap element}) {
+bool closeOverlay({OverlayEntryMap element}) {
   try {
     if (element != null) {
       element.overlayEntry.remove();
-      if (_overlayEntryList.contains(element)) _overlayEntryList.remove(element);
+      if (_overlayEntryList.contains(element)) return _overlayEntryList.remove(element);
     } else {
       if (_overlayEntryList.length > 0) {
         _overlayEntryList.last.overlayEntry.remove();
@@ -570,6 +570,7 @@ void closeOverlay({OverlayEntryMap element}) {
   } catch (e) {
     log(e);
   }
+  return false;
 }
 
 ///关闭所有Overlay
@@ -592,7 +593,7 @@ OverlayEntryMap showLoading({
   LoadingType loadingType,
   TextStyle textStyle,
 }) {
-  var loading = Loading(
+  return showOverlay(Loading(
     gaussian: gaussian,
     text: text,
     value: value,
@@ -603,8 +604,7 @@ OverlayEntryMap showLoading({
     semanticsValue: semanticsValue,
     loadingType: loadingType ?? LoadingType.circular,
     textStyle: textStyle,
-  );
-  return showOverlay(loading);
+  ));
 }
 
 ///Toast
@@ -624,7 +624,7 @@ void showToast(String message,
     BoxDecoration boxDecoration,
     GestureTapCallback onTap,
     TextStyle textStyle,
-    Duration closeDuration}) {
+    Duration closeDuration}) async {
   if (haveToast) return;
   var entry = showOverlay(
       PopupBase(
