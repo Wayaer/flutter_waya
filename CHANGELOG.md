@@ -1,5 +1,5 @@
 ## [1.2.0]
-  * 重构全部文件命名以及类
+ * 重构全部文件命名以及类
  * 优化Overlay 【Toast loading】
  * popup方法移出context参数。
  * 路由跳转 更改 可直接调用【push() pushReplacement() pushAndRemoveUntil() pop() 】。
