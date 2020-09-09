@@ -105,13 +105,10 @@ class Refresh extends StatelessWidget {
     );
   }
 
-  Widget footerText(String text) {
-    return Text(
-      text,
-      style:
-          footerTextStyle ?? TextStyle(fontSize: 13, color: getColors(black70)),
-    );
-  }
+  Widget footerText(String text) => Text(
+        text,
+        style: footerTextStyle ?? TextStyle(fontSize: 13, color: getColors(black70)),
+      );
 
   onTwoLevelVoid() {
     log('onTwoLevel');
@@ -186,12 +183,10 @@ class Refreshed extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<StatefulWidget> createState() {
-    return RefreshedState();
-  }
+  _RefreshedState createState() => _RefreshedState();
 }
 
-class RefreshedState extends State<Refreshed> {
+class _RefreshedState extends State<Refreshed> {
   RefreshController controller;
 
   @override

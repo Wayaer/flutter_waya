@@ -175,23 +175,21 @@ class TabBarBox extends StatelessWidget {
         child: tabBarLevel == null ? tabBarWidget() : null);
   }
 
-  Widget tabBarWidget() {
-    return TabBar(
-      controller: controller,
-      labelPadding: labelPadding,
-      tabs: tabBar,
-      isScrollable: isScrollable ?? true,
-      indicator: indicator,
-      labelColor: labelColor ?? getColors(blue),
-      unselectedLabelColor: unselectedLabelColor ?? getColors(background),
-      indicatorColor: labelColor ?? getColors(blue),
-      indicatorWeight: indicatorWeight ?? ScreenFit.getWidth(1),
-      indicatorPadding: indicatorPadding,
-      labelStyle: labelStyle ?? WayStyles.textStyleBlack70(fontSize: 13),
-      unselectedLabelStyle: unselectedLabelStyle,
-      indicatorSize: indicatorSize ?? TabBarIndicatorSize.label,
-    );
-  }
+  Widget tabBarWidget() => TabBar(
+        controller: controller,
+        labelPadding: labelPadding,
+        tabs: tabBar,
+        isScrollable: isScrollable ?? true,
+        indicator: indicator,
+        labelColor: labelColor ?? getColors(blue),
+        unselectedLabelColor: unselectedLabelColor ?? getColors(background),
+        indicatorColor: labelColor ?? getColors(blue),
+        indicatorWeight: indicatorWeight ?? ScreenFit.getWidth(1),
+        indicatorPadding: indicatorPadding,
+        labelStyle: labelStyle ?? WayStyles.textStyleBlack70(fontSize: 13),
+        unselectedLabelStyle: unselectedLabelStyle,
+        indicatorSize: indicatorSize ?? TabBarIndicatorSize.label,
+      );
 }
 
 class TabNavigationPage extends StatefulWidget {

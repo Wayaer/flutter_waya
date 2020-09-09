@@ -125,10 +125,8 @@ class IconBox extends StatelessWidget {
     );
   }
 
-  Widget spacingWidget() {
-    return Container(
-        width: direction == Axis.horizontal ? spacing : 0, height: direction == Axis.vertical ? spacing : 0);
-  }
+  Widget spacingWidget() =>
+      Container(width: direction == Axis.horizontal ? spacing : 0, height: direction == Axis.vertical ? spacing : 0);
 
   Widget titleWidget() {
     if (title != null) {
@@ -144,10 +142,9 @@ class IconBox extends StatelessWidget {
     );
   }
 
-  bool isChildren() {
-    return (titleText != null || title != null) &&
-        (icon != null || image != null || widget != null || imageProvider != null);
-  }
+  bool isChildren() =>
+      (titleText != null || title != null) &&
+      (icon != null || image != null || widget != null || imageProvider != null);
 
   List<Widget> iconWidget() {
     List<Widget> listWidget = [];
@@ -260,8 +257,7 @@ class _CheckBoxState extends State<CheckBox> {
         });
   }
 
-  Widget checkBoxWidget() {
-    return Checkbox(
+  Widget checkBoxWidget() => Checkbox(
       tristate: false,
 //      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       activeColor: widget.activeColor,
@@ -276,7 +272,5 @@ class _CheckBoxState extends State<CheckBox> {
             widget.onChange(v);
           }
         }
-      },
-    );
-  }
+      });
 }

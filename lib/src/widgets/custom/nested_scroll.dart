@@ -128,18 +128,15 @@ class NestedScroll extends StatefulWidget {
         this.primary = primary ?? true,
         this.brightness = brightness ?? Brightness.light,
         this.containsStatusBar = containsStatusBar ?? true,
-        this.stretchModes =
-            stretchModes ?? const <StretchMode>[StretchMode.zoomBackground],
+        this.stretchModes = stretchModes ?? const <StretchMode>[StretchMode.zoomBackground],
         this.collapseMode = collapseMode ?? CollapseMode.parallax,
         super(key: key);
 
   @override
-  State<StatefulWidget> createState() {
-    return NestedScrollState();
-  }
+  _NestedScrollState createState() => _NestedScrollState();
 }
 
-class NestedScrollState extends State<NestedScroll> {
+class _NestedScrollState extends State<NestedScroll> {
   GlobalKey containerKey = GlobalKey();
   GlobalKey preferredSizeKey = GlobalKey();
   bool showNestedScrollView = false;
@@ -149,20 +146,10 @@ class NestedScrollState extends State<NestedScroll> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((callback) {
-      double containerHeight = containerKey.currentContext
-          .findRenderObject()
-          .paintBounds
-          .size
-          .height;
-      double preferredSizeHeight = preferredSizeKey.currentContext
-          .findRenderObject()
-          .paintBounds
-          .size
-          .height;
+      double containerHeight = containerKey.currentContext.findRenderObject().paintBounds.size.height;
+      double preferredSizeHeight = preferredSizeKey.currentContext.findRenderObject().paintBounds.size.height;
       expandedHeight = widget.containsStatusBar
-          ? containerHeight +
-              preferredSizeHeight -
-              MediaQueryTools.getStatusBarHeight()
+          ? containerHeight + preferredSizeHeight - MediaQueryTools.getStatusBarHeight()
           : containerHeight + preferredSizeHeight;
       setState(() {
         showNestedScrollView = true;
@@ -187,67 +174,58 @@ class NestedScrollState extends State<NestedScroll> {
             scrollDirection: widget.scrollDirection ?? Axis.vertical,
             reverse: widget.reverse,
             physics: widget.physics,
-            dragStartBehavior:
-                widget.dragStartBehavior ?? DragStartBehavior.start,
+            dragStartBehavior: widget.dragStartBehavior ?? DragStartBehavior.start,
             body: widget.body,
             controller: widget.controller,
-            headerSliverBuilder:
-                (BuildContext context, bool innerBoxIsScrolled) {
+            headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
               return sliverWidget;
             },
           );
   }
 
-  Widget calculateFlexibleSpaceHeight() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Container(key: containerKey, child: widget.flexibleSpace),
-        Container(
-            key: preferredSizeKey,
-            child: widget.tabBarBody == null
-                ? null
-                : PreferredSize(
-                    child: widget.tabBarBody,
-                    preferredSize: widget.preferredSize))
-      ],
-    );
-  }
+  Widget calculateFlexibleSpaceHeight() => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Container(key: containerKey, child: widget.flexibleSpace),
+          Container(
+              key: preferredSizeKey,
+              child: widget.tabBarBody == null
+                  ? null
+                  : PreferredSize(child: widget.tabBarBody, preferredSize: widget.preferredSize))
+        ],
+      );
 
-  Widget sliverAppBarWidget() {
-    return SliverAppBar(
-      automaticallyImplyLeading: widget.automaticallyImplyLeading ?? true,
-      title: widget.title,
-      actions: widget.actions,
-      forceElevated: widget.forceElevated,
-      backgroundColor: widget.backgroundColor,
-      iconTheme: widget.iconTheme,
-      actionsIconTheme: widget.actionsIconTheme,
-      textTheme: widget.textTheme,
-      primary: widget.primary,
-      centerTitle: widget.centerTitle,
-      titleSpacing: NavigationToolbar.kMiddleSpacing,
-      snap: widget.snap,
-      stretch: widget.stretch,
-      stretchTriggerOffset: widget.stretchTriggerOffset ?? 100.0,
-      onStretchTrigger: widget.onStretchTrigger,
-      elevation: widget.elevation,
-      brightness: widget.brightness,
-      leading: widget.leading,
-      pinned: widget.pinned,
-      floating: widget.floating,
-      expandedHeight: expandedHeight,
-      flexibleSpace: FlexibleSpaceBar(
-          title: widget.flexibleSpaceTitle,
-          centerTitle: widget.centerTitle,
-          titlePadding: widget.flexibleSpaceTitlePadding,
-          collapseMode: widget.collapseMode,
-          stretchModes: widget.stretchModes,
-          background: widget.flexibleSpace),
-      bottom: widget.tabBarBody == null
-          ? null
-          : PreferredSize(
-              child: widget.tabBarBody, preferredSize: widget.preferredSize),
-    );
-  }
+  Widget sliverAppBarWidget() => SliverAppBar(
+        automaticallyImplyLeading: widget.automaticallyImplyLeading ?? true,
+        title: widget.title,
+        actions: widget.actions,
+        forceElevated: widget.forceElevated,
+        backgroundColor: widget.backgroundColor,
+        iconTheme: widget.iconTheme,
+        actionsIconTheme: widget.actionsIconTheme,
+        textTheme: widget.textTheme,
+        primary: widget.primary,
+        centerTitle: widget.centerTitle,
+        titleSpacing: NavigationToolbar.kMiddleSpacing,
+        snap: widget.snap,
+        stretch: widget.stretch,
+        stretchTriggerOffset: widget.stretchTriggerOffset ?? 100.0,
+        onStretchTrigger: widget.onStretchTrigger,
+        elevation: widget.elevation,
+        brightness: widget.brightness,
+        leading: widget.leading,
+        pinned: widget.pinned,
+        floating: widget.floating,
+        expandedHeight: expandedHeight,
+        flexibleSpace: FlexibleSpaceBar(
+            title: widget.flexibleSpaceTitle,
+            centerTitle: widget.centerTitle,
+            titlePadding: widget.flexibleSpaceTitlePadding,
+            collapseMode: widget.collapseMode,
+            stretchModes: widget.stretchModes,
+            background: widget.flexibleSpace),
+        bottom: widget.tabBarBody == null
+            ? null
+            : PreferredSize(child: widget.tabBarBody, preferredSize: widget.preferredSize),
+      );
 }

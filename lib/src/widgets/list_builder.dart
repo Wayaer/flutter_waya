@@ -63,9 +63,8 @@ class GridBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (itemCount == 0) {
-      return noData ?? Widgets.notDataWidget(margin: EdgeInsets.all(ScreenFit.getWidth(10)));
-    }
+    if (itemCount == 0) return noData ?? Widgets.notDataWidget(margin: EdgeInsets.all(ScreenFit.getWidth(10)));
+
     return GridView.builder(
       physics: physics,
       itemCount: itemCount,
@@ -135,16 +134,12 @@ class ListBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (enablePullDown || enablePullUp) {
-      return refresherListView();
-    }
+    if (enablePullDown || enablePullUp) return refresherListView();
     return listViewBuilder();
   }
 
   Widget listViewBuilder() {
-    if (itemCount == 0) {
-      return noData ?? Widgets.notDataWidget(margin: EdgeInsets.all(ScreenFit.getWidth(10)));
-    }
+    if (itemCount == 0) return noData ?? Widgets.notDataWidget(margin: EdgeInsets.all(ScreenFit.getWidth(10)));
     return ListView.builder(
       scrollDirection: scrollDirection,
       physics: physics,
@@ -158,18 +153,16 @@ class ListBuilder extends StatelessWidget {
     );
   }
 
-  Widget refresherListView() {
-    return Refreshed(
-        enablePullDown: enablePullDown,
-        enablePullUp: enablePullUp,
-        controller: refreshController,
-        onLoading: onLoading,
-        onRefresh: onRefresh,
-        child: listViewBuilder(),
-        header: header,
-        footer: footer,
-        footerTextStyle: footerTextStyle);
-  }
+  Widget refresherListView() => Refreshed(
+      enablePullDown: enablePullDown,
+      enablePullUp: enablePullUp,
+      controller: refreshController,
+      onLoading: onLoading,
+      onRefresh: onRefresh,
+      child: listViewBuilder(),
+      header: header,
+      footer: footer,
+      footerTextStyle: footerTextStyle);
 }
 
 class ListEntry extends StatelessWidget {
@@ -275,20 +268,18 @@ class ListEntry extends StatelessWidget {
         children: children);
   }
 
-  Widget listTile() {
-    return Expanded(
-        child: ListTile(
-      contentPadding: contentPadding,
-      title: hero(title ?? Text(titleText, style: titleStyle)),
-      subtitle: subtitle,
-      leading: leading,
-      trailing: child,
-      isThreeLine: isThreeLine,
-      dense: dense,
-      enabled: false,
-      selected: false,
-    ));
-  }
+  Widget listTile() => Expanded(
+          child: ListTile(
+        contentPadding: contentPadding,
+        title: hero(title ?? Text(titleText, style: titleStyle)),
+        subtitle: subtitle,
+        leading: leading,
+        trailing: child,
+        isThreeLine: isThreeLine,
+        dense: dense,
+        enabled: false,
+        selected: false,
+      ));
 
   Widget arrowWidget() => IconBox(icon: ConstIcon.arrowRight, size: arrowSize, color: arrowColor, margin: arrowMargin);
 

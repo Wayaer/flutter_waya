@@ -39,10 +39,6 @@ class RichSpan extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return richText();
-  }
-
-  Widget richText() {
     List<TextSpan> children = List();
     List<TextStyle> styles = List();
     if (textStyle == null) {

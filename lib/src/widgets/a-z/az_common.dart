@@ -101,7 +101,7 @@ class Suspension extends StatefulWidget {
   final ValueChanged<String> onSusTagChanged;
 
   /// on sus section callback.
-  final OnSusSectionCallBack onSusSectionInited;
+  final OnSusSectionCallBack onSusSection;
 
   final AzListHeader header;
 
@@ -114,7 +114,7 @@ class Suspension extends StatefulWidget {
     this.suspensionHeight = 80,
     this.itemHeight = 50,
     this.onSusTagChanged,
-    this.onSusSectionInited,
+    this.onSusSection,
     this.header,
   })  : assert(contentWidget != null),
         assert(controller != null),
@@ -204,8 +204,8 @@ class SuspensionState extends State<Suspension> {
       ..clear()
       ..addAll(suspensionSectionMap.values);
     suSectionListLength = suspensionSectionList.length;
-    if (widget.onSusSectionInited != null) {
-      widget.onSusSectionInited(suspensionSectionMap);
+    if (widget.onSusSection != null) {
+      widget.onSusSection(suspensionSectionMap);
     }
   }
 

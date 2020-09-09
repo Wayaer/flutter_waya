@@ -20,10 +20,10 @@ class CustomDrawer extends StatefulWidget {
         super(key: key);
 
   @override
-  CustomDrawerState createState() => CustomDrawerState();
+  _CustomDrawerState createState() => _CustomDrawerState();
 }
 
-class CustomDrawerState extends State<CustomDrawer> {
+class _CustomDrawerState extends State<CustomDrawer> {
   @override
   void initState() {
     if (widget.callback != null) widget.callback(true);

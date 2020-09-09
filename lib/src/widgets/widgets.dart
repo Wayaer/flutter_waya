@@ -349,13 +349,11 @@ class HintDot extends StatelessWidget {
     );
   }
 
-  Widget dotWidget() {
-    return Container(
-      child: pointChild,
-      padding: pointPadding,
-      width: pointChild == null ? (pointSize ?? ScreenFit.getWidth(4)) : null,
-      height: pointChild == null ? (pointSize ?? ScreenFit.getWidth(4)) : null,
-      decoration: BoxDecoration(color: pointColor ?? getColors(red), shape: BoxShape.circle),
-    );
-  }
+  Widget dotWidget() => Container(
+        child: pointChild,
+        padding: pointPadding,
+        width: pointChild == null ? (pointSize ?? ScreenFit.getWidth(4)) : null,
+        height: pointChild == null ? (pointSize ?? ScreenFit.getWidth(4)) : null,
+        decoration: BoxDecoration(color: pointColor ?? getColors(red), shape: BoxShape.circle),
+      );
 }

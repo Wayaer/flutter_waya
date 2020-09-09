@@ -51,11 +51,6 @@ class _GestureZoomState extends State<GestureZoom> with TickerProviderStateMixin
   double _maxDragOver = 100;
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Transform(
       alignment: Alignment.center,

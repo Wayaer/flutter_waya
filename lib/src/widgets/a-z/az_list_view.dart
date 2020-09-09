@@ -84,12 +84,10 @@ class AzListView extends StatefulWidget {
   final bool showIndexHint;
 
   @override
-  State<StatefulWidget> createState() {
-    return AzListViewState();
-  }
+  _AzListViewState createState() => _AzListViewState();
 }
 
-class AzListViewState extends State<AzListView> {
+class _AzListViewState extends State<AzListView> {
   Map<String, int> suspensionSectionMap = Map();
   List<SuspensionModel> cityList = List();
   List<String> indexTagList = List();
@@ -169,7 +167,7 @@ class AzListViewState extends State<AzListView> {
         itemHeight: widget.itemHeight ?? ScreenFit.getHeight(40, intType: true),
         onSusTagChanged: widget.onSusTagChanged,
         header: widget.header,
-        onSusSectionInited: (Map<String, int> map) => suspensionSectionMap = map,
+        onSusSection: (Map<String, int> map) => suspensionSectionMap = map,
       )
     ];
 

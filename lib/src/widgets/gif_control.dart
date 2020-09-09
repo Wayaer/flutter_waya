@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:ui' as ui show Codec;
 import 'dart:ui';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
@@ -8,9 +9,7 @@ import 'package:flutter/widgets.dart';
 class GifCache {
   final Map<String, List<ImageInfo>> caches = Map();
 
-  void clear() {
-    caches.clear();
-  }
+  void clear() => caches.clear();
 
   bool evict(Object key) {
     final List<ImageInfo> pendingImage = caches.remove(key);
@@ -37,9 +36,7 @@ class GifController extends AnimationController {
             vsync: vsync);
 
   @override
-  void reset() {
-    value = 0.0;
-  }
+  void reset() => value = 0.0;
 }
 
 class GifImage extends StatefulWidget {
@@ -58,7 +55,7 @@ class GifImage extends StatefulWidget {
     this.repeat = ImageRepeat.noRepeat,
     this.centerSlice,
     this.matchTextDirection = false,
-    this.gaplessPlayback = false,
+    this.gapLessPlayback = false,
   });
 
   final VoidCallback onFetchCompleted;
@@ -73,19 +70,17 @@ class GifImage extends StatefulWidget {
   final ImageRepeat repeat;
   final Rect centerSlice;
   final bool matchTextDirection;
-  final bool gaplessPlayback;
+  final bool gapLessPlayback;
   final String semanticLabel;
   final bool excludeFromSemantics;
 
   @override
-  State<StatefulWidget> createState() {
-    return new GifImageState();
-  }
+  _GifImageState createState() => _GifImageState();
 
   static GifCache cache = GifCache();
 }
 
-class GifImageState extends State<GifImage> {
+class _GifImageState extends State<GifImage> {
   List<ImageInfo> _images;
   int _curIndex = 0;
   bool _fetchComplete = false;
@@ -186,8 +181,7 @@ final HttpClient _sharedHttpClient = HttpClient()..autoUncompress = false;
 HttpClient get _httpClient {
   HttpClient client = _sharedHttpClient;
   assert(() {
-    if (debugNetworkImageHttpClientProvider != null)
-      client = debugNetworkImageHttpClientProvider();
+    if (debugNetworkImageHttpClientProvider != null) client = debugNetworkImageHttpClientProvider();
     return true;
   }());
   return client;
@@ -198,9 +192,7 @@ Future<List<ImageInfo>> fetchGif(ImageProvider provider) async {
   dynamic data;
   String key = provider is NetworkImage
       ? provider.url
-      : provider is AssetImage
-          ? provider.assetName
-          : provider is MemoryImage ? provider.bytes.toString() : "";
+      : provider is AssetImage ? provider.assetName : provider is MemoryImage ? provider.bytes.toString() : "";
   if (GifImage.cache.caches.containsKey(key)) {
     images = GifImage.cache.caches[key];
     return images;
@@ -224,8 +216,7 @@ Future<List<ImageInfo>> fetchGif(ImageProvider provider) async {
     data = provider.bytes;
   }
 
-  ui.Codec codec = await PaintingBinding.instance
-      .instantiateImageCodec(data.buffer.asUint8List());
+  ui.Codec codec = await PaintingBinding.instance.instantiateImageCodec(data.buffer.asUint8List());
   images = [];
   for (int i = 0; i < codec.frameCount; i++) {
     FrameInfo frameInfo = await codec.getNextFrame();

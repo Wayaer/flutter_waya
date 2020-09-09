@@ -405,19 +405,19 @@ class Universal extends StatelessWidget {
       );
 
 
-  Widget cardWidget({Widget widget}) {
-    return Card(
-      child: widget,
-      color: color,
-      clipBehavior: clipBehavior,
-      shadowColor: shadowColor,
-      elevation: elevation,
-      shape: shape,
-      borderOnForeground: borderOnForeground ?? true,
-      margin: margin,
-      semanticContainer: semanticContainer ?? true,
-    );
-  }
+  Widget cardWidget({Widget widget}) =>
+      Card(
+        child: widget,
+        color: color,
+        clipBehavior: clipBehavior,
+        shadowColor: shadowColor,
+        elevation: elevation,
+        shape: shape,
+        borderOnForeground: borderOnForeground ?? true,
+        margin: margin,
+        semanticContainer: semanticContainer ?? true,
+      );
+
 
   Widget clipWidget({Widget widget}) {
     Clip behavior = clipBehavior;
@@ -444,51 +444,51 @@ class Universal extends StatelessWidget {
     );
   }
 
-  Widget circleAvatarWidget({Widget widget}) {
-    return CircleAvatar(
-      child: widget,
-      backgroundColor: color,
-      backgroundImage: backgroundImage,
-      onBackgroundImageError: onBackgroundImageError,
-      foregroundColor: foregroundColor,
-      radius: radius,
-      minRadius: minRadius,
-      maxRadius: maxRadius,
-    );
-  }
+  Widget circleAvatarWidget({Widget widget}) =>
+      CircleAvatar(
+        child: widget,
+        backgroundColor: color,
+        backgroundImage: backgroundImage,
+        onBackgroundImageError: onBackgroundImageError,
+        foregroundColor: foregroundColor,
+        radius: radius,
+        minRadius: minRadius,
+        maxRadius: maxRadius,
+      );
 
-  Widget stackWidget({List<Widget> children}) {
-    return Stack(
-      alignment: alignment ?? AlignmentDirectional.topStart,
-      textDirection: textDirection,
-      fit: stackFit,
-      overflow: overflow,
-      children: children,
-    );
-  }
 
-  Widget heroWidget({Widget widget}) {
-    return Hero(
-        tag: heroTag,
-        createRectTween: createRectTween,
-        flightShuttleBuilder: flightShuttleBuilder,
-        placeholderBuilder: placeholderBuilder,
-        transitionOnUserGestures: transitionOnUserGestures,
-        child: widget);
-  }
+  Widget stackWidget({List<Widget> children}) =>
+      Stack(
+        alignment: alignment ?? AlignmentDirectional.topStart,
+        textDirection: textDirection,
+        fit: stackFit,
+        overflow: overflow,
+        children: children,
+      );
 
-  Widget visibilityWidget({Widget widget}) {
-    return Visibility(
-      child: widget,
-      replacement: replacement,
-      visible: visible,
-      maintainState: maintainState,
-      maintainAnimation: maintainAnimation,
-      maintainSize: maintainSize,
-      maintainSemantics: maintainSemantics,
-      maintainInteractivity: maintainInteractivity,
-    );
-  }
+
+  Widget heroWidget({Widget widget}) =>
+      Hero(
+          tag: heroTag,
+          createRectTween: createRectTween,
+          flightShuttleBuilder: flightShuttleBuilder,
+          placeholderBuilder: placeholderBuilder,
+          transitionOnUserGestures: transitionOnUserGestures,
+          child: widget);
+
+
+  Widget visibilityWidget({Widget widget}) =>
+      Visibility(
+        child: widget,
+        replacement: replacement,
+        visible: visible,
+        maintainState: maintainState,
+        maintainAnimation: maintainAnimation,
+        maintainSize: maintainSize,
+        maintainSemantics: maintainSemantics,
+        maintainInteractivity: maintainInteractivity,
+      );
+
 
   Widget flexibleWidget({Widget widget}) {
     if (isFlexible) {
@@ -508,134 +508,134 @@ class Universal extends StatelessWidget {
     return widget;
   }
 
-  Widget inkWellWidget({Widget widget}) {
-    return Material(
-        color: color,
-        type: type,
-        elevation: elevation,
-        shadowColor: shadowColor,
-        textStyle: textStyle,
-        borderRadius: borderRadius,
-        shape: shape,
-        borderOnForeground: borderOnForeground,
-        clipBehavior: clipBehavior,
-        animationDuration: animationDuration,
-        child: Ink(
+  Widget inkWellWidget({Widget widget}) =>
+      Material(
+          color: color,
+          type: type,
+          elevation: elevation,
+          shadowColor: shadowColor,
+          textStyle: textStyle,
+          borderRadius: borderRadius,
+          shape: shape,
+          borderOnForeground: borderOnForeground,
+          clipBehavior: clipBehavior,
+          animationDuration: animationDuration,
+          child: Ink(
 //            padding: padding,
 //            color: color,
-            decoration: decoration,
+              decoration: decoration,
 //            width: width,
 //            height: height,
-            child: InkWell(
-              child: widget,
-              onTap: onTap,
-              onLongPress: onLongPress,
-              onDoubleTap: onDoubleTap,
-              onTapDown: onTapDown,
-              onTapCancel: onTapCancel,
-              onHighlightChanged: onHighlightChanged,
-              onHover: onHover,
-              focusColor: focusColor,
-              hoverColor: hoverColor,
-              highlightColor: highlightColor,
-              splashColor: splashColor,
-              splashFactory: splashFactory,
-              radius: radius,
-              borderRadius: borderRadius,
-              customBorder: customBorder,
-              enableFeedback: enableFeedback,
-              excludeFromSemantics: excludeFromSemantics,
-              focusNode: focusNode,
-              canRequestFocus: canRequestFocus,
-              onFocusChange: onFocusChange,
-              autofocus: autoFocus,
-            )));
-  }
+              child: InkWell(
+                child: widget,
+                onTap: onTap,
+                onLongPress: onLongPress,
+                onDoubleTap: onDoubleTap,
+                onTapDown: onTapDown,
+                onTapCancel: onTapCancel,
+                onHighlightChanged: onHighlightChanged,
+                onHover: onHover,
+                focusColor: focusColor,
+                hoverColor: hoverColor,
+                highlightColor: highlightColor,
+                splashColor: splashColor,
+                splashFactory: splashFactory,
+                radius: radius,
+                borderRadius: borderRadius,
+                customBorder: customBorder,
+                enableFeedback: enableFeedback,
+                excludeFromSemantics: excludeFromSemantics,
+                focusNode: focusNode,
+                canRequestFocus: canRequestFocus,
+                onFocusChange: onFocusChange,
+                autofocus: autoFocus,
+              )));
 
-  Widget singleChildScrollViewWidget({Widget widget}) {
-    return SingleChildScrollView(
-        physics: physics,
-        reverse: reverse,
+
+  Widget singleChildScrollViewWidget({Widget widget}) =>
+      SingleChildScrollView(
+          physics: physics,
+          reverse: reverse,
 //       padding: padding,
-        primary: primary,
+          primary: primary,
+          dragStartBehavior: dragStartBehavior,
+          controller: scrollController,
+          scrollDirection: direction,
+          child: widget);
+
+
+  Widget flexWidget({List<Widget> children}) =>
+      Flex(
+        children: children,
+        mainAxisAlignment: mainAxisAlignment,
+        crossAxisAlignment: crossAxisAlignment,
+        direction: direction,
+        textBaseline: textBaseline,
+        verticalDirection: verticalDirection,
+        textDirection: textDirection,
+        mainAxisSize: mainAxisSize,
+      );
+
+
+  Widget containerWidget({Widget widget}) =>
+      Container(
+          foregroundDecoration: foregroundDecoration,
+          clipBehavior: clipBehavior,
+          transform: transform,
+          constraints: constraints,
+          alignment: alignment,
+          color: decoration == null ? color : null,
+          width: width,
+          height: height,
+          padding: padding,
+          margin: margin,
+          decoration: decoration,
+          child: widget);
+
+
+  Widget gestureDetectorWidget({Widget widget}) =>
+      GestureDetector(
+        onTapDown: onTapDown,
+        onTapUp: onTapUp,
+        onTap: onTap,
+        onTapCancel: onTapCancel,
+        onSecondaryTapDown: onSecondaryTapDown,
+        onSecondaryTapUp: onSecondaryTapUp,
+        onSecondaryTapCancel: onSecondaryTapCancel,
+        onDoubleTap: onDoubleTap,
+        onLongPress: onLongPress,
+        onLongPressStart: onLongPressStart,
+        onLongPressMoveUpdate: onLongPressMoveUpdate,
+        onLongPressUp: onLongPressUp,
+        onLongPressEnd: onLongPressEnd,
+        onVerticalDragDown: onVerticalDragDown,
+        onVerticalDragStart: onVerticalDragStart,
+        onVerticalDragUpdate: onVerticalDragUpdate,
+        onVerticalDragEnd: onVerticalDragEnd,
+        onVerticalDragCancel: onVerticalDragCancel,
+        onHorizontalDragDown: onHorizontalDragDown,
+        onHorizontalDragStart: onHorizontalDragStart,
+        onHorizontalDragUpdate: onHorizontalDragUpdate,
+        onHorizontalDragEnd: onHorizontalDragEnd,
+        onHorizontalDragCancel: onHorizontalDragCancel,
+        onForcePressStart: onForcePressStart,
+        onForcePressPeak: onForcePressPeak,
+        onForcePressUpdate: onForcePressUpdate,
+        onForcePressEnd: onForcePressEnd,
+        onPanDown: onPanDown,
+        onPanStart: onPanStart,
+        onPanUpdate: onPanUpdate,
+        onPanEnd: onPanEnd,
+        onPanCancel: onPanCancel,
+        onScaleStart: onScaleStart,
+        onScaleUpdate: onScaleUpdate,
+        onScaleEnd: onScaleEnd,
+        behavior: behavior,
+        excludeFromSemantics: excludeFromSemantics,
         dragStartBehavior: dragStartBehavior,
-        controller: scrollController,
-        scrollDirection: direction,
-        child: widget);
-  }
+        child: widget,
+      );
 
-  Widget flexWidget({List<Widget> children}) {
-    return Flex(
-      children: children,
-      mainAxisAlignment: mainAxisAlignment,
-      crossAxisAlignment: crossAxisAlignment,
-      direction: direction,
-      textBaseline: textBaseline,
-      verticalDirection: verticalDirection,
-      textDirection: textDirection,
-      mainAxisSize: mainAxisSize,
-    );
-  }
-
-  Widget containerWidget({Widget widget}) {
-    return Container(
-        foregroundDecoration: foregroundDecoration,
-        clipBehavior: clipBehavior,
-        transform: transform,
-        constraints: constraints,
-        alignment: alignment,
-        color: decoration == null ? color : null,
-        width: width,
-        height: height,
-        padding: padding,
-        margin: margin,
-        decoration: decoration,
-        child: widget);
-  }
-
-  Widget gestureDetectorWidget({Widget widget}) {
-    return GestureDetector(
-      onTapDown: onTapDown,
-      onTapUp: onTapUp,
-      onTap: onTap,
-      onTapCancel: onTapCancel,
-      onSecondaryTapDown: onSecondaryTapDown,
-      onSecondaryTapUp: onSecondaryTapUp,
-      onSecondaryTapCancel: onSecondaryTapCancel,
-      onDoubleTap: onDoubleTap,
-      onLongPress: onLongPress,
-      onLongPressStart: onLongPressStart,
-      onLongPressMoveUpdate: onLongPressMoveUpdate,
-      onLongPressUp: onLongPressUp,
-      onLongPressEnd: onLongPressEnd,
-      onVerticalDragDown: onVerticalDragDown,
-      onVerticalDragStart: onVerticalDragStart,
-      onVerticalDragUpdate: onVerticalDragUpdate,
-      onVerticalDragEnd: onVerticalDragEnd,
-      onVerticalDragCancel: onVerticalDragCancel,
-      onHorizontalDragDown: onHorizontalDragDown,
-      onHorizontalDragStart: onHorizontalDragStart,
-      onHorizontalDragUpdate: onHorizontalDragUpdate,
-      onHorizontalDragEnd: onHorizontalDragEnd,
-      onHorizontalDragCancel: onHorizontalDragCancel,
-      onForcePressStart: onForcePressStart,
-      onForcePressPeak: onForcePressPeak,
-      onForcePressUpdate: onForcePressUpdate,
-      onForcePressEnd: onForcePressEnd,
-      onPanDown: onPanDown,
-      onPanStart: onPanStart,
-      onPanUpdate: onPanUpdate,
-      onPanEnd: onPanEnd,
-      onPanCancel: onPanCancel,
-      onScaleStart: onScaleStart,
-      onScaleUpdate: onScaleUpdate,
-      onScaleEnd: onScaleEnd,
-      behavior: behavior,
-      excludeFromSemantics: excludeFromSemantics,
-      dragStartBehavior: dragStartBehavior,
-      child: widget,
-    );
-  }
 }
 
 class SimpleButton extends StatelessWidget {

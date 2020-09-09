@@ -94,10 +94,10 @@ class AzIndexBar extends StatefulWidget {
         super(key: key);
 
   @override
-  AzIndexBarState createState() => AzIndexBarState();
+  _AzIndexBarState createState() => _AzIndexBarState();
 }
 
-class AzIndexBarState extends State<AzIndexBar> {
+class _AzIndexBarState extends State<AzIndexBar> {
   List<int> indexSectionList = List();
   int widgetTop = -1;
   int lastIndex = 0;
@@ -139,9 +139,7 @@ class AzIndexBarState extends State<AzIndexBar> {
   }
 
   triggerTouchEvent() {
-    if (widget.onTouch != null) {
-      widget.onTouch(indexModel);
-    }
+    if (widget.onTouch != null) widget.onTouch(indexModel);
   }
 
   @override

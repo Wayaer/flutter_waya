@@ -21,7 +21,6 @@ class CommonLocalizationsDelegate extends LocalizationsDelegate<CupertinoLocaliz
 class _DefaultCupertinoLocalizations extends CupertinoLocalizations {
   _DefaultCupertinoLocalizations(this._languageCode) : assert(_languageCode != null);
   final String _languageCode;
-  static const LocalizationsDelegate<CupertinoLocalizations> delegate = CommonLocalizationsDelegate();
   final Map<String, Map<String, String>> _dict = <String, Map<String, String>>{
     'en': <String, String>{
       'alert': 'Alert',

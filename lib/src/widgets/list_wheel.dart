@@ -162,12 +162,10 @@ class AutoScrollEntry extends StatefulWidget {
         super(key: key);
 
   @override
-  State<StatefulWidget> createState() {
-    return AutoScrollEntryState();
-  }
+  _AutoScrollEntryState createState() => _AutoScrollEntryState();
 }
 
-class AutoScrollEntryState extends State<AutoScrollEntry> {
+class _AutoScrollEntryState extends State<AutoScrollEntry> {
   FixedExtentScrollController controller;
   Timer timer;
   int index = 0;
