@@ -1,27 +1,27 @@
-## [1.2.0]
- * 重构全部文件命名以及类
- * 优化Overlay 【Toast loading】
- * popup方法移出context参数。
- * 路由跳转 更改 可直接调用【push() pushReplacement() pushAndRemoveUntil() pop() 】。
+## [1.2.1]
+ * Refactoring all file names and classes
+ * Optimize overlay [toast loading]
+ * The pop method moves out of the context parameter.
+ * Change of route jump can directly call [push() pushReplacement() pushAndRemoveUntil() pop()].
 ## [1.1.1]
- * 优化类文件
+ * Optimization class file
 ## [1.1.0]
- * 拆分部分工具类
- * 新加一些组件【GifControl】【DropdownMenu】【Universal】...
+ * Split some tool classes
+ * Add some new components [GifControl] [DropdownMenu] [Universal]
 ## [1.0.4]
- * 拆分TabBarWidget 
- * 优化部分代码 
- * 新增部分组件
+ * Split TabBarWidget
+ * Optimize part of the code
+ * New components
 ## [1.0.3]
- * 优化时间选择器(简化参数)
- * 优化Overlay叠层
- * 修复点击返回按键 Overlay无法关闭(需使用OverlayScaffold)
- * 添加Hero组件
+ * Optimize time selector (simplified parameter)
+ * Optimize overlay stack
+ * To fix the problem that overlay cannot be closed by clicking the return button (overlay scaffold is required)
+ * Add hero component
 ## [1.0.2]
- * 修复 download upload 方法 catch 异常无法返回问题
+ * Fix download upload method catch exception failed to return
 ## [1.0.1]
- * 修改crypto与flutter_test冲突
+ * Modify crypto and fluent_ Test conflict
 ## [1.0.0]
- * 发布正式版
+ * Release of official version
 ## [0.0.1]
- * create lib
+ *  create lib

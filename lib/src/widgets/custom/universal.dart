@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 class Universal extends StatelessWidget {
 
+  ///public
   final EdgeInsetsGeometry padding;
   final DragStartBehavior dragStartBehavior;
   final Clip clipBehavior;
@@ -10,16 +11,16 @@ class Universal extends StatelessWidget {
   final AlignmentGeometry alignment;
   final BorderRadius borderRadius;
 
-  //****** child ******//
+  ///****** child ******///
   final Widget child;
 
-  //****** Flexible ******//
+  ///****** Flexible ******///
   final bool expanded;
   final int flex;
   final bool isFlexible;
   final FlexFit flexFit;
 
-  //****** Container ******//
+  ///****** Container ******///
   final Decoration foregroundDecoration;
   final Matrix4 transform;
   final BoxConstraints constraints;
@@ -29,14 +30,14 @@ class Universal extends StatelessWidget {
   final EdgeInsetsGeometry margin;
   final Decoration decoration;
 
-  //****** children ******//
+  ///****** children ******///
   final List<Widget> children;
 
-  //****** Card ******//
+  ///****** Card ******///
   final addCard;
   final bool semanticContainer;
 
-  //****** Flex ******//
+  ///****** Flex ******///
   final MainAxisAlignment mainAxisAlignment;
   final CrossAxisAlignment crossAxisAlignment;
   final Axis direction;
@@ -45,13 +46,13 @@ class Universal extends StatelessWidget {
   final TextDirection textDirection;
   final MainAxisSize mainAxisSize;
 
-  //****** Clip ******//
+  ///****** Clip ******///
   final bool isClip;
   final CustomClipper<RRect> clipperRRect;
   final CustomClipper<Rect> clipperRect;
   final CustomClipper<Path> clipperPath;
 
-  //****** CircleAvatar ******//
+  ///****** CircleAvatar ******///
   final bool isCircleAvatar;
   final ImageProvider backgroundImage;
   final ImageErrorListener onBackgroundImageError;
@@ -59,14 +60,14 @@ class Universal extends StatelessWidget {
   final double minRadius;
   final double maxRadius;
 
-  //****** SingleChildScrollView ******//
+  ///****** SingleChildScrollView ******///
   final bool isScroll;
   final ScrollPhysics physics;
   final ScrollController scrollController;
   final bool reverse;
   final bool primary;
 
-  //****** Visibility ******//
+  ///****** Visibility ******///
   final bool sizedBoxExpand;
   final Widget replacement;
   final bool visible;
@@ -77,7 +78,7 @@ class Universal extends StatelessWidget {
   final bool maintainInteractivity;
   final bool offstage;
 
-  //****** 点击事件相关 ******//
+  ///****** 点击事件相关 ******///
   final bool addInkWell;
   final bool enabled;
 
@@ -98,7 +99,7 @@ class Universal extends StatelessWidget {
 
   final bool excludeFromSemantics;
 
-  //****** GestureDetector ******//
+  ///****** GestureDetector ******///
   ///点击抬起
   final GestureTapUpCallback onTapUp;
   final GestureTapDownCallback onSecondaryTapDown;
@@ -146,7 +147,7 @@ class Universal extends StatelessWidget {
   ///HitTestBehavior.translucent 自己和child都可以接收事件
   final HitTestBehavior behavior;
 
-  //****** Material ******//
+  ///****** Material ******///
   final MaterialType type;
   final double elevation;
   final Color shadowColor;
@@ -154,7 +155,7 @@ class Universal extends StatelessWidget {
   final ShapeBorder shape;
   final bool borderOnForeground;
 
-  //****** InkWell ******//
+  ///****** InkWell ******///
   ///高亮变化回调
   final ValueChanged<bool> onHighlightChanged;
   final ValueChanged<bool> onHover;
@@ -177,14 +178,14 @@ class Universal extends StatelessWidget {
   final ValueChanged<bool> onFocusChange;
   final bool autoFocus;
 
-  //****** Hero ******//
+  ///****** Hero ******///
   final String heroTag;
   final CreateRectTween createRectTween;
   final HeroFlightShuttleBuilder flightShuttleBuilder;
   final bool transitionOnUserGestures;
   final HeroPlaceholderBuilder placeholderBuilder;
 
-  //****** Stack ******//
+  ///****** Stack ******///
   final bool isStack;
   final StackFit stackFit;
   final Overflow overflow;
