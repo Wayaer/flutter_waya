@@ -23,7 +23,8 @@ class ConstConstant {
   static const String errorMessageT500 = 'Response'; //服务器错误
   static const String regExpPositive = '[+0-9.]'; //正数
   static const String regExpNegative = '[-0-9.]'; //负数
-  static const String regExpPassword = '[a-zA-Z0-9.]'; //密码
+  static const String regExpPassword = '[a-zA-Z0-9.]'; //密码 字母数字和点
+  static const String regExpLettersNumbers = '[a-zA-Z0-9]'; //字母和数字
   static const String regExpDecimal = '[0-9.]'; //小数
   static const String regExpLetter = '[a-zA-Z]'; //字母
   static const String regExpChinese = '[\u4e00-\u9fa5]'; //中文

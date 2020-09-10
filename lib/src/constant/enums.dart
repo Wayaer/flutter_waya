@@ -74,7 +74,10 @@ enum PushMode {
   material,
 }
 enum InputTextType {
-  ///密码
+  ///字母和数字
+  lettersNumbers,
+
+  ///密码 字母和数字和.
   password,
 
   ///整数
