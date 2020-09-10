@@ -138,6 +138,7 @@ class AutoScrollEntry extends StatefulWidget {
   final EdgeInsetsGeometry padding;
   final Duration duration;
   final Duration animateDuration;
+  final int maxItemCount;
 
   /// 回调监听
   final ValueChanged<int> onChanged;
@@ -151,6 +152,7 @@ class AutoScrollEntry extends StatefulWidget {
       {Key key,
       int initialIndex,
       this.itemHeight,
+      this.maxItemCount,
       this.itemWidth,
       @required this.children,
       this.onChanged,
@@ -169,6 +171,7 @@ class _AutoScrollEntryState extends State<AutoScrollEntry> {
   FixedExtentScrollController controller;
   Timer timer;
   int index = 0;
+  int maxItemCount = 10;
   double itemHeight = ScreenFit.getHeight(30);
 
   @override
@@ -177,10 +180,18 @@ class _AutoScrollEntryState extends State<AutoScrollEntry> {
     if (widget.initialIndex != null && widget.initialIndex < widget.children.length) index = widget.initialIndex;
     if (widget.itemHeight != null) itemHeight = widget.itemHeight;
     controller = FixedExtentScrollController(initialItem: widget.initialIndex);
+    if (widget.maxItemCount == null) {
+      if (widget.children.length > maxItemCount) maxItemCount = widget.children.length;
+    } else {
+      maxItemCount = widget.maxItemCount;
+    }
     Tools.addPostFrameCallback((duration) {
       timer = Tools.timerPeriodic(widget.duration ?? Duration(seconds: 3), (callback) {
         index += 1;
-        if (index > 100) index = 0;
+        if (index >= maxItemCount) {
+          index = 0;
+          controller.jumpToItem(index);
+        }
         controller?.animateToItem(index,
             duration: widget.animateDuration ?? Duration(milliseconds: 500), curve: Curves.linear);
       });
