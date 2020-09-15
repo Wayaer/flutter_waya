@@ -5,11 +5,9 @@ class EventBus<S> {
 
   StreamController get streamController => _streamController;
 
-  EventBus({bool sync = false})
-      : _streamController = StreamController.broadcast(sync: sync);
+  EventBus({bool sync = false}) : _streamController = StreamController.broadcast(sync: sync);
 
-  EventBus.customController(StreamController controller)
-      : _streamController = controller;
+  EventBus.customController(StreamController controller) : _streamController = controller;
 
   Stream<T> on<T>() {
     if (T == dynamic) {
@@ -27,8 +25,8 @@ class EventBus<S> {
     _streamController.close();
   }
 
-  void listen(listen) {
-    _streamController.stream.listen(listen);
+  void listen<T>(void onData(T event)) {
+    _streamController.stream.listen(onData);
   }
 
   void error(error) {
@@ -71,6 +69,6 @@ messageDestroy() {
   EventFactory.instance.event.close();
 }
 
-messageListen(listen) {
-  EventFactory.instance.event.listen(listen);
+messageListen<T>(void onData(T event)) {
+  EventFactory.instance.event.listen(onData);
 }

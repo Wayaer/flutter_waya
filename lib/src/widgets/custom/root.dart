@@ -117,8 +117,7 @@ class GlobalMaterial extends StatelessWidget {
     this.shortcuts,
     this.actions,
     this.onGenerateInitialRoutes,
-  })
-      : this.debugShowMaterialGrid = debugShowMaterialGrid ?? false,
+  })  : this.debugShowMaterialGrid = debugShowMaterialGrid ?? false,
         this.showPerformanceOverlay = showPerformanceOverlay ?? false,
         this.checkerboardRasterCacheImages = checkerboardRasterCacheImages ?? false,
         this.checkerboardOffscreenLayers = checkerboardOffscreenLayers ?? false,
@@ -225,8 +224,7 @@ class GlobalCupertino extends StatelessWidget {
     this.color,
     this.localeListResolutionCallback,
     this.localeResolutionCallback,
-  })
-      : this.showPerformanceOverlay = showPerformanceOverlay ?? false,
+  })  : this.showPerformanceOverlay = showPerformanceOverlay ?? false,
         this.checkerboardRasterCacheImages = checkerboardRasterCacheImages ?? false,
         this.checkerboardOffscreenLayers = checkerboardOffscreenLayers ?? false,
         this.showSemanticsDebugger = showSemanticsDebugger ?? false,
@@ -349,8 +347,7 @@ class OverlayScaffold extends StatefulWidget {
     this.resizeToAvoidBottomInset,
     this.onWillPop,
     this.appBarHeight,
-  })
-      : this.isScroll = isScroll ?? false,
+  })  : this.isScroll = isScroll ?? false,
         this.isolationBody = isolationBody ?? false,
         this.onWillPopOverlayClose = onWillPopOverlayClose ?? true,
         this.paddingStatusBar = paddingStatusBar ?? false,
@@ -377,7 +374,7 @@ class _OverlayScaffoldState extends State<OverlayScaffold> {
   Widget build(BuildContext context) {
     Widget scaffold = WillPopScope(
         onWillPop: widget.onWillPop ??
-                () async {
+            () async {
               if (widget.onWillPopOverlayClose &&
                   _overlayEntryList.length > 0 &&
                   !_overlayEntryList.last.isAutomaticOff) {
@@ -411,8 +408,7 @@ class _OverlayScaffoldState extends State<OverlayScaffold> {
 
   Widget bodyWidget(BuildContext context) => widget.enablePullDown ? refresherContainer() : container();
 
-  Widget refresherContainer() =>
-      Refreshed(
+  Widget refresherContainer() => Refreshed(
         enablePullDown: widget.enablePullDown,
         controller: widget.controller,
         onRefresh: widget.onRefresh,
@@ -425,12 +421,11 @@ class _OverlayScaffoldState extends State<OverlayScaffold> {
     return widget.appBar == null
         ? null
         : PreferredSize(
-        child: widget.appBar,
-        preferredSize: Size.fromHeight(MediaQueryTools.getStatusBarHeight() + widget.appBarHeight ?? 30));
+            child: widget.appBar,
+            preferredSize: Size.fromHeight(MediaQueryTools.getStatusBarHeight() + widget.appBarHeight ?? 30));
   }
 
-  Widget container() =>
-      Container(
+  Widget container() => Container(
         color: widget.backgroundColor,
         margin: widget.isolationBody ? EdgeInsets.only(top: ScreenFit.getHeight(10)) : EdgeInsets.zero,
         padding: widget.paddingStatusBar ? EdgeInsets.only(top: MediaQueryTools.getStatusBarHeight()) : widget.padding,
@@ -447,13 +442,14 @@ class _OverlayScaffoldState extends State<OverlayScaffold> {
 }
 
 ///************ 以下为 路由跳转 *****************///
-Future<T> push<T>({WidgetBuilder builder,
-  Widget widget,
-  String title,
-  RouteSettings settings,
-  bool maintainState,
-  bool fullscreenDialog,
-  PushMode pushMode}) {
+Future<T> push<T>(
+    {WidgetBuilder builder,
+    Widget widget,
+    String title,
+    RouteSettings settings,
+    bool maintainState,
+    bool fullscreenDialog,
+    PushMode pushMode}) {
   var route = _pageRoute(
       title: title,
       maintainState: maintainState,
@@ -465,13 +461,14 @@ Future<T> push<T>({WidgetBuilder builder,
   return Navigator.of(_globalNavigatorKey.currentContext).push(route);
 }
 
-Future<T> pushReplacement<T>({WidgetBuilder builder,
-  Widget widget,
-  String title,
-  RouteSettings settings,
-  bool maintainState,
-  bool fullscreenDialog,
-  PushMode pushMode}) {
+Future<T> pushReplacement<T>(
+    {WidgetBuilder builder,
+    Widget widget,
+    String title,
+    RouteSettings settings,
+    bool maintainState,
+    bool fullscreenDialog,
+    PushMode pushMode}) {
   var route = _pageRoute(
       title: title,
       maintainState: maintainState,
@@ -483,13 +480,14 @@ Future<T> pushReplacement<T>({WidgetBuilder builder,
   return Navigator.of(_globalNavigatorKey.currentContext).pushReplacement(route);
 }
 
-Future<T> pushAndRemoveUntil<T>({WidgetBuilder builder,
-  Widget widget,
-  String title,
-  RouteSettings settings,
-  bool maintainState,
-  bool fullscreenDialog,
-  PushMode pushMode}) {
+Future<T> pushAndRemoveUntil<T>(
+    {WidgetBuilder builder,
+    Widget widget,
+    String title,
+    RouteSettings settings,
+    bool maintainState,
+    bool fullscreenDialog,
+    PushMode pushMode}) {
   var route = _pageRoute(
       title: title,
       maintainState: maintainState,
@@ -623,10 +621,10 @@ bool haveToast = false;
 ///关闭 closeOverlay();
 void showToast(String message,
     {Color backgroundColor,
-      BoxDecoration boxDecoration,
-      GestureTapCallback onTap,
-      TextStyle textStyle,
-      Duration closeDuration}) async {
+    BoxDecoration boxDecoration,
+    GestureTapCallback onTap,
+    TextStyle textStyle,
+    Duration closeDuration}) async {
   if (haveToast) return;
   var entry = showOverlay(
       PopupBase(
@@ -634,7 +632,7 @@ void showToast(String message,
           child: Container(
             margin: EdgeInsets.symmetric(horizontal: ScreenFit.getWidth(0) / 5, vertical: ScreenFit.getHeight(0) / 4),
             decoration:
-            boxDecoration ?? BoxDecoration(color: getColors(black90), borderRadius: BorderRadius.circular(5)),
+                boxDecoration ?? BoxDecoration(color: getColors(black90), borderRadius: BorderRadius.circular(5)),
             padding: EdgeInsets.all(10),
             child: Widgets.textDefault(message, color: getColors(white), maxLines: 4),
           )),
@@ -792,9 +790,10 @@ Future<T> dialogSureCancel<T>({
   bool animatedOpacity,
   bool gaussian,
   double width,
+  bool isOverlay: false,
   bool addMaterial, //是否添加Material Widget 部分组件需要基于Material
 }) {
-  var popup = PopupSureCancel(
+  var widget = PopupSureCancel(
     backsideTap: () {
       if (isDismissible) closePopup();
     },
@@ -819,7 +818,11 @@ Future<T> dialogSureCancel<T>({
     padding: padding,
     margin: margin,
   );
-  return showDialogPopup(widget: popup);
+  if (isOverlay ?? false) {
+    showOverlay(widget);
+    return null;
+  }
+  return showDialogPopup(widget: widget);
 }
 
 ///关闭弹窗
