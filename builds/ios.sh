@@ -8,7 +8,7 @@ env=release
 exportOptions=ExportOptionsAdHoc.plist
 
 app="app/ios"
-version=$(grep 'version:' pubspec.yaml)
+version=$(grep "version:" pubspec.yaml)
 version=${version#version: }
 
 mkdir -p "$app/$env/"
@@ -39,8 +39,9 @@ xcodebuild -workspace Runner.xcworkspace -scheme Runner -sdk iphoneos -configura
 xcodebuild -exportArchive -archivePath $env/Runner.xcarchive -exportOptionsPlist $exportOptions -exportPath $env/runner -allowProvisioningUpdates
 
 # shellcheck disable=SC2046
+#Runner 修改为自己的app名字
 mv $env/runner/Runner.ipa ../$app/$env/app-v"${version}".$(date "+%Y%m%d%H%M").ipa
 
-rm -rf $env
+rm -rf "$env"
 
 echo "iOS打包完成😄"
