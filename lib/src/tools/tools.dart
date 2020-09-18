@@ -16,8 +16,6 @@ isDebug() {
 }
 
 class Tools {
-  static Timer _timerInfo;
-
   static exitApp() async {
     await SystemNavigator.pop();
   }
@@ -110,21 +108,17 @@ class Tools {
   static addPostFrameCallback(FrameCallback callback) => WidgetsBinding.instance.addPostFrameCallback(callback);
 
   static Timer timerTools(Duration duration, [Function function]) {
-    _timerInfo = Timer(duration, () {
+    Timer timer;
+    timer = Timer(duration, () {
       if (function != null) function();
-      _timerInfo.cancel();
+      timer?.cancel();
     });
-    return _timerInfo;
+    return timer;
   }
 
   static Timer timerPeriodic(Duration duration, [void callback(Timer timer)]) {
     ///需要手动释放timer
-    _timerInfo = Timer.periodic(duration, (time) => callback(time));
-    return _timerInfo;
-  }
-
-  static timerCancel() {
-    if (_timerInfo != null) _timerInfo.cancel();
+    return Timer.periodic(duration, (time) => callback(time));
   }
 
   /// md5 加密
