@@ -23,6 +23,7 @@ enum IndicatorType {
   scale,
   drop,
 }
+enum CarouselLayout { none, stack, tinder, custom }
 enum DateType {
   ///2020-1-1 00:00:00
   yearSecond,

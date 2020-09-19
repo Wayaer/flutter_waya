@@ -7,7 +7,7 @@
  * Optimization class file
 ## [1.1.0]
  * Split some tool classes
- * Add some new components [GifControl] [DropdownMenu] [Universal]
+ * Add some components [GifControl] [DropdownMenu] [Universal]
 ## [1.0.4]
  * Split TabBarWidget
  * Optimize part of the code

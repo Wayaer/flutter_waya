@@ -42,7 +42,7 @@ class SuspensionUtil {
   /// get index data list by suspension tag.
   /// 获取索引列表。
   static List<String> getTagIndexList(List<SuspensionModel> list) {
-    List<String> indexData = new List();
+    List<String> indexData = List();
     if (list != null && list.isNotEmpty) {
       String tempTag;
       for (int i = 0, length = list.length; i < length; i++) {

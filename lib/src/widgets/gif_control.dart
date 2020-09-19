@@ -153,7 +153,7 @@ class _GifImageState extends State<GifImage> {
 
   @override
   Widget build(BuildContext context) {
-    final RawImage image = new RawImage(
+    final RawImage image = RawImage(
       image: _imageInfo?.image,
       width: widget.width,
       height: widget.height,
@@ -167,7 +167,7 @@ class _GifImageState extends State<GifImage> {
       matchTextDirection: widget.matchTextDirection,
     );
     if (widget.excludeFromSemantics) return image;
-    return new Semantics(
+    return Semantics(
       container: widget.semanticLabel != null,
       image: true,
       label: widget.semanticLabel == null ? '' : widget.semanticLabel,
