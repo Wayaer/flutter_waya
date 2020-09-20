@@ -131,7 +131,7 @@ class NestedScrollSliver extends StatefulWidget {
         this.stretch = stretch ?? false,
         this.brightness = brightness ?? Brightness.light,
         this.elevation = elevation ?? 0.5,
-        this.duration = duration ?? const Duration(milliseconds: 200),
+        this.duration = duration ?? const Duration(milliseconds: 400),
         this.stretchTriggerOffset = stretchTriggerOffset ?? 100,
         this.stretchModes = stretchModes ?? const <StretchMode>[StretchMode.zoomBackground],
         this.collapseMode = collapseMode ?? CollapseMode.parallax,

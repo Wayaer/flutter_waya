@@ -126,6 +126,9 @@ class ListBuilder extends StatelessWidget {
     Key key,
     this.itemBuilder,
     @required this.itemCount,
+    Axis scrollDirection,
+    EdgeInsetsGeometry padding,
+    bool reverse,
     this.separatorBuilder,
     this.dragStartBehavior: DragStartBehavior.start,
     this.keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
@@ -146,14 +149,14 @@ class ListBuilder extends StatelessWidget {
     this.footer,
     this.footerTextStyle,
     this.listType,
-    this.padding: EdgeInsets.zero,
-    this.scrollDirection: Axis.vertical,
-    this.reverse: false,
     this.primary: false,
     this.cacheExtent,
     this.semanticChildCount,
     this.childrenDelegate,
-  }) : super(key: key) {
+  })  : this.padding = padding ?? EdgeInsets.zero,
+        this.scrollDirection = scrollDirection ?? Axis.vertical,
+        this.reverse = reverse ?? false,
+        super(key: key) {
     if (listType == null || listType == ListType.builder) assert(itemBuilder != null);
     if (listType == ListType.custom) assert(childrenDelegate != null);
     if (listType == ListType.separated) assert(itemBuilder != null && separatorBuilder != null && itemCount != null);
