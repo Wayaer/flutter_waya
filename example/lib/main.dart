@@ -25,10 +25,13 @@ class Home extends StatelessWidget {
           FlatButton(onPressed: () => showModalPopup(), child: Text('点击弹窗')),
           FlatButton(onPressed: () => showOverlayLoading(), child: Text('点击Loading')),
           FlatButton(onPressed: () => showOverlayToast(context), child: Text('点击Toast')),
+          FlatButton(onPressed: () => selectCity(), child: Text('城市选择器')),
         ],
       ),
     );
   }
+
+  selectCity() => showAreaPicker();
 
   showOverlayLoading() => showLoading(gaussian: true);
 

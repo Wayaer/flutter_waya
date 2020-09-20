@@ -15,15 +15,13 @@ enum AutoScrollAnimation {
   ///从下往上执行动画 默认是从下往上的
   b2t
 }
-enum IndicatorType {
-  none,
-  slide,
-  warm,
-  color,
-  scale,
-  drop,
-}
+
+enum ListType { builder, custom, separated }
+
+enum IndicatorType { none, slide, warm, color, scale, drop }
+
 enum CarouselLayout { none, stack, tinder, custom }
+
 enum DateType {
   ///2020-1-1 00:00:00
   yearSecond,
@@ -119,20 +117,10 @@ enum InputTextType {
 }
 
 ///刷新类型
-enum RefreshCompletedType {
-  refresh,
-  refreshFailed,
-  refreshToIdle,
-  onLoading,
-  loadFailed,
-  loadNoData,
-  twoLevel,
-}
-enum StretchyHeaderAlignment {
-  bottom,
-  center,
-  top,
-}
+enum RefreshCompletedType { refresh, refreshFailed, refreshToIdle, onLoading, loadFailed, loadNoData, twoLevel }
+
+enum StretchyHeaderAlignment { bottom, center, top }
+
 enum TabBarLevelPosition {
   right,
   left,

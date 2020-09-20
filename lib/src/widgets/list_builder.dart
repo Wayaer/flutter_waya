@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/styles.dart';
@@ -64,7 +65,6 @@ class GridBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (itemCount == 0) return noData ?? Widgets.notDataWidget(margin: EdgeInsets.all(ScreenFit.getWidth(10)));
-
     return GridView.builder(
       physics: physics,
       itemCount: itemCount,
@@ -74,7 +74,7 @@ class GridBuilder extends StatelessWidget {
       shrinkWrap: shrinkWrap,
       itemBuilder: itemBuilder,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-//          maxCrossAxisExtent: maxCrossAxisExtent,
+//          maxCrossAxisExtent: maxCrossAisExtent,
           childAspectRatio: childAspectRatio,
           mainAxisSpacing: mainAxisSpacing,
           crossAxisCount: crossAxisCount,
@@ -84,6 +84,8 @@ class GridBuilder extends StatelessWidget {
 }
 
 class ListBuilder extends StatelessWidget {
+  final ListType listType;
+
   final bool shrinkWrap;
   final IndexedWidgetBuilder itemBuilder;
   final int itemCount;
@@ -106,17 +108,33 @@ class ListBuilder extends StatelessWidget {
 
   ///是否逆转
   final bool reverse;
+  final bool primary;
+
+  final bool addAutomaticKeepALives;
+
+  final bool addRepaintBoundaries;
+
+  final bool addSemanticIndexes;
+  final double cacheExtent;
+  final int semanticChildCount;
+  final DragStartBehavior dragStartBehavior;
+  final SliverChildDelegate childrenDelegate;
+  final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
+  final IndexedWidgetBuilder separatorBuilder;
 
   ListBuilder({
     Key key,
-    @required this.itemBuilder,
+    this.itemBuilder,
     @required this.itemCount,
+    this.separatorBuilder,
+    this.dragStartBehavior: DragStartBehavior.start,
+    this.keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
     this.physics,
     this.controller,
     this.itemExtent,
-    Axis scrollDirection,
-    EdgeInsetsGeometry padding,
-    bool reverse,
+    this.addAutomaticKeepALives: true,
+    this.addRepaintBoundaries: true,
+    this.addSemanticIndexes: true,
     this.noData,
     this.shrinkWrap: true,
     this.enablePullDown: false,
@@ -127,14 +145,26 @@ class ListBuilder extends StatelessWidget {
     this.header,
     this.footer,
     this.footerTextStyle,
-  })  : this.padding = padding ?? EdgeInsets.zero,
-        this.scrollDirection = scrollDirection ?? Axis.vertical,
-        this.reverse = reverse ?? false,
-        super(key: key);
+    this.listType,
+    this.padding: EdgeInsets.zero,
+    this.scrollDirection: Axis.vertical,
+    this.reverse: false,
+    this.primary: false,
+    this.cacheExtent,
+    this.semanticChildCount,
+    this.childrenDelegate,
+  }) : super(key: key) {
+    if (listType == null || listType == ListType.builder) assert(itemBuilder != null);
+    if (listType == ListType.custom) assert(childrenDelegate != null);
+    if (listType == ListType.separated) assert(itemBuilder != null && separatorBuilder != null && itemCount != null);
+  }
 
   @override
-  Widget build(BuildContext context) {
-    if (enablePullDown || enablePullUp) return refresherListView();
+  Widget build(BuildContext context) => (enablePullDown || enablePullUp) ? refresherListView() : list();
+
+  Widget list() {
+    if (listType == ListType.separated) return listViewSeparated();
+    if (listType == ListType.custom) return listViewCustom();
     return listViewBuilder();
   }
 
@@ -150,6 +180,54 @@ class ListBuilder extends StatelessWidget {
       itemCount: itemCount,
       itemExtent: itemExtent,
       padding: padding,
+      primary: primary,
+      addAutomaticKeepAlives: addAutomaticKeepALives,
+      addRepaintBoundaries: addRepaintBoundaries,
+      addSemanticIndexes: addSemanticIndexes,
+      cacheExtent: cacheExtent,
+      semanticChildCount: semanticChildCount,
+      dragStartBehavior: dragStartBehavior,
+      keyboardDismissBehavior: keyboardDismissBehavior,
+    );
+  }
+
+  Widget listViewCustom() {
+    if (itemCount == 0) return noData ?? Widgets.notDataWidget(margin: EdgeInsets.all(ScreenFit.getWidth(10)));
+    return ListView.custom(
+        scrollDirection: scrollDirection,
+        physics: physics,
+        reverse: reverse,
+        shrinkWrap: shrinkWrap,
+        controller: controller,
+        itemExtent: itemExtent,
+        padding: padding,
+        primary: primary,
+        childrenDelegate: childrenDelegate,
+        cacheExtent: cacheExtent,
+        semanticChildCount: semanticChildCount,
+        dragStartBehavior: dragStartBehavior,
+        keyboardDismissBehavior: keyboardDismissBehavior);
+  }
+
+  Widget listViewSeparated() {
+    if (itemCount == 0) return noData ?? Widgets.notDataWidget(margin: EdgeInsets.all(ScreenFit.getWidth(10)));
+    return ListView.separated(
+      scrollDirection: scrollDirection,
+      physics: physics,
+      reverse: reverse,
+      shrinkWrap: shrinkWrap,
+      controller: controller,
+      padding: padding,
+      primary: primary,
+      cacheExtent: cacheExtent,
+      dragStartBehavior: dragStartBehavior,
+      keyboardDismissBehavior: keyboardDismissBehavior,
+      itemBuilder: itemBuilder,
+      separatorBuilder: separatorBuilder,
+      itemCount: itemCount,
+      addAutomaticKeepAlives: addAutomaticKeepALives,
+      addRepaintBoundaries: addRepaintBoundaries,
+      addSemanticIndexes: addSemanticIndexes,
     );
   }
 
@@ -159,7 +237,7 @@ class ListBuilder extends StatelessWidget {
       controller: refreshController,
       onLoading: onLoading,
       onRefresh: onRefresh,
-      child: listViewBuilder(),
+      child: list(),
       header: header,
       footer: footer,
       footerTextStyle: footerTextStyle);

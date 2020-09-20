@@ -928,7 +928,7 @@ Future<T> showDateTimePicker<T>({
       contentStyle: contentStyle,
       unitStyle: unitStyle,
       cancelTap: cancelTap ?? () => closePopup(),
-      sureTap: sureTap ?? () => closePopup());
+      sureTap: sureTap ?? (String text) => closePopup());
   return showBottomPopup(widget: widget);
 }
 
@@ -959,9 +959,6 @@ Future<T> showAreaPicker<T>({
 
   ///单个item的高度
   double itemHeight,
-
-  ///单个item的宽度
-  double itemWidth,
 
   ///整个弹框高度
   double height,
@@ -1000,7 +997,6 @@ Future<T> showAreaPicker<T>({
       useMagnifier: useMagnifier,
       squeeze: squeeze,
       itemHeight: itemHeight,
-      itemWidth: itemWidth,
       height: height,
       backgroundColor: backgroundColor,
       sure: sure,
@@ -1009,7 +1005,7 @@ Future<T> showAreaPicker<T>({
       titleBottom: titleBottom,
       contentStyle: contentStyle,
       cancelTap: cancelTap ?? () => closePopup(),
-      sureTap: sureTap ?? () => closePopup());
+      sureTap: sureTap ?? (String text) => closePopup());
   return showBottomPopup(widget: widget);
 }
 

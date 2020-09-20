@@ -70,7 +70,12 @@ class ListWheel extends StatefulWidget {
         this.squeeze = squeeze ?? 1,
         this.itemExtent = itemExtent ?? ScreenFit.getHeight(12),
         this.physics = physics ?? FixedExtentScrollPhysics(),
-        super(key: key);
+        super(key: key) {
+    if ((childDelegateType == ListWheelChildDelegateType.list ||
+        childDelegateType == ListWheelChildDelegateType.looping)) assert(children != null);
+    if ((childDelegateType == null || childDelegateType == ListWheelChildDelegateType.builder))
+      assert(itemCount != null && itemBuilder != null);
+  }
 
   @override
   _ListWheelState createState() => _ListWheelState();
@@ -78,50 +83,35 @@ class ListWheel extends StatefulWidget {
 
 class _ListWheelState extends State<ListWheel> {
   FixedExtentScrollController controller;
-  ListWheelChildDelegateType childDelegateType;
 
   @override
   void initState() {
     super.initState();
     controller = widget.controller ?? FixedExtentScrollController(initialItem: widget.initialIndex);
-    childDelegateType = widget.childDelegateType ?? ListWheelChildDelegateType.builder;
   }
 
   @override
   Widget build(BuildContext context) {
-    ListWheelChildDelegate childDelegate;
-    switch (childDelegateType) {
-      case ListWheelChildDelegateType.builder:
-        assert(widget.itemCount != null);
-        assert(widget.itemBuilder != null);
-        childDelegate = ListWheelChildBuilderDelegate(builder: widget.itemBuilder, childCount: widget.itemCount);
-        break;
-      case ListWheelChildDelegateType.list:
-        assert(widget.children != null);
-        childDelegate = ListWheelChildListDelegate(children: widget.children);
-        break;
-      case ListWheelChildDelegateType.looping:
-        assert(widget.children != null);
-        childDelegate = ListWheelChildLoopingListDelegate(children: widget.children);
-        break;
-    }
-    if (childDelegate == null) return Container();
-
+    ListWheelChildDelegate childDelegate =
+        ListWheelChildBuilderDelegate(builder: widget.itemBuilder, childCount: widget.itemCount);
+    if (widget?.childDelegateType == ListWheelChildDelegateType.looping)
+      childDelegate = ListWheelChildLoopingListDelegate(children: widget.children);
+    if (widget?.childDelegateType == ListWheelChildDelegateType.list)
+      childDelegate = ListWheelChildListDelegate(children: widget.children);
     return ListWheelScrollView.useDelegate(
-      controller: controller,
-      itemExtent: widget.itemExtent,
-      physics: widget.physics,
-      diameterRatio: widget.diameterRatio,
-      onSelectedItemChanged: (int index) {
-        if (widget?.onChanged != null) widget.onChanged(index);
-      },
-      offAxisFraction: widget.offAxisFraction,
-      perspective: widget.perspective,
-      useMagnifier: widget.useMagnifier,
-      squeeze: widget.squeeze,
-      magnification: widget.magnification,
-      childDelegate: childDelegate,
-    );
+        controller: controller,
+        itemExtent: widget.itemExtent,
+        physics: widget.physics,
+        diameterRatio: widget.diameterRatio,
+        onSelectedItemChanged: (int index) {
+          if (widget?.onChanged != null) widget.onChanged(index);
+        },
+        offAxisFraction: widget.offAxisFraction,
+        perspective: widget.perspective,
+        useMagnifier: widget.useMagnifier,
+        squeeze: widget.squeeze,
+        magnification: widget.magnification,
+        childDelegate: childDelegate);
   }
 
   @override
