@@ -28,6 +28,7 @@ class PopupBase extends StatefulWidget {
   final double right;
   final double bottom;
   final AlignmentGeometry alignment;
+  final bool ignoring;
 
   const PopupBase(
       {Key key,
@@ -35,6 +36,7 @@ class PopupBase extends StatefulWidget {
       this.onTap,
       int fuzzyDegree,
       bool gaussian,
+      bool ignoring,
       bool animationOpacity,
       this.color,
       bool addMaterial,
@@ -57,6 +59,7 @@ class PopupBase extends StatefulWidget {
         this.handleTouch = handleTouch ?? true,
         this.popupMode = popupMode ?? PopupMode.center,
         this.animation = animation ?? true,
+        this.ignoring = ignoring ?? false,
         this.animationOpacity = animationOpacity ?? false,
         this.fuzzyDegree = fuzzyDegree ?? 2,
         super(key: key);
@@ -127,7 +130,7 @@ class _PopupBaseState extends State<PopupBase> {
           color: getColors(transparent), child: MediaQuery(data: MediaQueryData.fromWindow(window), child: child));
 
     if (!widget.handleTouch) child = IgnorePointer(ignoring: widget.handleTouch, child: child);
-
+    if (widget.ignoring) child = IgnorePointer(child: child);
     return child;
   }
 

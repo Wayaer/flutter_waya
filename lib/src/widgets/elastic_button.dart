@@ -6,9 +6,9 @@ class ElasticButton extends StatefulWidget {
   final ElasticButtonType elasticButtonType;
 
   ///The widget that is to be displayed on your regular UI.
-  final Widget uiChild;
+  final Widget child;
 
-  ///Set this to true if your [uiChild] doesn't change at runtime.
+  ///Set this to true if your [child] doesn't change at runtime.
   final bool useCache;
 
   ///Use this value to determine the alignment of the animation.
@@ -53,13 +53,13 @@ class ElasticButton extends StatefulWidget {
   final GestureForcePressUpdateCallback onForcePressUpdate;
   final GestureForcePressEndCallback onForcePressEnd;
 
-  const ElasticButton(
-    this.elasticButtonType,
-    this.uiChild, {
+  const ElasticButton({
     Key key,
-    this.useCache: true,
-    this.alignment: Alignment.center,
-    this.scaleCoefficient: 0.75,
+    ElasticButtonType elasticButtonType,
+    this.child,
+    bool useCache,
+    Alignment alignment,
+    double scaleCoefficient,
     this.onTapDown,
     this.onTapUp,
     this.onTap,
@@ -95,7 +95,10 @@ class ElasticButton extends StatefulWidget {
     this.onScaleStart,
     this.onScaleUpdate,
     this.onScaleEnd,
-  })  : assert(scaleCoefficient >= 0.0 && scaleCoefficient <= 1.0),
+  })  : this.elasticButtonType = elasticButtonType ?? ElasticButtonType.onlyScale,
+        this.scaleCoefficient = scaleCoefficient ?? 0.80,
+        this.useCache = useCache ?? true,
+        this.alignment = alignment ?? Alignment.center,
         super(key: key);
 
   @override
@@ -122,17 +125,16 @@ class _ElasticButtonState extends State<ElasticButton> with SingleTickerProvider
   void initState() {
     super.initState();
     elasticButtonType = widget.elasticButtonType;
+    scaleCoefficient = widget.scaleCoefficient;
+    if (scaleCoefficient > 1.0) scaleCoefficient = 1;
     useCache = widget.useCache;
     alignment = widget.alignment;
-    scaleCoefficient = widget.scaleCoefficient;
     if (useCache) uiChild = wrapper();
     animationController = AnimationController(
         vsync: this, lowerBound: 0.0, upperBound: 1.0, duration: const Duration(milliseconds: 1000));
     animationController.value = 1;
-    animation = Tween(
-      begin: scaleCoefficient,
-      end: 1.0,
-    ).animate(CurvedAnimation(parent: animationController, curve: Curves.elasticOut));
+    animation = Tween(begin: scaleCoefficient, end: 1.0)
+        .animate(CurvedAnimation(parent: animationController, curve: Curves.elasticOut));
   }
 
   @override
@@ -437,7 +439,7 @@ class _ElasticButtonState extends State<ElasticButton> with SingleTickerProvider
                 elastic();
                 if (widget.onScaleEnd != null && isEnabled) widget.onScaleEnd(_);
               },
-        child: widget.uiChild,
+        child: widget.child,
       );
 
   @override

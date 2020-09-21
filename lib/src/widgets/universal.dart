@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 
 class Universal extends StatelessWidget {
 
@@ -641,7 +642,7 @@ class Universal extends StatelessWidget {
 }
 
 class SimpleButton extends StatelessWidget {
-  final child;
+  final Widget child;
   final TextStyle textStyle;
   final EdgeInsetsGeometry padding;
   final EdgeInsetsGeometry margin;
@@ -658,11 +659,16 @@ class SimpleButton extends StatelessWidget {
   final bool visible;
   final String heroTag;
   final BoxConstraints constraints;
+  final ElasticButtonType elasticButtonType;
+  final bool isElastic;
+  final bool useCache;
+  final double scaleCoefficient;
 
   SimpleButton({
     Key key,
     String text,
-    bool inkWell,
+    bool isElastic,
+    TextOverflow overflow,
     this.textStyle,
     this.visible,
     this.constraints,
@@ -677,39 +683,46 @@ class SimpleButton extends StatelessWidget {
     this.alignment,
     this.maxLines,
     this.child,
-    TextOverflow overflow,
-    this.addInkWell,
+    this.addInkWell, this.elasticButtonType, this.useCache, this.scaleCoefficient,
   })
       : this.text = text ?? 'Button',
+        this.isElastic=isElastic ?? false,
         this.overflow = overflow ?? TextOverflow.ellipsis,
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    Widget widget = hero(Text(text,
+    Widget widget = Text(text,
         textAlign: TextAlign.start,
         style: textStyle,
         maxLines: maxLines,
-        overflow: overflow));
+        overflow: overflow);
     if (child != null) widget = child;
-    return Universal(
-        visible: visible,
-        constraints: constraints,
-        addInkWell: addInkWell,
-        mainAxisSize: MainAxisSize.min,
-        child: widget,
-        width: width,
-        height: height,
-        onTap: onTap,
-        margin: margin,
-        decoration: decoration ?? BoxDecoration(color: color),
-        padding: padding,
-        alignment: alignment
-    );
+    if (isElastic) return ElasticButton(
+      child: universal(widget),
+      onTap: onTap,
+      elasticButtonType: elasticButtonType,
+      scaleCoefficient: scaleCoefficient,
+      useCache: useCache,);
+    return universal(widget, onTap: onTap);
   }
 
-  Widget hero(Widget text) {
-    if (heroTag != null) return Hero(tag: heroTag, child: text);
-    return text;
-  }
+  Widget universal(Widget widget, {GestureTapCallback onTap}) =>
+      Universal(
+          heroTag: heroTag,
+          visible: visible,
+          constraints: constraints,
+          addInkWell: addInkWell,
+          mainAxisSize: MainAxisSize.min,
+          child: widget,
+          onTap: onTap,
+          width: width,
+          height: height,
+          margin: margin,
+          decoration: decoration ?? BoxDecoration(color: color),
+          padding: padding,
+          alignment: alignment
+      );
+
+
 }

@@ -623,7 +623,7 @@ void showToast(String message,
   if (haveToast) return;
   var entry = showOverlay(
       PopupBase(
-          onTap: () => closeOverlay(),
+          ignoring: true,
           child: Container(
               margin: EdgeInsets.symmetric(horizontal: ScreenFit.getWidth(0) / 5, vertical: ScreenFit.getHeight(0) / 4),
               decoration:

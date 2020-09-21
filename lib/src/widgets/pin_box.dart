@@ -126,10 +126,10 @@ class PinBox extends StatefulWidget {
     this.wrapAlignment: WrapAlignment.start,
     this.textDirection: TextDirection.ltr,
     this.keyboardType: TextInputType.number,
-    this.pinBoxOuterPadding = const EdgeInsets.symmetric(horizontal: 4.0),
+    this.pinBoxOuterPadding = const EdgeInsets.all(0),
     this.pinBoxColor,
     this.highlightPinBoxColor,
-    this.pinBoxBorderWidth = 2.0,
+    this.pinBoxBorderWidth = 1.0,
     this.pinBoxRadius = 0,
     this.hideDefaultKeyboard = false,
     this.hasUnderline = false,
@@ -153,7 +153,6 @@ class _PinBoxState extends State<PinBox> with SingleTickerProviderStateMixin {
   void didUpdateWidget(PinBox oldWidget) {
     super.didUpdateWidget(oldWidget);
     focusNode = widget.focusNode ?? focusNode;
-
     if (oldWidget.maxLength < widget.maxLength) {
       currentIndex = text.length;
       setState(() {});
@@ -218,7 +217,6 @@ class _PinBoxState extends State<PinBox> with SingleTickerProviderStateMixin {
 
   void _initTextController() {
     if (widget.controller == null) return;
-
     strList.clear();
     if (widget.controller.text.isNotEmpty && widget.controller.text.length > widget.maxLength) {
       throw Exception("TextEditingController length exceeded maxLength!");
@@ -245,8 +243,6 @@ class _PinBoxState extends State<PinBox> with SingleTickerProviderStateMixin {
   @override
   void dispose() {
     if (widget.focusNode == null) {
-      // Only dispose the focus node if it's internal.  Don't dispose the passed
-      // in focus node as it's owned by the parent not this child widget.
       focusNode?.dispose();
     } else {
       focusNode.removeListener(_focusListener);
@@ -367,7 +363,7 @@ class _PinBoxState extends State<PinBox> with SingleTickerProviderStateMixin {
     } else if (widget.highlightAnimation && _shouldHighlight(i)) {
       pinBoxColor = widget.pinBoxColor;
       return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4.0),
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: AnimatedBuilder(
               animation: _highlightAnimationController,
               builder: (BuildContext context, Widget child) {
@@ -407,7 +403,6 @@ class _PinBoxState extends State<PinBox> with SingleTickerProviderStateMixin {
     EdgeInsets insets;
     if (i == 0) {
       insets = EdgeInsets.only(
-          left: 0,
           top: widget.pinBoxOuterPadding.top,
           right: widget.pinBoxOuterPadding.right,
           bottom: widget.pinBoxOuterPadding.bottom);
@@ -415,7 +410,6 @@ class _PinBoxState extends State<PinBox> with SingleTickerProviderStateMixin {
       insets = EdgeInsets.only(
           left: widget.pinBoxOuterPadding.left,
           top: widget.pinBoxOuterPadding.top,
-          right: 0,
           bottom: widget.pinBoxOuterPadding.bottom);
     } else {
       insets = widget.pinBoxOuterPadding;

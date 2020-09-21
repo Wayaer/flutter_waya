@@ -21,10 +21,33 @@ class Home extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          PinBox(),
+          PinBox(
+            maxLength: 6,
+            pinBoxWidth: 30,
+            pinBoxOuterPadding: EdgeInsets.zero,
+            pinBoxBorderWidth: 0.5,
+            pinBoxColor: Colors.amber,
+            pinBoxHeight: 30,
+            pinTextStyle: TextStyle(fontSize: 10),
+            highlight: true,
+          ),
+          Container(
+            margin: EdgeInsets.all(10),
+            child: ElasticButton(
+              useCache: false,
+              elasticButtonType: ElasticButtonType.onlyScale,
+              onTap: () {
+                showOverlayToast();
+              },
+              child: Container(
+                color: Colors.green,
+                padding: EdgeInsets.all(10),
+                child: Text('按钮'),
+              ),
+            ),
+          ),
           FlatButton(onPressed: () => showModalPopup(), child: Text('点击弹窗')),
-          FlatButton(onPressed: () => showOverlayLoading(), child: Text('点击Loading')),
-          FlatButton(onPressed: () => showOverlayToast(context), child: Text('点击Toast')),
+          FlatButton(onPressed: () => showOverlayToast(), child: Text('点击Toast')),
           FlatButton(onPressed: () => selectCity(), child: Text('城市选择器')),
         ],
       ),
@@ -35,12 +58,8 @@ class Home extends StatelessWidget {
 
   showOverlayLoading() => showLoading(gaussian: true);
 
-  showOverlayToast(BuildContext context) {
+  showOverlayToast() {
     showToast("0");
-    showToast("1");
-    showToast("2");
-    showToast("3");
-    showToast("4");
   }
 
   showModalPopup() {

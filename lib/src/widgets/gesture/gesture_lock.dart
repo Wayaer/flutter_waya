@@ -36,10 +36,10 @@ class GestureLock extends StatefulWidget {
 }
 
 class _GestureLockState extends State<GestureLock> {
-  List<Point> points;
-  List<Point> pathPoints = [];
+  List<_Point> points;
+  List<_Point> path_Points = [];
   double realRadius = 0;
-  Point curPoint;
+  _Point cur_Point;
 
   @override
   void initState() {
@@ -51,7 +51,7 @@ class _GestureLockState extends State<GestureLock> {
     for (int i = 0; i < 9; i++) {
       double x = gapWidth + realRingSize;
       double y = gapWidth + realRingSize;
-      points.add(Point(x: (1 + i % 3 * 2) * x, y: (1 + i ~/ 3 * 2) * y, position: i));
+      points.add(_Point(x: (1 + i % 3 * 2) * x, y: (1 + i ~/ 3 * 2) * y, position: i));
     }
   }
 
@@ -62,7 +62,7 @@ class _GestureLockState extends State<GestureLock> {
         Container(
           child: CustomPaint(
             size: Size(widget.size, widget.size),
-            painter: _CanvasPoint(
+            painter: _Canvas_Point(
                 ringWidth: widget.ringWidth,
                 ringRadius: widget.ringRadius,
                 showUnSelectRing: widget.showUnSelectRing,
@@ -76,10 +76,10 @@ class _GestureLockState extends State<GestureLock> {
             child: CustomPaint(
                 size: Size(widget.size, widget.size),
                 painter: _CanvasLine(
-                    pathPoints: pathPoints,
+                    path_Points: path_Points,
                     selectColor: widget.selectColor,
                     lineWidth: widget.lineWidth,
-                    curPoint: curPoint)),
+                    cur_Point: cur_Point)),
             onPanDown: onPanDownVoid,
             onPanUpdate: (DragUpdateDetails e) => onPanUpdate(e, context),
             onPanEnd: (DragEndDetails e) => onPanEnd(e, context))
@@ -96,16 +96,16 @@ class _GestureLockState extends State<GestureLock> {
     RenderBox box = context.findRenderObject();
     Offset offset = box.globalToLocal(e.globalPosition);
     slideDealt(offset);
-    curPoint = Point(x: offset.dx, y: offset.dy, position: -1);
+    cur_Point = _Point(x: offset.dx, y: offset.dy, position: -1);
     setState(() {});
   }
 
   onPanEnd(DragEndDetails e, BuildContext context) {
-    if (pathPoints.length > 0) {
-      curPoint = pathPoints[pathPoints.length - 1];
+    if (path_Points.length > 0) {
+      cur_Point = path_Points[path_Points.length - 1];
       setState(() {});
       if (widget.onPanUp != null) {
-        List<int> items = pathPoints.map((item) => item.position).toList();
+        List<int> items = path_Points.map((item) => item.position).toList();
         widget.onPanUp(items);
       }
       if (widget.immediatelyClear) clearAllData();
@@ -127,27 +127,27 @@ class _GestureLockState extends State<GestureLock> {
     int position = yPosition * 3 + xPosition;
     if (!points[position].isSelect) {
       points[position].isSelect = true;
-      pathPoints.add(points[position]);
+      path_Points.add(points[position]);
     }
   }
 
   clearAllData() {
     for (int i = 0; i < 9; i++) points[i].isSelect = false;
-    pathPoints.clear();
+    path_Points.clear();
     setState(() {});
   }
 }
 
-class _CanvasPoint extends CustomPainter {
+class _Canvas_Point extends CustomPainter {
   final double ringWidth;
   final double ringRadius;
   final bool showUnSelectRing;
   final double circleRadius;
   final Color selectColor;
   final Color unSelectColor;
-  final List<Point> points;
+  final List<_Point> points;
 
-  _CanvasPoint(
+  _Canvas_Point(
       {@required this.ringWidth,
       @required this.ringRadius,
       @required this.showUnSelectRing,
@@ -187,27 +187,27 @@ class _CanvasPoint extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) => true;
 }
 
-class Point {
+class _Point {
   double x;
   double y;
   bool isSelect = false;
   int position;
 
-  Point({@required this.x, @required this.y, @required this.position});
+  _Point({@required this.x, @required this.y, @required this.position});
 }
 
 class _CanvasLine extends CustomPainter {
-  final List<Point> pathPoints;
+  final List<_Point> path_Points;
   final Color selectColor;
   final double lineWidth;
-  final Point curPoint;
+  final _Point cur_Point;
 
   _CanvasLine(
-      {@required this.pathPoints, @required this.selectColor, @required this.lineWidth, @required this.curPoint});
+      {@required this.path_Points, @required this.selectColor, @required this.lineWidth, @required this.cur_Point});
 
   @override
   void paint(Canvas canvas, Size size) {
-    int length = pathPoints.length;
+    int length = path_Points.length;
     if (length < 1) return;
     final linePaint = Paint()
       ..isAntiAlias = true
@@ -218,11 +218,11 @@ class _CanvasLine extends CustomPainter {
 
     for (int i = 0; i < length - 1; i++) {
       canvas.drawLine(
-          Offset(pathPoints[i].x, pathPoints[i].y), Offset(pathPoints[i + 1].x, pathPoints[i + 1].y), linePaint);
+          Offset(path_Points[i].x, path_Points[i].y), Offset(path_Points[i + 1].x, path_Points[i + 1].y), linePaint);
     }
 
-    double endX = curPoint.x;
-    double endY = curPoint.y;
+    double endX = cur_Point.x;
+    double endY = cur_Point.y;
     if (endX < 0) {
       endX = 0;
     } else if (endX > size.width) {
@@ -233,7 +233,7 @@ class _CanvasLine extends CustomPainter {
     } else if (endY > size.height) {
       endY = size.height;
     }
-    canvas.drawLine(Offset(pathPoints[length - 1].x, pathPoints[length - 1].y), Offset(endX, endY), linePaint);
+    canvas.drawLine(Offset(path_Points[length - 1].x, path_Points[length - 1].y), Offset(endX, endY), linePaint);
   }
 
   @override
