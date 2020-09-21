@@ -19,15 +19,16 @@ class CarouselPluginConfig {
   final CarouselController controller;
   final CarouselLayout layout;
 
-  const CarouselPluginConfig({this.activeIndex,
-    this.itemCount,
-    this.indicatorLayout,
-    this.outer,
-    this.scrollDirection,
-    this.controller,
-    this.pageController,
-    this.layout,
-    this.loop})
+  const CarouselPluginConfig(
+      {this.activeIndex,
+      this.itemCount,
+      this.indicatorLayout,
+      this.outer,
+      this.scrollDirection,
+      this.controller,
+      this.pageController,
+      this.layout,
+      this.loop})
       : assert(scrollDirection != null),
         assert(controller != null);
 }
@@ -69,16 +70,17 @@ class CarouselControl extends CarouselPlugin {
 
   final Key key;
 
-  const CarouselControl({this.iconPrevious: Icons.arrow_back_ios,
-    this.iconNext: Icons.arrow_forward_ios,
-    this.color,
-    this.disableColor,
-    this.key,
-    this.size: 30.0,
-    this.padding: const EdgeInsets.all(5.0)});
+  const CarouselControl(
+      {this.iconPrevious: Icons.arrow_back_ios,
+      this.iconNext: Icons.arrow_forward_ios,
+      this.color,
+      this.disableColor,
+      this.key,
+      this.size: 30.0,
+      this.padding: const EdgeInsets.all(5.0)});
 
   Widget buildButton(CarouselPluginConfig config, Color color, IconData iconData, int quarterTurns, bool previous) =>
-      GestureDetector(
+      Universal(
         behavior: HitTestBehavior.opaque,
         onTap: () {
           if (previous) {
@@ -87,11 +89,10 @@ class CarouselControl extends CarouselPlugin {
             config.controller.next(animation: true);
           }
         },
-        child: Padding(
-            padding: padding,
-            child: RotatedBox(
-                quarterTurns: quarterTurns,
-                child: Icon(iconData, semanticLabel: previous ? "Previous" : "Next", size: size, color: color))),
+        padding: padding,
+        child: RotatedBox(
+            quarterTurns: quarterTurns,
+            child: Icon(iconData, semanticLabel: previous ? "Previous" : "Next", size: size, color: color)),
       );
 
   @override
@@ -229,12 +230,13 @@ class RectCarouselPaginationBuilder extends CarouselPlugin {
 
   final Key key;
 
-  const RectCarouselPaginationBuilder({this.activeColor,
-    this.color,
-    this.key,
-    this.size: const Size(10.0, 2.0),
-    this.activeSize: const Size(10.0, 2.0),
-    this.space: 3.0});
+  const RectCarouselPaginationBuilder(
+      {this.activeColor,
+      this.color,
+      this.key,
+      this.size: const Size(10.0, 2.0),
+      this.activeSize: const Size(10.0, 2.0),
+      this.space: 3.0});
 
   @override
   Widget build(BuildContext context, CarouselPluginConfig config) {
@@ -265,12 +267,7 @@ class RectCarouselPaginationBuilder extends CarouselPlugin {
         ),
       ));
     }
-
-    if (config.scrollDirection == Axis.vertical) {
-      return Column(key: key, mainAxisSize: MainAxisSize.min, children: list);
-    } else {
-      return Row(key: key, mainAxisSize: MainAxisSize.min, children: list);
-    }
+    return Universal(key: key, direction: config.scrollDirection, mainAxisSize: MainAxisSize.min, children: list);
   }
 }
 
@@ -339,12 +336,7 @@ class DotCarouselPaginationBuilder extends CarouselPlugin {
                 height: active ? activeSize : size),
           )));
     }
-
-    if (config.scrollDirection == Axis.vertical) {
-      return Column(key: key, mainAxisSize: MainAxisSize.min, children: list);
-    } else {
-      return Row(key: key, mainAxisSize: MainAxisSize.min, children: list);
-    }
+    return Universal(key: key, direction: config.scrollDirection, mainAxisSize: MainAxisSize.min, children: list);
   }
 }
 

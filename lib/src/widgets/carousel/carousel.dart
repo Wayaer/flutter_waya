@@ -114,6 +114,7 @@ class Carousel extends StatefulWidget {
   final IndicatorType indicatorLayout;
 
   Carousel({
+    Key key,
     this.itemBuilder,
     this.indicatorLayout: IndicatorType.none,
     this.transformer,
@@ -133,7 +134,6 @@ class Carousel extends StatefulWidget {
     this.pagination,
     this.plugins,
     this.physics,
-    Key key,
     this.controller,
     this.customLayoutOption,
     this.containerHeight,
@@ -246,36 +246,35 @@ class Carousel extends StatefulWidget {
     double itemWidth,
     bool outer: false,
     double scale: 1.0,
-  }) {
-    return Carousel(
-        transformer: transformer,
-        customLayoutOption: customLayoutOption,
-        containerHeight: containerHeight,
-        containerWidth: containerWidth,
-        viewportFraction: viewportFraction,
-        itemHeight: itemHeight,
-        itemWidth: itemWidth,
-        outer: outer,
-        scale: scale,
-        autoPlay: autoPlay,
-        autoPlayDelay: autoPlayDelay,
-        autoPlayDisableOnInteraction: autoPlayDisableOnInteraction,
-        duration: duration,
-        onIndexChanged: onIndexChanged,
-        index: index,
-        onTap: onTap,
-        curve: curve,
-        key: key,
-        scrollDirection: scrollDirection,
-        pagination: pagination,
-        control: control,
-        controller: controller,
-        loop: loop,
-        plugins: plugins,
-        physics: physics,
-        itemBuilder: (BuildContext context, int index) => builder(context, list[index], index),
-        itemCount: list.length);
-  }
+  }) =>
+      Carousel(
+          transformer: transformer,
+          customLayoutOption: customLayoutOption,
+          containerHeight: containerHeight,
+          containerWidth: containerWidth,
+          viewportFraction: viewportFraction,
+          itemHeight: itemHeight,
+          itemWidth: itemWidth,
+          outer: outer,
+          scale: scale,
+          autoPlay: autoPlay,
+          autoPlayDelay: autoPlayDelay,
+          autoPlayDisableOnInteraction: autoPlayDisableOnInteraction,
+          duration: duration,
+          onIndexChanged: onIndexChanged,
+          index: index,
+          onTap: onTap,
+          curve: curve,
+          key: key,
+          scrollDirection: scrollDirection,
+          pagination: pagination,
+          control: control,
+          controller: controller,
+          loop: loop,
+          plugins: plugins,
+          physics: physics,
+          itemBuilder: (BuildContext context, int index) => builder(context, list[index], index),
+          itemCount: list.length);
 
   @override
   _CarouselState createState() => _CarouselState();
@@ -533,7 +532,6 @@ class _CarouselState extends _CarouselTimerMixin {
     List<Widget> listForStack;
     CarouselPluginConfig config;
     if (widget.control != null) {
-      //Stack
       config = _ensureConfig(config);
       listForStack = _ensureListForStack(carousel, listForStack, widget.control.build(context, config));
     }
@@ -873,7 +871,6 @@ abstract class _CustomLayoutStateBase<T extends _SubCarousel> extends State<T> w
       oldWidget.controller.removeListener(_onController);
       widget.controller.addListener(_onController);
     }
-
     if (widget.loop != oldWidget.loop && !widget.loop) _currentIndex = _ensureIndex(_currentIndex);
     super.didUpdateWidget(oldWidget);
   }

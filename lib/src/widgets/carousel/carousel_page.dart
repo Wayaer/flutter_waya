@@ -268,7 +268,6 @@ class CarouselPageView extends StatefulWidget {
   static int getRealIndexFromRenderIndex({bool reverse, int index, int itemCount, bool loop}) {
     int initPage = reverse ? (itemCount - index - 1) : index;
     if (loop) initPage += kMiddleValue;
-
     return initPage;
   }
 
@@ -288,9 +287,7 @@ class _CarouselPageViewPageViewState extends State<CarouselPageView> {
 
   ///This value will not change until user end drag.
   int _fromIndex;
-
   PageTransformer _transformer;
-
   TransformerPageController _pageController;
 
   Widget _buildItemNormal(BuildContext context, int index) {
@@ -315,11 +312,8 @@ class _CarouselPageViewPageViewState extends State<CarouselPageView> {
 
           double page = _pageController.realPage;
 
-          if (_transformer.reverse) {
-            position = page - index;
-          } else {
-            position = index - page;
-          }
+          position = _transformer.reverse ? page - index : index - page;
+
           position *= widget.viewportFraction;
 
           TransformInfo info = TransformInfo(
@@ -337,15 +331,10 @@ class _CarouselPageViewPageViewState extends State<CarouselPageView> {
         });
   }
 
-  double _calcCurrentPixels() {
-    _currentPixels = _pageController.getRenderIndexFromRealIndex(_activeIndex) *
-        _pageController.position.viewportDimension *
-        widget.viewportFraction;
-
-    //  print("activeIndex:$_activeIndex , pix:$_currentPixels");
-
-    return _currentPixels;
-  }
+  double _calcCurrentPixels() =>
+      _pageController.getRenderIndexFromRealIndex(_activeIndex) *
+      _pageController.position.viewportDimension *
+      widget.viewportFraction;
 
   @override
   Widget build(BuildContext context) {
@@ -373,7 +362,6 @@ class _CarouselPageViewPageViewState extends State<CarouselPageView> {
             _fromIndex = _activeIndex;
             _done = true;
           }
-
           return false;
         },
         child: child);
@@ -381,9 +369,7 @@ class _CarouselPageViewPageViewState extends State<CarouselPageView> {
 
   void _onIndexChanged(int index) {
     _activeIndex = index;
-    if (widget.onPageChanged != null) {
-      widget.onPageChanged(_pageController.getRenderIndexFromRealIndex(index));
-    }
+    if (widget.onPageChanged != null) widget.onPageChanged(_pageController.getRenderIndexFromRealIndex(index));
   }
 
   void _onGetSize(_) {
@@ -395,9 +381,7 @@ class _CarouselPageViewPageViewState extends State<CarouselPageView> {
     RenderObject renderObject = context.findRenderObject();
     if (renderObject != null) {
       Rect bounds = renderObject.paintBounds;
-      if (bounds != null) {
-        size = bounds.size;
-      }
+      if (bounds != null) size = bounds.size;
     }
     _calcCurrentPixels();
     onGetSize(size);
@@ -405,9 +389,8 @@ class _CarouselPageViewPageViewState extends State<CarouselPageView> {
 
   void onGetSize(Size size) {
     if (mounted) {
-      setState(() {
-        _size = size;
-      });
+      _size = size;
+      setState(() {});
     }
   }
 
@@ -428,9 +411,7 @@ class _CarouselPageViewPageViewState extends State<CarouselPageView> {
     _fromIndex = _activeIndex = _pageController.initialPage;
 
     _controller = getNotifier();
-    if (_controller != null) {
-      _controller.addListener(onChangeNotifier);
-    }
+    if (_controller != null) _controller.addListener(onChangeNotifier);
     super.initState();
   }
 
@@ -462,13 +443,10 @@ class _CarouselPageViewPageViewState extends State<CarouselPageView> {
     if (_transformer != null) WidgetsBinding.instance.addPostFrameCallback(_onGetSize);
 
     if (_controller != getNotifier()) {
-      if (_controller != null) {
-        _controller.removeListener(onChangeNotifier);
-      }
+      if (_controller != null) _controller.removeListener(onChangeNotifier);
+
       _controller = getNotifier();
-      if (_controller != null) {
-        _controller.addListener(onChangeNotifier);
-      }
+      if (_controller != null) _controller.addListener(onChangeNotifier);
     }
     super.didUpdateWidget(oldWidget);
   }
@@ -484,17 +462,15 @@ class _CarouselPageViewPageViewState extends State<CarouselPageView> {
   int _calcNextIndex(bool next) {
     int currentIndex = _activeIndex;
     if (_pageController.reverse) {
-      if (next) {
+      if (next)
         currentIndex--;
-      } else {
+      else
         currentIndex++;
-      }
     } else {
-      if (next) {
+      if (next)
         currentIndex++;
-      } else {
+      else
         currentIndex--;
-      }
     }
 
     if (!_pageController.loop) {
@@ -504,7 +480,6 @@ class _CarouselPageViewPageViewState extends State<CarouselPageView> {
         currentIndex = _pageController.itemCount - 1;
       }
     }
-
     return currentIndex;
   }
 
@@ -520,7 +495,6 @@ class _CarouselPageViewPageViewState extends State<CarouselPageView> {
         index = _calcNextIndex(event == IndexController.NEXT);
         break;
       default:
-        //ignore this event
         return;
     }
     if (widget.controller.animation) {
@@ -537,9 +511,7 @@ class _CarouselPageViewPageViewState extends State<CarouselPageView> {
 
   void dispose() {
     super.dispose();
-    if (_controller != null) {
-      _controller.removeListener(onChangeNotifier);
-    }
+    if (_controller != null) _controller.removeListener(onChangeNotifier);
   }
 }
 
@@ -583,8 +555,6 @@ class IndexController extends ChangeNotifier {
   }
 
   void complete() {
-    if (!_completer.isCompleted) {
-      _completer.complete();
-    }
+    if (!_completer.isCompleted) _completer.complete();
   }
 }

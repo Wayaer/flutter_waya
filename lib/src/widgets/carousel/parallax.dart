@@ -88,9 +88,8 @@ class ParallaxContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Opacity(
-      opacity: (1 - position.abs()).clamp(0.0, 1.0) * opacityFactor,
-      child: Transform.translate(offset: Offset(position * translationFactor, 0.0), child: child),
-    );
+        opacity: (1 - position.abs()).clamp(0.0, 1.0) * opacityFactor,
+        child: Transform.translate(offset: Offset(position * translationFactor, 0.0), child: child));
   }
 }
 

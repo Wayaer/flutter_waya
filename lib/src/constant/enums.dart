@@ -1,7 +1,5 @@
-enum LineType {
-  outline,
-  underline,
-}
+enum LineType { outline, underline }
+enum ElasticButtonType { onlyScale, withOpacity }
 enum AutoScrollAnimation {
   ///从左往右执行动画
   l2r,

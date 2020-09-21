@@ -21,7 +21,7 @@ class Home extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          SearchBox(width: 200),
+          PinBox(),
           FlatButton(onPressed: () => showModalPopup(), child: Text('点击弹窗')),
           FlatButton(onPressed: () => showOverlayLoading(), child: Text('点击Loading')),
           FlatButton(onPressed: () => showOverlayToast(context), child: Text('点击Toast')),
