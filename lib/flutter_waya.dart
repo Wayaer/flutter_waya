@@ -31,6 +31,7 @@ export 'src/widgets/dotted_line.dart';
 export 'src/widgets/gesture/gesture_lock.dart';
 export 'src/widgets/gesture/gesture_zoom.dart';
 export 'src/widgets/gif_control.dart';
+export 'src/widgets/stretchy_header.dart';
 export 'src/widgets/icon.dart';
 export 'src/widgets/input_field.dart';
 export 'src/widgets/list_builder.dart';
