@@ -1027,6 +1027,9 @@ Future<T> showMultipleChoicePicker<T>({
   ///头部文字
   Widget title,
 
+  ///头部下面
+  Widget titleBottom,
+
   ///取消点击事件
   GestureTapCallback cancelTap,
 
@@ -1080,6 +1083,7 @@ Future<T> showMultipleChoicePicker<T>({
       sure: sure,
       cancel: cancel,
       title: title,
+      titleBottom: titleBottom,
       color: color,
       cancelTap: cancelTap ?? () => closePopup(),
       sureTap: sureTap ?? () => closePopup());

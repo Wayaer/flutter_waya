@@ -71,10 +71,14 @@ class ListWheel extends StatefulWidget {
         this.itemExtent = itemExtent ?? ScreenFit.getHeight(12),
         this.physics = physics ?? FixedExtentScrollPhysics(),
         super(key: key) {
-    if ((childDelegateType == ListWheelChildDelegateType.list ||
-        childDelegateType == ListWheelChildDelegateType.looping)) assert(children != null);
-    if ((childDelegateType == null || childDelegateType == ListWheelChildDelegateType.builder))
-      assert(itemCount != null && itemBuilder != null);
+    if (childDelegateType == ListWheelChildDelegateType.list ||
+        childDelegateType == ListWheelChildDelegateType.looping) {
+      assert(children != null);
+    }
+    if (childDelegateType == null || childDelegateType == ListWheelChildDelegateType.builder) {
+      assert(itemCount != null && itemBuilder != null,
+          'childDelegateType default is "ListWheelChildDelegateType.builder", The necessary conditions must be passed');
+    }
   }
 
   @override
@@ -92,12 +96,22 @@ class _ListWheelState extends State<ListWheel> {
 
   @override
   Widget build(BuildContext context) {
-    ListWheelChildDelegate childDelegate =
-        ListWheelChildBuilderDelegate(builder: widget.itemBuilder, childCount: widget.itemCount);
-    if (widget?.childDelegateType == ListWheelChildDelegateType.looping)
-      childDelegate = ListWheelChildLoopingListDelegate(children: widget.children);
-    if (widget?.childDelegateType == ListWheelChildDelegateType.list)
-      childDelegate = ListWheelChildListDelegate(children: widget.children);
+    ListWheelChildDelegate childDelegate;
+    switch (widget?.childDelegateType) {
+      case ListWheelChildDelegateType.builder:
+        childDelegate = ListWheelChildBuilderDelegate(builder: widget.itemBuilder, childCount: widget.itemCount);
+        break;
+      case ListWheelChildDelegateType.list:
+        childDelegate = ListWheelChildListDelegate(children: widget.children);
+        break;
+      case ListWheelChildDelegateType.looping:
+        childDelegate = ListWheelChildLoopingListDelegate(children: widget.children);
+        break;
+      default:
+        childDelegate = ListWheelChildBuilderDelegate(builder: widget.itemBuilder, childCount: widget.itemCount);
+        break;
+    }
+
     return ListWheelScrollView.useDelegate(
         controller: controller,
         itemExtent: widget.itemExtent,
