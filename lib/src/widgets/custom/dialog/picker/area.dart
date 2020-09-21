@@ -21,7 +21,7 @@ class AreaPicker extends StatefulWidget {
   final GestureTapCallback cancelTap;
   final ValueChanged<String> sureTap;
 
-  ///以下为滚轮属性
+  ///以下为ListWheel属性
   ///高度
   final double itemHeight;
 
@@ -31,7 +31,7 @@ class AreaPicker extends StatefulWidget {
   /// 选中item偏移
   final double offAxisFraction;
 
-  ///表示车轮水平偏离中心的程度  范围[0,0.01]
+  ///表示ListWheel水平偏离中心的程度  范围[0,0.01]
   final double perspective;
 
   ///放大倍率
