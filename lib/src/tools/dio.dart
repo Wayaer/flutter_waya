@@ -136,6 +136,11 @@ class InterceptorWrap extends InterceptorsWrapper {
 
   @override
   Future onRequest(RequestOptions options) async {
+    /// 在请求被发送之前做一些事情
+    /// 如果你想完成请求并返回一些自定义数据，可以返回一个`Response`对象或返回`dio.resolve(data)`。
+    /// 这样请求将会被终止，上层then会被调用，then中返回的数据将是你的自定义数据data.
+    /// 如果你想终止请求并触发一个错误,你可以返回一个`DioError`对象，或返回`dio.reject(errMsg)`，
+    /// 这样请求将被中止并触发异常，上层catchError会被调用。 return options;
     if (cookieJar != null) {
       var cookies = cookieJar?.loadForRequest(options.uri);
       cookies.removeWhere((cookie) {
@@ -147,15 +152,11 @@ class InterceptorWrap extends InterceptorsWrapper {
       String cookie = getCookies(cookies);
       if (cookie.isNotEmpty) options.headers[HttpHeaders.cookieHeader] = cookie;
     }
-
-    /// 在请求被发送之前做一些事情 /// 如果你想完成请求并返回一些自定义数据，可以返回一个`Response`对象或返回`dio.resolve(data)`。 /// 这样请求将会被终止，上层then会被调用，then中返回的数据将是你的自定义数据data. /// /// 如果你想终止请求并触发一个错误,你可以返回一个`DioError`对象，或返回`dio.reject(errMsg)`， /// 这样请求将被中止并触发异常，上层catchError会被调用。 return options;
   }
 
   @override
   Future onResponse(Response response) async {
-    if (cookieJar != null) {
-      saveCookies(response, responseModel);
-    }
+    if (cookieJar != null) saveCookies(response, responseModel);
     responseModel.statusCode = response.statusCode;
     if (response.statusCode == 200) {
       responseModel.statusMessage = 'success';

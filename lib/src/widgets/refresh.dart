@@ -13,8 +13,6 @@ class Refresh extends StatelessWidget {
   final Widget header;
   final Widget footer;
   final TextStyle footerTextStyle;
-
-  ///
   final bool enableTwoLevel;
 
   ///二楼是否开启
@@ -35,8 +33,6 @@ class Refresh extends StatelessWidget {
     bool enablePullDown,
     bool enablePullUp,
     bool enableTwoLevel,
-
-    ///二楼是否开启
     this.controller,
     this.footerTextStyle,
     this.onLoading,
@@ -63,72 +59,61 @@ class Refresh extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SmartRefresher(
-      controller: controller ?? refreshController,
-      enablePullDown: enablePullDown,
-      enablePullUp: enablePullUp,
-      header: header ?? BezierCircleHeader(bezierColor: getColors(transparent)),
-      footer: footer ??
-          CustomFooter(
-            builder: (BuildContext context, LoadStatus mode) {
-              Widget body;
-              if (mode == LoadStatus.idle) {
-                body = footerText('pull loading');
-              } else if (mode == LoadStatus.loading) {
-                body = footerText('loading');
-              } else if (mode == LoadStatus.failed) {
-                body = footerText('load failed');
-              } else if (mode == LoadStatus.canLoading) {
-                body = footerText('load data');
-              } else {
-                body = footerText('load not data');
-              }
-              return Container(
-                height: ScreenFit.getHeight(40),
-                child: Center(child: body),
-              );
-            },
-          ),
-      onRefresh: onRefresh ?? onRefreshVoid,
-      onLoading: onLoading ?? onLoadingVoid,
-      child: child,
-      enableTwoLevel: enableTwoLevel,
-      onTwoLevel: onTwoLevel ?? onTwoLevelVoid,
-      onOffsetChange: onOffsetChange,
-      dragStartBehavior: dragStartBehavior,
-      primary: primary,
-      cacheExtent: cacheExtent,
-      semanticChildCount: semanticChildCount,
-      reverse: reverse,
-      physics: physics,
-      scrollDirection: scrollDirection,
-      scrollController: scrollController,
-    );
+        controller: controller ?? refreshController,
+        enablePullDown: enablePullDown,
+        enablePullUp: enablePullUp,
+        header: header ?? BezierCircleHeader(bezierColor: getColors(transparent)),
+        footer: footer ?? customFooter(),
+        onRefresh: onRefresh ?? onRefreshVoid,
+        onLoading: onLoading ?? onLoadingVoid,
+        child: child,
+        enableTwoLevel: enableTwoLevel,
+        onTwoLevel: onTwoLevel ?? onTwoLevelVoid,
+        onOffsetChange: onOffsetChange,
+        dragStartBehavior: dragStartBehavior,
+        primary: primary,
+        cacheExtent: cacheExtent,
+        semanticChildCount: semanticChildCount,
+        reverse: reverse,
+        physics: physics,
+        scrollDirection: scrollDirection,
+        scrollController: scrollController);
   }
 
-  Widget footerText(String text) => Text(
-        text,
-        style: footerTextStyle ?? TextStyle(fontSize: 13, color: getColors(black70)),
+  Widget customFooter() => CustomFooter(
+        builder: (BuildContext context, LoadStatus mode) {
+          Widget body;
+          if (mode == LoadStatus.idle) {
+            body = footerText('pull loading');
+          } else if (mode == LoadStatus.loading) {
+            body = footerText('loading');
+          } else if (mode == LoadStatus.failed) {
+            body = footerText('load failed');
+          } else if (mode == LoadStatus.canLoading) {
+            body = footerText('load data');
+          } else {
+            body = footerText('load not data');
+          }
+          return Container(height: ScreenFit.getHeight(40), child: Center(child: body));
+        },
       );
 
-  onTwoLevelVoid() {
+  Widget footerText(String text) =>
+      Text(text, style: footerTextStyle ?? TextStyle(fontSize: 13, color: getColors(black70)));
+
+  void onTwoLevelVoid() {
     log('onTwoLevel');
-    Tools.timerTools(Duration(seconds: 2), () {
-      refreshController.twoLevelComplete();
-    });
+    Tools.timerTools(Duration(seconds: 2), () => refreshController.twoLevelComplete());
   }
 
-  onRefreshVoid() {
+  void onRefreshVoid() {
     log('onRefresh');
-    Tools.timerTools(Duration(seconds: 2), () {
-      refreshController.refreshCompleted();
-    });
+    Tools.timerTools(Duration(seconds: 2), () => refreshController.refreshCompleted());
   }
 
-  onLoadingVoid() {
+  void onLoadingVoid() {
     log('onLoading');
-    Tools.timerTools(Duration(seconds: 2), () {
-      refreshController.loadComplete();
-    });
+    Tools.timerTools(Duration(seconds: 2), () => refreshController.loadComplete());
   }
 }
 
@@ -194,42 +179,39 @@ class _RefreshedState extends State<Refreshed> {
     super.initState();
     controller = widget.controller ?? RefreshController(initialRefresh: false);
     if (widget.controller == null) {
-      WidgetsBinding.instance.addPostFrameCallback((callback) {
-        messageListen((data) {
-          if (data == null) return;
-          if (data != null && data is RefreshCompletedType) {
-            switch (data) {
-              case RefreshCompletedType.refresh:
-                controller.refreshCompleted();
-                break;
-              case RefreshCompletedType.refreshFailed:
-                controller.refreshFailed();
-                break;
-              case RefreshCompletedType.refreshToIdle:
-                controller.refreshToIdle();
-                break;
-              case RefreshCompletedType.onLoading:
-                controller.loadComplete();
-                break;
-              case RefreshCompletedType.loadFailed:
-                controller.loadFailed();
-                break;
-              case RefreshCompletedType.loadNoData:
-                controller.loadNoData();
-                break;
-              case RefreshCompletedType.twoLevel:
-                controller.twoLevelComplete();
-                break;
+      Tools.addPostFrameCallback((callback) => messageListen((data) {
+            if (data == null) return;
+            if (data != null && data is RefreshCompletedType) {
+              switch (data) {
+                case RefreshCompletedType.refresh:
+                  controller.refreshCompleted();
+                  break;
+                case RefreshCompletedType.refreshFailed:
+                  controller.refreshFailed();
+                  break;
+                case RefreshCompletedType.refreshToIdle:
+                  controller.refreshToIdle();
+                  break;
+                case RefreshCompletedType.onLoading:
+                  controller.loadComplete();
+                  break;
+                case RefreshCompletedType.loadFailed:
+                  controller.loadFailed();
+                  break;
+                case RefreshCompletedType.loadNoData:
+                  controller.loadNoData();
+                  break;
+                case RefreshCompletedType.twoLevel:
+                  controller.twoLevelComplete();
+                  break;
+              }
             }
-          }
-        });
-      });
+          }));
     }
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Refresh(
+  Widget build(BuildContext context) => Refresh(
       controller: controller,
       enablePullUp: widget.enablePullUp,
       enablePullDown: widget.enablePullDown,
@@ -249,7 +231,5 @@ class _RefreshedState extends State<Refreshed> {
       physics: widget.physics,
       scrollDirection: widget.scrollDirection,
       scrollController: widget.scrollController,
-      footerTextStyle: widget.footerTextStyle,
-    );
-  }
+      footerTextStyle: widget.footerTextStyle);
 }

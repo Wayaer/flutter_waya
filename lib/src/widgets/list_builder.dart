@@ -1,8 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:flutter_waya/src/constant/styles.dart';
-import 'package:flutter_waya/src/constant/widgets.dart';
+import 'package:flutter_waya/src/constant/way.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class GridBuilder extends StatelessWidget {
@@ -64,7 +63,7 @@ class GridBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (itemCount == 0) return noData ?? Widgets.notDataWidget(margin: EdgeInsets.all(ScreenFit.getWidth(10)));
+    if (itemCount == 0) return noData ?? WayWidgets.notDataWidget(margin: EdgeInsets.all(ScreenFit.getWidth(10)));
     return GridView.builder(
       physics: physics,
       itemCount: itemCount,
@@ -172,7 +171,7 @@ class ListBuilder extends StatelessWidget {
   }
 
   Widget listViewBuilder() {
-    if (itemCount == 0) return noData ?? Widgets.notDataWidget(margin: EdgeInsets.all(ScreenFit.getWidth(10)));
+    if (itemCount == 0) return noData ?? WayWidgets.notDataWidget(margin: EdgeInsets.all(ScreenFit.getWidth(10)));
     return ListView.builder(
       scrollDirection: scrollDirection,
       physics: physics,
@@ -195,7 +194,7 @@ class ListBuilder extends StatelessWidget {
   }
 
   Widget listViewCustom() {
-    if (itemCount == 0) return noData ?? Widgets.notDataWidget(margin: EdgeInsets.all(ScreenFit.getWidth(10)));
+    if (itemCount == 0) return noData ?? WayWidgets.notDataWidget(margin: EdgeInsets.all(ScreenFit.getWidth(10)));
     return ListView.custom(
         scrollDirection: scrollDirection,
         physics: physics,
@@ -213,25 +212,24 @@ class ListBuilder extends StatelessWidget {
   }
 
   Widget listViewSeparated() {
-    if (itemCount == 0) return noData ?? Widgets.notDataWidget(margin: EdgeInsets.all(ScreenFit.getWidth(10)));
+    if (itemCount == 0) return noData ?? WayWidgets.notDataWidget(margin: EdgeInsets.all(ScreenFit.getWidth(10)));
     return ListView.separated(
-      scrollDirection: scrollDirection,
-      physics: physics,
-      reverse: reverse,
-      shrinkWrap: shrinkWrap,
-      controller: controller,
-      padding: padding,
-      primary: primary,
-      cacheExtent: cacheExtent,
-      dragStartBehavior: dragStartBehavior,
-      keyboardDismissBehavior: keyboardDismissBehavior,
-      itemBuilder: itemBuilder,
-      separatorBuilder: separatorBuilder,
-      itemCount: itemCount,
-      addAutomaticKeepAlives: addAutomaticKeepALives,
-      addRepaintBoundaries: addRepaintBoundaries,
-      addSemanticIndexes: addSemanticIndexes,
-    );
+        scrollDirection: scrollDirection,
+        physics: physics,
+        reverse: reverse,
+        shrinkWrap: shrinkWrap,
+        controller: controller,
+        padding: padding,
+        primary: primary,
+        cacheExtent: cacheExtent,
+        dragStartBehavior: dragStartBehavior,
+        keyboardDismissBehavior: keyboardDismissBehavior,
+        itemBuilder: itemBuilder,
+        separatorBuilder: separatorBuilder,
+        itemCount: itemCount,
+        addAutomaticKeepAlives: addAutomaticKeepALives,
+        addRepaintBoundaries: addRepaintBoundaries,
+        addSemanticIndexes: addSemanticIndexes);
   }
 
   Widget refresherListView() => Refreshed(
@@ -350,17 +348,16 @@ class ListEntry extends StatelessWidget {
   }
 
   Widget listTile() => Expanded(
-          child: ListTile(
-        contentPadding: contentPadding,
-        title: hero(title ?? Text(titleText, style: titleStyle)),
-        subtitle: subtitle,
-        leading: leading,
-        trailing: child,
-        isThreeLine: isThreeLine,
-        dense: dense,
-        enabled: false,
-        selected: false,
-      ));
+      child: ListTile(
+          contentPadding: contentPadding,
+          title: hero(title ?? Text(titleText, style: titleStyle)),
+          subtitle: subtitle,
+          leading: leading,
+          trailing: child,
+          isThreeLine: isThreeLine,
+          dense: dense,
+          enabled: false,
+          selected: false));
 
   Widget arrowWidget() => IconBox(icon: ConstIcon.arrowRight, size: arrowSize, color: arrowColor, margin: arrowMargin);
 

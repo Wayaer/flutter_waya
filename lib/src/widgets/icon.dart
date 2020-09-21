@@ -98,48 +98,38 @@ class IconBox extends StatelessWidget {
       }
       return universal(children: listWidget);
     }
-    if (iconWidget().length > 0) {
-      return universal(child: iconWidget()[0]);
-    }
+    if (iconWidget().length > 0) return universal(child: iconWidget()[0]);
+
     return Container();
   }
 
   Widget universal({List<Widget> children, Widget child}) {
     return Universal(
-      heroTag: heroTag,
-      addInkWell: addInkWell,
-      child: child,
-      visible: visible,
-      direction: direction,
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: crossAxisAlignment,
-      mainAxisAlignment: mainAxisAlignment,
-      children: children,
-      width: width,
-      height: height,
-      onTap: onTap,
-      margin: margin,
-      decoration: decoration ?? BoxDecoration(color: background),
-      padding: padding,
-      alignment: alignment,
-    );
+        heroTag: heroTag,
+        addInkWell: addInkWell,
+        child: child,
+        visible: visible,
+        direction: direction,
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: crossAxisAlignment,
+        mainAxisAlignment: mainAxisAlignment,
+        children: children,
+        width: width,
+        height: height,
+        onTap: onTap,
+        margin: margin,
+        decoration: decoration ?? BoxDecoration(color: background),
+        padding: padding,
+        alignment: alignment);
   }
 
   Widget spacingWidget() =>
       Container(width: direction == Axis.horizontal ? spacing : 0, height: direction == Axis.vertical ? spacing : 0);
 
   Widget titleWidget() {
-    if (title != null) {
-      return title;
-    }
-    return Text(
-      titleText ?? '',
-      style: titleStyle,
-      textAlign: textAlign,
-      maxLines: maxLines,
-      textDirection: textDirection,
-      overflow: overflow,
-    );
+    if (title != null) return title;
+    return Text(titleText ?? '',
+        style: titleStyle, textAlign: textAlign, maxLines: maxLines, textDirection: textDirection, overflow: overflow);
   }
 
   bool isChildren() =>
@@ -148,20 +138,15 @@ class IconBox extends StatelessWidget {
 
   List<Widget> iconWidget() {
     List<Widget> listWidget = [];
-    if (icon != null) {
+    if (icon != null)
       listWidget.add(Icon(icon, color: color, size: size, textDirection: textDirection, semanticLabel: semanticLabel));
 
-      ///帮助盲人或者视力有障碍的用户提供语言辅助描述
-    }
-    if (image != null) {
-      listWidget.add(image);
-    }
-    if (imageProvider != null) {
+    if (image != null) listWidget.add(image);
+
+    if (imageProvider != null)
       listWidget.add(ImageIcon(imageProvider, color: color, size: size, semanticLabel: semanticLabel));
-    }
-    if (widget != null) {
-      listWidget.add(widget);
-    }
+
+    if (widget != null) listWidget.add(widget);
     return listWidget;
   }
 }
@@ -248,12 +233,9 @@ class _CheckBoxState extends State<CheckBox> {
         titleText: widget.titleText,
         title: widget.title,
         onTap: () {
-          setState(() {
-            value = !value;
-          });
-          if (widget.onChange is ValueChanged<bool>) {
-            widget.onChange(value);
-          }
+          value = !value;
+          setState(() {});
+          if (widget.onChange is ValueChanged<bool>) widget.onChange(value);
         });
   }
 
@@ -265,12 +247,9 @@ class _CheckBoxState extends State<CheckBox> {
       value: value,
       onChanged: (bool v) {
         if (value != v) {
-          setState(() {
-            value = v;
-          });
-          if (widget.onChange is ValueChanged<bool>) {
-            widget.onChange(v);
-          }
+          value = v;
+          setState(() {});
+          if (widget.onChange is ValueChanged<bool>) widget.onChange(v);
         }
       });
 }

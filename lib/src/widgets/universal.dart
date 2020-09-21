@@ -693,18 +693,18 @@ class SimpleButton extends StatelessWidget {
         overflow: overflow));
     if (child != null) widget = child;
     return Universal(
-      visible: visible,
-      constraints: constraints,
-      addInkWell: addInkWell,
-      mainAxisSize: MainAxisSize.min,
-      child: widget,
-      width: width,
-      height: height,
-      onTap: onTap,
-      margin: margin,
-      decoration: decoration ?? BoxDecoration(color: color),
-      padding: padding,
-      alignment: alignment,
+        visible: visible,
+        constraints: constraints,
+        addInkWell: addInkWell,
+        mainAxisSize: MainAxisSize.min,
+        child: widget,
+        width: width,
+        height: height,
+        onTap: onTap,
+        margin: margin,
+        decoration: decoration ?? BoxDecoration(color: color),
+        padding: padding,
+        alignment: alignment
     );
   }
 

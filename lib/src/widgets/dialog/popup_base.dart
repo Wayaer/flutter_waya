@@ -103,11 +103,10 @@ class _PopupBaseState extends State<PopupBase> {
     }
     WidgetsBinding.instance.addPostFrameCallback((callback) {
       if (animation) {
-        setState(() {
-          opacity = 1;
-          popupDistance = 0;
-          if (widget.gaussian) fuzzyDegree = widget.fuzzyDegree;
-        });
+        opacity = 1;
+        popupDistance = 0;
+        if (widget.gaussian) fuzzyDegree = widget.fuzzyDegree;
+        setState(() {});
       }
     });
   }
@@ -116,7 +115,6 @@ class _PopupBaseState extends State<PopupBase> {
   Widget build(BuildContext context) {
     Widget child = childWidget();
     if (widget.gaussian) child = backdropFilter(child);
-
     if (animation) {
       if (popupMode == PopupMode.center) {
         if (widget.animationOpacity) child = animationOpacity(child);
@@ -133,39 +131,26 @@ class _PopupBaseState extends State<PopupBase> {
     return child;
   }
 
-  Widget animationOpacity(Widget child) {
-    return AnimatedPositioned(
+  Widget animationOpacity(Widget child) => AnimatedPositioned(
       left: popupMode == PopupMode.left ? popupDistance : 0,
       top: popupMode == PopupMode.top ? popupDistance : 0,
       right: popupMode == PopupMode.right ? popupDistance : 0,
       bottom: popupMode == PopupMode.bottom ? popupDistance : 0,
       curve: Curves.easeIn,
       duration: Duration(milliseconds: 200),
-      child: child,
-    );
-  }
+      child: child);
 
-  Widget backdropFilter(Widget child) {
-    return BackdropFilter(filter: ImageFilter.blur(sigmaX: fuzzyDegree, sigmaY: fuzzyDegree), child: child);
-  }
+  Widget backdropFilter(Widget child) =>
+      BackdropFilter(filter: ImageFilter.blur(sigmaX: fuzzyDegree, sigmaY: fuzzyDegree), child: child);
 
-  Widget animatedOpacity(Widget child) {
-    return AnimatedOpacity(
-      opacity: opacity,
-      curve: Curves.slowMiddle,
-      duration: Duration(milliseconds: 200),
-      child: child,
-    );
-  }
+  Widget animatedOpacity(Widget child) =>
+      AnimatedOpacity(opacity: opacity, curve: Curves.slowMiddle, duration: Duration(milliseconds: 200), child: child);
 
-  Widget childWidget() {
-    return Universal(
+  Widget childWidget() => Universal(
       color: widget.color,
       onTap: widget.onTap,
       behavior: widget.behavior,
       alignment: widget.alignment,
       padding: EdgeInsets.fromLTRB(widget.left, widget.top, widget.right, widget.bottom),
-      child: widget.child,
-    );
-  }
+      child: widget.child);
 }

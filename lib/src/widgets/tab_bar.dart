@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:flutter_waya/src/constant/styles.dart';
+import 'package:flutter_waya/src/constant/way.dart';
 
 class TabBarMerge extends StatelessWidget {
   ///最好传入 TabBarBox
@@ -64,25 +64,23 @@ class TabBarMerge extends StatelessWidget {
     return Column(children: children);
   }
 
-  Widget tabBarViewWidget() {
-    return viewHeight == 0
-        ? Expanded(
-            child: Container(
-                margin: margin,
-                padding: padding,
-                decoration: decoration,
-                constraints: constraints,
-                width: width,
-                child: TabBarView(controller: controller, children: tabBarView)))
-        : Container(
-            margin: margin,
-            padding: padding,
-            decoration: decoration,
-            constraints: constraints,
-            width: width,
-            height: viewHeight,
-            child: TabBarView(controller: controller, children: tabBarView));
-  }
+  Widget tabBarViewWidget() => viewHeight == 0
+      ? Expanded(
+          child: Container(
+              margin: margin,
+              padding: padding,
+              decoration: decoration,
+              constraints: constraints,
+              width: width,
+              child: TabBarView(controller: controller, children: tabBarView)))
+      : Container(
+          margin: margin,
+          padding: padding,
+          decoration: decoration,
+          constraints: constraints,
+          width: width,
+          height: viewHeight,
+          child: TabBarView(controller: controller, children: tabBarView));
 }
 
 class TabBarBox extends StatelessWidget {
@@ -219,40 +217,28 @@ class _TabNavigationPageState extends State<TabNavigationPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: currentPage,
-      bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: getColors(blue),
-        unselectedItemColor: getColors(background),
-        backgroundColor: getColors(white),
-        items: widget.navigationBarItem ??
-            <BottomNavigationBarItem>[
-              BottomNavigationBarItem(icon: barIcon(Icons.home), title: Text('home')),
-              BottomNavigationBarItem(
-                  icon: barIcon(Icons.add_circle),
-                  title: Text(
-                    'center',
-                  )),
-              BottomNavigationBarItem(
-                  icon: barIcon(Icons.account_circle),
-                  title: Text(
-                    'mine',
-                  )),
-            ],
-        type: BottomNavigationBarType.fixed,
+  Widget build(BuildContext context) => OverlayScaffold(
+        body: currentPage,
+        bottomNavigationBar: BottomNavigationBar(
+          selectedItemColor: getColors(blue),
+          unselectedItemColor: getColors(background),
+          backgroundColor: getColors(white),
+          items: widget.navigationBarItem ??
+              <BottomNavigationBarItem>[
+                BottomNavigationBarItem(icon: barIcon(Icons.home), title: Text('home')),
+                BottomNavigationBarItem(icon: barIcon(Icons.add_circle), title: Text('center')),
+                BottomNavigationBarItem(icon: barIcon(Icons.account_circle), title: Text('mine')),
+              ],
 
-        /// 超过5个页面，需加上此行，不然会无法显示颜色
-        onTap: (index) {
-          setState(() {
+          /// 超过5个页面，需加上此行，不然会无法显示颜色
+          type: BottomNavigationBarType.fixed,
+          onTap: (index) => setState(() {
             tabIndex = index;
             currentPage = pageList[tabIndex];
-          });
-        },
-        currentIndex: tabIndex,
-      ),
-    );
-  }
+          }),
+          currentIndex: tabIndex,
+        ),
+      );
 
   Widget barIcon(IconData icons) => Icon(icons, size: ScreenFit.getWidth(24));
 }

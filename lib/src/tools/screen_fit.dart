@@ -125,9 +125,7 @@ class ScreenFit {
     if (ratioFit == null) ratioFit = _ratioFit;
     double h;
     if (height == null || height == 0) {
-      h = MediaQueryTools
-          .getSize()
-          .height;
+      h = MediaQueryTools.getSize().height;
     } else {
       ///  h = (height / designHeight) * phoneFitHeight(context);
       h = ratioFit ? (height / _designHeight) * MediaQueryTools.getHeight() : height;
@@ -140,9 +138,7 @@ class ScreenFit {
     if (ratioFit == null) ratioFit = _ratioFit;
     double w;
     if (width == null || width == 0) {
-      w = MediaQueryTools
-          .getSize()
-          .width;
+      w = MediaQueryTools.getSize().width;
     } else {
       w = ratioFit ? (width / _designWidth) * MediaQueryTools.getWidth() : width;
     }
@@ -151,9 +147,7 @@ class ScreenFit {
 
   ///初始化设置 设计稿宽高
   ///默认为 667*375
-  static setRatioFit(bool fit) {
-    _ratioFit = fit;
-  }
+  static setRatioFit(bool fit) => _ratioFit = fit;
 
   ///初始化设置 设计稿宽高
   ///默认为 667*375

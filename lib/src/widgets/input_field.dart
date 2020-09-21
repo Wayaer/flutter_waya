@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:flutter_waya/src/constant/styles.dart';
+import 'package:flutter_waya/src/constant/way.dart';
 
 class InputField extends StatelessWidget {
   final TextEditingController controller;
@@ -219,60 +219,59 @@ class InputField extends StatelessWidget {
     this.onEditingComplete,
     this.extraSuffix,
     this.extraPrefix,
-  })
-      : this.obscureText = obscureText ?? false,
+  })  : this.obscureText = obscureText ?? false,
         this.readOnly = readOnly ?? false,
         this.crossAxisAlignment = crossAxisAlignment ?? CrossAxisAlignment.center,
         this.floatingLabelBehavior = floatingLabelBehavior ?? FloatingLabelBehavior.always,
 
-  ///键盘大小写的显示 Only supports text keyboards  但是好像不起作用？
-  ///characters 默认为每个字符使用大写键盘
-  ///sentence 默认为每个句子的第一个字母使用大写键盘
-  ///word 默认为每个单词的第一个字母使用大写键盘。
-  ///none 默认使用小写
+        ///键盘大小写的显示 Only supports text keyboards  但是好像不起作用？
+        ///characters 默认为每个字符使用大写键盘
+        ///sentence 默认为每个句子的第一个字母使用大写键盘
+        ///word 默认为每个单词的第一个字母使用大写键盘。
+        ///none 默认使用小写
         this.textCapitalization = textCapitalization ?? TextCapitalization.none,
 
-  ///长按输入的文字时，true显示系统的粘贴板  false不显示
+        ///长按输入的文字时，true显示系统的粘贴板  false不显示
         this.enableInteractiveSelection = enableInteractiveSelection ?? true,
 
-  ///自定义数字显示   指定maxLength后 右下角会出现字数，flutter有默认实现  可以通过这个自定义
-  ///光标颜色
+        ///自定义数字显示   指定maxLength后 右下角会出现字数，flutter有默认实现  可以通过这个自定义
+        ///光标颜色
         this.cursorColor = cursorColor ?? getColors(black70),
 
-  ///光标圆角
+        ///光标圆角
         this.cursorRadius = cursorRadius ?? Radius.circular(1),
 
-  ///光标宽度
+        ///光标宽度
         this.cursorWidth = cursorWidth ?? 2,
 
-  /// 键盘外观  仅ios有效
+        /// 键盘外观  仅ios有效
         this.keyboardAppearance = keyboardAppearance,
 
-  ///      默认true  超过长度后输入无效  右下角数字 显示10/10   此时onchange方法依然会调用，返回值就是限制了长度的值 超过后的输入不显示
-  ///      false 超过后可继续输入  右下角数字显示，比如 23/10
+        ///      默认true  超过长度后输入无效  右下角数字 显示10/10   此时onchange方法依然会调用，返回值就是限制了长度的值 超过后的输入不显示
+        ///      false 超过后可继续输入  右下角数字显示，比如 23/10
         this.maxLengthEnforced = maxLengthEnforced ?? true,
 
-  ///       设置键盘上enter键的显示内容
-  ///       textInputAction: TextInputAction.search, ///搜索
-  ///       textInputAction: TextInputAction.none,///默认回车符号
-  ///       textInputAction: TextInputAction.done,///安卓显示 回车符号
-  ///       textInputAction: TextInputAction.go,///开始
-  ///       textInputAction: TextInputAction.next,///下一步
-  ///       textInputAction: TextInputAction.send,///发送
-  ///       textInputAction: TextInputAction.continueAction,///android  不支持
-  ///       textInputAction: TextInputAction.emergencyCall,///android  不支持
-  ///       textInputAction: TextInputAction.newline,///安卓显示 回车符号
-  ///       textInputAction: TextInputAction.route,///android  不支持
-  ///       textInputAction: TextInputAction.join,///android  不支持
-  ///       textInputAction: TextInputAction.previous,///安卓显示 回车符号
-  ///       textInputAction: TextInputAction.unspecified,///安卓显示 回车符号
+        ///       设置键盘上enter键的显示内容
+        ///       textInputAction: TextInputAction.search, ///搜索
+        ///       textInputAction: TextInputAction.none,///默认回车符号
+        ///       textInputAction: TextInputAction.done,///安卓显示 回车符号
+        ///       textInputAction: TextInputAction.go,///开始
+        ///       textInputAction: TextInputAction.next,///下一步
+        ///       textInputAction: TextInputAction.send,///发送
+        ///       textInputAction: TextInputAction.continueAction,///android  不支持
+        ///       textInputAction: TextInputAction.emergencyCall,///android  不支持
+        ///       textInputAction: TextInputAction.newline,///安卓显示 回车符号
+        ///       textInputAction: TextInputAction.route,///android  不支持
+        ///       textInputAction: TextInputAction.join,///android  不支持
+        ///       textInputAction: TextInputAction.previous,///安卓显示 回车符号
+        ///       textInputAction: TextInputAction.unspecified,///安卓显示 回车符号
         this.textInputAction = textInputAction ?? TextInputAction.done,
         this.autoFocus = autoFocus ?? false,
         this.maxLines = maxLines ?? 1,
 
-  ///从左边输入  光标在左边
-  ///从右边输入  光标在右边
-  ///      this.textDirection = textDirection ?? TextDirection.rtl,
+        ///从左边输入  光标在左边
+        ///从右边输入  光标在右边
+        ///      this.textDirection = textDirection ?? TextDirection.rtl,
         this.textDirection = textDirection ?? TextDirection.ltr,
         this.enabled = enabled ?? true,
         this.textAlign = textAlign ?? TextAlign.left,
@@ -337,119 +336,117 @@ class InputField extends StatelessWidget {
     return child;
   }
 
-  Widget textField(BuildContext context) {
-    return TextField(
-      //长按输入的文字时，true显示系统的粘贴板  false不显示
-      enableInteractiveSelection: enableInteractiveSelection,
-      //自定义数字显示   指定maxLength后 右下角会出现字数，flutter有默认实现  可以通过这个自定义
-      buildCounter: buildCounter,
-      maxLines: maxLines,
-      minLines: minLines,
-      maxLength: maxLength,
-      maxLengthEnforced: maxLengthEnforced,
-      keyboardAppearance: keyboardAppearance,
-      textDirection: textDirection,
-      textCapitalization: textCapitalization,
-      textAlign: textAlign,
-      focusNode: focusNode,
-      autofocus: autoFocus,
-      textInputAction: textInputAction,
-      inputFormatters: inputFormatter ?? inputType(),
-      cursorColor: cursorColor,
-      cursorRadius: cursorRadius,
-      cursorWidth: cursorWidth,
-      obscureText: obscureText,
-      keyboardType: keyboardType,
-      style: inputStyle ?? WayStyles.textStyleBlack70(),
-      controller: controller,
-      decoration: inputDecoration ??
-          InputDecoration(
-            //显示在输入框前面的图标，在文字和下划线前面
-            icon: icon,
-            //输入框光标前面的图标和文字
-            prefixIcon: prefixIcon,
-            //显示在输入框内，光标前面的图标，注意icon是在输入框外
-            prefixText: prefixText,
-            //显示在输入框内，光标前面的文字   获得焦点后显示
-            prefixStyle: prefixStyle,
-            //显示在输入框内，光标前面的指定图片或其他Widget   获取焦点后显示。注意prefix不能与prefixIcon prefixText同时指定
-            prefix: prefix,
+  Widget textField(BuildContext context) => TextField(
+        //长按输入的文字时，true显示系统的粘贴板  false不显示
+        enableInteractiveSelection: enableInteractiveSelection,
+        //自定义数字显示   指定maxLength后 右下角会出现字数，flutter有默认实现  可以通过这个自定义
+        buildCounter: buildCounter,
+        maxLines: maxLines,
+        minLines: minLines,
+        maxLength: maxLength,
+        maxLengthEnforced: maxLengthEnforced,
+        keyboardAppearance: keyboardAppearance,
+        textDirection: textDirection,
+        textCapitalization: textCapitalization,
+        textAlign: textAlign,
+        focusNode: focusNode,
+        autofocus: autoFocus,
+        textInputAction: textInputAction,
+        inputFormatters: inputFormatter ?? inputType(),
+        cursorColor: cursorColor,
+        cursorRadius: cursorRadius,
+        cursorWidth: cursorWidth,
+        obscureText: obscureText,
+        keyboardType: keyboardType,
+        style: inputStyle ?? WayStyles.textStyleBlack70(),
+        controller: controller,
+        decoration: inputDecoration ??
+            InputDecoration(
+              //显示在输入框前面的图标，在文字和下划线前面
+              icon: icon,
+              //输入框光标前面的图标和文字
+              prefixIcon: prefixIcon,
+              //显示在输入框内，光标前面的图标，注意icon是在输入框外
+              prefixText: prefixText,
+              //显示在输入框内，光标前面的文字   获得焦点后显示
+              prefixStyle: prefixStyle,
+              //显示在输入框内，光标前面的指定图片或其他Widget   获取焦点后显示。注意prefix不能与prefixIcon prefixText同时指定
+              prefix: prefix,
 
-            //输入框光标后面的图标和文字
-            suffixIcon: suffixIcon,
-            //显示在输入框内，光标文字后面，输入框最后面的图标
-            //text无点击事件
-            suffixText: suffixText,
-            //显示在输入框内，输入框最后面的文字    但是在suffixIcon之前。 注意suffixText不能与suffix共存
-            suffixStyle: suffixStyle,
-            //显示在输入框内，最后面的指定图片或其他Widget
-            suffix: suffix,
+              //输入框光标后面的图标和文字
+              suffixIcon: suffixIcon,
+              //显示在输入框内，光标文字后面，输入框最后面的图标
+              //text无点击事件
+              suffixText: suffixText,
+              //显示在输入框内，输入框最后面的文字    但是在suffixIcon之前。 注意suffixText不能与suffix共存
+              suffixStyle: suffixStyle,
+              //显示在输入框内，最后面的指定图片或其他Widget
+              suffix: suffix,
 
-            // 显示在输入的下划线外右下角的文字提示
-            counterText: counterText,
-            //显示在输入的下划线外右下角的文字提示,会覆盖maxLength的右下角显示的字数限制。
-            counterStyle: counterStyle,
-            //显示在输入的下划线外右下角的提示,可以是任何Widget ，counterText与counter只能存在一个
-            counter: counter,
-            // 输入框的文字提示
-            labelText: labelText,
-            //显示在输入框内的提示语，一旦输入框获取焦点就字体缩小并上移到输入上方，作为提示使用
-            labelStyle: labelStyle,
+              // 显示在输入的下划线外右下角的文字提示
+              counterText: counterText,
+              //显示在输入的下划线外右下角的文字提示,会覆盖maxLength的右下角显示的字数限制。
+              counterStyle: counterStyle,
+              //显示在输入的下划线外右下角的提示,可以是任何Widget ，counterText与counter只能存在一个
+              counter: counter,
+              // 输入框的文字提示
+              labelText: labelText,
+              //显示在输入框内的提示语，一旦输入框获取焦点就字体缩小并上移到输入上方，作为提示使用
+              labelStyle: labelStyle,
 //            hasFloatingPlaceholder: labelFloating,
-            floatingLabelBehavior: floatingLabelBehavior,
-            //默认为true，表示labelText是否上浮，true上浮，false表示获取焦点后labelText消失
-            helperText: helperText,
-            //显示在输入框下划线下面的提示语，提示使用
-            helperStyle: helperStyle,
+              floatingLabelBehavior: floatingLabelBehavior,
+              //默认为true，表示labelText是否上浮，true上浮，false表示获取焦点后labelText消失
+              helperText: helperText,
+              //显示在输入框下划线下面的提示语，提示使用
+              helperStyle: helperStyle,
 
-            hintText: hintText,
-            //显示在输入框内的提示信息，当输入框为空时显示，一旦开始输入内容就消失
-            hintStyle: hintStyle ?? WayStyles.textStyleBlack30(fontSize: 16),
-            hintMaxLines: hintMaxLines ?? 1,
-            //提示语的做多显示行数，超过行数显示...
+              hintText: hintText,
+              //显示在输入框内的提示信息，当输入框为空时显示，一旦开始输入内容就消失
+              hintStyle: hintStyle ?? WayStyles.textStyleBlack30(fontSize: 16),
+              hintMaxLines: hintMaxLines ?? 1,
+              //提示语的做多显示行数，超过行数显示...
 
-            // 错误提示相关
-            errorText: errorText,
-            //在输入框下方的提示语，通常用于错误提示，比如密码错误 用户名错误等  同时输入框的下划线修改为了红色
-            errorStyle: errorStyle,
-            errorMaxLines: errorMaxLines,
-            //做多显示的行数  ，超过行数显示...
-            errorBorder: errorBorder,
-            //失去焦点时，error时下划线显示的边框样式，不设置则使用默认的的下划线
-            focusedErrorBorder: focusedErrorBorder,
-            //获取焦点时，error时下划线显示的边框样式，不设置则使用默认的的下划线
-            //输入框内文字 密集显示
-            isDense: isDense ?? false,
-            //改变输入框是否为密集型，默认为false，修改为true时，图标及间距会变小  行间距减小
-            //内部padding
-            contentPadding: contentPadding ?? EdgeInsets.zero,
-            //输入框的padding  对内部的文字有效
-            //背景色
-            fillColor: fillColor,
-            //输入框内部的填充颜色  需filled=true
-            filled: filled,
-            //输入框禁用时，下划线的样式.如果设置了errorText，则此属性无效
-            disabledBorder: disabledBorder,
-            //输入框启用时，下划线的样式
-            enabledBorder: enabledBorder,
-            //是否启用输入框
-            enabled: enabled,
-            //获取焦点时，下划线的样式
-            focusedBorder: focusedBorder,
-            //级别最低的border，没有设置其他border时显示的border
-            border: defaultBorder,
+              // 错误提示相关
+              errorText: errorText,
+              //在输入框下方的提示语，通常用于错误提示，比如密码错误 用户名错误等  同时输入框的下划线修改为了红色
+              errorStyle: errorStyle,
+              errorMaxLines: errorMaxLines,
+              //做多显示的行数  ，超过行数显示...
+              errorBorder: errorBorder,
+              //失去焦点时，error时下划线显示的边框样式，不设置则使用默认的的下划线
+              focusedErrorBorder: focusedErrorBorder,
+              //获取焦点时，error时下划线显示的边框样式，不设置则使用默认的的下划线
+              //输入框内文字 密集显示
+              isDense: isDense ?? false,
+              //改变输入框是否为密集型，默认为false，修改为true时，图标及间距会变小  行间距减小
+              //内部padding
+              contentPadding: contentPadding ?? EdgeInsets.zero,
+              //输入框的padding  对内部的文字有效
+              //背景色
+              fillColor: fillColor,
+              //输入框内部的填充颜色  需filled=true
+              filled: filled,
+              //输入框禁用时，下划线的样式.如果设置了errorText，则此属性无效
+              disabledBorder: disabledBorder,
+              //输入框启用时，下划线的样式
+              enabledBorder: enabledBorder,
+              //是否启用输入框
+              enabled: enabled,
+              //获取焦点时，下划线的样式
+              focusedBorder: focusedBorder,
+              //级别最低的border，没有设置其他border时显示的border
+              border: defaultBorder,
 //            border: InputBorder.none,
-          ),
-      onChanged: onChanged,
-      onTap: onTap,
-      toolbarOptions: toolbarOptions,
-      onSubmitted: onSubmitted,
-      enabled: enabled,
-      readOnly: readOnly,
-      //按回车时调用 先调用此方法  然后调用onSubmitted方法
-      onEditingComplete: onEditingComplete,
-    );
-  }
+            ),
+        onChanged: onChanged,
+        onTap: onTap,
+        toolbarOptions: toolbarOptions,
+        onSubmitted: onSubmitted,
+        enabled: enabled,
+        readOnly: readOnly,
+        //按回车时调用 先调用此方法  然后调用onSubmitted方法
+        onEditingComplete: onEditingComplete,
+      );
 
   List<TextInputFormatter> inputType() {
     switch (inputTextType) {
@@ -492,7 +489,6 @@ class SearchBox extends StatelessWidget {
   final EdgeInsetsGeometry padding;
   final AlignmentGeometry alignment;
   final Decoration decoration;
-
   final String searchText;
   final Widget search;
   final TextStyle searchStyle;
@@ -562,8 +558,7 @@ class SearchBox extends StatelessWidget {
     this.width,
     this.autoFocus,
     this.focusNode,
-  })
-      : this.icon = icon ?? ConstIcon.search,
+  })  : this.icon = icon ?? ConstIcon.search,
         this.size = size ?? 15,
         this.contentPadding = contentPadding ?? EdgeInsets.all(6),
         super(key: key);
@@ -574,81 +569,60 @@ class SearchBox extends StatelessWidget {
     if (extraSuffix == null && extraPrefix == null) {
       children = null;
     } else {
-      if (extraPrefix != null) {
-        children.add(extraPrefix);
-      }
+      if (extraPrefix != null) children.add(extraPrefix);
       children.add(Expanded(child: heroTextInput()));
-      if (extraSuffix != null) {
-        children.add(extraSuffix);
-      }
+      if (extraSuffix != null) children.add(extraSuffix);
     }
     return Universal(
-      decoration: decoration,
-      margin: margin,
-      height: height,
-      width: width,
-      alignment: alignment,
-      padding: padding,
-      direction: Axis.horizontal,
-      children: children,
-      child: extraPrefix == null ? heroTextInput() : null,
-    );
+        decoration: decoration,
+        margin: margin,
+        height: height,
+        width: width,
+        alignment: alignment,
+        padding: padding,
+        direction: Axis.horizontal,
+        children: children,
+        child: extraPrefix == null ? heroTextInput() : null);
   }
 
   Widget heroTextInput() {
-    if (heroTag != null)
-      return Hero(
-        tag: heroTag,
-        child: textInput(),
-      );
+    if (heroTag != null) return Hero(tag: heroTag, child: textInput());
     return textInput();
   }
 
   Widget textInput() {
     return InputField(
-      controller: controller,
-      isDense: true,
-      focusNode: focusNode,
-      fillColor: fillColor,
-      filled: true,
-      focusedBorder: inputBorder(focusedBorderColor ?? enabledBorderColor ?? getColors(blue)),
-      enabledBorder: inputBorder(enabledBorderColor ?? getColors(white50)),
-      inputStyle: inputStyle,
-      contentPadding: contentPadding,
-      hintStyle: hintStyle,
-      hintText: hintText,
-      cursorColor: cursorColor ?? enabledBorderColor ?? getColors(blue),
-      prefixIcon: prefix(),
-      onChanged: onChanged,
-      autoFocus: autoFocus,
-      suffix: suffix(),
-      suffixIcon: suffixIcon,
-      enableInteractiveSelection: true,
-    );
+        controller: controller,
+        isDense: true,
+        focusNode: focusNode,
+        fillColor: fillColor,
+        filled: true,
+        focusedBorder: inputBorder(focusedBorderColor ?? enabledBorderColor ?? getColors(blue)),
+        enabledBorder: inputBorder(enabledBorderColor ?? getColors(white50)),
+        inputStyle: inputStyle,
+        contentPadding: contentPadding,
+        hintStyle: hintStyle,
+        hintText: hintText,
+        cursorColor: cursorColor ?? enabledBorderColor ?? getColors(blue),
+        prefixIcon: prefix(),
+        onChanged: onChanged,
+        autoFocus: autoFocus,
+        suffix: suffix(),
+        suffixIcon: suffixIcon,
+        enableInteractiveSelection: true);
   }
 
-  Widget prefix() {
-    if (prefixIcon == null) {
-      return Icon(
-        icon,
-        size: size,
-        color: color,
-      );
-    } else {
-      return prefixIcon;
-    }
-  }
+  Widget prefix() => prefixIcon == null ? Icon(icon, size: size, color: color) : prefixIcon;
 
   Widget suffix() {
     if (search == null) {
       return searchText == null
           ? null
           : SimpleButton(
-        text: searchText,
-        onTap: searchTap,
-        padding: EdgeInsets.symmetric(horizontal: ScreenFit.getWidth(4)),
-        textStyle: searchStyle ?? TextStyle(color: getColors(white)),
-      );
+              text: searchText,
+              onTap: searchTap,
+              padding: EdgeInsets.symmetric(horizontal: ScreenFit.getWidth(4)),
+              textStyle: searchStyle ?? TextStyle(color: getColors(white)));
     } else {
       return search;
     }

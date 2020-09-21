@@ -48,13 +48,9 @@ class RichSpan extends StatelessWidget {
     }
     if (text.length > styles.length) {
       int poor = text.length - styles.length;
-      for (int i = 0; i <= poor; i++) {
-        styles.add(styles.last);
-      }
+      for (int i = 0; i <= poor; i++) styles.add(styles.last);
     }
-    text.map((value) {
-      children.add(TextSpan(text: value, style: styles[text.indexOf(value)]));
-    }).toList();
+    text.map((value) => children.add(TextSpan(text: value, style: styles[text.indexOf(value)]))).toList();
     return RichText(
       textDirection: textDirection,
       softWrap: softWrap,

@@ -5,7 +5,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:flutter_waya/src/constant/widgets.dart';
+import 'package:flutter_waya/src/constant/way.dart';
 
 GlobalKey<NavigatorState> _globalNavigatorKey = GlobalKey();
 List<GlobalKey<State>> _scaffoldKeyList = [];
@@ -142,36 +142,35 @@ class GlobalMaterial extends StatelessWidget {
   Widget build(BuildContext context) {
     if (navigatorKey != null) _globalNavigatorKey = navigatorKey;
     return MaterialApp(
-      key: key,
-      navigatorKey: _globalNavigatorKey,
-      home: home,
-      routes: routes,
-      initialRoute: initialRoute,
-      onGenerateRoute: onGenerateRoute,
-      onGenerateInitialRoutes: onGenerateInitialRoutes,
-      onUnknownRoute: onUnknownRoute,
-      navigatorObservers: navigatorObservers,
-      builder: builder,
-      title: title,
-      onGenerateTitle: onGenerateTitle,
-      color: color,
-      theme: theme,
-      darkTheme: darkTheme,
-      themeMode: themeMode,
-      locale: locale,
-      localizationsDelegates: localizationsDelegates,
-      localeListResolutionCallback: localeListResolutionCallback,
-      localeResolutionCallback: localeResolutionCallback,
-      supportedLocales: supportedLocales,
-      debugShowMaterialGrid: debugShowMaterialGrid,
-      showPerformanceOverlay: showPerformanceOverlay,
-      checkerboardRasterCacheImages: checkerboardRasterCacheImages,
-      checkerboardOffscreenLayers: checkerboardOffscreenLayers,
-      showSemanticsDebugger: showSemanticsDebugger,
-      debugShowCheckedModeBanner: debugShowCheckedModeBanner,
-      shortcuts: shortcuts,
-      actions: actions,
-    );
+        key: key,
+        navigatorKey: _globalNavigatorKey,
+        home: home,
+        routes: routes,
+        initialRoute: initialRoute,
+        onGenerateRoute: onGenerateRoute,
+        onGenerateInitialRoutes: onGenerateInitialRoutes,
+        onUnknownRoute: onUnknownRoute,
+        navigatorObservers: navigatorObservers,
+        builder: builder,
+        title: title,
+        onGenerateTitle: onGenerateTitle,
+        color: color,
+        theme: theme,
+        darkTheme: darkTheme,
+        themeMode: themeMode,
+        locale: locale,
+        localizationsDelegates: localizationsDelegates,
+        localeListResolutionCallback: localeListResolutionCallback,
+        localeResolutionCallback: localeResolutionCallback,
+        supportedLocales: supportedLocales,
+        debugShowMaterialGrid: debugShowMaterialGrid,
+        showPerformanceOverlay: showPerformanceOverlay,
+        checkerboardRasterCacheImages: checkerboardRasterCacheImages,
+        checkerboardOffscreenLayers: checkerboardOffscreenLayers,
+        showSemanticsDebugger: showSemanticsDebugger,
+        debugShowCheckedModeBanner: debugShowCheckedModeBanner,
+        shortcuts: shortcuts,
+        actions: actions);
   }
 }
 
@@ -246,30 +245,29 @@ class GlobalCupertino extends StatelessWidget {
   Widget build(BuildContext context) {
     if (navigatorKey != null) _globalNavigatorKey = navigatorKey;
     return CupertinoApp(
-      key: key,
-      navigatorKey: _globalNavigatorKey,
-      home: home,
-      theme: theme,
-      routes: routes,
-      initialRoute: initialRoute,
-      onGenerateRoute: onGenerateRoute,
-      onUnknownRoute: onUnknownRoute,
-      navigatorObservers: navigatorObservers,
-      builder: builder,
-      title: title,
-      onGenerateTitle: onGenerateTitle,
-      color: color,
-      locale: locale,
-      localizationsDelegates: localizationsDelegates,
-      localeListResolutionCallback: localeListResolutionCallback,
-      localeResolutionCallback: localeResolutionCallback,
-      supportedLocales: supportedLocales,
-      showPerformanceOverlay: showPerformanceOverlay,
-      checkerboardRasterCacheImages: checkerboardRasterCacheImages,
-      checkerboardOffscreenLayers: checkerboardOffscreenLayers,
-      showSemanticsDebugger: showSemanticsDebugger,
-      debugShowCheckedModeBanner: debugShowCheckedModeBanner,
-    );
+        key: key,
+        navigatorKey: _globalNavigatorKey,
+        home: home,
+        theme: theme,
+        routes: routes,
+        initialRoute: initialRoute,
+        onGenerateRoute: onGenerateRoute,
+        onUnknownRoute: onUnknownRoute,
+        navigatorObservers: navigatorObservers,
+        builder: builder,
+        title: title,
+        onGenerateTitle: onGenerateTitle,
+        color: color,
+        locale: locale,
+        localizationsDelegates: localizationsDelegates,
+        localeListResolutionCallback: localeListResolutionCallback,
+        localeResolutionCallback: localeResolutionCallback,
+        supportedLocales: supportedLocales,
+        showPerformanceOverlay: showPerformanceOverlay,
+        checkerboardRasterCacheImages: checkerboardRasterCacheImages,
+        checkerboardOffscreenLayers: checkerboardOffscreenLayers,
+        showSemanticsDebugger: showSemanticsDebugger,
+        debugShowCheckedModeBanner: debugShowCheckedModeBanner);
   }
 }
 
@@ -384,37 +382,35 @@ class _OverlayScaffoldState extends State<OverlayScaffold> {
               return true;
             },
         child: Scaffold(
-          key: _globalKey,
-          primary: widget.primary,
-          resizeToAvoidBottomInset: widget.resizeToAvoidBottomInset,
-          drawerDragStartBehavior: widget.drawerDragStartBehavior,
-          bottomSheet: widget.bottomSheet,
-          extendBody: widget.extendBody,
-          resizeToAvoidBottomPadding: widget.resizeToAvoidBottomPadding,
-          endDrawer: widget.endDrawer,
-          drawer: widget.drawer,
-          persistentFooterButtons: widget.persistentFooterButtons,
-          floatingActionButtonLocation: widget.floatingActionButtonLocation,
-          floatingActionButton: widget.floatingActionButton,
-          floatingActionButtonAnimator: widget.floatingActionButtonAnimator,
-          backgroundColor: widget.backgroundColor ?? getColors(background),
-          appBar: appBar(),
-          bottomNavigationBar: widget.bottomNavigationBar,
-          body: bodyWidget(context),
-        ));
+            key: _globalKey,
+            primary: widget.primary,
+            resizeToAvoidBottomInset: widget.resizeToAvoidBottomInset,
+            drawerDragStartBehavior: widget.drawerDragStartBehavior,
+            bottomSheet: widget.bottomSheet,
+            extendBody: widget.extendBody,
+            resizeToAvoidBottomPadding: widget.resizeToAvoidBottomPadding,
+            endDrawer: widget.endDrawer,
+            drawer: widget.drawer,
+            persistentFooterButtons: widget.persistentFooterButtons,
+            floatingActionButtonLocation: widget.floatingActionButtonLocation,
+            floatingActionButton: widget.floatingActionButton,
+            floatingActionButtonAnimator: widget.floatingActionButtonAnimator,
+            backgroundColor: widget.backgroundColor ?? getColors(background),
+            appBar: appBar(),
+            bottomNavigationBar: widget.bottomNavigationBar,
+            body: bodyWidget()));
     if (!_scaffoldKeyList.contains(_globalKey)) _scaffoldKeyList.add(_globalKey);
     return scaffold;
   }
 
-  Widget bodyWidget(BuildContext context) => widget.enablePullDown ? refresherContainer() : container();
+  Widget bodyWidget() => widget.enablePullDown ? refresherContainer() : container();
 
   Widget refresherContainer() => Refreshed(
-        enablePullDown: widget.enablePullDown,
-        controller: widget.controller,
-        onRefresh: widget.onRefresh,
-        child: container(),
-        header: widget.header,
-      );
+      enablePullDown: widget.enablePullDown,
+      controller: widget.controller,
+      onRefresh: widget.onRefresh,
+      child: container(),
+      header: widget.header);
 
   PreferredSizeWidget appBar() {
     if (widget.appBar is AppBar && widget.appBarHeight == null) return widget.appBar;
@@ -426,13 +422,12 @@ class _OverlayScaffoldState extends State<OverlayScaffold> {
   }
 
   Widget container() => Container(
-        color: widget.backgroundColor,
-        margin: widget.isolationBody ? EdgeInsets.only(top: ScreenFit.getHeight(10)) : EdgeInsets.zero,
-        padding: widget.paddingStatusBar ? EdgeInsets.only(top: MediaQueryTools.getStatusBarHeight()) : widget.padding,
-        width: double.infinity,
-        height: double.infinity,
-        child: widget.isScroll ? SingleChildScrollView(child: widget.body) : widget.body,
-      );
+      color: widget.backgroundColor,
+      margin: widget.isolationBody ? EdgeInsets.only(top: ScreenFit.getHeight(10)) : EdgeInsets.zero,
+      padding: widget.paddingStatusBar ? EdgeInsets.only(top: MediaQueryTools.getStatusBarHeight()) : widget.padding,
+      width: double.infinity,
+      height: double.infinity,
+      child: widget.isScroll ? SingleChildScrollView(child: widget.body) : widget.body);
 
   @override
   void dispose() {
@@ -630,12 +625,11 @@ void showToast(String message,
       PopupBase(
           onTap: () => closeOverlay(),
           child: Container(
-            margin: EdgeInsets.symmetric(horizontal: ScreenFit.getWidth(0) / 5, vertical: ScreenFit.getHeight(0) / 4),
-            decoration:
-                boxDecoration ?? BoxDecoration(color: getColors(black90), borderRadius: BorderRadius.circular(5)),
-            padding: EdgeInsets.all(10),
-            child: Widgets.textDefault(message, color: getColors(white), maxLines: 4),
-          )),
+              margin: EdgeInsets.symmetric(horizontal: ScreenFit.getWidth(0) / 5, vertical: ScreenFit.getHeight(0) / 4),
+              decoration:
+                  boxDecoration ?? BoxDecoration(color: getColors(black90), borderRadius: BorderRadius.circular(5)),
+              padding: EdgeInsets.all(10),
+              child: WayWidgets.textDefault(message, color: getColors(white), maxLines: 4))),
       isAutomaticOff: true);
   haveToast = true;
   Tools.timerTools(closeDuration ?? _duration, () {

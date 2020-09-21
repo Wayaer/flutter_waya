@@ -70,9 +70,7 @@ class CanvasLine extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     int length = pathPoints.length;
-
     if (length < 1) return;
-
     final linePaint = Paint()
       ..isAntiAlias = true
       ..color = this.selectColor
@@ -97,7 +95,6 @@ class CanvasLine extends CustomPainter {
     } else if (endY > size.height) {
       endY = size.height;
     }
-
     canvas.drawLine(Offset(pathPoints[length - 1].x, pathPoints[length - 1].y), Offset(endX, endY), linePaint);
   }
 

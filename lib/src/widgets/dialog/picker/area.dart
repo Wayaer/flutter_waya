@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/area.dart';
-import 'package:flutter_waya/src/constant/widgets.dart';
+import 'package:flutter_waya/src/constant/way.dart';
 
 class AreaPicker extends StatefulWidget {
   ///容器属性
@@ -70,9 +70,9 @@ class AreaPicker extends StatefulWidget {
       this.defaultCity,
       this.defaultDistrict})
       : this.titleBottom = titleBottom ?? Container(),
-        this.sure = sure ?? Widgets.textDefault('sure'),
-        this.title = title ?? Widgets.textDefault('title'),
-        this.cancel = cancel ?? Widgets.textDefault('cancel'),
+        this.sure = sure ?? WayWidgets.textDefault('sure'),
+        this.title = title ?? WayWidgets.textDefault('title'),
+        this.cancel = cancel ?? WayWidgets.textDefault('cancel'),
         this.height = height ?? ScreenFit.getHeight(0) / 4,
         this.magnification = magnification ?? 1.2,
         super(key: key);
@@ -241,7 +241,7 @@ class _AreaPickerState extends State<AreaPicker> {
   Widget item(String value) {
     return Container(
         alignment: Alignment.center,
-        child: Widgets.textSmall(value, overflow: TextOverflow.ellipsis, style: contentStyle));
+        child: WayWidgets.textSmall(value, overflow: TextOverflow.ellipsis, style: contentStyle));
   }
 
   jumpToIndex(int index, FixedExtentScrollController controller, {Duration duration}) {

@@ -53,22 +53,19 @@ class _GestureZoomState extends State<GestureZoom> with TickerProviderStateMixin
   @override
   Widget build(BuildContext context) {
     return Transform(
-      alignment: Alignment.center,
-      transform: Matrix4.identity()
-        ..translate(_offset.dx, _offset.dy)
-        ..scale(_scale, _scale),
-      child: Listener(
-        onPointerUp: _onPointerUp,
-        child: GestureDetector(
-          onTap: widget.onPressed,
-          onDoubleTap: _onDoubleTap,
-          onScaleStart: _onScaleStart,
-          onScaleUpdate: _onScaleUpdate,
-          onScaleEnd: _onScaleEnd,
-          child: widget.child,
-        ),
-      ),
-    );
+        alignment: Alignment.center,
+        transform: Matrix4.identity()
+          ..translate(_offset.dx, _offset.dy)
+          ..scale(_scale, _scale),
+        child: Listener(
+            onPointerUp: _onPointerUp,
+            child: GestureDetector(
+                onTap: widget.onPressed,
+                onDoubleTap: _onDoubleTap,
+                onScaleStart: _onScaleStart,
+                onScaleUpdate: _onScaleUpdate,
+                onScaleEnd: _onScaleEnd,
+                child: widget.child)));
   }
 
   @override
@@ -79,17 +76,13 @@ class _GestureZoomState extends State<GestureZoom> with TickerProviderStateMixin
   }
 
   /// 处理手指抬起事件 [event]
-  _onPointerUp(PointerUpEvent event) {
-    _doubleTapPosition = event.localPosition;
-  }
+  _onPointerUp(PointerUpEvent event) => _doubleTapPosition = event.localPosition;
 
   /// 处理双击
   _onDoubleTap() {
     double targetScale = _scale == 1.0 ? widget.doubleTapScale : 1.0;
     _animationScale(targetScale);
-    if (targetScale == 1.0) {
-      _animationOffset(Offset.zero);
-    }
+    if (targetScale == 1.0) _animationOffset(Offset.zero);
   }
 
   _onScaleStart(ScaleStartDetails details) {
@@ -98,21 +91,17 @@ class _GestureZoomState extends State<GestureZoom> with TickerProviderStateMixin
   }
 
   /// 处理缩放变化 [details]
-  _onScaleUpdate(ScaleUpdateDetails details) {
-    setState(() {
-      if (details.scale != 1.0) {
-        _scaling(details);
-      } else {
-        _dragging(details);
-      }
-    });
-  }
+  _onScaleUpdate(ScaleUpdateDetails details) => setState(() {
+        if (details.scale != 1.0) {
+          _scaling(details);
+        } else {
+          _dragging(details);
+        }
+      });
 
   /// 执行缩放
   _scaling(ScaleUpdateDetails details) {
-    if (_isDragging) {
-      return;
-    }
+    if (_isDragging) return;
     _isScaling = true;
     if (_latestScaleUpdateDetails == null) {
       _latestScaleUpdateDetails = details;
@@ -121,9 +110,8 @@ class _GestureZoomState extends State<GestureZoom> with TickerProviderStateMixin
 
     /// 计算缩放比例
     double scaleIncrement = details.scale - _latestScaleUpdateDetails.scale;
-    if (details.scale < 1.0 && _scale > 1.0) {
-      scaleIncrement *= _scale;
-    }
+    if (details.scale < 1.0 && _scale > 1.0) scaleIncrement *= _scale;
+
     if (_scale < 1.0 && scaleIncrement < 0) {
       scaleIncrement *= (_scale - 0.5);
     } else if (_scale > widget.maxScale && scaleIncrement > 0) {
@@ -150,9 +138,8 @@ class _GestureZoomState extends State<GestureZoom> with TickerProviderStateMixin
 
   /// 执行拖动
   _dragging(ScaleUpdateDetails details) {
-    if (_isScaling) {
-      return;
-    }
+    if (_isScaling) return;
+
     _isDragging = true;
     if (_latestScaleUpdateDetails == null) {
       _latestScaleUpdateDetails = details;
@@ -261,21 +248,17 @@ class _GestureZoomState extends State<GestureZoom> with TickerProviderStateMixin
     _scaleAnimController?.dispose();
     _scaleAnimController = AnimationController(vsync: this, duration: widget.duration);
     Animation anim = Tween<double>(begin: _scale, end: targetScale).animate(_scaleAnimController);
-    anim.addListener(() {
-      setState(() {
-        _scaling(ScaleUpdateDetails(
-          focalPoint: _doubleTapPosition,
-          localFocalPoint: _doubleTapPosition,
-          scale: anim.value,
-          horizontalScale: anim.value,
-          verticalScale: anim.value,
-        ));
-      });
-    });
+    anim.addListener(() => setState(() {
+          _scaling(ScaleUpdateDetails(
+            focalPoint: _doubleTapPosition,
+            localFocalPoint: _doubleTapPosition,
+            scale: anim.value,
+            horizontalScale: anim.value,
+            verticalScale: anim.value,
+          ));
+        }));
     anim.addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        _onScaleEnd(ScaleEndDetails());
-      }
+      if (status == AnimationStatus.completed) _onScaleEnd(ScaleEndDetails());
     });
     _scaleAnimController.forward();
   }
@@ -285,11 +268,9 @@ class _GestureZoomState extends State<GestureZoom> with TickerProviderStateMixin
     _offsetAnimController?.dispose();
     _offsetAnimController = AnimationController(vsync: this, duration: widget.duration);
     Animation anim = _offsetAnimController.drive(Tween<Offset>(begin: _offset, end: targetOffset));
-    anim.addListener(() {
-      setState(() {
-        _offset = anim.value;
-      });
-    });
+    anim.addListener(() => setState(() {
+          _offset = anim.value;
+        }));
     _offsetAnimController.fling();
   }
 }

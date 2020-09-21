@@ -40,6 +40,22 @@ class GifController extends AnimationController {
 }
 
 class GifImage extends StatefulWidget {
+  final VoidCallback onFetchCompleted;
+  final GifController controller;
+  final ImageProvider image;
+  final double width;
+  final double height;
+  final Color color;
+  final BlendMode colorBlendMode;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+  final ImageRepeat repeat;
+  final Rect centerSlice;
+  final bool matchTextDirection;
+  final bool gapLessPlayback;
+  final String semanticLabel;
+  final bool excludeFromSemantics;
+
   GifImage({
     @required this.image,
     @required this.controller,
@@ -57,22 +73,6 @@ class GifImage extends StatefulWidget {
     this.matchTextDirection = false,
     this.gapLessPlayback = false,
   });
-
-  final VoidCallback onFetchCompleted;
-  final GifController controller;
-  final ImageProvider image;
-  final double width;
-  final double height;
-  final Color color;
-  final BlendMode colorBlendMode;
-  final BoxFit fit;
-  final AlignmentGeometry alignment;
-  final ImageRepeat repeat;
-  final Rect centerSlice;
-  final bool matchTextDirection;
-  final bool gapLessPlayback;
-  final String semanticLabel;
-  final bool excludeFromSemantics;
 
   @override
   _GifImageState createState() => _GifImageState();
@@ -106,16 +106,14 @@ class _GifImageState extends State<GifImage> {
   void didUpdateWidget(GifImage oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.image != oldWidget.image) {
-      fetchGif(widget.image).then((imageInfo) {
-        if (mounted)
-          setState(() {
-            _images = imageInfo;
-            _fetchComplete = true;
-            _curIndex = widget.controller.value.toInt();
-            if (widget.onFetchCompleted != null) {
-              widget.onFetchCompleted();
-            }
-          });
+      _fetchGif(widget.image).then((imageInfo) {
+        if (mounted) {
+          _images = imageInfo;
+          _fetchComplete = true;
+          _curIndex = widget.controller.value.toInt();
+          if (widget.onFetchCompleted != null) widget.onFetchCompleted();
+          setState(() {});
+        }
       });
     }
     if (widget.controller != oldWidget.controller) {
@@ -125,11 +123,9 @@ class _GifImageState extends State<GifImage> {
   }
 
   void _listener() {
-    if (_curIndex != widget.controller.value && _fetchComplete) {
-      if (mounted)
-        setState(() {
-          _curIndex = widget.controller.value.toInt();
-        });
+    if (_curIndex != widget.controller.value && _fetchComplete && mounted) {
+      _curIndex = widget.controller.value.toInt();
+      setState(() {});
     }
   }
 
@@ -137,16 +133,13 @@ class _GifImageState extends State<GifImage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (_images == null) {
-      fetchGif(widget.image).then((imageInfo) {
-        if (mounted)
-          setState(() {
-            _images = imageInfo;
-            _fetchComplete = true;
-            _curIndex = widget.controller.value.toInt();
-            if (widget.onFetchCompleted != null) {
-              widget.onFetchCompleted();
-            }
-          });
+      _fetchGif(widget.image).then((imageInfo) {
+        if (mounted) {
+          _images = imageInfo;
+          _fetchComplete = true;
+          _curIndex = widget.controller.value.toInt();
+          setState(() {});
+        }
       });
     }
   }
@@ -154,25 +147,23 @@ class _GifImageState extends State<GifImage> {
   @override
   Widget build(BuildContext context) {
     final RawImage image = RawImage(
-      image: _imageInfo?.image,
-      width: widget.width,
-      height: widget.height,
-      scale: _imageInfo?.scale ?? 1.0,
-      color: widget.color,
-      colorBlendMode: widget.colorBlendMode,
-      fit: widget.fit,
-      alignment: widget.alignment,
-      repeat: widget.repeat,
-      centerSlice: widget.centerSlice,
-      matchTextDirection: widget.matchTextDirection,
-    );
+        image: _imageInfo?.image,
+        width: widget.width,
+        height: widget.height,
+        scale: _imageInfo?.scale ?? 1.0,
+        color: widget.color,
+        colorBlendMode: widget.colorBlendMode,
+        fit: widget.fit,
+        alignment: widget.alignment,
+        repeat: widget.repeat,
+        centerSlice: widget.centerSlice,
+        matchTextDirection: widget.matchTextDirection);
     if (widget.excludeFromSemantics) return image;
     return Semantics(
-      container: widget.semanticLabel != null,
-      image: true,
-      label: widget.semanticLabel == null ? '' : widget.semanticLabel,
-      child: image,
-    );
+        container: widget.semanticLabel != null,
+        image: true,
+        label: widget.semanticLabel == null ? '' : widget.semanticLabel,
+        child: image);
   }
 }
 
@@ -187,7 +178,7 @@ HttpClient get _httpClient {
   return client;
 }
 
-Future<List<ImageInfo>> fetchGif(ImageProvider provider) async {
+Future<List<ImageInfo>> _fetchGif(ImageProvider provider) async {
   List<ImageInfo> images = [];
   dynamic data;
   String key = provider is NetworkImage
@@ -204,9 +195,7 @@ Future<List<ImageInfo>> fetchGif(ImageProvider provider) async {
       request.headers.add(name, value);
     });
     final HttpClientResponse response = await request.close();
-    data = await consolidateHttpClientResponseBytes(
-      response,
-    );
+    data = await consolidateHttpClientResponseBytes(response);
   } else if (provider is AssetImage) {
     AssetBundleImageKey key = await provider.obtainKey(ImageConfiguration());
     data = await key.bundle.load(key.name);

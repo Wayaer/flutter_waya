@@ -139,8 +139,6 @@ class _GestureLockState extends State<GestureLock> {
         onPanUp(items);
       }
       if (immediatelyClear) clearAllData();
-
-      ///clear data
     }
   }
 
@@ -165,9 +163,7 @@ class _GestureLockState extends State<GestureLock> {
   }
 
   clearAllData() {
-    for (int i = 0; i < 9; i++) {
-      points[i].isSelect = false;
-    }
+    for (int i = 0; i < 9; i++) points[i].isSelect = false;
     pathPoints.clear();
     setState(() {});
   }

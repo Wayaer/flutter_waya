@@ -4,7 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/styles.dart';
-import 'package:flutter_waya/src/constant/widgets.dart';
+import 'package:flutter_waya/src/constant/way.dart';
 
 ///发送验证码
 class SendSMS extends StatefulWidget {
@@ -37,17 +37,21 @@ class SendSMS extends StatefulWidget {
       this.notTapBorderColor,
       this.width,
       this.height,
-      this.defaultText,
-      this.sendingText,
-      this.sentText,
-      this.notTapText,
+      String defaultText,
+      String sendingText,
+      String sentText,
+      String notTapText,
       this.defaultTextStyle,
       this.notTapTextStyle,
       this.background,
       this.seconds,
       this.margin,
       this.padding})
-      : super(key: key);
+      : this.defaultText = defaultText ?? '获取验证码',
+        this.sendingText = sendingText ?? '发送中',
+        this.sentText = sentText ?? '重新发送',
+        this.notTapText = notTapText ?? '重新发送',
+        super(key: key);
 
   @override
   _SendSMSState createState() => _SendSMSState();
@@ -61,11 +65,7 @@ class _SendSMSState extends State<SendSMS> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((callback) {
-      setState(() {
-        verifyStr = widget.defaultText ?? '获取验证码';
-      });
-    });
+    verifyStr = widget.defaultText;
   }
 
   @override
@@ -88,19 +88,16 @@ class _SendSMSState extends State<SendSMS> {
                           ? (widget.defaultBorderColor ?? getColors(blue))
                           : (widget.notTapBorderColor ?? getColors(black70))),
               borderRadius: widget.borderRadius ?? BorderRadius.circular(20)),
-      child: Text(
-        '$verifyStr',
-        style: seconds == 0
-            ? widget.defaultTextStyle ?? WayStyles.textStyleBlue(fontSize: 13)
-            : widget.notTapTextStyle ?? WayStyles.textStyleBlack70(fontSize: 13),
-      ),
+      child: Text('$verifyStr',
+          style: seconds == 0
+              ? widget.defaultTextStyle ?? WayStyles.textStyleBlue(fontSize: 13)
+              : widget.notTapTextStyle ?? WayStyles.textStyleBlack70(fontSize: 13)),
     );
   }
 
   onTap() {
-    setState(() {
-      verifyStr = widget.sendingText ?? '发送中';
-    });
+    verifyStr = widget.sendingText;
+    setState(() {});
     widget.onTap(send);
   }
 
@@ -108,9 +105,8 @@ class _SendSMSState extends State<SendSMS> {
     if (sending) {
       startTimer();
     } else {
-      setState(() {
-        verifyStr = widget.sentText ?? '重新发送';
-      });
+      verifyStr = widget.sentText;
+      setState(() {});
     }
   }
 
@@ -124,9 +120,7 @@ class _SendSMSState extends State<SendSMS> {
       seconds--;
       verifyStr = '${seconds}s';
       setState(() {});
-      if (seconds == 0) {
-        verifyStr = widget.sentText ?? '重新发送';
-      }
+      if (seconds == 0) verifyStr = widget.sentText;
     });
   }
 
@@ -170,7 +164,7 @@ class _CountDownSkipState extends State<CountDownSkip> {
   void initState() {
     super.initState();
     seconds = widget.seconds;
-    WidgetsBinding.instance.addPostFrameCallback((callback) {
+    Tools.addPostFrameCallback((callback) {
       if (seconds > 0) {
         timer = Timer.periodic(Duration(seconds: 1), (time) {
           seconds -= 1;
@@ -183,14 +177,11 @@ class _CountDownSkipState extends State<CountDownSkip> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return SimpleButton(
+  Widget build(BuildContext context) => SimpleButton(
       onTap: widget.onTap,
       decoration: widget.decoration ?? BoxDecoration(color: getColors(white50), borderRadius: BorderRadius.circular(5)),
       padding: EdgeInsets.symmetric(horizontal: ScreenFit.getHeight(5), vertical: ScreenFit.getWidth(4)),
-      child: Widgets.textSmall(seconds.toString() + 's' + widget.skipText),
-    );
-  }
+      child: WayWidgets.textSmall(seconds.toString() + 's' + widget.skipText));
 
   @override
   void dispose() {
@@ -266,8 +257,7 @@ class CustomDismissible extends StatelessWidget {
         super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Dismissible(
+  Widget build(BuildContext context) => Dismissible(
       child: child,
       key: key,
       background: background,
@@ -280,9 +270,7 @@ class CustomDismissible extends StatelessWidget {
       dismissThresholds: dismissThresholds,
       movementDuration: movementDuration,
       crossAxisEndOffset: crossAxisEndOffset,
-      dragStartBehavior: dragStartBehavior,
-    );
-  }
+      dragStartBehavior: dragStartBehavior);
 }
 
 ///组件右上角加红点
@@ -333,21 +321,57 @@ class HintDot extends StatelessWidget {
     if (right != null || top != null || bottom != null || left != null)
       dot = Positioned(right: right, top: top, bottom: bottom, left: left, child: dot);
     if (dot != null) children.add(dot);
-    return Universal(
-      onTap: onTap,
-      margin: margin,
-      width: width,
-      height: height,
-      isStack: true,
-      children: children,
-    );
+    return Universal(onTap: onTap, margin: margin, width: width, height: height, isStack: true, children: children);
   }
 
   Widget dotWidget() => Container(
-        child: pointChild,
-        padding: pointPadding,
-        width: pointChild == null ? (pointSize ?? ScreenFit.getWidth(4)) : null,
-        height: pointChild == null ? (pointSize ?? ScreenFit.getWidth(4)) : null,
-        decoration: BoxDecoration(color: pointColor ?? getColors(red), shape: BoxShape.circle),
-      );
+      child: pointChild,
+      padding: pointPadding,
+      width: pointChild == null ? (pointSize ?? ScreenFit.getWidth(4)) : null,
+      height: pointChild == null ? (pointSize ?? ScreenFit.getWidth(4)) : null,
+      decoration: BoxDecoration(color: pointColor ?? getColors(red), shape: BoxShape.circle));
+}
+
+class CustomDrawer extends StatefulWidget {
+  final Color backgroundColor;
+  final Widget child;
+  final DrawerCallback callback;
+  final double width;
+  final double elevation;
+
+  CustomDrawer({
+    Key key,
+    double elevation,
+    double width,
+    @required this.child,
+    this.backgroundColor,
+    this.callback,
+  })  : this.width = width ?? ScreenFit.getWidth(0) * 0.7,
+        this.elevation = elevation ?? 16.0,
+        super(key: key);
+
+  @override
+  _CustomDrawerState createState() => _CustomDrawerState();
+}
+
+class _CustomDrawerState extends State<CustomDrawer> {
+  @override
+  void initState() {
+    if (widget.callback != null) widget.callback(true);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    if (widget.callback != null) widget.callback(false);
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxWidth: widget.width),
+      child: PopupBase(color: widget.backgroundColor, child: widget.child),
+    );
+  }
 }

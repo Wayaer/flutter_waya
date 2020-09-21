@@ -16,19 +16,14 @@ isDebug() {
 }
 
 class Tools {
-  static exitApp() async {
-    await SystemNavigator.pop();
-  }
+  static exitApp() async => await SystemNavigator.pop();
 
   ///手机号验证
-  static bool isChinaPhoneLegal(String str) {
-    return RegExp(r"^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$").hasMatch(str);
-  }
+  static bool isChinaPhoneLegal(String str) =>
+      RegExp(r"^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$").hasMatch(str);
 
   ///邮箱验证
-  static bool isEmail(String str) {
-    return RegExp(r"^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$").hasMatch(str);
-  }
+  static bool isEmail(String str) => RegExp(r"^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$").hasMatch(str);
 
   /// 截屏
   static Future<ByteData> screenshots(GlobalKey globalKey, {ImageByteFormat format}) async {
@@ -36,7 +31,7 @@ class Tools {
     var image = await boundary.toImage(pixelRatio: window.devicePixelRatio);
     ByteData byteData = await image.toByteData(format: format ?? ImageByteFormat.rawRgba);
 
-    ///    Uint8List uint8list = byteData.buffer.asUint8List();
+    /// Uint8List uint8list = byteData.buffer.asUint8List();
     return byteData;
   }
 
@@ -53,13 +48,11 @@ class Tools {
   ///时间戳转换
   static String stampToDate(int s, {DateType dateType, bool micro}) {
     if (micro == null) micro = false;
-    if (micro) {
-      ///微秒
-      return formatDate(DateTime.fromMicrosecondsSinceEpoch(s), dateType);
-    } else {
-      ///毫秒
-      return formatDate(DateTime.fromMillisecondsSinceEpoch(s), dateType);
-    }
+
+    ///微秒:毫秒
+    return micro
+        ? formatDate(DateTime.fromMicrosecondsSinceEpoch(s), dateType)
+        : formatDate(DateTime.fromMillisecondsSinceEpoch(s), dateType);
   }
 
   static String formatDate(DateTime date, [DateType dateType]) {
@@ -104,7 +97,6 @@ class Tools {
   ///自动获取焦点
   static autoFocus(BuildContext context) => FocusScope.of(context).autofocus(FocusNode());
 
-  ///
   static addPostFrameCallback(FrameCallback callback) => WidgetsBinding.instance.addPostFrameCallback(callback);
 
   static Timer timerTools(Duration duration, [Function function]) {
@@ -116,10 +108,9 @@ class Tools {
     return timer;
   }
 
-  static Timer timerPeriodic(Duration duration, [void callback(Timer timer)]) {
-    ///需要手动释放timer
-    return Timer.periodic(duration, (time) => callback(time));
-  }
+  ///需要手动释放timer
+  static Timer timerPeriodic(Duration duration, [void callback(Timer timer)]) =>
+      Timer.periodic(duration, (time) => callback(time));
 
   /// md5 加密
   static String setMd5(String data) => md5.convert(utf8.encode(data)).toString();
@@ -132,28 +123,22 @@ class Tools {
 
   static setStatusBarLight(bool isLight) {
     Color color = getColors(transparent);
-    SystemUiOverlayStyle systemUiOverlayStyle;
     if (isLight is bool) {
-      if (isLight) {
-        systemUiOverlayStyle = SystemUiOverlayStyle(
-          systemNavigationBarColor: getColors(black70),
-          systemNavigationBarDividerColor: getColors(transparent),
-          statusBarColor: color,
-          systemNavigationBarIconBrightness: Brightness.light,
-          statusBarIconBrightness: Brightness.light,
-          statusBarBrightness: Brightness.dark,
-        );
-      } else {
-        systemUiOverlayStyle = SystemUiOverlayStyle(
-          systemNavigationBarColor: getColors(black70),
-          systemNavigationBarDividerColor: color,
-          statusBarColor: color,
-          systemNavigationBarIconBrightness: Brightness.light,
-          statusBarIconBrightness: Brightness.dark,
-          statusBarBrightness: Brightness.light,
-        );
-      }
-      SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
+      SystemChrome.setSystemUIOverlayStyle(isLight
+          ? SystemUiOverlayStyle(
+              systemNavigationBarColor: getColors(black70),
+              systemNavigationBarDividerColor: getColors(transparent),
+              statusBarColor: color,
+              systemNavigationBarIconBrightness: Brightness.light,
+              statusBarIconBrightness: Brightness.light,
+              statusBarBrightness: Brightness.dark)
+          : SystemUiOverlayStyle(
+              systemNavigationBarColor: getColors(black70),
+              systemNavigationBarDividerColor: color,
+              statusBarColor: color,
+              systemNavigationBarIconBrightness: Brightness.light,
+              statusBarIconBrightness: Brightness.dark,
+              statusBarBrightness: Brightness.light));
     }
   }
 
