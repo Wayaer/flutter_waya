@@ -99,8 +99,7 @@ class DioTools {
   Future download(String url, String savePath, [ProgressCallback onReceiveProgress]) async {
     try {
       log("Download url:" + url + "  savePath:" + savePath.toString());
-      _dio.interceptors.remove(_interceptorWrap);
-      return await _dio.download(url, savePath, cancelToken: _cancelToken,
+      return await Dio().download(url, savePath, cancelToken: _cancelToken,
           onReceiveProgress: (int received, int total) {
         onReceiveProgress(received, total);
       });
@@ -112,9 +111,8 @@ class DioTools {
   Future upload(String url,
       {Map<String, dynamic> params, data, ProgressCallback onSendProgress, ProgressCallback onReceiveProgress}) async {
     try {
-      _dio.interceptors.remove(_interceptorWrap);
       log("Upload url:" + url + "  params:" + params.toString() + "  data:" + data.toString());
-      return await _dio.post(url,
+      return await Dio().post(url,
           queryParameters: params,
           data: data,
           cancelToken: _cancelToken,
