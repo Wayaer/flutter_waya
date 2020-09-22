@@ -577,6 +577,7 @@ void closeAllOverlay() {
 ///loading 加载框
 ///关闭 closeOverlay();
 OverlayEntryMap showLoading({
+  Widget custom,
   String text,
   double value,
   bool gaussian,
@@ -589,26 +590,24 @@ OverlayEntryMap showLoading({
   TextStyle textStyle,
 }) {
   return showOverlay(Loading(
-    gaussian: gaussian,
-    text: text,
-    value: value,
-    backgroundColor: backgroundColor,
-    valueColor: valueColor,
-    strokeWidth: strokeWidth ?? 4.0,
-    semanticsLabel: semanticsLabel,
-    semanticsValue: semanticsValue,
-    loadingType: loadingType ?? LoadingType.circular,
-    textStyle: textStyle,
-  ));
+      child: custom,
+      gaussian: gaussian,
+      text: text,
+      value: value,
+      backgroundColor: backgroundColor,
+      valueColor: valueColor,
+      strokeWidth: strokeWidth ?? 4.0,
+      semanticsLabel: semanticsLabel,
+      semanticsValue: semanticsValue,
+      loadingType: loadingType ?? LoadingType.circular,
+      textStyle: textStyle));
 }
 
 ///Toast
 Duration _duration = Duration(milliseconds: 1500);
 
 ///设置全局弹窗时间
-void setToastDuration(Duration duration) {
-  _duration = duration;
-}
+void setToastDuration(Duration duration) => _duration = duration;
 
 bool haveToast = false;
 

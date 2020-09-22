@@ -28,6 +28,8 @@ class PopupBase extends StatefulWidget {
   final double right;
   final double bottom;
   final AlignmentGeometry alignment;
+
+  ///是否可以操作背景
   final bool ignoring;
 
   const PopupBase(
