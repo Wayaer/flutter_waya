@@ -68,7 +68,7 @@ class ListWheel extends StatefulWidget {
         this.magnification = magnification ?? 1.5,
         this.useMagnifier = useMagnifier ?? true,
         this.squeeze = squeeze ?? 1,
-        this.itemExtent = itemExtent ?? ScreenFit.getHeight(12),
+        this.itemExtent = itemExtent ?? getHeight(12),
         this.physics = physics ?? FixedExtentScrollPhysics(),
         super(key: key) {
     if (childDelegateType == ListWheelChildDelegateType.list ||
@@ -176,7 +176,7 @@ class _AutoScrollEntryState extends State<AutoScrollEntry> {
   Timer timer;
   int index = 0;
   int maxItemCount = 10;
-  double itemHeight = ScreenFit.getHeight(30);
+  double itemHeight = getHeight(30);
 
   @override
   void initState() {

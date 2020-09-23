@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
+import 'dart:ui' as ui show Image;
 
 import 'package:crypto/crypto.dart';
 import 'package:flutter/foundation.dart';
@@ -11,32 +12,70 @@ import 'package:flutter/services.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/enums.dart';
 
-isDebug() {
-  return !kReleaseMode;
+bool isDebug() => !kReleaseMode;
+const int limitLength = 800;
+
+bool isAndroid() => Platform.isAndroid;
+
+bool isIOS() => Platform.isIOS;
+
+bool isMacOS() => Platform.isMacOS;
+
+bool isWindows() => Platform.isWindows;
+
+bool isLinux() => Platform.isLinux;
+
+bool isFuchsia() => Platform.isFuchsia;
+
+void log(dynamic msg) {
+  if (isDebug()) {
+    if (msg.length < limitLength != null) {
+      print(msg);
+    } else {
+      _segmentationLog(msg.toString());
+    }
+  }
+}
+
+void _segmentationLog(String msg) {
+  final StringBuffer outStr = StringBuffer();
+  for (int index = 0; index < msg.length; index++) {
+    outStr.write(msg[index]);
+    if (index % limitLength == 0 && index != 0) {
+      print(outStr);
+      outStr.clear();
+      final int lastIndex = index + 1;
+      if (msg.length - lastIndex < limitLength) {
+        final String remainderStr = msg.substring(lastIndex, msg.length);
+        print(remainderStr);
+        break;
+      }
+    }
+  }
 }
 
 class Tools {
-  static exitApp() async => await SystemNavigator.pop();
+  static Future<void> exitApp() async => await SystemNavigator.pop();
 
   ///手机号验证
   static bool isChinaPhoneLegal(String str) =>
-      RegExp(r"^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$").hasMatch(str);
+      RegExp(r'^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$').hasMatch(str);
 
   ///邮箱验证
-  static bool isEmail(String str) => RegExp(r"^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$").hasMatch(str);
+  static bool isEmail(String str) => RegExp(r'^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$').hasMatch(str);
 
   /// 截屏
   static Future<ByteData> screenshots(GlobalKey globalKey, {ImageByteFormat format}) async {
-    RenderRepaintBoundary boundary = globalKey.currentContext.findRenderObject();
-    var image = await boundary.toImage(pixelRatio: window.devicePixelRatio);
-    ByteData byteData = await image.toByteData(format: format ?? ImageByteFormat.rawRgba);
+    final RenderRepaintBoundary boundary = globalKey.currentContext.findRenderObject() as RenderRepaintBoundary;
+    final ui.Image image = await boundary.toImage(pixelRatio: window.devicePixelRatio);
+    final ByteData byteData = await image.toByteData(format: format ?? ImageByteFormat.rawRgba);
 
     /// Uint8List uint8list = byteData.buffer.asUint8List();
     return byteData;
   }
 
   /// 复制到粘贴板
-  static void copy(text) => Clipboard.setData(ClipboardData(text: text));
+  static void copy(String text) => Clipboard.setData(ClipboardData(text: text));
 
   ///分页 计算总页数
   static int totalPageCount(int recordCount, int pageSize) {
@@ -47,7 +86,7 @@ class Tools {
 
   ///时间戳转换
   static String stampToDate(int s, {DateType dateType, bool micro}) {
-    if (micro == null) micro = false;
+    micro ??= false;
 
     ///微秒:毫秒
     return micro
@@ -56,13 +95,13 @@ class Tools {
   }
 
   static String formatDate(DateTime date, [DateType dateType]) {
-    if (dateType == null) dateType = DateType.yearSecond;
-    String year = date.year.toString();
-    String month = date.month.toString().padLeft(2, '0');
-    String day = date.day.toString().padLeft(2, '0');
-    String hour = date.hour.toString().padLeft(2, '0');
-    String minute = date.minute.toString().padLeft(2, '0');
-    String second = date.second.toString().padLeft(2, '0');
+    dateType ??= DateType.yearSecond;
+    final String year = date.year.toString();
+    final String month = date.month.toString().padLeft(2, '0');
+    final String day = date.day.toString().padLeft(2, '0');
+    final String hour = date.hour.toString().padLeft(2, '0');
+    final String minute = date.minute.toString().padLeft(2, '0');
+    final String second = date.second.toString().padLeft(2, '0');
     switch (dateType) {
       case DateType.yearSecond:
         return '$year-$month-$day $hour:$minute:$second';
@@ -92,12 +131,12 @@ class Tools {
   }
 
   ///关闭键盘
-  static closeKeyboard(BuildContext context) => FocusScope.of(context).requestFocus(FocusNode());
+  static void closeKeyboard(BuildContext context) => FocusScope.of(context).requestFocus(FocusNode());
 
   ///自动获取焦点
-  static autoFocus(BuildContext context) => FocusScope.of(context).autofocus(FocusNode());
+  static void autoFocus(BuildContext context) => FocusScope.of(context).autofocus(FocusNode());
 
-  static addPostFrameCallback(FrameCallback callback) => WidgetsBinding.instance.addPostFrameCallback(callback);
+  static void addPostFrameCallback(FrameCallback callback) => WidgetsBinding.instance.addPostFrameCallback(callback);
 
   static Timer timerTools(Duration duration, [Function function]) {
     Timer timer;
@@ -110,7 +149,7 @@ class Tools {
 
   ///需要手动释放timer
   static Timer timerPeriodic(Duration duration, [void callback(Timer timer)]) =>
-      Timer.periodic(duration, (time) => callback(time));
+      Timer.periodic(duration, (Timer time) => callback(time));
 
   /// md5 加密
   static String setMd5(String data) => md5.convert(utf8.encode(data)).toString();
@@ -121,8 +160,8 @@ class Tools {
   ///Base64解密
   static String decodeBase64(String data) => String.fromCharCodes(base64Decode(data));
 
-  static setStatusBarLight(bool isLight) {
-    Color color = getColors(transparent);
+  static void setStatusBarLight(bool isLight) {
+    final Color color = getColors(transparent);
     if (isLight is bool) {
       SystemChrome.setSystemUIOverlayStyle(isLight
           ? SystemUiOverlayStyle(
@@ -142,9 +181,9 @@ class Tools {
     }
   }
 
-  static popBack(navigator, {bool nullBack: true}) {
-    Future future = navigator;
-    future.then((value) {
+  static void popBack(Future<dynamic> navigator, {bool nullBack = true}) {
+    final Future<dynamic> future = navigator;
+    future.then((dynamic value) {
       if (value == null) {
         if (nullBack) pop();
       } else {
@@ -152,16 +191,4 @@ class Tools {
       }
     });
   }
-
-  static bool isAndroid() => Platform.isAndroid;
-
-  static bool isIOS() => Platform.isIOS;
-
-  static bool isMacOS() => Platform.isMacOS;
-
-  static bool isWindows() => Platform.isWindows;
-
-  static isLinux() => Platform.isLinux;
-
-  static bool isFuchsia() => Platform.isFuchsia;
 }

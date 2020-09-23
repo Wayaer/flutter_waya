@@ -621,7 +621,7 @@ class SearchBox extends StatelessWidget {
           : SimpleButton(
               text: searchText,
               onTap: searchTap,
-              padding: EdgeInsets.symmetric(horizontal: ScreenFit.getWidth(4)),
+              padding: EdgeInsets.symmetric(horizontal: getWidth(4)),
               textStyle: searchStyle ?? TextStyle(color: getColors(white)));
     } else {
       return search;
@@ -632,11 +632,11 @@ class SearchBox extends StatelessWidget {
     if (lineType == LineType.outline) {
       return OutlineInputBorder(
           borderRadius: BorderRadius.circular(borderRadius),
-          borderSide: BorderSide(width: ScreenFit.getWidth(0.5), color: color));
+          borderSide: BorderSide(width: getWidth(0.5), color: color));
     } else if (lineType == LineType.underline) {
       return UnderlineInputBorder(
           borderRadius: BorderRadius.circular(borderRadius),
-          borderSide: BorderSide(width: ScreenFit.getWidth(0.5), color: color));
+          borderSide: BorderSide(width: getWidth(0.5), color: color));
     } else {
       return InputBorder.none;
     }

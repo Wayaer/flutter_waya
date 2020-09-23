@@ -182,7 +182,7 @@ class TabBarBox extends StatelessWidget {
         labelColor: labelColor ?? getColors(blue),
         unselectedLabelColor: unselectedLabelColor ?? getColors(background),
         indicatorColor: labelColor ?? getColors(blue),
-        indicatorWeight: indicatorWeight ?? ScreenFit.getWidth(1),
+        indicatorWeight: indicatorWeight ?? getWidth(1),
         indicatorPadding: indicatorPadding,
         labelStyle: labelStyle ?? WayStyles.textStyleBlack70(fontSize: 13),
         unselectedLabelStyle: unselectedLabelStyle,
@@ -240,5 +240,5 @@ class _TabNavigationPageState extends State<TabNavigationPage> {
         ),
       );
 
-  Widget barIcon(IconData icons) => Icon(icons, size: ScreenFit.getWidth(24));
+  Widget barIcon(IconData icons) => Icon(icons, size: getWidth(24));
 }

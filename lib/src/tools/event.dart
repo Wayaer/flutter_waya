@@ -1,31 +1,33 @@
 import 'dart:async';
 
-class EventBus<S> {
-  StreamController _streamController;
+class EventBus {
+  EventBus({bool sync = false}) : _streamController = StreamController<dynamic>.broadcast(sync: sync);
 
-  StreamController get streamController => _streamController;
+  EventBus.customController(StreamController<dynamic> controller) : _streamController = controller;
 
-  EventBus({bool sync = false}) : _streamController = StreamController.broadcast(sync: sync);
+  StreamController<dynamic> get streamController => _streamController;
 
-  EventBus.customController(StreamController controller) : _streamController = controller;
+  Stream<dynamic> on<T>() =>
+      T == dynamic ? streamController.stream : streamController.stream.where((dynamic event) => event is T).cast<T>();
+  final StreamController<dynamic> _streamController;
 
-  Stream<T> on<T>() =>
-      T == dynamic ? streamController.stream : streamController.stream.where((event) => event is T).cast<T>();
-
-  void send(event) => _streamController.add(event);
+  void send(dynamic event) => _streamController.add(event);
 
   void close() => _streamController.close();
 
-  void listen<T>(void onData(T event)) => _streamController.stream.listen(onData);
+  void listen(void onData(dynamic event)) => _streamController.stream.listen(onData);
 
-  void error(error) => _streamController.addError(error);
+  void error(dynamic error) => _streamController.addError(error);
 
-  void stream(Stream<S> stream) => _streamController.addStream(stream);
+  void stream(Stream<dynamic> stream) => _streamController.addStream(stream);
 }
 
 class EventFactory {
-  /// 工厂模式
   factory EventFactory() => _getInstance();
+
+  EventFactory._internal() {
+    event = EventBus();
+  }
 
   static EventFactory get instance => _getInstance();
 
@@ -33,18 +35,14 @@ class EventFactory {
 
   EventBus event;
 
-  EventFactory._internal() {
-    this.event = EventBus();
-  }
-
   static EventFactory _getInstance() {
-    if (_instance == null) _instance = EventFactory._internal();
+    _instance ??= EventFactory._internal();
     return _instance;
   }
 }
 
-sendMessage(dynamic message) => EventFactory.instance.event.send(message);
+void sendMessage(dynamic message) => EventFactory.instance.event.send(message);
 
-messageDestroy() => EventFactory.instance.event.close();
+void messageDestroy() => EventFactory.instance.event.close();
 
-messageListen<T>(void onData(T event)) => EventFactory.instance.event.listen(onData);
+void messageListen(void onData(dynamic event)) => EventFactory.instance.event.listen(onData);

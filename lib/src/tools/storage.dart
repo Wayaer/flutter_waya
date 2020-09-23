@@ -5,11 +5,11 @@ import 'package:synchronized/synchronized.dart';
 
 class StorageTools {
   static StorageTools _singleton;
-  static var _preferences;
+  static dynamic _preferences;
   static Lock _lock = Lock();
 
   ///传入 SharedPreferences.getInstance()
-  static Future<StorageTools> getInstance(var preferences) async {
+  static Future<StorageTools> getInstance(dynamic preferences) async {
     if (_singleton == null) {
       await _lock.synchronized(() async {
         if (_singleton == null) {
@@ -25,7 +25,7 @@ class StorageTools {
   }
 
   /// put object.
-  static Future<bool> putObject(String key, Object value) {
+  static Future<bool> putObject(String key, dynamic value) {
     if (_preferences == null) return null;
     return _preferences.setString(key, value == null ? "" : json.encode(value));
   }

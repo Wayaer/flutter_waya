@@ -74,8 +74,8 @@ class _SendSMSState extends State<SendSMS> {
       padding: widget.padding,
       onTap: (seconds == 0 && widget.onTap != null) ? onTap : null,
       alignment: Alignment.center,
-      width: widget.width ?? ScreenFit.getWidth(86),
-      height: widget.height ?? ScreenFit.getHeight(25),
+      width: widget.width ?? getWidth(86),
+      height: widget.height ?? getHeight(25),
       decoration: widget.decoration ??
           BoxDecoration(
               color: widget.background,
@@ -179,7 +179,7 @@ class _CountDownSkipState extends State<CountDownSkip> {
   Widget build(BuildContext context) => SimpleButton(
       onTap: widget.onTap,
       decoration: widget.decoration ?? BoxDecoration(color: getColors(white50), borderRadius: BorderRadius.circular(5)),
-      padding: EdgeInsets.symmetric(horizontal: ScreenFit.getHeight(5), vertical: ScreenFit.getWidth(4)),
+      padding: EdgeInsets.symmetric(horizontal: getHeight(5), vertical: getWidth(4)),
       child: WayWidgets.textSmall(seconds.toString() + 's' + widget.skipText));
 
   @override
@@ -326,8 +326,8 @@ class HintDot extends StatelessWidget {
   Widget dotWidget() => Container(
       child: pointChild,
       padding: pointPadding,
-      width: pointChild == null ? (pointSize ?? ScreenFit.getWidth(4)) : null,
-      height: pointChild == null ? (pointSize ?? ScreenFit.getWidth(4)) : null,
+      width: pointChild == null ? (pointSize ?? getWidth(4)) : null,
+      height: pointChild == null ? (pointSize ?? getWidth(4)) : null,
       decoration: BoxDecoration(color: pointColor ?? getColors(red), shape: BoxShape.circle));
 }
 
@@ -345,7 +345,7 @@ class CustomDrawer extends StatefulWidget {
     @required this.child,
     this.backgroundColor,
     this.callback,
-  })  : this.width = width ?? ScreenFit.getWidth(0) * 0.7,
+  })  : this.width = width ?? getWidth(0) * 0.7,
         this.elevation = elevation ?? 16.0,
         super(key: key);
 

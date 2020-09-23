@@ -193,7 +193,7 @@ class CheckBox extends StatefulWidget {
       this.visible,
       this.activeColor,
       this.value})
-      : this.size = size ?? ScreenFit.getWidth(17),
+      : this.size = size ?? getWidth(17),
         this.uncheckColor = uncheckColor ?? getColors(black70),
         this.checkColor = checkColor ?? getColors(white),
         this.mainAxisAlignment = mainAxisAlignment ?? MainAxisAlignment.center,

@@ -1,10 +1,9 @@
-log(message) {
-  LogTools.d(message);
-}
+void log(dynamic message) => LogTools.d(message);
 
 class LogTools {
   static var _separator = "=";
-  static var _split = "$_separator$_separator$_separator$_separator$_separator$_separator$_separator$_separator$_separator";
+  static var _split =
+      "$_separator$_separator$_separator$_separator$_separator$_separator$_separator$_separator$_separator";
   static var _title = "Yl-Log";
   static var _isDebug = true;
   static int _limitLength = 800;
@@ -27,14 +26,10 @@ class LogTools {
 
   ///仅Debug模式可见
   static void d(dynamic obj) {
-    if (_isDebug) {
-      log(obj.toString());
-    }
+    if (_isDebug) log(obj.toString());
   }
 
-  static void v(dynamic obj) {
-    log(obj.toString());
-  }
+  static void v(dynamic obj) => log(obj.toString());
 
   static void log(String msg) {
     if (msg.length < _limitLength) {

@@ -423,7 +423,7 @@ class _OverlayScaffoldState extends State<OverlayScaffold> {
 
   Widget container() => Container(
       color: widget.backgroundColor,
-      margin: widget.isolationBody ? EdgeInsets.only(top: ScreenFit.getHeight(10)) : EdgeInsets.zero,
+      margin: widget.isolationBody ? EdgeInsets.only(top: getHeight(10)) : EdgeInsets.zero,
       padding: widget.paddingStatusBar ? EdgeInsets.only(top: MediaQueryTools.getStatusBarHeight()) : widget.padding,
       width: double.infinity,
       height: double.infinity,
@@ -437,7 +437,7 @@ class _OverlayScaffoldState extends State<OverlayScaffold> {
 }
 
 ///************ 以下为 路由跳转 *****************///
-Future<T> push<T>(
+Future<dynamic> push(
     {WidgetBuilder builder,
     Widget widget,
     String title,
@@ -445,7 +445,7 @@ Future<T> push<T>(
     bool maintainState,
     bool fullscreenDialog,
     PushMode pushMode}) {
-  var route = _pageRoute(
+  final Route<dynamic> route = _pageRoute(
       title: title,
       maintainState: maintainState,
       fullscreenDialog: fullscreenDialog,
@@ -453,10 +453,10 @@ Future<T> push<T>(
       builder: builder,
       pushMode: pushMode,
       widget: widget);
-  return Navigator.of(_globalNavigatorKey.currentContext).push(route);
+  return Navigator.of(_globalNavigatorKey.currentContext).push<dynamic>(route);
 }
 
-Future<T> pushReplacement<T>(
+Future<dynamic> pushReplacement(
     {WidgetBuilder builder,
     Widget widget,
     String title,
@@ -464,7 +464,7 @@ Future<T> pushReplacement<T>(
     bool maintainState,
     bool fullscreenDialog,
     PushMode pushMode}) {
-  var route = _pageRoute(
+  final Route<dynamic> route = _pageRoute(
       title: title,
       maintainState: maintainState,
       fullscreenDialog: fullscreenDialog,
@@ -483,7 +483,7 @@ Future<T> pushAndRemoveUntil<T>(
     bool maintainState,
     bool fullscreenDialog,
     PushMode pushMode}) {
-  var route = _pageRoute(
+  final Route<dynamic> route = _pageRoute(
       title: title,
       maintainState: maintainState,
       fullscreenDialog: fullscreenDialog,
@@ -491,16 +491,16 @@ Future<T> pushAndRemoveUntil<T>(
       builder: builder,
       pushMode: pushMode,
       widget: widget);
-  return Navigator.of(_globalNavigatorKey.currentContext).pushAndRemoveUntil(route, (route) => false);
+  return Navigator.of(_globalNavigatorKey.currentContext).pushAndRemoveUntil<dynamic>(route, (route) => false);
 }
 
-pop<T extends Object>([T result]) => Navigator.of(_globalNavigatorKey.currentContext).pop(result);
+void pop<T extends Object>([dynamic result]) => Navigator.of(_globalNavigatorKey.currentContext).pop<dynamic>(result);
 
 PushMode _pushMode;
 
-setGlobalPushMode(PushMode pushMode) => _pushMode = pushMode;
+void setGlobalPushMode(PushMode pushMode) => _pushMode = pushMode;
 
-Route<T> _pageRoute<T>({
+Route<dynamic> _pageRoute({
   WidgetBuilder builder,
   Widget widget,
   String title,
@@ -511,16 +511,16 @@ Route<T> _pageRoute<T>({
 }) {
   assert(builder != null || widget != null);
   if (pushMode == null && _pushMode != null) pushMode = _pushMode;
-  if (pushMode == null) pushMode = PushMode.cupertino;
+  pushMode ??= PushMode.cupertino;
   if (pushMode == PushMode.cupertino) {
-    return CupertinoPageRoute(
+    return CupertinoPageRoute<dynamic>(
         title: title,
         maintainState: maintainState ?? true,
         fullscreenDialog: fullscreenDialog ?? false,
         settings: settings,
         builder: builder ?? (BuildContext context) => widget);
   }
-  return MaterialPageRoute(
+  return MaterialPageRoute<dynamic>(
       maintainState: maintainState ?? true,
       fullscreenDialog: fullscreenDialog ?? false,
       settings: settings,
@@ -538,7 +538,7 @@ class OverlayEntryMap {
   OverlayEntryMap({this.overlayEntry, this.isAutomaticOff});
 }
 
-///自定义叠层
+///自定义Overlay
 OverlayEntryMap showOverlay(Widget widget, {bool isAutomaticOff}) {
   if (_overlay != null) _overlay = null;
   _overlay = Overlay.of(_scaffoldKeyList?.last?.currentContext, rootOverlay: false);
@@ -550,7 +550,7 @@ OverlayEntryMap showOverlay(Widget widget, {bool isAutomaticOff}) {
   return entryMap;
 }
 
-///关闭最顶层的叠层
+///关闭最顶层的Overlay
 bool closeOverlay({OverlayEntryMap element}) {
   try {
     if (element != null) {
@@ -624,7 +624,7 @@ void showToast(String message,
       PopupBase(
           ignoring: true,
           child: Container(
-              margin: EdgeInsets.symmetric(horizontal: ScreenFit.getWidth(0) / 5, vertical: ScreenFit.getHeight(0) / 4),
+              margin: EdgeInsets.symmetric(horizontal: getWidth(0) / 5, vertical: getHeight(0) / 4),
               decoration:
                   boxDecoration ?? BoxDecoration(color: getColors(black90), borderRadius: BorderRadius.circular(5)),
               padding: EdgeInsets.all(10),

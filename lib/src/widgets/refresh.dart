@@ -94,7 +94,7 @@ class Refresh extends StatelessWidget {
           } else {
             body = footerText('load not data');
           }
-          return Container(height: ScreenFit.getHeight(40), child: Center(child: body));
+          return Container(height: getHeight(40), child: Center(child: body));
         },
       );
 

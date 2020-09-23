@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 /// Called to build children for the listview.
-typedef Widget ItemWidgetBuilder(BuildContext context, SuspensionModel model);
+typedef ItemWidgetBuilder = Widget Function(BuildContext context, SuspensionModel model);
 
 /// Called to build IndexBar.
-typedef Widget IndexBarBuilder(BuildContext context, List<String> tags, IndexBarTouchCallback onTouch);
+typedef IndexBarBuilder = Widget Function(BuildContext context, List<String> tags, IndexBarTouchCallback onTouch);
 
 /// Called to build index hint.
-typedef Widget IndexHintBuilder(BuildContext context, String hint);
+typedef IndexHintBuilder = Widget Function(BuildContext context, String hint);
 
 /// Header.
 class Header extends SuspensionModel {
@@ -23,11 +23,11 @@ class Header extends SuspensionModel {
 
 /// AzListView.
 class AzListView extends StatefulWidget {
-  AzListView(
+  const AzListView(
       {Key key,
       this.data,
       this.topData,
-      this.itemBuilder,
+      @required this.itemBuilder,
       this.controller,
       this.physics,
       this.shrinkWrap = true,
@@ -41,8 +41,7 @@ class AzListView extends StatefulWidget {
       this.indexBarBuilder,
       this.indexHintBuilder,
       this.showIndexHint = true})
-      : assert(itemBuilder != null),
-        super(key: key);
+      : super(key: key);
 
   ///with SuspensionModel Data
   final List<SuspensionModel> data;
@@ -88,11 +87,11 @@ class AzListView extends StatefulWidget {
 }
 
 class _AzListViewState extends State<AzListView> {
-  Map<String, int> suspensionSectionMap = Map();
-  List<SuspensionModel> cityList = List();
-  List<String> indexTagList = List();
+  Map<String, int> suspensionSectionMap = <String, int>{};
+  List<SuspensionModel> cityList = <SuspensionModel>[];
+  List<String> indexTagList = <String>[];
   bool isShowIndexBarHint = false;
-  String indexBarHint = "";
+  String indexBarHint = '';
 
   ScrollController scrollController;
 
@@ -112,9 +111,9 @@ class _AzListViewState extends State<AzListView> {
     setState(() {
       indexBarHint = model.tag;
       isShowIndexBarHint = model.isTouchDown;
-      int offset = suspensionSectionMap[model.tag];
+      final int offset = suspensionSectionMap[model.tag];
       if (offset != null) {
-        scrollController.jumpTo(offset.toDouble().clamp(.0, scrollController.position.maxScrollExtent));
+        scrollController.jumpTo(offset.toDouble().clamp(.0, scrollController.position.maxScrollExtent).toDouble());
       }
     });
   }
@@ -124,9 +123,9 @@ class _AzListViewState extends State<AzListView> {
     if (widget.topData != null && widget.topData.isNotEmpty) {
       cityList.addAll(widget.topData);
     }
-    List<SuspensionModel> list = widget.data;
+    final List<SuspensionModel> list = widget.data;
     if (list != null && list.isNotEmpty) {
-      ///      SuspensionUtil.sortListBySuspensionTag(list);
+      ///SuspensionUtil.sortListBySuspensionTag(list);
       cityList.addAll(list);
     }
 
@@ -146,7 +145,7 @@ class _AzListViewState extends State<AzListView> {
   @override
   Widget build(BuildContext context) {
     init();
-    List<Widget> children = <Widget>[
+    final List<Widget> children = <Widget>[
       Suspension(
         data: widget.header == null ? cityList : cityList.sublist(1),
         contentWidget: ListBuilder(
@@ -163,8 +162,8 @@ class _AzListViewState extends State<AzListView> {
             }),
         suspensionWidget: widget.suspensionWidget,
         controller: scrollController,
-        suspensionHeight: widget.suspensionHeight ?? ScreenFit.getWidth(80, intType: true),
-        itemHeight: widget.itemHeight ?? ScreenFit.getHeight(40, intType: true),
+        suspensionHeight: widget.suspensionHeight ?? getWidth(80).toInt(),
+        itemHeight: widget.itemHeight ?? getHeight(40).toInt(),
         onSusTagChanged: widget.onSusTagChanged,
         header: widget.header,
         onSusSection: (Map<String, int> map) => suspensionSectionMap = map,
@@ -173,17 +172,9 @@ class _AzListViewState extends State<AzListView> {
 
     Widget indexBar;
     if (widget.indexBarBuilder == null) {
-      indexBar = AzIndexBar(
-        data: indexTagList,
-        size: ScreenFit.getWidth(23, intType: true),
-        onTouch: onIndexBarTouch,
-      );
+      indexBar = AzIndexBar(data: indexTagList, size: getWidth(23).toInt(), onTouch: onIndexBarTouch);
     } else {
-      indexBar = widget.indexBarBuilder(
-        context,
-        indexTagList,
-        onIndexBarTouch,
-      );
+      indexBar = widget.indexBarBuilder(context, indexTagList, onIndexBarTouch);
     }
     children.add(Align(
       alignment: Alignment.centerRight,
@@ -191,15 +182,15 @@ class _AzListViewState extends State<AzListView> {
     ));
     Widget indexHint;
     if (widget.indexHintBuilder != null) {
-      indexHint = widget.indexHintBuilder(context, '$indexBarHint');
+      indexHint = widget.indexHintBuilder(context, indexBarHint);
     } else {
       indexHint = Container(
         decoration: BoxDecoration(color: getColors(black30), borderRadius: BorderRadius.circular(10)),
         alignment: Alignment.center,
-        width: ScreenFit.getWidth(60),
-        height: ScreenFit.getWidth(60),
+        width: getWidth(60),
+        height: getWidth(60),
         child: Text(
-          '$indexBarHint',
+          indexBarHint,
           style: TextStyle(
             fontSize: 32.0,
             color: getColors(white),
@@ -207,13 +198,7 @@ class _AzListViewState extends State<AzListView> {
         ),
       );
     }
-
-    if (isShowIndexBarHint && widget.showIndexHint) {
-      children.add(Center(
-        child: indexHint,
-      ));
-    }
-
+    if (isShowIndexBarHint && widget.showIndexHint) children.add(Center(child: indexHint));
     return Stack(children: children);
   }
 }

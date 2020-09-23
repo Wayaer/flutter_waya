@@ -6,12 +6,14 @@ const double fontSize = ConstConstant.fontSize;
 
 class WayStyles {
   //统一所有阴影效果
-  static List<BoxShadow> boxShadow() =>
-      [BoxShadow(color: getColors(boxShadowColor), blurRadius: radiusLocal, spreadRadius: 1, offset: Offset(0, 3))];
+  static List<BoxShadow> boxShadow() => <BoxShadow>[
+        BoxShadow(
+            color: getColors(boxShadowColor), blurRadius: radiusLocal, spreadRadius: 1, offset: const Offset(0, 3))
+      ];
 
   //left right  margin or padding 20
-  static EdgeInsetsGeometry edgeInsetsHorizontal({double width: 20}) =>
-      EdgeInsets.symmetric(horizontal: ScreenFit.getWidth(width));
+  static EdgeInsetsGeometry edgeInsetsHorizontal({double width = 20}) =>
+      EdgeInsets.symmetric(horizontal: getWidth(width));
 
   static Decoration borderRadiusTop({Color color, double radius}) => BoxDecoration(
       color: color ?? getColors(white),
@@ -19,11 +21,11 @@ class WayStyles {
           topLeft: Radius.circular(radius ?? radiusLocal), topRight: Radius.circular(radius ?? radiusLocal)));
 
   //top bottom  margin or padding 20
-  static EdgeInsetsGeometry edgeInsetsVertical({double height: 20}) =>
-      EdgeInsets.symmetric(vertical: ScreenFit.getHeight(height));
+  static EdgeInsetsGeometry edgeInsetsVertical({double height = 20}) =>
+      EdgeInsets.symmetric(vertical: getHeight(height));
 
   //统一白色背景 圆角
-  static Decoration containerWhiteRadius({Color color, double radius, bool shadow: false}) => BoxDecoration(
+  static Decoration containerWhiteRadius({Color color, double radius, bool shadow = false}) => BoxDecoration(
       color: color ?? getColors(white),
       borderRadius: BorderRadius.circular(radius ?? radiusLocal),
       boxShadow: shadow ? boxShadow() : null);
@@ -32,16 +34,14 @@ class WayStyles {
   static Decoration containerRadiusWidth({Color color, double width, Color widthColor, double radius}) => BoxDecoration(
       color: color ?? getColors(white),
       borderRadius: BorderRadius.circular(radius ?? radiusLocal),
-      border: Border.all(width: width ?? ScreenFit.getWidth(1), color: widthColor ?? getColors(background)));
+      border: Border.all(width: width ?? getWidth(1), color: widthColor ?? getColors(background)));
 
   //统一下划线样式
   static Decoration containerUnderlineBackground({Color color, double width, Color underlineColor}) => BoxDecoration(
       color: color,
       border: underlineColor == null
           ? null
-          : Border(
-              bottom:
-                  BorderSide(width: width ?? ScreenFit.getHeight(1), color: underlineColor ?? getColors(background))));
+          : Border(bottom: BorderSide(width: width ?? getHeight(1), color: underlineColor ?? getColors(background))));
 
   //统一上划线样式
   static Decoration containerTopLineBackground({Color color}) =>
@@ -90,7 +90,7 @@ class WayWidgets {
           {EdgeInsetsGeometry padding, double width, Color color, EdgeInsetsGeometry margin}) =>
       Container(
           height: height,
-          width: width ?? ScreenFit.getWidth(1),
+          width: width ?? getWidth(1),
           margin: margin,
           padding: padding,
           color: color ?? getColors(background));
@@ -99,21 +99,22 @@ class WayWidgets {
   static Widget lineHorizontal(double width,
           {EdgeInsetsGeometry padding, double height, Color color, EdgeInsetsGeometry margin}) =>
       Container(
-          height: height ?? ScreenFit.getWidth(1),
+          height: height ?? getWidth(1),
           padding: padding,
-          width: width ?? ScreenFit.getWidth(0),
+          width: width ?? getWidth(0),
           margin: margin,
           color: color ?? getColors(background));
 
-  static Widget notDataWidget({double size, String showText, TextStyle textStyle, double, margin}) => Container(
-      margin: margin ?? EdgeInsets.all(100),
-      child: Center(
-          child: Text(
-        showText ?? "暂无数据",
-        style: textStyle ?? TextStyle(),
-      )));
+  static Widget notDataWidget({double size, String showText, TextStyle textStyle, EdgeInsetsGeometry margin}) =>
+      Container(
+          margin: margin ?? const EdgeInsets.all(100),
+          child: Center(
+              child: Text(
+            showText ?? '暂无数据',
+            style: textStyle ?? const TextStyle(),
+          )));
 
-  static textDefault(String text,
+  static dynamic textDefault(String text,
           {Color color,
           int maxLines,
           double height,
@@ -128,7 +129,7 @@ class WayWidgets {
           overflow: overflow,
           height: height);
 
-  static textSmall(String text,
+  static dynamic textSmall(String text,
           {Color color, int maxLines, TextStyle style, double height, FontWeight fontWeight, TextOverflow overflow}) =>
       textWidget(text,
           maxLines: maxLines,
@@ -139,7 +140,7 @@ class WayWidgets {
           overflow: overflow,
           height: height);
 
-  static textWidget(String text,
+  static Text textWidget(String text,
           {Color color,
           TextStyle style,
           int maxLines,

@@ -4,9 +4,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-typedef void CarouselOnTap(int index);
+typedef CarouselOnTap = void Function(int index);
 
-typedef Widget CarouselDataBuilder(BuildContext context, dynamic data, int index);
+typedef CarouselDataBuilder = Widget Function(BuildContext context, dynamic data, int index);
 
 ///default auto play delay
 const int kDefaultAutoPlayDelayMs = 3000;
@@ -15,6 +15,165 @@ const int kDefaultAutoPlayDelayMs = 3000;
 const int kDefaultAutoPlayTransactionDuration = 300;
 
 class Carousel extends StatefulWidget {
+  const Carousel({
+    Key key,
+    this.itemBuilder,
+    this.indicatorLayout = IndicatorType.none,
+    this.transformer,
+    @required this.itemCount,
+    this.autoPlay = false,
+    this.layout = CarouselLayout.none,
+    this.autoPlayDelay = kDefaultAutoPlayDelayMs,
+    this.autoPlayDisableOnInteraction = true,
+    this.duration = kDefaultAutoPlayTransactionDuration,
+    this.onIndexChanged,
+    this.index,
+    this.onTap,
+    this.control,
+    this.loop = true,
+    this.curve = Curves.ease,
+    this.scrollDirection = Axis.horizontal,
+    this.pagination,
+    this.plugins,
+    this.physics,
+    this.controller,
+    this.customLayoutOption,
+    this.containerHeight,
+    this.containerWidth,
+    this.viewportFraction = 1.0,
+    this.itemHeight,
+    this.itemWidth,
+    this.outer = false,
+    this.scale,
+    this.fade,
+  })  : assert(
+            itemBuilder != null || transformer != null, 'itemBuilder and transformItemBuilder must not be both null'),
+        assert(
+            !loop ||
+                ((loop &&
+                        layout == CarouselLayout.none &&
+                        (indicatorLayout == IndicatorType.scale ||
+                            indicatorLayout == IndicatorType.color ||
+                            indicatorLayout == IndicatorType.none)) ||
+                    (loop && layout != CarouselLayout.none)),
+            'Only support `IndicatorType.scale` and `IndicatorType.color`when layout==CarouselLayout.DEFAULT in loop mode'),
+        super(key: key);
+
+  factory Carousel.children({
+    @required List<Widget> children,
+    bool autoPlay = false,
+    PageTransformer transformer,
+    int autoPlayDelay = kDefaultAutoPlayDelayMs,
+    bool autoPlayDisableOnInteraction = true,
+    int duration = kDefaultAutoPlayTransactionDuration,
+    ValueChanged<int> onIndexChanged,
+    int index,
+    CarouselOnTap onTap,
+    bool loop = true,
+    Curve curve = Curves.ease,
+    Axis scrollDirection = Axis.horizontal,
+    CarouselPlugin pagination,
+    CarouselPlugin control,
+    List<CarouselPlugin> plugins,
+    CarouselController controller,
+    Key key,
+    CustomLayoutOption customLayoutOption,
+    ScrollPhysics physics,
+    double containerHeight,
+    double containerWidth,
+    double viewportFraction = 1.0,
+    double itemHeight,
+    double itemWidth,
+    bool outer = false,
+    double scale = 1.0,
+  }) =>
+      Carousel(
+          transformer: transformer,
+          customLayoutOption: customLayoutOption,
+          containerHeight: containerHeight,
+          containerWidth: containerWidth,
+          viewportFraction: viewportFraction,
+          itemHeight: itemHeight,
+          itemWidth: itemWidth,
+          outer: outer,
+          scale: scale,
+          autoPlay: autoPlay,
+          autoPlayDelay: autoPlayDelay,
+          autoPlayDisableOnInteraction: autoPlayDisableOnInteraction,
+          duration: duration,
+          onIndexChanged: onIndexChanged,
+          index: index,
+          onTap: onTap,
+          curve: curve,
+          scrollDirection: scrollDirection,
+          pagination: pagination,
+          control: control,
+          controller: controller,
+          loop: loop,
+          plugins: plugins,
+          physics: physics,
+          key: key,
+          itemBuilder: (BuildContext context, int index) => children[index],
+          itemCount: children.length);
+
+  factory Carousel.list({
+    PageTransformer transformer,
+    List<dynamic> list,
+    CustomLayoutOption customLayoutOption,
+    CarouselDataBuilder builder,
+    bool autoPlay = false,
+    int autoPlayDelay = kDefaultAutoPlayDelayMs,
+    bool autoPlayDisableOnInteraction = true,
+    int duration = kDefaultAutoPlayTransactionDuration,
+    ValueChanged<int> onIndexChanged,
+    int index,
+    CarouselOnTap onTap,
+    bool loop = true,
+    Curve curve = Curves.ease,
+    Axis scrollDirection = Axis.horizontal,
+    CarouselPlugin pagination,
+    CarouselPlugin control,
+    List<CarouselPlugin> plugins,
+    CarouselController controller,
+    Key key,
+    ScrollPhysics physics,
+    double containerHeight,
+    double containerWidth,
+    double viewportFraction = 1.0,
+    double itemHeight,
+    double itemWidth,
+    bool outer = false,
+    double scale = 1.0,
+  }) =>
+      Carousel(
+          transformer: transformer,
+          customLayoutOption: customLayoutOption,
+          containerHeight: containerHeight,
+          containerWidth: containerWidth,
+          viewportFraction: viewportFraction,
+          itemHeight: itemHeight,
+          itemWidth: itemWidth,
+          outer: outer,
+          scale: scale,
+          autoPlay: autoPlay,
+          autoPlayDelay: autoPlayDelay,
+          autoPlayDisableOnInteraction: autoPlayDisableOnInteraction,
+          duration: duration,
+          onIndexChanged: onIndexChanged,
+          index: index,
+          onTap: onTap,
+          curve: curve,
+          key: key,
+          scrollDirection: scrollDirection,
+          pagination: pagination,
+          control: control,
+          controller: controller,
+          loop: loop,
+          plugins: plugins,
+          physics: physics,
+          itemBuilder: (BuildContext context, int index) => builder(context, list[index], index),
+          itemCount: list.length);
+
   ///If set true , the pagination will display 'outer' of the 'content' container.
   final bool outer;
 
@@ -113,169 +272,6 @@ class Carousel extends StatefulWidget {
   ///底部指示器样式
   final IndicatorType indicatorLayout;
 
-  Carousel({
-    Key key,
-    this.itemBuilder,
-    this.indicatorLayout: IndicatorType.none,
-    this.transformer,
-    @required this.itemCount,
-    this.autoPlay: false,
-    this.layout: CarouselLayout.none,
-    this.autoPlayDelay: kDefaultAutoPlayDelayMs,
-    this.autoPlayDisableOnInteraction: true,
-    this.duration: kDefaultAutoPlayTransactionDuration,
-    this.onIndexChanged,
-    this.index,
-    this.onTap,
-    this.control,
-    this.loop: true,
-    this.curve: Curves.ease,
-    this.scrollDirection: Axis.horizontal,
-    this.pagination,
-    this.plugins,
-    this.physics,
-    this.controller,
-    this.customLayoutOption,
-    this.containerHeight,
-    this.containerWidth,
-    this.viewportFraction: 1.0,
-    this.itemHeight,
-    this.itemWidth,
-    this.outer: false,
-    this.scale,
-    this.fade,
-  })  : assert(
-            itemBuilder != null || transformer != null, "itemBuilder and transformItemBuilder must not be both null"),
-        assert(
-            !loop ||
-                ((loop &&
-                        layout == CarouselLayout.none &&
-                        (indicatorLayout == IndicatorType.scale ||
-                            indicatorLayout == IndicatorType.color ||
-                            indicatorLayout == IndicatorType.none)) ||
-                    (loop && layout != CarouselLayout.none)),
-            "Only support `IndicatorType.scale` and `IndicatorType.color`when layout==CarouselLayout.DEFAULT in loop mode"),
-        super(key: key);
-
-  factory Carousel.children({
-    List<Widget> children,
-    bool autoPlay: false,
-    PageTransformer transformer,
-    int autoPlayDelay: kDefaultAutoPlayDelayMs,
-    bool reverse: false,
-    bool autoPlayDisableOnInteraction: true,
-    int duration: kDefaultAutoPlayTransactionDuration,
-    ValueChanged<int> onIndexChanged,
-    int index,
-    CarouselOnTap onTap,
-    bool loop: true,
-    Curve curve: Curves.ease,
-    Axis scrollDirection: Axis.horizontal,
-    CarouselPlugin pagination,
-    CarouselPlugin control,
-    List<CarouselPlugin> plugins,
-    CarouselController controller,
-    Key key,
-    CustomLayoutOption customLayoutOption,
-    ScrollPhysics physics,
-    double containerHeight,
-    double containerWidth,
-    double viewportFraction: 1.0,
-    double itemHeight,
-    double itemWidth,
-    bool outer: false,
-    double scale: 1.0,
-  }) {
-    assert(children != null, "children must not be null");
-    return Carousel(
-        transformer: transformer,
-        customLayoutOption: customLayoutOption,
-        containerHeight: containerHeight,
-        containerWidth: containerWidth,
-        viewportFraction: viewportFraction,
-        itemHeight: itemHeight,
-        itemWidth: itemWidth,
-        outer: outer,
-        scale: scale,
-        autoPlay: autoPlay,
-        autoPlayDelay: autoPlayDelay,
-        autoPlayDisableOnInteraction: autoPlayDisableOnInteraction,
-        duration: duration,
-        onIndexChanged: onIndexChanged,
-        index: index,
-        onTap: onTap,
-        curve: curve,
-        scrollDirection: scrollDirection,
-        pagination: pagination,
-        control: control,
-        controller: controller,
-        loop: loop,
-        plugins: plugins,
-        physics: physics,
-        key: key,
-        itemBuilder: (BuildContext context, int index) => children[index],
-        itemCount: children.length);
-  }
-
-  factory Carousel.list({
-    PageTransformer transformer,
-    List list,
-    CustomLayoutOption customLayoutOption,
-    CarouselDataBuilder builder,
-    bool autoPlay: false,
-    int autoPlayDelay: kDefaultAutoPlayDelayMs,
-    bool reverse: false,
-    bool autoPlayDisableOnInteraction: true,
-    int duration: kDefaultAutoPlayTransactionDuration,
-    ValueChanged<int> onIndexChanged,
-    int index,
-    CarouselOnTap onTap,
-    bool loop: true,
-    Curve curve: Curves.ease,
-    Axis scrollDirection: Axis.horizontal,
-    CarouselPlugin pagination,
-    CarouselPlugin control,
-    List<CarouselPlugin> plugins,
-    CarouselController controller,
-    Key key,
-    ScrollPhysics physics,
-    double containerHeight,
-    double containerWidth,
-    double viewportFraction: 1.0,
-    double itemHeight,
-    double itemWidth,
-    bool outer: false,
-    double scale: 1.0,
-  }) =>
-      Carousel(
-          transformer: transformer,
-          customLayoutOption: customLayoutOption,
-          containerHeight: containerHeight,
-          containerWidth: containerWidth,
-          viewportFraction: viewportFraction,
-          itemHeight: itemHeight,
-          itemWidth: itemWidth,
-          outer: outer,
-          scale: scale,
-          autoPlay: autoPlay,
-          autoPlayDelay: autoPlayDelay,
-          autoPlayDisableOnInteraction: autoPlayDisableOnInteraction,
-          duration: duration,
-          onIndexChanged: onIndexChanged,
-          index: index,
-          onTap: onTap,
-          curve: curve,
-          key: key,
-          scrollDirection: scrollDirection,
-          pagination: pagination,
-          control: control,
-          controller: controller,
-          loop: loop,
-          plugins: plugins,
-          physics: physics,
-          itemBuilder: (BuildContext context, int index) => builder(context, list[index], index),
-          itemCount: list.length);
-
   @override
   _CarouselState createState() => _CarouselState();
 }
@@ -288,7 +284,7 @@ abstract class _CarouselTimerMixin extends State<Carousel> {
   @override
   void initState() {
     _controller = widget.controller;
-    if (_controller == null) _controller = CarouselController();
+    _controller ??= CarouselController();
     _controller.addListener(_onController);
     _handleAutoPlay();
     super.initState();
@@ -332,7 +328,7 @@ abstract class _CarouselTimerMixin extends State<Carousel> {
   }
 
   void _startAutoPlay() {
-    assert(_timer == null, "Timer must be stopped before start!");
+    assert(_timer == null, 'Timer must be stopped before start!');
     _timer = Timer.periodic(Duration(milliseconds: widget.autoPlayDelay), _onTimer);
   }
 
@@ -354,7 +350,7 @@ class _CarouselState extends _CarouselTimerMixin {
   Widget _wrapTap(BuildContext context, int index) {
     return GestureDetector(
         behavior: HitTestBehavior.opaque,
-        onTap: () => this.widget.onTap(index),
+        onTap: () => widget.onTap(index),
         child: widget.itemBuilder(context, index));
   }
 
@@ -836,7 +832,7 @@ abstract class _CustomLayoutStateBase<T extends _SubCarousel> extends State<T> w
   @override
   void initState() {
     if (widget.itemWidth == null)
-      throw Exception("==============\n\nwidget.itemWith must not be null when use stack layout.\n========\n");
+      throw Exception('==============\n\nwidget.itemWith must not be null when use stack layout.\n========\n');
     _createAnimationController();
     widget.controller.addListener(_onController);
     super.initState();
@@ -969,7 +965,7 @@ abstract class _CustomLayoutStateBase<T extends _SubCarousel> extends State<T> w
         _move(0.0, nextIndex: nextIndex);
         break;
       case IndexController.MOVE:
-        throw Exception("Custom layout does not support CarouselControllerEvent.MOVE_INDEX yet!");
+        throw Exception('Custom layout does not support CarouselControllerEvent.MOVE_INDEX yet!');
       case CarouselController.STOP_AUTOPLAY:
       case CarouselController.START_AUTOPLAY:
         break;
