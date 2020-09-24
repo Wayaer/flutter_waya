@@ -560,7 +560,9 @@ bool closeOverlay({OverlayEntryMap element}) {
         _overlayEntryList.remove(_overlayEntryList.last);
       }
     }
-  } catch (e) {}
+  } catch (e) {
+    log(e.toString());
+  }
   return false;
 }
 
