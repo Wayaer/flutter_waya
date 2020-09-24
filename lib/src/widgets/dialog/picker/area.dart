@@ -4,6 +4,36 @@ import 'package:flutter_waya/src/constant/area.dart';
 import 'package:flutter_waya/src/constant/way.dart';
 
 class AreaPicker extends StatefulWidget {
+  AreaPicker(
+      {Key key,
+      Widget titleBottom,
+      Widget sure,
+      Widget title,
+      Widget cancel,
+      double height,
+      this.backgroundColor,
+      this.cancelTap,
+      this.sureTap,
+      this.contentStyle,
+      this.itemHeight,
+      this.diameterRatio,
+      this.offAxisFraction,
+      this.perspective,
+      double magnification,
+      this.useMagnifier,
+      this.squeeze,
+      this.physics,
+      this.defaultProvince,
+      this.defaultCity,
+      this.defaultDistrict})
+      : titleBottom = titleBottom ?? Container(),
+        sure = sure ?? WayWidgets.textDefault('sure'),
+        title = title ?? WayWidgets.textDefault('title'),
+        cancel = cancel ?? WayWidgets.textDefault('cancel'),
+        height = height ?? getHeight(0) / 4,
+        magnification = magnification ?? 1.2,
+        super(key: key);
+
   ///容器属性
   final Color backgroundColor;
   final double height;
@@ -47,46 +77,16 @@ class AreaPicker extends StatefulWidget {
   final String defaultCity;
   final String defaultDistrict;
 
-  AreaPicker(
-      {Key key,
-      Widget titleBottom,
-      Widget sure,
-      Widget title,
-      Widget cancel,
-      double height,
-      this.backgroundColor,
-      this.cancelTap,
-      this.sureTap,
-      this.contentStyle,
-      this.itemHeight,
-      this.diameterRatio,
-      this.offAxisFraction,
-      this.perspective,
-      double magnification,
-      this.useMagnifier,
-      this.squeeze,
-      this.physics,
-      this.defaultProvince,
-      this.defaultCity,
-      this.defaultDistrict})
-      : this.titleBottom = titleBottom ?? Container(),
-        this.sure = sure ?? WayWidgets.textDefault('sure'),
-        this.title = title ?? WayWidgets.textDefault('title'),
-        this.cancel = cancel ?? WayWidgets.textDefault('cancel'),
-        this.height = height ?? getHeight(0) / 4,
-        this.magnification = magnification ?? 1.2,
-        super(key: key);
-
   @override
   _AreaPickerState createState() => _AreaPickerState();
 }
 
 class _AreaPickerState extends State<AreaPicker> {
-  List<String> province = [];
-  List<String> city = [];
-  List<String> district = [];
+  List<String> province = <String>[];
+  List<String> city = <String>[];
+  List<String> district = <String>[];
 
-//  List<String> street = [];
+//  List<String> street = <String>[];
   Map<String, dynamic> areaData = area;
   double itemHeight;
 
@@ -111,7 +111,7 @@ class _AreaPickerState extends State<AreaPicker> {
     controllerDistrict = FixedExtentScrollController(initialItem: districtIndex);
   }
 
-  initData() {
+  void initData() {
     ///样式设置
     contentStyle = widget.contentStyle ??
         TextStyle(
@@ -124,15 +124,15 @@ class _AreaPickerState extends State<AreaPicker> {
     ///省
     province = areaData?.keys?.toList();
     if (province.contains(widget.defaultProvince)) provinceIndex = province.indexOf(widget.defaultProvince);
-    var provinceData = areaData[province[provinceIndex]];
+    final Map<dynamic, dynamic> provinceData = areaData[province[provinceIndex]] as Map<dynamic, dynamic>;
 
     ///市
-    city = provinceData?.keys?.toList();
+    city = provinceData?.keys?.toList() as List<String>;
     if (city.contains(widget.defaultCity)) cityIndex = city.indexOf(widget.defaultCity);
-    var cityData = provinceData[city[cityIndex]];
+    final Map<dynamic, dynamic> cityData = provinceData[city[cityIndex]] as Map<dynamic, dynamic>;
 
     ///区
-    district = cityData?.keys?.toList();
+    district = cityData?.keys?.toList() as List<String>;
     if (district.contains(widget.defaultDistrict)) districtIndex = district.indexOf(widget.defaultDistrict);
 //    var districtData = cityData[districtIndex];
 
@@ -141,33 +141,33 @@ class _AreaPickerState extends State<AreaPicker> {
   }
 
   ///点击确定返回选择的地区
-  sureTapVoid() {
+  void sureTapVoid() {
     if (widget.sureTap == null) return;
-    String areaString = '${province[provinceIndex]} ${city[cityIndex]} ${district[districtIndex]}';
+    final String areaString = '${province[provinceIndex]} ${city[cityIndex]} ${district[districtIndex]}';
     widget.sureTap(areaString);
   }
 
-  refreshCity() {
-    var provinceData = areaData[province[provinceIndex]];
-    city = provinceData?.keys?.toList();
+  void refreshCity() {
+    final Map<dynamic, dynamic> provinceData = areaData[province[provinceIndex]] as Map<dynamic, dynamic>;
+    city = provinceData?.keys?.toList() as List<String>;
     cityState(() {});
-    var cityData = provinceData[city[cityIndex]];
-    district = cityData?.keys?.toList();
+    final Map<dynamic, dynamic> cityData = provinceData[city[cityIndex]] as Map<dynamic, dynamic>;
+    district = cityData?.keys?.toList() as List<String>;
     districtState(() {});
     controllerCity.jumpTo(0);
     controllerDistrict.jumpTo(0);
   }
 
-  refreshDistrict() {
-    var cityData = areaData[province[provinceIndex]][city[cityIndex]];
-    district = cityData?.keys?.toList();
+  void refreshDistrict() {
+    final Map<dynamic, dynamic> cityData = areaData[province[provinceIndex]][city[cityIndex]] as Map<dynamic, dynamic>;
+    district = cityData?.keys?.toList() as List<String>;
     districtState(() {});
     controllerDistrict.jumpTo(0);
   }
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> children = List();
+    final List<Widget> children = <Widget>[];
     children.add(Expanded(
       child: wheelItem(province, initialIndex: provinceIndex, onChanged: (int newIndex) {
         provinceIndex = newIndex;
@@ -232,7 +232,7 @@ class _AreaPickerState extends State<AreaPicker> {
         squeeze: widget.squeeze,
         physics: widget.physics,
         childDelegateType: childDelegateType,
-        children: list.map((value) => item(value)).toList(),
+        children: list.map((String value) => item(value)).toList(),
         itemBuilder: (BuildContext context, int index) => item(list[index]),
         itemCount: list.length,
         onChanged: onChanged);
@@ -244,7 +244,7 @@ class _AreaPickerState extends State<AreaPicker> {
         child: WayWidgets.textSmall(value, overflow: TextOverflow.ellipsis, style: contentStyle));
   }
 
-  jumpToIndex(int index, FixedExtentScrollController controller, {Duration duration}) {
+  void jumpToIndex(int index, FixedExtentScrollController controller, {Duration duration}) {
     if (controller != null) controller.jumpToItem(index);
   }
 }

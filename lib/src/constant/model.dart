@@ -30,14 +30,14 @@ class ResponseModel {
   List<String> cookie;
 
   Map<String, dynamic> toMap() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['type'] = type;
-    data['data'] = data;
-    data['cookie'] = cookie;
-    data['statusCode'] = statusCode;
-    data['statusMessage'] = statusMessage;
-    data['statusMessageT'] = statusMessageT;
-    return data;
+    final Map<String, dynamic> map = <String, dynamic>{};
+    map['type'] = type;
+    map['data'] = data;
+    map['cookie'] = cookie;
+    map['statusCode'] = statusCode;
+    map['statusMessage'] = statusMessage;
+    map['statusMessageT'] = statusMessageT;
+    return map;
   }
 }
 

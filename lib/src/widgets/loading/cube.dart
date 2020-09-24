@@ -33,15 +33,15 @@ class _SpinKitCubeGridState extends State<SpinKitCubeGrid> with SingleTickerProv
 
     _controller = (widget.controller ?? AnimationController(vsync: this, duration: widget.duration))
       ..repeat(reverse: true);
-    _anim1 = Tween(begin: 1.0, end: 0.0)
+    _anim1 = Tween<double>(begin: 1.0, end: 0.0)
         .animate(CurvedAnimation(parent: _controller, curve: const Interval(0.1, 0.6, curve: Curves.easeIn)));
-    _anim2 = Tween(begin: 1.0, end: 0.0)
+    _anim2 = Tween<double>(begin: 1.0, end: 0.0)
         .animate(CurvedAnimation(parent: _controller, curve: const Interval(0.2, 0.7, curve: Curves.easeIn)));
-    _anim3 = Tween(begin: 1.0, end: 0.0)
+    _anim3 = Tween<double>(begin: 1.0, end: 0.0)
         .animate(CurvedAnimation(parent: _controller, curve: const Interval(0.3, 0.8, curve: Curves.easeIn)));
-    _anim4 = Tween(begin: 1.0, end: 0.0)
+    _anim4 = Tween<double>(begin: 1.0, end: 0.0)
         .animate(CurvedAnimation(parent: _controller, curve: const Interval(0.4, 0.9, curve: Curves.easeIn)));
-    _anim5 = Tween(begin: 1.0, end: 0.0)
+    _anim5 = Tween<double>(begin: 1.0, end: 0.0)
         .animate(CurvedAnimation(parent: _controller, curve: const Interval(0.5, 1.0, curve: Curves.easeIn)));
   }
 
@@ -118,13 +118,13 @@ class _SpinKitFoldingCubeState extends State<SpinKitFoldingCube> with SingleTick
     _controller = (widget.controller ?? AnimationController(vsync: this, duration: widget.duration))
       ..addListener(() => setState(() {}))
       ..repeat(reverse: true);
-    _rotate1 = Tween(begin: 0.0, end: 180.0)
+    _rotate1 = Tween<double>(begin: 0.0, end: 180.0)
         .animate(CurvedAnimation(parent: _controller, curve: const Interval(0.0, 0.25, curve: Curves.easeIn)));
-    _rotate2 = Tween(begin: 0.0, end: 180.0)
+    _rotate2 = Tween<double>(begin: 0.0, end: 180.0)
         .animate(CurvedAnimation(parent: _controller, curve: const Interval(0.25, 0.5, curve: Curves.easeIn)));
-    _rotate3 = Tween(begin: 0.0, end: 180.0)
+    _rotate3 = Tween<double>(begin: 0.0, end: 180.0)
         .animate(CurvedAnimation(parent: _controller, curve: const Interval(0.5, 0.75, curve: Curves.easeIn)));
-    _rotate4 = Tween(begin: 0.0, end: 180.0)
+    _rotate4 = Tween<double>(begin: 0.0, end: 180.0)
         .animate(CurvedAnimation(parent: _controller, curve: const Interval(0.75, 1.0, curve: Curves.easeIn)));
   }
 
@@ -153,10 +153,8 @@ class _SpinKitFoldingCubeState extends State<SpinKitFoldingCube> with SingleTick
   }
 
   Widget _cube(int i, {Animation<double> animation}) {
-    final _size = widget.size * 0.5, _position = widget.size * .5;
-
+    final double _size = widget.size * 0.5, _position = widget.size * .5;
     final Matrix4 _tRotate = Matrix4.identity()..rotateY(animation.value * 0.0174533);
-
     return Positioned.fill(
       top: _position,
       left: _position,

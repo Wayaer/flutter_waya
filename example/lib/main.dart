@@ -2,26 +2,25 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-void main() async {
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(App());
 }
 
 class App extends StatelessWidget {
-  Widget build(BuildContext context) {
-    return GlobalMaterial(title: 'Waya Demo', home: Home());
-  }
+  @override
+  Widget build(BuildContext context) => GlobalMaterial(title: 'Waya Demo', home: Home());
 }
 
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return OverlayScaffold(
-      appBar: AppBar(title: Text('Waya Demo'), centerTitle: true),
+      appBar: AppBar(title: const Text('Waya Demo'), centerTitle: true),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          PinBox(
+          const PinBox(
             maxLength: 6,
             pinBoxWidth: 30,
             pinBoxOuterPadding: EdgeInsets.zero,
@@ -32,7 +31,7 @@ class Home extends StatelessWidget {
             highlight: true,
           ),
           Container(
-            margin: EdgeInsets.all(10),
+            margin: const EdgeInsets.all(10),
             child: ElasticButton(
               useCache: false,
               elasticButtonType: ElasticButtonType.onlyScale,
@@ -41,40 +40,40 @@ class Home extends StatelessWidget {
               },
               child: Container(
                 color: Colors.green,
-                padding: EdgeInsets.all(10),
-                child: Text('按钮'),
+                padding: const EdgeInsets.all(10),
+                child: const Text('按钮'),
               ),
             ),
           ),
-          FlatButton(onPressed: () => showModalPopup(), child: Text('点击弹窗')),
-          FlatButton(onPressed: () => showOverlayToast(), child: Text('点击Toast')),
-          FlatButton(onPressed: () => selectCity(), child: Text('城市选择器')),
+          FlatButton(onPressed: () => showModalPopup(), child: const Text('点击弹窗')),
+          FlatButton(onPressed: () => showOverlayToast(), child: const Text('点击Toast')),
+          FlatButton(onPressed: () => selectCity(), child: const Text('城市选择器')),
         ],
       ),
     );
   }
 
-  selectCity() => showAreaPicker();
+  void selectCity() => showAreaPicker<dynamic>();
 
-  showOverlayLoading() => showLoading(gaussian: true);
+  void showOverlayLoading() => showLoading(gaussian: true);
 
-  showOverlayToast() {
-    showToast("0");
+  void showOverlayToast() {
+    showToast('0');
   }
 
-  showModalPopup() {
-    showBottomPagePopup(
+  void showModalPopup() {
+    showBottomPagePopup<dynamic>(
         widget: CupertinoActionSheet(
-      title: Text('提示'),
-      message: Text('是否要删除当前项？'),
+      title: const Text('提示'),
+      message: const Text('是否要删除当前项？'),
       actions: <Widget>[
         CupertinoActionSheetAction(
-          child: Text('删除'),
+          child: const Text('删除'),
           onPressed: () {},
           isDefaultAction: true,
         ),
         CupertinoActionSheetAction(
-          child: Text('暂时不删'),
+          child: const Text('暂时不删'),
           onPressed: () {},
           isDestructiveAction: true,
         ),

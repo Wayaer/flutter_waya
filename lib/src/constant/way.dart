@@ -82,7 +82,7 @@ class WayStyles {
 }
 
 class WayWidgets {
-  static Widget titleWidget(String title) =>
+  static Text titleWidget(String title) =>
       Text(title, style: TextStyle(color: getColors(white), fontSize: 16, fontWeight: FontWeight.w700));
 
   ///垂直线
@@ -114,7 +114,7 @@ class WayWidgets {
             style: textStyle ?? const TextStyle(),
           )));
 
-  static dynamic textDefault(String text,
+  static Text textDefault(String text,
           {Color color,
           int maxLines,
           double height,
@@ -129,7 +129,7 @@ class WayWidgets {
           overflow: overflow,
           height: height);
 
-  static dynamic textSmall(String text,
+  static Text textSmall(String text,
           {Color color, int maxLines, TextStyle style, double height, FontWeight fontWeight, TextOverflow overflow}) =>
       textWidget(text,
           maxLines: maxLines,

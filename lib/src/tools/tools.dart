@@ -13,7 +13,7 @@ import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/enums.dart';
 
 bool isDebug() => !kReleaseMode;
-const int limitLength = 800;
+const int _limitLength = 800;
 
 bool isAndroid() => Platform.isAndroid;
 
@@ -27,12 +27,12 @@ bool isLinux() => Platform.isLinux;
 
 bool isFuchsia() => Platform.isFuchsia;
 
-void log(dynamic msg) {
+void log(String msg) {
   if (isDebug()) {
-    if (msg.length < limitLength != null) {
+    if (msg.length < _limitLength) {
       print(msg);
     } else {
-      _segmentationLog(msg.toString());
+      _segmentationLog(msg);
     }
   }
 }
@@ -41,11 +41,11 @@ void _segmentationLog(String msg) {
   final StringBuffer outStr = StringBuffer();
   for (int index = 0; index < msg.length; index++) {
     outStr.write(msg[index]);
-    if (index % limitLength == 0 && index != 0) {
+    if (index % _limitLength == 0 && index != 0) {
       print(outStr);
       outStr.clear();
       final int lastIndex = index + 1;
-      if (msg.length - lastIndex < limitLength) {
+      if (msg.length - lastIndex < _limitLength) {
         final String remainderStr = msg.substring(lastIndex, msg.length);
         print(remainderStr);
         break;

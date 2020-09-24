@@ -3,20 +3,7 @@ import 'dart:ui' as ui show TextHeightBehavior;
 import 'package:flutter/material.dart';
 
 class RichSpan extends StatelessWidget {
-  final TextAlign textAlign;
-  final List<String> text;
-  final List<TextStyle> textStyle;
-  final TextDirection textDirection;
-  final bool softWrap;
-  final TextOverflow overflow;
-  final int maxLines;
-  final Locale locale;
-  final StrutStyle strutStyle;
-  final TextWidthBasis textWidthBasis;
-  final ui.TextHeightBehavior textHeightBehavior;
-  final double textScaleFactor;
-
-  RichSpan({
+  const RichSpan({
     Key key,
     this.text,
     TextAlign textAlign,
@@ -30,27 +17,40 @@ class RichSpan extends StatelessWidget {
     this.locale,
     this.strutStyle,
     this.textHeightBehavior,
-  })  : this.textAlign = textAlign ?? TextAlign.center,
-        this.softWrap = softWrap ?? true,
-        this.overflow = overflow ?? TextOverflow.clip,
-        this.textWidthBasis = textWidthBasis ?? TextWidthBasis.parent,
-        this.textScaleFactor = textScaleFactor ?? 1.0,
+  })  : textAlign = textAlign ?? TextAlign.center,
+        softWrap = softWrap ?? true,
+        overflow = overflow ?? TextOverflow.clip,
+        textWidthBasis = textWidthBasis ?? TextWidthBasis.parent,
+        textScaleFactor = textScaleFactor ?? 1.0,
         super(key: key);
+
+  final TextAlign textAlign;
+  final List<String> text;
+  final List<TextStyle> textStyle;
+  final TextDirection textDirection;
+  final bool softWrap;
+  final TextOverflow overflow;
+  final int maxLines;
+  final Locale locale;
+  final StrutStyle strutStyle;
+  final TextWidthBasis textWidthBasis;
+  final ui.TextHeightBehavior textHeightBehavior;
+  final double textScaleFactor;
 
   @override
   Widget build(BuildContext context) {
-    List<TextSpan> children = List();
-    List<TextStyle> styles = List();
+    final List<TextSpan> children = <TextSpan>[];
+    final List<TextStyle> styles = <TextStyle>[];
     if (textStyle == null) {
-      styles.add(TextStyle(fontSize: 14));
+      styles.add(const TextStyle(fontSize: 14));
     } else {
       styles.addAll(textStyle);
     }
     if (text.length > styles.length) {
-      int poor = text.length - styles.length;
+      final int poor = text.length - styles.length;
       for (int i = 0; i <= poor; i++) styles.add(styles.last);
     }
-    text.map((value) => children.add(TextSpan(text: value, style: styles[text.indexOf(value)]))).toList();
+    text.map((String value) => children.add(TextSpan(text: value, style: styles[text.indexOf(value)]))).toList();
     return RichText(
       textDirection: textDirection,
       softWrap: softWrap,
@@ -68,6 +68,23 @@ class RichSpan extends StatelessWidget {
 }
 
 class GText extends StatelessWidget {
+  const GText(
+    this.data, {
+    Key key,
+    this.style,
+    this.strutStyle,
+    this.textAlign,
+    this.textDirection,
+    this.locale,
+    this.softWrap,
+    this.overflow,
+    this.textScaleFactor,
+    this.maxLines,
+    this.semanticsLabel,
+    this.textWidthBasis,
+    this.textHeightBehavior,
+  }) : super(key: key);
+
   ///要展示的数据内容，必须填写的参数
   final String data;
 
@@ -106,27 +123,10 @@ class GText extends StatelessWidget {
 
   final ui.TextHeightBehavior textHeightBehavior;
 
-  const GText(
-    this.data, {
-    Key key,
-    this.style,
-    this.strutStyle,
-    this.textAlign,
-    this.textDirection,
-    this.locale,
-    this.softWrap,
-    this.overflow,
-    this.textScaleFactor,
-    this.maxLines,
-    this.semanticsLabel,
-    this.textWidthBasis,
-    this.textHeightBehavior,
-  }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Text(
-      data ?? "",
+      data ?? '',
       style: style,
       strutStyle: strutStyle,
       textAlign: textAlign,

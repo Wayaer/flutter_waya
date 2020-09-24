@@ -4,6 +4,34 @@ import 'package:flutter_waya/flutter_waya.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class Refresh extends StatelessWidget {
+  Refresh({
+    Key key,
+    bool enablePullDown,
+    bool enablePullUp,
+    bool enableTwoLevel,
+    this.controller,
+    this.footerTextStyle,
+    this.onLoading,
+    this.onRefresh,
+    this.child,
+    this.footer,
+    this.header,
+    this.onTwoLevel,
+    this.onOffsetChange,
+    this.dragStartBehavior,
+    this.primary,
+    this.cacheExtent,
+    this.semanticChildCount,
+    this.reverse,
+    this.physics,
+    this.scrollDirection,
+    this.scrollController,
+  })  : enablePullDown = enablePullDown ?? false,
+        enablePullUp = enablePullUp ?? false,
+        enableTwoLevel = enableTwoLevel ?? false,
+        refreshController = RefreshController(initialRefresh: false),
+        super(key: key);
+
   final RefreshController controller;
   final bool enablePullDown;
   final bool enablePullUp;
@@ -27,34 +55,6 @@ class Refresh extends StatelessWidget {
   final int semanticChildCount;
   final DragStartBehavior dragStartBehavior;
   final RefreshController refreshController;
-
-  Refresh({
-    Key key,
-    bool enablePullDown,
-    bool enablePullUp,
-    bool enableTwoLevel,
-    this.controller,
-    this.footerTextStyle,
-    this.onLoading,
-    this.onRefresh,
-    this.child,
-    this.footer,
-    this.header,
-    this.onTwoLevel,
-    this.onOffsetChange,
-    this.dragStartBehavior,
-    this.primary,
-    this.cacheExtent,
-    this.semanticChildCount,
-    this.reverse,
-    this.physics,
-    this.scrollDirection,
-    this.scrollController,
-  })  : this.enablePullDown = enablePullDown ?? false,
-        this.enablePullUp = enablePullUp ?? false,
-        this.enableTwoLevel = enableTwoLevel ?? false,
-        this.refreshController = RefreshController(initialRefresh: false),
-        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -103,21 +103,45 @@ class Refresh extends StatelessWidget {
 
   void onTwoLevelVoid() {
     log('onTwoLevel');
-    Tools.timerTools(Duration(seconds: 2), () => refreshController.twoLevelComplete());
+    Tools.timerTools(const Duration(seconds: 2), () => refreshController.twoLevelComplete());
   }
 
   void onRefreshVoid() {
     log('onRefresh');
-    Tools.timerTools(Duration(seconds: 2), () => refreshController.refreshCompleted());
+    Tools.timerTools(const Duration(seconds: 2), () => refreshController.refreshCompleted());
   }
 
   void onLoadingVoid() {
     log('onLoading');
-    Tools.timerTools(Duration(seconds: 2), () => refreshController.loadComplete());
+    Tools.timerTools(const Duration(seconds: 2), () => refreshController.loadComplete());
   }
 }
 
 class Refreshed extends StatefulWidget {
+  const Refreshed(
+      {Key key,
+      this.child,
+      this.onTwoLevel,
+      this.enablePullDown,
+      this.onLoading,
+      this.enablePullUp,
+      this.onRefresh,
+      this.header,
+      this.footer,
+      this.controller,
+      this.onOffsetChange,
+      this.scrollDirection,
+      this.reverse,
+      this.scrollController,
+      this.primary,
+      this.physics,
+      this.cacheExtent,
+      this.semanticChildCount,
+      this.dragStartBehavior,
+      this.footerTextStyle,
+      this.enableTwoLevel})
+      : super(key: key);
+
   ///可不传controller，
   ///若想关闭刷新组件可以通过发送消息
   ///sendMessage(RefreshCompletedType.refresh);
@@ -143,30 +167,6 @@ class Refreshed extends StatefulWidget {
   final DragStartBehavior dragStartBehavior;
   final TextStyle footerTextStyle;
 
-  Refreshed(
-      {Key key,
-      this.child,
-      this.onTwoLevel,
-      this.enablePullDown,
-      this.onLoading,
-      this.enablePullUp,
-      this.onRefresh,
-      this.header,
-      this.footer,
-      this.controller,
-      this.onOffsetChange,
-      this.scrollDirection,
-      this.reverse,
-      this.scrollController,
-      this.primary,
-      this.physics,
-      this.cacheExtent,
-      this.semanticChildCount,
-      this.dragStartBehavior,
-      this.footerTextStyle,
-      this.enableTwoLevel})
-      : super(key: key);
-
   @override
   _RefreshedState createState() => _RefreshedState();
 }
@@ -179,7 +179,7 @@ class _RefreshedState extends State<Refreshed> {
     super.initState();
     controller = widget.controller ?? RefreshController(initialRefresh: false);
     if (widget.controller == null) {
-      Tools.addPostFrameCallback((callback) => messageListen((data) {
+      Tools.addPostFrameCallback((Duration callback) => messageListen((dynamic data) {
             if (data == null) return;
             if (data != null && data is RefreshCompletedType) {
               switch (data) {

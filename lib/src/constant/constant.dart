@@ -9,6 +9,7 @@ class ConstConstant {
   static const int errorCode408 = 408; //网络连接超时
   static const int errorCode502 = 502; //网络接收超时
   static const int errorCode450 = 450; //网络发送超时
+  static const String success = 'success';
   static const String errorMessage404 = '网络请求失败'; //网络请求失败
   static const String errorMessage420 = '网络请求已取消'; //网络请求已取消
   static const String errorMessage408 = '网络连接超时'; //网络连接超时
@@ -52,20 +53,20 @@ const String black90 = 'black90';
 
 Color getColors(String color) => constColors[color];
 
-const constColors = {
-  '$transparent': Colors.transparent,
-  '$white': Colors.white,
-  '$red': Colors.red,
-  '$white50': Color(0x50FFFFFF),
-  '$black': Color(0xFF000000),
-  '$black30': Color(0x30000000),
-  '$black50': Color(0x50000000),
-  '$black70': Color(0x70000000),
-  '$black90': Color(0x90000000),
-  '$greenAccent': Colors.greenAccent,
-  '$blue': Color(0xFF349DFF),
-  '$boxShadowColor': Color(0xFFE0E0E0),
-  '$background': Color.fromRGBO(246, 246, 246, 1),
+const Map<String, Color> constColors = <String, Color>{
+  transparent: Colors.transparent,
+  white: Colors.white,
+  red: Colors.red,
+  white50: Color(0x50FFFFFF),
+  black: Color(0xFF000000),
+  black30: Color(0x30000000),
+  black50: Color(0x50000000),
+  black70: Color(0x70000000),
+  black90: Color(0x90000000),
+  greenAccent: Colors.greenAccent,
+  blue: Color(0xFF349DFF),
+  boxShadowColor: Color(0xFFE0E0E0),
+  background: Color.fromRGBO(246, 246, 246, 1),
 };
 
 ///icons
@@ -102,5 +103,5 @@ class ConstIcon {
 
 class IconCode extends IconData {
   const IconCode(int codePoint)
-      : super(codePoint, fontFamily: 'Icons', matchTextDirection: true, fontPackage: "flutter_waya");
+      : super(codePoint, fontFamily: 'Icons', matchTextDirection: true, fontPackage: 'flutter_waya');
 }

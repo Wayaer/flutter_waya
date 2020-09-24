@@ -8,12 +8,63 @@ import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/way.dart';
 
 GlobalKey<NavigatorState> _globalNavigatorKey = GlobalKey();
-List<GlobalKey<State>> _scaffoldKeyList = [];
-List<OverlayEntryMap> _overlayEntryList = [];
-var _overlay;
+List<GlobalKey<State>> _scaffoldKeyList = <GlobalKey<State>>[];
+List<OverlayEntryMap> _overlayEntryList = <OverlayEntryMap>[];
+OverlayState _overlay;
 
 ///GlobalMaterial
 class GlobalMaterial extends StatelessWidget {
+  GlobalMaterial({
+    Key key,
+    Map<String, WidgetBuilder> routes,
+    String title,
+    ThemeMode themeMode,
+    Locale locale,
+    Iterable<LocalizationsDelegate<dynamic>> localizationsDelegates,
+    Iterable<Locale> supportedLocales,
+    bool debugShowMaterialGrid,
+    bool showPerformanceOverlay,
+    bool checkerboardRasterCacheImages,
+    bool checkerboardOffscreenLayers,
+    bool showSemanticsDebugger,
+    bool debugShowCheckedModeBanner,
+    List<NavigatorObserver> navigatorObservers,
+    this.navigatorKey,
+    this.home,
+    this.initialRoute,
+    this.onGenerateRoute,
+    this.onUnknownRoute,
+    this.builder,
+    this.onGenerateTitle,
+    this.color,
+    this.theme,
+    this.darkTheme,
+    this.localeListResolutionCallback,
+    this.localeResolutionCallback,
+    this.shortcuts,
+    this.actions,
+    this.onGenerateInitialRoutes,
+  })  : debugShowMaterialGrid = debugShowMaterialGrid ?? false,
+        showPerformanceOverlay = showPerformanceOverlay ?? false,
+        checkerboardRasterCacheImages = checkerboardRasterCacheImages ?? false,
+        checkerboardOffscreenLayers = checkerboardOffscreenLayers ?? false,
+        showSemanticsDebugger = showSemanticsDebugger ?? false,
+        debugShowCheckedModeBanner = debugShowCheckedModeBanner ?? false,
+        themeMode = themeMode ?? ThemeMode.system,
+        title = title ?? '',
+        routes = routes ?? const <String, WidgetBuilder>{},
+        navigatorObservers = navigatorObservers ?? <NavigatorObserver>[],
+        locale = locale ?? const Locale('zh'),
+        supportedLocales = supportedLocales ?? <Locale>[const Locale('zh', 'CH'), const Locale('en', 'US')],
+        localizationsDelegates = localizationsDelegates ??
+            <LocalizationsDelegate<dynamic>>[
+              DefaultCupertinoLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+            ],
+        super(key: key);
+
   ///导航键
   final GlobalKey<NavigatorState> navigatorKey;
 
@@ -87,57 +138,6 @@ class GlobalMaterial extends StatelessWidget {
   final Map<Type, Action<Intent>> actions;
   final InitialRouteListFactory onGenerateInitialRoutes;
 
-  GlobalMaterial({
-    Key key,
-    Map<String, WidgetBuilder> routes,
-    String title,
-    ThemeMode themeMode,
-    Locale locale,
-    Iterable<LocalizationsDelegate<dynamic>> localizationsDelegates,
-    Iterable<Locale> supportedLocales,
-    bool debugShowMaterialGrid,
-    bool showPerformanceOverlay,
-    bool checkerboardRasterCacheImages,
-    bool checkerboardOffscreenLayers,
-    bool showSemanticsDebugger,
-    bool debugShowCheckedModeBanner,
-    List<NavigatorObserver> navigatorObservers,
-    this.navigatorKey,
-    this.home,
-    this.initialRoute,
-    this.onGenerateRoute,
-    this.onUnknownRoute,
-    this.builder,
-    this.onGenerateTitle,
-    this.color,
-    this.theme,
-    this.darkTheme,
-    this.localeListResolutionCallback,
-    this.localeResolutionCallback,
-    this.shortcuts,
-    this.actions,
-    this.onGenerateInitialRoutes,
-  })  : this.debugShowMaterialGrid = debugShowMaterialGrid ?? false,
-        this.showPerformanceOverlay = showPerformanceOverlay ?? false,
-        this.checkerboardRasterCacheImages = checkerboardRasterCacheImages ?? false,
-        this.checkerboardOffscreenLayers = checkerboardOffscreenLayers ?? false,
-        this.showSemanticsDebugger = showSemanticsDebugger ?? false,
-        this.debugShowCheckedModeBanner = debugShowCheckedModeBanner ?? false,
-        this.themeMode = themeMode ?? ThemeMode.system,
-        this.title = title ?? "",
-        this.routes = routes ?? const <String, WidgetBuilder>{},
-        this.navigatorObservers = navigatorObservers ?? [],
-        this.locale = locale ?? Locale('zh'),
-        this.supportedLocales = supportedLocales ?? [Locale('zh', 'CH'), Locale('en', 'US')],
-        this.localizationsDelegates = localizationsDelegates ??
-            [
-              DefaultCupertinoLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-            ],
-        super(key: key);
-
   @override
   Widget build(BuildContext context) {
     if (navigatorKey != null) _globalNavigatorKey = navigatorKey;
@@ -176,29 +176,6 @@ class GlobalMaterial extends StatelessWidget {
 
 ///GlobalCupertino
 class GlobalCupertino extends StatelessWidget {
-  final Iterable<Locale> supportedLocales;
-  final Locale locale;
-  final Iterable<LocalizationsDelegate<dynamic>> localizationsDelegates;
-  final List<NavigatorObserver> navigatorObservers;
-  final Map<String, WidgetBuilder> routes;
-  final String title;
-  final bool showPerformanceOverlay;
-  final bool checkerboardRasterCacheImages;
-  final bool checkerboardOffscreenLayers;
-  final bool showSemanticsDebugger;
-  final bool debugShowCheckedModeBanner;
-  final GlobalKey<NavigatorState> navigatorKey;
-  final Widget home;
-  final CupertinoThemeData theme;
-  final String initialRoute;
-  final RouteFactory onGenerateRoute;
-  final RouteFactory onUnknownRoute;
-  final TransitionBuilder builder;
-  final GenerateAppTitle onGenerateTitle;
-  final Color color;
-  final LocaleListResolutionCallback localeListResolutionCallback;
-  final LocaleResolutionCallback localeResolutionCallback;
-
   GlobalCupertino({
     Key key,
     Iterable<Locale> supportedLocales,
@@ -223,23 +200,46 @@ class GlobalCupertino extends StatelessWidget {
     this.color,
     this.localeListResolutionCallback,
     this.localeResolutionCallback,
-  })  : this.showPerformanceOverlay = showPerformanceOverlay ?? false,
-        this.checkerboardRasterCacheImages = checkerboardRasterCacheImages ?? false,
-        this.checkerboardOffscreenLayers = checkerboardOffscreenLayers ?? false,
-        this.showSemanticsDebugger = showSemanticsDebugger ?? false,
-        this.debugShowCheckedModeBanner = debugShowCheckedModeBanner ?? false,
-        this.title = title ?? "",
-        this.routes = routes ?? const <String, WidgetBuilder>{},
-        this.navigatorObservers = navigatorObservers ?? [],
-        this.locale = locale ?? const Locale('zh', 'CN'),
-        this.supportedLocales = supportedLocales ?? [const Locale('zh', 'CN'), const Locale('en', 'US')],
-        this.localizationsDelegates = localizationsDelegates ??
-            [
+  })  : showPerformanceOverlay = showPerformanceOverlay ?? false,
+        checkerboardRasterCacheImages = checkerboardRasterCacheImages ?? false,
+        checkerboardOffscreenLayers = checkerboardOffscreenLayers ?? false,
+        showSemanticsDebugger = showSemanticsDebugger ?? false,
+        debugShowCheckedModeBanner = debugShowCheckedModeBanner ?? false,
+        title = title ?? '',
+        routes = routes ?? const <String, WidgetBuilder>{},
+        navigatorObservers = navigatorObservers ?? <NavigatorObserver>[],
+        locale = locale ?? const Locale('zh', 'CN'),
+        supportedLocales = supportedLocales ?? <Locale>[const Locale('zh', 'CN'), const Locale('en', 'US')],
+        localizationsDelegates = localizationsDelegates ??
+            <LocalizationsDelegate<dynamic>>[
               GlobalCupertinoLocalizations.delegate,
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate
             ],
         super(key: key);
+
+  final Iterable<Locale> supportedLocales;
+  final Locale locale;
+  final Iterable<LocalizationsDelegate<dynamic>> localizationsDelegates;
+  final List<NavigatorObserver> navigatorObservers;
+  final Map<String, WidgetBuilder> routes;
+  final String title;
+  final bool showPerformanceOverlay;
+  final bool checkerboardRasterCacheImages;
+  final bool checkerboardOffscreenLayers;
+  final bool showSemanticsDebugger;
+  final bool debugShowCheckedModeBanner;
+  final GlobalKey<NavigatorState> navigatorKey;
+  final Widget home;
+  final CupertinoThemeData theme;
+  final String initialRoute;
+  final RouteFactory onGenerateRoute;
+  final RouteFactory onUnknownRoute;
+  final TransitionBuilder builder;
+  final GenerateAppTitle onGenerateTitle;
+  final Color color;
+  final LocaleListResolutionCallback localeListResolutionCallback;
+  final LocaleResolutionCallback localeResolutionCallback;
 
   @override
   Widget build(BuildContext context) {
@@ -273,47 +273,8 @@ class GlobalCupertino extends StatelessWidget {
 
 ///OverlayScaffold
 class OverlayScaffold extends StatefulWidget {
-  final EdgeInsetsGeometry padding;
-  final Color backgroundColor;
-  final Widget body;
-  final bool isScroll;
-  final bool isolationBody;
-  final bool paddingStatusBar;
-  final bool enablePullDown;
-
-  ///点击返回是否关闭叠层
-  final bool onWillPopOverlayClose;
-
-  ///返回按键监听
-  final WillPopCallback onWillPop;
-
-  //刷新组件相关
-  final RefreshController controller;
-  final VoidCallback onRefresh;
-  final Widget child;
-  final Widget header;
-  final Widget footer;
-  final TextStyle footerTextStyle;
-
-  //Scaffold相关属性
-  final Widget bottomNavigationBar;
-  final Widget appBar;
-  final double appBarHeight;
-  final Widget floatingActionButton;
-  final FloatingActionButtonAnimator floatingActionButtonAnimator;
-  final FloatingActionButtonLocation floatingActionButtonLocation;
-  final Widget bottomSheet;
-  final Widget endDrawer;
-  final Widget drawer;
-  final List<Widget> persistentFooterButtons;
-  final bool resizeToAvoidBottomPadding;
-  final bool resizeToAvoidBottomInset;
-  final bool primary;
-  final bool extendBody;
-  final DragStartBehavior drawerDragStartBehavior;
-
   //isScroll 和isolationBody（body隔离出一个横条目）  不可同时使用
-  OverlayScaffold({
+  const OverlayScaffold({
     Key key,
     bool isScroll,
     bool isolationBody,
@@ -345,15 +306,54 @@ class OverlayScaffold extends StatefulWidget {
     this.resizeToAvoidBottomInset,
     this.onWillPop,
     this.appBarHeight,
-  })  : this.isScroll = isScroll ?? false,
-        this.isolationBody = isolationBody ?? false,
-        this.onWillPopOverlayClose = onWillPopOverlayClose ?? true,
-        this.paddingStatusBar = paddingStatusBar ?? false,
-        this.enablePullDown = enablePullDown ?? false,
-        this.primary = primary ?? true,
-        this.extendBody = extendBody ?? false,
-        this.drawerDragStartBehavior = drawerDragStartBehavior ?? DragStartBehavior.start,
+  })  : isScroll = isScroll ?? false,
+        isolationBody = isolationBody ?? false,
+        onWillPopOverlayClose = onWillPopOverlayClose ?? true,
+        paddingStatusBar = paddingStatusBar ?? false,
+        enablePullDown = enablePullDown ?? false,
+        primary = primary ?? true,
+        extendBody = extendBody ?? false,
+        drawerDragStartBehavior = drawerDragStartBehavior ?? DragStartBehavior.start,
         super(key: key);
+
+  final EdgeInsetsGeometry padding;
+  final Color backgroundColor;
+  final Widget body;
+  final bool isScroll;
+  final bool isolationBody;
+  final bool paddingStatusBar;
+  final bool enablePullDown;
+
+  ///点击返回是否关闭Overlay
+  final bool onWillPopOverlayClose;
+
+  ///返回按键监听
+  final WillPopCallback onWillPop;
+
+  //刷新组件相关
+  final RefreshController controller;
+  final VoidCallback onRefresh;
+  final Widget child;
+  final Widget header;
+  final Widget footer;
+  final TextStyle footerTextStyle;
+
+  //Scaffold相关属性
+  final Widget bottomNavigationBar;
+  final Widget appBar;
+  final double appBarHeight;
+  final Widget floatingActionButton;
+  final FloatingActionButtonAnimator floatingActionButtonAnimator;
+  final FloatingActionButtonLocation floatingActionButtonLocation;
+  final Widget bottomSheet;
+  final Widget endDrawer;
+  final Widget drawer;
+  final List<Widget> persistentFooterButtons;
+  final bool resizeToAvoidBottomPadding;
+  final bool resizeToAvoidBottomInset;
+  final bool primary;
+  final bool extendBody;
+  final DragStartBehavior drawerDragStartBehavior;
 
   @override
   _OverlayScaffoldState createState() => _OverlayScaffoldState();
@@ -365,16 +365,16 @@ class _OverlayScaffoldState extends State<OverlayScaffold> {
   @override
   void initState() {
     super.initState();
-    if (widget.key != null) _globalKey = widget.key;
+    if (widget.key != null) _globalKey = widget.key as GlobalKey<State<StatefulWidget>>;
   }
 
   @override
   Widget build(BuildContext context) {
-    Widget scaffold = WillPopScope(
+    final Widget scaffold = WillPopScope(
         onWillPop: widget.onWillPop ??
             () async {
               if (widget.onWillPopOverlayClose &&
-                  _overlayEntryList.length > 0 &&
+                  _overlayEntryList.isNotEmpty &&
                   !_overlayEntryList.last.isAutomaticOff) {
                 closeOverlay();
                 return false;
@@ -413,18 +413,17 @@ class _OverlayScaffoldState extends State<OverlayScaffold> {
       header: widget.header);
 
   PreferredSizeWidget appBar() {
-    if (widget.appBar is AppBar && widget.appBarHeight == null) return widget.appBar;
+    if (widget.appBar is AppBar && widget.appBarHeight == null) return widget.appBar as AppBar;
     return widget.appBar == null
         ? null
         : PreferredSize(
-            child: widget.appBar,
-            preferredSize: Size.fromHeight(MediaQueryTools.getStatusBarHeight() + widget.appBarHeight ?? 30));
+            child: widget.appBar, preferredSize: Size.fromHeight(getStatusBarHeight() + widget.appBarHeight ?? 30));
   }
 
   Widget container() => Container(
       color: widget.backgroundColor,
       margin: widget.isolationBody ? EdgeInsets.only(top: getHeight(10)) : EdgeInsets.zero,
-      padding: widget.paddingStatusBar ? EdgeInsets.only(top: MediaQueryTools.getStatusBarHeight()) : widget.padding,
+      padding: widget.paddingStatusBar ? EdgeInsets.only(top: getStatusBarHeight()) : widget.padding,
       width: double.infinity,
       height: double.infinity,
       child: widget.isScroll ? SingleChildScrollView(child: widget.body) : widget.body);
@@ -445,15 +444,14 @@ Future<dynamic> push(
     bool maintainState,
     bool fullscreenDialog,
     PushMode pushMode}) {
-  final Route<dynamic> route = _pageRoute(
+  return Navigator.of(_globalNavigatorKey.currentContext).push(_pageRoute(
       title: title,
       maintainState: maintainState,
       fullscreenDialog: fullscreenDialog,
       settings: settings,
       builder: builder,
       pushMode: pushMode,
-      widget: widget);
-  return Navigator.of(_globalNavigatorKey.currentContext).push<dynamic>(route);
+      widget: widget));
 }
 
 Future<dynamic> pushReplacement(
@@ -464,18 +462,17 @@ Future<dynamic> pushReplacement(
     bool maintainState,
     bool fullscreenDialog,
     PushMode pushMode}) {
-  final Route<dynamic> route = _pageRoute(
+  return Navigator.of(_globalNavigatorKey.currentContext).pushReplacement(_pageRoute(
       title: title,
       maintainState: maintainState,
       fullscreenDialog: fullscreenDialog,
       settings: settings,
       builder: builder,
       pushMode: pushMode,
-      widget: widget);
-  return Navigator.of(_globalNavigatorKey.currentContext).pushReplacement(route);
+      widget: widget));
 }
 
-Future<T> pushAndRemoveUntil<T>(
+Future<dynamic> pushAndRemoveUntil(
     {WidgetBuilder builder,
     Widget widget,
     String title,
@@ -483,15 +480,16 @@ Future<T> pushAndRemoveUntil<T>(
     bool maintainState,
     bool fullscreenDialog,
     PushMode pushMode}) {
-  final Route<dynamic> route = _pageRoute(
-      title: title,
-      maintainState: maintainState,
-      fullscreenDialog: fullscreenDialog,
-      settings: settings,
-      builder: builder,
-      pushMode: pushMode,
-      widget: widget);
-  return Navigator.of(_globalNavigatorKey.currentContext).pushAndRemoveUntil<dynamic>(route, (route) => false);
+  return Navigator.of(_globalNavigatorKey.currentContext).pushAndRemoveUntil(
+      _pageRoute(
+          title: title,
+          maintainState: maintainState,
+          fullscreenDialog: fullscreenDialog,
+          settings: settings,
+          builder: builder,
+          pushMode: pushMode,
+          widget: widget),
+      (_) => false);
 }
 
 void pop<T extends Object>([dynamic result]) => Navigator.of(_globalNavigatorKey.currentContext).pop<dynamic>(result);
@@ -500,7 +498,7 @@ PushMode _pushMode;
 
 void setGlobalPushMode(PushMode pushMode) => _pushMode = pushMode;
 
-Route<dynamic> _pageRoute({
+Route<T> _pageRoute<T>({
   WidgetBuilder builder,
   Widget widget,
   String title,
@@ -513,14 +511,14 @@ Route<dynamic> _pageRoute({
   if (pushMode == null && _pushMode != null) pushMode = _pushMode;
   pushMode ??= PushMode.cupertino;
   if (pushMode == PushMode.cupertino) {
-    return CupertinoPageRoute<dynamic>(
+    return CupertinoPageRoute<T>(
         title: title,
         maintainState: maintainState ?? true,
         fullscreenDialog: fullscreenDialog ?? false,
         settings: settings,
         builder: builder ?? (BuildContext context) => widget);
   }
-  return MaterialPageRoute<dynamic>(
+  return MaterialPageRoute<T>(
       maintainState: maintainState ?? true,
       fullscreenDialog: fullscreenDialog ?? false,
       settings: settings,
@@ -529,13 +527,13 @@ Route<dynamic> _pageRoute({
 
 ///************ 以下为Scaffold Overlay *****************///
 class OverlayEntryMap {
-  ///叠层
+  OverlayEntryMap({this.overlayEntry, this.isAutomaticOff});
+
+  ///Overlay
   final OverlayEntry overlayEntry;
 
   ///是否自动关闭
   final bool isAutomaticOff;
-
-  OverlayEntryMap({this.overlayEntry, this.isAutomaticOff});
 }
 
 ///自定义Overlay
@@ -543,9 +541,9 @@ OverlayEntryMap showOverlay(Widget widget, {bool isAutomaticOff}) {
   if (_overlay != null) _overlay = null;
   _overlay = Overlay.of(_scaffoldKeyList?.last?.currentContext, rootOverlay: false);
   if (_overlay == null) return null;
-  OverlayEntry entry = OverlayEntry(builder: (context) => widget);
+  final OverlayEntry entry = OverlayEntry(builder: (_) => widget);
   _overlay.insert(entry);
-  var entryMap = OverlayEntryMap(overlayEntry: entry, isAutomaticOff: isAutomaticOff ?? false);
+  final OverlayEntryMap entryMap = OverlayEntryMap(overlayEntry: entry, isAutomaticOff: isAutomaticOff ?? false);
   _overlayEntryList.add(entryMap);
   return entryMap;
 }
@@ -557,21 +555,19 @@ bool closeOverlay({OverlayEntryMap element}) {
       element.overlayEntry.remove();
       if (_overlayEntryList.contains(element)) return _overlayEntryList.remove(element);
     } else {
-      if (_overlayEntryList.length > 0) {
+      if (_overlayEntryList.isNotEmpty) {
         _overlayEntryList.last.overlayEntry.remove();
         _overlayEntryList.remove(_overlayEntryList.last);
       }
     }
-  } catch (e) {
-    log(e);
-  }
+  } catch (e) {}
   return false;
 }
 
 ///关闭所有Overlay
 void closeAllOverlay() {
-  _overlayEntryList.forEach((element) => element.overlayEntry.remove());
-  _overlayEntryList = [];
+  for (final OverlayEntryMap element in _overlayEntryList) element.overlayEntry.remove();
+  _overlayEntryList = <OverlayEntryMap>[];
 }
 
 ///loading 加载框
@@ -590,7 +586,7 @@ OverlayEntryMap showLoading({
   TextStyle textStyle,
 }) {
   return showOverlay(Loading(
-      child: custom,
+      custom: custom,
       gaussian: gaussian,
       text: text,
       value: value,
@@ -604,7 +600,7 @@ OverlayEntryMap showLoading({
 }
 
 ///Toast
-Duration _duration = Duration(milliseconds: 1500);
+Duration _duration = const Duration(milliseconds: 1500);
 
 ///设置全局弹窗时间
 void setToastDuration(Duration duration) => _duration = duration;
@@ -613,21 +609,21 @@ bool haveToast = false;
 
 ///Toast
 ///关闭 closeOverlay();
-void showToast(String message,
+Future<void> showToast(String message,
     {Color backgroundColor,
     BoxDecoration boxDecoration,
     GestureTapCallback onTap,
     TextStyle textStyle,
     Duration closeDuration}) async {
   if (haveToast) return;
-  var entry = showOverlay(
+  final OverlayEntryMap entry = showOverlay(
       PopupBase(
           ignoring: true,
           child: Container(
               margin: EdgeInsets.symmetric(horizontal: getWidth(0) / 5, vertical: getHeight(0) / 4),
               decoration:
                   boxDecoration ?? BoxDecoration(color: getColors(black90), borderRadius: BorderRadius.circular(5)),
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               child: WayWidgets.textDefault(message, color: getColors(white), maxLines: 4))),
       isAutomaticOff: true);
   haveToast = true;
@@ -674,8 +670,8 @@ Future<T> showDialogPopup<T>({
 }) {
   assert(pageBuilder != null || widget != null);
   if (transitionBuilder == null && popupFromType != null) {
-    transitionBuilder = (context, animation, _, child) {
-      var translation = Offset(0, 1 - animation.value);
+    transitionBuilder = (BuildContext context, Animation<double> animation, _, Widget child) {
+      Offset translation = Offset(0, 1 - animation.value);
       switch (popupFromType) {
         case PopupFromType.fromLeft:
           translation = Offset(animation.value - 1, 0);
@@ -695,11 +691,11 @@ Future<T> showDialogPopup<T>({
   }
   return showGeneralDialog(
     context: _globalNavigatorKey.currentContext,
-    pageBuilder: pageBuilder ?? (BuildContext context, Animation animation, Animation secondaryAnimation) => widget,
+    pageBuilder: pageBuilder ?? (BuildContext context, Animation<double> animation, _) => widget,
     barrierDismissible: barrierDismissible ?? true,
     barrierLabel: barrierLabel ?? '',
     barrierColor: backgroundColor,
-    transitionDuration: transitionDuration ?? Duration(milliseconds: 80),
+    transitionDuration: transitionDuration ?? const Duration(milliseconds: 80),
     transitionBuilder: transitionBuilder,
     useRootNavigator: useRootNavigator ?? true,
     routeSettings: routeSettings,
@@ -775,7 +771,7 @@ Future<T> dialogSureCancel<T>({
   TextStyle cancelTextStyle,
   TextStyle sureTextStyle,
   double height,
-  bool isDismissible: true,
+  bool isDismissible = true,
   EdgeInsetsGeometry padding,
   EdgeInsetsGeometry margin,
   AlignmentGeometry alignment,
@@ -783,10 +779,10 @@ Future<T> dialogSureCancel<T>({
   bool animatedOpacity,
   bool gaussian,
   double width,
-  bool isOverlay: false,
+  bool isOverlay = false,
   bool addMaterial, //是否添加Material Widget 部分组件需要基于Material
 }) {
-  var widget = PopupSureCancel(
+  final PopupSureCancel widget = PopupSureCancel(
     backsideTap: () {
       if (isDismissible) closePopup();
     },
@@ -820,7 +816,7 @@ Future<T> dialogSureCancel<T>({
 
 ///关闭弹窗
 ///也可以通过 Navigator.of(context).pop()
-closePopup([value]) => pop(value);
+void closePopup([dynamic value]) => pop(value);
 
 ///日期选择器
 ///关闭 closePopup()
@@ -897,7 +893,7 @@ Future<T> showDateTimePicker<T>({
   ScrollPhysics physics,
 }) {
   Tools.closeKeyboard(_globalNavigatorKey.currentContext);
-  Widget widget = DateTimePicker(
+  final Widget widget = DateTimePicker(
       diameterRatio: diameterRatio,
       offAxisFraction: offAxisFraction,
       perspective: perspective,
@@ -979,7 +975,7 @@ Future<T> showAreaPicker<T>({
   String defaultDistrict,
 }) {
   Tools.closeKeyboard(_globalNavigatorKey.currentContext);
-  Widget widget = AreaPicker(
+  final Widget widget = AreaPicker(
       defaultProvince: defaultProvince,
       defaultCity: defaultCity,
       defaultDistrict: defaultDistrict,
@@ -1060,7 +1056,7 @@ Future<T> showMultipleChoicePicker<T>({
   @required IndexedWidgetBuilder itemBuilder,
 }) {
   Tools.closeKeyboard(_globalNavigatorKey.currentContext);
-  Widget widget = MultipleChoicePicker(
+  final Widget widget = MultipleChoicePicker(
       itemCount: itemCount,
       itemBuilder: itemBuilder,
       diameterRatio: diameterRatio,
@@ -1079,7 +1075,7 @@ Future<T> showMultipleChoicePicker<T>({
       titleBottom: titleBottom,
       color: color,
       cancelTap: cancelTap ?? () => closePopup(),
-      sureTap: sureTap ?? () => closePopup());
+      sureTap: sureTap ?? (int index) => closePopup());
   return showBottomPopup(widget: widget);
 }
 

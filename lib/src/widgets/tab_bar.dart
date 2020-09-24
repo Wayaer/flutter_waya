@@ -4,6 +4,24 @@ import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/way.dart';
 
 class TabBarMerge extends StatelessWidget {
+  const TabBarMerge({
+    Key key,
+    this.among,
+    this.physics,
+    this.header,
+    this.footer,
+    double viewHeight,
+    @required this.tabBar,
+    this.tabBarView,
+    @required this.controller,
+    this.margin,
+    this.padding,
+    this.decoration,
+    this.constraints,
+    this.width,
+  })  : viewHeight = viewHeight ?? 0,
+        super(key: key);
+
   ///最好传入 TabBarBox
   final Widget tabBar;
 
@@ -27,40 +45,14 @@ class TabBarMerge extends StatelessWidget {
   final BoxConstraints constraints;
   final double width;
 
-  TabBarMerge({
-    Key key,
-    this.among,
-    this.physics,
-    this.header,
-    this.footer,
-    double viewHeight,
-    @required this.tabBar,
-    this.tabBarView,
-    @required this.controller,
-    this.margin,
-    this.padding,
-    this.decoration,
-    this.constraints,
-    this.width,
-  })  : this.viewHeight = viewHeight ?? 0,
-        super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    List<Widget> children = [];
-    if (header != null) {
-      children.add(header);
-    }
+    final List<Widget> children = <Widget>[];
+    if (header != null) children.add(header);
     children.add(tabBar);
-    if (among != null) {
-      children.add(among);
-    }
-    if (tabBarView != null) {
-      children.add(tabBarViewWidget());
-    }
-    if (footer != null) {
-      children.add(footer);
-    }
+    if (among != null) children.add(among);
+    if (tabBarView != null) children.add(tabBarViewWidget());
+    if (footer != null) children.add(footer);
     return Column(children: children);
   }
 
@@ -84,6 +76,32 @@ class TabBarMerge extends StatelessWidget {
 }
 
 class TabBarBox extends StatelessWidget {
+  const TabBarBox({
+    Key key,
+    EdgeInsetsGeometry indicatorPadding,
+    TabBarLevelPosition levelPosition,
+    this.border,
+    @required this.controller,
+    this.labelPadding,
+    @required this.tabBar,
+    this.isScrollable,
+    this.alignment,
+    this.tabBarLevel,
+    this.labelColor,
+    this.unselectedLabelColor,
+    this.indicatorSize,
+    this.labelStyle,
+    this.unselectedLabelStyle,
+    this.indicatorWeight,
+    this.indicator,
+    this.margin,
+    this.padding,
+    this.height,
+    this.decoration,
+    this.width,
+  })  : levelPosition = levelPosition ?? TabBarLevelPosition.right,
+        indicatorPadding = indicatorPadding ?? EdgeInsets.zero,
+        super(key: key);
   final TabController controller;
   final EdgeInsetsGeometry labelPadding;
   final List<Widget> tabBar;
@@ -118,38 +136,10 @@ class TabBarBox extends StatelessWidget {
   final AlignmentGeometry alignment;
   final BoxBorder border;
 
-  const TabBarBox({
-    Key key,
-    EdgeInsetsGeometry indicatorPadding,
-    TabBarLevelPosition levelPosition,
-    this.border,
-    @required this.controller,
-    this.labelPadding,
-    @required this.tabBar,
-    this.isScrollable,
-    this.alignment,
-    this.tabBarLevel,
-    this.labelColor,
-    this.unselectedLabelColor,
-    this.indicatorSize,
-    this.labelStyle,
-    this.unselectedLabelStyle,
-    this.indicatorWeight,
-    this.indicator,
-    this.margin,
-    this.padding,
-    this.height,
-    this.decoration,
-    this.width,
-  })  : this.levelPosition = levelPosition ?? TabBarLevelPosition.right,
-        this.indicatorPadding = indicatorPadding ?? EdgeInsets.zero,
-        super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    List<Widget> children;
+    final List<Widget> children = <Widget>[];
     if (tabBarLevel != null) {
-      children = [];
       switch (levelPosition) {
         case TabBarLevelPosition.right:
           children.add(Expanded(child: tabBarWidget()));
@@ -191,14 +181,15 @@ class TabBarBox extends StatelessWidget {
 }
 
 class TabNavigationPage extends StatefulWidget {
+  const TabNavigationPage(
+      {Key key, this.arguments, this.defaultTabIndex, this.pageList, @required this.navigationBarItem})
+      : assert(navigationBarItem != null),
+        super(key: key);
+
   final Map<String, Object> arguments;
   final List<BottomNavigationBarItem> navigationBarItem;
   final List<Widget> pageList;
   final int defaultTabIndex;
-
-  TabNavigationPage({Key key, this.arguments, this.defaultTabIndex, this.pageList, this.navigationBarItem})
-      : assert(navigationBarItem != null),
-        super(key: key);
 
   @override
   _TabNavigationPageState createState() => _TabNavigationPageState();
@@ -206,14 +197,14 @@ class TabNavigationPage extends StatefulWidget {
 
 class _TabNavigationPageState extends State<TabNavigationPage> {
   int tabIndex = 0;
-  var currentPage;
-  List<Widget> pageList = [];
+  Widget currentPage;
+  List<Widget> pageList = <Widget>[];
 
   @override
   void initState() {
     super.initState();
     pageList = widget.pageList;
-    currentPage = widget.defaultTabIndex ?? pageList[tabIndex];
+    currentPage = pageList[widget.defaultTabIndex ?? tabIndex];
   }
 
   @override
@@ -225,14 +216,14 @@ class _TabNavigationPageState extends State<TabNavigationPage> {
           backgroundColor: getColors(white),
           items: widget.navigationBarItem ??
               <BottomNavigationBarItem>[
-                BottomNavigationBarItem(icon: barIcon(Icons.home), title: Text('home')),
-                BottomNavigationBarItem(icon: barIcon(Icons.add_circle), title: Text('center')),
-                BottomNavigationBarItem(icon: barIcon(Icons.account_circle), title: Text('mine')),
+                BottomNavigationBarItem(icon: barIcon(Icons.home), title: const Text('home')),
+                BottomNavigationBarItem(icon: barIcon(Icons.add_circle), title: const Text('center')),
+                BottomNavigationBarItem(icon: barIcon(Icons.account_circle), title: const Text('mine')),
               ],
 
           /// 超过5个页面，需加上此行，不然会无法显示颜色
           type: BottomNavigationBarType.fixed,
-          onTap: (index) => setState(() {
+          onTap: (int index) => setState(() {
             tabIndex = index;
             currentPage = pageList[tabIndex];
           }),

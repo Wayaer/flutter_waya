@@ -1,16 +1,17 @@
 import 'dart:async';
 
 import 'package:flutter/widgets.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 
 abstract class PageTransformer {
-  final bool reverse;
+  PageTransformer({this.reverse = false});
 
-  PageTransformer({this.reverse: false});
+  final bool reverse;
 
   Widget transform(Widget child, TransformInfo info);
 }
 
-typedef Widget PageTransformerBuilderCallback(Widget child, TransformInfo info);
+typedef PageTransformerBuilderCallback = Widget Function(Widget child, TransformInfo info);
 
 const int kMaxValue = 2000000000;
 const int kMiddleValue = 1000000000;
@@ -19,6 +20,18 @@ const int kMiddleValue = 1000000000;
 const int kDefaultTransactionDuration = 300;
 
 class TransformInfo {
+  TransformInfo(
+      {this.index,
+      this.position,
+      this.width,
+      this.height,
+      this.activeIndex,
+      this.fromIndex,
+      this.forward,
+      this.done,
+      this.viewportFraction,
+      this.scrollDirection});
+
   /// The `width` of the `TransformerPageView`
   final double width;
 
@@ -54,57 +67,44 @@ class TransformInfo {
 
   /// Copy from [TransformerPageView.scrollDirection]
   final Axis scrollDirection;
-
-  TransformInfo(
-      {this.index,
-      this.position,
-      this.width,
-      this.height,
-      this.activeIndex,
-      this.fromIndex,
-      this.forward,
-      this.done,
-      this.viewportFraction,
-      this.scrollDirection});
 }
 
 class PageTransformerBuilder extends PageTransformer {
-  final PageTransformerBuilderCallback builder;
-
-  PageTransformerBuilder({bool reverse: false, @required this.builder})
+  PageTransformerBuilder({bool reverse = false, @required this.builder})
       : assert(builder != null),
         super(reverse: reverse);
+  final PageTransformerBuilderCallback builder;
 
   @override
   Widget transform(Widget child, TransformInfo info) => builder(child, info);
 }
 
 class TransformerPageController extends PageController {
-  final bool loop;
-  final int itemCount;
-  final bool reverse;
-
   TransformerPageController({
     int initialPage = 0,
     bool keepPage = true,
     double viewportFraction = 1.0,
-    this.loop: false,
+    this.loop = false,
     this.itemCount,
-    this.reverse: false,
+    this.reverse = false,
   }) : super(
             initialPage:
                 TransformerPageController._getRealIndexFromRenderIndex(initialPage ?? 0, loop, itemCount, reverse),
             keepPage: keepPage,
             viewportFraction: viewportFraction);
 
-  int getRenderIndexFromRealIndex(num index) => _getRenderIndexFromRealIndex(index, loop, itemCount, reverse);
+  final bool loop;
+  final int itemCount;
+  final bool reverse;
+
+  int getRenderIndexFromRealIndex(int index) => _getRenderIndexFromRealIndex(index, loop, itemCount, reverse);
 
   int getRealItemCount() {
     if (itemCount == 0) return 0;
     return loop ? itemCount + kMaxValue : itemCount;
   }
 
-  static _getRenderIndexFromRealIndex(num index, bool loop, int itemCount, bool reverse) {
+  static int _getRenderIndexFromRealIndex(int index, bool loop, int itemCount, bool reverse) {
     if (itemCount == 0) return 0;
     int renderIndex;
     if (loop) {
@@ -122,7 +122,7 @@ class TransformerPageController extends PageController {
 
   double get realPage => (position.maxScrollExtent == null || position.minScrollExtent == null) ? 0.0 : super.page;
 
-  static _getRenderPageFromRealPage(double page, bool loop, int itemCount, bool reverse) {
+  static double _getRenderPageFromRealPage(double page, bool loop, int itemCount, bool reverse) {
     double renderPage;
     if (loop) {
       renderPage = page - kMiddleValue;
@@ -135,12 +135,13 @@ class TransformerPageController extends PageController {
     return renderPage;
   }
 
+  @override
   double get page => loop ? _getRenderPageFromRealPage(realPage, loop, itemCount, reverse) : realPage;
 
   int getRealIndexFromRenderIndex(num index) => _getRealIndexFromRenderIndex(index, loop, itemCount, reverse);
 
   static int _getRealIndexFromRenderIndex(num index, bool loop, int itemCount, bool reverse) {
-    int result = reverse ? (itemCount - index - 1) : index;
+    int result = (reverse ? (itemCount - index - 1) : index) as int;
     if (loop) {
       result += kMiddleValue;
     }
@@ -149,6 +150,60 @@ class TransformerPageController extends PageController {
 }
 
 class CarouselPageView extends StatefulWidget {
+  const CarouselPageView({
+    Key key,
+    this.index,
+    Duration duration,
+    this.curve = Curves.ease,
+    this.viewportFraction = 1.0,
+    this.loop = false,
+    this.scrollDirection = Axis.horizontal,
+    this.physics,
+    this.pageSnapping = true,
+    this.onPageChanged,
+    this.controller,
+    this.transformer,
+    this.itemBuilder,
+    this.pageController,
+    @required this.itemCount,
+  })  : assert(itemCount != null),
+        assert(itemCount == 0 || itemBuilder != null || transformer != null),
+        duration = duration ?? const Duration(milliseconds: kDefaultTransactionDuration),
+        super(key: key);
+
+  factory CarouselPageView.children(
+      {Key key,
+      int index,
+      Duration duration,
+      Curve curve = Curves.ease,
+      double viewportFraction = 1.0,
+      Axis scrollDirection = Axis.horizontal,
+      ScrollPhysics physics,
+      bool pageSnapping = true,
+      ValueChanged<int> onPageChanged,
+      IndexController controller,
+      PageTransformer transformer,
+      @required List<Widget> children,
+      TransformerPageController pageController}) {
+    assert(children != null);
+    return CarouselPageView(
+      itemCount: children.length,
+      itemBuilder: (BuildContext context, int index) => children[index],
+      pageController: pageController,
+      transformer: transformer,
+      pageSnapping: pageSnapping,
+      key: key,
+      index: index,
+      duration: duration,
+      curve: curve,
+      viewportFraction: viewportFraction,
+      scrollDirection: scrollDirection,
+      physics: physics,
+      onPageChanged: onPageChanged,
+      controller: controller,
+    );
+  }
+
   /// Create a `transformed` widget base on the widget that has been passed to  the [PageTransformer.transform].
   /// See [TransformInfo]
   ///
@@ -207,60 +262,6 @@ class CarouselPageView extends StatefulWidget {
   ///
   /// [itemBuilder] will be called only with indices greater than or equal to
   /// zero and less than [itemCount].
-  CarouselPageView({
-    Key key,
-    this.index,
-    Duration duration,
-    this.curve: Curves.ease,
-    this.viewportFraction: 1.0,
-    this.loop: false,
-    this.scrollDirection = Axis.horizontal,
-    this.physics,
-    this.pageSnapping = true,
-    this.onPageChanged,
-    this.controller,
-    this.transformer,
-    this.itemBuilder,
-    this.pageController,
-    @required this.itemCount,
-  })  : assert(itemCount != null),
-        assert(itemCount == 0 || itemBuilder != null || transformer != null),
-        this.duration = duration ?? Duration(milliseconds: kDefaultTransactionDuration),
-        super(key: key);
-
-  factory CarouselPageView.children(
-      {Key key,
-      int index,
-      Duration duration,
-      Curve curve: Curves.ease,
-      double viewportFraction: 1.0,
-      bool loop: false,
-      Axis scrollDirection = Axis.horizontal,
-      ScrollPhysics physics,
-      bool pageSnapping = true,
-      ValueChanged<int> onPageChanged,
-      IndexController controller,
-      PageTransformer transformer,
-      @required List<Widget> children,
-      TransformerPageController pageController}) {
-    assert(children != null);
-    return CarouselPageView(
-      itemCount: children.length,
-      itemBuilder: (BuildContext context, int index) => children[index],
-      pageController: pageController,
-      transformer: transformer,
-      pageSnapping: pageSnapping,
-      key: key,
-      index: index,
-      duration: duration,
-      curve: curve,
-      viewportFraction: viewportFraction,
-      scrollDirection: scrollDirection,
-      physics: physics,
-      onPageChanged: onPageChanged,
-      controller: controller,
-    );
-  }
 
   @override
   _CarouselPageViewPageViewState createState() => _CarouselPageViewPageViewState();
@@ -291,8 +292,8 @@ class _CarouselPageViewPageViewState extends State<CarouselPageView> {
   TransformerPageController _pageController;
 
   Widget _buildItemNormal(BuildContext context, int index) {
-    int renderIndex = _pageController.getRenderIndexFromRealIndex(index);
-    Widget child = widget.itemBuilder(context, renderIndex);
+    final int renderIndex = _pageController.getRenderIndexFromRealIndex(index);
+    final Widget child = widget.itemBuilder(context, renderIndex);
     return child;
   }
 
@@ -300,27 +301,20 @@ class _CarouselPageViewPageViewState extends State<CarouselPageView> {
     return AnimatedBuilder(
         animation: _pageController,
         builder: (BuildContext c, Widget w) {
-          int renderIndex = _pageController.getRenderIndexFromRealIndex(index);
+          final int renderIndex = _pageController.getRenderIndexFromRealIndex(index);
           Widget child;
           if (widget.itemBuilder != null) child = widget.itemBuilder(context, renderIndex);
-
-          if (child == null) child = Container();
-
+          child ??= Container();
           if (_size == null) return child ?? Container();
-
           double position;
-
-          double page = _pageController.realPage;
-
+          final double page = _pageController.realPage;
           position = _transformer.reverse ? page - index : index - page;
-
           position *= widget.viewportFraction;
-
-          TransformInfo info = TransformInfo(
+          final TransformInfo info = TransformInfo(
               index: renderIndex,
               width: _size.width,
               height: _size.height,
-              position: position.clamp(-1.0, 1.0),
+              position: position.clamp(-1.0, 1.0).toDouble(),
               activeIndex: _pageController.getRenderIndexFromRealIndex(_activeIndex),
               fromIndex: _fromIndex,
               forward: _pageController.position.pixels - _currentPixels >= 0,
@@ -338,8 +332,8 @@ class _CarouselPageViewPageViewState extends State<CarouselPageView> {
 
   @override
   Widget build(BuildContext context) {
-    IndexedWidgetBuilder builder = _transformer == null ? _buildItemNormal : _buildItem;
-    Widget child = PageView.builder(
+    final IndexedWidgetBuilder builder = _transformer == null ? _buildItemNormal : _buildItem;
+    final Widget child = PageView.builder(
       itemBuilder: builder,
       itemCount: _pageController.getRealItemCount(),
       onPageChanged: _onIndexChanged,
@@ -350,7 +344,7 @@ class _CarouselPageViewPageViewState extends State<CarouselPageView> {
       reverse: _pageController.reverse,
     );
     if (_transformer == null) return child;
-
+    // ignore: always_specify_types
     return NotificationListener(
         onNotification: (ScrollNotification notification) {
           if (notification is ScrollStartNotification) {
@@ -372,15 +366,15 @@ class _CarouselPageViewPageViewState extends State<CarouselPageView> {
     if (widget.onPageChanged != null) widget.onPageChanged(_pageController.getRenderIndexFromRealIndex(index));
   }
 
-  void _onGetSize(_) {
+  void _onGetSize(Duration timeStamp) {
     Size size;
     if (context == null) {
       onGetSize(size);
       return;
     }
-    RenderObject renderObject = context.findRenderObject();
+    final RenderObject renderObject = context.findRenderObject();
     if (renderObject != null) {
-      Rect bounds = renderObject.paintBounds;
+      final Rect bounds = renderObject.paintBounds;
       if (bounds != null) size = bounds.size;
     }
     _calcCurrentPixels();
@@ -398,18 +392,14 @@ class _CarouselPageViewPageViewState extends State<CarouselPageView> {
   void initState() {
     _transformer = widget.transformer;
     //  int index = widget.index ?? 0;
+    bool reverse = false;
+    if (widget.transformer != null) reverse = widget.transformer.reverse;
     _pageController = widget.pageController;
-    if (_pageController == null) {
-      _pageController = TransformerPageController(
-          initialPage: widget.index,
-          itemCount: widget.itemCount,
-          loop: widget.loop,
-          reverse: widget.transformer == null ? false : widget.transformer.reverse);
-    }
+    _pageController ??= TransformerPageController(
+        initialPage: widget.index, itemCount: widget.itemCount, loop: widget.loop, reverse: reverse);
     // int initPage = _getRealIndexFromRenderIndex(index);
     // _pageController =  PageController(initialPage: initPage,viewportFraction: widget.viewportFraction);
     _fromIndex = _activeIndex = _pageController.initialPage;
-
     _controller = getNotifier();
     if (_controller != null) _controller.addListener(onChangeNotifier);
     super.initState();
@@ -418,29 +408,28 @@ class _CarouselPageViewPageViewState extends State<CarouselPageView> {
   @override
   void didUpdateWidget(CarouselPageView oldWidget) {
     _transformer = widget.transformer;
-    int index = widget.index ?? 0;
+    final int index = widget.index ?? 0;
     bool created = false;
     if (_pageController != widget.pageController) {
       if (widget.pageController != null) {
         _pageController = widget.pageController;
       } else {
         created = true;
+        bool reverse = false;
+        if (widget.transformer != null) reverse = widget.transformer.reverse;
         _pageController = TransformerPageController(
-            initialPage: widget.index,
-            itemCount: widget.itemCount,
-            loop: widget.loop,
-            reverse: widget.transformer == null ? false : widget.transformer.reverse);
+            initialPage: widget.index, itemCount: widget.itemCount, loop: widget.loop, reverse: reverse);
       }
     }
 
     if (_pageController.getRenderIndexFromRealIndex(_activeIndex) != index) {
       _fromIndex = _activeIndex = _pageController.initialPage;
       if (!created) {
-        int initPage = _pageController.getRealIndexFromRenderIndex(index);
+        final int initPage = _pageController.getRealIndexFromRenderIndex(index);
         _pageController.animateToPage(initPage, duration: widget.duration, curve: widget.curve);
       }
     }
-    if (_transformer != null) WidgetsBinding.instance.addPostFrameCallback(_onGetSize);
+    if (_transformer != null) Tools.addPostFrameCallback(_onGetSize);
 
     if (_controller != getNotifier()) {
       if (_controller != null) _controller.removeListener(onChangeNotifier);
@@ -453,7 +442,7 @@ class _CarouselPageViewPageViewState extends State<CarouselPageView> {
 
   @override
   void didChangeDependencies() {
-    if (_transformer != null) WidgetsBinding.instance.addPostFrameCallback(_onGetSize);
+    if (_transformer != null) Tools.addPostFrameCallback(_onGetSize);
     super.didChangeDependencies();
   }
 
@@ -484,7 +473,7 @@ class _CarouselPageViewPageViewState extends State<CarouselPageView> {
   }
 
   void onChangeNotifier() {
-    int event = widget.controller.event;
+    final int event = widget.controller.event;
     int index;
     switch (event) {
       case IndexController.MOVE:
@@ -509,6 +498,7 @@ class _CarouselPageViewPageViewState extends State<CarouselPageView> {
 
   ChangeNotifier _controller;
 
+  @override
   void dispose() {
     super.dispose();
     if (_controller != null) _controller.removeListener(onChangeNotifier);
@@ -516,40 +506,40 @@ class _CarouselPageViewPageViewState extends State<CarouselPageView> {
 }
 
 class IndexController extends ChangeNotifier {
+  Completer<dynamic> _completer;
+
   static const int NEXT = 1;
   static const int PREVIOUS = -1;
   static const int MOVE = 0;
-
-  Completer _completer;
 
   int index;
   bool animation;
   int event;
 
   ///移动到指定下标
-  Future move(int index, {bool animation: true}) {
+  Future<void> move(int index, {bool animation = true}) {
     this.animation = animation ?? true;
     this.index = index;
-    this.event = MOVE;
-    _completer = Completer();
+    event = MOVE;
+    _completer = Completer<dynamic>();
     notifyListeners();
     return _completer.future;
   }
 
   ///下一页
-  Future next({bool animation: true}) {
-    this.event = NEXT;
+  Future<void> next({bool animation = true}) {
+    event = NEXT;
     this.animation = animation ?? true;
-    _completer = Completer();
+    _completer = Completer<dynamic>();
     notifyListeners();
     return _completer.future;
   }
 
   ///	上一页
-  Future previous({bool animation: true}) {
-    this.event = PREVIOUS;
+  Future<void> previous({bool animation = true}) {
+    event = PREVIOUS;
     this.animation = animation ?? true;
-    _completer = Completer();
+    _completer = Completer<dynamic>();
     notifyListeners();
     return _completer.future;
   }

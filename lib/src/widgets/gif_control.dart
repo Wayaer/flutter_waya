@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 import 'dart:ui' as ui show Codec;
 import 'dart:ui';
 
@@ -7,7 +8,7 @@ import 'package:flutter/widgets.dart';
 
 /// cache gif fetched image
 class GifCache {
-  final Map<String, List<ImageInfo>> caches = Map();
+  final Map<String, List<ImageInfo>> caches = <String, List<ImageInfo>>{};
 
   void clear() => caches.clear();
 
@@ -40,23 +41,7 @@ class GifController extends AnimationController {
 }
 
 class GifImage extends StatefulWidget {
-  final VoidCallback onFetchCompleted;
-  final GifController controller;
-  final ImageProvider image;
-  final double width;
-  final double height;
-  final Color color;
-  final BlendMode colorBlendMode;
-  final BoxFit fit;
-  final AlignmentGeometry alignment;
-  final ImageRepeat repeat;
-  final Rect centerSlice;
-  final bool matchTextDirection;
-  final bool gapLessPlayback;
-  final String semanticLabel;
-  final bool excludeFromSemantics;
-
-  GifImage({
+  const GifImage({
     @required this.image,
     @required this.controller,
     this.semanticLabel,
@@ -73,6 +58,22 @@ class GifImage extends StatefulWidget {
     this.matchTextDirection = false,
     this.gapLessPlayback = false,
   });
+
+  final VoidCallback onFetchCompleted;
+  final GifController controller;
+  final ImageProvider image;
+  final double width;
+  final double height;
+  final Color color;
+  final BlendMode colorBlendMode;
+  final BoxFit fit;
+  final AlignmentGeometry alignment;
+  final ImageRepeat repeat;
+  final Rect centerSlice;
+  final bool matchTextDirection;
+  final bool gapLessPlayback;
+  final String semanticLabel;
+  final bool excludeFromSemantics;
 
   @override
   _GifImageState createState() => _GifImageState();
@@ -106,7 +107,7 @@ class _GifImageState extends State<GifImage> {
   void didUpdateWidget(GifImage oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.image != oldWidget.image) {
-      _fetchGif(widget.image).then((imageInfo) {
+      _fetchGif(widget.image).then((List<ImageInfo> imageInfo) {
         if (mounted) {
           _images = imageInfo;
           _fetchComplete = true;
@@ -133,7 +134,7 @@ class _GifImageState extends State<GifImage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (_images == null) {
-      _fetchGif(widget.image).then((imageInfo) {
+      _fetchGif(widget.image).then((List<ImageInfo> imageInfo) {
         if (mounted) {
           _images = imageInfo;
           _fetchComplete = true;
@@ -160,10 +161,7 @@ class _GifImageState extends State<GifImage> {
         matchTextDirection: widget.matchTextDirection);
     if (widget.excludeFromSemantics) return image;
     return Semantics(
-        container: widget.semanticLabel != null,
-        image: true,
-        label: widget.semanticLabel == null ? '' : widget.semanticLabel,
-        child: image);
+        container: widget.semanticLabel != null, image: true, label: widget.semanticLabel ?? '', child: image);
   }
 }
 
@@ -179,11 +177,11 @@ HttpClient get _httpClient {
 }
 
 Future<List<ImageInfo>> _fetchGif(ImageProvider provider) async {
-  List<ImageInfo> images = [];
+  List<ImageInfo> images = <ImageInfo>[];
   dynamic data;
-  String key = provider is NetworkImage
+  final String key = provider is NetworkImage
       ? provider.url
-      : provider is AssetImage ? provider.assetName : provider is MemoryImage ? provider.bytes.toString() : "";
+      : provider is AssetImage ? provider.assetName : provider is MemoryImage ? provider.bytes.toString() : '';
   if (GifImage.cache.caches.containsKey(key)) {
     images = GifImage.cache.caches[key];
     return images;
@@ -197,7 +195,7 @@ Future<List<ImageInfo>> _fetchGif(ImageProvider provider) async {
     final HttpClientResponse response = await request.close();
     data = await consolidateHttpClientResponseBytes(response);
   } else if (provider is AssetImage) {
-    AssetBundleImageKey key = await provider.obtainKey(ImageConfiguration());
+    final AssetBundleImageKey key = await provider.obtainKey(const ImageConfiguration());
     data = await key.bundle.load(key.name);
   } else if (provider is FileImage) {
     data = await provider.file.readAsBytes();
@@ -205,10 +203,10 @@ Future<List<ImageInfo>> _fetchGif(ImageProvider provider) async {
     data = provider.bytes;
   }
 
-  ui.Codec codec = await PaintingBinding.instance.instantiateImageCodec(data.buffer.asUint8List());
-  images = [];
+  final ui.Codec codec = await PaintingBinding.instance.instantiateImageCodec(data.buffer.asUint8List() as Uint8List);
+  images = <ImageInfo>[];
   for (int i = 0; i < codec.frameCount; i++) {
-    FrameInfo frameInfo = await codec.getNextFrame();
+    final FrameInfo frameInfo = await codec.getNextFrame();
     images.add(ImageInfo(image: frameInfo.image));
   }
   GifImage.cache.caches.putIfAbsent(key, () => images);

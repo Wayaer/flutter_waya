@@ -5,6 +5,33 @@ import 'package:flutter_waya/src/constant/way.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class GridBuilder extends StatelessWidget {
+  GridBuilder({
+    Key key,
+    bool shrinkWrap,
+    @required int itemCount,
+    double mainAxisSpacing,
+    double crossAxisSpacing,
+    double childAspectRatio,
+    bool reverse,
+    this.noData,
+    this.controller,
+    EdgeInsetsGeometry padding,
+    this.physics,
+    @required this.itemBuilder,
+    this.maxCrossAxisExtent,
+    Axis scrollDirection,
+    int crossAxisCount,
+  })  : itemCount = itemCount ?? 0,
+        scrollDirection = scrollDirection ?? Axis.vertical,
+        reverse = reverse ?? false,
+        shrinkWrap = shrinkWrap = true,
+        crossAxisSpacing = crossAxisSpacing ?? 0.0,
+        childAspectRatio = childAspectRatio ?? 1.0,
+        mainAxisSpacing = mainAxisSpacing ?? 0.0,
+        crossAxisCount = crossAxisCount ?? 1,
+        padding = padding ?? EdgeInsets.zero,
+        super(key: key);
+
   final ScrollController controller;
   final EdgeInsetsGeometry padding;
 
@@ -34,33 +61,6 @@ class GridBuilder extends StatelessWidget {
   final bool reverse;
   final Axis scrollDirection;
 
-  GridBuilder({
-    Key key,
-    bool shrinkWrap,
-    @required int itemCount,
-    double mainAxisSpacing,
-    double crossAxisSpacing,
-    double childAspectRatio,
-    bool reverse,
-    this.noData,
-    this.controller,
-    EdgeInsetsGeometry padding,
-    this.physics,
-    @required this.itemBuilder,
-    this.maxCrossAxisExtent,
-    Axis scrollDirection,
-    int crossAxisCount,
-  })  : this.itemCount = itemCount ?? 0,
-        this.scrollDirection = scrollDirection ?? Axis.vertical,
-        this.reverse = reverse ?? false,
-        this.shrinkWrap = shrinkWrap = true,
-        this.crossAxisSpacing = crossAxisSpacing ?? 0.0,
-        this.childAspectRatio = childAspectRatio ?? 1.0,
-        this.mainAxisSpacing = mainAxisSpacing ?? 0.0,
-        this.crossAxisCount = crossAxisCount ?? 1,
-        this.padding = padding ?? EdgeInsets.zero,
-        super(key: key);
-
   @override
   Widget build(BuildContext context) {
     if (itemCount == 0) return noData ?? WayWidgets.notDataWidget(margin: EdgeInsets.all(getWidth(10)));
@@ -83,6 +83,46 @@ class GridBuilder extends StatelessWidget {
 }
 
 class ListBuilder extends StatelessWidget {
+  ListBuilder({
+    Key key,
+    this.itemBuilder,
+    @required this.itemCount,
+    Axis scrollDirection,
+    EdgeInsetsGeometry padding,
+    bool reverse,
+    this.separatorBuilder,
+    this.dragStartBehavior = DragStartBehavior.start,
+    this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
+    this.physics,
+    this.controller,
+    this.itemExtent,
+    this.addAutomaticKeepALives = true,
+    this.addRepaintBoundaries = true,
+    this.addSemanticIndexes = true,
+    this.noData,
+    this.shrinkWrap = true,
+    this.enablePullDown = false,
+    this.enablePullUp = false,
+    this.refreshController,
+    this.onLoading,
+    this.onRefresh,
+    this.header,
+    this.footer,
+    this.footerTextStyle,
+    this.listType,
+    this.primary = false,
+    this.cacheExtent,
+    this.semanticChildCount,
+    this.childrenDelegate,
+  })  : padding = padding ?? EdgeInsets.zero,
+        scrollDirection = scrollDirection ?? Axis.vertical,
+        reverse = reverse ?? false,
+        super(key: key) {
+    if (listType == null || listType == ListType.builder) assert(itemBuilder != null);
+    if (listType == ListType.custom) assert(childrenDelegate != null);
+    if (listType == ListType.separated) assert(itemBuilder != null && separatorBuilder != null && itemCount != null);
+  }
+
   final ListType listType;
 
   final bool shrinkWrap;
@@ -120,46 +160,6 @@ class ListBuilder extends StatelessWidget {
   final SliverChildDelegate childrenDelegate;
   final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
   final IndexedWidgetBuilder separatorBuilder;
-
-  ListBuilder({
-    Key key,
-    this.itemBuilder,
-    @required this.itemCount,
-    Axis scrollDirection,
-    EdgeInsetsGeometry padding,
-    bool reverse,
-    this.separatorBuilder,
-    this.dragStartBehavior: DragStartBehavior.start,
-    this.keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
-    this.physics,
-    this.controller,
-    this.itemExtent,
-    this.addAutomaticKeepALives: true,
-    this.addRepaintBoundaries: true,
-    this.addSemanticIndexes: true,
-    this.noData,
-    this.shrinkWrap: true,
-    this.enablePullDown: false,
-    this.enablePullUp: false,
-    this.refreshController,
-    this.onLoading,
-    this.onRefresh,
-    this.header,
-    this.footer,
-    this.footerTextStyle,
-    this.listType,
-    this.primary: false,
-    this.cacheExtent,
-    this.semanticChildCount,
-    this.childrenDelegate,
-  })  : this.padding = padding ?? EdgeInsets.zero,
-        this.scrollDirection = scrollDirection ?? Axis.vertical,
-        this.reverse = reverse ?? false,
-        super(key: key) {
-    if (listType == null || listType == ListType.builder) assert(itemBuilder != null);
-    if (listType == ListType.custom) assert(childrenDelegate != null);
-    if (listType == ListType.separated) assert(itemBuilder != null && separatorBuilder != null && itemCount != null);
-  }
 
   @override
   Widget build(BuildContext context) => (enablePullDown || enablePullUp) ? refresherListView() : list();
@@ -245,6 +245,43 @@ class ListBuilder extends StatelessWidget {
 }
 
 class ListEntry extends StatelessWidget {
+  ListEntry(
+      {Key key,
+      double arrowSize,
+      Color arrowColor,
+      bool isThreeLine,
+      bool arrow,
+      bool enabled,
+      this.onTap,
+      this.heroTag,
+      this.onDoubleTap,
+      this.onLongPress,
+      this.title,
+      this.height,
+      this.inkWell,
+      this.padding,
+      this.margin,
+      this.decoration,
+      this.child,
+      this.color,
+      this.titleText,
+      this.titleStyle,
+      this.underlineColor,
+      this.leading,
+      this.subtitle,
+      this.dense,
+      this.contentPadding,
+      this.selected,
+      this.arrowIcon,
+      this.arrowMargin,
+      this.prefix,
+      this.prefixMargin})
+      : arrowSize = arrowSize ?? 16,
+        arrowColor = arrowColor ?? getColors(black),
+        isThreeLine = isThreeLine ?? false,
+        arrow = arrow ?? true,
+        enabled = enabled ?? true,
+        super(key: key);
   final GestureTapCallback onTap;
   final GestureTapCallback onDoubleTap;
   final GestureLongPressCallback onLongPress;
@@ -288,47 +325,9 @@ class ListEntry extends StatelessWidget {
   final bool arrow;
   final bool enabled;
 
-  ListEntry(
-      {Key key,
-      double arrowSize,
-      Color arrowColor,
-      bool isThreeLine,
-      bool arrow,
-      bool enabled,
-      this.onTap,
-      this.heroTag,
-      this.onDoubleTap,
-      this.onLongPress,
-      this.title,
-      this.height,
-      this.inkWell,
-      this.padding,
-      this.margin,
-      this.decoration,
-      this.child,
-      this.color,
-      this.titleText,
-      this.titleStyle,
-      this.underlineColor,
-      this.leading,
-      this.subtitle,
-      this.dense,
-      this.contentPadding,
-      this.selected,
-      this.arrowIcon,
-      this.arrowMargin,
-      this.prefix,
-      this.prefixMargin})
-      : this.arrowSize = arrowSize ?? 16,
-        this.arrowColor = arrowColor ?? getColors(black),
-        this.isThreeLine = isThreeLine ?? false,
-        this.arrow = arrow ?? true,
-        this.enabled = enabled ?? true,
-        super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    List<Widget> children = List();
+    final List<Widget> children = <Widget>[];
     if (prefix != null) children.add(prefix);
     children.add(listTile());
     if (arrowIcon != null) children.add(arrowIcon);

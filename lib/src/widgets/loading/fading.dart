@@ -28,7 +28,7 @@ class SpinKitFadingFour extends StatefulWidget {
 }
 
 class _SpinKitFadingFourState extends State<SpinKitFadingFour> with SingleTickerProviderStateMixin {
-  final List<double> delays = [.0, -0.9, -0.6, -0.3];
+  final List<double> delays = <double>[.0, -0.9, -0.6, -0.3];
   AnimationController _controller;
 
   @override
@@ -49,8 +49,9 @@ class _SpinKitFadingFourState extends State<SpinKitFadingFour> with SingleTicker
       child: SizedBox.fromSize(
           size: Size.square(widget.size),
           child: Stack(
-              children: List.generate(4, (i) {
-            final _position = widget.size * .5;
+              // ignore: always_specify_types
+              children: List.generate(4, (int i) {
+            final double _position = widget.size * .5;
             return Positioned.fill(
                 left: _position,
                 top: _position,
@@ -67,6 +68,7 @@ class _SpinKitFadingFourState extends State<SpinKitFadingFour> with SingleTicker
       ? widget.itemBuilder(context, index)
       : DecoratedBox(decoration: BoxDecoration(color: widget.color, shape: widget.shape));
 }
+
 class SpinKitWanderingCubes extends StatefulWidget {
   const SpinKitWanderingCubes({
     Key key,
@@ -76,7 +78,7 @@ class SpinKitWanderingCubes extends StatefulWidget {
     this.itemBuilder,
     this.duration = const Duration(milliseconds: 1800),
   })  : assert(!(itemBuilder is IndexedWidgetBuilder && color is Color) && !(itemBuilder == null && color == null),
-  'You should specify either a itemBuilder or a color'),
+            'You should specify either a itemBuilder or a color'),
         assert(shape != null),
         assert(size != null),
         offset = size * 0.75,
@@ -106,23 +108,27 @@ class _SpinKitWanderingCubesState extends State<SpinKitWanderingCubes> with Sing
       ..addListener(() => setState(() {}))
       ..repeat();
 
-    final animation1 = CurvedAnimation(parent: _controller, curve: const Interval(0.0, 0.25, curve: Curves.easeInOut));
-    _translate1 = Tween(begin: 0.0, end: widget.offset).animate(animation1);
-    _scale1 = Tween(begin: 1.0, end: 0.5).animate(animation1);
+    final CurvedAnimation animation1 =
+        CurvedAnimation(parent: _controller, curve: const Interval(0.0, 0.25, curve: Curves.easeInOut));
+    _translate1 = Tween<double>(begin: 0.0, end: widget.offset).animate(animation1);
+    _scale1 = Tween<double>(begin: 1.0, end: 0.5).animate(animation1);
 
-    final animation2 = CurvedAnimation(parent: _controller, curve: const Interval(0.25, 0.5, curve: Curves.easeInOut));
-    _translate2 = Tween(begin: 0.0, end: widget.offset).animate(animation2);
-    _scale2 = Tween(begin: 1.0, end: 2.0).animate(animation2);
+    final CurvedAnimation animation2 =
+        CurvedAnimation(parent: _controller, curve: const Interval(0.25, 0.5, curve: Curves.easeInOut));
+    _translate2 = Tween<double>(begin: 0.0, end: widget.offset).animate(animation2);
+    _scale2 = Tween<double>(begin: 1.0, end: 2.0).animate(animation2);
 
-    final animation3 = CurvedAnimation(parent: _controller, curve: const Interval(0.5, 0.75, curve: Curves.easeInOut));
-    _translate3 = Tween(begin: 0.0, end: -widget.offset).animate(animation3);
-    _scale3 = Tween(begin: 1.0, end: 0.5).animate(animation3);
+    final CurvedAnimation animation3 =
+        CurvedAnimation(parent: _controller, curve: const Interval(0.5, 0.75, curve: Curves.easeInOut));
+    _translate3 = Tween<double>(begin: 0.0, end: -widget.offset).animate(animation3);
+    _scale3 = Tween<double>(begin: 1.0, end: 0.5).animate(animation3);
 
-    final animation4 = CurvedAnimation(parent: _controller, curve: const Interval(0.75, 1.0, curve: Curves.easeInOut));
-    _translate4 = Tween(begin: 0.0, end: -widget.offset).animate(animation4);
-    _scale4 = Tween(begin: 1.0, end: 2.0).animate(animation4);
+    final CurvedAnimation animation4 =
+        CurvedAnimation(parent: _controller, curve: const Interval(0.75, 1.0, curve: Curves.easeInOut));
+    _translate4 = Tween<double>(begin: 0.0, end: -widget.offset).animate(animation4);
+    _scale4 = Tween<double>(begin: 1.0, end: 2.0).animate(animation4);
 
-    _rotate = Tween(begin: 0.0, end: 360.0).animate(CurvedAnimation(parent: _controller, curve: Curves.linear));
+    _rotate = Tween<double>(begin: 0.0, end: 360.0).animate(CurvedAnimation(parent: _controller, curve: Curves.linear));
   }
 
   @override

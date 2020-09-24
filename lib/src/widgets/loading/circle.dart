@@ -1,6 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_waya/src/widgets/loading/tweens/delay_tween.dart';
-import 'dart:math';
 
 class SpinKitCircle extends StatefulWidget {
   const SpinKitCircle({
@@ -26,7 +27,7 @@ class SpinKitCircle extends StatefulWidget {
 }
 
 class _SpinKitCircleState extends State<SpinKitCircle> with SingleTickerProviderStateMixin {
-  final List<double> delays = [.0, -1.1, -1.0, -0.9, -0.8, -0.7, -0.6, -0.5, -0.4, -0.3, -0.2, -0.1];
+  final List<double> delays = <double>[.0, -1.1, -1.0, -0.9, -0.8, -0.7, -0.6, -0.5, -0.4, -0.3, -0.2, -0.1];
   AnimationController _controller;
 
   @override
@@ -47,8 +48,9 @@ class _SpinKitCircleState extends State<SpinKitCircle> with SingleTickerProvider
         child: SizedBox.fromSize(
             size: Size.square(widget.size),
             child: Stack(
-                children: List.generate(delays.length, (index) {
-              final _position = widget.size * .5;
+                // ignore: always_specify_types
+                children: List.generate(delays.length, (int index) {
+              final double _position = widget.size * .5;
               return Positioned.fill(
                   left: _position,
                   top: _position,
@@ -92,7 +94,7 @@ class SpinKitFadingCircle extends StatefulWidget {
 }
 
 class _SpinKitFadingCircleState extends State<SpinKitFadingCircle> with SingleTickerProviderStateMixin {
-  final List<double> delays = [.0, -1.1, -1.0, -0.9, -0.8, -0.7, -0.6, -0.5, -0.4, -0.3, -0.2, -0.1];
+  final List<double> delays = <double>[.0, -1.1, -1.0, -0.9, -0.8, -0.7, -0.6, -0.5, -0.4, -0.3, -0.2, -0.1];
   AnimationController _controller;
 
   @override
@@ -113,8 +115,9 @@ class _SpinKitFadingCircleState extends State<SpinKitFadingCircle> with SingleTi
         child: SizedBox.fromSize(
             size: Size.square(widget.size),
             child: Stack(
-                children: List.generate(12, (i) {
-              final _position = widget.size * .5;
+                // ignore: always_specify_types
+                children: List.generate(12, (int i) {
+              final double _position = widget.size * .5;
               return Positioned.fill(
                 left: _position,
                 top: _position,
@@ -170,9 +173,9 @@ class _SpinKitSquareCircleState extends State<SpinKitSquareCircle> with SingleTi
     controller = (widget.controller ?? AnimationController(vsync: this, duration: widget.duration))
       ..addListener(() => setState(() {}))
       ..repeat(reverse: true);
-    final animation = CurvedAnimation(parent: controller, curve: Curves.easeInOutCubic);
-    animationCurve = Tween(begin: 1.0, end: 0.0).animate(animation);
-    animationSize = Tween(begin: 0.5, end: 1.0).animate(animation);
+    final CurvedAnimation animation = CurvedAnimation(parent: controller, curve: Curves.easeInOutCubic);
+    animationCurve = Tween<double>(begin: 1.0, end: 0.0).animate(animation);
+    animationSize = Tween<double>(begin: 0.5, end: 1.0).animate(animation);
   }
 
   @override
@@ -183,7 +186,7 @@ class _SpinKitSquareCircleState extends State<SpinKitSquareCircle> with SingleTi
 
   @override
   Widget build(BuildContext context) {
-    final sizeValue = widget.size * animationSize.value;
+    final double sizeValue = widget.size * animationSize.value;
     return Center(
       child: Transform(
         transform: Matrix4.identity()..rotateZ(animationCurve.value * pi),

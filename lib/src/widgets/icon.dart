@@ -2,6 +2,49 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 class IconBox extends StatelessWidget {
+  const IconBox({
+    Key key,
+    Axis direction,
+    MainAxisAlignment mainAxisAlignment,
+    CrossAxisAlignment crossAxisAlignment,
+    int maxLines,
+    bool reversal,
+    TextOverflow overflow,
+    double spacing,
+    double size,
+    TextAlign textAlign,
+    this.heroTag,
+    this.icon,
+    this.background,
+    this.color,
+    this.semanticLabel,
+    this.textDirection,
+    this.titleText,
+    this.addInkWell,
+    this.titleStyle,
+    this.onTap,
+    this.padding,
+    this.margin,
+    this.width,
+    this.height,
+    this.decoration,
+    this.alignment,
+    this.imageProvider,
+    this.image,
+    this.title,
+    this.visible,
+    this.widget,
+  })  : maxLines = maxLines ?? 1,
+        overflow = overflow ?? TextOverflow.ellipsis,
+        textAlign = textAlign ?? TextAlign.start,
+        size = size ?? 16,
+        reversal = reversal ?? false,
+        direction = direction ?? Axis.horizontal,
+        spacing = spacing ?? 4,
+        crossAxisAlignment = crossAxisAlignment ?? CrossAxisAlignment.center,
+        mainAxisAlignment = mainAxisAlignment ?? MainAxisAlignment.center,
+        super(key: key);
+
   ///icon > image > imageProvider > widget
   final Widget widget;
   final IconData icon;
@@ -40,52 +83,9 @@ class IconBox extends StatelessWidget {
 
   final String heroTag;
 
-  IconBox({
-    Key key,
-    Axis direction,
-    MainAxisAlignment mainAxisAlignment,
-    CrossAxisAlignment crossAxisAlignment,
-    int maxLines,
-    bool reversal,
-    TextOverflow overflow,
-    double spacing,
-    double size,
-    TextAlign textAlign,
-    this.heroTag,
-    this.icon,
-    this.background,
-    this.color,
-    this.semanticLabel,
-    this.textDirection,
-    this.titleText,
-    this.addInkWell,
-    this.titleStyle,
-    this.onTap,
-    this.padding,
-    this.margin,
-    this.width,
-    this.height,
-    this.decoration,
-    this.alignment,
-    this.imageProvider,
-    this.image,
-    this.title,
-    this.visible,
-    this.widget,
-  })  : this.maxLines = maxLines ?? 1,
-        this.overflow = overflow ?? TextOverflow.ellipsis,
-        this.textAlign = textAlign ?? TextAlign.start,
-        this.size = size ?? 16,
-        this.reversal = reversal ?? false,
-        this.direction = direction ?? Axis.horizontal,
-        this.spacing = spacing ?? 4,
-        this.crossAxisAlignment = crossAxisAlignment ?? CrossAxisAlignment.center,
-        this.mainAxisAlignment = mainAxisAlignment ?? MainAxisAlignment.center,
-        super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    List<Widget> listWidget = [];
+    final List<Widget> listWidget = <Widget>[];
     if (isChildren()) {
       if (reversal) {
         listWidget.add(titleWidget());
@@ -98,8 +98,7 @@ class IconBox extends StatelessWidget {
       }
       return universal(children: listWidget);
     }
-    if (iconWidget().length > 0) return universal(child: iconWidget()[0]);
-
+    if (iconWidget().isNotEmpty) return universal(child: iconWidget()[0]);
     return Container();
   }
 
@@ -137,7 +136,7 @@ class IconBox extends StatelessWidget {
       (icon != null || image != null || widget != null || imageProvider != null);
 
   List<Widget> iconWidget() {
-    List<Widget> listWidget = [];
+    final List<Widget> listWidget = <Widget>[];
     if (icon != null)
       listWidget.add(Icon(icon, color: color, size: size, textDirection: textDirection, semanticLabel: semanticLabel));
 
@@ -152,26 +151,6 @@ class IconBox extends StatelessWidget {
 }
 
 class CheckBox extends StatefulWidget {
-  final ValueChanged<bool> onChange;
-  final Color checkColor;
-  final Color activeColor;
-  final Color background;
-  final Color uncheckColor;
-  final TextStyle titleStyle;
-  final String titleText;
-  final Widget title;
-  final double size;
-  final EdgeInsetsGeometry margin;
-  final EdgeInsetsGeometry padding;
-  final Widget checkWidget;
-  final Widget uncheckWidget;
-  final IconData checkIcon;
-  final IconData uncheckIcon;
-  final bool value;
-  final bool visible;
-  final MainAxisAlignment mainAxisAlignment;
-  final CrossAxisAlignment crossAxisAlignment;
-
   CheckBox(
       {Key key,
       double size,
@@ -193,12 +172,32 @@ class CheckBox extends StatefulWidget {
       this.visible,
       this.activeColor,
       this.value})
-      : this.size = size ?? getWidth(17),
-        this.uncheckColor = uncheckColor ?? getColors(black70),
-        this.checkColor = checkColor ?? getColors(white),
-        this.mainAxisAlignment = mainAxisAlignment ?? MainAxisAlignment.center,
-        this.crossAxisAlignment = crossAxisAlignment ?? CrossAxisAlignment.center,
+      : size = size ?? getWidth(17),
+        uncheckColor = uncheckColor ?? getColors(black70),
+        checkColor = checkColor ?? getColors(white),
+        mainAxisAlignment = mainAxisAlignment ?? MainAxisAlignment.center,
+        crossAxisAlignment = crossAxisAlignment ?? CrossAxisAlignment.center,
         super(key: key);
+
+  final ValueChanged<bool> onChange;
+  final Color checkColor;
+  final Color activeColor;
+  final Color background;
+  final Color uncheckColor;
+  final TextStyle titleStyle;
+  final String titleText;
+  final Widget title;
+  final double size;
+  final EdgeInsetsGeometry margin;
+  final EdgeInsetsGeometry padding;
+  final Widget checkWidget;
+  final Widget uncheckWidget;
+  final IconData checkIcon;
+  final IconData uncheckIcon;
+  final bool value;
+  final bool visible;
+  final MainAxisAlignment mainAxisAlignment;
+  final CrossAxisAlignment crossAxisAlignment;
 
   @override
   _CheckBoxState createState() => _CheckBoxState();

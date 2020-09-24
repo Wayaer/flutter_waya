@@ -31,11 +31,11 @@ class _SpinKitDoubleBounceState extends State<SpinKitDoubleBounce> with SingleTi
   @override
   void initState() {
     super.initState();
-
     _controller = (widget.controller ?? AnimationController(vsync: this, duration: widget.duration))
       ..addListener(() => setState(() {}))
       ..repeat(reverse: true);
-    _animation = Tween(begin: -1.0, end: 1.0).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
+    _animation =
+        Tween<double>(begin: -1.0, end: 1.0).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
   }
 
   @override
@@ -48,12 +48,13 @@ class _SpinKitDoubleBounceState extends State<SpinKitDoubleBounce> with SingleTi
   Widget build(BuildContext context) {
     return Center(
       child: Stack(
-        children: List.generate(2, (i) {
-          return Transform.scale(
-            scale: (1.0 - i - _animation.value.abs()).abs(),
-            child: SizedBox.fromSize(size: Size.square(widget.size), child: _itemBuilder(i)),
-          );
-        }),
+        // ignore: always_specify_types
+        children: List.generate(
+            2,
+            (int i) => Transform.scale(
+                  scale: (1.0 - i - _animation.value.abs()).abs(),
+                  child: SizedBox.fromSize(size: Size.square(widget.size), child: _itemBuilder(i)),
+                )),
       ),
     );
   }
@@ -109,12 +110,13 @@ class _SpinKitThreeBounceState extends State<SpinKitThreeBounce> with SingleTick
         size: Size(widget.size * 2, widget.size),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: List.generate(3, (i) {
-            return ScaleTransition(
-              scale: DelayTween(begin: 0.0, end: 1.0, delay: i * .2).animate(_controller),
-              child: SizedBox.fromSize(size: Size.square(widget.size * 0.5), child: _itemBuilder(i)),
-            );
-          }),
+          // ignore: always_specify_types
+          children: List.generate(
+              3,
+              (int i) => ScaleTransition(
+                    scale: DelayTween(begin: 0.0, end: 1.0, delay: i * .2).animate(_controller),
+                    child: SizedBox.fromSize(size: Size.square(widget.size * 0.5), child: _itemBuilder(i)),
+                  )),
         ),
       ),
     );
@@ -225,9 +227,9 @@ class _SpinKitRippleState extends State<SpinKitRipple> with SingleTickerProvider
     _controller = (widget.controller ?? AnimationController(vsync: this, duration: widget.duration))
       ..addListener(() => setState(() {}))
       ..repeat();
-    _animation1 = Tween(begin: 0.0, end: 1.0)
+    _animation1 = Tween<double>(begin: 0.0, end: 1.0)
         .animate(CurvedAnimation(parent: _controller, curve: const Interval(0.0, 0.75, curve: Curves.linear)));
-    _animation2 = Tween(begin: 0.0, end: 1.0)
+    _animation2 = Tween<double>(begin: 0.0, end: 1.0)
         .animate(CurvedAnimation(parent: _controller, curve: const Interval(0.25, 1.0, curve: Curves.linear)));
   }
 

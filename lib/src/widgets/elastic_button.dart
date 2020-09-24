@@ -2,6 +2,54 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 class ElasticButton extends StatefulWidget {
+  const ElasticButton({
+    Key key,
+    ElasticButtonType elasticButtonType,
+    this.child,
+    bool useCache,
+    Alignment alignment,
+    double scaleCoefficient,
+    this.onTapDown,
+    this.onTapUp,
+    this.onTap,
+    this.onTapCancel,
+    this.onSecondaryTapDown,
+    this.onSecondaryTapUp,
+    this.onSecondaryTapCancel,
+    this.onDoubleTap,
+    this.onLongPress,
+    this.onLongPressStart,
+    this.onLongPressMoveUpdate,
+    this.onLongPressUp,
+    this.onLongPressEnd,
+    this.onVerticalDragDown,
+    this.onVerticalDragStart,
+    this.onVerticalDragUpdate,
+    this.onVerticalDragEnd,
+    this.onVerticalDragCancel,
+    this.onHorizontalDragDown,
+    this.onHorizontalDragStart,
+    this.onHorizontalDragUpdate,
+    this.onHorizontalDragEnd,
+    this.onHorizontalDragCancel,
+    this.onForcePressStart,
+    this.onForcePressPeak,
+    this.onForcePressUpdate,
+    this.onForcePressEnd,
+    this.onPanDown,
+    this.onPanStart,
+    this.onPanUpdate,
+    this.onPanEnd,
+    this.onPanCancel,
+    this.onScaleStart,
+    this.onScaleUpdate,
+    this.onScaleEnd,
+  })  : elasticButtonType = elasticButtonType ?? ElasticButtonType.onlyScale,
+        scaleCoefficient = scaleCoefficient ?? 0.80,
+        useCache = useCache ?? true,
+        alignment = alignment ?? Alignment.center,
+        super(key: key);
+
   ///Use this value to determine the type of animation to be played.
   final ElasticButtonType elasticButtonType;
 
@@ -53,54 +101,6 @@ class ElasticButton extends StatefulWidget {
   final GestureForcePressUpdateCallback onForcePressUpdate;
   final GestureForcePressEndCallback onForcePressEnd;
 
-  const ElasticButton({
-    Key key,
-    ElasticButtonType elasticButtonType,
-    this.child,
-    bool useCache,
-    Alignment alignment,
-    double scaleCoefficient,
-    this.onTapDown,
-    this.onTapUp,
-    this.onTap,
-    this.onTapCancel,
-    this.onSecondaryTapDown,
-    this.onSecondaryTapUp,
-    this.onSecondaryTapCancel,
-    this.onDoubleTap,
-    this.onLongPress,
-    this.onLongPressStart,
-    this.onLongPressMoveUpdate,
-    this.onLongPressUp,
-    this.onLongPressEnd,
-    this.onVerticalDragDown,
-    this.onVerticalDragStart,
-    this.onVerticalDragUpdate,
-    this.onVerticalDragEnd,
-    this.onVerticalDragCancel,
-    this.onHorizontalDragDown,
-    this.onHorizontalDragStart,
-    this.onHorizontalDragUpdate,
-    this.onHorizontalDragEnd,
-    this.onHorizontalDragCancel,
-    this.onForcePressStart,
-    this.onForcePressPeak,
-    this.onForcePressUpdate,
-    this.onForcePressEnd,
-    this.onPanDown,
-    this.onPanStart,
-    this.onPanUpdate,
-    this.onPanEnd,
-    this.onPanCancel,
-    this.onScaleStart,
-    this.onScaleUpdate,
-    this.onScaleEnd,
-  })  : this.elasticButtonType = elasticButtonType ?? ElasticButtonType.onlyScale,
-        this.scaleCoefficient = scaleCoefficient ?? 0.80,
-        this.useCache = useCache ?? true,
-        this.alignment = alignment ?? Alignment.center,
-        super(key: key);
-
   @override
   _ElasticButtonState createState() => _ElasticButtonState();
 }
@@ -133,7 +133,7 @@ class _ElasticButtonState extends State<ElasticButton> with SingleTickerProvider
     animationController = AnimationController(
         vsync: this, lowerBound: 0.0, upperBound: 1.0, duration: const Duration(milliseconds: 1000));
     animationController.value = 1;
-    animation = Tween(begin: scaleCoefficient, end: 1.0)
+    animation = Tween<double>(begin: scaleCoefficient, end: 1.0)
         .animate(CurvedAnimation(parent: animationController, curve: Curves.elasticOut));
   }
 
@@ -144,7 +144,7 @@ class _ElasticButtonState extends State<ElasticButton> with SingleTickerProvider
   }
 
   bool get hasMultiple {
-    List<bool> list = [
+    final List<bool> list = <bool>[
       hasTap,
       hasSecondaryTap,
       hasDoubleTap,
@@ -216,26 +216,26 @@ class _ElasticButtonState extends State<ElasticButton> with SingleTickerProvider
 
   void elasticDown() {
     if (!isEnabled) return;
-    if (_debugLevel > 0) print("elasticDown");
+    if (_debugLevel > 0) print('elasticDown');
     isSpringDown = true;
     animationController.value = 0;
   }
 
-  Future elastic() async {
+  Future<void> elastic() async {
     if (!isEnabled) return;
-    if (_debugLevel > 0) print("elastic-1");
+    if (_debugLevel > 0) print('elastic-1');
     isSpringDown = false;
-    if (hasMultiple) await Future.delayed(const Duration(milliseconds: 5));
-    if (_debugLevel > 0) print("elastic-2");
+    if (hasMultiple) await Future<dynamic>.delayed(const Duration(milliseconds: 5));
+    if (_debugLevel > 0) print('elastic-2');
     if (!isSpringDown) animationController.forward();
   }
 
-  Future elasticUp() async {
+  Future<void> elasticUp() async {
     if (!isEnabled) return;
-    if (_debugLevel > 0) print("elasticUp-1");
+    if (_debugLevel > 0) print('elasticUp-1');
     isSpringDown = false;
-    if (hasMultiple) await Future.delayed(const Duration(milliseconds: 500));
-    if (_debugLevel > 0) print("elasticUp-2");
+    if (hasMultiple) await Future<dynamic>.delayed(const Duration(milliseconds: 500));
+    if (_debugLevel > 0) print('elasticUp-2');
     if (!isSpringDown) animationController.value = 1;
   }
 
@@ -447,10 +447,10 @@ class _ElasticButtonState extends State<ElasticButton> with SingleTickerProvider
         animation: animation,
         child: useCache ? uiChild : null,
         builder: (BuildContext context, Widget cachedChild) {
-          var transform =
+          final Transform transform =
               Transform.scale(scale: animation.value, alignment: alignment, child: useCache ? cachedChild : wrapper());
           if (elasticButtonType == ElasticButtonType.withOpacity)
-            return Opacity(opacity: animation.value.clamp(0.5, 1.0), child: transform);
+            return Opacity(opacity: animation.value.clamp(0.5, 1.0).toDouble(), child: transform);
           return transform;
         },
       );

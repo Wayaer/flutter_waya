@@ -4,6 +4,43 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 class ListWheel extends StatefulWidget {
+  ListWheel({
+    Key key,
+    double itemExtent,
+    double diameterRatio,
+    double offAxisFraction,
+    double perspective,
+    int initialIndex,
+    double magnification,
+    bool useMagnifier,
+    double squeeze,
+    ScrollPhysics physics,
+    this.itemBuilder,
+    this.itemCount,
+    this.childDelegateType,
+    this.controller,
+    this.onChanged,
+    this.children,
+  })  : diameterRatio = diameterRatio ?? 1,
+        offAxisFraction = offAxisFraction ?? 0,
+        initialIndex = initialIndex ?? 0,
+        perspective = perspective ?? 0.01,
+        magnification = magnification ?? 1.5,
+        useMagnifier = useMagnifier ?? true,
+        squeeze = squeeze ?? 1,
+        itemExtent = itemExtent ?? getHeight(12),
+        physics = physics ?? const FixedExtentScrollPhysics(),
+        super(key: key) {
+    if (childDelegateType == ListWheelChildDelegateType.list ||
+        childDelegateType == ListWheelChildDelegateType.looping) {
+      assert(children != null);
+    }
+    if (childDelegateType == null || childDelegateType == ListWheelChildDelegateType.builder) {
+      assert(itemCount != null && itemBuilder != null,
+          'childDelegateType default is "ListWheelChildDelegateType.builder", The necessary conditions must be passed');
+    }
+  }
+
   /// 每个Item的高度,固定的
   final double itemExtent;
 
@@ -43,43 +80,6 @@ class ListWheel extends StatefulWidget {
   final ListWheelChildDelegateType childDelegateType;
   final FixedExtentScrollController controller;
   final List<Widget> children;
-
-  ListWheel({
-    Key key,
-    double itemExtent,
-    double diameterRatio,
-    double offAxisFraction,
-    double perspective,
-    int initialIndex,
-    double magnification,
-    bool useMagnifier,
-    double squeeze,
-    ScrollPhysics physics,
-    this.itemBuilder,
-    this.itemCount,
-    this.childDelegateType,
-    this.controller,
-    this.onChanged,
-    this.children,
-  })  : this.diameterRatio = diameterRatio ?? 1,
-        this.offAxisFraction = offAxisFraction ?? 0,
-        this.initialIndex = initialIndex ?? 0,
-        this.perspective = perspective ?? 0.01,
-        this.magnification = magnification ?? 1.5,
-        this.useMagnifier = useMagnifier ?? true,
-        this.squeeze = squeeze ?? 1,
-        this.itemExtent = itemExtent ?? getHeight(12),
-        this.physics = physics ?? FixedExtentScrollPhysics(),
-        super(key: key) {
-    if (childDelegateType == ListWheelChildDelegateType.list ||
-        childDelegateType == ListWheelChildDelegateType.looping) {
-      assert(children != null);
-    }
-    if (childDelegateType == null || childDelegateType == ListWheelChildDelegateType.builder) {
-      assert(itemCount != null && itemBuilder != null,
-          'childDelegateType default is "ListWheelChildDelegateType.builder", The necessary conditions must be passed');
-    }
-  }
 
   @override
   _ListWheelState createState() => _ListWheelState();
@@ -136,6 +136,21 @@ class _ListWheelState extends State<ListWheel> {
 }
 
 class AutoScrollEntry extends StatefulWidget {
+  const AutoScrollEntry(
+      {Key key,
+      int initialIndex,
+      this.itemHeight,
+      this.maxItemCount,
+      this.itemWidth,
+      @required this.children,
+      this.onChanged,
+      this.margin,
+      this.padding,
+      this.duration,
+      this.animateDuration})
+      : initialIndex = initialIndex ?? 0,
+        super(key: key);
+
   final int initialIndex;
   final List<Widget> children;
   final EdgeInsetsGeometry margin;
@@ -151,21 +166,6 @@ class AutoScrollEntry extends StatefulWidget {
   ///高度
   final double itemHeight;
   final double itemWidth;
-
-  const AutoScrollEntry(
-      {Key key,
-      int initialIndex,
-      this.itemHeight,
-      this.maxItemCount,
-      this.itemWidth,
-      @required this.children,
-      this.onChanged,
-      this.margin,
-      this.padding,
-      this.duration,
-      this.animateDuration})
-      : this.initialIndex = initialIndex ?? 0,
-        super(key: key);
 
   @override
   _AutoScrollEntryState createState() => _AutoScrollEntryState();
@@ -189,22 +189,22 @@ class _AutoScrollEntryState extends State<AutoScrollEntry> {
     } else {
       maxItemCount = widget.maxItemCount;
     }
-    Tools.addPostFrameCallback((duration) {
-      timer = Tools.timerPeriodic(widget.duration ?? Duration(seconds: 3), (callback) {
+    Tools.addPostFrameCallback((Duration duration) {
+      timer = Tools.timerPeriodic(widget.duration ?? const Duration(seconds: 3), (Timer callback) {
         index += 1;
         if (index >= maxItemCount) {
           index = 0;
           controller.jumpToItem(index);
         }
         controller?.animateToItem(index,
-            duration: widget.animateDuration ?? Duration(milliseconds: 500), curve: Curves.linear);
+            duration: widget.animateDuration ?? const Duration(milliseconds: 500), curve: Curves.linear);
       });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    if (widget.children == null || widget.children.length < 1) return Container();
+    if (widget.children == null || widget.children.isEmpty) return Container();
     return Universal(
         margin: widget.margin,
         padding: widget.padding,
@@ -220,7 +220,7 @@ class _AutoScrollEntryState extends State<AutoScrollEntry> {
             perspective: 0.00001,
             childDelegateType: ListWheelChildDelegateType.looping,
             children: widget.children,
-            physics: NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             onChanged: widget.onChanged ?? (int index) {}));
   }
 

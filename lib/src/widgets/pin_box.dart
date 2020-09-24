@@ -14,52 +14,87 @@ typedef PinBoxDecoration = BoxDecoration Function(Color borderColor, Color pinBo
 
 /// class to provide some standard PinBoxDecoration such as standard box or underlined
 /// 类提供一些标准的Pinbox装饰，例如标准框或下划线
-class ProvidedPinBoxDecoration {
-  /// Default BoxDecoration\
-  /// 默认框装饰
-  static PinBoxDecoration defaultPinBoxDecoration =
-      (Color borderColor, Color pinBoxColor, {double borderWidth = 2.0, double radius = 5.0}) => BoxDecoration(
-          border: Border.all(color: borderColor, width: borderWidth),
-          color: pinBoxColor,
-          borderRadius: BorderRadius.circular(radius));
 
-  /// Underlined BoxDecoration
-  /// 下划线框装饰
-  static PinBoxDecoration underlinedPinBoxDecoration = (Color borderColor, Color pinBoxColor,
-          {double borderWidth = 2.0, double radius}) =>
-      BoxDecoration(border: Border(bottom: BorderSide(color: borderColor, width: borderWidth)));
+/// Default BoxDecoration\
+/// 默认框装饰
+PinBoxDecoration defaultPinBoxDecoration =
+    (Color borderColor, Color pinBoxColor, {double borderWidth = 2.0, double radius = 5.0}) => BoxDecoration(
+        border: Border.all(color: borderColor, width: borderWidth),
+        color: pinBoxColor,
+        borderRadius: BorderRadius.circular(radius));
 
-  static PinBoxDecoration roundedPinBoxDecoration =
-      (Color borderColor, Color pinBoxColor, {double borderWidth = 2.0, double radius}) => BoxDecoration(
-          border: Border.all(color: borderColor, width: borderWidth), shape: BoxShape.circle, color: pinBoxColor);
-}
+/// Underlined BoxDecoration
+/// 下划线框装饰
+PinBoxDecoration underlinedPinBoxDecoration = (Color borderColor, Color pinBoxColor,
+        {double borderWidth = 2.0, double radius}) =>
+    BoxDecoration(border: Border(bottom: BorderSide(color: borderColor, width: borderWidth)));
 
-class PinBoxTextAnimation {
-  /// A combination of RotationTransition, DefaultTextStyleTransition, ScaleTransition
-  /// 一种旋转转换、变形、分级的组合
-  static AnimatedSwitcherTransitionBuilder awesomeTransition =
-      (Widget child, Animation<double> animation) => RotationTransition(
-            turns: animation,
-            child: DefaultTextStyleTransition(
-                style: TextStyleTween(begin: TextStyle(color: Colors.pink), end: TextStyle(color: Colors.blue))
-                    .animate(animation),
-                child: ScaleTransition(child: child, scale: animation)),
-          );
+PinBoxDecoration roundedPinBoxDecoration =
+    (Color borderColor, Color pinBoxColor, {double borderWidth = 2.0, double radius}) => BoxDecoration(
+        border: Border.all(color: borderColor, width: borderWidth), shape: BoxShape.circle, color: pinBoxColor);
 
-  /// Simple Scaling Transition
-  /// 简单缩放转换
-  static AnimatedSwitcherTransitionBuilder scalingTransition =
-      (child, animation) => ScaleTransition(child: child, scale: animation);
+/// A combination of RotationTransition, DefaultTextStyleTransition, ScaleTransition
+/// 一种旋转转换、变形、分级的组合
+AnimatedSwitcherTransitionBuilder awesomeTransition = (Widget child, Animation<double> animation) => RotationTransition(
+      turns: animation,
+      child: DefaultTextStyleTransition(
+          style: TextStyleTween(begin: const TextStyle(color: Colors.pink), end: const TextStyle(color: Colors.blue))
+              .animate(animation),
+          child: ScaleTransition(child: child, scale: animation)),
+    );
 
-  /// No transition
-  static AnimatedSwitcherTransitionBuilder defaultNoTransition = (Widget child, Animation<double> animation) => child;
+/// Simple Scaling Transition
+/// 简单缩放转换
+AnimatedSwitcherTransitionBuilder scalingTransition =
+    (Widget child, Animation<double> animation) => ScaleTransition(child: child, scale: animation);
 
-  /// Rotate Transition
-  static AnimatedSwitcherTransitionBuilder rotateTransition =
-      (Widget child, Animation<double> animation) => RotationTransition(child: child, turns: animation);
-}
+/// No transition
+AnimatedSwitcherTransitionBuilder defaultNoTransition = (Widget child, Animation<double> animation) => child;
+
+/// Rotate Transition
+AnimatedSwitcherTransitionBuilder rotateTransition =
+    (Widget child, Animation<double> animation) => RotationTransition(child: child, turns: animation);
 
 class PinBox extends StatefulWidget {
+  const PinBox({
+    Key key,
+    this.isCupertino = false,
+    this.maxLength = 4,
+    this.controller,
+    this.hideCharacter = false,
+    this.highlight = false,
+    this.highlightAnimation = false,
+    this.highlightAnimationBeginColor = Colors.white,
+    this.highlightAnimationEndColor = Colors.black,
+    this.highlightAnimationDuration,
+    this.highlightColor = Colors.black,
+    this.pinBoxDecoration,
+    this.maskCharacter = ' ',
+    this.pinBoxWidth = 70.0,
+    this.pinBoxHeight = 70.0,
+    this.pinTextStyle,
+    this.onDone,
+    this.defaultBorderColor = Colors.black,
+    this.hasTextBorderColor = Colors.black,
+    this.pinTextAnimatedSwitcherTransition,
+    this.pinTextAnimatedSwitcherDuration = const Duration(),
+    this.hasError = false,
+    this.errorBorderColor = Colors.red,
+    this.onTextChanged,
+    this.autoFocus = false,
+    this.focusNode,
+    this.wrapAlignment = WrapAlignment.start,
+    this.textDirection = TextDirection.ltr,
+    this.keyboardType = TextInputType.number,
+    this.pinBoxOuterPadding = const EdgeInsets.all(0),
+    this.pinBoxColor,
+    this.highlightPinBoxColor,
+    this.pinBoxBorderWidth = 1.0,
+    this.pinBoxRadius = 0,
+    this.hideDefaultKeyboard = false,
+    this.hasUnderline = false,
+  }) : super(key: key);
+
   final bool isCupertino;
   final int maxLength;
   final TextEditingController controller;
@@ -96,56 +131,17 @@ class PinBox extends StatefulWidget {
   final EdgeInsets pinBoxOuterPadding;
   final bool hasUnderline;
 
-  const PinBox({
-    Key key,
-    this.isCupertino: false,
-    this.maxLength: 4,
-    this.controller,
-    this.hideCharacter: false,
-    this.highlight: false,
-    this.highlightAnimation: false,
-    this.highlightAnimationBeginColor: Colors.white,
-    this.highlightAnimationEndColor: Colors.black,
-    this.highlightAnimationDuration,
-    this.highlightColor: Colors.black,
-    this.pinBoxDecoration,
-    this.maskCharacter: " ",
-    this.pinBoxWidth: 70.0,
-    this.pinBoxHeight: 70.0,
-    this.pinTextStyle,
-    this.onDone,
-    this.defaultBorderColor: Colors.black,
-    this.hasTextBorderColor: Colors.black,
-    this.pinTextAnimatedSwitcherTransition,
-    this.pinTextAnimatedSwitcherDuration: const Duration(),
-    this.hasError: false,
-    this.errorBorderColor: Colors.red,
-    this.onTextChanged,
-    this.autoFocus: false,
-    this.focusNode,
-    this.wrapAlignment: WrapAlignment.start,
-    this.textDirection: TextDirection.ltr,
-    this.keyboardType: TextInputType.number,
-    this.pinBoxOuterPadding = const EdgeInsets.all(0),
-    this.pinBoxColor,
-    this.highlightPinBoxColor,
-    this.pinBoxBorderWidth = 1.0,
-    this.pinBoxRadius = 0,
-    this.hideDefaultKeyboard = false,
-    this.hasUnderline = false,
-  }) : super(key: key);
-
   @override
   _PinBoxState createState() => _PinBoxState();
 }
 
 class _PinBoxState extends State<PinBox> with SingleTickerProviderStateMixin {
   AnimationController _highlightAnimationController;
-  Animation _highlightAnimationColorTween;
+  Animation<Color> _highlightAnimationColorTween;
   FocusNode focusNode;
-  String text = "";
+  String text = '';
   int currentIndex = 0;
-  List<String> strList = [];
+  List<String> strList = <String>[];
   bool hasFocus = false;
   double screenWidth;
 
@@ -160,7 +156,7 @@ class _PinBoxState extends State<PinBox> with SingleTickerProviderStateMixin {
       widget.controller?.selection = TextSelection.collapsed(offset: text.length);
     } else if (oldWidget.maxLength > widget.maxLength &&
         widget.maxLength > 0 &&
-        text.length > 0 &&
+        text.isNotEmpty &&
         text.length > widget.maxLength) {
       text = text.substring(0, widget.maxLength);
       currentIndex = text.length;
@@ -170,18 +166,18 @@ class _PinBoxState extends State<PinBox> with SingleTickerProviderStateMixin {
     }
   }
 
-  _calculateStrList() async {
+  Future<void> _calculateStrList() async {
     if (strList.length > widget.maxLength) strList.length = widget.maxLength;
-    while (strList.length < widget.maxLength) strList.add("");
+    while (strList.length < widget.maxLength) strList.add('');
   }
 
   @override
   void initState() {
     super.initState();
     if (widget.highlightAnimation) {
-      _highlightAnimationController =
-          AnimationController(vsync: this, duration: widget.highlightAnimationDuration ?? Duration(milliseconds: 500));
-      _highlightAnimationController.addStatusListener((status) {
+      _highlightAnimationController = AnimationController(
+          vsync: this, duration: widget.highlightAnimationDuration ?? const Duration(milliseconds: 500));
+      _highlightAnimationController.addStatusListener((AnimationStatus status) {
         if (status == AnimationStatus.completed) {
           _highlightAnimationController.reverse();
         } else if (status == AnimationStatus.dismissed) {
@@ -219,15 +215,15 @@ class _PinBoxState extends State<PinBox> with SingleTickerProviderStateMixin {
     if (widget.controller == null) return;
     strList.clear();
     if (widget.controller.text.isNotEmpty && widget.controller.text.length > widget.maxLength) {
-      throw Exception("TextEditingController length exceeded maxLength!");
+      throw Exception('TextEditingController length exceeded maxLength!');
     }
     text = widget.controller.text;
-    for (var i = 0; i < text.length; i++) strList.add(widget.hideCharacter ? widget.maskCharacter : text[i]);
+    for (int i = 0; i < text.length; i++) strList.add(widget.hideCharacter ? widget.maskCharacter : text[i]);
   }
 
   double get _width {
-    var width = 0.0;
-    for (var i = 0; i < widget.maxLength; i++) {
+    double width = 0.0;
+    for (int i = 0; i < widget.maxLength; i++) {
       width += widget.pinBoxWidth;
       if (i == 0) {
         width += widget.pinBoxOuterPadding?.left ?? 0;
@@ -253,8 +249,10 @@ class _PinBoxState extends State<PinBox> with SingleTickerProviderStateMixin {
   }
 
   @override
-  Widget build(BuildContext context) =>
-      Stack(children: <Widget>[!widget.isCupertino ? _fakeTextInput() : _fakeTextInputCupertino(), _touchPinBoxRow()]);
+  Widget build(BuildContext context) {
+    final Widget child = widget.isCupertino ? _fakeTextInputCupertino() : _fakeTextInput();
+    return Stack(children: <Widget>[child, _touchPinBoxRow()]);
+  }
 
   Widget _touchPinBoxRow() => widget.hideDefaultKeyboard
       ? _pinBoxRow(context)
@@ -263,7 +261,7 @@ class _PinBoxState extends State<PinBox> with SingleTickerProviderStateMixin {
           onTap: () {
             if (hasFocus) {
               FocusScope.of(context).requestFocus(FocusNode());
-              Future.delayed(Duration(milliseconds: 100), () {
+              Future<dynamic>.delayed(const Duration(milliseconds: 100), () {
                 FocusScope.of(context).requestFocus(focusNode);
               });
             } else {
@@ -274,12 +272,13 @@ class _PinBoxState extends State<PinBox> with SingleTickerProviderStateMixin {
         );
 
   Widget _fakeTextInput() {
-    var transparentBorder = OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent, width: 0.0));
+    const OutlineInputBorder transparentBorder =
+        OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent, width: 0.0));
     return Container(
         width: _width,
         height: widget.pinBoxHeight,
         child: TextField(
-            autofocus: !kIsWeb ? widget.autoFocus : false,
+            autofocus: widget.autoFocus,
             enableInteractiveSelection: false,
             focusNode: focusNode,
             controller: widget.controller,
@@ -287,8 +286,8 @@ class _PinBoxState extends State<PinBox> with SingleTickerProviderStateMixin {
             inputFormatters: widget.keyboardType == TextInputType.number
                 ? <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly]
                 : null,
-            style: TextStyle(height: 0.1, color: Colors.transparent),
-            decoration: InputDecoration(
+            style: const TextStyle(height: 0.1, color: Colors.transparent),
+            decoration: const InputDecoration(
                 focusedErrorBorder: transparentBorder,
                 errorBorder: transparentBorder,
                 disabledBorder: transparentBorder,
@@ -310,26 +309,26 @@ class _PinBoxState extends State<PinBox> with SingleTickerProviderStateMixin {
       width: _width,
       height: widget.pinBoxHeight,
       child: CupertinoTextField(
-          autofocus: !kIsWeb ? widget.autoFocus : false,
+          autofocus: widget.autoFocus,
           focusNode: focusNode,
           controller: widget.controller,
           keyboardType: widget.keyboardType,
           inputFormatters: widget.keyboardType == TextInputType.number
               ? <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly]
               : null,
-          style: TextStyle(color: Colors.transparent),
-          decoration: BoxDecoration(color: Colors.transparent, border: null),
+          style: const TextStyle(color: Colors.transparent),
+          decoration: const BoxDecoration(color: Colors.transparent, border: null),
           cursorColor: Colors.transparent,
           showCursor: false,
           maxLength: widget.maxLength,
           onChanged: _onTextChanged));
 
-  void _onTextChanged(text) {
+  void _onTextChanged(String text) {
     if (widget.onTextChanged != null) widget.onTextChanged(text);
     setState(() {
       this.text = text;
       if (text.length < currentIndex) {
-        strList[text.length] = "";
+        strList[text.length] = '';
       } else {
         for (int i = currentIndex; i < text.length; i++) {
           strList[i] = widget.hideCharacter ? widget.maskCharacter : text[i];
@@ -345,7 +344,8 @@ class _PinBoxState extends State<PinBox> with SingleTickerProviderStateMixin {
 
   Widget _pinBoxRow(BuildContext context) {
     _calculateStrList();
-    List<Widget> pinCodes = List.generate(widget.maxLength, (int i) => _buildPinCode(i, context));
+    // ignore: always_specify_types
+    final List<Widget> pinCodes = List.generate(widget.maxLength, (int i) => _buildPinCode(i, context));
     return Wrap(
         direction: Axis.horizontal,
         alignment: widget.wrapAlignment,
@@ -371,12 +371,11 @@ class _PinBoxState extends State<PinBox> with SingleTickerProviderStateMixin {
                   boxDecoration = widget.pinBoxDecoration(_highlightAnimationColorTween.value, pinBoxColor,
                       borderWidth: widget.pinBoxBorderWidth, radius: widget.pinBoxRadius);
                 } else {
-                  boxDecoration = ProvidedPinBoxDecoration.defaultPinBoxDecoration(
-                      _highlightAnimationColorTween.value, pinBoxColor,
+                  boxDecoration = defaultPinBoxDecoration(_highlightAnimationColorTween.value, pinBoxColor,
                       borderWidth: widget.pinBoxBorderWidth, radius: widget.pinBoxRadius);
                 }
                 return Container(
-                    key: ValueKey<String>("container$i"),
+                    key: ValueKey<String>('container$i'),
                     child: Center(child: _animatedTextBox(strList[i], i)),
                     decoration: boxDecoration,
                     width: widget.pinBoxWidth,
@@ -397,7 +396,7 @@ class _PinBoxState extends State<PinBox> with SingleTickerProviderStateMixin {
       boxDecoration = widget.pinBoxDecoration(borderColor, pinBoxColor,
           borderWidth: widget.pinBoxBorderWidth, radius: widget.pinBoxRadius);
     } else {
-      boxDecoration = ProvidedPinBoxDecoration.defaultPinBoxDecoration(borderColor, pinBoxColor,
+      boxDecoration = defaultPinBoxDecoration(borderColor, pinBoxColor,
           borderWidth: widget.pinBoxBorderWidth, radius: widget.pinBoxRadius);
     }
     EdgeInsets insets;
@@ -416,9 +415,9 @@ class _PinBoxState extends State<PinBox> with SingleTickerProviderStateMixin {
     }
     return Universal(
       padding: insets,
-      key: ValueKey<String>("container$i"),
+      key: ValueKey<String>('container$i'),
       child: Universal(
-        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 8),
+        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8),
         child: Center(child: _animatedTextBox(strList[i], i)),
         decoration: widget.hasUnderline
             ? BoxDecoration(border: Border(bottom: BorderSide(color: borderColor ?? Colors.black)))
@@ -439,9 +438,9 @@ class _PinBoxState extends State<PinBox> with SingleTickerProviderStateMixin {
           duration: widget.pinTextAnimatedSwitcherDuration,
           transitionBuilder:
               widget.pinTextAnimatedSwitcherTransition ?? (Widget child, Animation<double> animation) => child,
-          child: Text(text, key: ValueKey<String>("$text$i"), style: widget.pinTextStyle));
+          child: Text(text, key: ValueKey<String>('$text$i'), style: widget.pinTextStyle));
     } else {
-      return Text(text, key: ValueKey<String>("${strList[i]}$i"), style: widget.pinTextStyle);
+      return Text(text, key: ValueKey<String>('${strList[i]}$i'), style: widget.pinTextStyle);
     }
   }
 }

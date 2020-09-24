@@ -3,6 +3,25 @@ import 'package:flutter/material.dart';
 typedef ImageSequenceProcessCallback = void Function(ImageSequenceState _imageSequenceAnimator);
 
 class ImageSequence extends StatefulWidget {
+  const ImageSequence(
+    this.folderName,
+    this.fileName,
+    this.suffixStart,
+    this.suffixCount,
+    this.fileFormat,
+    this.frameCount, {
+    Key key,
+    this.fps = 60,
+    this.isLooping = false,
+    this.isBoomerang = false,
+    this.isAutoPlay = true,
+    this.color = Colors.white,
+    this.onReadyToPlay,
+    this.onStartPlaying,
+    this.onPlaying,
+    this.onFinishPlaying,
+  }) : super(key: key);
+
   final String folderName;
 
   ///The file name for each image in your image sequence excluding the suffix. For example, if the images in your image sequence are named as
@@ -57,25 +76,6 @@ class ImageSequence extends StatefulWidget {
   ///The callback for when the [ImageSequenceState] finishes playing.
   final ImageSequenceProcessCallback onFinishPlaying;
 
-  const ImageSequence(
-    this.folderName,
-    this.fileName,
-    this.suffixStart,
-    this.suffixCount,
-    this.fileFormat,
-    this.frameCount, {
-    Key key,
-    this.fps: 60,
-    this.isLooping: false,
-    this.isBoomerang: false,
-    this.isAutoPlay: true,
-    this.color: Colors.white,
-    this.onReadyToPlay,
-    this.onStartPlaying,
-    this.onPlaying,
-    this.onFinishPlaying,
-  }) : super(key: key);
-
   @override
   ImageSequenceState createState() => ImageSequenceState(
         folderName,
@@ -97,6 +97,24 @@ class ImageSequence extends StatefulWidget {
 }
 
 class ImageSequenceState extends State<ImageSequence> with SingleTickerProviderStateMixin {
+  ImageSequenceState(
+    this.folderName,
+    this.fileName,
+    this.suffixStart,
+    this.suffixCount,
+    this.fileFormat,
+    this.frameCount,
+    this.fps,
+    this.isLooping,
+    this.isBoomerang,
+    this.isAutoPlay,
+    this.color,
+    this.onReadyToPlay,
+    this.onStartPlaying,
+    this.onPlaying,
+    this.onFinishPlaying,
+  );
+
   final String folderName;
   final String fileName;
   final int suffixStart;
@@ -127,24 +145,6 @@ class ImageSequenceState extends State<ImageSequence> with SingleTickerProviderS
 
   ///Use this value to get the current time of the animation in milliseconds.
   double get currentTime => animationController.value * fpsInMilliseconds;
-
-  ImageSequenceState(
-    this.folderName,
-    this.fileName,
-    this.suffixStart,
-    this.suffixCount,
-    this.fileFormat,
-    this.frameCount,
-    this.fps,
-    this.isLooping,
-    this.isBoomerang,
-    this.isAutoPlay,
-    this.color,
-    this.onReadyToPlay,
-    this.onStartPlaying,
-    this.onPlaying,
-    this.onFinishPlaying,
-  );
 
   void animationListener() {
     changeNotifier.value++;
@@ -178,7 +178,7 @@ class ImageSequenceState extends State<ImageSequence> with SingleTickerProviderS
       ..addListener(animationListener)
       ..addStatusListener(animationStatusListener);
     if (isLooping) isBoomerang = false;
-    if (fileFormat.startsWith(".")) fileFormat = fileFormat.substring(1);
+    if (fileFormat.startsWith('.')) fileFormat = fileFormat.substring(1);
     if (onReadyToPlay != null) onReadyToPlay(this);
     if (isAutoPlay) play();
   }
@@ -217,7 +217,7 @@ class ImageSequenceState extends State<ImageSequence> with SingleTickerProviderS
     changeNotifier.value++;
   }
 
-  void play({double from: -1.0}) {
+  void play({double from = -1.0}) {
     if (!animationController.isAnimating && onStartPlaying != null) onStartPlaying(this);
     if (from == -1.0)
       animationController.forward();
@@ -225,7 +225,7 @@ class ImageSequenceState extends State<ImageSequence> with SingleTickerProviderS
       animationController.forward(from: from);
   }
 
-  void rewind({double from: -1.0}) {
+  void rewind({double from = -1.0}) {
     if (!animationController.isAnimating && onStartPlaying != null) onStartPlaying(this);
     if (from == -1.0)
       animationController.reverse();
@@ -236,7 +236,7 @@ class ImageSequenceState extends State<ImageSequence> with SingleTickerProviderS
   void pause() => animationController.stop();
 
   ///Only use either value or percentage.
-  void skip(double value, {double percentage: -1.0}) {
+  void skip(double value, {double percentage = -1.0}) {
     if (percentage != -1.0)
       animationController.value = totalTime * percentage;
     else
@@ -258,15 +258,16 @@ class ImageSequenceState extends State<ImageSequence> with SingleTickerProviderS
   }
 
   String getSuffix(String value) {
-    while (value.length < suffixCount) value = "0" + value;
+    while (value.length < suffixCount) value = '0' + value;
     return value;
   }
 
   String getDirectory() =>
-      folderName + "/" + fileName + getSuffix((suffixStart + previousFrame).toString()) + "." + fileFormat;
+      folderName + '/' + fileName + getSuffix((suffixStart + previousFrame).toString()) + '.' + fileFormat;
 
   @override
   Widget build(BuildContext context) {
+    // ignore: always_specify_types
     return ValueListenableBuilder(
       builder: (BuildContext context, int change, Widget cachedChild) {
         if (currentFrame == null || animationController.value.floor() != previousFrame || colorChanged) {

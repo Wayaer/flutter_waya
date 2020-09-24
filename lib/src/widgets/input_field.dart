@@ -4,6 +4,133 @@ import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/way.dart';
 
 class InputField extends StatelessWidget {
+  InputField({
+    Key key,
+    int maxLines,
+    TextAlign textAlign,
+    bool obscureText,
+    bool autoFocus,
+    bool enabled,
+    bool enableInteractiveSelection,
+    bool maxLengthEnforced,
+    TextInputAction textInputAction,
+    TextDirection textDirection,
+    Color cursorColor,
+    Radius cursorRadius,
+    double cursorWidth,
+    Brightness keyboardAppearance,
+    TextCapitalization textCapitalization,
+    FloatingLabelBehavior floatingLabelBehavior,
+    bool readOnly,
+    CrossAxisAlignment crossAxisAlignment,
+    this.icon,
+    this.toolbarOptions,
+    this.controller,
+    this.inputDecoration,
+    this.onSubmitted,
+    this.inputStyle,
+    this.keyboardType,
+    this.minLines,
+    this.maxLength,
+    this.onChanged,
+    this.hintText,
+    this.hintStyle,
+    this.contentPadding,
+    this.inputFormatter,
+    this.fillColor,
+    this.inputTextType,
+    this.isDense,
+    this.disabledBorder,
+    this.enabledBorder,
+    this.focusedBorder,
+    this.defaultBorder,
+    this.labelText,
+    this.labelStyle,
+    this.prefixText,
+    this.prefixIcon,
+    this.prefix,
+    this.prefixStyle,
+    this.suffixIcon,
+    this.suffixText,
+    this.suffix,
+    this.suffixStyle,
+    this.errorBorder,
+    this.focusedErrorBorder,
+    this.onTap,
+    this.filled,
+    this.errorStyle,
+    this.errorText,
+    this.errorMaxLines,
+    this.helperText,
+    this.helperStyle,
+    this.focusNode,
+    this.header,
+    this.footer,
+    this.hintMaxLines,
+    this.counterText,
+    this.counterStyle,
+    this.counter,
+    this.buildCounter,
+    this.onEditingComplete,
+    this.extraSuffix,
+    this.extraPrefix,
+  })  : obscureText = obscureText ?? false,
+        readOnly = readOnly ?? false,
+        crossAxisAlignment = crossAxisAlignment ?? CrossAxisAlignment.center,
+        floatingLabelBehavior = floatingLabelBehavior ?? FloatingLabelBehavior.always,
+
+        ///键盘大小写的显示 Only supports text keyboards  但是好像不起作用？
+        ///characters 默认为每个字符使用大写键盘
+        ///sentence 默认为每个句子的第一个字母使用大写键盘
+        ///word 默认为每个单词的第一个字母使用大写键盘。
+        ///none 默认使用小写
+        textCapitalization = textCapitalization ?? TextCapitalization.none,
+
+        ///长按输入的文字时，true显示系统的粘贴板  false不显示
+        enableInteractiveSelection = enableInteractiveSelection ?? true,
+
+        ///自定义数字显示   指定maxLength后 右下角会出现字数，flutter有默认实现  可以通过这个自定义
+        ///光标颜色
+        cursorColor = cursorColor ?? getColors(black70),
+
+        ///光标圆角
+        cursorRadius = cursorRadius ?? const Radius.circular(1),
+
+        ///光标宽度
+        cursorWidth = cursorWidth ?? 2,
+
+        /// 键盘外观  仅ios有效
+        keyboardAppearance = keyboardAppearance ?? Brightness.dark,
+
+        ///      默认true  超过长度后输入无效  右下角数字 显示10/10   此时onchange方法依然会调用，返回值就是限制了长度的值 超过后的输入不显示
+        ///      false 超过后可继续输入  右下角数字显示，比如 23/10
+        maxLengthEnforced = maxLengthEnforced ?? true,
+
+        ///       设置键盘上enter键的显示内容
+        ///       textInputAction: TextInputAction.search, ///搜索
+        ///       textInputAction: TextInputAction.none,///默认回车符号
+        ///       textInputAction: TextInputAction.done,///安卓显示 回车符号
+        ///       textInputAction: TextInputAction.go,///开始
+        ///       textInputAction: TextInputAction.next,///下一步
+        ///       textInputAction: TextInputAction.send,///发送
+        ///       textInputAction: TextInputAction.continueAction,///android  不支持
+        ///       textInputAction: TextInputAction.emergencyCall,///android  不支持
+        ///       textInputAction: TextInputAction.newline,///安卓显示 回车符号
+        ///       textInputAction: TextInputAction.route,///android  不支持
+        ///       textInputAction: TextInputAction.join,///android  不支持
+        ///       textInputAction: TextInputAction.previous,///安卓显示 回车符号
+        ///       textInputAction: TextInputAction.unspecified,///安卓显示 回车符号
+        textInputAction = textInputAction ?? TextInputAction.done,
+        autoFocus = autoFocus ?? false,
+        maxLines = maxLines ?? 1,
+
+        ///从左边输入  光标在左边
+        ///从右边输入  光标在右边
+        ///      textDirection = textDirection ?? TextDirection.rtl,
+        textDirection = textDirection ?? TextDirection.ltr,
+        enabled = enabled ?? true,
+        textAlign = textAlign ?? TextAlign.left,
+        super(key: key);
   final TextEditingController controller;
   final ValueChanged<String> onChanged;
   final List<TextInputFormatter> inputFormatter;
@@ -149,134 +276,6 @@ class InputField extends StatelessWidget {
   final InputCounterWidgetBuilder buildCounter;
   final CrossAxisAlignment crossAxisAlignment;
 
-  InputField({
-    Key key,
-    int maxLines,
-    TextAlign textAlign,
-    bool obscureText,
-    bool autoFocus,
-    bool enabled,
-    bool enableInteractiveSelection,
-    bool maxLengthEnforced,
-    TextInputAction textInputAction,
-    TextDirection textDirection,
-    Color cursorColor,
-    Radius cursorRadius,
-    double cursorWidth,
-    Brightness keyboardAppearance,
-    TextCapitalization textCapitalization,
-    FloatingLabelBehavior floatingLabelBehavior,
-    bool readOnly,
-    CrossAxisAlignment crossAxisAlignment,
-    this.icon,
-    this.toolbarOptions,
-    this.controller,
-    this.inputDecoration,
-    this.onSubmitted,
-    this.inputStyle,
-    this.keyboardType,
-    this.minLines,
-    this.maxLength,
-    this.onChanged,
-    this.hintText,
-    this.hintStyle,
-    this.contentPadding,
-    this.inputFormatter,
-    this.fillColor,
-    this.inputTextType,
-    this.isDense,
-    this.disabledBorder,
-    this.enabledBorder,
-    this.focusedBorder,
-    this.defaultBorder,
-    this.labelText,
-    this.labelStyle,
-    this.prefixText,
-    this.prefixIcon,
-    this.prefix,
-    this.prefixStyle,
-    this.suffixIcon,
-    this.suffixText,
-    this.suffix,
-    this.suffixStyle,
-    this.errorBorder,
-    this.focusedErrorBorder,
-    this.onTap,
-    this.filled,
-    this.errorStyle,
-    this.errorText,
-    this.errorMaxLines,
-    this.helperText,
-    this.helperStyle,
-    this.focusNode,
-    this.header,
-    this.footer,
-    this.hintMaxLines,
-    this.counterText,
-    this.counterStyle,
-    this.counter,
-    this.buildCounter,
-    this.onEditingComplete,
-    this.extraSuffix,
-    this.extraPrefix,
-  })  : this.obscureText = obscureText ?? false,
-        this.readOnly = readOnly ?? false,
-        this.crossAxisAlignment = crossAxisAlignment ?? CrossAxisAlignment.center,
-        this.floatingLabelBehavior = floatingLabelBehavior ?? FloatingLabelBehavior.always,
-
-        ///键盘大小写的显示 Only supports text keyboards  但是好像不起作用？
-        ///characters 默认为每个字符使用大写键盘
-        ///sentence 默认为每个句子的第一个字母使用大写键盘
-        ///word 默认为每个单词的第一个字母使用大写键盘。
-        ///none 默认使用小写
-        this.textCapitalization = textCapitalization ?? TextCapitalization.none,
-
-        ///长按输入的文字时，true显示系统的粘贴板  false不显示
-        this.enableInteractiveSelection = enableInteractiveSelection ?? true,
-
-        ///自定义数字显示   指定maxLength后 右下角会出现字数，flutter有默认实现  可以通过这个自定义
-        ///光标颜色
-        this.cursorColor = cursorColor ?? getColors(black70),
-
-        ///光标圆角
-        this.cursorRadius = cursorRadius ?? Radius.circular(1),
-
-        ///光标宽度
-        this.cursorWidth = cursorWidth ?? 2,
-
-        /// 键盘外观  仅ios有效
-        this.keyboardAppearance = keyboardAppearance,
-
-        ///      默认true  超过长度后输入无效  右下角数字 显示10/10   此时onchange方法依然会调用，返回值就是限制了长度的值 超过后的输入不显示
-        ///      false 超过后可继续输入  右下角数字显示，比如 23/10
-        this.maxLengthEnforced = maxLengthEnforced ?? true,
-
-        ///       设置键盘上enter键的显示内容
-        ///       textInputAction: TextInputAction.search, ///搜索
-        ///       textInputAction: TextInputAction.none,///默认回车符号
-        ///       textInputAction: TextInputAction.done,///安卓显示 回车符号
-        ///       textInputAction: TextInputAction.go,///开始
-        ///       textInputAction: TextInputAction.next,///下一步
-        ///       textInputAction: TextInputAction.send,///发送
-        ///       textInputAction: TextInputAction.continueAction,///android  不支持
-        ///       textInputAction: TextInputAction.emergencyCall,///android  不支持
-        ///       textInputAction: TextInputAction.newline,///安卓显示 回车符号
-        ///       textInputAction: TextInputAction.route,///android  不支持
-        ///       textInputAction: TextInputAction.join,///android  不支持
-        ///       textInputAction: TextInputAction.previous,///安卓显示 回车符号
-        ///       textInputAction: TextInputAction.unspecified,///安卓显示 回车符号
-        this.textInputAction = textInputAction ?? TextInputAction.done,
-        this.autoFocus = autoFocus ?? false,
-        this.maxLines = maxLines ?? 1,
-
-        ///从左边输入  光标在左边
-        ///从右边输入  光标在右边
-        ///      this.textDirection = textDirection ?? TextDirection.rtl,
-        this.textDirection = textDirection ?? TextDirection.ltr,
-        this.enabled = enabled ?? true,
-        this.textAlign = textAlign ?? TextAlign.left,
-        super(key: key);
-
   ///  解决切换后台 再切换前台输入框为null
   ///  @override
   ///  void initState() {
@@ -320,14 +319,14 @@ class InputField extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget child = textField(context);
     if (extraPrefix != null || extraSuffix != null) {
-      List<Widget> row = List();
+      final List<Widget> row = <Widget>[];
       if (extraPrefix != null) row.add(extraPrefix);
       row.add(Expanded(child: child));
       if (extraSuffix != null) row.add(extraSuffix);
       child = Row(crossAxisAlignment: crossAxisAlignment, children: row);
     }
     if (header != null || footer != null) {
-      List<Widget> children = List();
+      final List<Widget> children = <Widget>[];
       if (header != null) children.add(header);
       children.add(child);
       if (footer != null) children.add(footer);
@@ -451,31 +450,53 @@ class InputField extends StatelessWidget {
   List<TextInputFormatter> inputType() {
     switch (inputTextType) {
       case InputTextType.number:
-        return [WhitelistingTextInputFormatter.digitsOnly];
+        return <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly];
       case InputTextType.password:
-        return [FilteringTextInputFormatter(RegExp(ConstConstant.regExpPassword), allow: true)]; //密码常见类型
+        return <TextInputFormatter>[
+          FilteringTextInputFormatter(RegExp(ConstConstant.regExpPassword), allow: true)
+        ]; //密码常见类型
       case InputTextType.lettersNumbers:
-        return [FilteringTextInputFormatter(RegExp(ConstConstant.regExpLettersNumbers), allow: true)]; //字母和数字
+        return <TextInputFormatter>[
+          FilteringTextInputFormatter(RegExp(ConstConstant.regExpLettersNumbers), allow: true)
+        ]; //字母和数字
       case InputTextType.decimal:
-        return [FilteringTextInputFormatter(RegExp(ConstConstant.regExpDecimal), allow: true)]; //只允许输入小数
+        return <TextInputFormatter>[
+          FilteringTextInputFormatter(RegExp(ConstConstant.regExpDecimal), allow: true)
+        ]; //只允许输入小数
       case InputTextType.letter:
-        return [FilteringTextInputFormatter(RegExp(ConstConstant.regExpLetter), allow: true)]; //只允许输入字母
+        return <TextInputFormatter>[
+          FilteringTextInputFormatter(RegExp(ConstConstant.regExpLetter), allow: true)
+        ]; //只允许输入字母
       case InputTextType.chinese:
-        return [FilteringTextInputFormatter(RegExp(ConstConstant.regExpChinese), allow: true)]; //只允许输入汉字
+        return <TextInputFormatter>[
+          FilteringTextInputFormatter(RegExp(ConstConstant.regExpChinese), allow: true)
+        ]; //只允许输入汉字
       case InputTextType.email:
-        return [FilteringTextInputFormatter(RegExp(ConstConstant.regExpEmail), allow: true)]; //只允许输入邮箱
+        return <TextInputFormatter>[
+          FilteringTextInputFormatter(RegExp(ConstConstant.regExpEmail), allow: true)
+        ]; //只允许输入邮箱
       case InputTextType.phone:
-        return [FilteringTextInputFormatter(RegExp(ConstConstant.regExpPhone), allow: true)]; //只允许输入国内电话号
+        return <TextInputFormatter>[
+          FilteringTextInputFormatter(RegExp(ConstConstant.regExpPhone), allow: true)
+        ]; //只允许输入国内电话号
       case InputTextType.mobilePhone:
-        return [FilteringTextInputFormatter(RegExp(ConstConstant.regExpMobilePhone), allow: true)]; //只允许输入国内手机号
+        return <TextInputFormatter>[
+          FilteringTextInputFormatter(RegExp(ConstConstant.regExpMobilePhone), allow: true)
+        ]; //只允许输入国内手机号
       case InputTextType.idCard:
-        return [FilteringTextInputFormatter(RegExp(ConstConstant.regExpIdCard), allow: true)]; //只允许输入身份证
+        return <TextInputFormatter>[
+          FilteringTextInputFormatter(RegExp(ConstConstant.regExpIdCard), allow: true)
+        ]; //只允许输入身份证
       case InputTextType.ip:
-        return [FilteringTextInputFormatter(RegExp(ConstConstant.regExpIP), allow: true)]; //只允许输入IP
+        return <TextInputFormatter>[FilteringTextInputFormatter(RegExp(ConstConstant.regExpIP), allow: true)]; //只允许输入IP
       case InputTextType.positive:
-        return [FilteringTextInputFormatter(RegExp(ConstConstant.regExpPositive), allow: true)]; //只允许输入正数
+        return <TextInputFormatter>[
+          FilteringTextInputFormatter(RegExp(ConstConstant.regExpPositive), allow: true)
+        ]; //只允许输入正数
       case InputTextType.negative:
-        return [FilteringTextInputFormatter(RegExp(ConstConstant.regExpNegative), allow: true)]; //只允许输入负数
+        return <TextInputFormatter>[
+          FilteringTextInputFormatter(RegExp(ConstConstant.regExpNegative), allow: true)
+        ]; //只允许输入负数
       case InputTextType.text:
         return inputFormatter;
       default:
@@ -485,43 +506,7 @@ class InputField extends StatelessWidget {
 }
 
 class SearchBox extends StatelessWidget {
-  final EdgeInsetsGeometry margin;
-  final EdgeInsetsGeometry padding;
-  final AlignmentGeometry alignment;
-  final Decoration decoration;
-  final String searchText;
-  final Widget search;
-  final TextStyle searchStyle;
-  final GestureTapCallback searchTap;
-  final double size;
-  final Color color;
-  final IconData icon;
-  final Widget prefixIcon;
-  final double labelSpacing;
-  final LineType lineType;
-  final TextEditingController controller;
-  final ValueChanged<String> onChanged;
-  final String hintText;
-  final TextStyle hintStyle;
-  final TextStyle inputStyle;
-  final double borderRadius;
-  final Color cursorColor;
-  final InputBorder defaultBorder;
-  final InputBorder focusedBorder;
-  final Color focusedBorderColor;
-  final Color enabledBorderColor;
-  final Widget extraPrefix;
-  final Widget extraSuffix;
-  final EdgeInsetsGeometry contentPadding;
-  final Color fillColor;
-  final double height;
-  final double width;
-  final bool autoFocus;
-  final FocusNode focusNode;
-  final Widget suffixIcon;
-  final String heroTag;
-
-  SearchBox({
+  const SearchBox({
     Key key,
     IconData icon,
     EdgeInsetsGeometry contentPadding,
@@ -558,14 +543,50 @@ class SearchBox extends StatelessWidget {
     this.width,
     this.autoFocus,
     this.focusNode,
-  })  : this.icon = icon ?? ConstIcon.search,
-        this.size = size ?? 15,
-        this.contentPadding = contentPadding ?? EdgeInsets.all(6),
+  })  : icon = icon ?? ConstIcon.search,
+        size = size ?? 15,
+        contentPadding = contentPadding ?? const EdgeInsets.all(6),
         super(key: key);
+
+  final EdgeInsetsGeometry margin;
+  final EdgeInsetsGeometry padding;
+  final AlignmentGeometry alignment;
+  final Decoration decoration;
+  final String searchText;
+  final Widget search;
+  final TextStyle searchStyle;
+  final GestureTapCallback searchTap;
+  final double size;
+  final Color color;
+  final IconData icon;
+  final Widget prefixIcon;
+  final double labelSpacing;
+  final LineType lineType;
+  final TextEditingController controller;
+  final ValueChanged<String> onChanged;
+  final String hintText;
+  final TextStyle hintStyle;
+  final TextStyle inputStyle;
+  final double borderRadius;
+  final Color cursorColor;
+  final InputBorder defaultBorder;
+  final InputBorder focusedBorder;
+  final Color focusedBorderColor;
+  final Color enabledBorderColor;
+  final Widget extraPrefix;
+  final Widget extraSuffix;
+  final EdgeInsetsGeometry contentPadding;
+  final Color fillColor;
+  final double height;
+  final double width;
+  final bool autoFocus;
+  final FocusNode focusNode;
+  final Widget suffixIcon;
+  final String heroTag;
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> children = List();
+    List<Widget> children = <Widget>[];
     if (extraSuffix == null && extraPrefix == null) {
       children = null;
     } else {
@@ -612,7 +633,7 @@ class SearchBox extends StatelessWidget {
         enableInteractiveSelection: true);
   }
 
-  Widget prefix() => prefixIcon == null ? Icon(icon, size: size, color: color) : prefixIcon;
+  Widget prefix() => prefixIcon ?? Icon(icon, size: size, color: color);
 
   Widget suffix() {
     if (search == null) {

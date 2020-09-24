@@ -9,6 +9,18 @@ abstract class CarouselPlugin {
 }
 
 class CarouselPluginConfig {
+  const CarouselPluginConfig(
+      {this.activeIndex,
+      this.itemCount,
+      this.indicatorLayout,
+      this.outer,
+      @required this.scrollDirection,
+      @required this.controller,
+      this.pageController,
+      this.layout,
+      this.loop})
+      : assert(scrollDirection != null),
+        assert(controller != null);
   final int activeIndex;
   final int itemCount;
   final IndicatorType indicatorLayout;
@@ -18,26 +30,13 @@ class CarouselPluginConfig {
   final PageController pageController;
   final CarouselController controller;
   final CarouselLayout layout;
-
-  const CarouselPluginConfig(
-      {this.activeIndex,
-      this.itemCount,
-      this.indicatorLayout,
-      this.outer,
-      this.scrollDirection,
-      this.controller,
-      this.pageController,
-      this.layout,
-      this.loop})
-      : assert(scrollDirection != null),
-        assert(controller != null);
 }
 
 class CarouselPluginView extends StatelessWidget {
+  const CarouselPluginView(this.plugin, this.config);
+
   final CarouselPlugin plugin;
   final CarouselPluginConfig config;
-
-  const CarouselPluginView(this.plugin, this.config);
 
   @override
   Widget build(BuildContext context) => plugin.build(context, config);
@@ -45,6 +44,15 @@ class CarouselPluginView extends StatelessWidget {
 
 ///Control
 class CarouselControl extends CarouselPlugin {
+  const CarouselControl(
+      {this.iconPrevious = Icons.arrow_back_ios,
+      this.iconNext = Icons.arrow_forward_ios,
+      this.color,
+      this.disableColor,
+      this.key,
+      this.size = 30.0,
+      this.padding = const EdgeInsets.all(5.0)});
+
   ///IconData for previous
   ///上一页的IconData
   final IconData iconPrevious;
@@ -70,15 +78,6 @@ class CarouselControl extends CarouselPlugin {
 
   final Key key;
 
-  const CarouselControl(
-      {this.iconPrevious: Icons.arrow_back_ios,
-      this.iconNext: Icons.arrow_forward_ios,
-      this.color,
-      this.disableColor,
-      this.key,
-      this.size: 30.0,
-      this.padding: const EdgeInsets.all(5.0)});
-
   Widget buildButton(CarouselPluginConfig config, Color color, IconData iconData, int quarterTurns, bool previous) =>
       Universal(
         behavior: HitTestBehavior.opaque,
@@ -92,23 +91,23 @@ class CarouselControl extends CarouselPlugin {
         padding: padding,
         child: RotatedBox(
             quarterTurns: quarterTurns,
-            child: Icon(iconData, semanticLabel: previous ? "Previous" : "Next", size: size, color: color)),
+            child: Icon(iconData, semanticLabel: previous ? 'Previous' : 'Next', size: size, color: color)),
       );
 
   @override
   Widget build(BuildContext context, CarouselPluginConfig config) {
-    ThemeData themeData = Theme.of(context);
+    final ThemeData themeData = Theme.of(context);
 
-    Color color = this.color ?? themeData.primaryColor;
-    Color disableColor = this.disableColor ?? themeData.disabledColor;
+    final Color color = this.color ?? themeData.primaryColor;
+    final Color disableColor = this.disableColor ?? themeData.disabledColor;
     Color prevColor;
     Color nextColor;
 
     if (config.loop) {
       prevColor = nextColor = color;
     } else {
-      bool next = config.activeIndex < config.itemCount - 1;
-      bool prev = config.activeIndex > 0;
+      final bool next = config.activeIndex < config.itemCount - 1;
+      final bool prev = config.activeIndex > 0;
       prevColor = prev ? color : disableColor;
       nextColor = next ? color : disableColor;
     }
@@ -130,6 +129,8 @@ class CarouselControl extends CarouselPlugin {
 }
 
 class CarouselController extends IndexController {
+  CarouselController();
+
   // AutoPlay started
   static const int START_AUTOPLAY = 2;
 
@@ -150,29 +151,28 @@ class CarouselController extends IndexController {
   // this value is PageViewController.pos
   double pos;
 
-  int index;
-  bool animation;
   bool autoPlay;
-
-  CarouselController();
 
   ///开始自动播放
   void startAutoPlay() {
     event = CarouselController.START_AUTOPLAY;
-    this.autoPlay = true;
+    autoPlay = true;
     notifyListeners();
   }
 
   ///停止自动播放
   void stopAutoPlay() {
     event = CarouselController.STOP_AUTOPLAY;
-    this.autoPlay = false;
+    autoPlay = false;
     notifyListeners();
   }
 }
 
 ///底部指示器
 class FractionPaginationBuilder extends CarouselPlugin {
+  const FractionPaginationBuilder(
+      {this.color, this.fontSize = 20.0, this.key, this.activeColor, this.activeFontSize = 35.0});
+
   ///color ,if set null , will be Theme.of(context).scaffoldBackgroundColor
   final Color color;
 
@@ -187,25 +187,22 @@ class FractionPaginationBuilder extends CarouselPlugin {
 
   final Key key;
 
-  const FractionPaginationBuilder(
-      {this.color, this.fontSize: 20.0, this.key, this.activeColor, this.activeFontSize: 35.0});
-
   @override
   Widget build(BuildContext context, CarouselPluginConfig config) {
-    ThemeData themeData = Theme.of(context);
-    Color activeColor = this.activeColor ?? themeData.primaryColor;
-    Color color = this.color ?? themeData.scaffoldBackgroundColor;
+    final ThemeData themeData = Theme.of(context);
+    final Color activeColor = this.activeColor ?? themeData.primaryColor;
+    final Color color = this.color ?? themeData.scaffoldBackgroundColor;
 
     if (Axis.vertical == config.scrollDirection) {
       return Column(key: key, mainAxisSize: MainAxisSize.min, children: <Widget>[
-        Text("${config.activeIndex + 1}", style: TextStyle(color: activeColor, fontSize: activeFontSize)),
-        Text("/", style: TextStyle(color: color, fontSize: fontSize)),
-        Text("${config.itemCount}", style: TextStyle(color: color, fontSize: fontSize))
+        Text('${config.activeIndex + 1}', style: TextStyle(color: activeColor, fontSize: activeFontSize)),
+        Text('/', style: TextStyle(color: color, fontSize: fontSize)),
+        Text('${config.itemCount}', style: TextStyle(color: color, fontSize: fontSize))
       ]);
     } else {
       return Row(key: key, mainAxisSize: MainAxisSize.min, children: <Widget>[
-        Text("${config.activeIndex + 1}", style: TextStyle(color: activeColor, fontSize: activeFontSize)),
-        Text(" / ${config.itemCount}", style: TextStyle(color: color, fontSize: fontSize))
+        Text('${config.activeIndex + 1}', style: TextStyle(color: activeColor, fontSize: activeFontSize)),
+        Text(' / ${config.itemCount}', style: TextStyle(color: color, fontSize: fontSize))
       ]);
     }
   }
@@ -213,6 +210,14 @@ class FractionPaginationBuilder extends CarouselPlugin {
 
 ///底部指示器
 class RectCarouselPaginationBuilder extends CarouselPlugin {
+  const RectCarouselPaginationBuilder(
+      {this.activeColor,
+      this.color,
+      this.key,
+      this.size = const Size(10.0, 2.0),
+      this.activeSize = const Size(10.0, 2.0),
+      this.space = 3.0});
+
   ///color when current index,if set null , will be Theme.of(context).primaryColor
   final Color activeColor;
 
@@ -230,39 +235,27 @@ class RectCarouselPaginationBuilder extends CarouselPlugin {
 
   final Key key;
 
-  const RectCarouselPaginationBuilder(
-      {this.activeColor,
-      this.color,
-      this.key,
-      this.size: const Size(10.0, 2.0),
-      this.activeSize: const Size(10.0, 2.0),
-      this.space: 3.0});
-
   @override
   Widget build(BuildContext context, CarouselPluginConfig config) {
-    ThemeData themeData = Theme.of(context);
-    Color activeColor = this.activeColor ?? themeData.primaryColor;
-    Color color = this.color ?? themeData.scaffoldBackgroundColor;
-
-    List<Widget> list = [];
-
+    final ThemeData themeData = Theme.of(context);
+    final Color activeColor = this.activeColor ?? themeData.primaryColor;
+    final Color color = this.color ?? themeData.scaffoldBackgroundColor;
+    final List<Widget> list = <Widget>[];
     if (config.itemCount > 20) {
       print(
-          "The itemCount is too big, we suggest use FractionPaginationBuilder instead of DotCarouselPaginationBuilder in this sitituation");
+          'The itemCount is too big, we suggest use FractionPaginationBuilder instead of DotCarouselPaginationBuilder in this sitituation');
     }
-
-    int itemCount = config.itemCount;
-    int activeIndex = config.activeIndex;
-
+    final int itemCount = config.itemCount;
+    final int activeIndex = config.activeIndex;
     for (int i = 0; i < itemCount; ++i) {
-      bool active = i == activeIndex;
-      Size size = active ? this.activeSize : this.size;
+      final bool active = i == activeIndex;
+      final Size size = active ? activeSize : this.size;
       list.add(SizedBox(
         width: size.width,
         height: size.height,
         child: Container(
           color: active ? activeColor : color,
-          key: Key("pagination_$i"),
+          key: Key('pagination_$i'),
           margin: EdgeInsets.all(space),
         ),
       ));
@@ -273,6 +266,9 @@ class RectCarouselPaginationBuilder extends CarouselPlugin {
 
 ///底部指示器
 class DotCarouselPaginationBuilder extends CarouselPlugin {
+  const DotCarouselPaginationBuilder(
+      {this.activeColor, this.color, this.key, this.size = 10.0, this.activeSize = 10.0, this.space = 3.0});
+
   ///color when current index,if set null , will be Theme.of(context).primaryColor
   final Color activeColor;
 
@@ -290,20 +286,17 @@ class DotCarouselPaginationBuilder extends CarouselPlugin {
 
   final Key key;
 
-  const DotCarouselPaginationBuilder(
-      {this.activeColor, this.color, this.key, this.size: 10.0, this.activeSize: 10.0, this.space: 3.0});
-
   @override
   Widget build(BuildContext context, CarouselPluginConfig config) {
     if (config.itemCount > 20) {
       print(
-          "The itemCount is too big, we suggest use FractionPaginationBuilder instead of DotCarouselPaginationBuilder in this sitituation");
+          'The itemCount is too big, we suggest use FractionPaginationBuilder instead of DotCarouselPaginationBuilder in this sitituation');
     }
     Color activeColor = this.activeColor;
     Color color = this.color;
 
     if (activeColor == null || color == null) {
-      ThemeData themeData = Theme.of(context);
+      final ThemeData themeData = Theme.of(context);
       activeColor = this.activeColor ?? themeData.primaryColor;
       color = this.color ?? themeData.scaffoldBackgroundColor;
     }
@@ -319,15 +312,15 @@ class DotCarouselPaginationBuilder extends CarouselPlugin {
           space: space);
     }
 
-    List<Widget> list = [];
+    final List<Widget> list = <Widget>[];
 
-    int itemCount = config.itemCount;
-    int activeIndex = config.activeIndex;
+    final int itemCount = config.itemCount;
+    final int activeIndex = config.activeIndex;
 
     for (int i = 0; i < itemCount; ++i) {
-      bool active = i == activeIndex;
+      final bool active = i == activeIndex;
       list.add(Container(
-          key: Key("pagination_$i"),
+          key: Key('pagination_$i'),
           margin: EdgeInsets.all(space),
           child: ClipOval(
             child: Container(
@@ -342,13 +335,16 @@ class DotCarouselPaginationBuilder extends CarouselPlugin {
 
 ///底部指示器组件
 class CarouselPagination extends CarouselPlugin {
+  const CarouselPagination(
+      {this.alignment, this.key, this.margin = const EdgeInsets.all(10.0), this.builder = CarouselPagination.dots});
+
   /// dot style pagination
-  static const CarouselPlugin dots = const DotCarouselPaginationBuilder();
+  static const CarouselPlugin dots = DotCarouselPaginationBuilder();
 
   /// fraction style pagination
-  static const CarouselPlugin fraction = const FractionPaginationBuilder();
+  static const CarouselPlugin fraction = FractionPaginationBuilder();
 
-  static const CarouselPlugin rect = const RectCarouselPaginationBuilder();
+  static const CarouselPlugin rect = RectCarouselPaginationBuilder();
 
   /// Alignment.bottomCenter by default when scrollDirection== Axis.horizontal
   /// Alignment.centerRight by default when scrollDirection== Axis.vertical
@@ -362,24 +358,22 @@ class CarouselPagination extends CarouselPlugin {
 
   final Key key;
 
-  const CarouselPagination(
-      {this.alignment, this.key, this.margin: const EdgeInsets.all(10.0), this.builder: CarouselPagination.dots});
-
+  @override
   Widget build(BuildContext context, CarouselPluginConfig config) {
-    Alignment alignment =
+    final Alignment alignment =
         this.alignment ?? (config.scrollDirection == Axis.horizontal ? Alignment.bottomCenter : Alignment.centerRight);
-    Widget child = Container(margin: margin, child: this.builder.build(context, config));
+    Widget child = Container(margin: margin, child: builder.build(context, config));
     if (!config.outer) child = Align(key: key, alignment: alignment, child: child);
     return child;
   }
 }
 
-typedef Widget CarouselPaginationBuilder(BuildContext context, CarouselPluginConfig config);
+typedef CarouselPaginationBuilder = Widget Function(BuildContext context, CarouselPluginConfig config);
 
 class CarouselCustomPagination extends CarouselPlugin {
-  final CarouselPaginationBuilder builder;
-
   CarouselCustomPagination({@required this.builder}) : assert(builder != null);
+
+  final CarouselPaginationBuilder builder;
 
   @override
   Widget build(BuildContext context, CarouselPluginConfig config) => builder(context, config);

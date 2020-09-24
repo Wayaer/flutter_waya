@@ -7,26 +7,7 @@ import 'package:flutter_waya/src/constant/way.dart';
 
 ///发送验证码
 class SendSMS extends StatefulWidget {
-  final Function onTap;
-  final Decoration decoration;
-  final BorderRadiusGeometry borderRadius;
-  final double borderWidth;
-  final double width;
-  final double height;
-  final String defaultText;
-  final String sendingText;
-  final String sentText;
-  final String notTapText;
-  final Color defaultBorderColor;
-  final Color notTapBorderColor;
-  final Color background;
-  final TextStyle defaultTextStyle;
-  final TextStyle notTapTextStyle;
-  final int seconds;
-  final EdgeInsetsGeometry margin;
-  final EdgeInsetsGeometry padding;
-
-  SendSMS(
+  const SendSMS(
       {Key key,
       this.onTap,
       this.decoration,
@@ -46,11 +27,30 @@ class SendSMS extends StatefulWidget {
       this.seconds,
       this.margin,
       this.padding})
-      : this.defaultText = defaultText ?? '获取验证码',
-        this.sendingText = sendingText ?? '发送中',
-        this.sentText = sentText ?? '重新发送',
-        this.notTapText = notTapText ?? '重新发送',
+      : defaultText = defaultText ?? '获取验证码',
+        sendingText = sendingText ?? '发送中',
+        sentText = sentText ?? '重新发送',
+        notTapText = notTapText ?? '重新发送',
         super(key: key);
+
+  final Function onTap;
+  final Decoration decoration;
+  final BorderRadiusGeometry borderRadius;
+  final double borderWidth;
+  final double width;
+  final double height;
+  final String defaultText;
+  final String sendingText;
+  final String sentText;
+  final String notTapText;
+  final Color defaultBorderColor;
+  final Color notTapBorderColor;
+  final Color background;
+  final TextStyle defaultTextStyle;
+  final TextStyle notTapTextStyle;
+  final int seconds;
+  final EdgeInsetsGeometry margin;
+  final EdgeInsetsGeometry padding;
 
   @override
   _SendSMSState createState() => _SendSMSState();
@@ -87,20 +87,20 @@ class _SendSMSState extends State<SendSMS> {
                           ? (widget.defaultBorderColor ?? getColors(blue))
                           : (widget.notTapBorderColor ?? getColors(black70))),
               borderRadius: widget.borderRadius ?? BorderRadius.circular(20)),
-      child: Text('$verifyStr',
+      child: Text(verifyStr,
           style: seconds == 0
               ? widget.defaultTextStyle ?? WayStyles.textStyleBlue(fontSize: 13)
               : widget.notTapTextStyle ?? WayStyles.textStyleBlack70(fontSize: 13)),
     );
   }
 
-  onTap() {
+  void onTap() {
     verifyStr = widget.sendingText;
     setState(() {});
     widget.onTap(send);
   }
 
-  send(bool sending) {
+  void send(bool sending) {
     if (sending) {
       startTimer();
     } else {
@@ -109,9 +109,9 @@ class _SendSMSState extends State<SendSMS> {
     }
   }
 
-  startTimer() {
+  void startTimer() {
     seconds = widget.seconds ?? 60;
-    timer = Timer.periodic(Duration(seconds: 1), (time) {
+    timer = Timer.periodic(const Duration(seconds: 1), (Timer time) {
       if (seconds == 0) {
         timer.cancel();
         return;
@@ -132,14 +132,7 @@ class _SendSMSState extends State<SendSMS> {
 
 ///点击跳过
 class CountDownSkip extends StatefulWidget {
-  final String skipText;
-  final int seconds;
-  final TextStyle textStyle;
-  final ValueChanged<int> onChange;
-  final GestureTapCallback onTap;
-  final Decoration decoration;
-
-  CountDownSkip({
+  const CountDownSkip({
     Key key,
     String skipText,
     int seconds,
@@ -147,9 +140,16 @@ class CountDownSkip extends StatefulWidget {
     this.onChange,
     this.onTap,
     this.decoration,
-  })  : this.skipText = skipText ?? '',
-        this.seconds = seconds ?? 5,
+  })  : skipText = skipText ?? '',
+        seconds = seconds ?? 5,
         super(key: key);
+
+  final String skipText;
+  final int seconds;
+  final TextStyle textStyle;
+  final ValueChanged<int> onChange;
+  final GestureTapCallback onTap;
+  final Decoration decoration;
 
   @override
   _CountDownSkipState createState() => _CountDownSkipState();
@@ -163,9 +163,9 @@ class _CountDownSkipState extends State<CountDownSkip> {
   void initState() {
     super.initState();
     seconds = widget.seconds;
-    Tools.addPostFrameCallback((callback) {
+    Tools.addPostFrameCallback((Duration callback) {
       if (seconds > 0) {
-        timer = Timer.periodic(Duration(seconds: 1), (time) {
+        timer = Timer.periodic(const Duration(seconds: 1), (Timer time) {
           seconds -= 1;
           setState(() {});
           if (widget.onChange != null) widget.onChange(seconds);
@@ -191,6 +191,28 @@ class _CountDownSkipState extends State<CountDownSkip> {
 
 ///侧滑菜单
 class CustomDismissible extends StatelessWidget {
+  const CustomDismissible(
+      {Key key,
+      this.background,
+      this.secondaryBackground,
+      this.confirmDismiss,
+      this.onResize,
+      this.onDismissed,
+      DismissDirection direction,
+      Duration resizeDuration,
+      Map<DismissDirection, double> dismissThresholds,
+      Duration movementDuration,
+      double crossAxisEndOffset,
+      DragStartBehavior dragStartBehavior,
+      this.child})
+      : direction = direction ?? DismissDirection.horizontal,
+        resizeDuration = resizeDuration ?? const Duration(milliseconds: 300),
+        dismissThresholds = dismissThresholds ?? const <DismissDirection, double>{},
+        movementDuration = movementDuration ?? const Duration(milliseconds: 200),
+        crossAxisEndOffset = crossAxisEndOffset ?? 0.0,
+        dragStartBehavior = dragStartBehavior ?? DragStartBehavior.start,
+        super(key: key);
+
   ///子组件
   final Widget child;
 
@@ -233,28 +255,6 @@ class CustomDismissible extends StatelessWidget {
   ///默认DragStartBehavior.start
   final DragStartBehavior dragStartBehavior;
 
-  const CustomDismissible(
-      {Key key,
-      this.background,
-      this.secondaryBackground,
-      this.confirmDismiss,
-      this.onResize,
-      this.onDismissed,
-      DismissDirection direction,
-      Duration resizeDuration,
-      Map<DismissDirection, double> dismissThresholds,
-      Duration movementDuration,
-      double crossAxisEndOffset,
-      DragStartBehavior dragStartBehavior,
-      this.child})
-      : this.direction = direction ?? DismissDirection.horizontal,
-        this.resizeDuration = resizeDuration ?? const Duration(milliseconds: 300),
-        this.dismissThresholds = dismissThresholds ?? const <DismissDirection, double>{},
-        this.movementDuration = movementDuration ?? const Duration(milliseconds: 200),
-        this.crossAxisEndOffset = crossAxisEndOffset ?? 0.0,
-        this.dragStartBehavior = dragStartBehavior ?? DragStartBehavior.start,
-        super(key: key);
-
   @override
   Widget build(BuildContext context) => Dismissible(
       child: child,
@@ -274,22 +274,6 @@ class CustomDismissible extends StatelessWidget {
 
 ///组件右上角加红点
 class HintDot extends StatelessWidget {
-  final Widget child;
-  final Widget pointChild;
-  final double width;
-  final double height;
-  final GestureTapCallback onTap;
-  final EdgeInsetsGeometry margin;
-  final EdgeInsetsGeometry pointPadding;
-  final Color pointColor;
-  final double pointSize;
-  final bool hide;
-  final double top;
-  final double right;
-  final double bottom;
-  final double left;
-  final AlignmentGeometry alignment;
-
   const HintDot(
       {Key key,
       @required this.child,
@@ -307,13 +291,29 @@ class HintDot extends StatelessWidget {
       bool hide,
       this.pointChild,
       this.alignment})
-      : this.hide = hide ?? false,
+      : hide = hide ?? false,
         super(key: key);
+
+  final Widget child;
+  final Widget pointChild;
+  final double width;
+  final double height;
+  final GestureTapCallback onTap;
+  final EdgeInsetsGeometry margin;
+  final EdgeInsetsGeometry pointPadding;
+  final Color pointColor;
+  final double pointSize;
+  final bool hide;
+  final double top;
+  final double right;
+  final double bottom;
+  final double left;
+  final AlignmentGeometry alignment;
 
   @override
   Widget build(BuildContext context) {
     if (hide) return child;
-    List<Widget> children = [];
+    final List<Widget> children = <Widget>[];
     if (child != null) children.add(child);
     Widget dot = dotWidget();
     if (alignment != null) dot = Align(alignment: alignment, child: dot);
@@ -332,12 +332,6 @@ class HintDot extends StatelessWidget {
 }
 
 class CustomDrawer extends StatefulWidget {
-  final Color backgroundColor;
-  final Widget child;
-  final DrawerCallback callback;
-  final double width;
-  final double elevation;
-
   CustomDrawer({
     Key key,
     double elevation,
@@ -345,9 +339,15 @@ class CustomDrawer extends StatefulWidget {
     @required this.child,
     this.backgroundColor,
     this.callback,
-  })  : this.width = width ?? getWidth(0) * 0.7,
-        this.elevation = elevation ?? 16.0,
+  })  : width = width ?? getWidth(0) * 0.7,
+        elevation = elevation ?? 16.0,
         super(key: key);
+
+  final Color backgroundColor;
+  final Widget child;
+  final DrawerCallback callback;
+  final double width;
+  final double elevation;
 
   @override
   _CustomDrawerState createState() => _CustomDrawerState();
@@ -369,8 +369,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
-      constraints: BoxConstraints(maxWidth: widget.width),
-      child: PopupBase(color: widget.backgroundColor, child: widget.child),
-    );
+        constraints: BoxConstraints(maxWidth: widget.width),
+        child: PopupBase(color: widget.backgroundColor, child: widget.child));
   }
 }

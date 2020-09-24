@@ -220,9 +220,9 @@ const String z = 'z';
 const String Z = 'Z';
 
 String formatDate(DateTime date, List<String> formats) {
-  final sb = StringBuffer();
+  final StringBuffer sb = StringBuffer();
 
-  for (String format in formats) {
+  for (final String format in formats) {
     if (format == yyyy) {
       sb.write(_digits(date.year, 4));
     } else if (format == yy) {

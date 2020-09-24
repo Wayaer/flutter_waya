@@ -116,7 +116,7 @@ class _AzIndexBarState extends State<AzIndexBar> {
 
   /// get index.
   int getIndex(int offset) {
-    for (int i = 0, length = indexSectionList.length; i < length - 1; i++) {
+    for (int i = 0; i < indexSectionList.length - 1; i++) {
       final int a = indexSectionList[i];
       final int b = indexSectionList[i + 1];
       if (offset >= a && offset < b) {
@@ -131,10 +131,10 @@ class _AzIndexBarState extends State<AzIndexBar> {
     indexSectionList.clear();
     indexSectionList.add(0);
     int tempHeight = 0;
-    widget.data?.forEach((String value) {
+    widget.data?.map((String value) {
       tempHeight = tempHeight + widget.size;
       indexSectionList.add(tempHeight);
-    });
+    })?.toList();
   }
 
   void triggerTouchEvent() {
@@ -144,7 +144,7 @@ class _AzIndexBarState extends State<AzIndexBar> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> children = <Widget>[];
-    widget.data.forEach((String v) {
+    widget.data.map((String v) {
       children.add(Container(
         decoration: BoxDecoration(
             color: indexModel.isTouchDown == true && v == indexModel.tag ? onTouchColor : color,
@@ -157,7 +157,7 @@ class _AzIndexBarState extends State<AzIndexBar> {
             style:
                 indexModel.isTouchDown == true && v == indexModel.tag ? widget.touchDownTextStyle : widget.textStyle),
       ));
-    });
+    })?.toList();
 
     return Container(
         padding: widget.padding,

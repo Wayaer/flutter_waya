@@ -118,7 +118,7 @@ double phoneFitHeight(BuildContext context) {
 }
 
 ///相对iphone 6s 尺寸设计稿 高
-double getHeight(double height, {bool ratioFit}) {
+double getHeight([double height, bool ratioFit]) {
   ratioFit ??= _ratioFit;
   double h;
   if (height == null || height == 0) {
@@ -131,7 +131,7 @@ double getHeight(double height, {bool ratioFit}) {
 }
 
 ///相对iphone 6s 尺寸设计稿 宽
-double getWidth(double width, {bool ratioFit}) {
+double getWidth([double width, bool ratioFit]) {
   ratioFit ??= _ratioFit;
   double w;
   if (width == null || width == 0) {

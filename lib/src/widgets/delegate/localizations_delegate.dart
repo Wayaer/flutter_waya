@@ -43,9 +43,9 @@ class _DefaultCupertinoLocalizations extends CupertinoLocalizations {
       'today': '今天'
     }
   };
-  final Map<String, List> _months = <String, List>{
-    'en': ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-    'enl': [
+  final Map<String, List<String>> _months = <String, List<String>>{
+    'en': <String>['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    'enl': <String>[
       'January',
       'February',
       'March',
@@ -59,12 +59,12 @@ class _DefaultCupertinoLocalizations extends CupertinoLocalizations {
       'November',
       'December'
     ],
-    'zh': ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
+    'zh': <String>['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
   };
-  final Map<String, List> _weekDays = <String, List>{
-    'en': ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'],
-    'enl': ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-    'zh': ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+  final Map<String, List<String>> _weekDays = <String, List<String>>{
+    'en': <String>['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'],
+    'enl': <String>['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+    'zh': <String>['周一', '周二', '周三', '周四', '周五', '周六', '周日']
   };
 
   String _get(String key) => _dict[_languageCode][key];
@@ -149,20 +149,20 @@ class _DefaultCupertinoLocalizations extends CupertinoLocalizations {
   String timerPickerSecondLabel(int second) => '秒';
 
   @override
-  String get modalBarrierDismissLabel => "";
+  String get modalBarrierDismissLabel => '';
 
   @override
-  String tabSemanticsLabel({int tabIndex, int tabCount}) => "";
+  String tabSemanticsLabel({int tabIndex, int tabCount}) => '';
 }
 
 class ChineseCupertinoLocalizations implements CupertinoLocalizations {
-  final materialDelegate = GlobalMaterialLocalizations.delegate;
-  final widgetsDelegate = GlobalWidgetsLocalizations.delegate;
-  final local = const Locale('zh');
+  final LocalizationsDelegate<MaterialLocalizations> materialDelegate = GlobalMaterialLocalizations.delegate;
+  final LocalizationsDelegate<WidgetsLocalizations> widgetsDelegate = GlobalWidgetsLocalizations.delegate;
+  final Locale local = const Locale('zh');
 
   MaterialLocalizations ml;
 
-  Future init() async {
+  Future<void> init() async {
     ml = await materialDelegate.load(local);
     print(ml.pasteButtonLabel);
   }
@@ -200,10 +200,10 @@ class ChineseCupertinoLocalizations implements CupertinoLocalizations {
   }
 
   @override
-  String datePickerHour(int hour) => hour.toString().padLeft(2, "0");
+  String datePickerHour(int hour) => hour.toString().padLeft(2, '0');
 
   @override
-  String datePickerHourSemanticsLabel(int hour) => "$hour" + "时";
+  String datePickerHourSemanticsLabel(int hour) => '$hour时';
 
   @override
   String datePickerMediumDate(DateTime date) => ml.formatMediumDate(date);
@@ -212,31 +212,31 @@ class ChineseCupertinoLocalizations implements CupertinoLocalizations {
   String datePickerMinute(int minute) => minute.toString().padLeft(2, '0');
 
   @override
-  String datePickerMinuteSemanticsLabel(int minute) => "$minute" + "分";
+  String datePickerMinuteSemanticsLabel(int minute) => '$minute分';
 
   @override
-  String datePickerMonth(int monthIndex) => "$monthIndex";
+  String datePickerMonth(int monthIndex) => '$monthIndex';
 
   @override
   String datePickerYear(int yearIndex) => yearIndex.toString();
 
   @override
-  String timerPickerHour(int hour) => hour.toString().padLeft(2, "0");
+  String timerPickerHour(int hour) => hour.toString().padLeft(2, '0');
 
   @override
-  String timerPickerHourLabel(int hour) => "$hour".toString().padLeft(2, "0") + "时";
+  String timerPickerHourLabel(int hour) => hour.toString().padLeft(2, '0') + '时';
 
   @override
-  String timerPickerMinute(int minute) => minute.toString().padLeft(2, "0");
+  String timerPickerMinute(int minute) => minute.toString().padLeft(2, '0');
 
   @override
-  String timerPickerMinuteLabel(int minute) => minute.toString().padLeft(2, "0") + "分";
+  String timerPickerMinuteLabel(int minute) => minute.toString().padLeft(2, '0') + '分';
 
   @override
-  String timerPickerSecond(int second) => second.toString().padLeft(2, "0");
+  String timerPickerSecond(int second) => second.toString().padLeft(2, '0');
 
   @override
-  String timerPickerSecondLabel(int second) => second.toString().padLeft(2, "0") + "秒";
+  String timerPickerSecondLabel(int second) => second.toString().padLeft(2, '0') + '秒';
 
   static const LocalizationsDelegate<CupertinoLocalizations> delegate = _ChineseDelegate();
 
@@ -253,7 +253,7 @@ class ChineseCupertinoLocalizations implements CupertinoLocalizations {
   String tabSemanticsLabel({int tabIndex, int tabCount}) => '';
 
   @override
-  String get todayLabel => "今天";
+  String get todayLabel => '今天';
 }
 
 class _ChineseDelegate extends LocalizationsDelegate<CupertinoLocalizations> {

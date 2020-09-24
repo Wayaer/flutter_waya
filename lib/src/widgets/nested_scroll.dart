@@ -5,6 +5,74 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class NestedScrollSliver extends StatefulWidget {
+  const NestedScrollSliver({
+    Key key,
+    Axis scrollDirection,
+    DragStartBehavior dragStartBehavior,
+    bool reverse,
+    bool floatHeaderSlivers,
+    Clip clipBehavior,
+    List<StretchMode> stretchModes,
+    CollapseMode collapseMode,
+    double titleSpacing,
+    bool expanded,
+    bool primary,
+    bool centerTitle,
+    bool snap,
+    bool pinned,
+    bool floating,
+    bool stretch,
+    double stretchTriggerOffset,
+    Brightness brightness,
+    double elevation,
+    bool haveSliverHeader,
+    bool haveSliverAppBar,
+    bool automaticallyImplyLeading,
+    bool forceElevated,
+    Duration duration,
+    this.physics,
+    this.body,
+    this.controller,
+    this.title,
+    this.actions,
+    this.backgroundColor,
+    this.iconTheme,
+    this.textTheme,
+    this.actionsIconTheme,
+    this.onStretchTrigger,
+    this.leading,
+    this.bottom,
+    this.titlePadding,
+    this.flexibleSpaceTitle,
+    this.preferredSize,
+    this.headerSliverBuilder,
+    this.foldBody,
+    this.slivers,
+  })  : reverse = reverse ?? false,
+        expanded = expanded ?? false,
+        haveSliverAppBar = haveSliverAppBar ?? false,
+        haveSliverHeader = haveSliverHeader ?? false,
+        pinned = pinned ?? false,
+        floating = floating ?? false,
+        floatHeaderSlivers = floatHeaderSlivers ?? true,
+        clipBehavior = clipBehavior ?? Clip.hardEdge,
+        automaticallyImplyLeading = automaticallyImplyLeading ?? true,
+        forceElevated = forceElevated ?? false,
+        centerTitle = centerTitle ?? true,
+        snap = snap ?? false,
+        primary = primary ?? true,
+        stretch = stretch ?? false,
+        brightness = brightness ?? Brightness.light,
+        elevation = elevation ?? 0.5,
+        duration = duration ?? const Duration(milliseconds: 400),
+        stretchTriggerOffset = stretchTriggerOffset ?? 100,
+        stretchModes = stretchModes ?? const <StretchMode>[StretchMode.zoomBackground],
+        collapseMode = collapseMode ?? CollapseMode.parallax,
+        titleSpacing = titleSpacing ?? NavigationToolbar.kMiddleSpacing,
+        dragStartBehavior = dragStartBehavior ?? DragStartBehavior.start,
+        scrollDirection = scrollDirection ?? Axis.vertical,
+        super(key: key);
+
   ///
   ///NestedScrollView
   final bool floatHeaderSlivers;
@@ -72,74 +140,6 @@ class NestedScrollSliver extends StatefulWidget {
   ///需要折叠隐藏的区域
   final Widget foldBody;
 
-  const NestedScrollSliver({
-    Key key,
-    Axis scrollDirection,
-    DragStartBehavior dragStartBehavior,
-    bool reverse,
-    bool floatHeaderSlivers,
-    Clip clipBehavior,
-    List<StretchMode> stretchModes,
-    CollapseMode collapseMode,
-    double titleSpacing,
-    bool expanded,
-    bool primary,
-    bool centerTitle,
-    bool snap,
-    bool pinned,
-    bool floating,
-    bool stretch,
-    double stretchTriggerOffset,
-    Brightness brightness,
-    double elevation,
-    bool haveSliverHeader,
-    bool haveSliverAppBar,
-    bool automaticallyImplyLeading,
-    bool forceElevated,
-    Duration duration,
-    this.physics,
-    this.body,
-    this.controller,
-    this.title,
-    this.actions,
-    this.backgroundColor,
-    this.iconTheme,
-    this.textTheme,
-    this.actionsIconTheme,
-    this.onStretchTrigger,
-    this.leading,
-    this.bottom,
-    this.titlePadding,
-    this.flexibleSpaceTitle,
-    this.preferredSize,
-    this.headerSliverBuilder,
-    this.foldBody,
-    this.slivers,
-  })  : this.reverse = reverse ?? false,
-        this.expanded = expanded ?? false,
-        this.haveSliverAppBar = haveSliverAppBar ?? false,
-        this.haveSliverHeader = haveSliverHeader ?? false,
-        this.pinned = pinned ?? false,
-        this.floating = floating ?? false,
-        this.floatHeaderSlivers = floatHeaderSlivers ?? true,
-        this.clipBehavior = clipBehavior ?? Clip.hardEdge,
-        this.automaticallyImplyLeading = automaticallyImplyLeading ?? true,
-        this.forceElevated = forceElevated ?? false,
-        this.centerTitle = centerTitle ?? true,
-        this.snap = snap ?? false,
-        this.primary = primary ?? true,
-        this.stretch = stretch ?? false,
-        this.brightness = brightness ?? Brightness.light,
-        this.elevation = elevation ?? 0.5,
-        this.duration = duration ?? const Duration(milliseconds: 400),
-        this.stretchTriggerOffset = stretchTriggerOffset ?? 100,
-        this.stretchModes = stretchModes ?? const <StretchMode>[StretchMode.zoomBackground],
-        this.collapseMode = collapseMode ?? CollapseMode.parallax,
-        this.titleSpacing = titleSpacing ?? NavigationToolbar.kMiddleSpacing,
-        this.dragStartBehavior = dragStartBehavior ?? DragStartBehavior.start,
-        this.scrollDirection = scrollDirection ?? Axis.vertical,
-        super(key: key);
-
   @override
   _NestedScrollSliverState createState() => _NestedScrollSliverState();
 }
@@ -153,7 +153,7 @@ class _NestedScrollSliverState extends State<NestedScrollSliver> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((callback) {
+    WidgetsBinding.instance.addPostFrameCallback((Duration callback) {
       Timer(widget.duration, () {
         foldSize = foldKey.currentContext.size;
         showNestedScrollView = true;
@@ -165,8 +165,9 @@ class _NestedScrollSliverState extends State<NestedScrollSliver> {
   @override
   Widget build(BuildContext context) {
     if (!showNestedScrollView)
-      return Column(mainAxisSize: MainAxisSize.min, children: [Container(key: foldKey, child: widget.foldBody)]);
-    var nestedScroll = NestedScrollView(
+      return Column(
+          mainAxisSize: MainAxisSize.min, children: <Widget>[Container(key: foldKey, child: widget.foldBody)]);
+    final NestedScrollView nestedScroll = NestedScrollView(
         floatHeaderSlivers: widget.floatHeaderSlivers,
         clipBehavior: widget.clipBehavior,
         scrollDirection: widget.scrollDirection,
@@ -182,10 +183,10 @@ class _NestedScrollSliverState extends State<NestedScrollSliver> {
   }
 
   List<Widget> headerSliverBuilder() {
-    List<Widget> children = [];
+    final List<Widget> children = <Widget>[];
     if (widget.haveSliverAppBar) children.add(sliverAppBar());
     if (widget.haveSliverHeader) children.add(sliverPersistentHeader());
-    if (widget.slivers != null && widget.slivers.length > 0) children.addAll(widget.slivers);
+    if (widget.slivers != null && widget.slivers.isNotEmpty) children.addAll(widget.slivers);
     return children;
   }
 
@@ -228,9 +229,9 @@ class _NestedScrollSliverState extends State<NestedScrollSliver> {
 }
 
 class FoldPersistentHeader extends SliverPersistentHeaderDelegate {
-  final PreferredSize child;
-
   FoldPersistentHeader({@required this.child});
+
+  final PreferredSize child;
 
   @override
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) => child;

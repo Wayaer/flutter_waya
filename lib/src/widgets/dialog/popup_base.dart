@@ -4,6 +4,40 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 class PopupBase extends StatefulWidget {
+  const PopupBase(
+      {Key key,
+      this.child,
+      this.onTap,
+      double fuzzyDegree,
+      bool gaussian,
+      bool ignoring,
+      bool animationOpacity,
+      this.color,
+      bool addMaterial,
+      bool handleTouch,
+      bool animation,
+      PopupMode popupMode,
+      double left,
+      double top,
+      double right,
+      double bottom,
+      AlignmentGeometry alignment,
+      this.behavior})
+      : top = top ?? 0,
+        left = left ?? 0,
+        right = right ?? 0,
+        bottom = bottom ?? 0,
+        alignment = alignment ?? Alignment.center,
+        gaussian = gaussian ?? false,
+        addMaterial = addMaterial ?? false,
+        handleTouch = handleTouch ?? true,
+        popupMode = popupMode ?? PopupMode.center,
+        animation = animation ?? true,
+        ignoring = ignoring ?? false,
+        animationOpacity = animationOpacity ?? false,
+        fuzzyDegree = fuzzyDegree ?? 2,
+        super(key: key);
+
   final Widget child;
   final GestureTapCallback onTap;
   final HitTestBehavior behavior;
@@ -31,40 +65,6 @@ class PopupBase extends StatefulWidget {
 
   ///是否可以操作背景
   final bool ignoring;
-
-  const PopupBase(
-      {Key key,
-      this.child,
-      this.onTap,
-      int fuzzyDegree,
-      bool gaussian,
-      bool ignoring,
-      bool animationOpacity,
-      this.color,
-      bool addMaterial,
-      bool handleTouch,
-      bool animation,
-      PopupMode popupMode,
-      double left,
-      double top,
-      double right,
-      double bottom,
-      AlignmentGeometry alignment,
-      this.behavior})
-      : this.top = top ?? 0,
-        this.left = left ?? 0,
-        this.right = right ?? 0,
-        this.bottom = bottom ?? 0,
-        this.alignment = alignment ?? Alignment.center,
-        this.gaussian = gaussian ?? false,
-        this.addMaterial = addMaterial ?? false,
-        this.handleTouch = handleTouch ?? true,
-        this.popupMode = popupMode ?? PopupMode.center,
-        this.animation = animation ?? true,
-        this.ignoring = ignoring ?? false,
-        this.animationOpacity = animationOpacity ?? false,
-        this.fuzzyDegree = fuzzyDegree ?? 2,
-        super(key: key);
 
   @override
   _PopupBaseState createState() => _PopupBaseState();
@@ -106,7 +106,7 @@ class _PopupBaseState extends State<PopupBase> {
           break;
       }
     }
-    WidgetsBinding.instance.addPostFrameCallback((callback) {
+    WidgetsBinding.instance.addPostFrameCallback((Duration callback) {
       if (animation) {
         opacity = 1;
         popupDistance = 0;
@@ -142,14 +142,14 @@ class _PopupBaseState extends State<PopupBase> {
       right: popupMode == PopupMode.right ? popupDistance : 0,
       bottom: popupMode == PopupMode.bottom ? popupDistance : 0,
       curve: Curves.easeIn,
-      duration: Duration(milliseconds: 200),
+      duration: const Duration(milliseconds: 200),
       child: child);
 
   Widget backdropFilter(Widget child) =>
       BackdropFilter(filter: ImageFilter.blur(sigmaX: fuzzyDegree, sigmaY: fuzzyDegree), child: child);
 
-  Widget animatedOpacity(Widget child) =>
-      AnimatedOpacity(opacity: opacity, curve: Curves.slowMiddle, duration: Duration(milliseconds: 200), child: child);
+  Widget animatedOpacity(Widget child) => AnimatedOpacity(
+      opacity: opacity, curve: Curves.slowMiddle, duration: const Duration(milliseconds: 200), child: child);
 
   Widget childWidget() => Universal(
       color: widget.color,

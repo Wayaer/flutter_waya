@@ -14,7 +14,7 @@ class AzListHeader {
   AzListHeader({
     @required this.height,
     @required this.builder,
-    this.tag = "↑",
+    this.tag = '↑',
   });
 
   final int height;
@@ -28,10 +28,10 @@ class SuspensionUtil {
   /// 根据[A-Z]排序。
   static void sortListBySuspensionTag(List<SuspensionModel> list) {
     if (list == null || list.isEmpty) return;
-    list.sort((a, b) {
-      if (a.getSuspensionTag() == "@" || b.getSuspensionTag() == "#") {
+    list.sort((SuspensionModel a, SuspensionModel b) {
+      if (a.getSuspensionTag() == '@' || b.getSuspensionTag() == '#') {
         return -1;
-      } else if (a.getSuspensionTag() == "#" || b.getSuspensionTag() == "@") {
+      } else if (a.getSuspensionTag() == '#' || b.getSuspensionTag() == '@') {
         return 1;
       } else {
         return a.getSuspensionTag().compareTo(b.getSuspensionTag());
@@ -42,11 +42,11 @@ class SuspensionUtil {
   /// get index data list by suspension tag.
   /// 获取索引列表。
   static List<String> getTagIndexList(List<SuspensionModel> list) {
-    List<String> indexData = List();
+    final List<String> indexData = <String>[];
     if (list != null && list.isNotEmpty) {
       String tempTag;
-      for (int i = 0, length = list.length; i < length; i++) {
-        String tag = list[i].getSuspensionTag();
+      for (final SuspensionModel item in list) {
+        String tag = item.getSuspensionTag();
         if (tag.length > 2) tag = tag.substring(0, 2);
         if (tempTag != tag) {
           indexData.add(tag);
@@ -62,8 +62,8 @@ class SuspensionUtil {
   static void setShowSuspensionStatus(List<SuspensionModel> list) {
     if (list == null || list.isEmpty) return;
     String tempTag;
-    for (int i = 0, length = list.length; i < length; i++) {
-      String tag = list[i].getSuspensionTag();
+    for (int i = 0; i < list.length; i++) {
+      final String tag = list[i].getSuspensionTag();
       if (tempTag != tag) {
         tempTag = tag;
         list[i].isShowSuspension = true;
@@ -75,10 +75,25 @@ class SuspensionUtil {
 }
 
 /// on all sus section callback(map: Used to scroll the list to the specified tag location).
-typedef void OnSusSectionCallBack(Map<String, int> map);
+typedef OnSusSectionCallBack = void Function(Map<String, int> map);
 
 ///Suspension Widget.Currently only supports fixed height items!
 class Suspension extends StatefulWidget {
+  const Suspension({
+    Key key,
+    @required this.data,
+    @required this.contentWidget,
+    @required this.suspensionWidget,
+    @required this.controller,
+    this.suspensionHeight = 80,
+    this.itemHeight = 50,
+    this.onSusTagChanged,
+    this.onSusSection,
+    this.header,
+  })  : assert(contentWidget != null),
+        assert(controller != null),
+        super(key: key);
+
   /// with  ISuspensionBean Data
   final List<SuspensionModel> data;
 
@@ -105,21 +120,6 @@ class Suspension extends StatefulWidget {
 
   final AzListHeader header;
 
-  Suspension({
-    Key key,
-    @required this.data,
-    @required this.contentWidget,
-    @required this.suspensionWidget,
-    @required this.controller,
-    this.suspensionHeight = 80,
-    this.itemHeight = 50,
-    this.onSusTagChanged,
-    this.onSusSection,
-    this.header,
-  })  : assert(contentWidget != null),
-        assert(controller != null),
-        super(key: key);
-
   @override
   SuspensionState createState() => SuspensionState();
 }
@@ -129,8 +129,8 @@ class SuspensionState extends State<Suspension> {
   int lastIndex;
   int suSectionListLength;
 
-  List<int> suspensionSectionList = List();
-  Map<String, int> suspensionSectionMap = Map();
+  List<int> suspensionSectionList = <int>[];
+  Map<String, int> suspensionSectionMap = <String, int>{};
 
   @override
   void initState() {
@@ -139,8 +139,8 @@ class SuspensionState extends State<Suspension> {
       suspensionTop = -widget.header.height;
     }
     widget.controller.addListener(() {
-      int offset = widget.controller.offset.toInt();
-      int index = getIndex(offset);
+      final int offset = widget.controller.offset.toInt();
+      final int index = getIndex(offset);
       if (index != -1 && lastIndex != index) {
         lastIndex = index;
         if (widget.onSusTagChanged != null) {
@@ -153,9 +153,8 @@ class SuspensionState extends State<Suspension> {
   int getIndex(int offset) {
     if (widget.header != null && offset < widget.header.height) {
       if (suspensionTop != -widget.header.height && widget.suspensionWidget != null) {
-        setState(() {
-          suspensionTop = -widget.header.height;
-        });
+        suspensionTop = -widget.header.height;
+        setState(() {});
       }
       return 0;
     }
@@ -167,18 +166,13 @@ class SuspensionState extends State<Suspension> {
         space = 0;
       }
       if (suspensionTop != space && widget.suspensionWidget != null) {
-        setState(() {
-          suspensionTop = space;
-        });
+        suspensionTop = space;
+        setState(() {});
       }
-      int a = suspensionSectionList[i];
-      int b = suspensionSectionList[i + 1];
-      if (offset >= a && offset < b) {
-        return i;
-      }
-      if (offset >= suspensionSectionList[suSectionListLength - 1]) {
-        return suSectionListLength - 1;
-      }
+      final int a = suspensionSectionList[i];
+      final int b = suspensionSectionList[i + 1];
+      if (offset >= a && offset < b) return i;
+      if (offset >= suspensionSectionList[suSectionListLength - 1]) return suSectionListLength - 1;
     }
     return -1;
   }
@@ -191,7 +185,7 @@ class SuspensionState extends State<Suspension> {
       suspensionSectionMap[widget.header.tag] = 0;
       offset = widget.header.height;
     }
-    widget.data?.forEach((v) {
+    widget.data?.map((SuspensionModel v) {
       if (tag != v.getSuspensionTag()) {
         tag = v.getSuspensionTag();
         suspensionSectionMap.putIfAbsent(tag, () => offset);
@@ -199,7 +193,7 @@ class SuspensionState extends State<Suspension> {
       } else {
         offset = offset + widget.itemHeight;
       }
-    });
+    })?.toList();
     suspensionSectionList
       ..clear()
       ..addAll(suspensionSectionMap.values);
@@ -212,17 +206,15 @@ class SuspensionState extends State<Suspension> {
   @override
   Widget build(BuildContext context) {
     init();
-    var children = <Widget>[
-      widget.contentWidget,
-    ];
+    final List<Widget> children = <Widget>[widget.contentWidget];
     if (widget.suspensionWidget != null) {
       children.add(Positioned(
-        ///-0.1修复部分手机丢失精度问题
-        top: suspensionTop.toDouble() - 0.1,
-        left: 0.0,
-        right: 0.0,
-        child: widget.suspensionWidget,
-      ));
+
+          ///-0.1修复部分手机丢失精度问题
+          top: suspensionTop.toDouble() - 0.1,
+          left: 0.0,
+          right: 0.0,
+          child: widget.suspensionWidget));
     }
     return Stack(children: children);
   }

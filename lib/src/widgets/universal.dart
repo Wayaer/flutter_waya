@@ -4,6 +4,177 @@ import 'package:flutter_waya/flutter_waya.dart';
 
 class Universal extends StatelessWidget {
 
+  const Universal({
+    Key key,
+    bool isScroll,
+    bool isStack,
+    bool enabled,
+    bool addInkWell,
+    bool reverse,
+    bool canRequestFocus,
+    bool borderOnForeground,
+    bool enableFeedback,
+    bool excludeFromSemantics,
+    bool autoFocus,
+    bool sizedBoxExpand,
+    bool visible,
+    bool offstage,
+    bool maintainState,
+    bool maintainAnimation,
+    bool maintainSize,
+    bool maintainSemantics,
+    bool maintainInteractivity,
+    bool expanded,
+    bool isFlexible,
+    bool isCircleAvatar,
+    bool isClip,
+    bool addCard,
+    bool transitionOnUserGestures,
+    bool semanticContainer,
+    MaterialType type,
+    double elevation,
+    Clip clipBehavior,
+    DragStartBehavior dragStartBehavior,
+    Duration animationDuration,
+    Color shadowColor,
+    Widget replacement,
+    StackFit stackFit,
+    Overflow overflow,
+    MainAxisAlignment mainAxisAlignment,
+    CrossAxisAlignment crossAxisAlignment,
+    Axis direction,
+    VerticalDirection verticalDirection,
+    MainAxisSize mainAxisSize,
+    HitTestBehavior behavior,
+    BorderRadius borderRadius,
+    Color color,
+    int flex,
+    FlexFit flexFit,
+    this.child,
+    this.children,
+    this.padding,
+    this.physics,
+    this.scrollController,
+    this.primary,
+    this.foregroundDecoration,
+    this.transform,
+    this.constraints,
+    this.width,
+    this.height,
+    this.margin,
+    this.decoration,
+    this.alignment,
+    this.textBaseline,
+    this.textDirection,
+    this.onTap,
+    this.onTapDown,
+    this.onTapUp,
+    this.onTapCancel,
+    this.onSecondaryTapDown,
+    this.onSecondaryTapUp,
+    this.onSecondaryTapCancel,
+    this.onDoubleTap,
+    this.onLongPress,
+    this.onLongPressStart,
+    this.onLongPressMoveUpdate,
+    this.onLongPressUp,
+    this.onLongPressEnd,
+    this.onVerticalDragDown,
+    this.onVerticalDragStart,
+    this.onVerticalDragUpdate,
+    this.onVerticalDragEnd,
+    this.onVerticalDragCancel,
+    this.onHorizontalDragDown,
+    this.onHorizontalDragStart,
+    this.onHorizontalDragUpdate,
+    this.onHorizontalDragEnd,
+    this.onHorizontalDragCancel,
+    this.onPanDown,
+    this.onPanStart,
+    this.onPanUpdate,
+    this.onPanEnd,
+    this.onPanCancel,
+    this.onScaleStart,
+    this.onScaleUpdate,
+    this.onScaleEnd,
+    this.onForcePressStart,
+    this.onForcePressPeak,
+    this.onForcePressUpdate,
+    this.onForcePressEnd,
+    this.textStyle,
+    this.shape,
+    this.onHighlightChanged,
+    this.onHover,
+    this.focusColor,
+    this.hoverColor,
+    this.highlightColor,
+    this.splashColor,
+    this.splashFactory,
+    this.radius,
+    this.customBorder,
+    this.focusNode,
+    this.onFocusChange,
+    this.heroTag,
+    this.createRectTween,
+    this.flightShuttleBuilder,
+    this.placeholderBuilder,
+    this.backgroundImage,
+    this.onBackgroundImageError,
+    this.foregroundColor,
+    this.minRadius,
+    this.maxRadius,
+    this.clipperRRect,
+    this.clipperRect,
+    this.clipperPath,
+  })
+      : isScroll = isScroll ?? false,
+        addCard = addCard ?? false,
+        semanticContainer = semanticContainer ?? true,
+        maintainState = maintainState ?? false,
+        transitionOnUserGestures = transitionOnUserGestures ?? false,
+        expanded = expanded ?? false,
+        isFlexible = isFlexible ?? false,
+        isStack = isStack ?? false,
+        isCircleAvatar = isCircleAvatar ?? false,
+        isClip = isClip ?? false,
+        maintainAnimation = maintainAnimation ?? false,
+        maintainSize = maintainSize ?? false,
+        maintainSemantics = maintainSemantics ?? false,
+        maintainInteractivity = maintainInteractivity ?? false,
+        enabled = enabled ?? false,
+        addInkWell = addInkWell ?? false,
+        reverse = reverse ?? false,
+        autoFocus = autoFocus ?? false,
+        sizedBoxExpand = sizedBoxExpand ?? false,
+        excludeFromSemantics = excludeFromSemantics ?? false,
+        borderOnForeground = borderOnForeground ?? true,
+        enableFeedback = enableFeedback ?? true,
+        canRequestFocus = canRequestFocus ?? true,
+        visible = visible ?? true,
+        offstage = offstage ?? false,
+        dragStartBehavior = dragStartBehavior ?? DragStartBehavior.start,
+        type = type ?? MaterialType.canvas,
+        elevation = elevation ?? 0.0,
+        flex = flex ?? 1,
+        clipBehavior = clipBehavior ?? Clip.none,
+        shadowColor = shadowColor ?? Colors.transparent,
+        animationDuration = animationDuration ?? kThemeChangeDuration,
+        replacement = replacement ?? const SizedBox.shrink(),
+        stackFit = stackFit ?? StackFit.loose,
+        overflow = overflow ?? Overflow.clip,
+        mainAxisSize = mainAxisSize ?? MainAxisSize.max,
+        mainAxisAlignment = mainAxisAlignment ?? MainAxisAlignment.start,
+        crossAxisAlignment =
+            crossAxisAlignment ?? CrossAxisAlignment.center,
+        verticalDirection = verticalDirection ?? VerticalDirection.down,
+        direction = direction ?? Axis.vertical,
+        behavior = behavior ?? HitTestBehavior.opaque,
+        borderRadius = borderRadius ?? BorderRadius.zero,
+        color = color ?? Colors.transparent,
+        flexFit = flexFit ?? FlexFit.loose,
+        super(key: key);
+
+
   ///public
   final EdgeInsetsGeometry padding;
   final DragStartBehavior dragStartBehavior;
@@ -35,7 +206,7 @@ class Universal extends StatelessWidget {
   final List<Widget> children;
 
   ///****** Card ******///
-  final addCard;
+  final bool addCard;
   final bool semanticContainer;
 
   ///****** Flex ******///
@@ -191,181 +362,11 @@ class Universal extends StatelessWidget {
   final StackFit stackFit;
   final Overflow overflow;
 
-  const Universal({
-    Key key,
-    bool isScroll,
-    bool isStack,
-    bool enabled,
-    bool addInkWell,
-    bool reverse,
-    bool canRequestFocus,
-    bool borderOnForeground,
-    bool enableFeedback,
-    bool excludeFromSemantics,
-    bool autoFocus,
-    bool sizedBoxExpand,
-    bool visible,
-    bool offstage,
-    bool maintainState,
-    bool maintainAnimation,
-    bool maintainSize,
-    bool maintainSemantics,
-    bool maintainInteractivity,
-    bool expanded,
-    bool isFlexible,
-    bool isCircleAvatar,
-    bool isClip,
-    bool addCard,
-    bool transitionOnUserGestures,
-    bool semanticContainer,
-    MaterialType type,
-    double elevation,
-    Clip clipBehavior,
-    DragStartBehavior dragStartBehavior,
-    Duration animationDuration,
-    Color shadowColor,
-    Widget replacement,
-    StackFit stackFit,
-    Overflow overflow,
-    MainAxisAlignment mainAxisAlignment,
-    CrossAxisAlignment crossAxisAlignment,
-    Axis direction,
-    VerticalDirection verticalDirection,
-    MainAxisSize mainAxisSize,
-    HitTestBehavior behavior,
-    BorderRadius borderRadius,
-    Color color,
-    int flex,
-    FlexFit flexFit,
-    this.child,
-    this.children,
-    this.padding,
-    this.physics,
-    this.scrollController,
-    this.primary,
-    this.foregroundDecoration,
-    this.transform,
-    this.constraints,
-    this.width,
-    this.height,
-    this.margin,
-    this.decoration,
-    this.alignment,
-    this.textBaseline,
-    this.textDirection,
-    this.onTap,
-    this.onTapDown,
-    this.onTapUp,
-    this.onTapCancel,
-    this.onSecondaryTapDown,
-    this.onSecondaryTapUp,
-    this.onSecondaryTapCancel,
-    this.onDoubleTap,
-    this.onLongPress,
-    this.onLongPressStart,
-    this.onLongPressMoveUpdate,
-    this.onLongPressUp,
-    this.onLongPressEnd,
-    this.onVerticalDragDown,
-    this.onVerticalDragStart,
-    this.onVerticalDragUpdate,
-    this.onVerticalDragEnd,
-    this.onVerticalDragCancel,
-    this.onHorizontalDragDown,
-    this.onHorizontalDragStart,
-    this.onHorizontalDragUpdate,
-    this.onHorizontalDragEnd,
-    this.onHorizontalDragCancel,
-    this.onPanDown,
-    this.onPanStart,
-    this.onPanUpdate,
-    this.onPanEnd,
-    this.onPanCancel,
-    this.onScaleStart,
-    this.onScaleUpdate,
-    this.onScaleEnd,
-    this.onForcePressStart,
-    this.onForcePressPeak,
-    this.onForcePressUpdate,
-    this.onForcePressEnd,
-    this.textStyle,
-    this.shape,
-    this.onHighlightChanged,
-    this.onHover,
-    this.focusColor,
-    this.hoverColor,
-    this.highlightColor,
-    this.splashColor,
-    this.splashFactory,
-    this.radius,
-    this.customBorder,
-    this.focusNode,
-    this.onFocusChange,
-    this.heroTag,
-    this.createRectTween,
-    this.flightShuttleBuilder,
-    this.placeholderBuilder,
-    this.backgroundImage,
-    this.onBackgroundImageError,
-    this.foregroundColor,
-    this.minRadius,
-    this.maxRadius,
-    this.clipperRRect,
-    this.clipperRect,
-    this.clipperPath,
-  })
-      : this.isScroll = isScroll ?? false,
-        this.addCard = addCard ?? false,
-        this.semanticContainer = semanticContainer ?? true,
-        this.maintainState = maintainState ?? false,
-        this.transitionOnUserGestures = transitionOnUserGestures ?? false,
-        this.expanded = expanded ?? false,
-        this.isFlexible = isFlexible ?? false,
-        this.isStack = isStack ?? false,
-        this.isCircleAvatar = isCircleAvatar ?? false,
-        this.isClip = isClip ?? false,
-        this.maintainAnimation = maintainAnimation ?? false,
-        this.maintainSize = maintainSize ?? false,
-        this.maintainSemantics = maintainSemantics ?? false,
-        this.maintainInteractivity = maintainInteractivity ?? false,
-        this.enabled = enabled ?? false,
-        this.addInkWell = addInkWell ?? false,
-        this.reverse = reverse ?? false,
-        this.autoFocus = autoFocus ?? false,
-        this.sizedBoxExpand = sizedBoxExpand ?? false,
-        this.excludeFromSemantics = excludeFromSemantics ?? false,
-        this.borderOnForeground = borderOnForeground ?? true,
-        this.enableFeedback = enableFeedback ?? true,
-        this.canRequestFocus = canRequestFocus ?? true,
-        this.visible = visible ?? true,
-        this.offstage = offstage ?? false,
-        this.dragStartBehavior = dragStartBehavior ?? DragStartBehavior.start,
-        this.type = type ?? MaterialType.canvas,
-        this.elevation = elevation ?? 0.0,
-        this.flex = flex ?? 1,
-        this.clipBehavior = clipBehavior ?? Clip.none,
-        this.shadowColor = shadowColor ?? Colors.transparent,
-        this.animationDuration = animationDuration ?? kThemeChangeDuration,
-        this.replacement = replacement ?? const SizedBox.shrink(),
-        this.stackFit = stackFit ?? StackFit.loose,
-        this.overflow = overflow ?? Overflow.clip,
-        this.mainAxisSize = mainAxisSize ?? MainAxisSize.max,
-        this.mainAxisAlignment = mainAxisAlignment ?? MainAxisAlignment.start,
-        this.crossAxisAlignment =
-            crossAxisAlignment ?? CrossAxisAlignment.center,
-        this.verticalDirection = verticalDirection ?? VerticalDirection.down,
-        this.direction = direction ?? Axis.vertical,
-        this.behavior = behavior ?? HitTestBehavior.opaque,
-        this.borderRadius = borderRadius ?? BorderRadius.zero,
-        this.color = color ?? Colors.transparent,
-        this.flexFit = flexFit ?? FlexFit.loose,
-        super(key: key);
-
   @override
   Widget build(BuildContext context) {
     Widget widget = Container();
     if (child != null) widget = child;
-    if (children != null && children.length > 0) {
+    if (children != null && children.isNotEmpty) {
       if (isStack) {
         widget = stackWidget(children: children);
       } else {
@@ -410,15 +411,15 @@ class Universal extends StatelessWidget {
 
   Widget cardWidget({Widget widget}) =>
       Card(
-        child: widget,
-        color: color,
-        clipBehavior: clipBehavior,
-        shadowColor: shadowColor,
-        elevation: elevation,
-        shape: shape,
-        borderOnForeground: borderOnForeground ?? true,
-        margin: margin,
-        semanticContainer: semanticContainer ?? true,
+          child: widget,
+          color: color,
+          clipBehavior: clipBehavior,
+          shadowColor: shadowColor,
+          elevation: elevation,
+          shape: shape,
+          borderOnForeground: borderOnForeground ?? true,
+          margin: margin,
+          semanticContainer: semanticContainer ?? true
       );
 
 
@@ -427,46 +428,46 @@ class Universal extends StatelessWidget {
     if (clipBehavior == Clip.none) behavior = null;
     if (clipperRect != null) {
       return ClipRect(
-        child: widget,
-        clipper: clipperRect,
-        clipBehavior: behavior ?? Clip.hardEdge,
+          child: widget,
+          clipper: clipperRect,
+          clipBehavior: behavior ?? Clip.hardEdge
       );
     }
     if (clipperPath != null) {
       return ClipPath(
-        child: widget,
-        clipper: clipperPath,
-        clipBehavior: behavior ?? Clip.antiAlias,
+          child: widget,
+          clipper: clipperPath,
+          clipBehavior: behavior ?? Clip.antiAlias
       );
     }
     return ClipRRect(
-      child: widget,
-      borderRadius: borderRadius,
-      clipper: clipperRRect,
-      clipBehavior: behavior ?? Clip.antiAlias,
+        child: widget,
+        borderRadius: borderRadius,
+        clipper: clipperRRect,
+        clipBehavior: behavior ?? Clip.antiAlias
     );
   }
 
   Widget circleAvatarWidget({Widget widget}) =>
       CircleAvatar(
-        child: widget,
-        backgroundColor: color,
-        backgroundImage: backgroundImage,
-        onBackgroundImageError: onBackgroundImageError,
-        foregroundColor: foregroundColor,
-        radius: radius,
-        minRadius: minRadius,
-        maxRadius: maxRadius,
+          child: widget,
+          backgroundColor: color,
+          backgroundImage: backgroundImage,
+          onBackgroundImageError: onBackgroundImageError,
+          foregroundColor: foregroundColor,
+          radius: radius,
+          minRadius: minRadius,
+          maxRadius: maxRadius
       );
 
 
   Widget stackWidget({List<Widget> children}) =>
       Stack(
-        alignment: alignment ?? AlignmentDirectional.topStart,
-        textDirection: textDirection,
-        fit: stackFit,
-        overflow: overflow,
-        children: children,
+          alignment: alignment ?? AlignmentDirectional.topStart,
+          textDirection: textDirection,
+          fit: stackFit,
+          overflow: overflow,
+          children: children
       );
 
 
@@ -482,14 +483,14 @@ class Universal extends StatelessWidget {
 
   Widget visibilityWidget({Widget widget}) =>
       Visibility(
-        child: widget,
-        replacement: replacement,
-        visible: visible,
-        maintainState: maintainState,
-        maintainAnimation: maintainAnimation,
-        maintainSize: maintainSize,
-        maintainSemantics: maintainSemantics,
-        maintainInteractivity: maintainInteractivity,
+          child: widget,
+          replacement: replacement,
+          visible: visible,
+          maintainState: maintainState,
+          maintainAnimation: maintainAnimation,
+          maintainSize: maintainSize,
+          maintainSemantics: maintainSemantics,
+          maintainInteractivity: maintainInteractivity
       );
 
 
@@ -503,9 +504,9 @@ class Universal extends StatelessWidget {
     }
     if (expanded) {
       return Flexible(
-        child: widget,
-        flex: 1,
-        fit: FlexFit.tight,
+          child: widget,
+          flex: 1,
+          fit: FlexFit.tight
       );
     }
     return widget;
@@ -569,14 +570,14 @@ class Universal extends StatelessWidget {
 
   Widget flexWidget({List<Widget> children}) =>
       Flex(
-        children: children,
-        mainAxisAlignment: mainAxisAlignment,
-        crossAxisAlignment: crossAxisAlignment,
-        direction: direction,
-        textBaseline: textBaseline,
-        verticalDirection: verticalDirection,
-        textDirection: textDirection,
-        mainAxisSize: mainAxisSize,
+          children: children,
+          mainAxisAlignment: mainAxisAlignment,
+          crossAxisAlignment: crossAxisAlignment,
+          direction: direction,
+          textBaseline: textBaseline,
+          verticalDirection: verticalDirection,
+          textDirection: textDirection,
+          mainAxisSize: mainAxisSize
       );
 
 
@@ -642,6 +643,32 @@ class Universal extends StatelessWidget {
 }
 
 class SimpleButton extends StatelessWidget {
+  const SimpleButton({
+    Key key,
+    String text,
+    bool isElastic,
+    TextOverflow overflow,
+    this.textStyle,
+    this.visible,
+    this.constraints,
+    this.onTap,
+    this.heroTag,
+    this.padding,
+    this.margin,
+    this.width,
+    this.color,
+    this.height,
+    this.decoration,
+    this.alignment,
+    this.maxLines,
+    this.child,
+    this.addInkWell, this.elasticButtonType, this.useCache, this.scaleCoefficient,
+  })
+      : text = text ?? 'Button',
+        isElastic=isElastic ?? false,
+        overflow = overflow ?? TextOverflow.ellipsis,
+        super(key: key);
+
   final Widget child;
   final TextStyle textStyle;
   final EdgeInsetsGeometry padding;
@@ -664,31 +691,6 @@ class SimpleButton extends StatelessWidget {
   final bool useCache;
   final double scaleCoefficient;
 
-  SimpleButton({
-    Key key,
-    String text,
-    bool isElastic,
-    TextOverflow overflow,
-    this.textStyle,
-    this.visible,
-    this.constraints,
-    this.onTap,
-    this.heroTag,
-    this.padding,
-    this.margin,
-    this.width,
-    this.color,
-    this.height,
-    this.decoration,
-    this.alignment,
-    this.maxLines,
-    this.child,
-    this.addInkWell, this.elasticButtonType, this.useCache, this.scaleCoefficient,
-  })
-      : this.text = text ?? 'Button',
-        this.isElastic=isElastic ?? false,
-        this.overflow = overflow ?? TextOverflow.ellipsis,
-        super(key: key);
 
   @override
   Widget build(BuildContext context) {
