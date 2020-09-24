@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:cookie_jar/cookie_jar.dart';
@@ -52,7 +53,7 @@ class DioTools {
       log('GET url:' + url + '  responseData==  ' + responseModel.toMap().toString());
       return responseModel.toMap();
     } on DioError catch (e) {
-      return (e.message as ResponseModel).toMap();
+      return jsonDecode(e.message.toString()) as Map<String, dynamic>;
     }
   }
 
@@ -65,7 +66,7 @@ class DioTools {
       log('POST url:' + url + '  responseData==  ' + responseModel.toMap().toString());
       return responseModel.toMap();
     } on DioError catch (e) {
-      return (e.message as ResponseModel).toMap();
+      return jsonDecode(e.message.toString()) as Map<String, dynamic>;
     }
   }
 
@@ -78,7 +79,7 @@ class DioTools {
       log('PUT url:' + url + '  responseData==  ' + responseModel.toMap().toString());
       return responseModel.toMap();
     } on DioError catch (e) {
-      return (e.message as ResponseModel).toMap();
+      return jsonDecode(e.message.toString()) as Map<String, dynamic>;
     }
   }
 
@@ -91,7 +92,7 @@ class DioTools {
       log('DELETE url:' + url + '  responseData==  ' + responseModel.toMap().toString());
       return responseModel.toMap();
     } on DioError catch (e) {
-      return (e.message as ResponseModel).toMap();
+      return jsonDecode(e.message.toString()) as Map<String, dynamic>;
     }
   }
 
@@ -171,7 +172,7 @@ class InterceptorWrap extends InterceptorsWrapper {
   }
 
   @override
-  Future<ResponseModel> onError(DioError err) async {
+  Future<String> onError(DioError err) async {
     responseModel.type = err.type.toString();
     if (err.type == DioErrorType.DEFAULT) {
       responseModel.statusCode = ConstConstant.errorCode404;
@@ -198,7 +199,7 @@ class InterceptorWrap extends InterceptorsWrapper {
       responseModel.statusMessage = ConstConstant.errorMessage500 + err.response.statusCode.toString();
       responseModel.statusMessageT = ConstConstant.errorMessageT500;
     }
-    return responseModel;
+    return responseModel.toJson();
   }
 
   void saveCookies(Response<dynamic> response, ResponseModel responseModel) {

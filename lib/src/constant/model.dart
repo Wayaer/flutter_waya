@@ -39,6 +39,9 @@ class ResponseModel {
     map['statusMessageT'] = statusMessageT;
     return map;
   }
+
+  String toJson() =>
+      '{"type":"${type.toString()}","data":$data,"cookie":$cookie,"statusCode":$statusCode,"statusMessage":"$statusMessage","statusMessageT":"$statusMessageT"}';
 }
 
 class DateTimePickerUnit {
