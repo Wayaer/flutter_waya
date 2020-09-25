@@ -1,17 +1,18 @@
 import 'dart:async';
 
-class EventBus {
-  EventBus({bool sync = false}) : _streamController = StreamController<dynamic>.broadcast(sync: sync);
+class EventBus<T> {
+  EventBus({bool sync = false}) : _streamController = StreamController<T>.broadcast(sync: sync);
 
-  EventBus.customController(StreamController<dynamic> controller) : _streamController = controller;
+  // EventBus.customController(StreamController<T> controller) : _streamController = controller;
 
-  StreamController<dynamic> get streamController => _streamController;
+  StreamController<T> get streamController => _streamController;
 
   Stream<dynamic> on<T>() =>
       T == dynamic ? streamController.stream : streamController.stream.where((dynamic event) => event is T).cast<T>();
-  final StreamController<dynamic> _streamController;
 
-  void send(dynamic event) => _streamController.add(event);
+  final StreamController<T> _streamController;
+
+  void send(T event) => _streamController.add(event);
 
   void close() => _streamController.close();
 
@@ -19,21 +20,21 @@ class EventBus {
 
   void error(dynamic error) => _streamController.addError(error);
 
-  void stream(Stream<dynamic> stream) => _streamController.addStream(stream);
+  void stream(Stream<T> stream) => _streamController.addStream(stream);
 }
 
 class EventFactory {
   factory EventFactory() => _getInstance();
 
   EventFactory._internal() {
-    event = EventBus();
+    event = EventBus<dynamic>();
   }
 
   static EventFactory get instance => _getInstance();
 
   static EventFactory _instance;
 
-  EventBus event;
+  EventBus<dynamic> event;
 
   static EventFactory _getInstance() {
     _instance ??= EventFactory._internal();
@@ -41,8 +42,8 @@ class EventFactory {
   }
 }
 
-void sendMessage(dynamic message) => EventFactory.instance.event.send(message);
+void sendEvent(dynamic message) => EventFactory.instance.event.send(message);
 
-void messageDestroy() => EventFactory.instance.event.close();
+void eventDestroy() => EventFactory.instance.event.close();
 
-void messageListen(void onData(dynamic event)) => EventFactory.instance.event.listen(onData);
+void eventListen(void onData(dynamic event)) => EventFactory.instance.event.listen(onData);

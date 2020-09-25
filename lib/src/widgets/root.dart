@@ -359,6 +359,8 @@ class OverlayScaffold extends StatefulWidget {
   _OverlayScaffoldState createState() => _OverlayScaffoldState();
 }
 
+bool scaffoldWillPop = true;
+
 class _OverlayScaffoldState extends State<OverlayScaffold> {
   GlobalKey<State> _globalKey = GlobalKey();
 
@@ -373,6 +375,7 @@ class _OverlayScaffoldState extends State<OverlayScaffold> {
     final Widget scaffold = WillPopScope(
         onWillPop: widget.onWillPop ??
             () async {
+              if (isAndroid() && !scaffoldWillPop) return scaffoldWillPop;
               if (widget.onWillPopOverlayClose &&
                   _overlayEntryList.isNotEmpty &&
                   !_overlayEntryList.last.isAutomaticOff) {

@@ -179,7 +179,7 @@ class _RefreshedState extends State<Refreshed> {
     super.initState();
     controller = widget.controller ?? RefreshController(initialRefresh: false);
     if (widget.controller == null) {
-      Tools.addPostFrameCallback((Duration callback) => messageListen((dynamic data) {
+      Tools.addPostFrameCallback((Duration callback) => eventListen((dynamic data) {
             if (data == null) return;
             if (data != null && data is RefreshCompletedType) {
               switch (data) {
