@@ -7,8 +7,6 @@
 
 ### [多个工具类](lib/src/tools)
 
-### [本地持久化存储](lib/src/tools/storage.dart)
-
 ### [Picker选择器](lib/src/widgets/dialog/picker)
 
 ### [PopupBase 弹窗底层组件](lib/src/widgets/dialog/popup_base.dart)
