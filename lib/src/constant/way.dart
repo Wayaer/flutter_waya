@@ -81,6 +81,16 @@ class WayStyles {
   }
 }
 
+///横线
+Widget divider({
+  double height,
+  Color color,
+  double thickness,
+  double indent,
+  double endIndent,
+}) =>
+    Divider(height: height, thickness: thickness, indent: indent, endIndent: endIndent, color: color);
+
 class WayWidgets {
   static Text titleWidget(String title) =>
       Text(title, style: TextStyle(color: getColors(white), fontSize: 16, fontWeight: FontWeight.w700));
@@ -93,16 +103,6 @@ class WayWidgets {
           width: width ?? getWidth(1),
           margin: margin,
           padding: padding,
-          color: color ?? getColors(background));
-
-  ///横线
-  static Widget lineHorizontal(double width,
-          {EdgeInsetsGeometry padding, double height, Color color, EdgeInsetsGeometry margin}) =>
-      Container(
-          height: height ?? getWidth(1),
-          padding: padding,
-          width: width ?? getWidth(0),
-          margin: margin,
           color: color ?? getColors(background));
 
   static Widget notDataWidget({double size, String showText, TextStyle textStyle, EdgeInsetsGeometry margin}) =>

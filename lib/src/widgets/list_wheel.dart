@@ -28,7 +28,7 @@ class ListWheel extends StatefulWidget {
         magnification = magnification ?? 1.5,
         useMagnifier = useMagnifier ?? true,
         squeeze = squeeze ?? 1,
-        itemExtent = itemExtent ?? getHeight(12),
+        itemExtent = itemExtent ?? 15,
         physics = physics ?? const FixedExtentScrollPhysics(),
         super(key: key) {
     if (childDelegateType == ListWheelChildDelegateType.list ||

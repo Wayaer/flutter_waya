@@ -20,6 +20,15 @@ class Home extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
+          const DropdownMenu(
+            value: <List<String>>[
+              <String>['男', '女'],
+              <String>['12岁', '13岁', '14岁'],
+              <String>['湖北', '四川', '重庆']
+            ],
+            title: <String>['性别', '年龄', '地区'],
+          ),
+          const Divider(height: 20),
           const PinBox(
             maxLength: 6,
             pinBoxWidth: 30,
@@ -48,10 +57,13 @@ class Home extends StatelessWidget {
           FlatButton(onPressed: () => showModalPopup(), child: const Text('点击弹窗')),
           FlatButton(onPressed: () => showOverlayToast(), child: const Text('点击Toast')),
           FlatButton(onPressed: () => selectCity(), child: const Text('城市选择器')),
+          FlatButton(onPressed: () => selectTime(), child: const Text('时间选择器')),
         ],
       ),
     );
   }
+
+  void selectTime() => showDateTimePicker<dynamic>();
 
   void selectCity() => showAreaPicker<dynamic>();
 

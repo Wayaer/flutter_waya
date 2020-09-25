@@ -45,6 +45,8 @@ const String blue = 'blue';
 const String boxShadowColor = 'boxShadowColor';
 const String greenAccent = 'greenAccent';
 const String red = 'red';
+const String gray = 'gray';
+const String line = 'line';
 const String black = 'black';
 const String black30 = 'black30';
 const String black70 = 'black70';
@@ -66,7 +68,9 @@ const Map<String, Color> constColors = <String, Color>{
   greenAccent: Colors.greenAccent,
   blue: Color(0xFF349DFF),
   boxShadowColor: Color(0xFFE0E0E0),
-  background: Color.fromRGBO(246, 246, 246, 1),
+  gray: Colors.grey,
+  line: Color(0xFFF5F5F5),
+  background: Color(0xFFF5F5F5),
 };
 
 ///icons
