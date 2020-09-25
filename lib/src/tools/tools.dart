@@ -27,12 +27,13 @@ bool isLinux() => Platform.isLinux;
 
 bool isFuchsia() => Platform.isFuchsia;
 
-void log(String msg) {
+void log(dynamic msg) {
+  final String message = msg.toString();
   if (isDebug()) {
-    if (msg.length < _limitLength) {
+    if (message.length < _limitLength) {
       print(msg);
     } else {
-      _segmentationLog(msg);
+      _segmentationLog(message);
     }
   }
 }
