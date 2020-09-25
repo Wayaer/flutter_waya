@@ -1,3 +1,5 @@
+## [1.2.2]
+ * add lint
 ## [1.2.1]
  * Refactoring all file names and classes
  * Optimize overlay [toast loading]
