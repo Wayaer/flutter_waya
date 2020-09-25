@@ -4,41 +4,39 @@ import 'package:flutter_waya/src/constant/area.dart';
 import 'package:flutter_waya/src/constant/way.dart';
 
 class AreaPicker extends StatefulWidget {
-  AreaPicker(
-      {Key key,
-      Widget titleBottom,
-      Widget sure,
-      Widget title,
-      Widget cancel,
-      double height,
-      this.backgroundColor,
-      this.cancelTap,
-      this.sureTap,
-      this.contentStyle,
-      this.itemHeight,
-      this.diameterRatio,
-      this.offAxisFraction,
-      this.perspective,
-      double magnification,
-      this.useMagnifier,
-      this.squeeze,
-      this.physics,
-      this.defaultProvince,
-      this.defaultCity,
-      this.defaultDistrict})
-      : titleBottom = titleBottom ?? Container(),
-        sure = sure ?? WayWidgets.textDefault('sure'),
+  AreaPicker({
+    Key key,
+    Widget sure,
+    Widget title,
+    Widget cancel,
+    double height,
+    this.titleBottom,
+    this.backgroundColor,
+    this.cancelTap,
+    this.sureTap,
+    this.contentStyle,
+    this.itemHeight,
+    this.diameterRatio,
+    this.offAxisFraction,
+    this.perspective,
+    this.magnification,
+    this.useMagnifier,
+    this.squeeze,
+    this.physics,
+    this.defaultProvince,
+    this.defaultCity,
+    this.defaultDistrict,
+  })  : sure = sure ?? WayWidgets.textDefault('sure'),
         title = title ?? WayWidgets.textDefault('title'),
         cancel = cancel ?? WayWidgets.textDefault('cancel'),
-        height = height ?? 200,
-        magnification = magnification ?? 1.2,
+        height = height ?? ConstConstant.pickerHeight,
         super(key: key);
 
   ///容器属性
   final Color backgroundColor;
   final double height;
 
-  ///title底部内容
+  ///[title]底部内容
   final Widget titleBottom;
   final Widget sure;
   final Widget cancel;
@@ -167,52 +165,52 @@ class _AreaPickerState extends State<AreaPicker> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> children = <Widget>[];
-    children.add(Expanded(
-      child: wheelItem(province, initialIndex: provinceIndex, onChanged: (int newIndex) {
-        provinceIndex = newIndex;
-        refreshCity();
-      }),
-    ));
-    children.add(Expanded(
-      child: StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
-        cityState = setState;
-        return wheelItem(city, childDelegateType: ListWheelChildDelegateType.list, controller: controllerCity,
-            onChanged: (int newIndex) {
-          cityIndex = newIndex;
-          refreshDistrict();
-        });
-      }),
-    ));
-    children.add(Expanded(
-      child: StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
-        districtState = setState;
-        return wheelItem(district, childDelegateType: ListWheelChildDelegateType.list, controller: controllerDistrict,
-            onChanged: (int newIndex) {
-          districtIndex = newIndex;
-        });
-      }),
-    ));
+    final Row row = Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+      Expanded(
+        child: wheelItem(province, initialIndex: provinceIndex, onChanged: (int newIndex) {
+          provinceIndex = newIndex;
+          refreshCity();
+        }),
+      ),
+      Expanded(
+        child: StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
+          cityState = setState;
+          return wheelItem(city, childDelegateType: ListWheelChildDelegateType.list, controller: controllerCity,
+              onChanged: (int newIndex) {
+            cityIndex = newIndex;
+            refreshDistrict();
+          });
+        }),
+      ),
+      Expanded(
+        child: StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
+          districtState = setState;
+          return wheelItem(district,
+              childDelegateType: ListWheelChildDelegateType.list,
+              controller: controllerDistrict,
+              onChanged: (int newIndex) => districtIndex = newIndex);
+        }),
+      )
+    ]);
+
+    final List<Widget> columnChildren = <Widget>[];
+    columnChildren.add(Universal(
+        direction: Axis.horizontal,
+        padding: const EdgeInsets.all(10),
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Universal(child: widget.cancel, onTap: widget.cancelTap),
+          Container(child: widget.title),
+          Universal(child: widget.sure, onTap: sureTapVoid)
+        ]));
+    if (widget.titleBottom != null) columnChildren.add(widget.titleBottom);
+    columnChildren.add(Expanded(child: row));
     return Universal(
-      onTap: () {},
-      mainAxisSize: MainAxisSize.min,
-      height: widget.height,
-      decoration: BoxDecoration(color: widget.backgroundColor ?? getColors(white)),
-      children: <Widget>[
-        Universal(
-          direction: Axis.horizontal,
-          padding: EdgeInsets.all(getWidth(10)),
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Universal(child: widget.cancel, onTap: widget.cancelTap),
-            Container(child: widget.title),
-            Universal(child: widget.sure, onTap: sureTapVoid)
-          ],
-        ),
-        widget.titleBottom,
-        Expanded(child: Row(mainAxisAlignment: MainAxisAlignment.center, children: children))
-      ],
-    );
+        onTap: () {},
+        mainAxisSize: MainAxisSize.min,
+        height: widget.height,
+        decoration: BoxDecoration(color: widget.backgroundColor ?? getColors(white)),
+        children: columnChildren);
   }
 
   Widget wheelItem(List<String> list,

@@ -25,10 +25,10 @@ class ListWheel extends StatefulWidget {
         offAxisFraction = offAxisFraction ?? 0,
         initialIndex = initialIndex ?? 0,
         perspective = perspective ?? 0.01,
-        magnification = magnification ?? 1.5,
+        magnification = magnification ?? ConstConstant.listWheelMagnification,
         useMagnifier = useMagnifier ?? true,
         squeeze = squeeze ?? 1,
-        itemExtent = itemExtent ?? 15,
+        itemExtent = itemExtent ?? ConstConstant.pickerItemHeight,
         physics = physics ?? const FixedExtentScrollPhysics(),
         super(key: key) {
     if (childDelegateType == ListWheelChildDelegateType.list ||
