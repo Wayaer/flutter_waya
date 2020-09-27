@@ -1,10 +1,11 @@
-import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui' as ui show Codec;
 import 'dart:ui';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 
 /// cache gif fetched image
 class GifCache {
@@ -14,9 +15,7 @@ class GifCache {
 
   bool evict(Object key) {
     final List<ImageInfo> pendingImage = caches.remove(key);
-    if (pendingImage != null) {
-      return true;
-    }
+    if (pendingImage != null) return true;
     return false;
   }
 }
@@ -165,17 +164,6 @@ class _GifImageState extends State<GifImage> {
   }
 }
 
-final HttpClient _sharedHttpClient = HttpClient()..autoUncompress = false;
-
-HttpClient get _httpClient {
-  HttpClient client = _sharedHttpClient;
-  assert(() {
-    if (debugNetworkImageHttpClientProvider != null) client = debugNetworkImageHttpClientProvider();
-    return true;
-  }());
-  return client;
-}
-
 Future<List<ImageInfo>> _fetchGif(ImageProvider provider) async {
   List<ImageInfo> images = <ImageInfo>[];
   dynamic data;
@@ -187,13 +175,11 @@ Future<List<ImageInfo>> _fetchGif(ImageProvider provider) async {
     return images;
   }
   if (provider is NetworkImage) {
-    final Uri resolved = Uri.base.resolve(provider.url);
-    final HttpClientRequest request = await _httpClient.getUrl(resolved);
-    provider.headers?.forEach((String name, String value) {
-      request.headers.add(name, value);
-    });
-    final HttpClientResponse response = await request.close();
-    data = await consolidateHttpClientResponseBytes(response);
+    final BaseOptions options = BaseOptions(responseType: ResponseType.bytes);
+    provider.headers?.forEach((String name, String value) => options.headers.addAll(<String, String>{name: value}));
+    log(options.responseType);
+    final ResponseModel result = await DioTools.getInstance(options: options).getHttp(provider.url);
+    data = result.data as Uint8List;
   } else if (provider is AssetImage) {
     final AssetBundleImageKey key = await provider.obtainKey(const ImageConfiguration());
     data = await key.bundle.load(key.name);
@@ -202,7 +188,6 @@ Future<List<ImageInfo>> _fetchGif(ImageProvider provider) async {
   } else if (provider is MemoryImage) {
     data = provider.bytes;
   }
-
   final ui.Codec codec = await PaintingBinding.instance.instantiateImageCodec(data.buffer.asUint8List() as Uint8List);
   images = <ImageInfo>[];
   for (int i = 0; i < codec.frameCount; i++) {

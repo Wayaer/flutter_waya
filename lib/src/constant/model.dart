@@ -1,3 +1,5 @@
+import 'package:dio/dio.dart';
+
 class ResponseModel {
   ResponseModel({
     this.data,
@@ -5,6 +7,11 @@ class ResponseModel {
     this.statusCode,
     this.statusMessage,
     this.statusMessageT,
+    this.headers,
+    this.request,
+    this.isRedirect,
+    this.redirects,
+    this.extra,
   });
 
   ResponseModel.fromJson(Map<String, dynamic> json) {
@@ -14,7 +21,34 @@ class ResponseModel {
     statusMessage = json['statusMessage'].toString();
     statusMessageT = json['statusMessageT'].toString();
     data = json['data'];
+    headers = json['headers'] as Headers;
+    request = json['request'] as RequestOptions;
+    isRedirect = json['isRedirect'] as bool;
+    redirects = json['redirects'] as List<RedirectRecord>;
+    extra = json['extra'] as Map<String, dynamic>;
   }
+
+  /// Response headers.
+  Headers headers;
+
+  /// The corresponding request info.
+  RequestOptions request;
+
+  /// Custom field that you can retrieve it later in `then`.
+  Map<String, dynamic> extra;
+
+  /// Returns the series of redirects this connection has been through. The
+  /// list will be empty if no redirects were followed. [redirects] will be
+  /// updated both in the case of an automatic and a manual redirect.
+  ///
+  /// ** Attention **: Whether this field is available depends on whether the
+  /// implementation of the adapter supports it or not.
+  List<RedirectRecord> redirects;
+
+  /// Whether this response is a redirect.
+  /// ** Attention **: Whether this field is available depends on whether the
+  /// implementation of the adapter supports it or not.
+  bool isRedirect;
 
   /// 状态
   int statusCode;
@@ -37,6 +71,11 @@ class ResponseModel {
     map['statusCode'] = statusCode;
     map['statusMessage'] = statusMessage;
     map['statusMessageT'] = statusMessageT;
+    // map['headers'] = headers;
+    // map['request'] = request;
+    // map['isRedirect'] = isRedirect;
+    // map['redirects'] = redirects;
+    // map['extra'] = extra;
     return map;
   }
 

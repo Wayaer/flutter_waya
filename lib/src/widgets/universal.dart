@@ -724,5 +724,4 @@ class SimpleButton extends StatelessWidget {
           padding: padding,
           alignment: alignment);
 
-
 }

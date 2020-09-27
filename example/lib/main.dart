@@ -4,6 +4,7 @@ import 'package:flutter_waya/flutter_waya.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  // DioTools.getInstance();
   runApp(App());
 }
 
@@ -12,12 +13,31 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) => GlobalMaterial(title: 'Waya Demo', home: Home());
 }
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> with TickerProviderStateMixin {
+  GifController controller;
+
+  String uri = 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3681478079,2138136230&fm=26&gp=0.jpg';
+
+  @override
+  void initState() {
+    super.initState();
+    controller = GifController(vsync: this);
+    Tools.addPostFrameCallback((Duration duration) {
+      controller.repeat(min: 0, max: 74, period: const Duration(milliseconds: 1000));
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return OverlayScaffold(
       appBar: AppBar(title: const Text('Waya Demo'), centerTitle: true),
-      body: Column(
+      body: Universal(
+        isScroll: true,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           const DropdownMenu(
@@ -39,6 +59,9 @@ class Home extends StatelessWidget {
             pinTextStyle: TextStyle(fontSize: 10),
             highlight: true,
           ),
+          // GifImage.cache
+          GifImage(image: NetworkImage(uri), controller: controller),
+          // Image.network(uri),
           Container(
             margin: const EdgeInsets.all(10),
             child: ElasticButton(

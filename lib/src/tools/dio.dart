@@ -18,78 +18,132 @@ const List<String> HTTP_CONTENT_TYPE = <String>[
 ];
 
 class DioTools {
-  factory DioTools() => getHttp();
+  factory DioTools() => getInstance();
 
-  DioTools.internal({BaseOptions options, CookieJar cookieJar}) {
+  DioTools._internal({BaseOptions options, CookieJar cookieJar}) {
     _dio = Dio();
+    _initOptions(options);
+    _dio.interceptors.add(InterceptorWrap(cookieJar));
+  }
+
+  void _initOptions(BaseOptions options) {
     if (options != null) {
-      final Map<String, dynamic> _headers = <String, dynamic>{};
-      _options = _dio.options;
+      final BaseOptions _options = _dio.options;
       _options.connectTimeout = options?.connectTimeout ?? HTTP_TIMEOUT_CONNECT;
       _options.receiveTimeout = options?.receiveTimeout ?? HTTP_TIMEOUT_RECEIVE;
       _options.contentType = options?.contentType ?? HTTP_CONTENT_TYPE[2];
       _options.responseType = options?.responseType ?? ResponseType.json;
-      _options.headers = options?.headers ?? _headers;
+      _options.headers = options?.headers ?? <String, dynamic>{};
     }
-    _interceptorWrap = InterceptorWrap(cookieJar);
-    _dio.interceptors.add(_interceptorWrap);
   }
-
-  ///安装  cookie_jar  cookieJar:CookieJar()
-  static DioTools getHttp({BaseOptions options, CookieJar cookieJar}) =>
-      DioTools.internal(options: options, cookieJar: cookieJar);
 
   Dio _dio;
   final CancelToken _cancelToken = CancelToken();
-  BaseOptions _options;
-  InterceptorWrap _interceptorWrap;
 
+  static DioTools getInstance({BaseOptions options, CookieJar cookieJar}) {
+    return _instance ??= DioTools._internal(options: options, cookieJar: cookieJar);
+  }
+
+  static DioTools _instance;
+
+  static DioTools get instance => getInstance();
+
+  Future<ResponseModel> getHttp(String url,
+      {Map<String, dynamic> params, dynamic data, HttpType httpType = HttpType.get, BaseOptions options}) async {
+    try {
+      _initOptions(options);
+      log('${httpType.toString()} url:' + url + '  params:' + params.toString() + '  data:' + data.toString());
+      Response<dynamic> response;
+      switch (httpType) {
+        case HttpType.get:
+          response = await _dio.get<dynamic>(url, queryParameters: params, cancelToken: _cancelToken);
+          break;
+        case HttpType.post:
+          response = await _dio.post<dynamic>(url, queryParameters: params, data: data, cancelToken: _cancelToken);
+          break;
+        case HttpType.put:
+          response = await _dio.put<dynamic>(url, data: data, queryParameters: params, cancelToken: _cancelToken);
+          break;
+        case HttpType.delete:
+          response = await _dio.delete<dynamic>(url, queryParameters: params, data: data, cancelToken: _cancelToken);
+          break;
+        default:
+          response = await _dio.get<dynamic>(url, queryParameters: params, cancelToken: _cancelToken);
+          break;
+      }
+      final ResponseModel responseModel = response.data as ResponseModel;
+      if (responseModel?.request?.responseType != ResponseType.bytes &&
+          responseModel?.request?.responseType != ResponseType.stream) {
+        log('$httpType url:' + url + '  responseData==  ' + responseModel.toMap().toString());
+      }
+      return responseModel;
+    } on DioError catch (e) {
+      return ResponseModel.fromJson(jsonDecode(e.message.toString()) as Map<String, dynamic>);
+    }
+  }
+
+  @deprecated
   Future<Map<String, dynamic>> get(String url, {Map<String, dynamic> params}) async {
     try {
       log('GET url:' + url + '  params:' + params.toString());
       final Response<dynamic> response =
           await _dio.get<dynamic>(url, queryParameters: params, cancelToken: _cancelToken);
       final ResponseModel responseModel = response.data as ResponseModel;
-      log('GET url:' + url + '  responseData==  ' + responseModel.toMap().toString());
+      if (responseModel?.request?.responseType != ResponseType.bytes &&
+          responseModel?.request?.responseType != ResponseType.stream) {
+        log('GET url:' + url + '  responseData==  ' + responseModel.toMap().toString());
+      }
       return responseModel.toMap();
     } on DioError catch (e) {
       return jsonDecode(e.message.toString()) as Map<String, dynamic>;
     }
   }
 
+  @deprecated
   Future<Map<String, dynamic>> post(String url, {Map<String, dynamic> params, dynamic data}) async {
     try {
       log('POST url:' + url + '  params:' + params.toString() + '  data:' + data.toString());
       final Response<dynamic> response =
           await _dio.post<dynamic>(url, queryParameters: params, data: data, cancelToken: _cancelToken);
       final ResponseModel responseModel = response.data as ResponseModel;
-      log('POST url:' + url + '  responseData==  ' + responseModel.toMap().toString());
+      if (responseModel?.request?.responseType != ResponseType.bytes &&
+          responseModel?.request?.responseType != ResponseType.stream) {
+        log('POST url:' + url + '  responseData==  ' + responseModel.toMap().toString());
+      }
       return responseModel.toMap();
     } on DioError catch (e) {
       return jsonDecode(e.message.toString()) as Map<String, dynamic>;
     }
   }
 
+  @deprecated
   Future<Map<String, dynamic>> put(String url, {Map<String, dynamic> params, dynamic data}) async {
     try {
       log('PUT url:' + url + '  params:' + params.toString() + '  data:' + data.toString());
       final Response<dynamic> response =
           await _dio.put<dynamic>(url, data: data, queryParameters: params, cancelToken: _cancelToken);
       final ResponseModel responseModel = response.data as ResponseModel;
-      log('PUT url:' + url + '  responseData==  ' + responseModel.toMap().toString());
+      if (responseModel?.request?.responseType != ResponseType.bytes &&
+          responseModel?.request?.responseType != ResponseType.stream) {
+        log('PUT url:' + url + '  responseData==  ' + responseModel.toMap().toString());
+      }
       return responseModel.toMap();
     } on DioError catch (e) {
       return jsonDecode(e.message.toString()) as Map<String, dynamic>;
     }
   }
 
+  @deprecated
   Future<Map<String, dynamic>> delete(String url, {Map<String, dynamic> params, dynamic data}) async {
     try {
       log('DELETE url:' + url + '  params:' + params.toString() + '  data:' + data.toString());
       final Response<dynamic> response =
           await _dio.delete<dynamic>(url, queryParameters: params, data: data, cancelToken: _cancelToken);
       final ResponseModel responseModel = response.data as ResponseModel;
-      log('DELETE url:' + url + '  responseData==  ' + responseModel.toMap().toString());
+      if (responseModel?.request?.responseType != ResponseType.bytes &&
+          responseModel?.request?.responseType != ResponseType.stream) {
+        log('DELETE url:' + url + '  responseData==  ' + responseModel.toMap().toString());
+      }
       return responseModel.toMap();
     } on DioError catch (e) {
       return jsonDecode(e.message.toString()) as Map<String, dynamic>;
@@ -109,6 +163,7 @@ class DioTools {
     }
   }
 
+  ///文件上传
   Future<dynamic> upload<T>(String url,
       {Map<String, dynamic> params,
       dynamic data,
@@ -157,23 +212,32 @@ class InterceptorWrap extends InterceptorsWrapper {
   @override
   Future<ResponseModel> onResponse(Response<dynamic> response) async {
     if (cookieJar != null) saveCookies(response, responseModel);
-    responseModel.statusCode = response.statusCode;
     if (response.statusCode == 200) {
       responseModel.statusMessage = ConstConstant.success;
       responseModel.statusMessageT = ConstConstant.success;
       responseModel.data = response.data;
-      return responseModel;
     } else {
-      responseModel.statusCode = response.statusCode;
       responseModel.statusMessage = response.statusMessage;
       responseModel.statusMessageT = response.statusMessage;
-      return responseModel;
     }
+    responseModel.statusCode = response.statusCode;
+    responseModel.request = response?.request;
+    responseModel.headers = response?.headers;
+    responseModel.isRedirect = response?.isRedirect;
+    responseModel.redirects = response?.redirects;
+    responseModel.extra = response?.extra;
+    return responseModel;
   }
 
   @override
   Future<String> onError(DioError err) async {
     responseModel.type = err.type.toString();
+    responseModel.statusCode = err.response.statusCode;
+    responseModel.request = err.request;
+    responseModel.headers = err?.response?.headers;
+    responseModel.isRedirect = err?.response?.isRedirect;
+    responseModel.redirects = err?.response?.redirects;
+    responseModel.extra = err?.response?.extra;
     if (err.type == DioErrorType.DEFAULT) {
       responseModel.statusCode = ConstConstant.errorCode404;
       responseModel.statusMessage = ConstConstant.errorMessage404;

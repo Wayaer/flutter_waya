@@ -1,3 +1,4 @@
+enum HttpType { get, post, put, delete }
 enum LineType { outline, underline }
 enum ElasticButtonType { onlyScale, withOpacity }
 enum AutoScrollAnimation {
