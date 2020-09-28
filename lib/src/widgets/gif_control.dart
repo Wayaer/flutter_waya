@@ -177,7 +177,6 @@ Future<List<ImageInfo>> _fetchGif(ImageProvider provider) async {
   if (provider is NetworkImage) {
     final BaseOptions options = BaseOptions(responseType: ResponseType.bytes);
     provider.headers?.forEach((String name, String value) => options.headers.addAll(<String, String>{name: value}));
-    log(options.responseType);
     final ResponseModel result = await DioTools.getInstance(options: options).getHttp(provider.url);
     data = result.data as Uint8List;
   } else if (provider is AssetImage) {

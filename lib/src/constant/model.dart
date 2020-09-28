@@ -56,11 +56,15 @@ class ResponseModel {
   /// 状态消息
   String statusMessage;
 
-  /// 语言翻译版 消息
+  /// 语言翻译版 状态消息
   String statusMessageT;
 
   String type;
+
+  ///后台返回的数据
   Object data;
+
+  ///保存的cookie
   List<String> cookie;
 
   Map<String, dynamic> toMap() {

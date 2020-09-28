@@ -6,6 +6,7 @@ export 'src/constant/area.dart';
 export 'src/constant/constant.dart';
 export 'src/constant/enums.dart';
 export 'src/constant/model.dart';
+export 'src/tools/ali_oss.dart';
 export 'src/tools/date/date_format.dart';
 export 'src/tools/dio.dart';
 export 'src/tools/event.dart';

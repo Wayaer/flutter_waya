@@ -14,6 +14,7 @@ class ConstConstant {
   static const double listWheelMagnification = 1.2; //放大倍率
 
   static const String success = 'success';
+  static const String unknownException = 'unknown exception';
   static const String errorMessage404 = '网络请求失败'; //网络请求失败
   static const String errorMessage420 = '网络请求已取消'; //网络请求已取消
   static const String errorMessage408 = '网络连接超时'; //网络连接超时
