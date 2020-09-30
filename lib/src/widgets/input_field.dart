@@ -519,7 +519,6 @@ class SearchBox extends StatelessWidget {
     this.color,
     this.heroTag,
     double size,
-    this.borderRadius,
     this.inputStyle,
     this.cursorColor,
     this.labelSpacing,
@@ -543,11 +542,15 @@ class SearchBox extends StatelessWidget {
     this.width,
     this.autoFocus,
     this.focusNode,
+    this.borderRadius,
+    this.borderSide,
   })  : icon = icon ?? ConstIcon.search,
         size = size ?? 15,
         contentPadding = contentPadding ?? const EdgeInsets.all(6),
         super(key: key);
 
+  final BorderSide borderSide;
+  final BorderRadius borderRadius;
   final EdgeInsetsGeometry margin;
   final EdgeInsetsGeometry padding;
   final AlignmentGeometry alignment;
@@ -567,7 +570,6 @@ class SearchBox extends StatelessWidget {
   final String hintText;
   final TextStyle hintStyle;
   final TextStyle inputStyle;
-  final double borderRadius;
   final Color cursorColor;
   final InputBorder defaultBorder;
   final InputBorder focusedBorder;
@@ -650,12 +652,15 @@ class SearchBox extends StatelessWidget {
   }
 
   InputBorder inputBorder(Color color) {
+    if (lineType == null && borderRadius == null) return InputBorder.none;
     if (lineType == LineType.outline) {
       return OutlineInputBorder(
-          borderRadius: BorderRadius.circular(borderRadius), borderSide: BorderSide(width: 0.5, color: color));
+          borderRadius: borderRadius ?? BorderRadius.circular(0),
+          borderSide: borderSide ?? BorderSide(width: 0.5, color: color));
     } else if (lineType == LineType.underline) {
       return UnderlineInputBorder(
-          borderRadius: BorderRadius.circular(borderRadius), borderSide: BorderSide(width: 0.5, color: color));
+          borderRadius: borderRadius ?? BorderRadius.circular(0),
+          borderSide: borderSide ?? BorderSide(width: 0.5, color: color));
     } else {
       return InputBorder.none;
     }
