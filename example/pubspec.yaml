@@ -13,7 +13,12 @@ dependencies:
     sdk: flutter
   flutter_waya:
     path: ../
+  flutter_curiosity:
+    path: ../../flutter_curiosity
 
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
 
 flutter:
   uses-material-design: true
