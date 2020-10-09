@@ -216,9 +216,9 @@ class _TabNavigationPageState extends State<TabNavigationPage> {
           backgroundColor: getColors(white),
           items: widget.navigationBarItem ??
               <BottomNavigationBarItem>[
-                BottomNavigationBarItem(icon: barIcon(Icons.home), title: const Text('home')),
-                BottomNavigationBarItem(icon: barIcon(Icons.add_circle), title: const Text('center')),
-                BottomNavigationBarItem(icon: barIcon(Icons.account_circle), title: const Text('mine')),
+                BottomNavigationBarItem(icon: barIcon(Icons.home), label: 'home'),
+                BottomNavigationBarItem(icon: barIcon(Icons.add_circle), label: 'center'),
+                BottomNavigationBarItem(icon: barIcon(Icons.account_circle), label: 'mine'),
               ],
 
           /// 超过5个页面，需加上此行，不然会无法显示颜色

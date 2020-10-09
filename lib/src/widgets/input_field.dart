@@ -450,7 +450,7 @@ class InputField extends StatelessWidget {
   List<TextInputFormatter> inputType() {
     switch (inputTextType) {
       case InputTextType.number:
-        return <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly];
+        return <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly];
       case InputTextType.password:
         return <TextInputFormatter>[
           FilteringTextInputFormatter(RegExp(ConstConstant.regExpPassword), allow: true)

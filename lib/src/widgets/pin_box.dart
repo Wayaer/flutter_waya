@@ -284,7 +284,7 @@ class _PinBoxState extends State<PinBox> with SingleTickerProviderStateMixin {
             controller: widget.controller,
             keyboardType: widget.keyboardType,
             inputFormatters: widget.keyboardType == TextInputType.number
-                ? <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly]
+                ? <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly]
                 : null,
             style: const TextStyle(height: 0.1, color: Colors.transparent),
             decoration: const InputDecoration(
@@ -314,7 +314,7 @@ class _PinBoxState extends State<PinBox> with SingleTickerProviderStateMixin {
           controller: widget.controller,
           keyboardType: widget.keyboardType,
           inputFormatters: widget.keyboardType == TextInputType.number
-              ? <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly]
+              ? <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly]
               : null,
           style: const TextStyle(color: Colors.transparent),
           decoration: const BoxDecoration(color: Colors.transparent, border: null),
