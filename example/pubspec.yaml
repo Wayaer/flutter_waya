@@ -1,5 +1,6 @@
 name: waya
-description: A Flutter project.
+description: Demonstrates how to use the waya plugin.
+publish_to: 'none'
 
 version: 1.0.0+1
 
