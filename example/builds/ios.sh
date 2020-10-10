@@ -15,7 +15,7 @@ mkdir -p "$app/$env/"
 echo "ios===$env====$version"
 
 echo "开始flutter build"
-flutter build ios -t lib/main.dart --release
+flutter build ios --analyze-size -t lib/main.dart --release
 
 cd build/ios/iphoneos/Runner.app/Frameworks/App.framework
 xcrun bitcode_strip -r app -o app

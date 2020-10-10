@@ -12,7 +12,7 @@ mkdir -p "$app/$env/"
 echo "android===$env====$version"
 
 echo "开始打包apk"
-flutter build apk --"$env" --target-platform android-arm -t lib/main.dart #--no-codesign
+flutter build apk --analyze-size --"$env" --target-platform android-arm -t lib/main.dart #--no-codesign
 echo "打包apk已完成"
 
 # shellcheck disable=SC2046
