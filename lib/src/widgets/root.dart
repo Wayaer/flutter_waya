@@ -420,13 +420,13 @@ class _OverlayScaffoldState extends State<OverlayScaffold> {
     return widget.appBar == null
         ? null
         : PreferredSize(
-            child: widget.appBar, preferredSize: Size.fromHeight(getStatusBarHeight() + widget.appBarHeight ?? 30));
+            child: widget.appBar, preferredSize: Size.fromHeight(getStatusBarHeight + widget.appBarHeight ?? 30));
   }
 
   Widget container() => Container(
       color: widget.backgroundColor,
       margin: widget.isolationBody ? EdgeInsets.only(top: getHeight(10)) : EdgeInsets.zero,
-      padding: widget.paddingStatusBar ? EdgeInsets.only(top: getStatusBarHeight()) : widget.padding,
+      padding: widget.paddingStatusBar ? EdgeInsets.only(top: getStatusBarHeight) : widget.padding,
       width: double.infinity,
       height: double.infinity,
       child: widget.isScroll ? SingleChildScrollView(child: widget.body) : widget.body);

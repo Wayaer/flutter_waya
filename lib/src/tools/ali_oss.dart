@@ -1,7 +1,8 @@
 import 'dart:convert';
-import 'package:http_parser/http_parser.dart';
+
 import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
+import 'package:http_parser/http_parser.dart';
 
 class AliOSS {
   factory AliOSS() => getInstance();
