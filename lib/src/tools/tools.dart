@@ -15,17 +15,17 @@ import 'package:flutter_waya/src/constant/enums.dart';
 bool isDebug() => !kReleaseMode;
 const int _limitLength = 800;
 
-bool isAndroid() => Platform.isAndroid;
+bool get isAndroid => Platform.isAndroid;
 
-bool isIOS() => Platform.isIOS;
+bool get isIOS => Platform.isIOS;
 
-bool isMacOS() => Platform.isMacOS;
+bool get isMacOS => Platform.isMacOS;
 
-bool isWindows() => Platform.isWindows;
+bool get isWindows => Platform.isWindows;
 
-bool isLinux() => Platform.isLinux;
+bool get isLinux => Platform.isLinux;
 
-bool isFuchsia() => Platform.isFuchsia;
+bool get isFuchsia => Platform.isFuchsia;
 
 void log(dynamic msg) {
   final String message = msg.toString();

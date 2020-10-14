@@ -372,10 +372,30 @@ class _OverlayScaffoldState extends State<OverlayScaffold> {
 
   @override
   Widget build(BuildContext context) {
-    final Widget scaffold = WillPopScope(
+    Widget scaffold = Scaffold(
+        key: _globalKey,
+        primary: widget.primary,
+        resizeToAvoidBottomInset: widget.resizeToAvoidBottomInset,
+        drawerDragStartBehavior: widget.drawerDragStartBehavior,
+        bottomSheet: widget.bottomSheet,
+        extendBody: widget.extendBody,
+        resizeToAvoidBottomPadding: widget.resizeToAvoidBottomPadding,
+        endDrawer: widget.endDrawer,
+        drawer: widget.drawer,
+        persistentFooterButtons: widget.persistentFooterButtons,
+        floatingActionButtonLocation: widget.floatingActionButtonLocation,
+        floatingActionButton: widget.floatingActionButton,
+        floatingActionButtonAnimator: widget.floatingActionButtonAnimator,
+        backgroundColor: widget.backgroundColor ?? getColors(background),
+        appBar: appBar(),
+        bottomNavigationBar: widget.bottomNavigationBar,
+        body: bodyWidget());
+    if (isAndroid) {
+      scaffold = WillPopScope(
+        child: scaffold,
         onWillPop: widget.onWillPop ??
             () async {
-              if (isAndroid() && !scaffoldWillPop) return scaffoldWillPop;
+              if (!scaffoldWillPop) return scaffoldWillPop;
               if (widget.onWillPopOverlayClose &&
                   _overlayEntryList.isNotEmpty &&
                   !_overlayEntryList.last.isAutomaticOff) {
@@ -384,24 +404,8 @@ class _OverlayScaffoldState extends State<OverlayScaffold> {
               }
               return true;
             },
-        child: Scaffold(
-            key: _globalKey,
-            primary: widget.primary,
-            resizeToAvoidBottomInset: widget.resizeToAvoidBottomInset,
-            drawerDragStartBehavior: widget.drawerDragStartBehavior,
-            bottomSheet: widget.bottomSheet,
-            extendBody: widget.extendBody,
-            resizeToAvoidBottomPadding: widget.resizeToAvoidBottomPadding,
-            endDrawer: widget.endDrawer,
-            drawer: widget.drawer,
-            persistentFooterButtons: widget.persistentFooterButtons,
-            floatingActionButtonLocation: widget.floatingActionButtonLocation,
-            floatingActionButton: widget.floatingActionButton,
-            floatingActionButtonAnimator: widget.floatingActionButtonAnimator,
-            backgroundColor: widget.backgroundColor ?? getColors(background),
-            appBar: appBar(),
-            bottomNavigationBar: widget.bottomNavigationBar,
-            body: bodyWidget()));
+      );
+    }
     if (!_scaffoldKeyList.contains(_globalKey)) _scaffoldKeyList.add(_globalKey);
     return scaffold;
   }
@@ -542,6 +546,7 @@ class OverlayEntryMap {
 ///自定义Overlay
 OverlayEntryMap showOverlay(Widget widget, {bool isAutomaticOff}) {
   if (_overlay != null) _overlay = null;
+  if (_scaffoldKeyList.isEmpty) return null;
   _overlay = Overlay.of(_scaffoldKeyList?.last?.currentContext, rootOverlay: false);
   if (_overlay == null) return null;
   final OverlayEntry entry = OverlayEntry(builder: (_) => widget);
