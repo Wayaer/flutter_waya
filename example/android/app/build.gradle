@@ -33,6 +33,7 @@ android {
     }
 
     lintOptions {
+        checkReleaseBuilds false
         disable 'InvalidPackage'
     }
 
@@ -43,10 +44,26 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
-
+    signingConfigs {
+        release {
+            storeFile file("waya.jks")
+            storePassword "waya123"
+            keyAlias "waya"
+            keyPassword "waya111"
+        }
+    }
     buildTypes {
         release {
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
+            ndk {
+                abiFilters 'armeabi-v7a' //,'armeabi',  'x86', 'x86_64', 'mips', 'mips64', 'arm64-v8a'
+            }
+        }
+        debug {
+            signingConfig signingConfigs.release
+            ndk {
+                abiFilters 'armeabi', 'armeabi-v7a', 'x86', 'x86_64', 'mips', 'mips64', 'arm64-v8a'
+            }
         }
     }
 }
