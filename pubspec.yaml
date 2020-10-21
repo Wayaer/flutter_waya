@@ -19,7 +19,6 @@ dependencies:
 
 
 flutter:
-  uses-material-design: true
   fonts:
     - family: Icons
       fonts:
