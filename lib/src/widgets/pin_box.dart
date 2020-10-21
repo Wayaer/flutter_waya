@@ -369,8 +369,8 @@ class _PinBoxState extends State<PinBox> with SingleTickerProviderStateMixin {
 
   Widget _pinBoxRow(BuildContext context) {
     _calculateStrList();
-    // ignore: always_specify_types
     final List<Widget> pinCodes =
+        // ignore: always_specify_types
         List.generate(widget.maxLength, (int i) => _buildPinCode(i, context));
     return Wrap(
         direction: Axis.horizontal,
