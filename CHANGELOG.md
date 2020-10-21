@@ -1,4 +1,4 @@
-## [1.3.1]
+## [1.3.2]
   * remove some widget
   * format code
 ## [1.2.2]

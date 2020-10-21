@@ -88,7 +88,8 @@ class ResponseModel {
 }
 
 class DateTimePickerUnit {
-  DateTimePickerUnit({this.year, this.month, this.day, this.hour, this.minute, this.second});
+  DateTimePickerUnit(
+      {this.year, this.month, this.day, this.hour, this.minute, this.second});
 
   final String year;
   final String month;
@@ -108,6 +109,6 @@ class DateTimePickerUnit {
     return i;
   }
 
-  DateTimePickerUnit getDefaultUnit() =>
-      DateTimePickerUnit(year: 'Y', month: 'M', day: 'D', hour: 'H', minute: 'M', second: 'S');
+  DateTimePickerUnit getDefaultUnit() => DateTimePickerUnit(
+      year: 'Y', month: 'M', day: 'D', hour: 'H', minute: 'M', second: 'S');
 }

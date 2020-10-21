@@ -1,14 +1,16 @@
 import 'dart:async';
 
 class EventBus<T> {
-  EventBus({bool sync = false}) : _streamController = StreamController<T>.broadcast(sync: sync);
+  EventBus({bool sync = false})
+      : _streamController = StreamController<T>.broadcast(sync: sync);
 
   // EventBus.customController(StreamController<T> controller) : _streamController = controller;
 
   StreamController<T> get streamController => _streamController;
 
-  Stream<dynamic> on<T>() =>
-      T == dynamic ? streamController.stream : streamController.stream.where((dynamic event) => event is T).cast<T>();
+  Stream<dynamic> on<T>() => T == dynamic
+      ? streamController.stream
+      : streamController.stream.where((dynamic event) => event is T).cast<T>();
 
   final StreamController<T> _streamController;
 
@@ -16,7 +18,8 @@ class EventBus<T> {
 
   void close() => _streamController.close();
 
-  void listen(void onData(dynamic event)) => _streamController.stream.listen(onData);
+  void listen(void onData(dynamic event)) =>
+      _streamController.stream.listen(onData);
 
   void error(dynamic error) => _streamController.addError(error);
 
@@ -46,4 +49,5 @@ void sendEvent(dynamic message) => EventFactory.instance.event.send(message);
 
 void eventDestroy() => EventFactory.instance.event.close();
 
-void eventListen(void onData(dynamic event)) => EventFactory.instance.event.listen(onData);
+void eventListen(void onData(dynamic event)) =>
+    EventFactory.instance.event.listen(onData);

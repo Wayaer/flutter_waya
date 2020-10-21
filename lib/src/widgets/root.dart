@@ -55,7 +55,8 @@ class GlobalMaterial extends StatelessWidget {
         routes = routes ?? const <String, WidgetBuilder>{},
         navigatorObservers = navigatorObservers ?? <NavigatorObserver>[],
         locale = locale ?? const Locale('zh'),
-        supportedLocales = supportedLocales ?? <Locale>[const Locale('zh', 'CH'), const Locale('en', 'US')],
+        supportedLocales = supportedLocales ??
+            <Locale>[const Locale('zh', 'CH'), const Locale('en', 'US')],
         localizationsDelegates = localizationsDelegates ??
             <LocalizationsDelegate<dynamic>>[
               DefaultCupertinoLocalizations.delegate,
@@ -209,7 +210,8 @@ class GlobalCupertino extends StatelessWidget {
         routes = routes ?? const <String, WidgetBuilder>{},
         navigatorObservers = navigatorObservers ?? <NavigatorObserver>[],
         locale = locale ?? const Locale('zh', 'CN'),
-        supportedLocales = supportedLocales ?? <Locale>[const Locale('zh', 'CN'), const Locale('en', 'US')],
+        supportedLocales = supportedLocales ??
+            <Locale>[const Locale('zh', 'CN'), const Locale('en', 'US')],
         localizationsDelegates = localizationsDelegates ??
             <LocalizationsDelegate<dynamic>>[
               GlobalCupertinoLocalizations.delegate,
@@ -313,7 +315,8 @@ class OverlayScaffold extends StatefulWidget {
         enablePullDown = enablePullDown ?? false,
         primary = primary ?? true,
         extendBody = extendBody ?? false,
-        drawerDragStartBehavior = drawerDragStartBehavior ?? DragStartBehavior.start,
+        drawerDragStartBehavior =
+            drawerDragStartBehavior ?? DragStartBehavior.start,
         super(key: key);
 
   final EdgeInsetsGeometry padding;
@@ -367,7 +370,8 @@ class _OverlayScaffoldState extends State<OverlayScaffold> {
   @override
   void initState() {
     super.initState();
-    if (widget.key != null) _globalKey = widget.key as GlobalKey<State<StatefulWidget>>;
+    if (widget.key != null)
+      _globalKey = widget.key as GlobalKey<State<StatefulWidget>>;
   }
 
   @override
@@ -406,11 +410,13 @@ class _OverlayScaffoldState extends State<OverlayScaffold> {
             },
       );
     }
-    if (!_scaffoldKeyList.contains(_globalKey)) _scaffoldKeyList.add(_globalKey);
+    if (!_scaffoldKeyList.contains(_globalKey))
+      _scaffoldKeyList.add(_globalKey);
     return scaffold;
   }
 
-  Widget bodyWidget() => widget.enablePullDown ? refresherContainer() : container();
+  Widget bodyWidget() =>
+      widget.enablePullDown ? refresherContainer() : container();
 
   Widget refresherContainer() => Refreshed(
       enablePullDown: widget.enablePullDown,
@@ -420,25 +426,35 @@ class _OverlayScaffoldState extends State<OverlayScaffold> {
       header: widget.header);
 
   PreferredSizeWidget appBar() {
-    if (widget.appBar is AppBar && widget.appBarHeight == null) return widget.appBar as AppBar;
+    if (widget.appBar is AppBar && widget.appBarHeight == null)
+      return widget.appBar as AppBar;
     return widget.appBar == null
         ? null
         : PreferredSize(
-            child: widget.appBar, preferredSize: Size.fromHeight(getStatusBarHeight + widget.appBarHeight ?? 30));
+            child: widget.appBar,
+            preferredSize: Size.fromHeight(
+                getStatusBarHeight + widget.appBarHeight ?? 30));
   }
 
   Widget container() => Container(
       color: widget.backgroundColor,
-      margin: widget.isolationBody ? EdgeInsets.only(top: getHeight(10)) : EdgeInsets.zero,
-      padding: widget.paddingStatusBar ? EdgeInsets.only(top: getStatusBarHeight) : widget.padding,
+      margin: widget.isolationBody
+          ? EdgeInsets.only(top: getHeight(10))
+          : EdgeInsets.zero,
+      padding: widget.paddingStatusBar
+          ? EdgeInsets.only(top: getStatusBarHeight)
+          : widget.padding,
       width: double.infinity,
       height: double.infinity,
-      child: widget.isScroll ? SingleChildScrollView(child: widget.body) : widget.body);
+      child: widget.isScroll
+          ? SingleChildScrollView(child: widget.body)
+          : widget.body);
 
   @override
   void dispose() {
     super.dispose();
-    if (_scaffoldKeyList.contains(_globalKey)) _scaffoldKeyList.remove(_globalKey);
+    if (_scaffoldKeyList.contains(_globalKey))
+      _scaffoldKeyList.remove(_globalKey);
   }
 }
 
@@ -469,14 +485,15 @@ Future<dynamic> pushReplacement(
     bool maintainState,
     bool fullscreenDialog,
     PushMode pushMode}) {
-  return Navigator.of(_globalNavigatorKey.currentContext).pushReplacement(_pageRoute(
-      title: title,
-      maintainState: maintainState,
-      fullscreenDialog: fullscreenDialog,
-      settings: settings,
-      builder: builder,
-      pushMode: pushMode,
-      widget: widget));
+  return Navigator.of(_globalNavigatorKey.currentContext).pushReplacement(
+      _pageRoute(
+          title: title,
+          maintainState: maintainState,
+          fullscreenDialog: fullscreenDialog,
+          settings: settings,
+          builder: builder,
+          pushMode: pushMode,
+          widget: widget));
 }
 
 Future<dynamic> pushAndRemoveUntil(
@@ -499,7 +516,8 @@ Future<dynamic> pushAndRemoveUntil(
       (_) => false);
 }
 
-void pop<T extends Object>([dynamic result]) => Navigator.of(_globalNavigatorKey.currentContext).pop<dynamic>(result);
+void pop<T extends Object>([dynamic result]) =>
+    Navigator.of(_globalNavigatorKey.currentContext).pop<dynamic>(result);
 
 PushMode _pushMode;
 
@@ -547,11 +565,13 @@ class OverlayEntryMap {
 OverlayEntryMap showOverlay(Widget widget, {bool isAutomaticOff}) {
   if (_overlay != null) _overlay = null;
   if (_scaffoldKeyList.isEmpty) return null;
-  _overlay = Overlay.of(_scaffoldKeyList?.last?.currentContext, rootOverlay: false);
+  _overlay =
+      Overlay.of(_scaffoldKeyList?.last?.currentContext, rootOverlay: false);
   if (_overlay == null) return null;
   final OverlayEntry entry = OverlayEntry(builder: (_) => widget);
   _overlay.insert(entry);
-  final OverlayEntryMap entryMap = OverlayEntryMap(overlayEntry: entry, isAutomaticOff: isAutomaticOff ?? false);
+  final OverlayEntryMap entryMap = OverlayEntryMap(
+      overlayEntry: entry, isAutomaticOff: isAutomaticOff ?? false);
   _overlayEntryList.add(entryMap);
   return entryMap;
 }
@@ -561,7 +581,8 @@ bool closeOverlay({OverlayEntryMap element}) {
   try {
     if (element != null) {
       element.overlayEntry.remove();
-      if (_overlayEntryList.contains(element)) return _overlayEntryList.remove(element);
+      if (_overlayEntryList.contains(element))
+        return _overlayEntryList.remove(element);
     } else {
       if (_overlayEntryList.isNotEmpty) {
         _overlayEntryList.last.overlayEntry.remove();
@@ -576,7 +597,8 @@ bool closeOverlay({OverlayEntryMap element}) {
 
 ///关闭所有Overlay
 void closeAllOverlay() {
-  for (final OverlayEntryMap element in _overlayEntryList) element.overlayEntry.remove();
+  for (final OverlayEntryMap element in _overlayEntryList)
+    element.overlayEntry.remove();
   _overlayEntryList = <OverlayEntryMap>[];
 }
 
@@ -630,11 +652,15 @@ Future<void> showToast(String message,
       PopupBase(
           ignoring: true,
           child: Container(
-              margin: EdgeInsets.symmetric(horizontal: getWidth(0) / 5, vertical: getHeight(0) / 4),
-              decoration:
-                  boxDecoration ?? BoxDecoration(color: getColors(black90), borderRadius: BorderRadius.circular(5)),
+              margin: EdgeInsets.symmetric(
+                  horizontal: getWidth(0) / 5, vertical: getHeight(0) / 4),
+              decoration: boxDecoration ??
+                  BoxDecoration(
+                      color: getColors(black90),
+                      borderRadius: BorderRadius.circular(5)),
               padding: const EdgeInsets.all(10),
-              child: WayWidgets.textDefault(message, color: getColors(white), maxLines: 4))),
+              child: WayWidgets.textDefault(message,
+                  color: getColors(white), maxLines: 4))),
       isAutomaticOff: true);
   haveToast = true;
   Tools.timerTools(closeDuration ?? _duration, () {
@@ -680,7 +706,8 @@ Future<T> showDialogPopup<T>({
 }) {
   assert(pageBuilder != null || widget != null);
   if (transitionBuilder == null && popupFromType != null) {
-    transitionBuilder = (BuildContext context, Animation<double> animation, _, Widget child) {
+    transitionBuilder =
+        (BuildContext context, Animation<double> animation, _, Widget child) {
       Offset translation = Offset(0, 1 - animation.value);
       switch (popupFromType) {
         case PopupFromType.fromLeft:
@@ -701,7 +728,8 @@ Future<T> showDialogPopup<T>({
   }
   return showGeneralDialog(
     context: _globalNavigatorKey.currentContext,
-    pageBuilder: pageBuilder ?? (BuildContext context, Animation<double> animation, _) => widget,
+    pageBuilder: pageBuilder ??
+        (BuildContext context, Animation<double> animation, _) => widget,
     barrierDismissible: barrierDismissible ?? true,
     barrierLabel: barrierLabel ?? '',
     barrierColor: backgroundColor,

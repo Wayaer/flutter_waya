@@ -63,7 +63,9 @@ class GridBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (itemCount == 0) return noData ?? WayWidgets.notDataWidget(margin: EdgeInsets.all(getWidth(10)));
+    if (itemCount == 0)
+      return noData ??
+          WayWidgets.notDataWidget(margin: EdgeInsets.all(getWidth(10)));
     return GridView.builder(
       physics: physics,
       itemCount: itemCount,
@@ -118,9 +120,12 @@ class ListBuilder extends StatelessWidget {
         scrollDirection = scrollDirection ?? Axis.vertical,
         reverse = reverse ?? false,
         super(key: key) {
-    if (listType == null || listType == ListType.builder) assert(itemBuilder != null);
+    if (listType == null || listType == ListType.builder)
+      assert(itemBuilder != null);
     if (listType == ListType.custom) assert(childrenDelegate != null);
-    if (listType == ListType.separated) assert(itemBuilder != null && separatorBuilder != null && itemCount != null);
+    if (listType == ListType.separated)
+      assert(
+          itemBuilder != null && separatorBuilder != null && itemCount != null);
   }
 
   final ListType listType;
@@ -162,7 +167,8 @@ class ListBuilder extends StatelessWidget {
   final IndexedWidgetBuilder separatorBuilder;
 
   @override
-  Widget build(BuildContext context) => (enablePullDown || enablePullUp) ? refresherListView() : list();
+  Widget build(BuildContext context) =>
+      (enablePullDown || enablePullUp) ? refresherListView() : list();
 
   Widget list() {
     if (listType == ListType.separated) return listViewSeparated();
@@ -171,7 +177,9 @@ class ListBuilder extends StatelessWidget {
   }
 
   Widget listViewBuilder() {
-    if (itemCount == 0) return noData ?? WayWidgets.notDataWidget(margin: EdgeInsets.all(getWidth(10)));
+    if (itemCount == 0)
+      return noData ??
+          WayWidgets.notDataWidget(margin: EdgeInsets.all(getWidth(10)));
     return ListView.builder(
       scrollDirection: scrollDirection,
       physics: physics,
@@ -194,7 +202,9 @@ class ListBuilder extends StatelessWidget {
   }
 
   Widget listViewCustom() {
-    if (itemCount == 0) return noData ?? WayWidgets.notDataWidget(margin: EdgeInsets.all(getWidth(10)));
+    if (itemCount == 0)
+      return noData ??
+          WayWidgets.notDataWidget(margin: EdgeInsets.all(getWidth(10)));
     return ListView.custom(
         scrollDirection: scrollDirection,
         physics: physics,
@@ -212,7 +222,9 @@ class ListBuilder extends StatelessWidget {
   }
 
   Widget listViewSeparated() {
-    if (itemCount == 0) return noData ?? WayWidgets.notDataWidget(margin: EdgeInsets.all(getWidth(10)));
+    if (itemCount == 0)
+      return noData ??
+          WayWidgets.notDataWidget(margin: EdgeInsets.all(getWidth(10)));
     return ListView.separated(
         scrollDirection: scrollDirection,
         physics: physics,
@@ -342,7 +354,9 @@ class ListEntry extends StatelessWidget {
         onTap: enabled ? onTap : null,
         direction: Axis.horizontal,
         mainAxisAlignment: MainAxisAlignment.center,
-        decoration: decoration ?? WayStyles.containerUnderlineBackground(underlineColor: underlineColor, color: color),
+        decoration: decoration ??
+            WayStyles.containerUnderlineBackground(
+                underlineColor: underlineColor, color: color),
         children: children);
   }
 
@@ -358,7 +372,11 @@ class ListEntry extends StatelessWidget {
           enabled: false,
           selected: false));
 
-  Widget arrowWidget() => IconBox(icon: ConstIcon.arrowRight, size: arrowSize, color: arrowColor, margin: arrowMargin);
+  Widget arrowWidget() => IconBox(
+      icon: ConstIcon.arrowRight,
+      size: arrowSize,
+      color: arrowColor,
+      margin: arrowMargin);
 
   Widget hero(Widget text) {
     if (heroTag != null) return Hero(tag: heroTag, child: text);

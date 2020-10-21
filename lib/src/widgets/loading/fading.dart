@@ -10,7 +10,9 @@ class SpinKitFadingFour extends StatefulWidget {
     this.itemBuilder,
     this.duration = const Duration(milliseconds: 1200),
     this.controller,
-  })  : assert(!(itemBuilder is IndexedWidgetBuilder && color is Color) && !(itemBuilder == null && color == null),
+  })  : assert(
+            !(itemBuilder is IndexedWidgetBuilder && color is Color) &&
+                !(itemBuilder == null && color == null),
             'You should specify either a itemBuilder or a color'),
         assert(shape != null),
         assert(size != null),
@@ -27,7 +29,8 @@ class SpinKitFadingFour extends StatefulWidget {
   _SpinKitFadingFourState createState() => _SpinKitFadingFourState();
 }
 
-class _SpinKitFadingFourState extends State<SpinKitFadingFour> with SingleTickerProviderStateMixin {
+class _SpinKitFadingFourState extends State<SpinKitFadingFour>
+    with SingleTickerProviderStateMixin {
   final List<double> delays = <double>[.0, -0.9, -0.6, -0.3];
   AnimationController _controller;
 
@@ -35,7 +38,9 @@ class _SpinKitFadingFourState extends State<SpinKitFadingFour> with SingleTicker
   void initState() {
     super.initState();
 
-    _controller = (widget.controller ?? AnimationController(vsync: this, duration: widget.duration))..repeat();
+    _controller = (widget.controller ??
+        AnimationController(vsync: this, duration: widget.duration))
+      ..repeat();
   }
 
   @override
@@ -60,13 +65,18 @@ class _SpinKitFadingFourState extends State<SpinKitFadingFour> with SingleTicker
                     child: Align(
                         alignment: Alignment.center,
                         child: FadeTransition(
-                            opacity: DelayTween(begin: 0.0, end: 1.0, delay: delays[i]).animate(_controller),
-                            child: SizedBox.fromSize(size: Size.square(widget.size * 0.25), child: _itemBuilder(i))))));
+                            opacity: DelayTween(
+                                    begin: 0.0, end: 1.0, delay: delays[i])
+                                .animate(_controller),
+                            child: SizedBox.fromSize(
+                                size: Size.square(widget.size * 0.25),
+                                child: _itemBuilder(i))))));
           }))));
 
   Widget _itemBuilder(int index) => widget.itemBuilder != null
       ? widget.itemBuilder(context, index)
-      : DecoratedBox(decoration: BoxDecoration(color: widget.color, shape: widget.shape));
+      : DecoratedBox(
+          decoration: BoxDecoration(color: widget.color, shape: widget.shape));
 }
 
 class SpinKitWanderingCubes extends StatefulWidget {
@@ -77,7 +87,9 @@ class SpinKitWanderingCubes extends StatefulWidget {
     this.size = 50.0,
     this.itemBuilder,
     this.duration = const Duration(milliseconds: 1800),
-  })  : assert(!(itemBuilder is IndexedWidgetBuilder && color is Color) && !(itemBuilder == null && color == null),
+  })  : assert(
+            !(itemBuilder is IndexedWidgetBuilder && color is Color) &&
+                !(itemBuilder == null && color == null),
             'You should specify either a itemBuilder or a color'),
         assert(shape != null),
         assert(size != null),
@@ -95,7 +107,8 @@ class SpinKitWanderingCubes extends StatefulWidget {
   _SpinKitWanderingCubesState createState() => _SpinKitWanderingCubesState();
 }
 
-class _SpinKitWanderingCubesState extends State<SpinKitWanderingCubes> with SingleTickerProviderStateMixin {
+class _SpinKitWanderingCubesState extends State<SpinKitWanderingCubes>
+    with SingleTickerProviderStateMixin {
   AnimationController _controller;
   Animation<double> _scale1, _scale2, _scale3, _scale4, _rotate;
   Animation<double> _translate1, _translate2, _translate3, _translate4;
@@ -108,27 +121,36 @@ class _SpinKitWanderingCubesState extends State<SpinKitWanderingCubes> with Sing
       ..addListener(() => setState(() {}))
       ..repeat();
 
-    final CurvedAnimation animation1 =
-        CurvedAnimation(parent: _controller, curve: const Interval(0.0, 0.25, curve: Curves.easeInOut));
-    _translate1 = Tween<double>(begin: 0.0, end: widget.offset).animate(animation1);
+    final CurvedAnimation animation1 = CurvedAnimation(
+        parent: _controller,
+        curve: const Interval(0.0, 0.25, curve: Curves.easeInOut));
+    _translate1 =
+        Tween<double>(begin: 0.0, end: widget.offset).animate(animation1);
     _scale1 = Tween<double>(begin: 1.0, end: 0.5).animate(animation1);
 
-    final CurvedAnimation animation2 =
-        CurvedAnimation(parent: _controller, curve: const Interval(0.25, 0.5, curve: Curves.easeInOut));
-    _translate2 = Tween<double>(begin: 0.0, end: widget.offset).animate(animation2);
+    final CurvedAnimation animation2 = CurvedAnimation(
+        parent: _controller,
+        curve: const Interval(0.25, 0.5, curve: Curves.easeInOut));
+    _translate2 =
+        Tween<double>(begin: 0.0, end: widget.offset).animate(animation2);
     _scale2 = Tween<double>(begin: 1.0, end: 2.0).animate(animation2);
 
-    final CurvedAnimation animation3 =
-        CurvedAnimation(parent: _controller, curve: const Interval(0.5, 0.75, curve: Curves.easeInOut));
-    _translate3 = Tween<double>(begin: 0.0, end: -widget.offset).animate(animation3);
+    final CurvedAnimation animation3 = CurvedAnimation(
+        parent: _controller,
+        curve: const Interval(0.5, 0.75, curve: Curves.easeInOut));
+    _translate3 =
+        Tween<double>(begin: 0.0, end: -widget.offset).animate(animation3);
     _scale3 = Tween<double>(begin: 1.0, end: 0.5).animate(animation3);
 
-    final CurvedAnimation animation4 =
-        CurvedAnimation(parent: _controller, curve: const Interval(0.75, 1.0, curve: Curves.easeInOut));
-    _translate4 = Tween<double>(begin: 0.0, end: -widget.offset).animate(animation4);
+    final CurvedAnimation animation4 = CurvedAnimation(
+        parent: _controller,
+        curve: const Interval(0.75, 1.0, curve: Curves.easeInOut));
+    _translate4 =
+        Tween<double>(begin: 0.0, end: -widget.offset).animate(animation4);
     _scale4 = Tween<double>(begin: 1.0, end: 2.0).animate(animation4);
 
-    _rotate = Tween<double>(begin: 0.0, end: 360.0).animate(CurvedAnimation(parent: _controller, curve: Curves.linear));
+    _rotate = Tween<double>(begin: 0.0, end: 360.0)
+        .animate(CurvedAnimation(parent: _controller, curve: Curves.linear));
   }
 
   @override
@@ -140,7 +162,8 @@ class _SpinKitWanderingCubesState extends State<SpinKitWanderingCubes> with Sing
   @override
   Widget build(BuildContext context) => Center(
       child: SizedBox.fromSize(
-          size: Size.square(widget.size), child: Stack(children: <Widget>[_cube(0), _cube(1, true)])));
+          size: Size.square(widget.size),
+          child: Stack(children: <Widget>[_cube(0), _cube(1, true)])));
 
   Widget _cube(int index, [bool offset = false]) {
     Matrix4 _tTranslate;
@@ -183,5 +206,6 @@ class _SpinKitWanderingCubesState extends State<SpinKitWanderingCubes> with Sing
 
   Widget _itemBuilder(int index) => widget.itemBuilder != null
       ? widget.itemBuilder(context, index)
-      : DecoratedBox(decoration: BoxDecoration(color: widget.color, shape: widget.shape));
+      : DecoratedBox(
+          decoration: BoxDecoration(color: widget.color, shape: widget.shape));
 }

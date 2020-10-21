@@ -160,7 +160,10 @@ class _GifImageState extends State<GifImage> {
         matchTextDirection: widget.matchTextDirection);
     if (widget.excludeFromSemantics) return image;
     return Semantics(
-        container: widget.semanticLabel != null, image: true, label: widget.semanticLabel ?? '', child: image);
+        container: widget.semanticLabel != null,
+        image: true,
+        label: widget.semanticLabel ?? '',
+        child: image);
   }
 }
 
@@ -169,25 +172,33 @@ Future<List<ImageInfo>> _fetchGif(ImageProvider provider) async {
   dynamic data;
   final String key = provider is NetworkImage
       ? provider.url
-      : provider is AssetImage ? provider.assetName : provider is MemoryImage ? provider.bytes.toString() : '';
+      : provider is AssetImage
+          ? provider.assetName
+          : provider is MemoryImage
+              ? provider.bytes.toString()
+              : '';
   if (GifImage.cache.caches.containsKey(key)) {
     images = GifImage.cache.caches[key];
     return images;
   }
   if (provider is NetworkImage) {
     final BaseOptions options = BaseOptions(responseType: ResponseType.bytes);
-    provider.headers?.forEach((String name, String value) => options.headers.addAll(<String, String>{name: value}));
-    final ResponseModel result = await DioTools.getInstance(options: options).getHttp(provider.url);
+    provider.headers?.forEach((String name, String value) =>
+        options.headers.addAll(<String, String>{name: value}));
+    final ResponseModel result =
+        await DioTools.getInstance(options: options).getHttp(provider.url);
     data = result.data as Uint8List;
   } else if (provider is AssetImage) {
-    final AssetBundleImageKey key = await provider.obtainKey(const ImageConfiguration());
+    final AssetBundleImageKey key =
+        await provider.obtainKey(const ImageConfiguration());
     data = await key.bundle.load(key.name);
   } else if (provider is FileImage) {
     data = await provider.file.readAsBytes();
   } else if (provider is MemoryImage) {
     data = provider.bytes;
   }
-  final ui.Codec codec = await PaintingBinding.instance.instantiateImageCodec(data.buffer.asUint8List() as Uint8List);
+  final ui.Codec codec = await PaintingBinding.instance
+      .instantiateImageCodec(data.buffer.asUint8List() as Uint8List);
   images = <ImageInfo>[];
   for (int i = 0; i < codec.frameCount; i++) {
     final FrameInfo frameInfo = await codec.getNextFrame();

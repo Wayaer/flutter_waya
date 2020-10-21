@@ -25,22 +25,29 @@ class SpinKitRing extends StatefulWidget {
   _SpinKitRingState createState() => _SpinKitRingState();
 }
 
-class _SpinKitRingState extends State<SpinKitRing> with SingleTickerProviderStateMixin {
+class _SpinKitRingState extends State<SpinKitRing>
+    with SingleTickerProviderStateMixin {
   AnimationController _controller;
   Animation<double> _animation1, _animation2, _animation3;
 
   @override
   void initState() {
     super.initState();
-    _controller = (widget.controller ?? AnimationController(vsync: this, duration: widget.duration))
+    _controller = (widget.controller ??
+        AnimationController(vsync: this, duration: widget.duration))
       ..addListener(() => setState(() {}))
       ..repeat();
-    _animation1 = Tween<double>(begin: 0.0, end: 1.0)
-        .animate(CurvedAnimation(parent: _controller, curve: const Interval(0.0, 1.0, curve: Curves.linear)));
-    _animation2 = Tween<double>(begin: -2 / 3, end: 1 / 2)
-        .animate(CurvedAnimation(parent: _controller, curve: const Interval(0.5, 1.0, curve: Curves.linear)));
-    _animation3 = Tween<double>(begin: 0.25, end: 5 / 6)
-        .animate(CurvedAnimation(parent: _controller, curve: const Interval(0.0, 1.0, curve: _SpinKitRingCurve())));
+    _animation1 = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+        parent: _controller,
+        curve: const Interval(0.0, 1.0, curve: Curves.linear)));
+    _animation2 = Tween<double>(begin: -2 / 3, end: 1 / 2).animate(
+        CurvedAnimation(
+            parent: _controller,
+            curve: const Interval(0.5, 1.0, curve: Curves.linear)));
+    _animation3 = Tween<double>(begin: 0.25, end: 5 / 6).animate(
+        CurvedAnimation(
+            parent: _controller,
+            curve: const Interval(0.0, 1.0, curve: _SpinKitRingCurve())));
   }
 
   @override
@@ -90,8 +97,8 @@ class _RingPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final Offset center = Offset(size.width / 2, size.height / 2);
     final double radius = (min(size.width, size.height) - paintWidth) / 2;
-    canvas.drawArc(
-        Rect.fromCircle(center: center, radius: radius), startAngle, 2 * pi * progressPercent, false, trackPaint);
+    canvas.drawArc(Rect.fromCircle(center: center, radius: radius), startAngle,
+        2 * pi * progressPercent, false, trackPaint);
   }
 
   @override
@@ -127,7 +134,8 @@ class SpinKitDualRing extends StatefulWidget {
   _SpinKitDualRingState createState() => _SpinKitDualRingState();
 }
 
-class _SpinKitDualRingState extends State<SpinKitDualRing> with SingleTickerProviderStateMixin {
+class _SpinKitDualRingState extends State<SpinKitDualRing>
+    with SingleTickerProviderStateMixin {
   AnimationController _controller;
   Animation<double> _animation;
 
@@ -135,11 +143,13 @@ class _SpinKitDualRingState extends State<SpinKitDualRing> with SingleTickerProv
   void initState() {
     super.initState();
 
-    _controller = (widget.controller ?? AnimationController(vsync: this, duration: widget.duration))
+    _controller = (widget.controller ??
+        AnimationController(vsync: this, duration: widget.duration))
       ..addListener(() => setState(() {}))
       ..repeat();
-    _animation = Tween<double>(begin: 0.0, end: 1.0)
-        .animate(CurvedAnimation(parent: _controller, curve: const Interval(0.0, 1.0, curve: Curves.linear)));
+    _animation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+        parent: _controller,
+        curve: const Interval(0.0, 1.0, curve: Curves.linear)));
   }
 
   @override
@@ -156,7 +166,8 @@ class _SpinKitDualRingState extends State<SpinKitDualRing> with SingleTickerProv
         alignment: FractionalOffset.center,
         child: CustomPaint(
           child: SizedBox.fromSize(size: Size.square(widget.size)),
-          painter: _DualRingPainter(paintWidth: widget.lineWidth, color: widget.color),
+          painter: _DualRingPainter(
+              paintWidth: widget.lineWidth, color: widget.color),
         ),
       ),
     );
@@ -175,7 +186,8 @@ class _DualRingPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final Rect rect = Rect.fromPoints(Offset.zero, Offset(size.width, size.height));
+    final Rect rect =
+        Rect.fromPoints(Offset.zero, Offset(size.width, size.height));
     canvas.drawArc(rect, 0.0, getRadian(angle), false, ringPaint);
     canvas.drawArc(rect, getRadian(180.0), getRadian(angle), false, ringPaint);
   }

@@ -129,9 +129,12 @@ class _PopupBaseState extends State<PopupBase> {
     }
     if (widget.addMaterial)
       child = Material(
-          color: getColors(transparent), child: MediaQuery(data: MediaQueryData.fromWindow(window), child: child));
+          color: getColors(transparent),
+          child: MediaQuery(
+              data: MediaQueryData.fromWindow(window), child: child));
 
-    if (!widget.handleTouch) child = IgnorePointer(ignoring: widget.handleTouch, child: child);
+    if (!widget.handleTouch)
+      child = IgnorePointer(ignoring: widget.handleTouch, child: child);
     if (widget.ignoring) child = IgnorePointer(child: child);
     return child;
   }
@@ -145,17 +148,22 @@ class _PopupBaseState extends State<PopupBase> {
       duration: const Duration(milliseconds: 200),
       child: child);
 
-  Widget backdropFilter(Widget child) =>
-      BackdropFilter(filter: ImageFilter.blur(sigmaX: fuzzyDegree, sigmaY: fuzzyDegree), child: child);
+  Widget backdropFilter(Widget child) => BackdropFilter(
+      filter: ImageFilter.blur(sigmaX: fuzzyDegree, sigmaY: fuzzyDegree),
+      child: child);
 
   Widget animatedOpacity(Widget child) => AnimatedOpacity(
-      opacity: opacity, curve: Curves.slowMiddle, duration: const Duration(milliseconds: 200), child: child);
+      opacity: opacity,
+      curve: Curves.slowMiddle,
+      duration: const Duration(milliseconds: 200),
+      child: child);
 
   Widget childWidget() => Universal(
       color: widget.color,
       onTap: widget.onTap,
       behavior: widget.behavior,
       alignment: widget.alignment,
-      padding: EdgeInsets.fromLTRB(widget.left, widget.top, widget.right, widget.bottom),
+      padding: EdgeInsets.fromLTRB(
+          widget.left, widget.top, widget.right, widget.bottom),
       child: widget.child);
 }

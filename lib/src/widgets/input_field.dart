@@ -77,7 +77,8 @@ class InputField extends StatelessWidget {
   })  : obscureText = obscureText ?? false,
         readOnly = readOnly ?? false,
         crossAxisAlignment = crossAxisAlignment ?? CrossAxisAlignment.center,
-        floatingLabelBehavior = floatingLabelBehavior ?? FloatingLabelBehavior.always,
+        floatingLabelBehavior =
+            floatingLabelBehavior ?? FloatingLabelBehavior.always,
 
         ///键盘大小写的显示 Only supports text keyboards  但是好像不起作用？
         ///characters 默认为每个字符使用大写键盘
@@ -453,49 +454,64 @@ class InputField extends StatelessWidget {
         return <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly];
       case InputTextType.password:
         return <TextInputFormatter>[
-          FilteringTextInputFormatter(RegExp(ConstConstant.regExpPassword), allow: true)
+          FilteringTextInputFormatter(RegExp(ConstConstant.regExpPassword),
+              allow: true)
         ]; //密码常见类型
       case InputTextType.lettersNumbers:
         return <TextInputFormatter>[
-          FilteringTextInputFormatter(RegExp(ConstConstant.regExpLettersNumbers), allow: true)
+          FilteringTextInputFormatter(
+              RegExp(ConstConstant.regExpLettersNumbers),
+              allow: true)
         ]; //字母和数字
       case InputTextType.decimal:
         return <TextInputFormatter>[
-          FilteringTextInputFormatter(RegExp(ConstConstant.regExpDecimal), allow: true)
+          FilteringTextInputFormatter(RegExp(ConstConstant.regExpDecimal),
+              allow: true)
         ]; //只允许输入小数
       case InputTextType.letter:
         return <TextInputFormatter>[
-          FilteringTextInputFormatter(RegExp(ConstConstant.regExpLetter), allow: true)
+          FilteringTextInputFormatter(RegExp(ConstConstant.regExpLetter),
+              allow: true)
         ]; //只允许输入字母
       case InputTextType.chinese:
         return <TextInputFormatter>[
-          FilteringTextInputFormatter(RegExp(ConstConstant.regExpChinese), allow: true)
+          FilteringTextInputFormatter(RegExp(ConstConstant.regExpChinese),
+              allow: true)
         ]; //只允许输入汉字
       case InputTextType.email:
         return <TextInputFormatter>[
-          FilteringTextInputFormatter(RegExp(ConstConstant.regExpEmail), allow: true)
+          FilteringTextInputFormatter(RegExp(ConstConstant.regExpEmail),
+              allow: true)
         ]; //只允许输入邮箱
       case InputTextType.phone:
         return <TextInputFormatter>[
-          FilteringTextInputFormatter(RegExp(ConstConstant.regExpPhone), allow: true)
+          FilteringTextInputFormatter(RegExp(ConstConstant.regExpPhone),
+              allow: true)
         ]; //只允许输入国内电话号
       case InputTextType.mobilePhone:
         return <TextInputFormatter>[
-          FilteringTextInputFormatter(RegExp(ConstConstant.regExpMobilePhone), allow: true)
+          FilteringTextInputFormatter(RegExp(ConstConstant.regExpMobilePhone),
+              allow: true)
         ]; //只允许输入国内手机号
       case InputTextType.idCard:
         return <TextInputFormatter>[
-          FilteringTextInputFormatter(RegExp(ConstConstant.regExpIdCard), allow: true)
+          FilteringTextInputFormatter(RegExp(ConstConstant.regExpIdCard),
+              allow: true)
         ]; //只允许输入身份证
       case InputTextType.ip:
-        return <TextInputFormatter>[FilteringTextInputFormatter(RegExp(ConstConstant.regExpIP), allow: true)]; //只允许输入IP
+        return <TextInputFormatter>[
+          FilteringTextInputFormatter(RegExp(ConstConstant.regExpIP),
+              allow: true)
+        ]; //只允许输入IP
       case InputTextType.positive:
         return <TextInputFormatter>[
-          FilteringTextInputFormatter(RegExp(ConstConstant.regExpPositive), allow: true)
+          FilteringTextInputFormatter(RegExp(ConstConstant.regExpPositive),
+              allow: true)
         ]; //只允许输入正数
       case InputTextType.negative:
         return <TextInputFormatter>[
-          FilteringTextInputFormatter(RegExp(ConstConstant.regExpNegative), allow: true)
+          FilteringTextInputFormatter(RegExp(ConstConstant.regExpNegative),
+              allow: true)
         ]; //只允许输入负数
       case InputTextType.text:
         return inputFormatter;
@@ -620,7 +636,8 @@ class SearchBox extends StatelessWidget {
         focusNode: focusNode,
         fillColor: fillColor,
         filled: true,
-        focusedBorder: inputBorder(focusedBorderColor ?? enabledBorderColor ?? getColors(blue)),
+        focusedBorder: inputBorder(
+            focusedBorderColor ?? enabledBorderColor ?? getColors(blue)),
         enabledBorder: inputBorder(enabledBorderColor ?? getColors(white50)),
         inputStyle: inputStyle,
         contentPadding: contentPadding,

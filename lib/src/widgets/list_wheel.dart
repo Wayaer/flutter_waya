@@ -35,7 +35,8 @@ class ListWheel extends StatefulWidget {
         childDelegateType == ListWheelChildDelegateType.looping) {
       assert(children != null);
     }
-    if (childDelegateType == null || childDelegateType == ListWheelChildDelegateType.builder) {
+    if (childDelegateType == null ||
+        childDelegateType == ListWheelChildDelegateType.builder) {
       assert(itemCount != null && itemBuilder != null,
           'childDelegateType default is "ListWheelChildDelegateType.builder", The necessary conditions must be passed');
     }
@@ -91,7 +92,8 @@ class _ListWheelState extends State<ListWheel> {
   @override
   void initState() {
     super.initState();
-    controller = widget.controller ?? FixedExtentScrollController(initialItem: widget.initialIndex);
+    controller = widget.controller ??
+        FixedExtentScrollController(initialItem: widget.initialIndex);
   }
 
   @override
@@ -99,16 +101,19 @@ class _ListWheelState extends State<ListWheel> {
     ListWheelChildDelegate childDelegate;
     switch (widget?.childDelegateType) {
       case ListWheelChildDelegateType.builder:
-        childDelegate = ListWheelChildBuilderDelegate(builder: widget.itemBuilder, childCount: widget.itemCount);
+        childDelegate = ListWheelChildBuilderDelegate(
+            builder: widget.itemBuilder, childCount: widget.itemCount);
         break;
       case ListWheelChildDelegateType.list:
         childDelegate = ListWheelChildListDelegate(children: widget.children);
         break;
       case ListWheelChildDelegateType.looping:
-        childDelegate = ListWheelChildLoopingListDelegate(children: widget.children);
+        childDelegate =
+            ListWheelChildLoopingListDelegate(children: widget.children);
         break;
       default:
-        childDelegate = ListWheelChildBuilderDelegate(builder: widget.itemBuilder, childCount: widget.itemCount);
+        childDelegate = ListWheelChildBuilderDelegate(
+            builder: widget.itemBuilder, childCount: widget.itemCount);
         break;
     }
 
@@ -181,23 +186,29 @@ class _AutoScrollEntryState extends State<AutoScrollEntry> {
   @override
   void initState() {
     super.initState();
-    if (widget.initialIndex != null && widget.initialIndex < widget.children.length) index = widget.initialIndex;
+    if (widget.initialIndex != null &&
+        widget.initialIndex < widget.children.length)
+      index = widget.initialIndex;
     if (widget.itemHeight != null) itemHeight = widget.itemHeight;
     controller = FixedExtentScrollController(initialItem: widget.initialIndex);
     if (widget.maxItemCount == null) {
-      if (widget.children.length > maxItemCount) maxItemCount = widget.children.length;
+      if (widget.children.length > maxItemCount)
+        maxItemCount = widget.children.length;
     } else {
       maxItemCount = widget.maxItemCount;
     }
     Tools.addPostFrameCallback((Duration duration) {
-      timer = Tools.timerPeriodic(widget.duration ?? const Duration(seconds: 3), (Timer callback) {
+      timer = Tools.timerPeriodic(widget.duration ?? const Duration(seconds: 3),
+          (Timer callback) {
         index += 1;
         if (index >= maxItemCount) {
           index = 0;
           controller.jumpToItem(index);
         }
         controller?.animateToItem(index,
-            duration: widget.animateDuration ?? const Duration(milliseconds: 500), curve: Curves.linear);
+            duration:
+                widget.animateDuration ?? const Duration(milliseconds: 500),
+            curve: Curves.linear);
       });
     });
   }

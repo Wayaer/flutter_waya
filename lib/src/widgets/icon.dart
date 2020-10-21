@@ -122,28 +122,41 @@ class IconBox extends StatelessWidget {
         alignment: alignment);
   }
 
-  Widget spacingWidget() =>
-      Container(width: direction == Axis.horizontal ? spacing : 0, height: direction == Axis.vertical ? spacing : 0);
+  Widget spacingWidget() => Container(
+      width: direction == Axis.horizontal ? spacing : 0,
+      height: direction == Axis.vertical ? spacing : 0);
 
   Widget titleWidget() {
     if (title != null) return title;
     return Text(titleText ?? '',
-        style: titleStyle, textAlign: textAlign, maxLines: maxLines, textDirection: textDirection, overflow: overflow);
+        style: titleStyle,
+        textAlign: textAlign,
+        maxLines: maxLines,
+        textDirection: textDirection,
+        overflow: overflow);
   }
 
   bool isChildren() =>
       (titleText != null || title != null) &&
-      (icon != null || image != null || widget != null || imageProvider != null);
+      (icon != null ||
+          image != null ||
+          widget != null ||
+          imageProvider != null);
 
   List<Widget> iconWidget() {
     final List<Widget> listWidget = <Widget>[];
     if (icon != null)
-      listWidget.add(Icon(icon, color: color, size: size, textDirection: textDirection, semanticLabel: semanticLabel));
+      listWidget.add(Icon(icon,
+          color: color,
+          size: size,
+          textDirection: textDirection,
+          semanticLabel: semanticLabel));
 
     if (image != null) listWidget.add(image);
 
     if (imageProvider != null)
-      listWidget.add(ImageIcon(imageProvider, color: color, size: size, semanticLabel: semanticLabel));
+      listWidget.add(ImageIcon(imageProvider,
+          color: color, size: size, semanticLabel: semanticLabel));
 
     if (widget != null) listWidget.add(widget);
     return listWidget;
@@ -210,7 +223,8 @@ class _CheckBoxState extends State<CheckBox> {
   Widget build(BuildContext context) {
     if (widget.value != null) value = widget.value;
     IconData icon;
-    if (widget.checkIcon != null && widget.uncheckIcon != null) icon = value ? widget.checkIcon : widget.uncheckIcon;
+    if (widget.checkIcon != null && widget.uncheckIcon != null)
+      icon = value ? widget.checkIcon : widget.uncheckIcon;
     Widget check;
     if (widget.checkWidget != null && widget.uncheckWidget != null) {
       check = value ? widget.checkWidget : widget.uncheckWidget;

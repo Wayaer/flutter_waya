@@ -312,6 +312,4 @@ String _digits(int value, int length) {
 }
 
 int dayInYear(DateTime date) =>
-    date
-        .difference(DateTime(date.year, 1, 1))
-        .inDays;
+    date.difference(DateTime(date.year, 1, 1)).inDays;

@@ -60,16 +60,22 @@ class Tools {
 
   ///手机号验证
   static bool isChinaPhoneLegal(String str) =>
-      RegExp(r'^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$').hasMatch(str);
+      RegExp(r'^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$')
+          .hasMatch(str);
 
   ///邮箱验证
-  static bool isEmail(String str) => RegExp(r'^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$').hasMatch(str);
+  static bool isEmail(String str) =>
+      RegExp(r'^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$').hasMatch(str);
 
   /// 截屏
-  static Future<ByteData> screenshots(GlobalKey globalKey, {ImageByteFormat format}) async {
-    final RenderRepaintBoundary boundary = globalKey.currentContext.findRenderObject() as RenderRepaintBoundary;
-    final ui.Image image = await boundary.toImage(pixelRatio: window.devicePixelRatio);
-    final ByteData byteData = await image.toByteData(format: format ?? ImageByteFormat.rawRgba);
+  static Future<ByteData> screenshots(GlobalKey globalKey,
+      {ImageByteFormat format}) async {
+    final RenderRepaintBoundary boundary =
+        globalKey.currentContext.findRenderObject() as RenderRepaintBoundary;
+    final ui.Image image =
+        await boundary.toImage(pixelRatio: window.devicePixelRatio);
+    final ByteData byteData =
+        await image.toByteData(format: format ?? ImageByteFormat.rawRgba);
 
     /// Uint8List uint8list = byteData.buffer.asUint8List();
     return byteData;
@@ -132,12 +138,15 @@ class Tools {
   }
 
   ///关闭键盘
-  static void closeKeyboard(BuildContext context) => FocusScope.of(context).requestFocus(FocusNode());
+  static void closeKeyboard(BuildContext context) =>
+      FocusScope.of(context).requestFocus(FocusNode());
 
   ///自动获取焦点
-  static void autoFocus(BuildContext context) => FocusScope.of(context).autofocus(FocusNode());
+  static void autoFocus(BuildContext context) =>
+      FocusScope.of(context).autofocus(FocusNode());
 
-  static void addPostFrameCallback(FrameCallback callback) => WidgetsBinding.instance.addPostFrameCallback(callback);
+  static void addPostFrameCallback(FrameCallback callback) =>
+      WidgetsBinding.instance.addPostFrameCallback(callback);
 
   static Timer timerTools(Duration duration, [Function function]) {
     Timer timer;
@@ -153,13 +162,15 @@ class Tools {
       Timer.periodic(duration, (Timer time) => callback(time));
 
   /// md5 加密
-  static String setMd5(String data) => md5.convert(utf8.encode(data)).toString();
+  static String setMd5(String data) =>
+      md5.convert(utf8.encode(data)).toString();
 
   /// Base64加密
   static String encodeBase64(String data) => base64Encode(utf8.encode(data));
 
   ///Base64解密
-  static String decodeBase64(String data) => String.fromCharCodes(base64Decode(data));
+  static String decodeBase64(String data) =>
+      String.fromCharCodes(base64Decode(data));
 
   static void setStatusBarLight(bool isLight) {
     final Color color = getColors(transparent);

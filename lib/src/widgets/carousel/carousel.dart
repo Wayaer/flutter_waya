@@ -6,7 +6,8 @@ import 'package:flutter_waya/flutter_waya.dart';
 
 typedef CarouselOnTap = void Function(int index);
 
-typedef CarouselDataBuilder = Widget Function(BuildContext context, dynamic data, int index);
+typedef CarouselDataBuilder = Widget Function(
+    BuildContext context, dynamic data, int index);
 
 ///default auto play delay
 const int kDefaultAutoPlayDelayMs = 3000;
@@ -46,8 +47,8 @@ class Carousel extends StatefulWidget {
     this.outer = false,
     this.scale,
     this.fade,
-  })  : assert(
-            itemBuilder != null || transformer != null, 'itemBuilder and transformItemBuilder must not be both null'),
+  })  : assert(itemBuilder != null || transformer != null,
+            'itemBuilder and transformItemBuilder must not be both null'),
         assert(
             !loop ||
                 ((loop &&
@@ -171,7 +172,8 @@ class Carousel extends StatefulWidget {
           loop: loop,
           plugins: plugins,
           physics: physics,
-          itemBuilder: (BuildContext context, int index) => builder(context, list[index], index),
+          itemBuilder: (BuildContext context, int index) =>
+              builder(context, list[index], index),
           itemCount: list.length);
 
   ///If set true , the pagination will display 'outer' of the 'content' container.
@@ -329,7 +331,8 @@ abstract class _CarouselTimerMixin extends State<Carousel> {
 
   void _startAutoPlay() {
     assert(_timer == null, 'Timer must be stopped before start!');
-    _timer = Timer.periodic(Duration(milliseconds: widget.autoPlayDelay), _onTimer);
+    _timer =
+        Timer.periodic(Duration(milliseconds: widget.autoPlayDelay), _onTimer);
   }
 
   void _onTimer(Timer timer) => _controller.next(animation: true);
@@ -349,7 +352,9 @@ class _CarouselState extends _CarouselTimerMixin {
 
   Widget _wrapTap(BuildContext context, int index) {
     return GestureDetector(
-        behavior: HitTestBehavior.opaque, onTap: () => widget.onTap(index), child: widget.itemBuilder(context, index));
+        behavior: HitTestBehavior.opaque,
+        onTap: () => widget.onTap(index),
+        child: widget.itemBuilder(context, index));
   }
 
   @override
@@ -368,7 +373,8 @@ class _CarouselState extends _CarouselTimerMixin {
     super.initState();
   }
 
-  bool _isPageViewLayout() => widget.layout == null || widget.layout == CarouselLayout.none;
+  bool _isPageViewLayout() =>
+      widget.layout == null || widget.layout == CarouselLayout.none;
 
   @override
   void didChangeDependencies() {
@@ -406,7 +412,8 @@ class _CarouselState extends _CarouselTimerMixin {
         }
       });
     }
-    if (widget.index != null && widget.index != _activeIndex) _activeIndex = widget.index;
+    if (widget.index != null && widget.index != _activeIndex)
+      _activeIndex = widget.index;
   }
 
   void _onIndexChanged(int index) {
@@ -416,7 +423,8 @@ class _CarouselState extends _CarouselTimerMixin {
   }
 
   Widget _buildCarousel() {
-    final IndexedWidgetBuilder itemBuilder = widget.onTap == null ? widget.itemBuilder : _wrapTap;
+    final IndexedWidgetBuilder itemBuilder =
+        widget.onTap == null ? widget.itemBuilder : _wrapTap;
     if (widget.layout == CarouselLayout.stack) {
       return _StackCarousel(
         loop: widget.loop,
@@ -434,7 +442,8 @@ class _CarouselState extends _CarouselTimerMixin {
     } else if (_isPageViewLayout()) {
       PageTransformer transformer = widget.transformer;
       if (widget.scale != null || widget.fade != null)
-        transformer = ScaleAndFadeTransformer(scale: widget.scale, fade: widget.fade);
+        transformer =
+            ScaleAndFadeTransformer(scale: widget.scale, fade: widget.fade);
 
       final Widget child = CarouselPageView(
         pageController: _pageController,
@@ -516,7 +525,8 @@ class _CarouselState extends _CarouselTimerMixin {
           controller: _controller,
           loop: widget.loop);
 
-  List<Widget> _ensureListForStack(Widget carousel, List<Widget> listForStack, Widget widget) {
+  List<Widget> _ensureListForStack(
+      Widget carousel, List<Widget> listForStack, Widget widget) {
     if (listForStack == null) {
       listForStack = <Widget>[carousel, widget];
     } else {
@@ -532,34 +542,46 @@ class _CarouselState extends _CarouselTimerMixin {
     CarouselPluginConfig config;
     if (widget.control != null) {
       config = _ensureConfig(config);
-      listForStack = _ensureListForStack(carousel, listForStack, widget.control.build(context, config));
+      listForStack = _ensureListForStack(
+          carousel, listForStack, widget.control.build(context, config));
     }
 
     if (widget.plugins != null) {
       config = _ensureConfig(config);
       for (final CarouselPlugin plugin in widget.plugins) {
-        listForStack = _ensureListForStack(carousel, listForStack, plugin.build(context, config));
+        listForStack = _ensureListForStack(
+            carousel, listForStack, plugin.build(context, config));
       }
     }
     if (widget.pagination != null) {
       config = _ensureConfig(config);
       if (widget.outer) {
         return _buildOuterPagination(
-            widget.pagination, listForStack == null ? carousel : Stack(children: listForStack), config);
+            widget.pagination,
+            listForStack == null ? carousel : Stack(children: listForStack),
+            config);
       } else {
-        listForStack = _ensureListForStack(carousel, listForStack, widget.pagination.build(context, config));
+        listForStack = _ensureListForStack(
+            carousel, listForStack, widget.pagination.build(context, config));
       }
     }
     if (listForStack != null) return Stack(children: listForStack);
     return carousel;
   }
 
-  Widget _buildOuterPagination(CarouselPlugin pagination, Widget carousel, CarouselPluginConfig config) {
+  Widget _buildOuterPagination(
+      CarouselPlugin pagination, Widget carousel, CarouselPluginConfig config) {
     final List<Widget> list = <Widget>[];
     //Only support bottom yet!
-    list.add((widget.containerHeight != null || widget.containerWidth != null) ? carousel : Expanded(child: carousel));
-    list.add(Align(alignment: Alignment.center, child: pagination.build(context, config)));
-    return Column(children: list, crossAxisAlignment: CrossAxisAlignment.stretch, mainAxisSize: MainAxisSize.min);
+    list.add((widget.containerHeight != null || widget.containerWidth != null)
+        ? carousel
+        : Expanded(child: carousel));
+    list.add(Align(
+        alignment: Alignment.center, child: pagination.build(context, config)));
+    return Column(
+        children: list,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min);
   }
 }
 
@@ -673,7 +695,8 @@ class _TinderState extends _CustomLayoutStateBase<_TinderCarousel> {
   List<double> opacity;
   List<double> rotates;
 
-  double getOffsetY(double scale) => widget.itemHeight - widget.itemHeight * scale;
+  double getOffsetY(double scale) =>
+      widget.itemHeight - widget.itemHeight * scale;
 
   @override
   void didChangeDependencies() {
@@ -714,8 +737,9 @@ class _TinderState extends _CustomLayoutStateBase<_TinderCarousel> {
     final double fy = _getValue(offsetsY, animationValue, i);
     final double o = _getValue(opacity, animationValue, i);
     final double a = _getValue(rotates, animationValue, i);
-    final Alignment alignment =
-        widget.scrollDirection == Axis.horizontal ? Alignment.bottomCenter : Alignment.centerLeft;
+    final Alignment alignment = widget.scrollDirection == Axis.horizontal
+        ? Alignment.bottomCenter
+        : Alignment.centerLeft;
     return Opacity(
         opacity: o,
         child: Transform.rotate(
@@ -748,10 +772,22 @@ class _StackViewState extends _CustomLayoutStateBase<_StackCarousel> {
   void _updateValues() {
     if (widget.scrollDirection == Axis.horizontal) {
       final double space = (_carouselWidth - widget.itemWidth) / 2;
-      offsets = <double>[-space, -space / 3 * 2, -space / 3, 0.0, _carouselWidth];
+      offsets = <double>[
+        -space,
+        -space / 3 * 2,
+        -space / 3,
+        0.0,
+        _carouselWidth
+      ];
     } else {
       final double space = (_carouselHeight - widget.itemHeight) / 2;
-      offsets = <double>[-space, -space / 3 * 2, -space / 3, 0.0, _carouselHeight];
+      offsets = <double>[
+        -space,
+        -space / 3 * 2,
+        -space / 3,
+        0.0,
+        _carouselHeight
+      ];
     }
   }
 
@@ -778,8 +814,12 @@ class _StackViewState extends _CustomLayoutStateBase<_StackCarousel> {
     final double s = _getValue(scales, animationValue, i);
     final double f = _getValue(offsets, animationValue, i);
     final double o = _getValue(opacity, animationValue, i);
-    final Offset offset = widget.scrollDirection == Axis.horizontal ? Offset(f, 0.0) : Offset(0.0, f);
-    final Alignment alignment = widget.scrollDirection == Axis.horizontal ? Alignment.centerLeft : Alignment.topCenter;
+    final Offset offset = widget.scrollDirection == Axis.horizontal
+        ? Offset(f, 0.0)
+        : Offset(0.0, f);
+    final Alignment alignment = widget.scrollDirection == Axis.horizontal
+        ? Alignment.centerLeft
+        : Alignment.topCenter;
     return Opacity(
         opacity: o,
         child: Transform.translate(
@@ -823,7 +863,8 @@ class ScaleAndFadeTransformer extends PageTransformer {
 }
 
 ////CustomLayout
-abstract class _CustomLayoutStateBase<T extends _SubCarousel> extends State<T> with SingleTickerProviderStateMixin {
+abstract class _CustomLayoutStateBase<T extends _SubCarousel> extends State<T>
+    with SingleTickerProviderStateMixin {
   double _carouselWidth;
   double _carouselHeight;
   Animation<double> _animation;
@@ -834,7 +875,8 @@ abstract class _CustomLayoutStateBase<T extends _SubCarousel> extends State<T> w
   @override
   void initState() {
     if (widget.itemWidth == null)
-      throw Exception('==============\n\nwidget.itemWith must not be null when use stack layout.\n========\n');
+      throw Exception(
+          '==============\n\nwidget.itemWith must not be null when use stack layout.\n========\n');
     _createAnimationController();
     widget.controller.addListener(_onController);
     super.initState();
@@ -867,7 +909,8 @@ abstract class _CustomLayoutStateBase<T extends _SubCarousel> extends State<T> w
       oldWidget.controller.removeListener(_onController);
       widget.controller.addListener(_onController);
     }
-    if (widget.loop != oldWidget.loop && !widget.loop) _currentIndex = _ensureIndex(_currentIndex);
+    if (widget.loop != oldWidget.loop && !widget.loop)
+      _currentIndex = _ensureIndex(_currentIndex);
     super.didUpdateWidget(oldWidget);
   }
 
@@ -908,7 +951,8 @@ abstract class _CustomLayoutStateBase<T extends _SubCarousel> extends State<T> w
   @override
   Widget build(BuildContext context) {
     if (_animationCount == null) return Container();
-    return AnimatedBuilder(animation: _animationController, builder: _buildAnimation);
+    return AnimatedBuilder(
+        animation: _animationController, builder: _buildAnimation);
   }
 
   double _currentValue;
@@ -920,7 +964,8 @@ abstract class _CustomLayoutStateBase<T extends _SubCarousel> extends State<T> w
     try {
       _lockScroll = true;
       await _animationController.animateTo(position,
-          duration: Duration(milliseconds: widget.duration), curve: widget.curve);
+          duration: Duration(milliseconds: widget.duration),
+          curve: widget.curve);
       if (nextIndex != null) {
         widget.onIndexChanged(widget.getCorrectIndex(nextIndex));
       }
@@ -941,7 +986,8 @@ abstract class _CustomLayoutStateBase<T extends _SubCarousel> extends State<T> w
 
   int _nextIndex() {
     final int index = _currentIndex + 1;
-    if (!widget.loop && index >= widget.itemCount - 1) return widget.itemCount - 1;
+    if (!widget.loop && index >= widget.itemCount - 1)
+      return widget.itemCount - 1;
     return index;
   }
 
@@ -964,7 +1010,8 @@ abstract class _CustomLayoutStateBase<T extends _SubCarousel> extends State<T> w
         _move(0.0, nextIndex: nextIndex);
         break;
       case IndexController.MOVE:
-        throw Exception('Custom layout does not support CarouselControllerEvent.MOVE_INDEX yet!');
+        throw Exception(
+            'Custom layout does not support CarouselControllerEvent.MOVE_INDEX yet!');
       case CarouselController.STOP_AUTOPLAY:
       case CarouselController.START_AUTOPLAY:
         break;
@@ -990,13 +1037,17 @@ abstract class _CustomLayoutStateBase<T extends _SubCarousel> extends State<T> w
   void _onPanStart(DragStartDetails details) {
     if (_lockScroll) return;
     _currentValue = _animationController.value;
-    _currentPos = widget.scrollDirection == Axis.horizontal ? details.globalPosition.dx : details.globalPosition.dy;
+    _currentPos = widget.scrollDirection == Axis.horizontal
+        ? details.globalPosition.dx
+        : details.globalPosition.dy;
   }
 
   void _onPanUpdate(DragUpdateDetails details) {
     if (_lockScroll) return;
     double value = _currentValue +
-        ((widget.scrollDirection == Axis.horizontal ? details.globalPosition.dx : details.globalPosition.dy) -
+        ((widget.scrollDirection == Axis.horizontal
+                    ? details.globalPosition.dx
+                    : details.globalPosition.dy) -
                 _currentPos) /
             _carouselWidth /
             2;
@@ -1054,7 +1105,9 @@ abstract class TransformBuilder<T> {
 }
 
 class ScaleTransformBuilder extends TransformBuilder<double> {
-  ScaleTransformBuilder({List<double> values, this.alignment = Alignment.center}) : super(values: values);
+  ScaleTransformBuilder(
+      {List<double> values, this.alignment = Alignment.center})
+      : super(values: values);
 
   final Alignment alignment;
 
@@ -1096,9 +1149,11 @@ class TranslateTransformBuilder extends TransformBuilder<Offset> {
 }
 
 class CustomLayoutOption {
-  CustomLayoutOption({this.stateCount, @required this.startIndex}) : assert(startIndex != null, stateCount != null);
+  CustomLayoutOption({this.stateCount, @required this.startIndex})
+      : assert(startIndex != null, stateCount != null);
 
-  final List<TransformBuilder<dynamic>> builders = <TransformBuilder<dynamic>>[];
+  final List<TransformBuilder<dynamic>> builders =
+      <TransformBuilder<dynamic>>[];
   final int startIndex;
   final int stateCount;
 

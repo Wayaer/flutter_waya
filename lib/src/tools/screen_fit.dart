@@ -7,22 +7,26 @@ import 'package:flutter/material.dart';
 double get getStatusBarHeight => MediaQueryData.fromWindow(window).padding.top;
 
 ///获取导航栏高度
-double get getBottomNavigationBarHeight => MediaQueryData.fromWindow(window).padding.bottom;
+double get getBottomNavigationBarHeight =>
+    MediaQueryData.fromWindow(window).padding.bottom;
 
 ///orientation → Orientation 屏幕方向（横向/纵向）
 Orientation get getOrientation => MediaQueryData.fromWindow(window).orientation;
 
 ///accessibleNavigation → bool 用户是否使用TalkBack或VoiceOver等辅助功能服务与应用程序进行交互。
-bool get getAccessibleNavigation => MediaQueryData.fromWindow(window).accessibleNavigation;
+bool get getAccessibleNavigation =>
+    MediaQueryData.fromWindow(window).accessibleNavigation;
 
 ///alwaysUse24HourFormat → bool 格式化时间时是否使用24小时格式。
 bool get getBoldText => MediaQueryData.fromWindow(window).boldText;
 
 ///devicePixelRatio → double 单位逻辑像素的设备像素数量，即设备像素比。这个数字可能不是2的幂，实际上它甚至也可能不是整数。例如，Nexus 6的设备像素比为3.5。
-double get getDevicePixelRatio => MediaQueryData.fromWindow(window).devicePixelRatio;
+double get getDevicePixelRatio =>
+    MediaQueryData.fromWindow(window).devicePixelRatio;
 
 ///disableAnimations → bool 平台是否要求尽可能禁用或减少使用动画。
-bool get getDisableAnimations => MediaQueryData.fromWindow(window).disableAnimations;
+bool get getDisableAnimations =>
+    MediaQueryData.fromWindow(window).disableAnimations;
 
 ///  hashCode → int 此对象的哈希码
 int get getHashCode => MediaQueryData.fromWindow(window).hashCode;
@@ -34,13 +38,15 @@ bool get getInvertColors => MediaQueryData.fromWindow(window).invertColors;
 EdgeInsets get getPadding => MediaQueryData.fromWindow(window).padding;
 
 ///platformBrightness → Brightness 当前的亮度模式
-Brightness get getPlatformBrightness => MediaQueryData.fromWindow(window).platformBrightness;
+Brightness get getPlatformBrightness =>
+    MediaQueryData.fromWindow(window).platformBrightness;
 
 ///size → Size 设备尺寸信息，如屏幕的大小，单位 pixels
 Size get getDeviceSize => MediaQueryData.fromWindow(window).size;
 
 ///textScaleFactor → double 每个逻辑像素的字体像素数
-double get getTextScaleFactor => MediaQueryData.fromWindow(window).textScaleFactor;
+double get getTextScaleFactor =>
+    MediaQueryData.fromWindow(window).textScaleFactor;
 
 /// viewInsets → EdgeInsets 显示器的各个部分完全被系统UI遮挡，通常是设备的键盘
 EdgeInsets get getViewInsets => MediaQueryData.fromWindow(window).viewInsets;
@@ -49,10 +55,12 @@ EdgeInsets get getViewInsets => MediaQueryData.fromWindow(window).viewInsets;
 EdgeInsets get getViewPadding => MediaQueryData.fromWindow(window).viewPadding;
 
 ///手机屏幕的宽分辨率
-double get getWidthPixel => MediaQueryData.fromWindow(window).size.width * getDevicePixelRatio;
+double get getWidthPixel =>
+    MediaQueryData.fromWindow(window).size.width * getDevicePixelRatio;
 
 ///手机屏幕高分辨率
-double get getHeightPixel => MediaQueryData.fromWindow(window).size.height * getDevicePixelRatio;
+double get getHeightPixel =>
+    MediaQueryData.fromWindow(window).size.height * getDevicePixelRatio;
 
 ///手机屏幕的宽
 double get deviceWidth => MediaQueryData.fromWindow(window).size.width;

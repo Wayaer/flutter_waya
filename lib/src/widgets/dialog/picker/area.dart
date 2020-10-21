@@ -106,7 +106,8 @@ class _AreaPickerState extends State<AreaPicker> {
     super.initState();
     initData();
     controllerCity = FixedExtentScrollController(initialItem: cityIndex);
-    controllerDistrict = FixedExtentScrollController(initialItem: districtIndex);
+    controllerDistrict =
+        FixedExtentScrollController(initialItem: districtIndex);
   }
 
   void initData() {
@@ -121,17 +122,22 @@ class _AreaPickerState extends State<AreaPicker> {
 
     ///省
     province = areaData?.keys?.toList();
-    if (province.contains(widget.defaultProvince)) provinceIndex = province.indexOf(widget.defaultProvince);
-    final Map<dynamic, dynamic> provinceData = areaData[province[provinceIndex]] as Map<dynamic, dynamic>;
+    if (province.contains(widget.defaultProvince))
+      provinceIndex = province.indexOf(widget.defaultProvince);
+    final Map<dynamic, dynamic> provinceData =
+        areaData[province[provinceIndex]] as Map<dynamic, dynamic>;
 
     ///市
     city = provinceData?.keys?.toList() as List<String>;
-    if (city.contains(widget.defaultCity)) cityIndex = city.indexOf(widget.defaultCity);
-    final Map<dynamic, dynamic> cityData = provinceData[city[cityIndex]] as Map<dynamic, dynamic>;
+    if (city.contains(widget.defaultCity))
+      cityIndex = city.indexOf(widget.defaultCity);
+    final Map<dynamic, dynamic> cityData =
+        provinceData[city[cityIndex]] as Map<dynamic, dynamic>;
 
     ///区
     district = cityData?.keys?.toList() as List<String>;
-    if (district.contains(widget.defaultDistrict)) districtIndex = district.indexOf(widget.defaultDistrict);
+    if (district.contains(widget.defaultDistrict))
+      districtIndex = district.indexOf(widget.defaultDistrict);
 //    var districtData = cityData[districtIndex];
 
     ///街道
@@ -141,15 +147,18 @@ class _AreaPickerState extends State<AreaPicker> {
   ///点击确定返回选择的地区
   void sureTapVoid() {
     if (widget.sureTap == null) return;
-    final String areaString = '${province[provinceIndex]} ${city[cityIndex]} ${district[districtIndex]}';
+    final String areaString =
+        '${province[provinceIndex]} ${city[cityIndex]} ${district[districtIndex]}';
     widget.sureTap(areaString);
   }
 
   void refreshCity() {
-    final Map<dynamic, dynamic> provinceData = areaData[province[provinceIndex]] as Map<dynamic, dynamic>;
+    final Map<dynamic, dynamic> provinceData =
+        areaData[province[provinceIndex]] as Map<dynamic, dynamic>;
     city = provinceData?.keys?.toList() as List<String>;
     cityState(() {});
-    final Map<dynamic, dynamic> cityData = provinceData[city[cityIndex]] as Map<dynamic, dynamic>;
+    final Map<dynamic, dynamic> cityData =
+        provinceData[city[cityIndex]] as Map<dynamic, dynamic>;
     district = cityData?.keys?.toList() as List<String>;
     districtState(() {});
     controllerCity.jumpTo(0);
@@ -157,7 +166,8 @@ class _AreaPickerState extends State<AreaPicker> {
   }
 
   void refreshDistrict() {
-    final Map<dynamic, dynamic> cityData = areaData[province[provinceIndex]][city[cityIndex]] as Map<dynamic, dynamic>;
+    final Map<dynamic, dynamic> cityData = areaData[province[provinceIndex]]
+        [city[cityIndex]] as Map<dynamic, dynamic>;
     district = cityData?.keys?.toList() as List<String>;
     districtState(() {});
     controllerDistrict.jumpTo(0);
@@ -165,25 +175,30 @@ class _AreaPickerState extends State<AreaPicker> {
 
   @override
   Widget build(BuildContext context) {
-    final Row row = Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+    final Row row =
+        Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
       Expanded(
-        child: wheelItem(province, initialIndex: provinceIndex, onChanged: (int newIndex) {
+        child: wheelItem(province, initialIndex: provinceIndex,
+            onChanged: (int newIndex) {
           provinceIndex = newIndex;
           refreshCity();
         }),
       ),
       Expanded(
-        child: StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
+        child: StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
           cityState = setState;
-          return wheelItem(city, childDelegateType: ListWheelChildDelegateType.list, controller: controllerCity,
-              onChanged: (int newIndex) {
+          return wheelItem(city,
+              childDelegateType: ListWheelChildDelegateType.list,
+              controller: controllerCity, onChanged: (int newIndex) {
             cityIndex = newIndex;
             refreshDistrict();
           });
         }),
       ),
       Expanded(
-        child: StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
+        child: StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
           districtState = setState;
           return wheelItem(district,
               childDelegateType: ListWheelChildDelegateType.list,
@@ -209,7 +224,8 @@ class _AreaPickerState extends State<AreaPicker> {
         onTap: () {},
         mainAxisSize: MainAxisSize.min,
         height: widget.height,
-        decoration: BoxDecoration(color: widget.backgroundColor ?? getColors(white)),
+        decoration:
+            BoxDecoration(color: widget.backgroundColor ?? getColors(white)),
         children: columnChildren);
   }
 
@@ -239,10 +255,12 @@ class _AreaPickerState extends State<AreaPicker> {
   Widget item(String value) {
     return Container(
         alignment: Alignment.center,
-        child: WayWidgets.textSmall(value, overflow: TextOverflow.ellipsis, style: contentStyle));
+        child: WayWidgets.textSmall(value,
+            overflow: TextOverflow.ellipsis, style: contentStyle));
   }
 
-  void jumpToIndex(int index, FixedExtentScrollController controller, {Duration duration}) {
+  void jumpToIndex(int index, FixedExtentScrollController controller,
+      {Duration duration}) {
     if (controller != null) controller.jumpToItem(index);
   }
 }

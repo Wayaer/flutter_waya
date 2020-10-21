@@ -152,7 +152,8 @@ class SuspensionState extends State<Suspension> {
 
   int getIndex(int offset) {
     if (widget.header != null && offset < widget.header.height) {
-      if (suspensionTop != -widget.header.height && widget.suspensionWidget != null) {
+      if (suspensionTop != -widget.header.height &&
+          widget.suspensionWidget != null) {
         suspensionTop = -widget.header.height;
         setState(() {});
       }
@@ -172,7 +173,8 @@ class SuspensionState extends State<Suspension> {
       final int a = suspensionSectionList[i];
       final int b = suspensionSectionList[i + 1];
       if (offset >= a && offset < b) return i;
-      if (offset >= suspensionSectionList[suSectionListLength - 1]) return suSectionListLength - 1;
+      if (offset >= suspensionSectionList[suSectionListLength - 1])
+        return suSectionListLength - 1;
     }
     return -1;
   }

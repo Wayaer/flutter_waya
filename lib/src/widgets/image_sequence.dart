@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-typedef ImageSequenceProcessCallback = void Function(ImageSequenceState _imageSequenceAnimator);
+typedef ImageSequenceProcessCallback = void Function(
+    ImageSequenceState _imageSequenceAnimator);
 
 class ImageSequence extends StatefulWidget {
   const ImageSequence(
@@ -96,7 +97,8 @@ class ImageSequence extends StatefulWidget {
       );
 }
 
-class ImageSequenceState extends State<ImageSequence> with SingleTickerProviderStateMixin {
+class ImageSequenceState extends State<ImageSequence>
+    with SingleTickerProviderStateMixin {
   ImageSequenceState(
     this.folderName,
     this.fileName,
@@ -218,7 +220,8 @@ class ImageSequenceState extends State<ImageSequence> with SingleTickerProviderS
   }
 
   void play({double from = -1.0}) {
-    if (!animationController.isAnimating && onStartPlaying != null) onStartPlaying(this);
+    if (!animationController.isAnimating && onStartPlaying != null)
+      onStartPlaying(this);
     if (from == -1.0)
       animationController.forward();
     else
@@ -226,7 +229,8 @@ class ImageSequenceState extends State<ImageSequence> with SingleTickerProviderS
   }
 
   void rewind({double from = -1.0}) {
-    if (!animationController.isAnimating && onStartPlaying != null) onStartPlaying(this);
+    if (!animationController.isAnimating && onStartPlaying != null)
+      onStartPlaying(this);
     if (from == -1.0)
       animationController.reverse();
     else
@@ -263,18 +267,26 @@ class ImageSequenceState extends State<ImageSequence> with SingleTickerProviderS
   }
 
   String getDirectory() =>
-      folderName + '/' + fileName + getSuffix((suffixStart + previousFrame).toString()) + '.' + fileFormat;
+      folderName +
+      '/' +
+      fileName +
+      getSuffix((suffixStart + previousFrame).toString()) +
+      '.' +
+      fileFormat;
 
   @override
   Widget build(BuildContext context) {
     // ignore: always_specify_types
     return ValueListenableBuilder(
       builder: (BuildContext context, int change, Widget cachedChild) {
-        if (currentFrame == null || animationController.value.floor() != previousFrame || colorChanged) {
+        if (currentFrame == null ||
+            animationController.value.floor() != previousFrame ||
+            colorChanged) {
           colorChanged = false;
           previousFrame = animationController.value.floor();
           if (previousFrame < frameCount)
-            currentFrame = Image.asset(getDirectory(), color: color, gaplessPlayback: true);
+            currentFrame = Image.asset(getDirectory(),
+                color: color, gaplessPlayback: true);
         }
         return currentFrame;
       },

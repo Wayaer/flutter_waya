@@ -11,7 +11,8 @@ abstract class PageTransformer {
   Widget transform(Widget child, TransformInfo info);
 }
 
-typedef PageTransformerBuilderCallback = Widget Function(Widget child, TransformInfo info);
+typedef PageTransformerBuilderCallback = Widget Function(
+    Widget child, TransformInfo info);
 
 const int kMaxValue = 2000000000;
 const int kMiddleValue = 1000000000;
@@ -88,8 +89,8 @@ class TransformerPageController extends PageController {
     this.itemCount,
     this.reverse = false,
   }) : super(
-            initialPage:
-                TransformerPageController._getRealIndexFromRenderIndex(initialPage ?? 0, loop, itemCount, reverse),
+            initialPage: TransformerPageController._getRealIndexFromRenderIndex(
+                initialPage ?? 0, loop, itemCount, reverse),
             keepPage: keepPage,
             viewportFraction: viewportFraction);
 
@@ -97,14 +98,16 @@ class TransformerPageController extends PageController {
   final int itemCount;
   final bool reverse;
 
-  int getRenderIndexFromRealIndex(int index) => _getRenderIndexFromRealIndex(index, loop, itemCount, reverse);
+  int getRenderIndexFromRealIndex(int index) =>
+      _getRenderIndexFromRealIndex(index, loop, itemCount, reverse);
 
   int getRealItemCount() {
     if (itemCount == 0) return 0;
     return loop ? itemCount + kMaxValue : itemCount;
   }
 
-  static int _getRenderIndexFromRealIndex(int index, bool loop, int itemCount, bool reverse) {
+  static int _getRenderIndexFromRealIndex(
+      int index, bool loop, int itemCount, bool reverse) {
     if (itemCount == 0) return 0;
     int renderIndex;
     if (loop) {
@@ -120,9 +123,13 @@ class TransformerPageController extends PageController {
     return renderIndex;
   }
 
-  double get realPage => (position.maxScrollExtent == null || position.minScrollExtent == null) ? 0.0 : super.page;
+  double get realPage =>
+      (position.maxScrollExtent == null || position.minScrollExtent == null)
+          ? 0.0
+          : super.page;
 
-  static double _getRenderPageFromRealPage(double page, bool loop, int itemCount, bool reverse) {
+  static double _getRenderPageFromRealPage(
+      double page, bool loop, int itemCount, bool reverse) {
     double renderPage;
     if (loop) {
       renderPage = page - kMiddleValue;
@@ -136,11 +143,15 @@ class TransformerPageController extends PageController {
   }
 
   @override
-  double get page => loop ? _getRenderPageFromRealPage(realPage, loop, itemCount, reverse) : realPage;
+  double get page => loop
+      ? _getRenderPageFromRealPage(realPage, loop, itemCount, reverse)
+      : realPage;
 
-  int getRealIndexFromRenderIndex(num index) => _getRealIndexFromRenderIndex(index, loop, itemCount, reverse);
+  int getRealIndexFromRenderIndex(num index) =>
+      _getRealIndexFromRenderIndex(index, loop, itemCount, reverse);
 
-  static int _getRealIndexFromRenderIndex(num index, bool loop, int itemCount, bool reverse) {
+  static int _getRealIndexFromRenderIndex(
+      num index, bool loop, int itemCount, bool reverse) {
     int result = (reverse ? (itemCount - index - 1) : index) as int;
     if (loop) {
       result += kMiddleValue;
@@ -168,7 +179,8 @@ class CarouselPageView extends StatefulWidget {
     @required this.itemCount,
   })  : assert(itemCount != null),
         assert(itemCount == 0 || itemBuilder != null || transformer != null),
-        duration = duration ?? const Duration(milliseconds: kDefaultTransactionDuration),
+        duration = duration ??
+            const Duration(milliseconds: kDefaultTransactionDuration),
         super(key: key);
 
   factory CarouselPageView.children(
@@ -264,18 +276,25 @@ class CarouselPageView extends StatefulWidget {
   /// zero and less than [itemCount].
 
   @override
-  _CarouselPageViewPageViewState createState() => _CarouselPageViewPageViewState();
+  _CarouselPageViewPageViewState createState() =>
+      _CarouselPageViewPageViewState();
 
-  static int getRealIndexFromRenderIndex({bool reverse, int index, int itemCount, bool loop}) {
+  static int getRealIndexFromRenderIndex(
+      {bool reverse, int index, int itemCount, bool loop}) {
     int initPage = reverse ? (itemCount - index - 1) : index;
     if (loop) initPage += kMiddleValue;
     return initPage;
   }
 
   static PageController createPageController(
-      {bool reverse, int index, int itemCount, bool loop, double viewportFraction}) {
+      {bool reverse,
+      int index,
+      int itemCount,
+      bool loop,
+      double viewportFraction}) {
     return PageController(
-        initialPage: getRealIndexFromRenderIndex(reverse: reverse, index: index, itemCount: itemCount, loop: loop),
+        initialPage: getRealIndexFromRenderIndex(
+            reverse: reverse, index: index, itemCount: itemCount, loop: loop),
         viewportFraction: viewportFraction);
   }
 }
@@ -301,9 +320,11 @@ class _CarouselPageViewPageViewState extends State<CarouselPageView> {
     return AnimatedBuilder(
         animation: _pageController,
         builder: (BuildContext c, Widget w) {
-          final int renderIndex = _pageController.getRenderIndexFromRealIndex(index);
+          final int renderIndex =
+              _pageController.getRenderIndexFromRealIndex(index);
           Widget child;
-          if (widget.itemBuilder != null) child = widget.itemBuilder(context, renderIndex);
+          if (widget.itemBuilder != null)
+            child = widget.itemBuilder(context, renderIndex);
           child ??= Container();
           if (_size == null) return child ?? Container();
           double position;
@@ -315,7 +336,8 @@ class _CarouselPageViewPageViewState extends State<CarouselPageView> {
               width: _size.width,
               height: _size.height,
               position: position.clamp(-1.0, 1.0).toDouble(),
-              activeIndex: _pageController.getRenderIndexFromRealIndex(_activeIndex),
+              activeIndex:
+                  _pageController.getRenderIndexFromRealIndex(_activeIndex),
               fromIndex: _fromIndex,
               forward: _pageController.position.pixels - _currentPixels >= 0,
               done: _done,
@@ -332,7 +354,8 @@ class _CarouselPageViewPageViewState extends State<CarouselPageView> {
 
   @override
   Widget build(BuildContext context) {
-    final IndexedWidgetBuilder builder = _transformer == null ? _buildItemNormal : _buildItem;
+    final IndexedWidgetBuilder builder =
+        _transformer == null ? _buildItemNormal : _buildItem;
     final Widget child = PageView.builder(
       itemBuilder: builder,
       itemCount: _pageController.getRealItemCount(),
@@ -363,7 +386,8 @@ class _CarouselPageViewPageViewState extends State<CarouselPageView> {
 
   void _onIndexChanged(int index) {
     _activeIndex = index;
-    if (widget.onPageChanged != null) widget.onPageChanged(_pageController.getRenderIndexFromRealIndex(index));
+    if (widget.onPageChanged != null)
+      widget.onPageChanged(_pageController.getRenderIndexFromRealIndex(index));
   }
 
   void _onGetSize(Duration timeStamp) {
@@ -396,7 +420,10 @@ class _CarouselPageViewPageViewState extends State<CarouselPageView> {
     if (widget.transformer != null) reverse = widget.transformer.reverse;
     _pageController = widget.pageController;
     _pageController ??= TransformerPageController(
-        initialPage: widget.index, itemCount: widget.itemCount, loop: widget.loop, reverse: reverse);
+        initialPage: widget.index,
+        itemCount: widget.itemCount,
+        loop: widget.loop,
+        reverse: reverse);
     // int initPage = _getRealIndexFromRenderIndex(index);
     // _pageController =  PageController(initialPage: initPage,viewportFraction: widget.viewportFraction);
     _fromIndex = _activeIndex = _pageController.initialPage;
@@ -418,7 +445,10 @@ class _CarouselPageViewPageViewState extends State<CarouselPageView> {
         bool reverse = false;
         if (widget.transformer != null) reverse = widget.transformer.reverse;
         _pageController = TransformerPageController(
-            initialPage: widget.index, itemCount: widget.itemCount, loop: widget.loop, reverse: reverse);
+            initialPage: widget.index,
+            itemCount: widget.itemCount,
+            loop: widget.loop,
+            reverse: reverse);
       }
     }
 
@@ -426,7 +456,8 @@ class _CarouselPageViewPageViewState extends State<CarouselPageView> {
       _fromIndex = _activeIndex = _pageController.initialPage;
       if (!created) {
         final int initPage = _pageController.getRealIndexFromRenderIndex(index);
-        _pageController.animateToPage(initPage, duration: widget.duration, curve: widget.curve);
+        _pageController.animateToPage(initPage,
+            duration: widget.duration, curve: widget.curve);
       }
     }
     if (_transformer != null) Tools.addPostFrameCallback(_onGetSize);
@@ -477,7 +508,8 @@ class _CarouselPageViewPageViewState extends State<CarouselPageView> {
     int index;
     switch (event) {
       case IndexController.MOVE:
-        index = _pageController.getRealIndexFromRenderIndex(widget.controller.index);
+        index = _pageController
+            .getRealIndexFromRenderIndex(widget.controller.index);
         break;
       case IndexController.PREVIOUS:
       case IndexController.NEXT:
@@ -488,7 +520,8 @@ class _CarouselPageViewPageViewState extends State<CarouselPageView> {
     }
     if (widget.controller.animation) {
       _pageController
-          .animateToPage(index, duration: widget.duration, curve: widget.curve ?? Curves.ease)
+          .animateToPage(index,
+              duration: widget.duration, curve: widget.curve ?? Curves.ease)
           .whenComplete(widget.controller.complete);
     } else {
       _pageController.jumpToPage(index);

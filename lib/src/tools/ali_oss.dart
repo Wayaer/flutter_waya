@@ -7,7 +7,8 @@ import 'package:http_parser/http_parser.dart';
 class AliOSS {
   factory AliOSS() => getInstance();
 
-  AliOSS._internal({String aliOSSAccessKeyId, String aliOSSKeySecret, String policyText}) {
+  AliOSS._internal(
+      {String aliOSSAccessKeyId, String aliOSSKeySecret, String policyText}) {
     final String text = policyText ??
         '{"expiration": "2050-01-01T12:00:00.000Z","conditions": [["content-length-range", 0, 1048576000]]}';
     //进行utf8编码
@@ -27,10 +28,13 @@ class AliOSS {
 
   String _aliOSSAccessKeyId = '';
 
-  static AliOSS getInstance([String aliOSSAccessKeyId, String aliOSSKeySecret, String policyText]) {
+  static AliOSS getInstance(
+      [String aliOSSAccessKeyId, String aliOSSKeySecret, String policyText]) {
     assert(aliOSSAccessKeyId != null && aliOSSKeySecret != null);
     return _instance ??= AliOSS._internal(
-        aliOSSAccessKeyId: aliOSSAccessKeyId, aliOSSKeySecret: aliOSSKeySecret, policyText: policyText);
+        aliOSSAccessKeyId: aliOSSAccessKeyId,
+        aliOSSKeySecret: aliOSSKeySecret,
+        policyText: policyText);
   }
 
   static AliOSS _instance;
@@ -46,7 +50,8 @@ class AliOSS {
       ProgressCallback onSendProgress,
       ProgressCallback onReceiveProgress}) async {
     String fileName = customFileName;
-    fileName ??= filePath.substring(filePath.lastIndexOf('/') + 1, filePath.length);
+    fileName ??=
+        filePath.substring(filePath.lastIndexOf('/') + 1, filePath.length);
     return FormData.fromMap(<String, dynamic>{
       'file': await MultipartFile.fromFile(filePath, contentType: contentType),
       'key': ossPath,

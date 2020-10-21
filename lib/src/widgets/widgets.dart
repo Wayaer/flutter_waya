@@ -79,7 +79,8 @@ class _SendSMSState extends State<SendSMS> {
       decoration: widget.decoration ??
           BoxDecoration(
               color: widget.background,
-              border: !(widget.defaultBorderColor != null || widget.notTapBorderColor != null)
+              border: !(widget.defaultBorderColor != null ||
+                      widget.notTapBorderColor != null)
                   ? null
                   : Border.all(
                       width: widget.borderWidth ?? 0,
@@ -90,7 +91,8 @@ class _SendSMSState extends State<SendSMS> {
       child: Text(verifyStr,
           style: seconds == 0
               ? widget.defaultTextStyle ?? WayStyles.textStyleBlue(fontSize: 13)
-              : widget.notTapTextStyle ?? WayStyles.textStyleBlack70(fontSize: 13)),
+              : widget.notTapTextStyle ??
+                  WayStyles.textStyleBlack70(fontSize: 13)),
     );
   }
 
@@ -178,8 +180,12 @@ class _CountDownSkipState extends State<CountDownSkip> {
   @override
   Widget build(BuildContext context) => SimpleButton(
       onTap: widget.onTap,
-      decoration: widget.decoration ?? BoxDecoration(color: getColors(white50), borderRadius: BorderRadius.circular(5)),
-      padding: EdgeInsets.symmetric(horizontal: getHeight(5), vertical: getWidth(4)),
+      decoration: widget.decoration ??
+          BoxDecoration(
+              color: getColors(white50),
+              borderRadius: BorderRadius.circular(5)),
+      padding:
+          EdgeInsets.symmetric(horizontal: getHeight(5), vertical: getWidth(4)),
       child: WayWidgets.textSmall(seconds.toString() + 's' + widget.skipText));
 
   @override
@@ -207,8 +213,10 @@ class CustomDismissible extends StatelessWidget {
       this.child})
       : direction = direction ?? DismissDirection.horizontal,
         resizeDuration = resizeDuration ?? const Duration(milliseconds: 300),
-        dismissThresholds = dismissThresholds ?? const <DismissDirection, double>{},
-        movementDuration = movementDuration ?? const Duration(milliseconds: 200),
+        dismissThresholds =
+            dismissThresholds ?? const <DismissDirection, double>{},
+        movementDuration =
+            movementDuration ?? const Duration(milliseconds: 200),
         crossAxisEndOffset = crossAxisEndOffset ?? 0.0,
         dragStartBehavior = dragStartBehavior ?? DragStartBehavior.start,
         super(key: key);
@@ -318,9 +326,16 @@ class HintDot extends StatelessWidget {
     Widget dot = dotWidget();
     if (alignment != null) dot = Align(alignment: alignment, child: dot);
     if (right != null || top != null || bottom != null || left != null)
-      dot = Positioned(right: right, top: top, bottom: bottom, left: left, child: dot);
+      dot = Positioned(
+          right: right, top: top, bottom: bottom, left: left, child: dot);
     if (dot != null) children.add(dot);
-    return Universal(onTap: onTap, margin: margin, width: width, height: height, isStack: true, children: children);
+    return Universal(
+        onTap: onTap,
+        margin: margin,
+        width: width,
+        height: height,
+        isStack: true,
+        children: children);
   }
 
   Widget dotWidget() => Container(
@@ -328,7 +343,8 @@ class HintDot extends StatelessWidget {
       padding: pointPadding,
       width: pointChild == null ? (pointSize ?? getWidth(4)) : null,
       height: pointChild == null ? (pointSize ?? getWidth(4)) : null,
-      decoration: BoxDecoration(color: pointColor ?? getColors(red), shape: BoxShape.circle));
+      decoration: BoxDecoration(
+          color: pointColor ?? getColors(red), shape: BoxShape.circle));
 }
 
 class CustomDrawer extends StatefulWidget {

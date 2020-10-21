@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 /// Called to build children for the listview.
-typedef ItemWidgetBuilder = Widget Function(BuildContext context, SuspensionModel model);
+typedef ItemWidgetBuilder = Widget Function(
+    BuildContext context, SuspensionModel model);
 
 /// Called to build IndexBar.
-typedef IndexBarBuilder = Widget Function(BuildContext context, List<String> tags, IndexBarTouchCallback onTouch);
+typedef IndexBarBuilder = Widget Function(
+    BuildContext context, List<String> tags, IndexBarTouchCallback onTouch);
 
 /// Called to build index hint.
 typedef IndexHintBuilder = Widget Function(BuildContext context, String hint);
@@ -113,7 +115,10 @@ class _AzListViewState extends State<AzListView> {
       isShowIndexBarHint = model.isTouchDown;
       final int offset = suspensionSectionMap[model.tag];
       if (offset != null) {
-        scrollController.jumpTo(offset.toDouble().clamp(.0, scrollController.position.maxScrollExtent).toDouble());
+        scrollController.jumpTo(offset
+            .toDouble()
+            .clamp(.0, scrollController.position.maxScrollExtent)
+            .toDouble());
       }
     });
   }
@@ -156,7 +161,9 @@ class _AzListViewState extends State<AzListView> {
             itemCount: cityList.length,
             itemBuilder: (BuildContext context, int index) {
               if (index == 0 && cityList[index] is Header) {
-                return SizedBox(height: widget.header.height.toDouble(), child: widget.header.builder(context));
+                return SizedBox(
+                    height: widget.header.height.toDouble(),
+                    child: widget.header.builder(context));
               }
               return widget.itemBuilder(context, cityList[index]);
             }),
@@ -172,7 +179,10 @@ class _AzListViewState extends State<AzListView> {
 
     Widget indexBar;
     if (widget.indexBarBuilder == null) {
-      indexBar = AzIndexBar(data: indexTagList, size: getWidth(23).toInt(), onTouch: onIndexBarTouch);
+      indexBar = AzIndexBar(
+          data: indexTagList,
+          size: getWidth(23).toInt(),
+          onTouch: onIndexBarTouch);
     } else {
       indexBar = widget.indexBarBuilder(context, indexTagList, onIndexBarTouch);
     }
@@ -185,7 +195,8 @@ class _AzListViewState extends State<AzListView> {
       indexHint = widget.indexHintBuilder(context, indexBarHint);
     } else {
       indexHint = Container(
-        decoration: BoxDecoration(color: getColors(black30), borderRadius: BorderRadius.circular(10)),
+        decoration: BoxDecoration(
+            color: getColors(black30), borderRadius: BorderRadius.circular(10)),
         alignment: Alignment.center,
         width: getWidth(60),
         height: getWidth(60),
@@ -198,7 +209,8 @@ class _AzListViewState extends State<AzListView> {
         ),
       );
     }
-    if (isShowIndexBarHint && widget.showIndexHint) children.add(Center(child: indexHint));
+    if (isShowIndexBarHint && widget.showIndexHint)
+      children.add(Center(child: indexHint));
     return Stack(children: children);
   }
 }

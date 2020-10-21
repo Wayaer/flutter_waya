@@ -4,22 +4,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 ///主要解决cupertino控件不能显示中文的问题
-class CommonLocalizationsDelegate extends LocalizationsDelegate<CupertinoLocalizations> {
+class CommonLocalizationsDelegate
+    extends LocalizationsDelegate<CupertinoLocalizations> {
   const CommonLocalizationsDelegate();
 
   @override
-  bool isSupported(Locale locale) => <String>['zh', 'CN'].contains(locale.languageCode);
+  bool isSupported(Locale locale) =>
+      <String>['zh', 'CN'].contains(locale.languageCode);
 
   @override
   SynchronousFuture<_DefaultCupertinoLocalizations> load(Locale locale) =>
-      SynchronousFuture<_DefaultCupertinoLocalizations>(_DefaultCupertinoLocalizations(locale.languageCode));
+      SynchronousFuture<_DefaultCupertinoLocalizations>(
+          _DefaultCupertinoLocalizations(locale.languageCode));
 
   @override
   bool shouldReload(CommonLocalizationsDelegate old) => false;
 }
 
 class _DefaultCupertinoLocalizations extends CupertinoLocalizations {
-  _DefaultCupertinoLocalizations(this._languageCode) : assert(_languageCode != null);
+  _DefaultCupertinoLocalizations(this._languageCode)
+      : assert(_languageCode != null);
   final String _languageCode;
   final Map<String, Map<String, String>> _dict = <String, Map<String, String>>{
     'en': <String, String>{
@@ -44,7 +48,20 @@ class _DefaultCupertinoLocalizations extends CupertinoLocalizations {
     }
   };
   final Map<String, List<String>> _months = <String, List<String>>{
-    'en': <String>['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    'en': <String>[
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec'
+    ],
     'enl': <String>[
       'January',
       'February',
@@ -59,11 +76,32 @@ class _DefaultCupertinoLocalizations extends CupertinoLocalizations {
       'November',
       'December'
     ],
-    'zh': <String>['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
+    'zh': <String>[
+      '一月',
+      '二月',
+      '三月',
+      '四月',
+      '五月',
+      '六月',
+      '七月',
+      '八月',
+      '九月',
+      '十月',
+      '十一月',
+      '十二月'
+    ]
   };
   final Map<String, List<String>> _weekDays = <String, List<String>>{
     'en': <String>['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'],
-    'enl': <String>['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+    'enl': <String>[
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+      'Sunday'
+    ],
     'zh': <String>['周一', '周二', '周三', '周四', '周五', '周六', '周日']
   };
 
@@ -97,7 +135,8 @@ class _DefaultCupertinoLocalizations extends CupertinoLocalizations {
   DatePickerDateOrder get datePickerDateOrder => DatePickerDateOrder.ymd;
 
   @override
-  DatePickerDateTimeOrder get datePickerDateTimeOrder => DatePickerDateTimeOrder.date_time_dayPeriod;
+  DatePickerDateTimeOrder get datePickerDateTimeOrder =>
+      DatePickerDateTimeOrder.date_time_dayPeriod;
 
   @override
   String datePickerDayOfMonth(int dayIndex) => dayIndex.toString();
@@ -125,7 +164,8 @@ class _DefaultCupertinoLocalizations extends CupertinoLocalizations {
   }
 
   @override
-  String datePickerMonth(int monthIndex) => _months[_languageCode][monthIndex - 1];
+  String datePickerMonth(int monthIndex) =>
+      _months[_languageCode][monthIndex - 1];
 
   @override
   String datePickerYear(int yearIndex) => yearIndex.toString();
@@ -156,8 +196,10 @@ class _DefaultCupertinoLocalizations extends CupertinoLocalizations {
 }
 
 class ChineseCupertinoLocalizations implements CupertinoLocalizations {
-  final LocalizationsDelegate<MaterialLocalizations> materialDelegate = GlobalMaterialLocalizations.delegate;
-  final LocalizationsDelegate<WidgetsLocalizations> widgetsDelegate = GlobalWidgetsLocalizations.delegate;
+  final LocalizationsDelegate<MaterialLocalizations> materialDelegate =
+      GlobalMaterialLocalizations.delegate;
+  final LocalizationsDelegate<WidgetsLocalizations> widgetsDelegate =
+      GlobalWidgetsLocalizations.delegate;
   final Locale local = const Locale('zh');
 
   MaterialLocalizations ml;
@@ -192,7 +234,8 @@ class ChineseCupertinoLocalizations implements CupertinoLocalizations {
   DatePickerDateOrder get datePickerDateOrder => DatePickerDateOrder.mdy;
 
   @override
-  DatePickerDateTimeOrder get datePickerDateTimeOrder => DatePickerDateTimeOrder.date_time_dayPeriod;
+  DatePickerDateTimeOrder get datePickerDateTimeOrder =>
+      DatePickerDateTimeOrder.date_time_dayPeriod;
 
   @override
   String datePickerDayOfMonth(int dayIndex) {
@@ -224,26 +267,31 @@ class ChineseCupertinoLocalizations implements CupertinoLocalizations {
   String timerPickerHour(int hour) => hour.toString().padLeft(2, '0');
 
   @override
-  String timerPickerHourLabel(int hour) => hour.toString().padLeft(2, '0') + '时';
+  String timerPickerHourLabel(int hour) =>
+      hour.toString().padLeft(2, '0') + '时';
 
   @override
   String timerPickerMinute(int minute) => minute.toString().padLeft(2, '0');
 
   @override
-  String timerPickerMinuteLabel(int minute) => minute.toString().padLeft(2, '0') + '分';
+  String timerPickerMinuteLabel(int minute) =>
+      minute.toString().padLeft(2, '0') + '分';
 
   @override
   String timerPickerSecond(int second) => second.toString().padLeft(2, '0');
 
   @override
-  String timerPickerSecondLabel(int second) => second.toString().padLeft(2, '0') + '秒';
+  String timerPickerSecondLabel(int second) =>
+      second.toString().padLeft(2, '0') + '秒';
 
-  static const LocalizationsDelegate<CupertinoLocalizations> delegate = _ChineseDelegate();
+  static const LocalizationsDelegate<CupertinoLocalizations> delegate =
+      _ChineseDelegate();
 
   static Future<CupertinoLocalizations> load(Locale locale) {
     // var localizations = ChineseCupertinoLocalizations();
     // await localizations.init();
-    return SynchronousFuture<CupertinoLocalizations>(ChineseCupertinoLocalizations());
+    return SynchronousFuture<CupertinoLocalizations>(
+        ChineseCupertinoLocalizations());
   }
 
   @override
@@ -263,7 +311,8 @@ class _ChineseDelegate extends LocalizationsDelegate<CupertinoLocalizations> {
   bool isSupported(Locale locale) => locale.languageCode == 'zh';
 
   @override
-  Future<CupertinoLocalizations> load(Locale locale) => ChineseCupertinoLocalizations.load(locale);
+  Future<CupertinoLocalizations> load(Locale locale) =>
+      ChineseCupertinoLocalizations.load(locale);
 
   @override
   bool shouldReload(LocalizationsDelegate<CupertinoLocalizations> old) => false;

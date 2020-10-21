@@ -182,7 +182,11 @@ class TabBarBox extends StatelessWidget {
 
 class TabNavigationPage extends StatefulWidget {
   const TabNavigationPage(
-      {Key key, this.arguments, this.defaultTabIndex, this.pageList, @required this.navigationBarItem})
+      {Key key,
+      this.arguments,
+      this.defaultTabIndex,
+      this.pageList,
+      @required this.navigationBarItem})
       : assert(navigationBarItem != null),
         super(key: key);
 
@@ -216,9 +220,12 @@ class _TabNavigationPageState extends State<TabNavigationPage> {
           backgroundColor: getColors(white),
           items: widget.navigationBarItem ??
               <BottomNavigationBarItem>[
-                BottomNavigationBarItem(icon: barIcon(Icons.home), label: 'home'),
-                BottomNavigationBarItem(icon: barIcon(Icons.add_circle), label: 'center'),
-                BottomNavigationBarItem(icon: barIcon(Icons.account_circle), label: 'mine'),
+                BottomNavigationBarItem(
+                    icon: barIcon(Icons.home), label: 'home'),
+                BottomNavigationBarItem(
+                    icon: barIcon(Icons.add_circle), label: 'center'),
+                BottomNavigationBarItem(
+                    icon: barIcon(Icons.account_circle), label: 'mine'),
               ],
 
           /// 超过5个页面，需加上此行，不然会无法显示颜色

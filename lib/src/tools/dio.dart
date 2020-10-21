@@ -31,8 +31,10 @@ class DioTools {
     final BaseOptions _options = dio.options;
     _options.connectTimeout = options?.connectTimeout ?? HTTP_TIMEOUT_CONNECT;
     _options.receiveTimeout = options?.receiveTimeout ?? HTTP_TIMEOUT_RECEIVE;
-    _options.contentType = options?.contentType ?? (dio == _dio ? HTTP_CONTENT_TYPE[2] : HTTP_CONTENT_TYPE[1]);
-    _options.responseType = options?.responseType ?? (dio == _dio ? ResponseType.json : ResponseType.plain);
+    _options.contentType = options?.contentType ??
+        (dio == _dio ? HTTP_CONTENT_TYPE[2] : HTTP_CONTENT_TYPE[1]);
+    _options.responseType = options?.responseType ??
+        (dio == _dio ? ResponseType.json : ResponseType.plain);
     _options.headers = options?.headers ?? <String, dynamic>{};
   }
 
@@ -43,7 +45,8 @@ class DioTools {
 
   static DioTools get instance => getInstance();
 
-  static DioTools getInstance({BaseOptions options}) => _instance ??= DioTools._internal(options: options);
+  static DioTools getInstance({BaseOptions options}) =>
+      _instance ??= DioTools._internal(options: options);
 
   Future<ResponseModel> getHttp(String url,
       {Map<String, dynamic> params,
@@ -57,19 +60,24 @@ class DioTools {
       Response<dynamic> response;
       switch (httpType) {
         case HttpType.get:
-          response = await _dio.get<dynamic>(url, queryParameters: params, cancelToken: _cancelToken);
+          response = await _dio.get<dynamic>(url,
+              queryParameters: params, cancelToken: _cancelToken);
           break;
         case HttpType.post:
-          response = await _dio.post<dynamic>(url, queryParameters: params, data: data, cancelToken: _cancelToken);
+          response = await _dio.post<dynamic>(url,
+              queryParameters: params, data: data, cancelToken: _cancelToken);
           break;
         case HttpType.put:
-          response = await _dio.put<dynamic>(url, queryParameters: params, data: data, cancelToken: _cancelToken);
+          response = await _dio.put<dynamic>(url,
+              queryParameters: params, data: data, cancelToken: _cancelToken);
           break;
         case HttpType.delete:
-          response = await _dio.delete<dynamic>(url, queryParameters: params, data: data, cancelToken: _cancelToken);
+          response = await _dio.delete<dynamic>(url,
+              queryParameters: params, data: data, cancelToken: _cancelToken);
           break;
         default:
-          response = await _dio.get<dynamic>(url, queryParameters: params, cancelToken: _cancelToken);
+          response = await _dio.get<dynamic>(url,
+              queryParameters: params, cancelToken: _cancelToken);
           break;
       }
       if (response == null) return constResponseModel();
@@ -80,7 +88,8 @@ class DioTools {
       }
       return responseModel;
     } on DioError catch (e) {
-      final ResponseModel errorData = ResponseModel.fromJson(jsonDecode(e.message) as Map<String, dynamic>);
+      final ResponseModel errorData =
+          ResponseModel.fromJson(jsonDecode(e.message) as Map<String, dynamic>);
       log('error:$url  errorData==  ${errorData.toMap().toString()}');
       return errorData;
     } catch (e) {
@@ -105,7 +114,8 @@ class DioTools {
       log('Download url:$url  savePath:${savePath.toString()}');
       final Dio dio = Dio();
       _initOptions(dio, options: options);
-      return await dio.download(url, savePath, cancelToken: _cancelToken, onReceiveProgress: onReceiveProgress);
+      return await dio.download(url, savePath,
+          cancelToken: _cancelToken, onReceiveProgress: onReceiveProgress);
     } catch (e) {
       return constResponse();
     }
@@ -133,8 +143,10 @@ class DioTools {
     }
   }
 
-  Response<dynamic> constResponse() =>
-      Response<dynamic>(statusCode: 404, statusMessage: ConstConstant.unknownException, data: null);
+  Response<dynamic> constResponse() => Response<dynamic>(
+      statusCode: 404,
+      statusMessage: ConstConstant.unknownException,
+      data: null);
 
   void cancel() => _cancelToken.cancelError;
 }
@@ -156,7 +168,8 @@ class InterceptorWrap extends InterceptorsWrapper {
     if (cookieJar != null) {
       final List<Cookie> cookies = cookieJar?.loadForRequest(options.uri);
       cookies.removeWhere((Cookie cookie) {
-        if (cookie.expires != null) return cookie.expires.isBefore(DateTime.now());
+        if (cookie.expires != null)
+          return cookie.expires.isBefore(DateTime.now());
         return false;
       });
       final String cookie = getCookies(cookies);
@@ -166,11 +179,15 @@ class InterceptorWrap extends InterceptorsWrapper {
 
   void saveCookies(Response<dynamic> response) {
     if (response != null && response.headers != null) {
-      final List<String> cookies = response.headers[HttpHeaders.setCookieHeader];
+      final List<String> cookies =
+          response.headers[HttpHeaders.setCookieHeader];
       responseModel.cookie = cookies;
       if (cookies != null)
         cookieJar.saveFromResponse(
-            response.request.uri, cookies.map((String str) => Cookie.fromSetCookieValue(str)).toList());
+            response.request.uri,
+            cookies
+                .map((String str) => Cookie.fromSetCookieValue(str))
+                .toList());
     }
   }
 
@@ -219,7 +236,8 @@ class InterceptorWrap extends InterceptorsWrapper {
       responseModel.statusMessageT = ConstConstant.errorMessageT450;
     } else if (err.type == DioErrorType.RESPONSE) {
       responseModel.statusCode = err.response.statusCode;
-      responseModel.statusMessage = ConstConstant.errorMessage500 + err.response.statusCode.toString();
+      responseModel.statusMessage =
+          ConstConstant.errorMessage500 + err.response.statusCode.toString();
       responseModel.statusMessageT = ConstConstant.errorMessageT500;
     }
     responseModel.request = err?.request;
@@ -231,6 +249,7 @@ class InterceptorWrap extends InterceptorsWrapper {
     return responseModel.toJson();
   }
 
-  static String getCookies(List<Cookie> cookies) =>
-      cookies.map((Cookie cookie) => '${cookie.name}=${cookie.value}').join('; ');
+  static String getCookies(List<Cookie> cookies) => cookies
+      .map((Cookie cookie) => '${cookie.name}=${cookie.value}')
+      .join('; ');
 }

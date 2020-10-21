@@ -51,7 +51,8 @@ class _GestureLockState extends State<GestureLock> {
     for (int i = 0; i < 9; i++) {
       final double x = gapWidth + realRingSize;
       final double y = gapWidth + realRingSize;
-      points.add(_Point(x: (1 + i % 3 * 2) * x, y: (1 + i ~/ 3 * 2) * y, position: i));
+      points.add(
+          _Point(x: (1 + i % 3 * 2) * x, y: (1 + i ~/ 3 * 2) * y, position: i));
     }
   }
 
@@ -105,7 +106,8 @@ class _GestureLockState extends State<GestureLock> {
       curPoint = pathPoints[pathPoints.length - 1];
       setState(() {});
       if (widget.onPanUp != null) {
-        final List<int> items = pathPoints.map((_Point item) => item.position).toList();
+        final List<int> items =
+            pathPoints.map((_Point item) => item.position).toList();
         widget.onPanUp(items);
       }
       if (widget.immediatelyClear) clearAllData();
@@ -116,10 +118,14 @@ class _GestureLockState extends State<GestureLock> {
     int xPosition = -1;
     int yPosition = -1;
     for (int i = 0; i < 3; i++) {
-      if (xPosition == -1 && points[i].x + realRadius >= offSet.dx && offSet.dx >= points[i].x - realRadius) {
+      if (xPosition == -1 &&
+          points[i].x + realRadius >= offSet.dx &&
+          offSet.dx >= points[i].x - realRadius) {
         xPosition = i;
       }
-      if (yPosition == -1 && points[i * 3].y + realRadius >= offSet.dy && offSet.dy >= points[i * 3].y - realRadius) {
+      if (yPosition == -1 &&
+          points[i * 3].y + realRadius >= offSet.dy &&
+          offSet.dy >= points[i * 3].y - realRadius) {
         yPosition = i;
       }
     }
@@ -178,7 +184,8 @@ class _CanvasPoint extends CustomPainter {
       ringPaint.color = color;
       canvas.drawCircle(offSet, circleRadius, circlePaint);
       if (showUnSelectRing || point.isSelect) {
-        canvas.drawArc(Rect.fromCircle(center: offSet, radius: ringRadius), 0, 360, false, ringPaint);
+        canvas.drawArc(Rect.fromCircle(center: offSet, radius: ringRadius), 0,
+            360, false, ringPaint);
       }
     }
   }
@@ -198,7 +205,10 @@ class _Point {
 
 class _CanvasLine extends CustomPainter {
   _CanvasLine(
-      {@required this.pathPoints, @required this.selectColor, @required this.lineWidth, @required this.curPoint});
+      {@required this.pathPoints,
+      @required this.selectColor,
+      @required this.lineWidth,
+      @required this.curPoint});
 
   final List<_Point> pathPoints;
   final Color selectColor;
@@ -217,8 +227,8 @@ class _CanvasLine extends CustomPainter {
       ..strokeWidth = lineWidth;
 
     for (int i = 0; i < length - 1; i++) {
-      canvas.drawLine(
-          Offset(pathPoints[i].x, pathPoints[i].y), Offset(pathPoints[i + 1].x, pathPoints[i + 1].y), linePaint);
+      canvas.drawLine(Offset(pathPoints[i].x, pathPoints[i].y),
+          Offset(pathPoints[i + 1].x, pathPoints[i + 1].y), linePaint);
     }
 
     double endX = curPoint.x;
@@ -233,7 +243,8 @@ class _CanvasLine extends CustomPainter {
     } else if (endY > size.height) {
       endY = size.height;
     }
-    canvas.drawLine(Offset(pathPoints[length - 1].x, pathPoints[length - 1].y), Offset(endX, endY), linePaint);
+    canvas.drawLine(Offset(pathPoints[length - 1].x, pathPoints[length - 1].y),
+        Offset(endX, endY), linePaint);
   }
 
   @override

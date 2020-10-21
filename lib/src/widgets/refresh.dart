@@ -62,7 +62,8 @@ class Refresh extends StatelessWidget {
         controller: controller ?? refreshController,
         enablePullDown: enablePullDown,
         enablePullUp: enablePullUp,
-        header: header ?? BezierCircleHeader(bezierColor: getColors(transparent)),
+        header:
+            header ?? BezierCircleHeader(bezierColor: getColors(transparent)),
         footer: footer ?? customFooter(),
         onRefresh: onRefresh ?? onRefreshVoid,
         onLoading: onLoading ?? onLoadingVoid,
@@ -98,22 +99,26 @@ class Refresh extends StatelessWidget {
         },
       );
 
-  Widget footerText(String text) =>
-      Text(text, style: footerTextStyle ?? TextStyle(fontSize: 13, color: getColors(black70)));
+  Widget footerText(String text) => Text(text,
+      style: footerTextStyle ??
+          TextStyle(fontSize: 13, color: getColors(black70)));
 
   void onTwoLevelVoid() {
     log('onTwoLevel');
-    Tools.timerTools(const Duration(seconds: 2), () => refreshController.twoLevelComplete());
+    Tools.timerTools(
+        const Duration(seconds: 2), () => refreshController.twoLevelComplete());
   }
 
   void onRefreshVoid() {
     log('onRefresh');
-    Tools.timerTools(const Duration(seconds: 2), () => refreshController.refreshCompleted());
+    Tools.timerTools(
+        const Duration(seconds: 2), () => refreshController.refreshCompleted());
   }
 
   void onLoadingVoid() {
     log('onLoading');
-    Tools.timerTools(const Duration(seconds: 2), () => refreshController.loadComplete());
+    Tools.timerTools(
+        const Duration(seconds: 2), () => refreshController.loadComplete());
   }
 }
 
@@ -179,34 +184,35 @@ class _RefreshedState extends State<Refreshed> {
     super.initState();
     controller = widget.controller ?? RefreshController(initialRefresh: false);
     if (widget.controller == null) {
-      Tools.addPostFrameCallback((Duration callback) => eventListen((dynamic data) {
-            if (data == null) return;
-            if (data != null && data is RefreshCompletedType) {
-              switch (data) {
-                case RefreshCompletedType.refresh:
-                  controller.refreshCompleted();
-                  break;
-                case RefreshCompletedType.refreshFailed:
-                  controller.refreshFailed();
-                  break;
-                case RefreshCompletedType.refreshToIdle:
-                  controller.refreshToIdle();
-                  break;
-                case RefreshCompletedType.onLoading:
-                  controller.loadComplete();
-                  break;
-                case RefreshCompletedType.loadFailed:
-                  controller.loadFailed();
-                  break;
-                case RefreshCompletedType.loadNoData:
-                  controller.loadNoData();
-                  break;
-                case RefreshCompletedType.twoLevel:
-                  controller.twoLevelComplete();
-                  break;
-              }
-            }
-          }));
+      Tools.addPostFrameCallback(
+          (Duration callback) => eventListen((dynamic data) {
+                if (data == null) return;
+                if (data != null && data is RefreshCompletedType) {
+                  switch (data) {
+                    case RefreshCompletedType.refresh:
+                      controller.refreshCompleted();
+                      break;
+                    case RefreshCompletedType.refreshFailed:
+                      controller.refreshFailed();
+                      break;
+                    case RefreshCompletedType.refreshToIdle:
+                      controller.refreshToIdle();
+                      break;
+                    case RefreshCompletedType.onLoading:
+                      controller.loadComplete();
+                      break;
+                    case RefreshCompletedType.loadFailed:
+                      controller.loadFailed();
+                      break;
+                    case RefreshCompletedType.loadNoData:
+                      controller.loadNoData();
+                      break;
+                    case RefreshCompletedType.twoLevel:
+                      controller.twoLevelComplete();
+                      break;
+                  }
+                }
+              }));
     }
   }
 

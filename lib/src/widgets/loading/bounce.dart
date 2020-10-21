@@ -9,7 +9,9 @@ class SpinKitDoubleBounce extends StatefulWidget {
     this.itemBuilder,
     this.duration = const Duration(milliseconds: 2000),
     this.controller,
-  })  : assert(!(itemBuilder is IndexedWidgetBuilder && color is Color) && !(itemBuilder == null && color == null),
+  })  : assert(
+            !(itemBuilder is IndexedWidgetBuilder && color is Color) &&
+                !(itemBuilder == null && color == null),
             'You should specify either a itemBuilder or a color'),
         assert(size != null),
         super(key: key);
@@ -24,18 +26,20 @@ class SpinKitDoubleBounce extends StatefulWidget {
   _SpinKitDoubleBounceState createState() => _SpinKitDoubleBounceState();
 }
 
-class _SpinKitDoubleBounceState extends State<SpinKitDoubleBounce> with SingleTickerProviderStateMixin {
+class _SpinKitDoubleBounceState extends State<SpinKitDoubleBounce>
+    with SingleTickerProviderStateMixin {
   AnimationController _controller;
   Animation<double> _animation;
 
   @override
   void initState() {
     super.initState();
-    _controller = (widget.controller ?? AnimationController(vsync: this, duration: widget.duration))
+    _controller = (widget.controller ??
+        AnimationController(vsync: this, duration: widget.duration))
       ..addListener(() => setState(() {}))
       ..repeat(reverse: true);
-    _animation =
-        Tween<double>(begin: -1.0, end: 1.0).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
+    _animation = Tween<double>(begin: -1.0, end: 1.0)
+        .animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
   }
 
   @override
@@ -53,7 +57,8 @@ class _SpinKitDoubleBounceState extends State<SpinKitDoubleBounce> with SingleTi
             2,
             (int i) => Transform.scale(
                   scale: (1.0 - i - _animation.value.abs()).abs(),
-                  child: SizedBox.fromSize(size: Size.square(widget.size), child: _itemBuilder(i)),
+                  child: SizedBox.fromSize(
+                      size: Size.square(widget.size), child: _itemBuilder(i)),
                 )),
       ),
     );
@@ -61,7 +66,9 @@ class _SpinKitDoubleBounceState extends State<SpinKitDoubleBounce> with SingleTi
 
   Widget _itemBuilder(int index) => widget.itemBuilder != null
       ? widget.itemBuilder(context, index)
-      : DecoratedBox(decoration: BoxDecoration(shape: BoxShape.circle, color: widget.color.withOpacity(0.6)));
+      : DecoratedBox(
+          decoration: BoxDecoration(
+              shape: BoxShape.circle, color: widget.color.withOpacity(0.6)));
 }
 
 class SpinKitThreeBounce extends StatefulWidget {
@@ -72,7 +79,9 @@ class SpinKitThreeBounce extends StatefulWidget {
     this.itemBuilder,
     this.duration = const Duration(milliseconds: 1400),
     this.controller,
-  })  : assert(!(itemBuilder is IndexedWidgetBuilder && color is Color) && !(itemBuilder == null && color == null),
+  })  : assert(
+            !(itemBuilder is IndexedWidgetBuilder && color is Color) &&
+                !(itemBuilder == null && color == null),
             'You should specify either a itemBuilder or a color'),
         assert(size != null),
         super(key: key);
@@ -87,14 +96,17 @@ class SpinKitThreeBounce extends StatefulWidget {
   _SpinKitThreeBounceState createState() => _SpinKitThreeBounceState();
 }
 
-class _SpinKitThreeBounceState extends State<SpinKitThreeBounce> with SingleTickerProviderStateMixin {
+class _SpinKitThreeBounceState extends State<SpinKitThreeBounce>
+    with SingleTickerProviderStateMixin {
   AnimationController _controller;
 
   @override
   void initState() {
     super.initState();
 
-    _controller = (widget.controller ?? AnimationController(vsync: this, duration: widget.duration))..repeat();
+    _controller = (widget.controller ??
+        AnimationController(vsync: this, duration: widget.duration))
+      ..repeat();
   }
 
   @override
@@ -114,8 +126,11 @@ class _SpinKitThreeBounceState extends State<SpinKitThreeBounce> with SingleTick
           children: List.generate(
               3,
               (int i) => ScaleTransition(
-                    scale: DelayTween(begin: 0.0, end: 1.0, delay: i * .2).animate(_controller),
-                    child: SizedBox.fromSize(size: Size.square(widget.size * 0.5), child: _itemBuilder(i)),
+                    scale: DelayTween(begin: 0.0, end: 1.0, delay: i * .2)
+                        .animate(_controller),
+                    child: SizedBox.fromSize(
+                        size: Size.square(widget.size * 0.5),
+                        child: _itemBuilder(i)),
                   )),
         ),
       ),
@@ -124,7 +139,9 @@ class _SpinKitThreeBounceState extends State<SpinKitThreeBounce> with SingleTick
 
   Widget _itemBuilder(int index) => widget.itemBuilder != null
       ? widget.itemBuilder(context, index)
-      : DecoratedBox(decoration: BoxDecoration(color: widget.color, shape: BoxShape.circle));
+      : DecoratedBox(
+          decoration:
+              BoxDecoration(color: widget.color, shape: BoxShape.circle));
 }
 
 class SpinKitPulse extends StatefulWidget {
@@ -135,7 +152,9 @@ class SpinKitPulse extends StatefulWidget {
     this.itemBuilder,
     this.duration = const Duration(seconds: 1),
     this.controller,
-  })  : assert(!(itemBuilder is IndexedWidgetBuilder && color is Color) && !(itemBuilder == null && color == null),
+  })  : assert(
+            !(itemBuilder is IndexedWidgetBuilder && color is Color) &&
+                !(itemBuilder == null && color == null),
             'You should specify either a itemBuilder or a color'),
         assert(size != null),
         super(key: key);
@@ -150,7 +169,8 @@ class SpinKitPulse extends StatefulWidget {
   _SpinKitPulseState createState() => _SpinKitPulseState();
 }
 
-class _SpinKitPulseState extends State<SpinKitPulse> with SingleTickerProviderStateMixin {
+class _SpinKitPulseState extends State<SpinKitPulse>
+    with SingleTickerProviderStateMixin {
   AnimationController _controller;
   Animation<double> _animation;
 
@@ -158,7 +178,8 @@ class _SpinKitPulseState extends State<SpinKitPulse> with SingleTickerProviderSt
   void initState() {
     super.initState();
 
-    _controller = (widget.controller ?? AnimationController(vsync: this, duration: widget.duration))
+    _controller = (widget.controller ??
+        AnimationController(vsync: this, duration: widget.duration))
       ..addListener(() => setState(() {}))
       ..repeat();
     _animation = CurveTween(curve: Curves.easeInOut).animate(_controller);
@@ -188,7 +209,9 @@ class _SpinKitPulseState extends State<SpinKitPulse> with SingleTickerProviderSt
 
   Widget _itemBuilder(int index) => widget.itemBuilder != null
       ? widget.itemBuilder(context, index)
-      : DecoratedBox(decoration: BoxDecoration(shape: BoxShape.circle, color: widget.color));
+      : DecoratedBox(
+          decoration:
+              BoxDecoration(shape: BoxShape.circle, color: widget.color));
 }
 
 class SpinKitRipple extends StatefulWidget {
@@ -200,7 +223,9 @@ class SpinKitRipple extends StatefulWidget {
     this.itemBuilder,
     this.duration = const Duration(milliseconds: 1800),
     this.controller,
-  })  : assert(!(itemBuilder is IndexedWidgetBuilder && color is Color) && !(itemBuilder == null && color == null),
+  })  : assert(
+            !(itemBuilder is IndexedWidgetBuilder && color is Color) &&
+                !(itemBuilder == null && color == null),
             'You should specify either a itemBuilder or a color'),
         assert(size != null),
         assert(borderWidth != null),
@@ -217,20 +242,24 @@ class SpinKitRipple extends StatefulWidget {
   _SpinKitRippleState createState() => _SpinKitRippleState();
 }
 
-class _SpinKitRippleState extends State<SpinKitRipple> with SingleTickerProviderStateMixin {
+class _SpinKitRippleState extends State<SpinKitRipple>
+    with SingleTickerProviderStateMixin {
   AnimationController _controller;
   Animation<double> _animation1, _animation2;
 
   @override
   void initState() {
     super.initState();
-    _controller = (widget.controller ?? AnimationController(vsync: this, duration: widget.duration))
+    _controller = (widget.controller ??
+        AnimationController(vsync: this, duration: widget.duration))
       ..addListener(() => setState(() {}))
       ..repeat();
-    _animation1 = Tween<double>(begin: 0.0, end: 1.0)
-        .animate(CurvedAnimation(parent: _controller, curve: const Interval(0.0, 0.75, curve: Curves.linear)));
-    _animation2 = Tween<double>(begin: 0.0, end: 1.0)
-        .animate(CurvedAnimation(parent: _controller, curve: const Interval(0.25, 1.0, curve: Curves.linear)));
+    _animation1 = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+        parent: _controller,
+        curve: const Interval(0.0, 0.75, curve: Curves.linear)));
+    _animation2 = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+        parent: _controller,
+        curve: const Interval(0.25, 1.0, curve: Curves.linear)));
   }
 
   @override
@@ -245,11 +274,13 @@ class _SpinKitRippleState extends State<SpinKitRipple> with SingleTickerProvider
         child: Stack(children: <Widget>[
       Opacity(
         opacity: 1.0 - _animation1.value,
-        child: Transform.scale(scale: _animation1.value, child: _itemBuilder(0)),
+        child:
+            Transform.scale(scale: _animation1.value, child: _itemBuilder(0)),
       ),
       Opacity(
         opacity: 1.0 - _animation2.value,
-        child: Transform.scale(scale: _animation2.value, child: _itemBuilder(1)),
+        child:
+            Transform.scale(scale: _animation2.value, child: _itemBuilder(1)),
       )
     ]));
   }
@@ -261,7 +292,9 @@ class _SpinKitRippleState extends State<SpinKitRipple> with SingleTickerProvider
           ? widget.itemBuilder(context, index)
           : DecoratedBox(
               decoration: BoxDecoration(
-                  shape: BoxShape.circle, border: Border.all(color: widget.color, width: widget.borderWidth))),
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                      color: widget.color, width: widget.borderWidth))),
     );
   }
 }
