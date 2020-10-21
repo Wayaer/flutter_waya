@@ -112,5 +112,8 @@ class ConstIcon {
 
 class IconCode extends IconData {
   const IconCode(int codePoint)
-      : super(codePoint, fontFamily: 'Icons', matchTextDirection: true, fontPackage: 'flutter_waya');
+      : super(codePoint,
+            fontFamily: 'Icons',
+            matchTextDirection: true,
+            fontPackage: 'flutter_waya');
 }

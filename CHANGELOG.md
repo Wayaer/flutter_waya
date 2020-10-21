@@ -1,5 +1,6 @@
-## [1.3.0]
+## [1.3.1]
   * remove some widget
+  * format code
 ## [1.2.2]
  * add lint
 ## [1.2.1]
