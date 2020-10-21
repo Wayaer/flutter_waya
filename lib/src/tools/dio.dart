@@ -80,7 +80,9 @@ class DioTools {
       }
       return responseModel;
     } on DioError catch (e) {
-      return ResponseModel.fromJson(jsonDecode(e.message) as Map<String, dynamic>);
+      final ResponseModel errorData = ResponseModel.fromJson(jsonDecode(e.message) as Map<String, dynamic>);
+      log('error:$url  errorData==  ${errorData.toMap().toString()}');
+      return errorData;
     } catch (e) {
       return constResponseModel();
     }
@@ -225,6 +227,7 @@ class InterceptorWrap extends InterceptorsWrapper {
     responseModel.isRedirect = err?.response?.isRedirect;
     responseModel.redirects = err?.response?.redirects;
     responseModel.extra = err?.response?.extra;
+    responseModel.data = null;
     return responseModel.toJson();
   }
 
