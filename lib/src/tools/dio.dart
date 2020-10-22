@@ -246,6 +246,7 @@ class InterceptorWrap extends InterceptorsWrapper {
     responseModel.redirects = err?.response?.redirects;
     responseModel.extra = err?.response?.extra;
     responseModel.data = null;
+    responseModel.cookie = null;
     return responseModel.toJson();
   }
 
