@@ -683,3 +683,60 @@ class SearchBox extends StatelessWidget {
     }
   }
 }
+
+///数字输入的精确控制
+class NumberLimitFormatter extends TextInputFormatter {
+  NumberLimitFormatter(this.numberLength, this.decimalLength);
+
+  final int decimalLength;
+  final int numberLength;
+
+  RegExp exp = RegExp(ConstConstant.regExpDecimal);
+
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    const String POINTER = '.';
+
+    ///输入完全删除
+    if (newValue.text.isEmpty) return const TextEditingValue();
+
+    /// 只允许输入数字和小数点
+    if (!exp.hasMatch(newValue.text)) return oldValue;
+
+    ///包含小数点的情况
+    if (newValue.text.contains(POINTER)) {
+      ///精度为0，即不含小数
+      if (decimalLength == 0) return oldValue;
+
+      ///包含多个小数
+      if (newValue.text.indexOf(POINTER) != newValue.text.lastIndexOf(POINTER))
+        return oldValue;
+
+      final String input = newValue.text;
+      final int index = input.indexOf(POINTER);
+
+      ///小数点前位数
+      final int lengthBeforePointer = input.substring(0, index).length;
+
+      ///整数部分大于约定长度
+      if (lengthBeforePointer > numberLength) return oldValue;
+
+      ///小数点后位数
+      final int lengthAfterPointer =
+          input.substring(index, input.length).length - 1;
+
+      ///小数位大于精度
+      if (lengthAfterPointer > decimalLength) return oldValue;
+    } else if (
+        //以点开头
+        newValue.text.startsWith(POINTER) ||
+            //如果第1位为0，并且长度大于1，排除00,01-09所有非法输入
+            (newValue.text.startsWith('0') && newValue.text.length > 1) ||
+            //如果整数长度超过约定长度
+            newValue.text.length > numberLength) {
+      return oldValue;
+    }
+    return newValue;
+  }
+}
