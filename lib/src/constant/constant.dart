@@ -12,8 +12,8 @@ class ConstConstant {
   static const double pickerItemHeight = 18; //picker itemHeight
   static const double pickerHeight = 200; //picker 高
   static const double listWheelMagnification = 1.2; //放大倍率
-
   static const String success = 'success';
+  static const String oss = 'https://kingapp.oss-cn-hangzhou.aliyuncs.com';
   static const String unknownException = 'unknown exception';
   static const String errorMessage404 = '网络请求失败'; //网络请求失败
   static const String errorMessage420 = '网络请求已取消'; //网络请求已取消

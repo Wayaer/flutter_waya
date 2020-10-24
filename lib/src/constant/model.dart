@@ -87,6 +87,20 @@ class ResponseModel {
       '{"type":"${type.toString()}","data":$data,"cookie":$cookie,"statusCode":$statusCode,"statusMessage":"$statusMessage","statusMessageT":"$statusMessageT"}';
 }
 
+class AppConfig {
+  AppConfig({this.androidVersionCode, this.iosVersionCode, this.open});
+
+  AppConfig.fromJson(Map<dynamic, dynamic> json) {
+    json['open'] == null ? open = false : open = json['open'] as bool;
+    iosVersionCode = json['iosVersionCode'] as int;
+    androidVersionCode = json['androidVersionCode'] as int;
+  }
+
+  int androidVersionCode;
+  int iosVersionCode;
+  bool open;
+}
+
 class DateTimePickerUnit {
   DateTimePickerUnit(
       {this.year, this.month, this.day, this.hour, this.minute, this.second});
