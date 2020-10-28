@@ -218,25 +218,32 @@ class CheckBox extends StatefulWidget {
 
 class _CheckBoxState extends State<CheckBox> {
   bool value = false;
+  IconData icon;
+  Widget check;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.value != null) value = widget.value;
+  }
 
   @override
   Widget build(BuildContext context) {
-    if (widget.value != null) value = widget.value;
-    IconData icon;
-    if (widget.checkIcon != null && widget.uncheckIcon != null)
-      icon = value ? widget.checkIcon : widget.uncheckIcon;
-    Widget check;
     if (widget.checkWidget != null && widget.uncheckWidget != null) {
       check = value ? widget.checkWidget : widget.uncheckWidget;
     } else {
-      check = checkBoxWidget();
+      if (widget.checkIcon != null && widget.uncheckIcon != null) {
+        icon = value ? widget.checkIcon : widget.uncheckIcon;
+      } else {
+        check = checkBoxWidget();
+      }
     }
     return IconBox(
         visible: widget.visible,
         icon: icon,
         size: widget.size,
-        color: value ? widget.checkColor : widget.uncheckColor,
         widget: check,
+        color: value ? widget.checkColor : widget.uncheckColor,
         background: widget.background,
         margin: widget.margin,
         padding: widget.padding,
@@ -254,7 +261,6 @@ class _CheckBoxState extends State<CheckBox> {
 
   Widget checkBoxWidget() => Checkbox(
       tristate: false,
-//      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       activeColor: widget.activeColor,
       checkColor: widget.checkColor,
       value: value,
