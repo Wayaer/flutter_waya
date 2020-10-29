@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_waya/src/widgets/loading/tweens/delay_tween.dart';
+
+import 'tweens/delay_tween.dart';
 
 class SpinKitDoubleBounce extends StatefulWidget {
   const SpinKitDoubleBounce({

@@ -80,34 +80,17 @@ const Map<String, Color> constColors = <String, Color>{
 
 ///icons
 class ConstIcon {
-  static const IconData checked = Icons.check_box;
-  static const IconData unChecked = Icons.check_box_outline_blank;
-  static const IconData eyeOpen = IconCode(0xe633); //眼睛打开
-  static const IconData eyeClose = IconCode(0xe634); //眼睛关闭
   static const IconData arrowRight = IconCode(0xe65b); //箭头右
   static const IconData arrowLeft = IconCode(0xe659); //箭头左
   static const IconData arrowUp = IconCode(0xe658); //箭头上
   static const IconData arrowDown = IconCode(0xe65a); //箭头下
-  static const IconData download = IconCode(0xe640); //下载
-  static const IconData region = IconCode(0xe641); //地区
-  static const IconData location = IconCode(0xe8ae); //定位
-  static const IconData map = IconCode(0xe8ad); //地图
-  static const IconData copy = IconCode(0xe8b0); //复制
-  static const IconData share = IconCode(0xe8b1); //分享
-  static const IconData man = IconCode(0xe8b3); //男
-  static const IconData woman = IconCode(0xe60d); //女
-  static const IconData scanner = IconCode(0xe8b5); //扫描
-  static const IconData upload = IconCode(0xe60c); //上传
-  static const IconData horn = IconCode(0xe8b8); //小喇叭
-  static const IconData collect = IconCode(0xe8b9); //五角星空
-  static const IconData collected = IconCode(0xe8c6); //五角星填充
   static const IconData search = IconCode(0xe8ba); //搜索
-  static const IconData discuss = IconCode(0xe8bb); //讨论
-  static const IconData message = IconCode(0xe8bd); //消息
-  static const IconData heart = IconCode(0xe8c3); //心
-  static const IconData comment = IconCode(0xe8c5); //评论
-  static const IconData menu = IconCode(0xe644); //菜单
-  static const IconData modify = IconCode(0xe63e); //修改
+  static const IconData success = IconCode(0xe645); //成功
+  static const IconData fail = IconCode(0xe669); //错误
+  static const IconData info = IconCode(0xe631); //提示
+  static const IconData warning = IconCode(0xe610); //警告
+  static const IconData smile = IconCode(0xe62b); //笑脸
+
 }
 
 class IconCode extends IconData {

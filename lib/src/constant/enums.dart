@@ -17,6 +17,9 @@ enum AutoScrollAnimation {
 
 enum ListType { builder, custom, separated }
 
+///Toast类型
+enum ToastType { success, fail, info, warning, smile }
+
 enum IndicatorType { none, slide, warm, color, scale, drop }
 
 enum CarouselLayout { none, stack, tinder, custom }
