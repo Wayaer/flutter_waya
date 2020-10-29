@@ -216,7 +216,7 @@ Future<T> showDialogPopup<T>({
         (BuildContext context, Animation<double> animation, _) => widget,
     barrierDismissible: barrierDismissible ?? true,
     barrierLabel: barrierLabel ?? '',
-    barrierColor: backgroundColor,
+    barrierColor: backgroundColor ?? getColors(transparent),
     transitionDuration: transitionDuration ?? const Duration(milliseconds: 80),
     transitionBuilder: transitionBuilder,
     useRootNavigator: useRootNavigator ?? true,
@@ -226,7 +226,6 @@ Future<T> showDialogPopup<T>({
 
 ///showModalBottomSheet 去除context
 ///关闭 closePopup()
-///最高只有屏幕的一半
 Future<T> showBottomPopup<T>({
   WidgetBuilder builder,
   Widget widget,
@@ -235,7 +234,6 @@ Future<T> showBottomPopup<T>({
   ShapeBorder shape,
   Clip clipBehavior,
   Color barrierColor,
-  bool isScrollControlled = false,
   bool useRootNavigator = false,
   bool isDismissible = true,
   bool enableDrag = true,
@@ -244,36 +242,46 @@ Future<T> showBottomPopup<T>({
   return showModalBottomSheet(
     context: _globalNavigatorKey.currentContext,
     builder: builder ?? (BuildContext context) => widget,
-    backgroundColor: backgroundColor,
+    backgroundColor: backgroundColor ?? getColors(transparent),
     elevation: elevation,
     shape: shape,
     clipBehavior: clipBehavior,
     barrierColor: barrierColor,
-    isScrollControlled: isScrollControlled,
+    isScrollControlled: false,
     useRootNavigator: useRootNavigator,
     isDismissible: isDismissible,
     enableDrag: enableDrag,
   );
 }
 
-///showCupertinoModalPopup
-///去除context 简化参数
+///showModalBottomSheet
 ///关闭 closePopup()
 ///全屏显示
 Future<T> showBottomPagePopup<T>({
   WidgetBuilder builder,
   Widget widget,
-  ImageFilter filter,
-  bool useRootNavigator = true,
-  bool semanticsDismissible,
+  Color backgroundColor,
+  double elevation,
+  ShapeBorder shape,
+  Clip clipBehavior,
+  Color barrierColor,
+  bool useRootNavigator = false,
+  bool isDismissible = true,
+  bool enableDrag = true,
 }) {
   assert(builder != null || widget != null);
-  return showCupertinoModalPopup(
+  return showModalBottomSheet(
     context: _globalNavigatorKey.currentContext,
     builder: builder ?? (BuildContext context) => widget,
-    filter: filter,
+    backgroundColor: backgroundColor ?? getColors(transparent),
+    elevation: elevation,
+    shape: shape,
+    clipBehavior: clipBehavior,
+    barrierColor: barrierColor,
+    isScrollControlled: true,
     useRootNavigator: useRootNavigator,
-    semanticsDismissible: semanticsDismissible,
+    isDismissible: isDismissible,
+    enableDrag: enableDrag,
   );
 }
 
@@ -600,8 +608,6 @@ Future<T> showMultipleChoicePicker<T>({
       sureTap: sureTap ?? (int index) => closePopup());
   return showBottomPopup(widget: widget);
 }
-
-///不常用
 
 ///showCupertinoDialog
 ///去除context 简化参数

@@ -53,11 +53,14 @@ class Home extends StatelessWidget {
               onPressed: () => selectTime(),
               child: const Text('showDateTimePicker')),
           FlatButton(
-              onPressed: () => showModalPopup(),
-              child: const Text('showBottomPagePopup')),
-          FlatButton(
               onPressed: () => push(widget: ContentPage()),
               child: const Text('showDialogSureCancel')),
+          FlatButton(
+              onPressed: () => showBottom(),
+              child: const Text('showBottomPopup')),
+          FlatButton(
+              onPressed: () => showBottomPage(),
+              child: const Text('showBottomPagePopup')),
         ],
       ),
     );
@@ -69,8 +72,28 @@ class Home extends StatelessWidget {
 
   void showOverlayLoading() => showLoading(gaussian: true);
 
-  void showModalPopup() {
+  void showBottomPage() {
     showBottomPagePopup<dynamic>(
+        widget: CupertinoActionSheet(
+      title: const Text('提示'),
+      message: const Text('是否要删除当前项？'),
+      actions: <Widget>[
+        CupertinoActionSheetAction(
+          child: const Text('删除'),
+          onPressed: () {},
+          isDefaultAction: true,
+        ),
+        CupertinoActionSheetAction(
+          child: const Text('暂时不删'),
+          onPressed: () {},
+          isDestructiveAction: true,
+        ),
+      ],
+    ));
+  }
+
+  void showBottom() {
+    showBottomPopup<dynamic>(
         widget: CupertinoActionSheet(
       title: const Text('提示'),
       message: const Text('是否要删除当前项？'),
