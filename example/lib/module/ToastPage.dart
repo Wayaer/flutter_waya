@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
+import 'package:waya/main.dart';
 
 class ToastPage extends StatefulWidget {
   @override
@@ -13,7 +14,6 @@ class _ToastPageState extends State<ToastPage> {
   void initState() {
     super.initState();
     toastList = ToastType.values;
-    log(toastList);
   }
 
   @override
@@ -24,11 +24,8 @@ class _ToastPageState extends State<ToastPage> {
       body: Universal(
           mainAxisAlignment: MainAxisAlignment.center,
           children: toastList
-              .map(
-                (ToastType e) => FlatButton(
-                    onPressed: () => showToast(e.toString(), toastType: e),
-                    child: Text(e.toString())),
-              )
+              .map((ToastType e) => customElasticButton(e.toString(),
+                  onTap: () => showToast(e.toString(), toastType: e)))
               .toList()),
     );
   }

@@ -18,7 +18,8 @@ enum AutoScrollAnimation {
 enum ListType { builder, custom, separated }
 
 ///Toast类型
-enum ToastType { success, fail, info, warning, smile }
+///如果使用custom  请设置 customIcon
+enum ToastType { success, fail, info, warning, smile, custom }
 
 enum IndicatorType { none, slide, warm, color, scale, drop }
 

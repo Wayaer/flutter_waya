@@ -96,8 +96,15 @@ Future<void> showToast(String message,
     BoxDecoration boxDecoration,
     GestureTapCallback onTap,
     TextStyle textStyle,
+    Duration closeDuration,
+
+    ///icon style
+    ///如果使用ToastType.custom  请设置 customIcon
     ToastType toastType,
-    Duration closeDuration}) async {
+    IconData customIcon,
+    double size,
+    double spacing,
+    Axis direction}) async {
   if (haveToast) return;
   Widget toast;
   if (toastType != null) {
@@ -118,12 +125,16 @@ Future<void> showToast(String message,
       case ToastType.smile:
         icon = ConstIcon.smile;
         break;
+      case ToastType.custom:
+        assert(customIcon != null);
+        icon = customIcon ?? ConstIcon.success;
+        break;
     }
     toast = IconBox(
         icon: icon,
-        direction: Axis.vertical,
-        spacing: 10,
-        size: 30,
+        direction: direction ?? Axis.vertical,
+        spacing: spacing ?? 10,
+        size: size ?? 30,
         color: getColors(white),
         title: WayWidgets.textDefault(message,
             color: getColors(white), maxLines: 4));
@@ -447,7 +458,7 @@ Future<T> showDateTimePicker<T>({
       contentStyle: contentStyle,
       unitStyle: unitStyle,
       cancelTap: cancelTap ?? () => closePopup(),
-      sureTap: sureTap ?? (String text) => closePopup());
+      sureTap: sureTap ?? (String text) => closePopup(text));
   return showBottomPopup(widget: widget);
 }
 
@@ -524,7 +535,7 @@ Future<T> showAreaPicker<T>({
       titleBottom: titleBottom,
       contentStyle: contentStyle,
       cancelTap: cancelTap ?? () => closePopup(),
-      sureTap: sureTap ?? (String text) => closePopup());
+      sureTap: sureTap ?? (String text) => closePopup(text));
   return showBottomPopup(widget: widget);
 }
 
@@ -605,7 +616,7 @@ Future<T> showMultipleChoicePicker<T>({
       titleBottom: titleBottom,
       color: color,
       cancelTap: cancelTap ?? () => closePopup(),
-      sureTap: sureTap ?? (int index) => closePopup());
+      sureTap: sureTap ?? (int index) => closePopup(index));
   return showBottomPopup(widget: widget);
 }
 
