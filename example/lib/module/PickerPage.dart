@@ -42,6 +42,7 @@ class PickerPage extends StatelessWidget {
     final int index = await showMultipleChoicePicker<int>(
         itemBuilder: (_, int index) => Text(list[index]),
         itemCount: list.length);
+    if (index == null) return;
     showToast(list[index].toString());
   }
 }

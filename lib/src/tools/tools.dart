@@ -12,7 +12,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/enums.dart';
 
-bool isDebug() => !kReleaseMode;
+bool get isDebug => !kReleaseMode;
 const int _limitLength = 800;
 
 bool get isAndroid => Platform.isAndroid;
@@ -29,7 +29,7 @@ bool get isFuchsia => Platform.isFuchsia;
 
 void log(dynamic msg) {
   final String message = msg.toString();
-  if (isDebug()) {
+  if (isDebug) {
     if (message.length < _limitLength) {
       print(msg);
     } else {
