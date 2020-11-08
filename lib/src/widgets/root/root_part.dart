@@ -296,6 +296,22 @@ Future<T> showBottomPagePopup<T>({
   );
 }
 
+///showCupertinoModalPopup
+///关闭 closePopup()
+///全屏显示
+Future<T> showCupertinoBottomPagePopup<T>(
+    {WidgetBuilder builder,
+    Widget widget,
+    bool useRootNavigator = false,
+    ImageFilter filter}) {
+  assert(builder != null || widget != null);
+  return showCupertinoModalPopup(
+      context: _globalNavigatorKey.currentContext,
+      builder: builder ?? (BuildContext context) => widget,
+      filter: filter,
+      useRootNavigator: useRootNavigator);
+}
+
 ///关闭 closePopup()
 ///popup 确定和取消
 ///Dialog
