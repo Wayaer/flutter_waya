@@ -1,3 +1,5 @@
+## [1.3.3]
+  * add showCupertinoBottomPagePopup
 ## [1.3.2]
   * remove some widget
   * format code
