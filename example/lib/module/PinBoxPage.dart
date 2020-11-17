@@ -12,13 +12,7 @@ class PinBoxPage extends StatelessWidget {
           children: <Widget>[
             PinBox(
               maxLength: 6,
-              pinBoxWidth: 30,
-              pinBoxOuterPadding: EdgeInsets.zero,
-              pinBoxBorderWidth: 0.5,
-              pinBoxColor: Colors.amber,
-              pinBoxHeight: 30,
               pinTextStyle: TextStyle(fontSize: 10),
-              highlight: true,
             ),
           ]),
     );

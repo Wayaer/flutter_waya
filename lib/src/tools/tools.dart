@@ -137,9 +137,9 @@ class Tools {
     return date.toString();
   }
 
-  ///关闭键盘
-  static void closeKeyboard(BuildContext context) =>
-      FocusScope.of(context).requestFocus(FocusNode());
+  ///移出焦点 focusNode==null  移出焦点 （可用于关闭键盘） focusNode！!= null 获取焦点
+  static void focusNode(BuildContext context, {FocusNode focusNode}) =>
+      FocusScope.of(context).requestFocus(focusNode ?? FocusNode());
 
   ///自动获取焦点
   static void autoFocus(BuildContext context) =>

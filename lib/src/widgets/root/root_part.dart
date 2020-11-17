@@ -449,7 +449,7 @@ Future<T> showDateTimePicker<T>({
   double squeeze,
   ScrollPhysics physics,
 }) {
-  Tools.closeKeyboard(_globalNavigatorKey.currentContext);
+  Tools.focusNode(_globalNavigatorKey.currentContext);
   final Widget widget = DateTimePicker(
       diameterRatio: diameterRatio,
       offAxisFraction: offAxisFraction,
@@ -531,7 +531,7 @@ Future<T> showAreaPicker<T>({
   String defaultCity,
   String defaultDistrict,
 }) {
-  Tools.closeKeyboard(_globalNavigatorKey.currentContext);
+  Tools.focusNode(_globalNavigatorKey.currentContext);
   final Widget widget = AreaPicker(
       defaultProvince: defaultProvince,
       defaultCity: defaultCity,
@@ -612,7 +612,7 @@ Future<T> showMultipleChoicePicker<T>({
   @required int itemCount,
   @required IndexedWidgetBuilder itemBuilder,
 }) {
-  Tools.closeKeyboard(_globalNavigatorKey.currentContext);
+  Tools.focusNode(_globalNavigatorKey.currentContext);
   final Widget widget = MultipleChoicePicker(
       itemCount: itemCount,
       itemBuilder: itemBuilder,
