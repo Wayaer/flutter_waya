@@ -18,8 +18,16 @@ class PinBox extends StatefulWidget {
       this.decoration,
       this.boxSize = const Size(50, 50),
       this.width,
-      this.focusNode})
+      this.focusNode,
+      this.onChanged,
+      this.onDone})
       : super(key: key);
+
+  ///输入内容监听
+  final ValueChanged<String> onChanged;
+
+  ///输入完成后回调
+  final ValueChanged<String> onDone;
 
   ///输入文字类型限制
   final InputTextType inputTextType;
@@ -76,7 +84,6 @@ class _PinBoxState extends State<PinBox> {
     size = widget.boxSize;
     controller = widget.controller ?? TextEditingController();
     focusNode = widget.focusNode ?? FocusNode();
-    focusNode.addListener(() {});
   }
 
   @override
@@ -108,11 +115,8 @@ class _PinBoxState extends State<PinBox> {
       children.add(Container(
         height: size.height,
         width: size.width,
-        decoration: hasFocus
-            ? widget.pinDecoration
-            : hasFocus
-                ? widget.pinDecoration
-                : widget.hasFocusPinDecoration,
+        decoration:
+            hasFocus ? widget.pinDecoration : widget.hasFocusPinDecoration,
         alignment: Alignment.center,
         child: Text(
           texts[i],
@@ -153,6 +157,9 @@ class _PinBoxState extends State<PinBox> {
       helperStyle: const TextStyle(color: Colors.transparent),
       onChanged: (String text) {
         texts = text.trim().split('');
+        if (widget.onChanged != null) widget.onChanged(text);
+        if (widget.onDone != null && text.length == widget.maxLength)
+          widget.onDone(text);
         setState(() {});
       },
     );
