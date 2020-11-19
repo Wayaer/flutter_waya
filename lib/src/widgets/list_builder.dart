@@ -262,7 +262,9 @@ class ListEntry extends StatelessWidget {
       bool isThreeLine,
       bool enabled,
       bool dense,
+      bool arrow,
       String titleText,
+      double arrowSize,
       this.onTap,
       this.heroTag,
       this.onDoubleTap,
@@ -281,10 +283,14 @@ class ListEntry extends StatelessWidget {
       this.subtitle,
       this.contentPadding,
       this.selected,
-      this.prefix})
+      this.prefix,
+      this.arrowColor,
+      this.arrowIcon})
       : isThreeLine = isThreeLine ?? false,
+        arrow = arrow ?? false,
         enabled = enabled ?? true,
         dense = dense ?? true,
+        arrowSize = arrowSize ?? 15,
         titleText = titleText ?? '',
         super(key: key);
 
@@ -318,6 +324,12 @@ class ListEntry extends StatelessWidget {
   ///右侧widget
   final Widget child;
 
+  ///右边是否有箭头
+  final bool arrow;
+  final Widget arrowIcon;
+  final double arrowSize;
+  final Color arrowColor;
+
   ///中间内容
   final Widget title;
   final String titleText;
@@ -347,6 +359,7 @@ class ListEntry extends StatelessWidget {
     final List<Widget> children = <Widget>[];
     if (prefix != null) children.add(prefix);
     children.add(listTile());
+    if (arrow || arrowIcon != null) children.add(arrowIcon ?? arrowWidget());
     return Universal(
         height: height,
         addInkWell: inkWell,
@@ -365,6 +378,9 @@ class ListEntry extends StatelessWidget {
       ? WayStyles.containerUnderlineBackground(
           underlineColor: underlineColor, color: color)
       : null;
+
+  Widget arrowWidget() =>
+      Icon(ConstIcon.arrowRight, size: arrowSize, color: arrowColor);
 
   Widget listTile() => Expanded(
           child: ListTile(
