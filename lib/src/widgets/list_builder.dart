@@ -257,13 +257,12 @@ class ListBuilder extends StatelessWidget {
 }
 
 class ListEntry extends StatelessWidget {
-  ListEntry(
+  const ListEntry(
       {Key key,
-      double arrowSize,
-      Color arrowColor,
       bool isThreeLine,
-      bool arrow,
       bool enabled,
+      bool dense,
+      String titleText,
       this.onTap,
       this.heroTag,
       this.onDoubleTap,
@@ -276,34 +275,38 @@ class ListEntry extends StatelessWidget {
       this.decoration,
       this.child,
       this.color,
-      this.titleText,
       this.titleStyle,
       this.underlineColor,
       this.leading,
       this.subtitle,
-      this.dense,
       this.contentPadding,
       this.selected,
-      this.arrowIcon,
-      this.arrowMargin,
-      this.prefix,
-      this.prefixMargin})
-      : arrowSize = arrowSize ?? 16,
-        arrowColor = arrowColor ?? getColors(black),
-        isThreeLine = isThreeLine ?? false,
-        arrow = arrow ?? true,
+      this.prefix})
+      : isThreeLine = isThreeLine ?? false,
         enabled = enabled ?? true,
+        dense = dense ?? true,
+        titleText = titleText ?? '',
         super(key: key);
+
+  ///单击事件
   final GestureTapCallback onTap;
+
+  ///双击事件
   final GestureTapCallback onDoubleTap;
+
+  ///长按事件
   final GestureLongPressCallback onLongPress;
+
+  ///显示三行
   final bool isThreeLine;
 
   ///是否默认3行高度，subtitle不为空时才能使用
   final bool selected;
 
-  ///设置为true后字体变小
+  ///设置为true后 高度变小 默认为true
   final bool dense;
+
+  ///内边距
   final EdgeInsetsGeometry contentPadding;
 
   ///左侧widget
@@ -315,35 +318,35 @@ class ListEntry extends StatelessWidget {
   ///右侧widget
   final Widget child;
 
+  ///中间内容
   final Widget title;
   final String titleText;
-  final String heroTag;
   final TextStyle titleStyle;
+  final String heroTag;
+
+  ///高
   final double height;
+
+  ///前缀
   final Widget prefix;
 
   final EdgeInsetsGeometry padding;
   final EdgeInsetsGeometry margin;
-  final EdgeInsetsGeometry prefixMargin;
   final bool inkWell;
   final Color underlineColor;
-
-  final EdgeInsetsGeometry arrowMargin;
   final Color color;
-  final BoxDecoration decoration;
-  final double arrowSize;
-  final Color arrowColor;
-  final Widget arrowIcon;
-  final bool arrow;
+
+  ///是否可点击
   final bool enabled;
+
+  ///整个ListEntry装饰器
+  final BoxDecoration decoration;
 
   @override
   Widget build(BuildContext context) {
     final List<Widget> children = <Widget>[];
     if (prefix != null) children.add(prefix);
     children.add(listTile());
-    if (arrowIcon != null) children.add(arrowIcon);
-    if (arrow) children.add(arrowWidget());
     return Universal(
         height: height,
         addInkWell: inkWell,
@@ -354,29 +357,27 @@ class ListEntry extends StatelessWidget {
         onTap: enabled ? onTap : null,
         direction: Axis.horizontal,
         mainAxisAlignment: MainAxisAlignment.center,
-        decoration: decoration ??
-            WayStyles.containerUnderlineBackground(
-                underlineColor: underlineColor, color: color),
+        decoration: decoration ?? defaultDecoration(),
         children: children);
   }
 
-  Widget listTile() => Expanded(
-      child: ListTile(
-          contentPadding: contentPadding,
-          title: hero(title ?? Text(titleText, style: titleStyle)),
-          subtitle: subtitle,
-          leading: leading,
-          trailing: child,
-          isThreeLine: isThreeLine,
-          dense: dense,
-          enabled: false,
-          selected: false));
+  Decoration defaultDecoration() => underlineColor != null || color != null
+      ? WayStyles.containerUnderlineBackground(
+          underlineColor: underlineColor, color: color)
+      : null;
 
-  Widget arrowWidget() => IconBox(
-      icon: ConstIcon.arrowRight,
-      size: arrowSize,
-      color: arrowColor,
-      margin: arrowMargin);
+  Widget listTile() => Expanded(
+          child: ListTile(
+        contentPadding: contentPadding,
+        title: hero(title ?? Text(titleText, style: titleStyle)),
+        subtitle: subtitle,
+        leading: leading,
+        trailing: child,
+        isThreeLine: isThreeLine,
+        dense: dense,
+        enabled: false,
+        selected: selected ?? false,
+      ));
 
   Widget hero(Widget text) {
     if (heroTag != null) return Hero(tag: heroTag, child: text);
