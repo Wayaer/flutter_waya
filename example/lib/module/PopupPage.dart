@@ -75,37 +75,39 @@ class ContentPage extends StatelessWidget {
     const bool isOverlay = true;
     dialogSureCancel<dynamic>(
         isOverlay: isOverlay,
-        sure: Text('确定', style: _textStyle()),
-        sureTap: () {
-          if (isOverlay) {
-            closeOverlay();
-          } else {
-            closePopup();
-          }
+        sure: SimpleButton(
+          child: Text('确定', style: _textStyle()),
+          onTap: () {
+            if (isOverlay) {
+              closeOverlay();
+            } else {
+              closePopup();
+            }
 
-          ///如果isOverlay=true; 必须先closeOverlay() 再toast或者loading
-          showToast('确定');
-        },
-        cancelTap: () {
-          if (isOverlay) {
-            closeOverlay();
-          } else {
-            closePopup();
-          }
+            ///如果isOverlay=true; 必须先closeOverlay() 再toast或者loading
+            showToast('确定');
+          },
+        ),
+        cancel: SimpleButton(
+          child: Text('取消', style: _textStyle()),
+          onTap: () {
+            if (isOverlay) {
+              closeOverlay();
+            } else {
+              closePopup();
+            }
 
-          ///如果isOverlay=true; 必须先closeOverlay() 再toast或者loading
-          showToast('取消');
-        },
-        cancel: Text('取消', style: _textStyle()),
-        children: <Widget>[
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 40),
-            child: Text(
-              '内容',
-              style: _textStyle(),
-            ),
+            ///如果isOverlay=true; 必须先closeOverlay() 再toast或者loading
+            showToast('取消');
+          },
+        ),
+        content: Container(
+          padding: const EdgeInsets.symmetric(vertical: 40),
+          child: Text(
+            '内容',
+            style: _textStyle(),
           ),
-        ]);
+        ));
   }
 
   TextStyle _textStyle() => const TextStyle(

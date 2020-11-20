@@ -316,53 +316,49 @@ Future<T> showCupertinoBottomPagePopup<T>(
 ///popup 确定和取消
 ///Dialog
 Future<T> dialogSureCancel<T>({
-  @required List<Widget> children,
-  GestureTapCallback sureTap,
-  GestureTapCallback cancelTap,
-  String cancelText,
-  String sureText,
+  @required Widget content,
   Widget sure,
   Widget cancel,
-  PopupMode popupMode,
+
+  ///弹窗背景色
   Color backgroundColor,
-  TextStyle cancelTextStyle,
-  TextStyle sureTextStyle,
+
+  ///高度不建议设置
   double height,
+  double width,
   bool isDismissible = true,
   EdgeInsetsGeometry padding,
-  EdgeInsetsGeometry margin,
+
+  ///弹窗位置 默认居中
   AlignmentGeometry alignment,
+
+  ///弹窗 decoration
   Decoration decoration,
-  bool animatedOpacity,
+
+  ///背景是否模糊
   bool gaussian,
-  double width,
+
+  ///是否使用Overlay
   bool isOverlay = false,
-  bool addMaterial, //是否添加Material Widget 部分组件需要基于Material
+
+  ///是否添加Material Widget 部分组件需要基于Material
+  bool addMaterial,
 }) {
   final PopupSureCancel widget = PopupSureCancel(
     backsideTap: () {
       if (isDismissible) isOverlay ? closeOverlay() : closePopup();
     },
     width: width,
-    popupMode: popupMode,
     addMaterial: addMaterial,
-    animatedOpacity: animatedOpacity,
     gaussian: gaussian,
-    children: children,
-    sureTap: sureTap ?? () => isOverlay ? closeOverlay() : closePopup(),
-    cancelTap: cancelTap ?? () => isOverlay ? closeOverlay() : closePopup(),
+    content: content,
     decoration: decoration,
     alignment: alignment,
-    cancelText: cancelText,
-    sureText: sureText,
     height: height,
-    cancelTextStyle: cancelTextStyle,
-    sureTextStyle: sureTextStyle,
     sure: sure,
     cancel: cancel,
     backgroundColor: backgroundColor,
     padding: padding,
-    margin: margin,
   );
   if (isOverlay ?? false) {
     showOverlay(widget);
