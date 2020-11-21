@@ -1,3 +1,6 @@
+## [1.3.5]
+  * simplifying some component parameters 【PopupSureCancel，PopupBase】
+  * modify utils partial method name
 ## [1.3.3]
   * add showCupertinoBottomPagePopup
 ## [1.3.2]
