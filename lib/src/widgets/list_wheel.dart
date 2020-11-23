@@ -22,6 +22,9 @@ class ListWheel extends StatefulWidget {
     this.onChanged,
     this.onScrollEnd,
     this.children,
+    this.onNotification,
+    this.onScrollStart,
+    this.onScrollUpdate,
   })  : diameterRatio = diameterRatio ?? 1,
         offAxisFraction = offAxisFraction ?? 0,
         initialIndex = initialIndex ?? 0,
@@ -67,9 +70,6 @@ class ListWheel extends StatefulWidget {
   /// 回调监听
   final ValueChanged<int> onChanged;
 
-  /// 结束回调
-  final ValueChanged<int> onScrollEnd;
-
   ///放大倍率
   final double magnification;
 
@@ -85,6 +85,18 @@ class ListWheel extends StatefulWidget {
   final ListWheelChildDelegateType childDelegateType;
   final FixedExtentScrollController controller;
   final List<Widget> children;
+
+  ///滚动监听 添加此方法  [onScrollStart],[onScrollUpdate],[onScrollEnd] 无效
+  final NotificationListenerCallback<dynamic> onNotification;
+
+  ///动开始回调
+  final ValueChanged<int> onScrollStart;
+
+  ///滚动中回调
+  final ValueChanged<int> onScrollUpdate;
+
+  ///动结束回调
+  final ValueChanged<int> onScrollEnd;
 
   @override
   _ListWheelState createState() => _ListWheelState();
@@ -139,11 +151,16 @@ class _ListWheelState extends State<ListWheel> {
       // ignore: always_specify_types
       wheel = NotificationListener(
           child: wheel,
-          onNotification: (Notification notification) {
-            if (notification is ScrollEndNotification)
-              widget.onScrollEnd(controller.selectedItem);
-            return true;
-          });
+          onNotification: widget.onNotification ??
+              (Notification notification) {
+                if (notification is ScrollStartNotification)
+                  widget.onScrollStart(controller.selectedItem);
+                if (notification is ScrollUpdateNotification)
+                  widget.onScrollUpdate(controller.selectedItem);
+                if (notification is ScrollEndNotification)
+                  widget.onScrollEnd(controller.selectedItem);
+                return true;
+              });
     }
     return wheel;
   }
