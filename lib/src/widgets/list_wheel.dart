@@ -20,6 +20,7 @@ class ListWheel extends StatefulWidget {
     this.childDelegateType,
     this.controller,
     this.onChanged,
+    this.onScrollEnd,
     this.children,
   })  : diameterRatio = diameterRatio ?? 1,
         offAxisFraction = offAxisFraction ?? 0,
@@ -66,7 +67,10 @@ class ListWheel extends StatefulWidget {
   /// 回调监听
   final ValueChanged<int> onChanged;
 
-  /// ///放大倍率
+  /// 结束回调
+  final ValueChanged<int> onScrollEnd;
+
+  ///放大倍率
   final double magnification;
 
   ///是否启用放大镜
@@ -117,7 +121,7 @@ class _ListWheelState extends State<ListWheel> {
         break;
     }
 
-    return ListWheelScrollView.useDelegate(
+    Widget wheel = ListWheelScrollView.useDelegate(
         controller: controller,
         itemExtent: widget.itemExtent,
         physics: widget.physics,
@@ -131,6 +135,17 @@ class _ListWheelState extends State<ListWheel> {
         squeeze: widget.squeeze,
         magnification: widget.magnification,
         childDelegate: childDelegate);
+    if (widget.onScrollEnd != null) {
+      // ignore: always_specify_types
+      wheel = NotificationListener(
+          child: wheel,
+          onNotification: (Notification notification) {
+            if (notification is ScrollEndNotification)
+              widget.onScrollEnd(controller.selectedItem);
+            return true;
+          });
+    }
+    return wheel;
   }
 
   @override
