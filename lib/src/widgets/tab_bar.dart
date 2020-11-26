@@ -6,73 +6,72 @@ import 'package:flutter_waya/src/constant/way.dart';
 class TabBarMerge extends StatelessWidget {
   const TabBarMerge({
     Key key,
+    @required this.tabBar,
+    @required this.controller,
+    bool reverse,
+    double viewHeight,
+    this.width,
     this.among,
     this.physics,
     this.header,
     this.footer,
-    double viewHeight,
-    @required this.tabBar,
-    this.tabBarView,
-    @required this.controller,
+    this.tabView,
     this.margin,
     this.padding,
     this.decoration,
     this.constraints,
-    this.width,
   })  : viewHeight = viewHeight ?? 0,
+        reverse = reverse ?? false,
         super(key: key);
 
-  ///最好传入 TabBarBox
+  ///建议传 TabBarBox
   final Widget tabBar;
+
+  ///头部
+  final Widget header;
 
   ///tabBar和tabBarView中间层
   final Widget among;
 
-  ///最顶部
-  final Widget header;
-
-  ///最底部
+  ///底部
   final Widget footer;
-  final ScrollPhysics physics;
-  final List<Widget> tabBarView;
-  final double viewHeight;
+
+  ///控制器
   final TabController controller;
 
-  ///以下属性主要针对 tabBarView
+  ///作用于tabView
+  final List<Widget> tabView;
   final EdgeInsetsGeometry margin;
   final EdgeInsetsGeometry padding;
   final Decoration decoration;
   final BoxConstraints constraints;
   final double width;
+  final ScrollPhysics physics;
+  final double viewHeight;
+
+  ///[tabBar],[tabView] 反转
+  final bool reverse;
 
   @override
   Widget build(BuildContext context) {
     final List<Widget> children = <Widget>[];
     if (header != null) children.add(header);
-    children.add(tabBar);
+    children.add(reverse ? (tabViewWidget() ?? tabBar) : tabBar);
     if (among != null) children.add(among);
-    if (tabBarView != null) children.add(tabBarViewWidget());
+    if (tabView != null) children.add(reverse ? tabBar : tabViewWidget());
     if (footer != null) children.add(footer);
     return Column(children: children);
   }
 
-  Widget tabBarViewWidget() => viewHeight == 0
-      ? Expanded(
-          child: Container(
-              margin: margin,
-              padding: padding,
-              decoration: decoration,
-              constraints: constraints,
-              width: width,
-              child: TabBarView(controller: controller, children: tabBarView)))
-      : Container(
-          margin: margin,
-          padding: padding,
-          decoration: decoration,
-          constraints: constraints,
-          width: width,
-          height: viewHeight,
-          child: TabBarView(controller: controller, children: tabBarView));
+  Widget tabViewWidget() => Universal(
+      isScroll: viewHeight == 0,
+      margin: margin,
+      padding: padding,
+      decoration: decoration,
+      constraints: constraints,
+      width: width,
+      child: TabBarView(
+          physics: physics, controller: controller, children: tabView));
 }
 
 class TabBarBox extends StatelessWidget {
@@ -80,17 +79,16 @@ class TabBarBox extends StatelessWidget {
     Key key,
     EdgeInsetsGeometry indicatorPadding,
     TabBarLevelPosition levelPosition,
-    this.border,
     @required this.controller,
     this.labelPadding,
-    @required this.tabBar,
+    @required this.tabs,
     this.isScrollable,
     this.alignment,
     this.tabBarLevel,
-    this.labelColor,
+    this.selectedLabelColor,
     this.unselectedLabelColor,
     this.indicatorSize,
-    this.labelStyle,
+    this.selectedLabelStyle,
     this.unselectedLabelStyle,
     this.indicatorWeight,
     this.indicator,
@@ -103,14 +101,21 @@ class TabBarBox extends StatelessWidget {
         indicatorPadding = indicatorPadding ?? EdgeInsets.zero,
         super(key: key);
   final TabController controller;
+
+  ///作用于label
   final EdgeInsetsGeometry labelPadding;
-  final List<Widget> tabBar;
-  final EdgeInsetsGeometry margin;
-  final EdgeInsetsGeometry padding;
-  final double height;
-  final double width;
-  final Decoration decoration;
+
+  ///作用于指示器
   final EdgeInsetsGeometry indicatorPadding;
+
+  ///指示器高度
+  final double indicatorWeight;
+  final TabBarIndicatorSize indicatorSize;
+
+  ///tabBar 指示器
+  final Decoration indicator;
+
+  final List<Widget> tabs;
 
   ///true 最小宽度，false充满最大宽度
   final bool isScrollable;
@@ -118,23 +123,22 @@ class TabBarBox extends StatelessWidget {
   ///tabBar 位置
   final TabBarLevelPosition levelPosition;
 
-  final TabBarIndicatorSize indicatorSize;
-
   ///选中与未选中的指示器和字体样式和颜色，
-  final Color labelColor;
+  final Color selectedLabelColor;
   final Color unselectedLabelColor;
-  final TextStyle labelStyle;
+  final TextStyle selectedLabelStyle;
   final TextStyle unselectedLabelStyle;
 
-  ///指示器高度
-  final double indicatorWeight;
-
-  ///tabBar 水平左边或者右边的Widget
+  ///tabBar 水平左边或者右边的Widget 添加标签
   final Widget tabBarLevel;
 
-  final Decoration indicator; //tabBar 指示器
+  ///作用于整个tabBar
   final AlignmentGeometry alignment;
-  final BoxBorder border;
+  final EdgeInsetsGeometry margin;
+  final EdgeInsetsGeometry padding;
+  final double height;
+  final double width;
+  final Decoration decoration;
 
   @override
   Widget build(BuildContext context) {
@@ -158,7 +162,7 @@ class TabBarBox extends StatelessWidget {
         width: width,
         alignment: alignment,
         direction: Axis.horizontal,
-        decoration: decoration ?? BoxDecoration(border: border),
+        decoration: decoration,
         children: children,
         child: tabBarLevel == null ? tabBarWidget() : null);
   }
@@ -166,15 +170,16 @@ class TabBarBox extends StatelessWidget {
   Widget tabBarWidget() => TabBar(
         controller: controller,
         labelPadding: labelPadding,
-        tabs: tabBar,
+        tabs: tabs,
         isScrollable: isScrollable ?? true,
         indicator: indicator,
-        labelColor: labelColor ?? getColors(blue),
+        labelColor: selectedLabelColor ?? getColors(blue),
         unselectedLabelColor: unselectedLabelColor ?? getColors(background),
-        indicatorColor: labelColor ?? getColors(blue),
+        indicatorColor: selectedLabelColor ?? getColors(blue),
         indicatorWeight: indicatorWeight ?? getWidth(1),
         indicatorPadding: indicatorPadding,
-        labelStyle: labelStyle ?? WayStyles.textStyleBlack70(fontSize: 13),
+        labelStyle:
+            selectedLabelStyle ?? WayStyles.textStyleBlack70(fontSize: 13),
         unselectedLabelStyle: unselectedLabelStyle,
         indicatorSize: indicatorSize ?? TabBarIndicatorSize.label,
       );
