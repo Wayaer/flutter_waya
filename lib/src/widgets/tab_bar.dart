@@ -10,9 +10,9 @@ class TabBarMerge extends StatelessWidget {
     @required this.controller,
     bool reverse,
     double viewHeight,
+    ScrollPhysics physics,
     this.width,
     this.among,
-    this.physics,
     this.header,
     this.footer,
     this.tabView,
@@ -22,6 +22,7 @@ class TabBarMerge extends StatelessWidget {
     this.constraints,
   })  : viewHeight = viewHeight ?? 0,
         reverse = reverse ?? false,
+        physics = physics ?? const NeverScrollableScrollPhysics(),
         super(key: key);
 
   ///建议传 TabBarBox
@@ -80,8 +81,8 @@ class TabBarBox extends StatelessWidget {
     EdgeInsetsGeometry indicatorPadding,
     TabBarLevelPosition levelPosition,
     @required this.controller,
-    this.labelPadding,
     @required this.tabs,
+    this.labelPadding,
     this.isScrollable,
     this.alignment,
     this.tabBarLevel,
