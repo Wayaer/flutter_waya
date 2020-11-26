@@ -10,7 +10,7 @@ class TabBarMerge extends StatelessWidget {
     @required this.controller,
     bool reverse,
     double viewHeight,
-    ScrollPhysics physics,
+    this.physics,
     this.width,
     this.among,
     this.header,
@@ -22,7 +22,6 @@ class TabBarMerge extends StatelessWidget {
     this.constraints,
   })  : viewHeight = viewHeight ?? 0,
         reverse = reverse ?? false,
-        physics = physics ?? const NeverScrollableScrollPhysics(),
         super(key: key);
 
   ///建议传 TabBarBox
@@ -57,22 +56,24 @@ class TabBarMerge extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<Widget> children = <Widget>[];
     if (header != null) children.add(header);
-    children.add(reverse ? (tabViewWidget() ?? tabBar) : tabBar);
+    children
+        .add(tabView == null ? tabBar : (reverse ? tabBarUniversal() : tabBar));
     if (among != null) children.add(among);
-    if (tabView != null) children.add(reverse ? tabBar : tabViewWidget());
+    if (tabView != null) children.add(reverse ? tabBar : tabBarUniversal());
     if (footer != null) children.add(footer);
     return Column(children: children);
   }
 
-  Widget tabViewWidget() => Universal(
-      isScroll: viewHeight == 0,
+  Widget tabBarUniversal() => Universal(
+      expanded: viewHeight == 0,
       margin: margin,
       padding: padding,
       decoration: decoration,
       constraints: constraints,
       width: width,
+      height: viewHeight == 0 ? null : viewHeight,
       child: TabBarView(
-          physics: physics, controller: controller, children: tabView));
+          controller: controller, physics: physics, children: tabView));
 }
 
 class TabBarBox extends StatelessWidget {
