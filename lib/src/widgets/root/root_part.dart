@@ -145,7 +145,7 @@ Future<void> showToast(String message,
 
   final OverlayEntryMap entry = showOverlay(
       PopupBase(
-          ignoring: true,
+          handleTouch: true,
           alignment: Alignment.center,
           child: Container(
               margin:

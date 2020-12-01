@@ -397,8 +397,7 @@ class _OverlayScaffoldState extends State<OverlayScaffold> {
         appBar: appBar(),
         bottomNavigationBar: widget.bottomNavigationBar,
         body: widget.enablePullDown ? refresherContainer() : container());
-    if (widget.onWillPop != null ||
-        (isAndroid && widget.onWillPopOverlayClose)) {
+    if (widget.onWillPop != null || widget.onWillPopOverlayClose) {
       scaffold = WillPopScope(
           child: scaffold, onWillPop: widget.onWillPop ?? onWillPop);
     }
@@ -557,4 +556,3 @@ Route<T> _pageRoute<T>({
       settings: settings,
       builder: builder ?? (BuildContext context) => widget);
 }
-

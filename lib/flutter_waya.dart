@@ -20,7 +20,6 @@ export 'src/widgets/carousel/carousel_page.dart';
 export 'src/widgets/carousel/carousel_plugin.dart';
 export 'src/widgets/carousel/indicator.dart';
 export 'src/widgets/carousel/parallax.dart';
-export 'src/widgets/delegate/localizations_delegate.dart';
 export 'src/widgets/dotted_line.dart';
 export 'src/widgets/elastic_button.dart';
 export 'src/widgets/gesture_lock.dart';

@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 import 'dart:ui';
 import 'dart:ui' as ui show Image;
 
@@ -14,18 +13,6 @@ import 'package:flutter_waya/src/constant/enums.dart';
 
 bool get isDebug => !kReleaseMode;
 const int _limitLength = 800;
-
-bool get isAndroid => Platform.isAndroid;
-
-bool get isIOS => Platform.isIOS;
-
-bool get isMacOS => Platform.isMacOS;
-
-bool get isWindows => Platform.isWindows;
-
-bool get isLinux => Platform.isLinux;
-
-bool get isFuchsia => Platform.isFuchsia;
 
 void log(dynamic msg) {
   final String message = msg.toString();
@@ -71,11 +58,11 @@ class Tools {
   static Future<ByteData> screenshots(GlobalKey globalKey,
       {ImageByteFormat format}) async {
     final RenderRepaintBoundary boundary =
-        globalKey.currentContext.findRenderObject() as RenderRepaintBoundary;
+    globalKey.currentContext.findRenderObject() as RenderRepaintBoundary;
     final ui.Image image =
-        await boundary.toImage(pixelRatio: window.devicePixelRatio);
+    await boundary.toImage(pixelRatio: window.devicePixelRatio);
     final ByteData byteData =
-        await image.toByteData(format: format ?? ImageByteFormat.rawRgba);
+    await image.toByteData(format: format ?? ImageByteFormat.rawRgba);
 
     /// Uint8List uint8list = byteData.buffer.asUint8List();
     return byteData;
@@ -177,19 +164,19 @@ class Tools {
     if (isLight is bool) {
       SystemChrome.setSystemUIOverlayStyle(isLight
           ? SystemUiOverlayStyle(
-              systemNavigationBarColor: getColors(black70),
-              systemNavigationBarDividerColor: getColors(transparent),
-              statusBarColor: color,
-              systemNavigationBarIconBrightness: Brightness.light,
-              statusBarIconBrightness: Brightness.light,
-              statusBarBrightness: Brightness.dark)
+          systemNavigationBarColor: getColors(black70),
+          systemNavigationBarDividerColor: getColors(transparent),
+          statusBarColor: color,
+          systemNavigationBarIconBrightness: Brightness.light,
+          statusBarIconBrightness: Brightness.light,
+          statusBarBrightness: Brightness.dark)
           : SystemUiOverlayStyle(
-              systemNavigationBarColor: getColors(black70),
-              systemNavigationBarDividerColor: color,
-              statusBarColor: color,
-              systemNavigationBarIconBrightness: Brightness.light,
-              statusBarIconBrightness: Brightness.dark,
-              statusBarBrightness: Brightness.light));
+          systemNavigationBarColor: getColors(black70),
+          systemNavigationBarDividerColor: color,
+          statusBarColor: color,
+          systemNavigationBarIconBrightness: Brightness.light,
+          statusBarIconBrightness: Brightness.dark,
+          statusBarBrightness: Brightness.light));
     }
   }
 
