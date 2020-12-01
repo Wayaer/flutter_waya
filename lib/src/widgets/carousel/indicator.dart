@@ -4,16 +4,16 @@ import 'package:flutter_waya/flutter_waya.dart';
 class Indicator extends StatefulWidget {
   const Indicator(
       {Key key,
-        this.size = 20.0,
-        this.space = 5.0,
-        @required this.count,
-        this.activeSize = 20.0,
-        @required this.controller,
-        this.color = Colors.white30,
-        this.layout = IndicatorType.slide,
-        this.activeColor = Colors.white,
-        this.scale = 0.6,
-        this.dropHeight = 20.0})
+      this.size = 20.0,
+      this.space = 5.0,
+      @required this.count,
+      this.activeSize = 20.0,
+      @required this.controller,
+      this.color = Colors.white30,
+      this.layout = IndicatorType.slide,
+      this.activeColor = Colors.white,
+      this.scale = 0.6,
+      this.dropHeight = 20.0})
       : assert(count != null),
         assert(controller != null),
         super(key: key);
@@ -130,6 +130,7 @@ class _WarmPainter extends _IndicatorPainter {
 
     if (progress > 0.5) {
       final double right = start + size + distance;
+
       /// progress=>0.5-1.0
       /// left:0.0=>distance
 
@@ -227,9 +228,11 @@ class _ScalePainter extends _IndicatorPainter {
 
     final double progress = page - index;
     _paint.color = Color.lerp(widget.activeColor, widget.color, progress);
+
     /// last
     canvas.drawCircle(Offset(radius + (index * (size + space)), radius),
         lerp(radius, radius * widget.scale, progress), _paint);
+
     /// first
     _paint.color = Color.lerp(widget.color, widget.activeColor, progress);
     canvas.drawCircle(Offset(secondOffset, radius),
@@ -255,9 +258,11 @@ class _ColorPainter extends _IndicatorPainter {
         ? radius
         : radius + ((index + 1) * (size + space));
     _paint.color = Color.lerp(widget.activeColor, widget.color, progress);
+
     /// left
     canvas.drawCircle(
         Offset(radius + (index * (size + space)), radius), radius, _paint);
+
     /// right
     _paint.color = Color.lerp(widget.color, widget.activeColor, progress);
     canvas.drawCircle(Offset(secondOffset, radius), radius, _paint);

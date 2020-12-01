@@ -7,8 +7,10 @@ import 'package:flutter_waya/flutter_waya.dart';
 
 /// 网络链接超时时间
 const int HTTP_TIMEOUT_CONNECT = 5000;
+
 /// 接收超时时间
 const int HTTP_TIMEOUT_RECEIVE = 10000;
+
 /// 请求数据类型 (4种): application/x-www-form-urlencoded 、multipart/form-data、application/json、text/xml
 const List<String> HTTP_CONTENT_TYPE = <String>[
   'application/x-www-form-urlencoded',

@@ -44,7 +44,7 @@ class TransformInfo {
   ///  The widget in the center of the screen' which is  full visible, position is 0.0.
   ///  The width in the left ,may be hidden, of the screen's position is less than 0.0, -1.0 when out of the screen.
   ///  The width in the right ,may be hidden, of the screen's position is greater than 0.0,  1.0 when out of the screen
-  /// 
+  ///
   final double position;
 
   ///  The `index` of the widget pass to [PageTransformer.transform]
@@ -218,11 +218,11 @@ class CarouselPageView extends StatefulWidget {
 
   ///  Create a `transformed` widget base on the widget that has been passed to  the [PageTransformer.transform].
   ///  See [TransformInfo]
-  /// 
+  ///
   final PageTransformer transformer;
 
   ///  Same as [PageView.scrollDirection]
-  /// 
+  ///
   ///  Defaults to [Axis.horizontal].
   final Axis scrollDirection;
 
@@ -264,14 +264,14 @@ class CarouselPageView extends StatefulWidget {
 
   ///  Creates a scrollable list that works page by page using widgets that are
   ///  created on demand.
-  /// 
+  ///
   ///  This constructor is appropriate for page views with a large (or infinite)
   ///  number of children because the builder is called only for those children
   ///  that are actually visible.
-  /// 
+  ///
   ///  Providing a non-null [itemCount] lets the [PageView] compute the maximum
   ///  scroll extent.
-  /// 
+  ///
   ///  [itemBuilder] will be called only with indices greater than or equal to
   ///  zero and less than [itemCount].
 
@@ -367,6 +367,7 @@ class _CarouselPageViewPageViewState extends State<CarouselPageView> {
       reverse: _pageController.reverse,
     );
     if (_transformer == null) return child;
+
     ///  ignore: always_specify_types
     return NotificationListener(
         onNotification: (ScrollNotification notification) {
@@ -415,6 +416,7 @@ class _CarouselPageViewPageViewState extends State<CarouselPageView> {
   @override
   void initState() {
     _transformer = widget.transformer;
+
     ///  int index = widget.index ?? 0;
     bool reverse = false;
     if (widget.transformer != null) reverse = widget.transformer.reverse;
@@ -424,6 +426,7 @@ class _CarouselPageViewPageViewState extends State<CarouselPageView> {
         itemCount: widget.itemCount,
         loop: widget.loop,
         reverse: reverse);
+
     ///  int initPage = _getRealIndexFromRenderIndex(index);
     ///  _pageController =  PageController(initialPage: initPage,viewportFraction: widget.viewportFraction);
     _fromIndex = _activeIndex = _pageController.initialPage;

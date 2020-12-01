@@ -1,19 +1,19 @@
 ///  Outputs year as four digits
-/// 
+///
 ///  Example:
 ///     formatDate(DateTime(1989), [yyyy]);
 ///     ///  => 1989
 const String yyyy = 'yyyy';
 
 ///  Outputs year as two digits
-/// 
+///
 ///  Example:
 ///     formatDate(DateTime(1989), [yy]);
 ///     ///  => 89
 const String yy = 'yy';
 
 ///  Outputs month as two digits
-/// 
+///
 ///  Example:
 ///     formatDate(DateTime(1989, 11), [mm]);
 ///     ///  => 11
@@ -22,7 +22,7 @@ const String yy = 'yy';
 const String mm = 'mm';
 
 ///  Outputs month compactly
-/// 
+///
 ///  Example:
 ///     formatDate(DateTime(1989, 11), [mm]);
 ///     ///  => 11
@@ -31,21 +31,21 @@ const String mm = 'mm';
 const String m = 'm';
 
 ///  Outputs month as long name
-/// 
+///
 ///  Example:
 ///     formatDate(DateTime(1989, 2), [MM]);
 ///     ///  => february
 const String MM = 'MM';
 
 ///  Outputs month as short name
-/// 
+///
 ///  Example:
 ///     formatDate(DateTime(1989, 2), [M]);
 ///     ///  => feb
 const String M = 'M';
 
 ///  Outputs day as two digits
-/// 
+///
 ///  Example:
 ///     formatDate(DateTime(1989, 2, 21), [dd]);
 ///     ///  => 21
@@ -54,7 +54,7 @@ const String M = 'M';
 const String dd = 'dd';
 
 ///  Outputs day compactly
-/// 
+///
 ///  Example:
 ///     formatDate(DateTime(1989, 2, 21), [d]);
 ///     ///  => 21
@@ -63,14 +63,14 @@ const String dd = 'dd';
 const String d = 'd';
 
 ///  Outputs week in month
-/// 
+///
 ///  Example:
 ///     formatDate(DateTime(1989, 2, 21), [w]);
 ///     ///  => 4
 const String w = 'w';
 
 ///  Outputs week in year as two digits
-/// 
+///
 ///  Example:
 ///     formatDate(DateTime(1989, 12, 31), [W]);
 ///     ///  => 53
@@ -79,56 +79,56 @@ const String w = 'w';
 const String WW = 'WW';
 
 ///  Outputs week in year compactly
-/// 
+///
 ///  Example:
 ///     formatDate(DateTime(1989, 2, 21), [W]);
 ///     ///  => 8
 const String W = 'W';
 
 ///  Outputs week day as long name
-/// 
+///
 ///  Example:
 ///     formatDate(DateTime(2018, 1, 14), [DD]);
 ///     ///  => sunday
 const String DD = 'DD';
 
 ///  Outputs week day as long name
-/// 
+///
 ///  Example:
 ///     formatDate(DateTime(2018, 1, 14), [D]);
 ///     ///  => sun
 const String D = 'D';
 
 ///  Outputs hour (0 - 11) as two digits
-/// 
+///
 ///  Example:
 ///     formatDate(DateTime(1989, 02, 1, 15), [hh]);
 ///     ///  => 03
 const String hh = 'hh';
 
 ///  Outputs hour (0 - 11) compactly
-/// 
+///
 ///  Example:
 ///     formatDate(DateTime(1989, 02, 1, 15), [h]);
 ///     ///  => 3
 const String h = 'h';
 
 ///  Outputs hour (0 to 23) as two digits
-/// 
+///
 ///  Example:
 ///     formatDate(DateTime(1989, 02, 1, 15), [HH]);
 ///     ///  => 15
 const String HH = 'HH';
 
 ///  Outputs hour (0 to 23) compactly
-/// 
+///
 ///  Example:
 ///     formatDate(DateTime(1989, 02, 1, 5), [H]);
 ///     ///  => 5
 const String H = 'H';
 
 ///  Outputs minute as two digits
-/// 
+///
 ///  Example:
 ///     formatDate(DateTime(1989, 02, 1, 15, 40), [nn]);
 ///     ///  => 40
@@ -137,14 +137,14 @@ const String H = 'H';
 const String nn = 'nn';
 
 ///  Outputs minute compactly
-/// 
+///
 ///  Example:
 ///     formatDate(DateTime(1989, 02, 1, 15, 4), [n]);
 ///     ///  => 4
 const String n = 'n';
 
 ///  Outputs second as two digits
-/// 
+///
 ///  Example:
 ///     formatDate(DateTime(1989, 02, 1, 15, 40, 10), [ss]);
 ///     ///  => 10
@@ -153,14 +153,14 @@ const String n = 'n';
 const String ss = 'ss';
 
 ///  Outputs second compactly
-/// 
+///
 ///  Example:
 ///     formatDate(DateTime(1989, 02, 1, 15, 40, 5), [s]);
 ///     ///  => 5
 const String s = 's';
 
 ///  Outputs millisecond as three digits
-/// 
+///
 ///  Example:
 ///     formatDate(DateTime(1989, 02, 1, 15, 40, 10, 999), [SSS]);
 ///     ///  => 999
@@ -171,7 +171,7 @@ const String s = 's';
 const String SSS = 'SSS';
 
 ///  Outputs millisecond compactly
-/// 
+///
 ///  Example:
 ///     formatDate(DateTime(1989, 02, 1, 15, 40, 10, 999), [SSS]);
 ///     ///  => 999
@@ -182,7 +182,7 @@ const String SSS = 'SSS';
 const String S = 'S';
 
 ///  Outputs microsecond as three digits
-/// 
+///
 ///  Example:
 ///     formatDate(DateTime(1989, 02, 1, 15, 40, 10, 0, 999), [uuu]);
 ///     ///  => 999
@@ -193,7 +193,7 @@ const String S = 'S';
 const String uuu = 'uuu';
 
 ///  Outputs millisecond compactly
-/// 
+///
 ///  Example:
 ///     formatDate(DateTime(1989, 02, 1, 15, 40, 10, 0, 999), [u]);
 ///     ///  => 999
@@ -204,7 +204,7 @@ const String uuu = 'uuu';
 const String u = 'u';
 
 ///  Outputs if hour is AM or PM
-/// 
+///
 ///  Example:
 ///     print(formatDate(DateTime(1989, 02, 1, 5), [am]));
 ///     ///  => AM
@@ -213,9 +213,9 @@ const String u = 'u';
 const String am = 'am';
 
 ///  Outputs timezone as time offset
-/// 
+///
 ///  Example:
-/// 
+///
 const String z = 'z';
 const String Z = 'Z';
 

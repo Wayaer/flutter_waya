@@ -79,7 +79,7 @@ class ListWheel extends StatefulWidget {
   ///  1或者2
   final double squeeze;
 
-  /// 
+  ///
   final ScrollPhysics physics;
 
   final ListWheelChildDelegateType childDelegateType;

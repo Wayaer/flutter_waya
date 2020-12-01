@@ -256,7 +256,7 @@ class Carousel extends StatefulWidget {
 
   final ScrollPhysics physics;
 
-  /// 
+  ///
   final double viewportFraction;
 
   ///  Build in layouts
@@ -572,6 +572,7 @@ class _CarouselState extends _CarouselTimerMixin {
   Widget _buildOuterPagination(
       CarouselPlugin pagination, Widget carousel, CarouselPluginConfig config) {
     final List<Widget> list = <Widget>[];
+
     /// Only support bottom yet!
     list.add((widget.containerHeight != null || widget.containerWidth != null)
         ? carousel
@@ -800,8 +801,10 @@ class _StackViewState extends _CustomLayoutStateBase<_StackCarousel> {
   @override
   void afterRender() {
     super.afterRender();
+
     /// length of the values array below
     _animationCount = 5;
+
     /// Array below this line, '0' index is 1.0 ,witch is the first item show in carousel.
     _startIndex = -3;
     scales = <double>[0.7, 0.8, 0.9, 1.0, 1.0];
