@@ -9,10 +9,10 @@ typedef CarouselOnTap = void Function(int index);
 typedef CarouselDataBuilder = Widget Function(
     BuildContext context, dynamic data, int index);
 
-///default auto play delay
+///  default auto play delay
 const int kDefaultAutoPlayDelayMs = 3000;
 
-/// Default auto play transition duration (in millisecond)
+///  Default auto play transition duration (in millisecond)
 const int kDefaultAutoPlayTransactionDuration = 300;
 
 class Carousel extends StatefulWidget {
@@ -176,102 +176,102 @@ class Carousel extends StatefulWidget {
               builder(context, list[index], index),
           itemCount: list.length);
 
-  ///If set true , the pagination will display 'outer' of the 'content' container.
+  ///  If set true , the pagination will display 'outer' of the 'content' container.
   final bool outer;
 
-  ///Inner item height, this property is valid if layout=stack or layout=tinder or LAYOUT=custom,
+  ///  Inner item height, this property is valid if layout=stack or layout=tinder or LAYOUT=custom,
   final double itemHeight;
 
-  ///Inner item width, this property is valid if layout=stack or layout=tinder or LAYOUT=custom,
+  ///  Inner item width, this property is valid if layout=stack or layout=tinder or LAYOUT=custom,
   final double itemWidth;
 
-  ///height of the inside container,this property is valid when outer=true,otherwise the inside container size is controlled by parent widget
+  ///  height of the inside container,this property is valid when outer=true,otherwise the inside container size is controlled by parent widget
   final double containerHeight;
 
-  ///width of the inside container,this property is valid when outer=true,otherwise the inside container size is controlled by parent widget
+  ///  width of the inside container,this property is valid when outer=true,otherwise the inside container size is controlled by parent widget
   final double containerWidth;
 
-  ///Build item on index
+  ///  Build item on index
   final IndexedWidgetBuilder itemBuilder;
 
-  ///Support transform like Android PageView did
-  ///`itemBuilder` and `transformItemBuilder` must have one not null
+  ///  Support transform like Android PageView did
+  ///  `itemBuilder` and `transformItemBuilder` must have one not null
   final PageTransformer transformer;
 
-  ///count of the display items
+  ///  count of the display items
   final int itemCount;
 
-  ///当用户手动拖拽或者自动播放引起下标改变的时候调用
+  ///  当用户手动拖拽或者自动播放引起下标改变的时候调用
   final ValueChanged<int> onIndexChanged;
 
-  ///auto play config
-  ///自动播放开关.
+  ///  auto play config
+  ///  自动播放开关.
   final bool autoPlay;
 
-  ///Duration of the animation between transactions (in millisecond).
-  ///自动播放延迟毫秒数.
+  ///  Duration of the animation between transactions (in millisecond).
+  ///  自动播放延迟毫秒数.
   final int autoPlayDelay;
 
-  ///disable auto play when interaction
-  ///当用户拖拽的时候，是否停止自动播放.
+  ///  disable auto play when interaction
+  ///  当用户拖拽的时候，是否停止自动播放.
   final bool autoPlayDisableOnInteraction;
 
-  ///auto play transition duration (in millisecond)
-  ///动画时间，单位是毫秒
+  ///  auto play transition duration (in millisecond)
+  ///  动画时间，单位是毫秒
   final int duration;
 
-  ///horizontal/vertical
+  ///  horizontal/vertical
   final Axis scrollDirection;
 
-  ///transition curve
+  ///  transition curve
   final Curve curve;
 
-  ///Set to false to disable continuous loop mode.
-  ///无限轮播模式开关
+  ///  Set to false to disable continuous loop mode.
+  ///  无限轮播模式开关
   final bool loop;
 
-  ///Index number of initial slide.
-  ///If not set , the `Carousel` is 'uncontrolled', which means manage index by itself
-  ///If set , the `Carousel` is 'controlled', which means the index is fully managed by parent widget.
-  ///初始的时候下标位置
+  ///  Index number of initial slide.
+  ///  If not set , the `Carousel` is 'uncontrolled', which means manage index by itself
+  ///  If set , the `Carousel` is 'controlled', which means the index is fully managed by parent widget.
+  ///  初始的时候下标位置
   final int index;
 
-  ///Called when tap
-  ///当用户点击某个轮播的时候调用
+  ///  Called when tap
+  ///  当用户点击某个轮播的时候调用
   final CarouselOnTap onTap;
 
-  ///The carousel pagination plugin
-  ///底部指示器
+  ///  The carousel pagination plugin
+  ///  底部指示器
   final CarouselPlugin pagination;
 
-  ///the carousel control button plugin
-  ///控制按钮组件(左右添加箭头)
+  ///  the carousel control button plugin
+  ///  控制按钮组件(左右添加箭头)
   final CarouselPlugin control;
 
-  ///other plugins, you can custom your own plugin
+  ///  other plugins, you can custom your own plugin
   final List<CarouselPlugin> plugins;
 
-  ///控制器
+  ///  控制器
   final CarouselController controller;
 
   final ScrollPhysics physics;
 
-  ///
+  /// 
   final double viewportFraction;
 
-  ///Build in layouts
+  ///  Build in layouts
   final CarouselLayout layout;
 
-  ///this value is valid when layout == CarouselLayout.CUSTOM
+  ///  this value is valid when layout == CarouselLayout.CUSTOM
   final CustomLayoutOption customLayoutOption;
 
-  ///This value is valid when viewportFraction is set and < 1.0
+  ///  This value is valid when viewportFraction is set and < 1.0
   final double scale;
 
-  ///This value is valid when viewportFraction is set and < 1.0
+  ///  This value is valid when viewportFraction is set and < 1.0
   final double fade;
 
-  ///底部指示器样式
+  ///  底部指示器样式
   final IndicatorType indicatorLayout;
 
   @override
@@ -405,7 +405,7 @@ class _CarouselState extends _CarouselTimerMixin {
       }
     } else {
       scheduleMicrotask(() {
-        // So that we have a chance to do `removeListener` in child widgets.
+        ///  So that we have a chance to do `removeListener` in child widgets.
         if (_pageController != null) {
           _pageController.dispose();
           _pageController = null;
@@ -461,13 +461,13 @@ class _CarouselState extends _CarouselTimerMixin {
         controller: _controller,
       );
       if (widget.autoPlayDisableOnInteraction && widget.autoPlay) {
-        // ignore: always_specify_types
+        ///  ignore: always_specify_types
         return NotificationListener(
           child: child,
           onNotification: (ScrollNotification notification) {
             if (notification is ScrollStartNotification) {
               if (notification.dragDetails != null) {
-                //by human
+                /// by human
                 if (_timer != null) _stopAutoPlay();
               }
             } else if (notification is ScrollEndNotification) {
@@ -572,7 +572,7 @@ class _CarouselState extends _CarouselTimerMixin {
   Widget _buildOuterPagination(
       CarouselPlugin pagination, Widget carousel, CarouselPluginConfig config) {
     final List<Widget> list = <Widget>[];
-    //Only support bottom yet!
+    /// Only support bottom yet!
     list.add((widget.containerHeight != null || widget.containerWidth != null)
         ? carousel
         : Expanded(child: carousel));
@@ -800,9 +800,9 @@ class _StackViewState extends _CustomLayoutStateBase<_StackCarousel> {
   @override
   void afterRender() {
     super.afterRender();
-    //length of the values array below
+    /// length of the values array below
     _animationCount = 5;
-    //Array below this line, '0' index is 1.0 ,witch is the first item show in carousel.
+    /// Array below this line, '0' index is 1.0 ,witch is the first item show in carousel.
     _startIndex = -3;
     scales = <double>[0.7, 0.8, 0.9, 1.0, 1.0];
     opacity = <double>[0.0, 0.5, 1.0, 1.0, 1.0];
@@ -862,7 +862,7 @@ class ScaleAndFadeTransformer extends PageTransformer {
   }
 }
 
-////CustomLayout
+///  /CustomLayout
 abstract class _CustomLayoutStateBase<T extends _SubCarousel> extends State<T>
     with SingleTickerProviderStateMixin {
   double _carouselWidth;

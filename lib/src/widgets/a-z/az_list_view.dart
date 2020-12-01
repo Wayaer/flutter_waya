@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-/// Called to build children for the listview.
+///  Called to build children for the listview.
 typedef ItemWidgetBuilder = Widget Function(
     BuildContext context, SuspensionModel model);
 
-/// Called to build IndexBar.
+///  Called to build IndexBar.
 typedef IndexBarBuilder = Widget Function(
     BuildContext context, List<String> tags, IndexBarTouchCallback onTouch);
 
-/// Called to build index hint.
+///  Called to build index hint.
 typedef IndexHintBuilder = Widget Function(BuildContext context, String hint);
 
-/// Header.
+///  Header.
 class Header extends SuspensionModel {
   String tag;
 
@@ -23,7 +23,7 @@ class Header extends SuspensionModel {
   bool get isShowSuspension => false;
 }
 
-/// AzListView.
+///  AzListView.
 class AzListView extends StatefulWidget {
   const AzListView(
       {Key key,
@@ -45,10 +45,10 @@ class AzListView extends StatefulWidget {
       this.showIndexHint = true})
       : super(key: key);
 
-  ///with SuspensionModel Data
+  ///  with SuspensionModel Data
   final List<SuspensionModel> data;
 
-  ///with SuspensionModel topData, Do not participate in [A-Z] sorting (such as hotList).
+  ///  with SuspensionModel topData, Do not participate in [A-Z] sorting (such as hotList).
   final List<SuspensionModel> topData;
 
   final ItemWidgetBuilder itemBuilder;
@@ -61,19 +61,19 @@ class AzListView extends StatefulWidget {
 
   final EdgeInsetsGeometry padding;
 
-  ///suspension widget.
+  ///  suspension widget.
   final Widget suspensionWidget;
 
-  ///is use real index data.(false: use INDEXDATADEF)
+  ///  is use real index data.(false: use INDEXDATADEF)
   final bool isUseRealIndex;
 
-  ///item Height.
+  ///  item Height.
   final int itemHeight;
 
-  ///suspension widget Height.
+  ///  suspension widget Height.
   final int suspensionHeight;
 
-  ///on sus tag change callback.
+  ///  on sus tag change callback.
   final ValueChanged<String> onSusTagChanged;
 
   final AzListHeader header;
@@ -130,7 +130,7 @@ class _AzListViewState extends State<AzListView> {
     }
     final List<SuspensionModel> list = widget.data;
     if (list != null && list.isNotEmpty) {
-      ///SuspensionUtil.sortListBySuspensionTag(list);
+      ///  SuspensionUtil.sortListBySuspensionTag(list);
       cityList.addAll(list);
     }
 

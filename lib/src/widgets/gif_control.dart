@@ -7,7 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-/// cache gif fetched image
+///  cache gif fetched image
 class GifCache {
   final Map<String, List<ImageInfo>> caches = <String, List<ImageInfo>>{};
 
@@ -20,7 +20,7 @@ class GifCache {
   }
 }
 
-/// Controller gif
+///  Controller gif
 class GifController extends AnimationController {
   GifController(
       {@required TickerProvider vsync,

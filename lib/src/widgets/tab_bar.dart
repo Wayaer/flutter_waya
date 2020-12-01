@@ -24,22 +24,22 @@ class TabBarMerge extends StatelessWidget {
         reverse = reverse ?? false,
         super(key: key);
 
-  ///建议传 TabBarBox
+  ///  建议传 TabBarBox
   final Widget tabBar;
 
-  ///头部
+  ///  头部
   final Widget header;
 
-  ///tabBar和tabBarView中间层
+  ///  tabBar和tabBarView中间层
   final Widget among;
 
-  ///底部
+  ///  底部
   final Widget footer;
 
-  ///控制器
+  ///  控制器
   final TabController controller;
 
-  ///作用于tabView
+  ///  作用于tabView
   final List<Widget> tabView;
   final EdgeInsetsGeometry margin;
   final EdgeInsetsGeometry padding;
@@ -49,7 +49,7 @@ class TabBarMerge extends StatelessWidget {
   final ScrollPhysics physics;
   final double viewHeight;
 
-  ///[tabBar],[tabView] 反转
+  ///  [tabBar],[tabView] 反转
   final bool reverse;
 
   @override
@@ -104,37 +104,37 @@ class TabBarBox extends StatelessWidget {
         super(key: key);
   final TabController controller;
 
-  ///作用于label
+  ///  作用于label
   final EdgeInsetsGeometry labelPadding;
 
-  ///作用于指示器
+  ///  作用于指示器
   final EdgeInsetsGeometry indicatorPadding;
 
-  ///指示器高度
+  ///  指示器高度
   final double indicatorWeight;
   final TabBarIndicatorSize indicatorSize;
 
-  ///tabBar 指示器
+  ///  tabBar 指示器
   final Decoration indicator;
 
   final List<Widget> tabs;
 
-  ///true 最小宽度，false充满最大宽度
+  ///  true 最小宽度，false充满最大宽度
   final bool isScrollable;
 
-  ///tabBar 位置
+  ///  tabBar 位置
   final TabBarLevelPosition levelPosition;
 
-  ///选中与未选中的指示器和字体样式和颜色，
+  ///  选中与未选中的指示器和字体样式和颜色，
   final Color selectedLabelColor;
   final Color unselectedLabelColor;
   final TextStyle selectedLabelStyle;
   final TextStyle unselectedLabelStyle;
 
-  ///tabBar 水平左边或者右边的Widget 添加标签
+  ///  tabBar 水平左边或者右边的Widget 添加标签
   final Widget tabBarLevel;
 
-  ///作用于整个tabBar
+  ///  作用于整个tabBar
   final AlignmentGeometry alignment;
   final EdgeInsetsGeometry margin;
   final EdgeInsetsGeometry padding;
@@ -235,7 +235,7 @@ class _TabNavigationPageState extends State<TabNavigationPage> {
                     icon: barIcon(Icons.account_circle), label: 'mine'),
               ],
 
-          /// 超过5个页面，需加上此行，不然会无法显示颜色
+          ///  超过5个页面，需加上此行，不然会无法显示颜色
           type: BottomNavigationBarType.fixed,
           onTap: (int index) => setState(() {
             tabIndex = index;

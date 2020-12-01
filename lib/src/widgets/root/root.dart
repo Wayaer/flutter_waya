@@ -14,7 +14,7 @@ List<GlobalKey<State>> _scaffoldKeyList = <GlobalKey<State>>[];
 List<OverlayEntryMap> _overlayEntryList = <OverlayEntryMap>[];
 OverlayState _overlay;
 
-///GlobalMaterial
+///  GlobalMaterial
 class GlobalMaterial extends StatelessWidget {
   GlobalMaterial({
     Key key,
@@ -68,72 +68,72 @@ class GlobalMaterial extends StatelessWidget {
             ],
         super(key: key);
 
-  ///导航键
+  ///  导航键
   final GlobalKey<NavigatorState> navigatorKey;
 
-  ///主页
+  ///  主页
   final Widget home;
 
-  ///初始路由
+  ///  初始路由
   final String initialRoute;
 
-  ///生成路由
+  ///  生成路由
   final RouteFactory onGenerateRoute;
 
-  ///未知路由
+  ///  未知路由
   final RouteFactory onUnknownRoute;
 
-  ///建造者
+  ///  建造者
   final TransitionBuilder builder;
 
-  ///区域分辨回调
+  ///  区域分辨回调
   final LocaleListResolutionCallback localeListResolutionCallback;
 
   final LocaleResolutionCallback localeResolutionCallback;
 
-  ///生成标题
+  ///  生成标题
   final GenerateAppTitle onGenerateTitle;
 
-  ///主题
+  ///  主题
   final ThemeData theme;
 
   final ThemeData darkTheme;
 
-  ///颜色
+  ///  颜色
   final Color color;
 
-  ///路由
+  ///  路由
   final Map<String, WidgetBuilder> routes;
 
-  ///导航观察器
+  ///  导航观察器
   final List<NavigatorObserver> navigatorObservers;
 
-  ///本地化委托
+  ///  本地化委托
   final Iterable<LocalizationsDelegate<dynamic>> localizationsDelegates;
 
-  ///标题
+  ///  标题
   final String title;
 
   final ThemeMode themeMode;
 
-  ///地点
+  ///  地点
   final Locale locale;
 
-  ///支持区域
+  ///  支持区域
   final Iterable<Locale> supportedLocales;
 
-  ///显示性能叠加
+  ///  显示性能叠加
   final bool showPerformanceOverlay;
 
-  ///棋盘格光栅缓存图像
+  ///  棋盘格光栅缓存图像
   final bool checkerboardRasterCacheImages;
 
   final bool checkerboardOffscreenLayers;
 
-  ///显示语义调试器
+  ///  显示语义调试器
   final bool showSemanticsDebugger;
 
-  ///调试显示检查模式横幅
+  ///  调试显示检查模式横幅
   final bool debugShowCheckedModeBanner;
 
   final bool debugShowMaterialGrid;
@@ -177,7 +177,7 @@ class GlobalMaterial extends StatelessWidget {
   }
 }
 
-///GlobalCupertino
+///  GlobalCupertino
 class GlobalCupertino extends StatelessWidget {
   GlobalCupertino({
     Key key,
@@ -275,16 +275,18 @@ class GlobalCupertino extends StatelessWidget {
   }
 }
 
-///OverlayScaffold
+///  OverlayScaffold
 class OverlayScaffold extends StatefulWidget {
-  //isScroll 和 isolationBody（body隔离出一个横条目）  不可同时使用
+  /// isScroll 和 isolationBody（body隔离出一个横条目）  不可同时使用
   const OverlayScaffold({
     Key key,
     bool isScroll,
     bool isolationBody,
     bool paddingStatusBar,
     bool enablePullDown,
-    bool primary, //试用使用primary主色
+    bool primary,
+
+    /// 试用使用primary主色
     bool extendBody,
     DragStartBehavior drawerDragStartBehavior,
     bool onWillPopOverlayClose,
@@ -297,16 +299,34 @@ class OverlayScaffold extends StatefulWidget {
     this.header,
     this.footer,
     this.footerTextStyle,
-    this.floatingActionButton, //悬浮按钮
-    this.floatingActionButtonLocation, //悬浮按钮位置
-    this.floatingActionButtonAnimator, //悬浮按钮动画
-    this.persistentFooterButtons, //固定在下方显示的按钮，比如对话框下方的确定、取消按钮
-    this.drawer, //侧滑菜单左
-    this.endDrawer, //侧滑菜单右
-    this.bottomNavigationBar, //底部导航
+    this.floatingActionButton,
+
+    /// 悬浮按钮
+    this.floatingActionButtonLocation,
+
+    /// 悬浮按钮位置
+    this.floatingActionButtonAnimator,
+
+    /// 悬浮按钮动画
+    this.persistentFooterButtons,
+
+    /// 固定在下方显示的按钮，比如对话框下方的确定、取消按钮
+    this.drawer,
+
+    /// 侧滑菜单左
+    this.endDrawer,
+
+    /// 侧滑菜单右
+    this.bottomNavigationBar,
+
+    /// 底部导航
     this.bottomSheet,
-    this.backgroundColor, //内容的背景颜色，默认使用的是 ThemeData.scaffoldBackgroundColor 的值
-    this.resizeToAvoidBottomPadding, //类似于 Android 中的 android:windowSoftInputMode=”adjustResize”，控制界面内容 body 是否重新布局来避免底部被覆盖了，比如当键盘显示的时候，重新布局避免被键盘盖住内容。默认值为 true。
+    this.backgroundColor,
+
+    /// 内容的背景颜色，默认使用的是 ThemeData.scaffoldBackgroundColor 的值
+    this.resizeToAvoidBottomPadding,
+
+    /// 类似于 Android 中的 android:windowSoftInputMode=”adjustResize”，控制界面内容 body 是否重新布局来避免底部被覆盖了，比如当键盘显示的时候，重新布局避免被键盘盖住内容。默认值为 true。
     this.resizeToAvoidBottomInset,
     this.onWillPop,
     this.appBarHeight,
@@ -329,14 +349,14 @@ class OverlayScaffold extends StatefulWidget {
   final bool paddingStatusBar;
   final bool enablePullDown;
 
-  ///true 点击android实体返回按键先关闭Overlay【toast loading ...】但不pop 当前页面
-  ///false 点击android实体返回按键先关闭Overlay【toast loading ...】并pop 当前页面
+  ///  true 点击android实体返回按键先关闭Overlay【toast loading ...】但不pop 当前页面
+  ///  false 点击android实体返回按键先关闭Overlay【toast loading ...】并pop 当前页面
   final bool onWillPopOverlayClose;
 
-  ///返回按键监听
+  ///  返回按键监听
   final WillPopCallback onWillPop;
 
-  //刷新组件相关
+  /// 刷新组件相关
   final RefreshController controller;
   final VoidCallback onRefresh;
   final Widget child;
@@ -344,7 +364,7 @@ class OverlayScaffold extends StatefulWidget {
   final Widget footer;
   final TextStyle footerTextStyle;
 
-  //Scaffold相关属性
+  /// Scaffold相关属性
   final Widget bottomNavigationBar;
   final Widget appBar;
   final double appBarHeight;
@@ -465,7 +485,7 @@ class _OverlayScaffoldState extends State<OverlayScaffold> {
   }
 }
 
-///************ 以下为 路由跳转 *****************///
+///  ************ 以下为 路由跳转 *****************///
 Future<dynamic> push(
     {WidgetBuilder builder,
     Widget widget,

@@ -35,29 +35,29 @@ class GridBuilder extends StatelessWidget {
   final ScrollController controller;
   final EdgeInsetsGeometry padding;
 
-  ///子 Widget 宽高比例
+  ///  子 Widget 宽高比例
   final double childAspectRatio;
 
-  ///
+  ///  暂无数据
   final Widget noData;
   final IndexedWidgetBuilder itemBuilder;
   final bool shrinkWrap;
   final int itemCount;
   final ScrollPhysics physics;
 
-  ///一行的 Widget 数量
+  ///  一行的 Widget 数量
   final int crossAxisCount;
 
-  ///单个子Widget的水平最大宽度
+  ///  单个子Widget的水平最大宽度
   final double maxCrossAxisExtent;
 
-  ///水平单个子Widget之间间距
+  ///  水平单个子Widget之间间距
   final double mainAxisSpacing;
 
-  ///垂直单个子Widget之间间距
+  ///  垂直单个子Widget之间间距
   final double crossAxisSpacing;
 
-  ///倒置
+  ///  倒置
   final bool reverse;
   final Axis scrollDirection;
 
@@ -75,7 +75,8 @@ class GridBuilder extends StatelessWidget {
       shrinkWrap: shrinkWrap,
       itemBuilder: itemBuilder,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-//          maxCrossAxisExtent: maxCrossAisExtent,
+
+          /// axCrossAxisExtent: maxCrossAisExtent,
           childAspectRatio: childAspectRatio,
           mainAxisSpacing: mainAxisSpacing,
           crossAxisCount: crossAxisCount,
@@ -139,7 +140,7 @@ class ListBuilder extends StatelessWidget {
   final EdgeInsetsGeometry padding;
   final Widget noData;
 
-  ///刷新组件相关
+  ///  刷新组件相关
   final bool enablePullDown;
   final bool enablePullUp;
   final RefreshController refreshController;
@@ -150,7 +151,7 @@ class ListBuilder extends StatelessWidget {
   final TextStyle footerTextStyle;
   final Axis scrollDirection;
 
-  ///是否逆转
+  ///  是否逆转
   final bool reverse;
   final bool primary;
 
@@ -294,52 +295,52 @@ class ListEntry extends StatelessWidget {
         titleText = titleText ?? '',
         super(key: key);
 
-  ///单击事件
+  ///  单击事件
   final GestureTapCallback onTap;
 
-  ///双击事件
+  ///  双击事件
   final GestureTapCallback onDoubleTap;
 
-  ///长按事件
+  ///  长按事件
   final GestureLongPressCallback onLongPress;
 
-  ///显示三行
+  ///  显示三行
   final bool isThreeLine;
 
-  ///是否默认3行高度，subtitle不为空时才能使用
+  ///  是否默认3行高度，subtitle不为空时才能使用
   final bool selected;
 
-  ///设置为true后 高度变小 默认为true
+  ///  设置为true后 高度变小 默认为true
   final bool dense;
 
-  ///内边距
+  ///  内边距
   final EdgeInsetsGeometry contentPadding;
 
-  ///左侧widget
+  ///  左侧widget
   final Widget leading;
 
-  ///副标题
+  ///  副标题
   final Widget subtitle;
 
-  ///右侧widget
+  ///  右侧widget
   final Widget child;
 
-  ///右边是否有箭头
+  ///  右边是否有箭头
   final bool arrow;
   final Widget arrowIcon;
   final double arrowSize;
   final Color arrowColor;
 
-  ///中间内容
+  ///  中间内容
   final Widget title;
   final String titleText;
   final TextStyle titleStyle;
   final String heroTag;
 
-  ///高
+  ///  高
   final double height;
 
-  ///前缀
+  ///  前缀
   final Widget prefix;
 
   final EdgeInsetsGeometry padding;
@@ -348,10 +349,10 @@ class ListEntry extends StatelessWidget {
   final Color underlineColor;
   final Color color;
 
-  ///是否可点击
+  ///  是否可点击
   final bool enabled;
 
-  ///整个ListEntry装饰器
+  ///  整个ListEntry装饰器
   final BoxDecoration decoration;
 
   @override

@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-/// IndexBar touch callback IndexModel.
+///  IndexBar touch callback IndexModel.
 typedef IndexBarTouchCallback = void Function(AzIndexBarDetails model);
 
-/// IndexModel.
+///  IndexModel.
 class AzIndexBarDetails {
   AzIndexBarDetails({this.tag, this.position, this.isTouchDown});
 
-  ///current touch tag.
+  ///  current touch tag.
   String tag;
 
-  ///current touch position.
+  ///  current touch position.
   int position;
 
-  ///is touch down.
+  ///  is touch down.
   bool isTouchDown;
 }
 
-///Default Index data.
+///  Default Index data.
 const List<String> AzIndexData = <String>[
   'A',
   'B',
@@ -49,7 +49,7 @@ const List<String> AzIndexData = <String>[
   '#'
 ];
 
-/// Base IndexBar.
+///  Base IndexBar.
 class AzIndexBar extends StatefulWidget {
   const AzIndexBar(
       {Key key,
@@ -69,23 +69,23 @@ class AzIndexBar extends StatefulWidget {
         assert(size <= 24),
         super(key: key);
 
-  /// index data.
+  ///  index data.
   final List<String> data;
 
-  /// IndexBar width(def:30).
+  ///  IndexBar width(def:30).
   final int size;
 
-  /// IndexBar item height(def:16).
+  ///  IndexBar item height(def:16).
   ///  final int itemHeight;
   final Color onTouchColor;
   final Color color;
 
-  /// IndexBar text style.
+  ///  IndexBar text style.
   final TextStyle textStyle;
 
   final TextStyle touchDownTextStyle;
 
-  /// Item touch callback.
+  ///  Item touch callback.
   final IndexBarTouchCallback onTouch;
   final EdgeInsetsGeometry padding;
   final EdgeInsetsGeometry margin;
@@ -114,7 +114,7 @@ class _AzIndexBarState extends State<AzIndexBar> {
     init();
   }
 
-  /// get index.
+  ///  get index.
   int getIndex(int offset) {
     for (int i = 0; i < indexSectionList.length - 1; i++) {
       final int a = indexSectionList[i];

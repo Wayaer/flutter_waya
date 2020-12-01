@@ -46,56 +46,56 @@ class ListWheel extends StatefulWidget {
     }
   }
 
-  /// 每个Item的高度,固定的
+  ///  每个Item的高度,固定的
   final double itemExtent;
 
-  /// 条目构造器
+  ///  条目构造器
   final IndexedWidgetBuilder itemBuilder;
 
-  /// 条目数量
+  ///  条目数量
   final int itemCount;
 
-  /// 半径大小,越大则越平面,越小则间距越大
+  ///  半径大小,越大则越平面,越小则间距越大
   final double diameterRatio;
 
-  /// 选中item偏移
+  ///  选中item偏移
   final double offAxisFraction;
 
-  ///表示车轮水平偏离中心的程度  范围[0,0.01]
+  ///  表示车轮水平偏离中心的程度  范围[0,0.01]
   final double perspective;
 
-  /// 初始选中的Item
+  ///  初始选中的Item
   final int initialIndex;
 
-  /// 回调监听
+  ///  回调监听
   final ValueChanged<int> onChanged;
 
-  ///放大倍率
+  ///  放大倍率
   final double magnification;
 
-  ///是否启用放大镜
+  ///  是否启用放大镜
   final bool useMagnifier;
 
-  ///1或者2
+  ///  1或者2
   final double squeeze;
 
-  ///
+  /// 
   final ScrollPhysics physics;
 
   final ListWheelChildDelegateType childDelegateType;
   final FixedExtentScrollController controller;
   final List<Widget> children;
 
-  ///滚动监听 添加此方法  [onScrollStart],[onScrollUpdate],[onScrollEnd] 无效
+  ///  滚动监听 添加此方法  [onScrollStart],[onScrollUpdate],[onScrollEnd] 无效
   final NotificationListenerCallback<dynamic> onNotification;
 
-  ///动开始回调
+  ///  动开始回调
   final ValueChanged<int> onScrollStart;
 
-  ///滚动中回调
+  ///  滚动中回调
   final ValueChanged<int> onScrollUpdate;
 
-  ///动结束回调
+  ///  动结束回调
   final ValueChanged<int> onScrollEnd;
 
   @override
@@ -148,7 +148,7 @@ class _ListWheelState extends State<ListWheel> {
         magnification: widget.magnification,
         childDelegate: childDelegate);
     if (widget.onScrollEnd != null) {
-      // ignore: always_specify_types
+      ///  ignore: always_specify_types
       wheel = NotificationListener(
           child: wheel,
           onNotification: widget.onNotification ??
@@ -196,11 +196,11 @@ class AutoScrollEntry extends StatefulWidget {
   final Duration animateDuration;
   final int maxItemCount;
 
-  /// 回调监听
+  ///  回调监听
   final ValueChanged<int> onChanged;
 
-  ///以下为滚轮属性
-  ///高度
+  ///  以下为滚轮属性
+  ///  高度
   final double itemHeight;
   final double itemWidth;
 

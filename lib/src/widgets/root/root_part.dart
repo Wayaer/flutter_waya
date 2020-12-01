@@ -1,17 +1,17 @@
 part of 'root.dart';
 
-///************ 以下为Scaffold Overlay *****************///
+///  ************ 以下为Scaffold Overlay *****************   ///
 class OverlayEntryMap {
   OverlayEntryMap({this.overlayEntry, this.isAutomaticOff});
 
-  ///Overlay
+  ///  Overlay
   final OverlayEntry overlayEntry;
 
-  ///是否自动关闭
+  ///  是否自动关闭
   final bool isAutomaticOff;
 }
 
-///自定义Overlay
+///  自定义Overlay
 OverlayEntryMap showOverlay(Widget widget, {bool isAutomaticOff}) {
   if (_overlay != null) _overlay = null;
   if (_scaffoldKeyList.isEmpty) return null;
@@ -26,7 +26,7 @@ OverlayEntryMap showOverlay(Widget widget, {bool isAutomaticOff}) {
   return entryMap;
 }
 
-///关闭最顶层的Overlay
+///  关闭最顶层的Overlay
 bool closeOverlay({OverlayEntryMap element}) {
   try {
     if (element != null) {
@@ -45,15 +45,15 @@ bool closeOverlay({OverlayEntryMap element}) {
   return false;
 }
 
-///关闭所有Overlay
+///  关闭所有Overlay
 void closeAllOverlay() {
   for (final OverlayEntryMap element in _overlayEntryList)
     element.overlayEntry.remove();
   _overlayEntryList = <OverlayEntryMap>[];
 }
 
-///loading 加载框
-///关闭 closeOverlay();
+///  loading 加载框
+///  关闭 closeOverlay();
 OverlayEntryMap showLoading({
   Widget custom,
   String text,
@@ -81,16 +81,16 @@ OverlayEntryMap showLoading({
       textStyle: textStyle));
 }
 
-///Toast
+///  Toast
 Duration _duration = const Duration(milliseconds: 1300);
 
-///设置全局弹窗时间
+///  设置全局弹窗时间
 void setToastDuration(Duration duration) => _duration = duration;
 
 bool haveToast = false;
 
-///Toast
-///关闭 closeOverlay();
+///  Toast
+///  关闭 closeOverlay();
 Future<void> showToast(String message,
     {Color backgroundColor,
     BoxDecoration boxDecoration,
@@ -98,8 +98,8 @@ Future<void> showToast(String message,
     TextStyle textStyle,
     Duration closeDuration,
 
-    ///icon style
-    ///如果使用ToastType.custom  请设置 customIcon
+    ///  icon style
+    ///  如果使用ToastType.custom  请设置 customIcon
     ToastType toastType,
     IconData customIcon,
     double size,
@@ -164,37 +164,37 @@ Future<void> showToast(String message,
   });
 }
 
-///************ 以下为push Popup *****************///
+///  ************ 以下为push Popup *****************///
 
-///showGeneralDialog 去除context
-///添加popup进入方向属性
-///关闭 closePopup()
-///Dialog
+///  showGeneralDialog 去除context
+///  添加popup进入方向属性
+///  关闭 closePopup()
+///  Dialog
 Future<T> showDialogPopup<T>({
-  ///进入方向的距离
+  ///  进入方向的距离
   double startOffset,
 
-  ///popup 进入的方向
+  ///  popup 进入的方向
   PopupFromType popupFromType,
 
-  ///这个参数是一个方法,入参是 context,animation,secondaryAnimation,返回一个 Widget
-  ///这个 Widget 就是显示在页面上的 dialog
+  ///  这个参数是一个方法,入参是 context,animation,secondaryAnimation,返回一个 Widget
+  ///  这个 Widget 就是显示在页面上的 dialog
   RoutePageBuilder pageBuilder,
   Widget widget,
 
-  ///是否可以点击背景关闭
+  ///  是否可以点击背景关闭
   bool barrierDismissible,
 
-  ///语义化
+  ///  语义化
   String barrierLabel,
 
-  ///背景颜色
+  ///  背景颜色
   Color backgroundColor,
 
-  ///这个是从开始到完全显示的时间
+  ///  这个是从开始到完全显示的时间
   Duration transitionDuration,
 
-  ///路由显示和隐藏的过程,这里入参是 animation,secondaryAnimation 和 child, 其中 child 是 是 pageBuilder 构建的 widget
+  ///  路由显示和隐藏的过程,这里入参是 animation,secondaryAnimation 和 child, 其中 child 是 是 pageBuilder 构建的 widget
   RouteTransitionsBuilder transitionBuilder,
   bool useRootNavigator,
   RouteSettings routeSettings,
@@ -235,8 +235,8 @@ Future<T> showDialogPopup<T>({
   );
 }
 
-///showModalBottomSheet 去除context
-///关闭 closePopup()
+///  showModalBottomSheet 去除context
+///  关闭 closePopup()
 Future<T> showBottomPopup<T>({
   WidgetBuilder builder,
   Widget widget,
@@ -265,9 +265,9 @@ Future<T> showBottomPopup<T>({
   );
 }
 
-///showModalBottomSheet
-///关闭 closePopup()
-///全屏显示
+///  showModalBottomSheet
+///  关闭 closePopup()
+///  全屏显示
 Future<T> showBottomPagePopup<T>({
   WidgetBuilder builder,
   Widget widget,
@@ -296,9 +296,9 @@ Future<T> showBottomPagePopup<T>({
   );
 }
 
-///showCupertinoModalPopup
-///关闭 closePopup()
-///全屏显示
+///  showCupertinoModalPopup
+///  关闭 closePopup()
+///  全屏显示
 Future<T> showCupertinoBottomPagePopup<T>(
     {WidgetBuilder builder,
     Widget widget,
@@ -312,36 +312,36 @@ Future<T> showCupertinoBottomPagePopup<T>(
       useRootNavigator: useRootNavigator);
 }
 
-///关闭 closePopup()
-///popup 确定和取消
-///Dialog
+///  关闭 closePopup()
+///  popup 确定和取消
+///  Dialog
 Future<T> dialogSureCancel<T>({
   @required Widget content,
   Widget sure,
   Widget cancel,
 
-  ///弹窗背景色
+  ///  弹窗背景色
   Color backgroundColor,
 
-  ///高度不建议设置
+  ///  高度不建议设置
   double height,
   double width,
   bool isDismissible = true,
   EdgeInsetsGeometry padding,
 
-  ///弹窗位置 默认居中
+  ///  弹窗位置 默认居中
   AlignmentGeometry alignment,
 
-  ///弹窗 decoration
+  ///  弹窗 decoration
   Decoration decoration,
 
-  ///背景是否模糊
+  ///  背景是否模糊
   bool gaussian,
 
-  ///是否使用Overlay
+  ///  是否使用Overlay
   bool isOverlay = false,
 
-  ///是否添加Material Widget 部分组件需要基于Material
+  ///  是否添加Material Widget 部分组件需要基于Material
   bool addMaterial,
 }) {
   final PopupSureCancel widget = PopupSureCancel(
@@ -367,81 +367,81 @@ Future<T> dialogSureCancel<T>({
   return showDialogPopup(widget: widget);
 }
 
-///关闭弹窗
-///也可以通过 Navigator.of(context).pop()
+///  关闭弹窗
+///  也可以通过 Navigator.of(context).pop()
 void closePopup([dynamic value]) => pop(value);
 
-///日期选择器
-///关闭 closePopup()
+///  日期选择器
+///  关闭 closePopup()
 Future<T> showDateTimePicker<T>({
-  ///背景色
+  ///  背景色
   Color backgroundColor,
 
-  ///头部
+  ///  头部
   Widget titleBottom,
   Widget title,
 
-  ///头部右侧 确定
+  ///  头部右侧 确定
   Widget sure,
 
-  ///头部左侧 取消
+  ///  头部左侧 取消
   Widget cancel,
 
-  ///内容文字样式
+  ///  内容文字样式
   TextStyle contentStyle,
 
-  ///选择框内单位文字样式
+  ///  选择框内单位文字样式
   TextStyle unitStyle,
 
-  ///取消点击事件
+  ///  取消点击事件
   GestureTapCallback cancelTap,
 
-  ///确认点击事件
+  ///  确认点击事件
   ValueChanged<String> sureTap,
 
-  ///单个item的高度
+  ///  单个item的高度
   double itemHeight,
 
-  ///单个item的宽度
+  ///  单个item的宽度
   double itemWidth,
 
-  ///整个弹框高度
+  ///  整个弹框高度
   double height,
 
-  ///开始时间
+  ///  开始时间
   DateTime startDate,
 
-  ///默认选中时间
+  ///  默认选中时间
   DateTime defaultDate,
 
-  ///结束时间
+  ///  结束时间
   DateTime endDate,
 
-  ///补全双位数
+  ///  补全双位数
   bool dual,
 
-  ///是否显示单位
+  ///  是否显示单位
   bool showUnit,
 
-  ///单位设置
+  ///  单位设置
   DateTimePickerUnit unit,
 
-  /// 半径大小,越大则越平面,越小则间距越大
+  ///  半径大小,越大则越平面,越小则间距越大
   double diameterRatio,
 
-  /// 选中item偏移
+  ///  选中item偏移
   double offAxisFraction,
 
-  ///表示车轮水平偏离中心的程度  范围[0,0.01]
+  ///  表示车轮水平偏离中心的程度  范围[0,0.01]
   double perspective,
 
-  ///放大倍率
+  ///  放大倍率
   double magnification,
 
-  ///是否启用放大镜
+  ///  是否启用放大镜
   bool useMagnifier,
 
-  ///1或者2
+  ///  1或者2
   double squeeze,
   ScrollPhysics physics,
 }) {
@@ -474,53 +474,53 @@ Future<T> showDateTimePicker<T>({
   return showBottomPopup(widget: widget);
 }
 
-///地区选择器
-///关闭 closePopup()
+///  地区选择器
+///  关闭 closePopup()
 Future<T> showAreaPicker<T>({
-  ///背景色
+  ///  背景色
   Color backgroundColor,
 
-  ///头部
+  ///  头部
   Widget titleBottom,
   Widget title,
 
-  ///头部右侧 确定
+  ///  头部右侧 确定
   Widget sure,
 
-  ///头部左侧 取消
+  ///  头部左侧 取消
   Widget cancel,
 
-  ///内容文字样式
+  ///  内容文字样式
   TextStyle contentStyle,
 
-  ///取消点击事件
+  ///  取消点击事件
   GestureTapCallback cancelTap,
 
-  ///确认点击事件
+  ///  确认点击事件
   ValueChanged<String> sureTap,
 
-  ///单个item的高度
+  ///  单个item的高度
   double itemHeight,
 
-  ///整个弹框高度
+  ///  整个弹框高度
   double height,
 
-  /// 半径大小,越大则越平面,越小则间距越大
+  ///  半径大小,越大则越平面,越小则间距越大
   double diameterRatio,
 
-  /// 选中item偏移
+  ///  选中item偏移
   double offAxisFraction,
 
-  ///表示车轮水平偏离中心的程度  范围[0,0.01]
+  ///  表示车轮水平偏离中心的程度  范围[0,0.01]
   double perspective,
 
-  ///放大倍率
+  ///  放大倍率
   double magnification,
 
-  ///是否启用放大镜
+  ///  是否启用放大镜
   bool useMagnifier,
 
-  ///1或者2
+  ///  1或者2
   double squeeze,
   ScrollPhysics physics,
   String defaultProvince,
@@ -551,58 +551,58 @@ Future<T> showAreaPicker<T>({
   return showBottomPopup(widget: widget);
 }
 
-///wheel 单列 取消确认 选择
-///关闭 closePopup()
+///  wheel 单列 取消确认 选择
+///  关闭 closePopup()
 Future<T> showMultipleChoicePicker<T>({
-  ///默认选中
+  ///  默认选中
   int initialIndex,
 
-  ///背景色
+  ///  背景色
   Color color,
 
-  ///确认按钮
+  ///  确认按钮
   Widget sure,
 
-  ///取消按钮
+  ///  取消按钮
   Widget cancel,
 
-  ///头部文字
+  ///  头部文字
   Widget title,
 
-  ///头部下面
+  ///  头部下面
   Widget titleBottom,
 
-  ///取消点击事件
+  ///  取消点击事件
   GestureTapCallback cancelTap,
 
-  ///确认点击事件
+  ///  确认点击事件
   ValueChanged<int> sureTap,
 
-  ///单个item的高度
+  ///  单个item的高度
   double itemHeight,
 
-  ///单个item的宽度
+  ///  单个item的宽度
   double itemWidth,
 
-  ///整个弹框高度
+  ///  整个弹框高度
   double height,
 
-  /// 半径大小,越大则越平面,越小则间距越大
+  ///  半径大小,越大则越平面,越小则间距越大
   double diameterRatio,
 
-  /// 选中item偏移
+  ///  选中item偏移
   double offAxisFraction,
 
-  ///表示车轮水平偏离中心的程度  范围[0,0.01]
+  ///  表示车轮水平偏离中心的程度  范围[0,0.01]
   double perspective,
 
-  ///放大倍率
+  ///  放大倍率
   double magnification,
 
-  ///是否启用放大镜
+  ///  是否启用放大镜
   bool useMagnifier,
 
-  ///1或者2
+  ///  1或者2
   double squeeze,
   ScrollPhysics physics,
   @required int itemCount,
@@ -632,9 +632,9 @@ Future<T> showMultipleChoicePicker<T>({
   return showBottomPopup(widget: widget);
 }
 
-///showCupertinoDialog
-///去除context 简化参数
-///关闭 closePopup()
+///  showCupertinoDialog
+///  去除context 简化参数
+///  关闭 closePopup()
 Future<T> showSimpleCupertinoDialog<T>({
   WidgetBuilder builder,
   Widget widget,
@@ -652,9 +652,9 @@ Future<T> showSimpleCupertinoDialog<T>({
   );
 }
 
-///showDialog 去除context
-///关闭 closePopup()
-///Dialog
+///  showDialog 去除context
+///  关闭 closePopup()
+///  Dialog
 Future<T> showSimpleDialog<T>({
   WidgetBuilder builder,
   Widget widget,
@@ -663,23 +663,20 @@ Future<T> showSimpleDialog<T>({
   bool useSafeArea = true,
   bool useRootNavigator = true,
   RouteSettings routeSettings,
-  Widget child,
 }) {
   assert(builder != null || widget != null);
   return showDialog(
-    context: _globalNavigatorKey.currentContext,
-    builder: builder ?? (BuildContext context) => widget,
-    barrierDismissible: barrierDismissible,
-    barrierColor: barrierColor,
-    useSafeArea: useSafeArea,
-    useRootNavigator: useRootNavigator,
-    routeSettings: routeSettings,
-    child: child,
-  );
+      context: _globalNavigatorKey.currentContext,
+      builder: builder ?? (BuildContext context) => widget,
+      barrierDismissible: barrierDismissible,
+      barrierColor: barrierColor,
+      useSafeArea: useSafeArea,
+      useRootNavigator: useRootNavigator,
+      routeSettings: routeSettings);
 }
 
-///showMenu 去除context
-///关闭 closePopup()
+///  showMenu 去除context
+///  关闭 closePopup()
 Future<T> showMenuPopup<T>({
   @required RelativeRect position,
   @required List<PopupMenuEntry<T>> items,
@@ -688,7 +685,6 @@ Future<T> showMenuPopup<T>({
   String semanticLabel,
   ShapeBorder shape,
   Color color,
-  bool captureInheritedThemes = true,
   bool useRootNavigator = false,
 }) {
   return showMenu(
@@ -699,7 +695,6 @@ Future<T> showMenuPopup<T>({
     semanticLabel: semanticLabel,
     shape: shape,
     color: color,
-    captureInheritedThemes: captureInheritedThemes,
     useRootNavigator: useRootNavigator,
     position: position,
   );

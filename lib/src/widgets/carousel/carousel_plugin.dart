@@ -42,7 +42,7 @@ class CarouselPluginView extends StatelessWidget {
   Widget build(BuildContext context) => plugin.build(context, config);
 }
 
-///Control
+///  Control
 class CarouselControl extends CarouselPlugin {
   const CarouselControl(
       {this.iconPrevious = Icons.arrow_back_ios,
@@ -53,27 +53,27 @@ class CarouselControl extends CarouselPlugin {
       this.size = 30.0,
       this.padding = const EdgeInsets.all(5.0)});
 
-  ///IconData for previous
-  ///上一页的IconData
+  ///  IconData for previous
+  ///  上一页的IconData
   final IconData iconPrevious;
 
-  ///iconData for next
-  ///下一页的IconData
+  ///  iconData for next
+  ///  下一页的IconData
   final IconData iconNext;
 
-  ///icon size
-  ///控制按钮的大小
+  ///  icon size
+  ///  控制按钮的大小
   final double size;
 
-  ///Icon normal color, The theme's [ThemeData.primaryColor] by default.
-  ///控制按钮颜色
+  ///  Icon normal color, The theme's [ThemeData.primaryColor] by default.
+  ///  控制按钮颜色
   final Color color;
 
-  ///if set loop=false on Carousel, this color will be used when carousel goto the last slide.
-  ///The theme's [ThemeData.disabledColor] by default.
+  ///  if set loop=false on Carousel, this color will be used when carousel goto the last slide.
+  ///  The theme's [ThemeData.disabledColor] by default.
   final Color disableColor;
 
-  ///控制按钮与容器的距离
+  ///  控制按钮与容器的距离
   final EdgeInsetsGeometry padding;
 
   final Key key;
@@ -142,36 +142,36 @@ class CarouselControl extends CarouselPlugin {
 class CarouselController extends IndexController {
   CarouselController();
 
-  // AutoPlay started
+  ///  AutoPlay started
   static const int START_AUTOPLAY = 2;
 
-  // AutoPlay stopped.
+  ///  AutoPlay stopped.
   static const int STOP_AUTOPLAY = 3;
 
-  // Indicate that the user is swiping
+  ///  Indicate that the user is swiping
   static const int SWIPE = 4;
 
-  // Indicate that the `Carousel` has changed it's index and is building it's ui ,so that the
-  // `CarouselPluginConfig` is available.
+  ///  Indicate that the `Carousel` has changed it's index and is building it's ui ,so that the
+  ///  `CarouselPluginConfig` is available.
   static const int BUILD = 5;
 
-  // available when `event` == CarouselController.BUILD
+  ///  available when `event` == CarouselController.BUILD
   CarouselPluginConfig config;
 
-  // available when `event` == CarouselController.SWIPE
-  // this value is PageViewController.pos
+  ///  available when `event` == CarouselController.SWIPE
+  ///  this value is PageViewController.pos
   double pos;
 
   bool autoPlay;
 
-  ///开始自动播放
+  ///  开始自动播放
   void startAutoPlay() {
     event = CarouselController.START_AUTOPLAY;
     autoPlay = true;
     notifyListeners();
   }
 
-  ///停止自动播放
+  ///  停止自动播放
   void stopAutoPlay() {
     event = CarouselController.STOP_AUTOPLAY;
     autoPlay = false;
@@ -179,7 +179,7 @@ class CarouselController extends IndexController {
   }
 }
 
-///底部指示器
+///  底部指示器
 class FractionPaginationBuilder extends CarouselPlugin {
   const FractionPaginationBuilder(
       {this.color,
@@ -188,16 +188,16 @@ class FractionPaginationBuilder extends CarouselPlugin {
       this.activeColor,
       this.activeFontSize = 35.0});
 
-  ///color ,if set null , will be Theme.of(context).scaffoldBackgroundColor
+  ///  color ,if set null , will be Theme.of(context).scaffoldBackgroundColor
   final Color color;
 
-  ///color when active,if set null , will be Theme.of(context).primaryColor
+  ///  color when active,if set null , will be Theme.of(context).primaryColor
   final Color activeColor;
 
-  ////font size
+  ///  /font size
   final double fontSize;
 
-  ///font size when active
+  ///  font size when active
   final double activeFontSize;
 
   final Key key;
@@ -230,7 +230,7 @@ class FractionPaginationBuilder extends CarouselPlugin {
   }
 }
 
-///底部指示器
+///  底部指示器
 class RectCarouselPaginationBuilder extends CarouselPlugin {
   const RectCarouselPaginationBuilder(
       {this.activeColor,
@@ -240,19 +240,19 @@ class RectCarouselPaginationBuilder extends CarouselPlugin {
       this.activeSize = const Size(10.0, 2.0),
       this.space = 3.0});
 
-  ///color when current index,if set null , will be Theme.of(context).primaryColor
+  ///  color when current index,if set null , will be Theme.of(context).primaryColor
   final Color activeColor;
 
-  ///,if set null , will be Theme.of(context).scaffoldBackgroundColor
+  ///  ,if set null , will be Theme.of(context).scaffoldBackgroundColor
   final Color color;
 
-  ///Size of the rect when activate
+  ///  Size of the rect when activate
   final Size activeSize;
 
-  ///Size of the rect
+  ///  Size of the rect
   final Size size;
 
-  /// Space between rect
+  ///  Space between rect
   final double space;
 
   final Key key;
@@ -290,7 +290,7 @@ class RectCarouselPaginationBuilder extends CarouselPlugin {
   }
 }
 
-///底部指示器
+///  底部指示器
 class DotCarouselPaginationBuilder extends CarouselPlugin {
   const DotCarouselPaginationBuilder(
       {this.activeColor,
@@ -300,19 +300,19 @@ class DotCarouselPaginationBuilder extends CarouselPlugin {
       this.activeSize = 10.0,
       this.space = 3.0});
 
-  ///color when current index,if set null , will be Theme.of(context).primaryColor
+  ///  color when current index,if set null , will be Theme.of(context).primaryColor
   final Color activeColor;
 
-  ///,if set null , will be Theme.of(context).scaffoldBackgroundColor
+  ///  ,if set null , will be Theme.of(context).scaffoldBackgroundColor
   final Color color;
 
-  ///Size of the dot when activate
+  ///  Size of the dot when activate
   final double activeSize;
 
-  ///Size of the dot
+  ///  Size of the dot
   final double size;
 
-  /// Space between dots
+  ///  Space between dots
   final double space;
 
   final Key key;
@@ -369,7 +369,7 @@ class DotCarouselPaginationBuilder extends CarouselPlugin {
   }
 }
 
-///底部指示器组件
+///  底部指示器组件
 class CarouselPagination extends CarouselPlugin {
   const CarouselPagination(
       {this.alignment,
@@ -377,22 +377,22 @@ class CarouselPagination extends CarouselPlugin {
       this.margin = const EdgeInsets.all(10.0),
       this.builder = CarouselPagination.dots});
 
-  /// dot style pagination
+  ///  dot style pagination
   static const CarouselPlugin dots = DotCarouselPaginationBuilder();
 
-  /// fraction style pagination
+  ///  fraction style pagination
   static const CarouselPlugin fraction = FractionPaginationBuilder();
 
   static const CarouselPlugin rect = RectCarouselPaginationBuilder();
 
-  /// Alignment.bottomCenter by default when scrollDirection== Axis.horizontal
-  /// Alignment.centerRight by default when scrollDirection== Axis.vertical
+  ///  Alignment.bottomCenter by default when scrollDirection== Axis.horizontal
+  ///  Alignment.centerRight by default when scrollDirection== Axis.vertical
   final Alignment alignment;
 
-  /// Distance between pagination and the container
+  ///  Distance between pagination and the container
   final EdgeInsetsGeometry margin;
 
-  /// Build the wide
+  ///  Build the wide
   final CarouselPlugin builder;
 
   final Key key;

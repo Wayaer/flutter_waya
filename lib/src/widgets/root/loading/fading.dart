@@ -55,7 +55,8 @@ class _SpinKitFadingFourState extends State<SpinKitFadingFour>
       child: SizedBox.fromSize(
           size: Size.square(widget.size),
           child: Stack(
-              // ignore: always_specify_types
+
+              ///  ignore: always_specify_types
               children: List.generate(4, (int i) {
             final double _position = widget.size * .5;
             return Positioned.fill(

@@ -23,49 +23,49 @@ class PinBox extends StatefulWidget {
       this.onDone})
       : super(key: key);
 
-  ///输入内容监听
+  ///  输入内容监听
   final ValueChanged<String> onChanged;
 
-  ///输入完成后回调
+  ///  输入完成后回调
   final ValueChanged<String> onDone;
 
-  ///输入文字类型限制
+  ///  输入文字类型限制
   final InputTextType inputTextType;
 
-  ///是否自动获取焦点
+  ///  是否自动获取焦点
   final bool autoFocus;
 
-  ///输入框控制器
+  ///  输入框控制器
   final TextEditingController controller;
 
-  ///输入框数量
+  ///  输入框数量
   final int maxLength;
 
-  ///输入框内容限制
+  ///  输入框内容限制
   final List<TextInputFormatter> inputFormatter;
 
-  ///box 左右间距 设置 [width]后此参数失效
+  ///  box 左右间距 设置 [width]后此参数失效
   final double boxSpacing;
 
-  ///输入框焦点管理
+  ///  输入框焦点管理
   final FocusNode focusNode;
 
-  ///整默认输入框装饰器
+  ///  整默认输入框装饰器
   final Decoration pinDecoration;
 
-  ///整个组件装饰器
+  ///  整个组件装饰器
   final Decoration decoration;
 
-  ///获取焦点后的输入框装饰器
+  ///  获取焦点后的输入框装饰器
   final Decoration hasFocusPinDecoration;
 
-  ///box 内文字样式
+  ///  box 内文字样式
   final TextStyle pinTextStyle;
 
-  ///box 方框的大小
+  ///  box 方框的大小
   final Size boxSize;
 
-  ///设置此参数后 [boxSize] 的宽度将失效
+  ///  设置此参数后 [boxSize] 的宽度将失效
   final double width;
 
   @override

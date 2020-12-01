@@ -164,7 +164,7 @@ class _CanvasPoint extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    /// 绘制9个圆
+    ///  绘制9个圆
     final Paint ringPaint = Paint()
       ..isAntiAlias = true
       ..color = unSelectColor

@@ -12,17 +12,17 @@ class AliOSS {
       {String aliOSSAccessKeyId, String aliOSSKeySecret, String policyText}) {
     final String text = policyText ??
         '{"expiration": "2050-01-01T12:00:00.000Z","conditions": [["content-length-range", 0, 1048576000]]}';
-    //进行utf8编码
+    /// 进行utf8编码
     final List<int> policyTextUtf8 = utf8.encode(text);
-    //进行base64编码
+    /// 进行base64编码
     policyBase64 = base64.encode(policyTextUtf8);
-    //再次进行utf8编码
+    /// 再次进行utf8编码
     final List<int> policy = utf8.encode(policyBase64);
-    //进行utf8 编码
+    /// 进行utf8 编码
     final List<int> key = utf8.encode(aliOSSKeySecret);
-    //通过hmac,使用sha1进行加密
+    /// 通过hmac,使用sha1进行加密
     final List<int> signatureHmac = Hmac(sha1, key).convert(policy).bytes;
-    //最后一步，将上述所得进行base64 编码
+    /// 最后一步，将上述所得进行base64 编码
     signature = base64.encode(signatureHmac);
     _aliOSSAccessKeyId = aliOSSAccessKeyId;
   }

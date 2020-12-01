@@ -33,40 +33,40 @@ class TransformInfo {
       this.viewportFraction,
       this.scrollDirection});
 
-  /// The `width` of the `TransformerPageView`
+  ///  The `width` of the `TransformerPageView`
   final double width;
 
-  /// The `height` of the `TransformerPageView`
+  ///  The `height` of the `TransformerPageView`
   final double height;
 
-  /// The `position` of the widget pass to [PageTransformer.transform]
+  ///  The `position` of the widget pass to [PageTransformer.transform]
   ///  A `position` describes how visible the widget is.
   ///  The widget in the center of the screen' which is  full visible, position is 0.0.
   ///  The width in the left ,may be hidden, of the screen's position is less than 0.0, -1.0 when out of the screen.
   ///  The width in the right ,may be hidden, of the screen's position is greater than 0.0,  1.0 when out of the screen
-  ///
+  /// 
   final double position;
 
-  /// The `index` of the widget pass to [PageTransformer.transform]
+  ///  The `index` of the widget pass to [PageTransformer.transform]
   final int index;
 
-  /// The `activeIndex` of the PageView
+  ///  The `activeIndex` of the PageView
   final int activeIndex;
 
-  /// The `activeIndex` of the PageView, from user start to swipe
-  /// It will change when user end drag
+  ///  The `activeIndex` of the PageView, from user start to swipe
+  ///  It will change when user end drag
   final int fromIndex;
 
-  /// Next `index` is greater than this `index`
+  ///  Next `index` is greater than this `index`
   final bool forward;
 
-  /// User drag is done.
+  ///  User drag is done.
   final bool done;
 
-  /// Same as [TransformerPageView.viewportFraction]
+  ///  Same as [TransformerPageView.viewportFraction]
   final double viewportFraction;
 
-  /// Copy from [TransformerPageView.scrollDirection]
+  ///  Copy from [TransformerPageView.scrollDirection]
   final Axis scrollDirection;
 }
 
@@ -216,64 +216,64 @@ class CarouselPageView extends StatefulWidget {
     );
   }
 
-  /// Create a `transformed` widget base on the widget that has been passed to  the [PageTransformer.transform].
-  /// See [TransformInfo]
-  ///
+  ///  Create a `transformed` widget base on the widget that has been passed to  the [PageTransformer.transform].
+  ///  See [TransformInfo]
+  /// 
   final PageTransformer transformer;
 
-  /// Same as [PageView.scrollDirection]
-  ///
-  /// Defaults to [Axis.horizontal].
+  ///  Same as [PageView.scrollDirection]
+  /// 
+  ///  Defaults to [Axis.horizontal].
   final Axis scrollDirection;
 
-  /// Same as [PageView.physics]
+  ///  Same as [PageView.physics]
   final ScrollPhysics physics;
 
-  /// Set to false to disable page snapping, useful for custom scroll behavior.
-  /// Same as [PageView.pageSnapping]
+  ///  Set to false to disable page snapping, useful for custom scroll behavior.
+  ///  Same as [PageView.pageSnapping]
   final bool pageSnapping;
 
-  /// Called whenever the page in the center of the viewport changes.
-  /// Same as [PageView.onPageChanged]
+  ///  Called whenever the page in the center of the viewport changes.
+  ///  Same as [PageView.onPageChanged]
   final ValueChanged<int> onPageChanged;
 
   final IndexedWidgetBuilder itemBuilder;
 
-  // See [IndexController.mode],[IndexController.next],[IndexController.previous]
+  ///  See [IndexController.mode],[IndexController.next],[IndexController.previous]
   final IndexController controller;
 
-  /// Animation duration
+  ///  Animation duration
   final Duration duration;
 
-  /// Animation curve
+  ///  Animation curve
   final Curve curve;
 
   final TransformerPageController pageController;
 
-  /// Set true to open infinity loop mode.
+  ///  Set true to open infinity loop mode.
   final bool loop;
 
-  /// This value is only valid when `pageController` is not set,
+  ///  This value is only valid when `pageController` is not set,
   final int itemCount;
 
-  /// This value is only valid when `pageController` is not set,
+  ///  This value is only valid when `pageController` is not set,
   final double viewportFraction;
 
-  /// If not set, it is controlled by this widget.
+  ///  If not set, it is controlled by this widget.
   final int index;
 
-  /// Creates a scrollable list that works page by page using widgets that are
-  /// created on demand.
-  ///
-  /// This constructor is appropriate for page views with a large (or infinite)
-  /// number of children because the builder is called only for those children
-  /// that are actually visible.
-  ///
-  /// Providing a non-null [itemCount] lets the [PageView] compute the maximum
-  /// scroll extent.
-  ///
-  /// [itemBuilder] will be called only with indices greater than or equal to
-  /// zero and less than [itemCount].
+  ///  Creates a scrollable list that works page by page using widgets that are
+  ///  created on demand.
+  /// 
+  ///  This constructor is appropriate for page views with a large (or infinite)
+  ///  number of children because the builder is called only for those children
+  ///  that are actually visible.
+  /// 
+  ///  Providing a non-null [itemCount] lets the [PageView] compute the maximum
+  ///  scroll extent.
+  /// 
+  ///  [itemBuilder] will be called only with indices greater than or equal to
+  ///  zero and less than [itemCount].
 
   @override
   _CarouselPageViewPageViewState createState() =>
@@ -305,7 +305,7 @@ class _CarouselPageViewPageViewState extends State<CarouselPageView> {
   double _currentPixels;
   bool _done = false;
 
-  ///This value will not change until user end drag.
+  ///  This value will not change until user end drag.
   int _fromIndex;
   PageTransformer _transformer;
   TransformerPageController _pageController;
@@ -367,7 +367,7 @@ class _CarouselPageViewPageViewState extends State<CarouselPageView> {
       reverse: _pageController.reverse,
     );
     if (_transformer == null) return child;
-    // ignore: always_specify_types
+    ///  ignore: always_specify_types
     return NotificationListener(
         onNotification: (ScrollNotification notification) {
           if (notification is ScrollStartNotification) {
@@ -415,7 +415,7 @@ class _CarouselPageViewPageViewState extends State<CarouselPageView> {
   @override
   void initState() {
     _transformer = widget.transformer;
-    //  int index = widget.index ?? 0;
+    ///  int index = widget.index ?? 0;
     bool reverse = false;
     if (widget.transformer != null) reverse = widget.transformer.reverse;
     _pageController = widget.pageController;
@@ -424,8 +424,8 @@ class _CarouselPageViewPageViewState extends State<CarouselPageView> {
         itemCount: widget.itemCount,
         loop: widget.loop,
         reverse: reverse);
-    // int initPage = _getRealIndexFromRenderIndex(index);
-    // _pageController =  PageController(initialPage: initPage,viewportFraction: widget.viewportFraction);
+    ///  int initPage = _getRealIndexFromRenderIndex(index);
+    ///  _pageController =  PageController(initialPage: initPage,viewportFraction: widget.viewportFraction);
     _fromIndex = _activeIndex = _pageController.initialPage;
     _controller = getNotifier();
     if (_controller != null) _controller.addListener(onChangeNotifier);
@@ -549,7 +549,7 @@ class IndexController extends ChangeNotifier {
   bool animation;
   int event;
 
-  ///移动到指定下标
+  ///  移动到指定下标
   Future<void> move(int index, {bool animation = true}) {
     this.animation = animation ?? true;
     this.index = index;
@@ -559,7 +559,7 @@ class IndexController extends ChangeNotifier {
     return _completer.future;
   }
 
-  ///下一页
+  ///  下一页
   Future<void> next({bool animation = true}) {
     event = NEXT;
     this.animation = animation ?? true;
@@ -568,7 +568,7 @@ class IndexController extends ChangeNotifier {
     return _completer.future;
   }
 
-  ///	上一页
+  ///  	上一页
   Future<void> previous({bool animation = true}) {
     event = PREVIOUS;
     this.animation = animation ?? true;

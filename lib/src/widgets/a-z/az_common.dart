@@ -1,15 +1,13 @@
 import 'package:flutter/widgets.dart';
 
-/// ISuspension Bean.
+///  ISuspension Bean.
 abstract class SuspensionModel {
   bool isShowSuspension;
 
   String getSuspensionTag();
-
-  ///Suspension Tag
 }
 
-/// AzListView Header.
+///  AzListView Header.
 class AzListHeader {
   AzListHeader({
     @required this.height,
@@ -22,10 +20,10 @@ class AzListHeader {
   final WidgetBuilder builder;
 }
 
-/// Suspension Util.
+///  Suspension Util.
 class SuspensionUtil {
-  /// sort list  by suspension tag.
-  /// 根据[A-Z]排序。
+  ///  sort list  by suspension tag.
+  ///  根据[A-Z]排序。
   static void sortListBySuspensionTag(List<SuspensionModel> list) {
     if (list == null || list.isEmpty) return;
     list.sort((SuspensionModel a, SuspensionModel b) {
@@ -39,8 +37,8 @@ class SuspensionUtil {
     });
   }
 
-  /// get index data list by suspension tag.
-  /// 获取索引列表。
+  ///  get index data list by suspension tag.
+  ///  获取索引列表。
   static List<String> getTagIndexList(List<SuspensionModel> list) {
     final List<String> indexData = <String>[];
     if (list != null && list.isNotEmpty) {
@@ -57,8 +55,8 @@ class SuspensionUtil {
     return indexData;
   }
 
-  /// set show suspension status.
-  /// 设置显示悬停Header状态。
+  ///  set show suspension status.
+  ///  设置显示悬停Header状态。
   static void setShowSuspensionStatus(List<SuspensionModel> list) {
     if (list == null || list.isEmpty) return;
     String tempTag;
@@ -74,10 +72,10 @@ class SuspensionUtil {
   }
 }
 
-/// on all sus section callback(map: Used to scroll the list to the specified tag location).
+///  on all sus section callback(map: Used to scroll the list to the specified tag location).
 typedef OnSusSectionCallBack = void Function(Map<String, int> map);
 
-///Suspension Widget.Currently only supports fixed height items!
+///  Suspension Widget.Currently only supports fixed height items!
 class Suspension extends StatefulWidget {
   const Suspension({
     Key key,
@@ -94,28 +92,28 @@ class Suspension extends StatefulWidget {
         assert(controller != null),
         super(key: key);
 
-  /// with  ISuspensionBean Data
+  ///  with  ISuspensionBean Data
   final List<SuspensionModel> data;
 
-  /// content widget(must contain ListView).
+  ///  content widget(must contain ListView).
   final Widget contentWidget;
 
-  /// suspension widget.
+  ///  suspension widget.
   final Widget suspensionWidget;
 
-  /// ListView ScrollController.
+  ///  ListView ScrollController.
   final ScrollController controller;
 
-  /// suspension widget Height.
+  ///  suspension widget Height.
   final int suspensionHeight;
 
-  /// item Height.
+  ///  item Height.
   final int itemHeight;
 
-  /// on sus tag change callback.
+  ///  on sus tag change callback.
   final ValueChanged<String> onSusTagChanged;
 
-  /// on sus section callback.
+  ///  on sus section callback.
   final OnSusSectionCallBack onSusSection;
 
   final AzListHeader header;
@@ -212,7 +210,7 @@ class SuspensionState extends State<Suspension> {
     if (widget.suspensionWidget != null) {
       children.add(Positioned(
 
-          ///-0.1修复部分手机丢失精度问题
+          ///  -0.1修复部分手机丢失精度问题
           top: suspensionTop.toDouble() - 0.1,
           left: 0.0,
           right: 0.0,

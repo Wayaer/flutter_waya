@@ -1,4 +1,4 @@
-## [1.3.5]
+## [1.3.7]
   * simplifying some component parameters 【PopupSureCancel，PopupBase】
   * modify utils partial method name
 ## [1.3.3]

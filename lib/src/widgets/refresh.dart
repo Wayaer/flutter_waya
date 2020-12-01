@@ -43,7 +43,7 @@ class Refresh extends StatelessWidget {
   final TextStyle footerTextStyle;
   final bool enableTwoLevel;
 
-  ///二楼是否开启
+  ///  二楼是否开启
   final VoidCallback onTwoLevel;
   final OnOffsetChange onOffsetChange;
   final Axis scrollDirection;
@@ -147,9 +147,9 @@ class Refreshed extends StatefulWidget {
       this.enableTwoLevel})
       : super(key: key);
 
-  ///可不传controller，
-  ///若想关闭刷新组件可以通过发送消息
-  ///sendMessage(RefreshCompletedType.refresh);
+  ///  可不传controller，
+  ///  若想关闭刷新组件可以通过发送消息
+  ///  sendMessage(RefreshCompletedType.refresh);
   final RefreshController controller;
   final VoidCallback onRefresh;
   final VoidCallback onLoading;

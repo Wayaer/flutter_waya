@@ -45,16 +45,16 @@ class IconBox extends StatelessWidget {
         mainAxisAlignment = mainAxisAlignment ?? MainAxisAlignment.center,
         super(key: key);
 
-  ///icon > image > imageProvider > widget
+  ///  icon > image > imageProvider > widget
   final Widget widget;
   final IconData icon;
   final Widget image;
   final ImageProvider imageProvider;
 
-  ///显示图片
+  ///  显示图片
   final TextDirection textDirection;
 
-  ///仅支持icon
+  ///  仅支持icon
   final String semanticLabel;
   final String titleText;
   final Widget title;

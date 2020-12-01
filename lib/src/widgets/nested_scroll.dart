@@ -74,8 +74,7 @@ class NestedScrollSliver extends StatefulWidget {
         scrollDirection = scrollDirection ?? Axis.vertical,
         super(key: key);
 
-  ///
-  ///NestedScrollView
+  ///  NestedScrollView
   final bool floatHeaderSlivers;
   final Clip clipBehavior;
   final bool reverse;
@@ -88,11 +87,10 @@ class NestedScrollSliver extends StatefulWidget {
   final List<Widget> slivers;
   final bool expanded;
 
-  ///当组件内有异步延时渲染时 传递此参数将延时计算高度
+  ///  当组件内有异步延时渲染时 传递此参数将延时计算高度
   final Duration duration;
 
-  ///
-  ///SliverAppBar
+  ///  SliverAppBar
   final bool haveSliverAppBar;
   final bool automaticallyImplyLeading;
   final Widget title;
@@ -104,7 +102,7 @@ class NestedScrollSliver extends StatefulWidget {
   final IconThemeData actionsIconTheme;
   final double titleSpacing;
 
-  ///是否预留高度
+  ///  是否预留高度
   final bool primary;
   final bool centerTitle;
 
@@ -115,30 +113,29 @@ class NestedScrollSliver extends StatefulWidget {
   final double elevation;
   final Widget leading;
 
-  ///title是否固定在顶部不消失
+  ///  title是否固定在顶部不消失
   final bool pinned;
 
-  ///floating和snap同时为true body在滚动时 foldBody 是否悬浮于body之上
-  ///floating:true AppBar会在下拉时就立即展开
+  ///  floating和snap同时为true body在滚动时 foldBody 是否悬浮于body之上
+  ///  floating:true AppBar会在下拉时就立即展开
   final bool floating;
   final bool snap;
 
-  // final Widget flexibleSpace;
+  ///  final Widget flexibleSpace;
   final PreferredSizeWidget bottom;
 
   ///
-  /// FlexibleSpaceBar
+  ///  FlexibleSpaceBar
   final EdgeInsetsGeometry titlePadding;
   final CollapseMode collapseMode;
   final List<StretchMode> stretchModes;
   final Widget flexibleSpaceTitle;
 
-  ///
-  ///SliverPersistentHeader
+  ///  SliverPersistentHeader
   final bool haveSliverHeader;
   final Size preferredSize;
 
-  ///需要折叠隐藏的区域
+  ///  需要折叠隐藏的区域
   final Widget foldBody;
 
   @override

@@ -171,7 +171,7 @@ class Universal extends StatelessWidget {
         flexFit = flexFit ?? FlexFit.loose,
         super(key: key);
 
-  ///public
+  ///  public
   final EdgeInsetsGeometry padding;
   final DragStartBehavior dragStartBehavior;
   final Clip clipBehavior;
@@ -179,16 +179,16 @@ class Universal extends StatelessWidget {
   final AlignmentGeometry alignment;
   final BorderRadius borderRadius;
 
-  ///****** child ******///
+  ///  ****** child ******  ///
   final Widget child;
 
-  ///****** Flexible ******///
+  ///  ****** Flexible ******  ///
   final bool expanded;
   final int flex;
   final bool isFlexible;
   final FlexFit flexFit;
 
-  ///****** Container ******///
+  ///  ****** Container ******  ///
   final Decoration foregroundDecoration;
   final Matrix4 transform;
   final BoxConstraints constraints;
@@ -198,14 +198,14 @@ class Universal extends StatelessWidget {
   final EdgeInsetsGeometry margin;
   final Decoration decoration;
 
-  ///****** children ******///
+  ///  ****** children ******  ///
   final List<Widget> children;
 
-  ///****** Card ******///
+  ///  ****** Card ******  ///
   final bool addCard;
   final bool semanticContainer;
 
-  ///****** Flex ******///
+  ///  ****** Flex ******  ///
   final MainAxisAlignment mainAxisAlignment;
   final CrossAxisAlignment crossAxisAlignment;
   final Axis direction;
@@ -214,13 +214,13 @@ class Universal extends StatelessWidget {
   final TextDirection textDirection;
   final MainAxisSize mainAxisSize;
 
-  ///****** Clip ******///
+  ///  ****** Clip ******  ///
   final bool isClip;
   final CustomClipper<RRect> clipperRRect;
   final CustomClipper<Rect> clipperRect;
   final CustomClipper<Path> clipperPath;
 
-  ///****** CircleAvatar ******///
+  ///  ****** CircleAvatar ******  ///
   final bool isCircleAvatar;
   final ImageProvider backgroundImage;
   final ImageErrorListener onBackgroundImageError;
@@ -228,14 +228,14 @@ class Universal extends StatelessWidget {
   final double minRadius;
   final double maxRadius;
 
-  ///****** SingleChildScrollView ******///
+  ///  ****** SingleChildScrollView ******  ///
   final bool isScroll;
   final ScrollPhysics physics;
   final ScrollController scrollController;
   final bool reverse;
   final bool primary;
 
-  ///****** Visibility ******///
+  ///  ****** Visibility ******  ///
   final bool sizedBoxExpand;
   final Widget replacement;
   final bool visible;
@@ -246,29 +246,29 @@ class Universal extends StatelessWidget {
   final bool maintainInteractivity;
   final bool offstage;
 
-  ///****** 点击事件相关 ******///
+  ///  ****** 点击事件相关 ******  ///
   final bool addInkWell;
   final bool enabled;
 
-  ///点击
+  ///  点击
   final GestureTapCallback onTap;
 
-  ///双击
+  ///  双击
   final GestureTapCallback onDoubleTap;
 
-  ///长按
+  ///  长按
   final GestureLongPressCallback onLongPress;
 
-  ///按下回调
+  ///  按下回调
   final GestureTapDownCallback onTapDown;
 
-  ///点击取消
+  ///  点击取消
   final GestureTapCancelCallback onTapCancel;
 
   final bool excludeFromSemantics;
 
-  ///****** GestureDetector ******///
-  ///点击抬起
+  ///  ****** GestureDetector ******  ///
+  ///  点击抬起
   final GestureTapUpCallback onTapUp;
   final GestureTapDownCallback onSecondaryTapDown;
   final GestureTapUpCallback onSecondaryTapUp;
@@ -288,19 +288,19 @@ class Universal extends StatelessWidget {
   final GestureDragEndCallback onHorizontalDragEnd;
   final GestureDragCancelCallback onHorizontalDragCancel;
 
-  ///按下回调
+  ///  按下回调
   final GestureDragDownCallback onPanDown;
 
-  ///拖动开始
+  ///  拖动开始
   final GestureDragStartCallback onPanStart;
 
-  ///拖动更新
+  ///  拖动更新
   final GestureDragUpdateCallback onPanUpdate;
 
-  ///拖动结束
+  ///  拖动结束
   final GestureDragEndCallback onPanEnd;
 
-  ///拖动取消
+  ///  拖动取消
   final GestureDragCancelCallback onPanCancel;
   final GestureScaleStartCallback onScaleStart;
   final GestureScaleUpdateCallback onScaleUpdate;
@@ -310,12 +310,12 @@ class Universal extends StatelessWidget {
   final GestureForcePressUpdateCallback onForcePressUpdate;
   final GestureForcePressEndCallback onForcePressEnd;
 
-  ///HitTestBehavior.opaque 自己处理事件
-  ///HitTestBehavior.deferToChild child处理事件
-  ///HitTestBehavior.translucent 自己和child都可以接收事件
+  ///  HitTestBehavior.opaque 自己处理事件
+  ///  HitTestBehavior.deferToChild child处理事件
+  ///  HitTestBehavior.translucent 自己和child都可以接收事件
   final HitTestBehavior behavior;
 
-  ///****** Material ******///
+  ///  ****** Material ******  ///
   final MaterialType type;
   final double elevation;
   final Color shadowColor;
@@ -323,21 +323,21 @@ class Universal extends StatelessWidget {
   final ShapeBorder shape;
   final bool borderOnForeground;
 
-  ///****** InkWell ******///
-  ///高亮变化回调
+  ///  ****** InkWell ******  ///
+  ///  高亮变化回调
   final ValueChanged<bool> onHighlightChanged;
   final ValueChanged<bool> onHover;
   final Color focusColor;
   final Color hoverColor;
 
-  ///高亮颜色
+  ///  高亮颜色
   final Color highlightColor;
 
-  ///水波纹颜色
+  ///  水波纹颜色
   final Color splashColor;
   final InteractiveInkFeatureFactory splashFactory;
 
-  ///水波半径
+  ///  水波半径
   final double radius;
   final ShapeBorder customBorder;
   final bool enableFeedback;
@@ -346,14 +346,14 @@ class Universal extends StatelessWidget {
   final ValueChanged<bool> onFocusChange;
   final bool autoFocus;
 
-  ///****** Hero ******///
+  ///  ****** Hero ******  ///
   final String heroTag;
   final CreateRectTween createRectTween;
   final HeroFlightShuttleBuilder flightShuttleBuilder;
   final bool transitionOnUserGestures;
   final HeroPlaceholderBuilder placeholderBuilder;
 
-  ///****** Stack ******///
+  ///  ****** Stack ******  ///
   final bool isStack;
   final StackFit stackFit;
   final Overflow overflow;
@@ -495,11 +495,13 @@ class Universal extends StatelessWidget {
       clipBehavior: clipBehavior,
       animationDuration: animationDuration,
       child: Ink(
-//            padding: padding,
-//            color: color,
+
+          ///            padding: padding,
+          ///            color: color,
           decoration: decoration,
-//            width: width,
-//            height: height,
+
+          ///            width: width,
+          ///            height: height,
           child: InkWell(
             child: widget,
             onTap: onTap,
@@ -528,7 +530,8 @@ class Universal extends StatelessWidget {
   Widget singleChildScrollViewWidget({Widget widget}) => SingleChildScrollView(
       physics: physics,
       reverse: reverse,
-//       padding: padding,
+
+      ///       padding: padding,
       primary: primary,
       dragStartBehavior: dragStartBehavior,
       controller: scrollController,

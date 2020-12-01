@@ -5,7 +5,7 @@ const double radiusLocal = ConstConstant.Radius;
 const double fontSize = ConstConstant.fontSize;
 
 class WayStyles {
-  //统一所有阴影效果
+  /// 统一所有阴影效果
   static List<BoxShadow> boxShadow() => <BoxShadow>[
         BoxShadow(
             color: getColors(boxShadowColor),
@@ -14,7 +14,7 @@ class WayStyles {
             offset: const Offset(0, 3))
       ];
 
-  //left right  margin or padding 20
+  /// left right  margin or padding 20
   static EdgeInsetsGeometry edgeInsetsHorizontal({double width = 20}) =>
       EdgeInsets.symmetric(horizontal: getWidth(width));
 
@@ -25,11 +25,11 @@ class WayStyles {
               topLeft: Radius.circular(radius ?? radiusLocal),
               topRight: Radius.circular(radius ?? radiusLocal)));
 
-  //top bottom  margin or padding 20
+  /// top bottom  margin or padding 20
   static EdgeInsetsGeometry edgeInsetsVertical({double height = 20}) =>
       EdgeInsets.symmetric(vertical: getHeight(height));
 
-  //统一白色背景 圆角
+  /// 统一白色背景 圆角
   static Decoration containerWhiteRadius(
           {Color color, double radius, bool shadow = false}) =>
       BoxDecoration(
@@ -37,7 +37,7 @@ class WayStyles {
           borderRadius: BorderRadius.circular(radius ?? radiusLocal),
           boxShadow: shadow ? boxShadow() : null);
 
-  //统一 白色背景 圆角 边框
+  /// 统一 白色背景 圆角 边框
   static Decoration containerRadiusWidth(
           {Color color, double width, Color widthColor, double radius}) =>
       BoxDecoration(
@@ -47,7 +47,7 @@ class WayStyles {
               width: width ?? getWidth(1),
               color: widthColor ?? getColors(background)));
 
-  //统一下划线样式
+  /// 统一下划线样式
   static Decoration containerUnderlineBackground(
           {Color color, double width, Color underlineColor}) =>
       BoxDecoration(
@@ -59,7 +59,7 @@ class WayStyles {
                       width: width ?? getHeight(1),
                       color: underlineColor ?? getColors(background))));
 
-  //统一上划线样式
+  /// 统一上划线样式
   static Decoration containerTopLineBackground({Color color}) => BoxDecoration(
       color: color,
       border: Border(top: BorderSide(color: getColors(background))));
@@ -97,16 +97,16 @@ class WayStyles {
           height: height,
           color: color ?? getColors(black70));
 
-  //以上是多种颜色字体 样式
+  /// 以上是多种颜色字体 样式
 
-  //start 合并到 end
+  /// start 合并到 end
   static TextStyle mergeTextStyle(TextStyle startStyle, TextStyle endStyle) {
     if (startStyle != null && endStyle != null) endStyle.merge(startStyle);
     return endStyle;
   }
 }
 
-///横线
+///  横线
 Widget divider({
   double height,
   Color color,
@@ -126,7 +126,7 @@ class WayWidgets {
       style: TextStyle(
           color: getColors(white), fontSize: 16, fontWeight: FontWeight.w700));
 
-  ///垂直线
+  ///  垂直线
   static Widget lineVertical(double height,
           {EdgeInsetsGeometry padding,
           double width,

@@ -3,7 +3,7 @@ import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/area.dart';
 import 'package:flutter_waya/src/constant/way.dart';
 
-///省市区三级联动
+///  省市区三级联动
 class AreaPicker extends StatefulWidget {
   AreaPicker({
     Key key,
@@ -33,43 +33,43 @@ class AreaPicker extends StatefulWidget {
         height = height ?? ConstConstant.pickerHeight,
         super(key: key);
 
-  ///容器属性
+  ///  容器属性
   final Color backgroundColor;
   final double height;
 
-  ///[title]底部内容
+  ///  [title]底部内容
   final Widget titleBottom;
   final Widget sure;
   final Widget cancel;
   final Widget title;
 
-  ///字体样式
+  ///  字体样式
   final TextStyle contentStyle;
 
-  ///点击事件
+  ///  点击事件
   final GestureTapCallback cancelTap;
   final ValueChanged<String> sureTap;
 
-  ///以下为ListWheel属性
-  ///高度
+  ///  以下为ListWheel属性
+  ///  高度
   final double itemHeight;
 
-  /// 半径大小,越大则越平面,越小则间距越大
+  ///  半径大小,越大则越平面,越小则间距越大
   final double diameterRatio;
 
-  /// 选中item偏移
+  ///  选中item偏移
   final double offAxisFraction;
 
-  ///表示ListWheel水平偏离中心的程度  范围[0,0.01]
+  ///  表示ListWheel水平偏离中心的程度  范围[0,0.01]
   final double perspective;
 
-  ///放大倍率
+  ///  放大倍率
   final double magnification;
 
-  ///是否启用放大镜
+  ///  是否启用放大镜
   final bool useMagnifier;
 
-  ///1或者2
+  ///  1或者2
   final double squeeze;
   final ScrollPhysics physics;
   final String defaultProvince;
@@ -85,11 +85,11 @@ class _AreaPickerState extends State<AreaPicker> {
   List<String> city = <String>[];
   List<String> district = <String>[];
 
-//  List<String> street = <String>[];
+  ///  List<String> street = <String>[];
   Map<String, dynamic> areaData = area;
   double itemHeight;
 
-  ///字体样式
+  ///  字体样式
   TextStyle contentStyle;
 
   int provinceIndex = 0;
@@ -112,7 +112,7 @@ class _AreaPickerState extends State<AreaPicker> {
   }
 
   void initData() {
-    ///样式设置
+    ///  样式设置
     contentStyle = widget.contentStyle ??
         TextStyle(
             fontSize: 13,
@@ -121,31 +121,32 @@ class _AreaPickerState extends State<AreaPicker> {
             decorationStyle: TextDecorationStyle.dashed);
     itemHeight = widget.itemHeight ?? 18;
 
-    ///省
+    ///  省
     province = areaData?.keys?.toList();
     if (province.contains(widget.defaultProvince))
       provinceIndex = province.indexOf(widget.defaultProvince);
     final Map<dynamic, dynamic> provinceData =
         areaData[province[provinceIndex]] as Map<dynamic, dynamic>;
 
-    ///市
+    ///  市
     city = provinceData?.keys?.toList() as List<String>;
     if (city.contains(widget.defaultCity))
       cityIndex = city.indexOf(widget.defaultCity);
     final Map<dynamic, dynamic> cityData =
         provinceData[city[cityIndex]] as Map<dynamic, dynamic>;
 
-    ///区
+    ///  区
     district = cityData?.keys?.toList() as List<String>;
     if (district.contains(widget.defaultDistrict))
       districtIndex = district.indexOf(widget.defaultDistrict);
-//    var districtData = cityData[districtIndex];
 
-    ///街道
-//    street = districtData[districtIndex];
+    ///    var districtData = cityData[districtIndex];
+
+    ///  街道
+    ///    street = districtData[districtIndex];
   }
 
-  ///点击确定返回选择的地区
+  ///  点击确定返回选择的地区
   void sureTapVoid() {
     if (widget.sureTap == null) return;
     final String areaString =
@@ -266,7 +267,7 @@ class _AreaPickerState extends State<AreaPicker> {
   }
 }
 
-///单列选择
+///  单列选择
 class MultipleChoicePicker extends StatelessWidget {
   MultipleChoicePicker({
     Key key,
@@ -299,11 +300,11 @@ class MultipleChoicePicker extends StatelessWidget {
             FixedExtentScrollController(initialItem: initialIndex ?? 0),
         super(key: key);
 
-  ///点击事件
+  ///  点击事件
   final GestureTapCallback cancelTap;
   final ValueChanged<int> sureTap;
 
-  ///[title]底部内容
+  ///  [title]底部内容
   final Widget titleBottom;
   final Widget sure;
   final Widget cancel;
@@ -312,29 +313,29 @@ class MultipleChoicePicker extends StatelessWidget {
   final Color color;
   final double height;
 
-  ///以下为ListWheel属性
+  ///  以下为ListWheel属性
   final int initialIndex;
   final double itemHeight;
   final int itemCount;
   final IndexedWidgetBuilder itemBuilder;
   final double itemWidth;
 
-  /// 半径大小,越大则越平面,越小则间距越大
+  ///  半径大小,越大则越平面,越小则间距越大
   final double diameterRatio;
 
-  /// 选中item偏移
+  ///  选中item偏移
   final double offAxisFraction;
 
-  ///表示ListWheel水平偏离中心的程度  范围[0,0.01]
+  ///  表示ListWheel水平偏离中心的程度  范围[0,0.01]
   final double perspective;
 
-  ///放大倍率
+  ///  放大倍率
   final double magnification;
 
-  ///是否启用放大镜
+  ///  是否启用放大镜
   final bool useMagnifier;
 
-  ///1或者2
+  ///  1或者2
   final double squeeze;
   final ScrollPhysics physics;
   final FixedExtentScrollController controller;
@@ -377,7 +378,7 @@ class MultipleChoicePicker extends StatelessWidget {
   }
 }
 
-///日期时间选择器
+///  日期时间选择器
 class DateTimePicker extends StatefulWidget {
   DateTimePicker({
     Key key,
@@ -415,59 +416,59 @@ class DateTimePicker extends StatefulWidget {
         dual = dual ?? true,
         super(key: key);
 
-  ///补全双位数
+  ///  补全双位数
   final bool dual;
 
-  ///单位是否显示
+  ///  单位是否显示
   final bool showUnit;
 
-  ///点击事件
+  ///  点击事件
   final GestureTapCallback cancelTap;
   final ValueChanged<String> sureTap;
 
-  ///[title]底部内容
+  ///  [title]底部内容
   final Widget titleBottom;
   final Widget sure;
   final Widget cancel;
   final Widget title;
 
-  ///容器属性
+  ///  容器属性
   final Color backgroundColor;
   final double height;
 
-  ///时间选择器单位
+  ///  时间选择器单位
   final DateTimePickerUnit unit;
 
-  ///字体样式
+  ///  字体样式
   final TextStyle unitStyle;
   final TextStyle contentStyle;
 
-  ///时间
+  ///  时间
   final DateTime startDate;
   final DateTime defaultDate;
   final DateTime endDate;
 
-  ///以下为ListWheel属性
-  ///高度
+  ///  以下为ListWheel属性
+  ///  高度
   final double itemHeight;
   final double itemWidth;
 
-  /// 半径大小,越大则越平面,越小则间距越大
+  ///  半径大小,越大则越平面,越小则间距越大
   final double diameterRatio;
 
-  /// 选中item偏移
+  ///  选中item偏移
   final double offAxisFraction;
 
-  ///表示ListWheel水平偏离中心的程度  范围[0,0.01]
+  ///  表示ListWheel水平偏离中心的程度  范围[0,0.01]
   final double perspective;
 
-  ///放大倍率
+  ///  放大倍率
   final double magnification;
 
-  ///是否启用放大镜
+  ///  是否启用放大镜
   final bool useMagnifier;
 
-  ///1或者2
+  ///  1或者2
   final double squeeze;
   final ScrollPhysics physics;
 
@@ -484,11 +485,11 @@ class _DateTimePickerState extends State<DateTimePicker> {
       secondData = <String>[];
   FixedExtentScrollController controllerDay;
 
-  ///字体样式
+  ///  字体样式
   TextStyle contentStyle;
   TextStyle unitStyle;
 
-  ///时间
+  ///  时间
   DateTime startDate;
   DateTime defaultDate;
   DateTime endDate;
@@ -509,14 +510,14 @@ class _DateTimePickerState extends State<DateTimePicker> {
     itemWidth =
         widget.itemWidth ?? (getWidth(0) - getWidth(20)) / unit.getLength();
 
-    ///样式设置
+    ///  样式设置
     contentStyle = widget.contentStyle ?? textStyleVoid();
     unitStyle = widget.unitStyle ?? textStyleVoid();
     startDate = widget.startDate ?? DateTime.now();
     endDate = initEndDate();
     defaultDate = initDefaultDate();
 
-    ///初始化每个Wheel数组
+    ///  初始化每个Wheel数组
     final int year = (endDate.year - startDate.year) + 1;
     for (int i = 0; i < year; i++) {
       yearData.add((startDate.year + i).toString());
@@ -556,11 +557,11 @@ class _DateTimePickerState extends State<DateTimePicker> {
       decoration: TextDecoration.none,
       decorationStyle: TextDecorationStyle.dashed);
 
-  ///显示双数还是单数
+  ///  显示双数还是单数
   String valuePadLeft(String value) =>
       widget.dual ? value.padLeft(2, '0') : value;
 
-  ///wheel数组添加数据
+  ///  wheel数组添加数据
   List<String> addList(int maxNumber, {int startNumber = 0}) {
     final List<String> list = <String>[];
     for (int i = startNumber;
@@ -571,7 +572,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
     return list;
   }
 
-  ///计算每月day的数量
+  ///  计算每月day的数量
   List<String> calculateDayNumber({bool isFirst = false}) {
     final int selectYearItem =
         isFirst ? (defaultDate.year - startDate.year) : yearIndex;
@@ -596,7 +597,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
     }
   }
 
-  ///刷新day数
+  ///  刷新day数
   void refreshDay() {
     int oldDayIndex = dayIndex;
     final List<String> newDayList = calculateDayNumber().cast<String>();
@@ -612,7 +613,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
     }
   }
 
-  ///点击确定返回日期
+  ///  点击确定返回日期
   void sureTapVoid() {
     if (widget.sureTap == null) return;
     String dateTime = '';

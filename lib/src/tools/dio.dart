@@ -5,11 +5,11 @@ import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-//网络链接超时时间
+/// 网络链接超时时间
 const int HTTP_TIMEOUT_CONNECT = 5000;
-//接收超时时间
+/// 接收超时时间
 const int HTTP_TIMEOUT_RECEIVE = 10000;
-//请求数据类型 (4种): application/x-www-form-urlencoded 、multipart/form-data、application/json、text/xml
+/// 请求数据类型 (4种): application/x-www-form-urlencoded 、multipart/form-data、application/json、text/xml
 const List<String> HTTP_CONTENT_TYPE = <String>[
   'application/x-www-form-urlencoded',
   'multipart/form-data',
@@ -103,7 +103,7 @@ class DioTools {
       statusMessage: ConstConstant.unknownException,
       statusMessageT: ConstConstant.unknownException);
 
-  //下载文件需要申请文件储存权限
+  /// 下载文件需要申请文件储存权限
   Future<Response<dynamic>> download(
     String url,
     String savePath, {
@@ -121,7 +121,7 @@ class DioTools {
     }
   }
 
-  ///文件上传
+  ///  文件上传
   Future<Response<dynamic>> upload<T>(String url,
       {Map<String, dynamic> params,
       dynamic data,
@@ -160,11 +160,11 @@ class InterceptorWrap extends InterceptorsWrapper {
 
   @override
   Future<void> onRequest(RequestOptions options) async {
-    /// 在请求被发送之前做一些事情
-    /// 如果你想完成请求并返回一些自定义数据，可以返回一个`Response`对象或返回`dio.resolve(data)`。
-    /// 这样请求将会被终止，上层then会被调用，then中返回的数据将是你的自定义数据data.
-    /// 如果你想终止请求并触发一个错误,你可以返回一个`DioError`对象，或返回`dio.reject(errMsg)`，
-    /// 这样请求将被中止并触发异常，上层catchError会被调用。 return options;
+    ///  在请求被发送之前做一些事情
+    ///  如果你想完成请求并返回一些自定义数据，可以返回一个`Response`对象或返回`dio.resolve(data)`。
+    ///  这样请求将会被终止，上层then会被调用，then中返回的数据将是你的自定义数据data.
+    ///  如果你想终止请求并触发一个错误,你可以返回一个`DioError`对象，或返回`dio.reject(errMsg)`，
+    ///  这样请求将被中止并触发异常，上层catchError会被调用。 return options;
     if (cookieJar != null) {
       final List<Cookie> cookies = cookieJar?.loadForRequest(options.uri);
       cookies.removeWhere((Cookie cookie) {

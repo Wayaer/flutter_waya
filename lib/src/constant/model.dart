@@ -28,43 +28,43 @@ class ResponseModel {
     extra = json['extra'] as Map<String, dynamic>;
   }
 
-  /// Response headers.
+  ///  Response headers.
   Headers headers;
 
-  /// The corresponding request info.
+  ///  The corresponding request info.
   RequestOptions request;
 
-  /// Custom field that you can retrieve it later in `then`.
+  ///  Custom field that you can retrieve it later in `then`.
   Map<String, dynamic> extra;
 
-  /// Returns the series of redirects this connection has been through. The
-  /// list will be empty if no redirects were followed. [redirects] will be
-  /// updated both in the case of an automatic and a manual redirect.
+  ///  Returns the series of redirects this connection has been through. The
+  ///  list will be empty if no redirects were followed. [redirects] will be
+  ///  updated both in the case of an automatic and a manual redirect.
   ///
-  /// ** Attention **: Whether this field is available depends on whether the
-  /// implementation of the adapter supports it or not.
+  ///  ** Attention **: Whether this field is available depends on whether the
+  ///  implementation of the adapter supports it or not.
   List<RedirectRecord> redirects;
 
-  /// Whether this response is a redirect.
-  /// ** Attention **: Whether this field is available depends on whether the
-  /// implementation of the adapter supports it or not.
+  ///  Whether this response is a redirect.
+  ///  ** Attention **: Whether this field is available depends on whether the
+  ///  implementation of the adapter supports it or not.
   bool isRedirect;
 
-  /// 状态
+  ///  状态
   int statusCode;
 
-  /// 状态消息
+  ///  状态消息
   String statusMessage;
 
-  /// 语言翻译版 状态消息
+  ///  语言翻译版 状态消息
   String statusMessageT;
 
   String type;
 
-  ///后台返回的数据
+  ///  后台返回的数据
   Object data;
 
-  ///保存的cookie
+  ///  保存的cookie
   List<String> cookie;
 
   Map<String, dynamic> toMap() {
@@ -75,11 +75,12 @@ class ResponseModel {
     map['statusCode'] = statusCode;
     map['statusMessage'] = statusMessage;
     map['statusMessageT'] = statusMessageT;
-    // map['headers'] = headers;
-    // map['request'] = request;
-    // map['isRedirect'] = isRedirect;
-    // map['redirects'] = redirects;
-    // map['extra'] = extra;
+
+    ///  map['headers'] = headers;
+    ///  map['request'] = request;
+    ///  map['isRedirect'] = isRedirect;
+    ///  map['redirects'] = redirects;
+    ///  map['extra'] = extra;
     return map;
   }
 
