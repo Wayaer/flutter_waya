@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter_waya/flutter_waya.dart';
 import 'package:http_parser/http_parser.dart';
 
 class AliOSS {
@@ -68,23 +67,5 @@ class AliOSS {
       'Signature': signature,
       'Filename': fileName
     });
-  }
-
-  static Future<AppConfig> getAppConfig(String name,
-      {String configName}) async {
-    final String fileName = configName ?? 'appConfig';
-    final String url = '${ConstConstant.oss}/$name/$fileName';
-    final ResponseModel res = await DioTools.instance.getHttp(url);
-    AppConfig appConfig =
-        AppConfig(open: true, androidVersionCode: 1, iosVersionCode: 1);
-    if (res != null &&
-        res.statusCode == 200 &&
-        res.data != null &&
-        res.data is String) {
-      final Map<dynamic, dynamic> map =
-          jsonDecode(res.data.toString()) as Map<dynamic, dynamic>;
-      if (res.data != null) appConfig = AppConfig.fromJson(map);
-    }
-    return appConfig;
   }
 }

@@ -35,7 +35,7 @@ class ConstConstant {
   static const double listWheelMagnification = 1.2;
 
   static const String success = 'success';
-  static const String oss = 'https:/// kingapp.oss-cn-hangzhou.aliyuncs.com';
+
   static const String unknownException = 'unknown exception';
 
   /// 网络请求失败
