@@ -144,6 +144,8 @@ class GlobalMaterial extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (navigatorKey != null) _globalNavigatorKey = navigatorKey;
+    _scaffoldKeyList = <GlobalKey<State>>[];
+    _overlayEntryList = <OverlayEntryMap>[];
     return MaterialApp(
         key: key,
         navigatorKey: _globalNavigatorKey,
@@ -248,6 +250,8 @@ class GlobalCupertino extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (navigatorKey != null) _globalNavigatorKey = navigatorKey;
+    _scaffoldKeyList = <GlobalKey<State>>[];
+    _overlayEntryList = <OverlayEntryMap>[];
     return CupertinoApp(
         key: key,
         navigatorKey: _globalNavigatorKey,

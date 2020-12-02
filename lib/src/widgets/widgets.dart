@@ -7,26 +7,25 @@ import 'package:flutter_waya/src/constant/way.dart';
 
 ///  发送验证码
 class SendSMS extends StatefulWidget {
-  const SendSMS(
-      {Key key,
-      this.onTap,
-      this.decoration,
-      this.borderRadius,
-      this.borderWidth,
-      this.defaultBorderColor,
-      this.notTapBorderColor,
-      this.width,
-      this.height,
-      String defaultText,
-      String sendingText,
-      String sentText,
-      String notTapText,
-      this.defaultTextStyle,
-      this.notTapTextStyle,
-      this.background,
-      this.seconds,
-      this.margin,
-      this.padding})
+  const SendSMS({Key key,
+    this.onTap,
+    this.decoration,
+    this.borderRadius,
+    this.borderWidth,
+    this.defaultBorderColor,
+    this.notTapBorderColor,
+    this.width,
+    this.height,
+    String defaultText,
+    String sendingText,
+    String sentText,
+    String notTapText,
+    this.defaultTextStyle,
+    this.notTapTextStyle,
+    this.background,
+    this.seconds,
+    this.margin,
+    this.padding})
       : defaultText = defaultText ?? '获取验证码',
         sendingText = sendingText ?? '发送中',
         sentText = sentText ?? '重新发送',
@@ -80,19 +79,19 @@ class _SendSMSState extends State<SendSMS> {
           BoxDecoration(
               color: widget.background,
               border: !(widget.defaultBorderColor != null ||
-                      widget.notTapBorderColor != null)
+                  widget.notTapBorderColor != null)
                   ? null
                   : Border.all(
-                      width: widget.borderWidth ?? 0,
-                      color: seconds == 0
-                          ? (widget.defaultBorderColor ?? getColors(blue))
-                          : (widget.notTapBorderColor ?? getColors(black70))),
+                  width: widget.borderWidth ?? 0,
+                  color: seconds == 0
+                      ? (widget.defaultBorderColor ?? getColors(blue))
+                      : (widget.notTapBorderColor ?? getColors(black70))),
               borderRadius: widget.borderRadius ?? BorderRadius.circular(20)),
       child: Text(verifyStr,
           style: seconds == 0
               ? widget.defaultTextStyle ?? WayStyles.textStyleBlue(fontSize: 13)
               : widget.notTapTextStyle ??
-                  WayStyles.textStyleBlack70(fontSize: 13)),
+              WayStyles.textStyleBlack70(fontSize: 13)),
     );
   }
 
@@ -142,7 +141,8 @@ class CountDownSkip extends StatefulWidget {
     this.onChange,
     this.onTap,
     this.decoration,
-  })  : skipText = skipText ?? '',
+  })
+      : skipText = skipText ?? '',
         seconds = seconds ?? 5,
         super(key: key);
 
@@ -178,15 +178,17 @@ class _CountDownSkipState extends State<CountDownSkip> {
   }
 
   @override
-  Widget build(BuildContext context) => SimpleButton(
-      onTap: widget.onTap,
-      decoration: widget.decoration ??
-          BoxDecoration(
-              color: getColors(white50),
-              borderRadius: BorderRadius.circular(5)),
-      padding:
+  Widget build(BuildContext context) =>
+      SimpleButton(
+          onTap: widget.onTap,
+          decoration: widget.decoration ??
+              BoxDecoration(
+                  color: getColors(white50),
+                  borderRadius: BorderRadius.circular(5)),
+          padding:
           EdgeInsets.symmetric(horizontal: getHeight(5), vertical: getWidth(4)),
-      child: WayWidgets.textSmall(seconds.toString() + 's' + widget.skipText));
+          child: WayWidgets.textSmall(
+              seconds.toString() + 's' + widget.skipText));
 
   @override
   void dispose() {
@@ -197,20 +199,19 @@ class _CountDownSkipState extends State<CountDownSkip> {
 
 ///  侧滑菜单
 class CustomDismissible extends StatelessWidget {
-  const CustomDismissible(
-      {Key key,
-      this.background,
-      this.secondaryBackground,
-      this.confirmDismiss,
-      this.onResize,
-      this.onDismissed,
-      DismissDirection direction,
-      Duration resizeDuration,
-      Map<DismissDirection, double> dismissThresholds,
-      Duration movementDuration,
-      double crossAxisEndOffset,
-      DragStartBehavior dragStartBehavior,
-      this.child})
+  const CustomDismissible({Key key,
+    this.background,
+    this.secondaryBackground,
+    this.confirmDismiss,
+    this.onResize,
+    this.onDismissed,
+    DismissDirection direction,
+    Duration resizeDuration,
+    Map<DismissDirection, double> dismissThresholds,
+    Duration movementDuration,
+    double crossAxisEndOffset,
+    DragStartBehavior dragStartBehavior,
+    this.child})
       : direction = direction ?? DismissDirection.horizontal,
         resizeDuration = resizeDuration ?? const Duration(milliseconds: 300),
         dismissThresholds =
@@ -264,41 +265,41 @@ class CustomDismissible extends StatelessWidget {
   final DragStartBehavior dragStartBehavior;
 
   @override
-  Widget build(BuildContext context) => Dismissible(
-      child: child,
-      key: key,
-      background: background,
-      secondaryBackground: secondaryBackground,
-      confirmDismiss: confirmDismiss,
-      onResize: onResize,
-      onDismissed: onDismissed,
-      direction: direction,
-      resizeDuration: resizeDuration,
-      dismissThresholds: dismissThresholds,
-      movementDuration: movementDuration,
-      crossAxisEndOffset: crossAxisEndOffset,
-      dragStartBehavior: dragStartBehavior);
+  Widget build(BuildContext context) =>
+      Dismissible(
+          child: child,
+          key: key,
+          background: background,
+          secondaryBackground: secondaryBackground,
+          confirmDismiss: confirmDismiss,
+          onResize: onResize,
+          onDismissed: onDismissed,
+          direction: direction,
+          resizeDuration: resizeDuration,
+          dismissThresholds: dismissThresholds,
+          movementDuration: movementDuration,
+          crossAxisEndOffset: crossAxisEndOffset,
+          dragStartBehavior: dragStartBehavior);
 }
 
 ///  组件右上角加红点
 class HintDot extends StatelessWidget {
-  const HintDot(
-      {Key key,
-      @required this.child,
-      this.pointPadding,
-      this.width,
-      this.height,
-      this.onTap,
-      this.margin,
-      this.pointColor,
-      this.top,
-      this.right,
-      this.bottom,
-      this.left,
-      this.pointSize,
-      bool hide,
-      this.pointChild,
-      this.alignment})
+  const HintDot({Key key,
+    @required this.child,
+    this.pointPadding,
+    this.width,
+    this.height,
+    this.onTap,
+    this.margin,
+    this.pointColor,
+    this.top,
+    this.right,
+    this.bottom,
+    this.left,
+    this.pointSize,
+    bool hide,
+    this.pointChild,
+    this.alignment})
       : hide = hide ?? false,
         super(key: key);
 
@@ -327,7 +328,11 @@ class HintDot extends StatelessWidget {
     if (alignment != null) dot = Align(alignment: alignment, child: dot);
     if (right != null || top != null || bottom != null || left != null)
       dot = Positioned(
-          right: right, top: top, bottom: bottom, left: left, child: dot);
+          right: right,
+          top: top,
+          bottom: bottom,
+          left: left,
+          child: dot);
     if (dot != null) children.add(dot);
     return Universal(
         onTap: onTap,
@@ -338,13 +343,14 @@ class HintDot extends StatelessWidget {
         children: children);
   }
 
-  Widget dotWidget() => Container(
-      child: pointChild,
-      padding: pointPadding,
-      width: pointChild == null ? (pointSize ?? getWidth(4)) : null,
-      height: pointChild == null ? (pointSize ?? getWidth(4)) : null,
-      decoration: BoxDecoration(
-          color: pointColor ?? getColors(red), shape: BoxShape.circle));
+  Widget dotWidget() =>
+      Container(
+          child: pointChild,
+          padding: pointPadding,
+          width: pointChild == null ? (pointSize ?? 4) : null,
+          height: pointChild == null ? (pointSize ?? 4) : null,
+          decoration: BoxDecoration(
+              color: pointColor ?? getColors(red), shape: BoxShape.circle));
 }
 
 class CustomDrawer extends StatefulWidget {
@@ -355,7 +361,8 @@ class CustomDrawer extends StatefulWidget {
     @required this.child,
     this.backgroundColor,
     this.callback,
-  })  : width = width ?? getWidth(0) * 0.7,
+  })
+      : width = width ?? getWidth(0) * 0.7,
         elevation = elevation ?? 16.0,
         super(key: key);
 

@@ -153,11 +153,16 @@ class _ListWheelState extends State<ListWheel> {
           child: wheel,
           onNotification: widget.onNotification ??
               (Notification notification) {
-                if (notification is ScrollStartNotification)
+                if (notification is ScrollStartNotification &&
+                    widget.onScrollStart == null)
                   widget.onScrollStart(controller.selectedItem);
-                if (notification is ScrollUpdateNotification)
+
+                if (notification is ScrollUpdateNotification &&
+                    widget.onScrollUpdate != null)
                   widget.onScrollUpdate(controller.selectedItem);
-                if (notification is ScrollEndNotification)
+
+                if (notification is ScrollEndNotification &&
+                    widget.onScrollEnd != null)
                   widget.onScrollEnd(controller.selectedItem);
                 return true;
               });

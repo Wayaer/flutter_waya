@@ -1,3 +1,5 @@
+## [1.3.10]
+  * fix [ListWheel] The method 'call' was called on null.
 ## [1.3.9]
   * remove Overflow for Universal
 ## [1.3.7]
