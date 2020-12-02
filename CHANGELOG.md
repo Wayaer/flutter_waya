@@ -1,3 +1,5 @@
+## [1.3.8]
+  * remove Overflow for Universal
 ## [1.3.7]
   * simplifying some component parameters 【PopupSureCancel，PopupBase】
   * modify utils partial method name

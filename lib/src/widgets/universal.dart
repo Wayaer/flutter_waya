@@ -38,7 +38,6 @@ class Universal extends StatelessWidget {
     Color shadowColor,
     Widget replacement,
     StackFit stackFit,
-    Overflow overflow,
     MainAxisAlignment mainAxisAlignment,
     CrossAxisAlignment crossAxisAlignment,
     Axis direction,
@@ -159,7 +158,6 @@ class Universal extends StatelessWidget {
         animationDuration = animationDuration ?? kThemeChangeDuration,
         replacement = replacement ?? const SizedBox.shrink(),
         stackFit = stackFit ?? StackFit.loose,
-        overflow = overflow ?? Overflow.clip,
         mainAxisSize = mainAxisSize ?? MainAxisSize.max,
         mainAxisAlignment = mainAxisAlignment ?? MainAxisAlignment.start,
         crossAxisAlignment = crossAxisAlignment ?? CrossAxisAlignment.center,
@@ -356,7 +354,6 @@ class Universal extends StatelessWidget {
   ///  ****** Stack ******  ///
   final bool isStack;
   final StackFit stackFit;
-  final Overflow overflow;
 
   @override
   Widget build(BuildContext context) {
@@ -448,7 +445,6 @@ class Universal extends StatelessWidget {
       alignment: alignment ?? AlignmentDirectional.topStart,
       textDirection: textDirection,
       fit: stackFit,
-      overflow: overflow,
       children: children);
 
   Widget heroWidget({Widget widget}) => Hero(
