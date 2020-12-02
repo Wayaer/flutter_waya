@@ -1,5 +1,6 @@
 ## [1.3.10]
   * fix [ListWheel] The method 'call' was called on null.
+  * remove [ListWheel] dispose().
 ## [1.3.9]
   * remove Overflow for Universal
 ## [1.3.7]
