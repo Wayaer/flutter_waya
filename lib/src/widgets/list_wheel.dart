@@ -25,7 +25,8 @@ class ListWheel extends StatefulWidget {
     this.onNotification,
     this.onScrollStart,
     this.onScrollUpdate,
-  })  : diameterRatio = diameterRatio ?? 1,
+  })
+      : diameterRatio = diameterRatio ?? 1,
         offAxisFraction = offAxisFraction ?? 0,
         initialIndex = initialIndex ?? 0,
         perspective = perspective ?? 0.01,
@@ -42,7 +43,7 @@ class ListWheel extends StatefulWidget {
     if (childDelegateType == null ||
         childDelegateType == ListWheelChildDelegateType.builder) {
       assert(itemCount != null && itemBuilder != null,
-          'childDelegateType default is "ListWheelChildDelegateType.builder", The necessary conditions must be passed');
+      'childDelegateType default is "ListWheelChildDelegateType.builder", The necessary conditions must be passed');
     }
   }
 
@@ -152,9 +153,9 @@ class _ListWheelState extends State<ListWheel> {
       wheel = NotificationListener(
           child: wheel,
           onNotification: widget.onNotification ??
-              (Notification notification) {
+                  (Notification notification) {
                 if (notification is ScrollStartNotification &&
-                    widget.onScrollStart == null)
+                    widget.onScrollStart != null)
                   widget.onScrollStart(controller.selectedItem);
 
                 if (notification is ScrollUpdateNotification &&
@@ -178,18 +179,17 @@ class _ListWheelState extends State<ListWheel> {
 }
 
 class AutoScrollEntry extends StatefulWidget {
-  const AutoScrollEntry(
-      {Key key,
-      int initialIndex,
-      this.itemHeight,
-      this.maxItemCount,
-      this.itemWidth,
-      @required this.children,
-      this.onChanged,
-      this.margin,
-      this.padding,
-      this.duration,
-      this.animateDuration})
+  const AutoScrollEntry({Key key,
+    int initialIndex,
+    this.itemHeight,
+    this.maxItemCount,
+    this.itemWidth,
+    @required this.children,
+    this.onChanged,
+    this.margin,
+    this.padding,
+    this.duration,
+    this.animateDuration})
       : initialIndex = initialIndex ?? 0,
         super(key: key);
 
@@ -236,17 +236,17 @@ class _AutoScrollEntryState extends State<AutoScrollEntry> {
     }
     Tools.addPostFrameCallback((Duration duration) {
       timer = Tools.timerPeriodic(widget.duration ?? const Duration(seconds: 3),
-          (Timer callback) {
-        index += 1;
-        if (index >= maxItemCount) {
-          index = 0;
-          controller.jumpToItem(index);
-        }
-        controller?.animateToItem(index,
-            duration:
+              (Timer callback) {
+            index += 1;
+            if (index >= maxItemCount) {
+              index = 0;
+              controller.jumpToItem(index);
+            }
+            controller?.animateToItem(index,
+                duration:
                 widget.animateDuration ?? const Duration(milliseconds: 500),
-            curve: Curves.linear);
-      });
+                curve: Curves.linear);
+          });
     });
   }
 
