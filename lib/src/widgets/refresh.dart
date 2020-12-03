@@ -105,19 +105,19 @@ class Refresh extends StatelessWidget {
 
   void onTwoLevelVoid() {
     log('onTwoLevel');
-    Ts.timerTools(
+    Ts.timerTs(
         const Duration(seconds: 2), () => refreshController.twoLevelComplete());
   }
 
   void onRefreshVoid() {
     log('onRefresh');
-    Ts.timerTools(
+    Ts.timerTs(
         const Duration(seconds: 2), () => refreshController.refreshCompleted());
   }
 
   void onLoadingVoid() {
     log('onLoading');
-    Ts.timerTools(
+    Ts.timerTs(
         const Duration(seconds: 2), () => refreshController.loadComplete());
   }
 }

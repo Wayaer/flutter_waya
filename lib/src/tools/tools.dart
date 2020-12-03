@@ -130,7 +130,8 @@ class Ts {
   static void addPostFrameCallback(FrameCallback callback) =>
       WidgetsBinding.instance.addPostFrameCallback(callback);
 
-  static Timer timerTools(Duration duration, [Function function]) {
+  /// 时间工具
+  static Timer timerTs(Duration duration, [Function function]) {
     Timer timer;
     timer = Timer(duration, () {
       if (function != null) function();

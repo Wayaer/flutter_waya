@@ -158,7 +158,7 @@ Future<void> showToast(String message,
               child: toast)),
       isAutomaticOff: true);
   haveToast = true;
-  Ts.timerTools(closeDuration ?? _duration, () {
+  Ts.timerTs(closeDuration ?? _duration, () {
     closeOverlay(element: entry);
     haveToast = false;
   });
