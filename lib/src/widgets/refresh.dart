@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
+import 'package:flutter_waya/src/constant/way.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class Refresh extends StatelessWidget {
@@ -101,7 +102,7 @@ class Refresh extends StatelessWidget {
 
   Widget footerText(String text) => Text(text,
       style: footerTextStyle ??
-          TextStyle(fontSize: 13, color: getColors(black70)));
+          WayStyles.textStyle(fontSize: 13, color: getColors(black70)));
 
   void onTwoLevelVoid() {
     log('onTwoLevel');
