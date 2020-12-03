@@ -35,8 +35,7 @@ class DioTools {
     _options.receiveTimeout = options?.receiveTimeout ?? HTTP_TIMEOUT_RECEIVE;
     _options.contentType = options?.contentType ??
         (dio == _dio ? HTTP_CONTENT_TYPE[2] : HTTP_CONTENT_TYPE[1]);
-    _options.responseType = options?.responseType ??
-        (dio == _dio ? ResponseType.json : ResponseType.plain);
+    _options.responseType = options?.responseType ?? ResponseType.json;
     _options.headers = options?.headers ?? <String, dynamic>{};
   }
 
