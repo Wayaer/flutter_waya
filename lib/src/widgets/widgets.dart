@@ -165,7 +165,7 @@ class _CountDownSkipState extends State<CountDownSkip> {
   void initState() {
     super.initState();
     seconds = widget.seconds;
-    Tools.addPostFrameCallback((Duration callback) {
+    Ts.addPostFrameCallback((Duration callback) {
       if (seconds > 0) {
         timer = Timer.periodic(const Duration(seconds: 1), (Timer time) {
           seconds -= 1;

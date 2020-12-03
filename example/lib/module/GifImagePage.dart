@@ -17,7 +17,7 @@ class _GifImagePageState extends State<GifImagePage>
   void initState() {
     super.initState();
     controller = GifController(vsync: this);
-    Tools.addPostFrameCallback((Duration duration) {
+    Ts.addPostFrameCallback((Duration duration) {
       controller.repeat(
           min: 0, max: 74, period: const Duration(milliseconds: 1000));
     });

@@ -195,7 +195,7 @@ class _StretchyHeaderBaseState extends State<StretchyHeaderBase> {
   @override
   void didUpdateWidget(StretchyHeaderBase oldWidget) {
     if (widget.headerData.highlightHeader != null)
-      Tools.addPostFrameCallback(_onLayoutDone);
+      Ts.addPostFrameCallback(_onLayoutDone);
     super.didUpdateWidget(oldWidget);
   }
 
@@ -204,7 +204,7 @@ class _StretchyHeaderBaseState extends State<StretchyHeaderBase> {
     _scrollController = ScrollController();
     _headerSize = widget.headerData.headerHeight;
     if (widget.headerData.highlightHeader != null)
-      Tools.addPostFrameCallback(_onLayoutDone);
+      Ts.addPostFrameCallback(_onLayoutDone);
     super.initState();
   }
 

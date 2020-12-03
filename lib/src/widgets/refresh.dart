@@ -105,19 +105,19 @@ class Refresh extends StatelessWidget {
 
   void onTwoLevelVoid() {
     log('onTwoLevel');
-    Tools.timerTools(
+    Ts.timerTools(
         const Duration(seconds: 2), () => refreshController.twoLevelComplete());
   }
 
   void onRefreshVoid() {
     log('onRefresh');
-    Tools.timerTools(
+    Ts.timerTools(
         const Duration(seconds: 2), () => refreshController.refreshCompleted());
   }
 
   void onLoadingVoid() {
     log('onLoading');
-    Tools.timerTools(
+    Ts.timerTools(
         const Duration(seconds: 2), () => refreshController.loadComplete());
   }
 }
@@ -184,7 +184,7 @@ class _RefreshedState extends State<Refreshed> {
     super.initState();
     controller = widget.controller ?? RefreshController(initialRefresh: false);
     if (widget.controller == null) {
-      Tools.addPostFrameCallback(
+      Ts.addPostFrameCallback(
           (Duration callback) => eventListen((dynamic data) {
                 if (data == null) return;
                 if (data != null && data is RefreshCompletedType) {

@@ -158,7 +158,7 @@ Future<void> showToast(String message,
               child: toast)),
       isAutomaticOff: true);
   haveToast = true;
-  Tools.timerTools(closeDuration ?? _duration, () {
+  Ts.timerTools(closeDuration ?? _duration, () {
     closeOverlay(element: entry);
     haveToast = false;
   });
@@ -445,7 +445,7 @@ Future<T> showDateTimePicker<T>({
   double squeeze,
   ScrollPhysics physics,
 }) {
-  Tools.focusNode(_globalNavigatorKey.currentContext);
+  Ts.focusNode(_globalNavigatorKey.currentContext);
   final Widget widget = DateTimePicker(
       diameterRatio: diameterRatio,
       offAxisFraction: offAxisFraction,
@@ -527,7 +527,7 @@ Future<T> showAreaPicker<T>({
   String defaultCity,
   String defaultDistrict,
 }) {
-  Tools.focusNode(_globalNavigatorKey.currentContext);
+  Ts.focusNode(_globalNavigatorKey.currentContext);
   final Widget widget = AreaPicker(
       defaultProvince: defaultProvince,
       defaultCity: defaultCity,
@@ -608,7 +608,7 @@ Future<T> showMultipleChoicePicker<T>({
   @required int itemCount,
   @required IndexedWidgetBuilder itemBuilder,
 }) {
-  Tools.focusNode(_globalNavigatorKey.currentContext);
+  Ts.focusNode(_globalNavigatorKey.currentContext);
   final Widget widget = MultipleChoicePicker(
       itemCount: itemCount,
       itemBuilder: itemBuilder,

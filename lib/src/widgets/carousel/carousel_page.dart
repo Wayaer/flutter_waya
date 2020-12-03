@@ -463,7 +463,7 @@ class _CarouselPageViewPageViewState extends State<CarouselPageView> {
             duration: widget.duration, curve: widget.curve);
       }
     }
-    if (_transformer != null) Tools.addPostFrameCallback(_onGetSize);
+    if (_transformer != null) Ts.addPostFrameCallback(_onGetSize);
 
     if (_controller != getNotifier()) {
       if (_controller != null) _controller.removeListener(onChangeNotifier);
@@ -476,7 +476,7 @@ class _CarouselPageViewPageViewState extends State<CarouselPageView> {
 
   @override
   void didChangeDependencies() {
-    if (_transformer != null) Tools.addPostFrameCallback(_onGetSize);
+    if (_transformer != null) Ts.addPostFrameCallback(_onGetSize);
     super.didChangeDependencies();
   }
 

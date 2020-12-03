@@ -95,7 +95,7 @@ class _PinBoxState extends State<PinBox> {
       width: widget.width ?? width,
       height: size.height,
       decoration: widget.decoration,
-      onTap: () => Tools.focusNode(context, focusNode: focusNode),
+      onTap: () => Ts.focusNode(context, focusNode: focusNode),
       children: <Widget>[
         Container(alignment: Alignment.center, child: pinTextInput()),
         boxRow(),

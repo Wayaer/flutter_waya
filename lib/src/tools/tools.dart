@@ -42,7 +42,8 @@ void _segmentationLog(String msg) {
   }
 }
 
-class Tools {
+/// Tools
+class Ts {
   static Future<void> exitApp() async => await SystemNavigator.pop();
 
   ///  手机号验证
@@ -71,13 +72,6 @@ class Tools {
   ///  复制到粘贴板
   static void copy(String text) => Clipboard.setData(ClipboardData(text: text));
 
-  ///  分页 计算总页数
-  static int totalPageCount(int recordCount, int pageSize) {
-    int totalPage = recordCount ~/ pageSize;
-    if (recordCount % pageSize != 0) totalPage += 1;
-    return totalPage;
-  }
-
   ///  时间戳转换
   static String stampToDate(int s, {DateType dateType, bool micro}) {
     micro ??= false;
@@ -88,6 +82,7 @@ class Tools {
         : formatDate(DateTime.fromMillisecondsSinceEpoch(s), dateType);
   }
 
+  ///  格式化时间
   static String formatDate(DateTime date, [DateType dateType]) {
     dateType ??= DateType.yearSecond;
     final String year = date.year.toString();
@@ -180,6 +175,7 @@ class Tools {
     }
   }
 
+  /// pop 返回简写 带参数  nullBack  navigator 返回为空 就继续返回上一页面
   static void popBack(Future<dynamic> navigator, {bool nullBack = true}) {
     final Future<dynamic> future = navigator;
     future.then((dynamic value) {

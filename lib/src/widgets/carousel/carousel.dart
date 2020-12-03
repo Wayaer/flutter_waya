@@ -893,7 +893,7 @@ abstract class _CustomLayoutStateBase<T extends _SubCarousel> extends State<T>
 
   @override
   void didChangeDependencies() {
-    Tools.addPostFrameCallback((Duration duration) => afterRender());
+    Ts.addPostFrameCallback((Duration duration) => afterRender());
     super.didChangeDependencies();
   }
 
