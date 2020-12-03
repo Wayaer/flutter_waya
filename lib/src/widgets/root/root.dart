@@ -368,7 +368,7 @@ class OverlayScaffold extends StatefulWidget {
   _OverlayScaffoldState createState() => _OverlayScaffoldState();
 }
 
-bool _scaffoldWillPop = true;
+bool scaffoldWillPop = true;
 
 class _OverlayScaffoldState extends State<OverlayScaffold> {
   GlobalKey<State> _globalKey = GlobalKey();
@@ -410,7 +410,7 @@ class _OverlayScaffoldState extends State<OverlayScaffold> {
   }
 
   Future<bool> onWillPop() async {
-    if (!_scaffoldWillPop) return _scaffoldWillPop;
+    if (!scaffoldWillPop) return scaffoldWillPop;
     if (widget.onWillPopOverlayClose &&
         _overlayEntryList.isNotEmpty &&
         !_overlayEntryList.last.isAutomaticOff) {
