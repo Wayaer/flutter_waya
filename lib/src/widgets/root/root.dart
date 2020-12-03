@@ -545,28 +545,27 @@ WidgetMode _widgetMode;
 
 void setGlobalPushMode(WidgetMode widgetMode) => _widgetMode = widgetMode;
 
-Route<T> _pageRoute<T>({
-  WidgetBuilder builder,
-  Widget widget,
-  String title,
-  RouteSettings settings,
-  bool maintainState,
-  bool fullscreenDialog,
-  WidgetMode pushMode,
-}) {
+Route<T> _pageRoute<T>(
+    {WidgetBuilder builder,
+    Widget widget,
+    String title,
+    RouteSettings settings,
+    bool maintainState,
+    bool fullscreenDialog,
+    WidgetMode pushMode}) {
   assert(builder != null || widget != null);
-  _widgetMode = pushMode ?? WidgetMode.material;
+  _widgetMode = pushMode ?? _widgetMode ?? WidgetMode.cupertino;
   if (_widgetMode == WidgetMode.cupertino) {
     return CupertinoPageRoute<T>(
         title: title,
         maintainState: maintainState ?? true,
         fullscreenDialog: fullscreenDialog ?? false,
         settings: settings,
-        builder: builder ?? (BuildContext context) => widget);
+        builder: builder ?? (_) => widget);
   }
   return MaterialPageRoute<T>(
       maintainState: maintainState ?? true,
       fullscreenDialog: fullscreenDialog ?? false,
       settings: settings,
-      builder: builder ?? (BuildContext context) => widget);
+      builder: builder ?? (_) => widget);
 }
