@@ -68,11 +68,11 @@ enum LoadingType {
   ///  不常用 下拉刷新圆圈
   refresh,
 }
-enum PushMode {
-  ///  从右往左push
+enum WidgetMode {
+  ///  Cupertino风格
   cupertino,
 
-  ///  从下往上 push
+  ///  Material风格
   material,
 }
 enum InputTextType {

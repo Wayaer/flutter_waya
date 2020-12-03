@@ -10,7 +10,7 @@ import 'package:waya/module/ToastPage.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(GlobalMaterial(title: 'Waya Demo', home: Home()));
+  runApp(GlobalWidgetsApp(title: 'Waya Demo', home: Home()));
 }
 
 class Home extends StatelessWidget {

@@ -248,19 +248,19 @@ class Universal extends StatelessWidget {
   final bool addInkWell;
   final bool enabled;
 
-  ///  点击
+  ///  短暂触摸屏幕时触发
   final GestureTapCallback onTap;
 
-  ///  双击
+  ///  用户在短时间内触摸了屏幕两次
   final GestureTapCallback onDoubleTap;
 
-  ///  长按
+  ///  用户触摸屏幕时间超过500ms时触发
   final GestureLongPressCallback onLongPress;
 
-  ///  按下回调
+  ///  用户每次和屏幕交互时都会被调用
   final GestureTapDownCallback onTapDown;
 
-  ///  点击取消
+  ///  短暂触摸屏幕时触发取消
   final GestureTapCancelCallback onTapCancel;
 
   final bool excludeFromSemantics;
@@ -268,40 +268,75 @@ class Universal extends StatelessWidget {
   ///  ****** GestureDetector ******  ///
   ///  点击抬起
   final GestureTapUpCallback onTapUp;
+
   final GestureTapDownCallback onSecondaryTapDown;
   final GestureTapUpCallback onSecondaryTapUp;
   final GestureTapCancelCallback onSecondaryTapCancel;
+
+  ///  用户触摸屏幕时间超过500ms时触发开始
   final GestureLongPressStartCallback onLongPressStart;
+
+  ///  用户触摸屏幕时间超过500ms时移动触摸
   final GestureLongPressMoveUpdateCallback onLongPressMoveUpdate;
+
+  ///  用户触摸屏幕时间超过500ms时抬起触发
   final GestureLongPressUpCallback onLongPressUp;
+
+  ///  用户触摸屏幕时间超过500ms时触发结束
   final GestureLongPressEndCallback onLongPressEnd;
+
+  ///  当一个触摸点开始跟屏幕交互，同时在垂直方向上移动时触发
   final GestureDragDownCallback onVerticalDragDown;
+
+  ///  当触摸点开始在垂直方向上移动时触发
   final GestureDragStartCallback onVerticalDragStart;
+
+  ///  屏幕上的触摸点位置每次改变时，都会触发这个回调
   final GestureDragUpdateCallback onVerticalDragUpdate;
+
+  /// 当用户停止移动，这个拖拽操作就被认为是完成了，就会触发这个回调
   final GestureDragEndCallback onVerticalDragEnd;
+
+  ///  用户突然停止拖拽时触发
   final GestureDragCancelCallback onVerticalDragCancel;
+
+  ///  当一个触摸点开始跟屏幕交互，同时在水平方向上移动时触发
   final GestureDragDownCallback onHorizontalDragDown;
+
+  ///  当触摸点开始在水平方向上移动时触发
   final GestureDragStartCallback onHorizontalDragStart;
+
+  ///  屏幕上的触摸点位置每次改变时，都会触发这个回调
   final GestureDragUpdateCallback onHorizontalDragUpdate;
+
+  ///  水平拖拽结束时触发
   final GestureDragEndCallback onHorizontalDragEnd;
+
+  ///  onHorizontalDragDown没有成功完成时触发
   final GestureDragCancelCallback onHorizontalDragCancel;
 
-  ///  按下回调
+  ///  当触摸点开始跟屏幕交互时触发
   final GestureDragDownCallback onPanDown;
 
-  ///  拖动开始
+  ///  当触摸点开始移动时触发
   final GestureDragStartCallback onPanStart;
 
-  ///  拖动更新
+  ///  屏幕上的触摸点位置每次改变时，都会触发这个回调
   final GestureDragUpdateCallback onPanUpdate;
 
-  ///  拖动结束
+  ///  pan操作完成时触发
   final GestureDragEndCallback onPanEnd;
 
-  ///  拖动取消
+  ///  用户触摸了屏幕，但是没有完成Tap的动作时触发
   final GestureDragCancelCallback onPanCancel;
+
+  ///  触摸点开始跟屏幕交互时触发，同时会建立一个焦点为1.0
   final GestureScaleStartCallback onScaleStart;
+
+  ///  跟屏幕交互时触发，同时会标示一个新的焦点
   final GestureScaleUpdateCallback onScaleUpdate;
+
+  ///  	触摸点不再跟屏幕有任何交互，同时也表示这个scale手势完成
   final GestureScaleEndCallback onScaleEnd;
   final GestureForcePressStartCallback onForcePressStart;
   final GestureForcePressPeakCallback onForcePressPeak;
@@ -491,13 +526,7 @@ class Universal extends StatelessWidget {
       clipBehavior: clipBehavior,
       animationDuration: animationDuration,
       child: Ink(
-
-          ///            padding: padding,
-          ///            color: color,
           decoration: decoration,
-
-          ///            width: width,
-          ///            height: height,
           child: InkWell(
             child: widget,
             onTap: onTap,
@@ -526,8 +555,6 @@ class Universal extends StatelessWidget {
   Widget singleChildScrollViewWidget({Widget widget}) => SingleChildScrollView(
       physics: physics,
       reverse: reverse,
-
-      ///       padding: padding,
       primary: primary,
       dragStartBehavior: dragStartBehavior,
       controller: scrollController,

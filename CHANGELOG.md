@@ -1,5 +1,8 @@
 ## [1.5.0]
   * change Tools to Ts.
+  * change GlobalMaterial to GlobalWidgetsApp.
+  * modify push and pop
+  * add  Universal tagging
 ## [1.3.10]
   * fix [ListWheel] The method 'call' was called on null.
   * remove [ListWheel] dispose().
