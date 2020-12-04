@@ -127,6 +127,7 @@ class DioTools {
       {Map<String, dynamic> params,
       dynamic data,
       BaseOptions options,
+      CancelToken cancelToken,
       ProgressCallback onSendProgress,
       ProgressCallback onReceiveProgress}) async {
     try {
@@ -136,7 +137,7 @@ class DioTools {
       return await dio.post<dynamic>(url,
           queryParameters: params,
           data: data,
-          cancelToken: _cancelToken,
+          cancelToken: cancelToken ?? _cancelToken,
           onSendProgress: onSendProgress,
           onReceiveProgress: onReceiveProgress);
     } catch (e) {
