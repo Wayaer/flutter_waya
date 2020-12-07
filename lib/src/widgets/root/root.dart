@@ -159,7 +159,7 @@ class GlobalWidgetsApp extends StatelessWidget {
         debugShowMaterialGrid != null ||
         darkTheme != null ||
         themeMode != null ||
-        widgetMode == WidgetMode.material) materialApp();
+        widgetMode == WidgetMode.material) return materialApp();
     if (cupertinoTheme != null || widgetMode == WidgetMode.cupertino)
       return cupertinoApp();
     return WidgetsApp(
