@@ -27,9 +27,9 @@ class AreaPicker extends StatefulWidget {
     this.defaultProvince,
     this.defaultCity,
     this.defaultDistrict,
-  })  : sure = sure ?? WayWidgets.textDefault('sure'),
-        title = title ?? WayWidgets.textDefault('title'),
-        cancel = cancel ?? WayWidgets.textDefault('cancel'),
+  })  : sure = sure ?? TextDefault('sure'),
+        title = title ?? TextDefault('title'),
+        cancel = cancel ?? TextDefault('cancel'),
         height = height ?? ConstConstant.pickerHeight,
         super(key: key);
 
@@ -257,7 +257,7 @@ class _AreaPickerState extends State<AreaPicker> {
   Widget item(String value) {
     return Container(
         alignment: Alignment.center,
-        child: WayWidgets.textSmall(value,
+        child: TextSmall(value,
             overflow: TextOverflow.ellipsis, style: contentStyle));
   }
 
@@ -292,9 +292,9 @@ class MultipleChoicePicker extends StatelessWidget {
     Widget title,
     this.titleBottom,
   })  : height = height ?? ConstConstant.pickerHeight,
-        sure = sure ?? WayWidgets.textDefault('sure'),
-        title = title ?? WayWidgets.textDefault('title'),
-        cancel = cancel ?? WayWidgets.textDefault('cancel'),
+        sure = sure ?? TextDefault('sure'),
+        title = title ?? TextDefault('title'),
+        cancel = cancel ?? TextDefault('cancel'),
         color = color ?? getColors(white),
         controller =
             FixedExtentScrollController(initialItem: initialIndex ?? 0),
@@ -408,9 +408,9 @@ class DateTimePicker extends StatefulWidget {
     this.endDate,
     this.titleBottom,
   })  : unit = unit ?? DateTimePickerUnit().getDefaultUnit(),
-        sure = sure ?? WayWidgets.textDefault('sure'),
-        title = title ?? WayWidgets.textDefault('title'),
-        cancel = cancel ?? WayWidgets.textDefault('cancel'),
+        sure = sure ?? TextDefault('sure'),
+        title = title ?? TextDefault('title'),
+        cancel = cancel ?? TextDefault('cancel'),
         height = height ?? ConstConstant.pickerHeight,
         showUnit = showUnit ?? true,
         dual = dual ?? true,
@@ -757,7 +757,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
         physics: widget.physics,
         initialIndex: initialIndex,
         itemBuilder: (_, int index) =>
-            WayWidgets.textSmall(list[index].toString(), style: contentStyle),
+            TextSmall(list[index].toString(), style: contentStyle),
         itemCount: list.length,
         onChanged: onChanged);
   }

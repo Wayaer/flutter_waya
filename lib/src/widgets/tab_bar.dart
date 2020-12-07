@@ -180,8 +180,7 @@ class TabBarBox extends StatelessWidget {
         indicatorColor: selectedLabelColor ?? getColors(blue),
         indicatorWeight: indicatorWeight ?? getWidth(1),
         indicatorPadding: indicatorPadding,
-        labelStyle:
-            selectedLabelStyle ?? WayStyles.textStyleBlack70(fontSize: 13),
+        labelStyle: selectedLabelStyle ?? TextStyleBlack70(fontSize: 13),
         unselectedLabelStyle: unselectedLabelStyle,
         indicatorSize: indicatorSize ?? TabBarIndicatorSize.label,
       );

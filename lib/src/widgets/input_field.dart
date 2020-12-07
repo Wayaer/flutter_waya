@@ -359,7 +359,7 @@ class InputField extends StatelessWidget {
         cursorWidth: cursorWidth,
         obscureText: obscureText,
         keyboardType: keyboardType,
-        style: inputStyle ?? WayStyles.textStyleBlack70(),
+        style: inputStyle ?? TextStyleBlack70(),
         controller: controller,
         decoration: inputDecoration ??
             InputDecoration(
@@ -418,7 +418,7 @@ class InputField extends StatelessWidget {
               hintText: hintText,
 
               /// 显示在输入框内的提示信息，当输入框为空时显示，一旦开始输入内容就消失
-              hintStyle: hintStyle ?? WayStyles.textStyleBlack30(fontSize: 16),
+              hintStyle: hintStyle ?? TextStyleBlack30(fontSize: 16),
               hintMaxLines: hintMaxLines ?? 1,
 
               /// 提示语的做多显示行数，超过行数显示...

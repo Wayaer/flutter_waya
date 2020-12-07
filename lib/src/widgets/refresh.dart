@@ -102,7 +102,7 @@ class Refresh extends StatelessWidget {
 
   Widget footerText(String text) => Text(text,
       style: footerTextStyle ??
-          WayStyles.textStyle(fontSize: 13, color: getColors(black70)));
+          BaseTextStyle(fontSize: 13, color: getColors(black70)));
 
   void onTwoLevelVoid() {
     log('onTwoLevel');

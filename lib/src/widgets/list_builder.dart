@@ -64,8 +64,7 @@ class GridBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (itemCount == 0)
-      return noData ??
-          WayWidgets.notDataWidget(margin: EdgeInsets.all(getWidth(10)));
+      return noData ?? NotData(margin: EdgeInsets.all(getWidth(10)));
     return GridView.builder(
       physics: physics,
       itemCount: itemCount,
@@ -179,8 +178,7 @@ class ListBuilder extends StatelessWidget {
 
   Widget listViewBuilder() {
     if (itemCount == 0)
-      return noData ??
-          WayWidgets.notDataWidget(margin: EdgeInsets.all(getWidth(10)));
+      return noData ?? NotData(margin: EdgeInsets.all(getWidth(10)));
     return ListView.builder(
       scrollDirection: scrollDirection,
       physics: physics,
@@ -204,8 +202,7 @@ class ListBuilder extends StatelessWidget {
 
   Widget listViewCustom() {
     if (itemCount == 0)
-      return noData ??
-          WayWidgets.notDataWidget(margin: EdgeInsets.all(getWidth(10)));
+      return noData ?? NotData(margin: EdgeInsets.all(getWidth(10)));
     return ListView.custom(
         scrollDirection: scrollDirection,
         physics: physics,
@@ -224,8 +221,7 @@ class ListBuilder extends StatelessWidget {
 
   Widget listViewSeparated() {
     if (itemCount == 0)
-      return noData ??
-          WayWidgets.notDataWidget(margin: EdgeInsets.all(getWidth(10)));
+      return noData ?? NotData(margin: EdgeInsets.all(getWidth(10)));
     return ListView.separated(
         scrollDirection: scrollDirection,
         physics: physics,

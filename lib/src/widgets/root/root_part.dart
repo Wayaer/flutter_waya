@@ -136,11 +136,9 @@ Future<void> showToast(String message,
         spacing: spacing ?? 10,
         size: size ?? 30,
         color: getColors(white),
-        title: WayWidgets.textDefault(message,
-            color: getColors(white), maxLines: 4));
+        title: TextDefault(message, color: getColors(white), maxLines: 4));
   } else {
-    toast =
-        WayWidgets.textDefault(message, color: getColors(white), maxLines: 4);
+    toast = TextDefault(message, color: getColors(white), maxLines: 4);
   }
 
   final OverlayEntryMap entry = showOverlay(

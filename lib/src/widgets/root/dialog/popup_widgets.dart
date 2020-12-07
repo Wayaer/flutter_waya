@@ -170,7 +170,7 @@ class _DropdownMenuState extends State<DropdownMenu> {
         itemBuilder: (_, int i) => SimpleButton(
               text: value[index][i],
               width: double.infinity,
-              textStyle: widget.valueStyle ?? WayStyles.textStyleBlack70(),
+              textStyle: widget.valueStyle ?? TextStyleBlack70(),
               onTap: () {
                 if (widget.valueTap != null) widget.valueTap(index, i);
                 changeState(index);
@@ -352,7 +352,7 @@ class Loading extends Dialog {
     this.semanticsLabel,
     this.semanticsValue,
   })  : text = text ?? '加载中...',
-        textStyle = textStyle ?? WayStyles.textStyleBlack70(),
+        textStyle = textStyle ?? TextStyleBlack70(),
         strokeWidth = strokeWidth ?? 4.0,
         color = backgroundColor ?? getColors(white),
         loadingType = loadingType ?? LoadingType.circular,
