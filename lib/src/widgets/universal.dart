@@ -422,26 +422,26 @@ class Universal extends StatelessWidget {
       }
     }
     if (isScroll) widget = singleChildScrollViewWidget(widget);
-    widget = containerWidget(widget);
+    if (padding != null ||
+        margin != null ||
+        height != null ||
+        width != null ||
+        color != null ||
+        constraints != null ||
+        alignment != null ||
+        decoration != null) {
+      widget = containerWidget(widget);
+    }
+
     if (enabled || onTap != null) {
-      if (addInkWell)
-        widget = inkWellWidget(widget);
-      else
-        widget = gestureDetectorWidget(widget);
+      widget =
+          addInkWell ? inkWellWidget(widget) : gestureDetectorWidget(widget);
     }
     if (sizedBoxExpand) widget = SizedBox.expand(child: widget);
     if (heroTag != null) widget = heroWidget(widget);
     if (addCard) widget = cardWidget(widget);
     if (isCircleAvatar) widget = circleAvatarWidget(widget);
     if (isClip) widget = clipWidget(widget);
-    widget = refreshedWidget(widget);
-    if (isFlexible || expanded) widget = flexibleWidget(widget);
-    if (offstage) widget = offstageWidget(widget);
-    if (!visible) widget = visibilityWidget(widget);
-    return widget;
-  }
-
-  Widget refreshedWidget(Widget widget) {
     if (refreshController != null ||
         onRefresh != null ||
         onLoading != null ||
@@ -450,20 +450,27 @@ class Universal extends StatelessWidget {
         enablePullUp != null ||
         enableTwoLevel != null ||
         footer != null ||
-        header != null)
-      return Refreshed(
-          controller: refreshController,
-          child: widget,
-          onRefresh: onRefresh,
-          onLoading: onLoading,
-          onTwoLevel: onTwoLevel,
-          enablePullDown: enablePullDown,
-          enablePullUp: enablePullUp,
-          enableTwoLevel: enableTwoLevel,
-          header: header,
-          footer: footer);
+        header != null) {
+      widget = refreshedWidget(widget);
+    }
+
+    if (isFlexible || expanded) widget = flexibleWidget(widget);
+    if (offstage) widget = offstageWidget(widget);
+    if (!visible) widget = visibilityWidget(widget);
     return widget;
   }
+
+  Widget refreshedWidget(Widget widget) => Refreshed(
+      controller: refreshController,
+      child: widget,
+      onRefresh: onRefresh,
+      onLoading: onLoading,
+      onTwoLevel: onTwoLevel,
+      enablePullDown: enablePullDown,
+      enablePullUp: enablePullUp,
+      enableTwoLevel: enableTwoLevel,
+      header: header,
+      footer: footer);
 
   Widget offstageWidget(Widget widget) =>
       Offstage(child: widget, offstage: offstage);
@@ -482,17 +489,19 @@ class Universal extends StatelessWidget {
   Widget clipWidget(Widget widget) {
     Clip behavior = clipBehavior;
     if (clipBehavior == Clip.none) behavior = null;
-    if (clipperRect != null)
+    if (clipperRect != null) {
       return ClipRect(
           child: widget,
           clipper: clipperRect,
           clipBehavior: behavior ?? Clip.hardEdge);
+    }
 
-    if (clipperPath != null)
+    if (clipperPath != null) {
       return ClipPath(
           child: widget,
           clipper: clipperPath,
           clipBehavior: behavior ?? Clip.antiAlias);
+    }
 
     return ClipRRect(
         child: widget,
@@ -597,30 +606,19 @@ class Universal extends StatelessWidget {
       textDirection: textDirection,
       mainAxisSize: mainAxisSize);
 
-  Widget containerWidget(Widget widget) {
-    if (padding != null ||
-        margin != null ||
-        height != null ||
-        width != null ||
-        color != null ||
-        constraints != null ||
-        alignment != null ||
-        decoration != null)
-      Container(
-          foregroundDecoration: foregroundDecoration,
-          clipBehavior: clipBehavior,
-          transform: transform,
-          constraints: constraints,
-          alignment: alignment,
-          color: decoration == null ? color : null,
-          width: width,
-          height: height,
-          padding: padding,
-          margin: margin,
-          decoration: decoration,
-          child: widget);
-    return widget;
-  }
+  Widget containerWidget(Widget widget) => Container(
+      foregroundDecoration: foregroundDecoration,
+      clipBehavior: clipBehavior,
+      transform: transform,
+      constraints: constraints,
+      alignment: alignment,
+      color: decoration == null ? color : null,
+      width: width,
+      height: height,
+      padding: padding,
+      margin: margin,
+      decoration: decoration,
+      child: widget);
 
   Widget gestureDetectorWidget(Widget widget) => GestureDetector(
       onTapDown: onTapDown,

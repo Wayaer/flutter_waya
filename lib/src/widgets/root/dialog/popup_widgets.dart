@@ -20,6 +20,7 @@ class PopupBase extends StatelessWidget {
       double right,
       double bottom,
       AlignmentGeometry alignment,
+      MainAxisSize mainAxisSize,
       this.behavior,
       this.child,
       this.onTap,
@@ -27,7 +28,6 @@ class PopupBase extends StatelessWidget {
       this.mainAxisAlignment,
       this.crossAxisAlignment,
       this.direction,
-      this.mainAxisSize,
       this.isScroll,
       this.isStack})
       : top = top ?? 0,
@@ -39,6 +39,7 @@ class PopupBase extends StatelessWidget {
         addMaterial = addMaterial ?? false,
         handleTouch = handleTouch ?? true,
         fuzzyDegree = fuzzyDegree ?? 2,
+        mainAxisSize = mainAxisSize ?? MainAxisSize.min,
         super(key: key);
 
   /// 顶层组件
