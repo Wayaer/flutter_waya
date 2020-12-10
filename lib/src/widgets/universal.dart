@@ -124,6 +124,15 @@ class Universal extends StatelessWidget {
     this.clipperRRect,
     this.clipperRect,
     this.clipperPath,
+    this.refreshController,
+    this.onRefresh,
+    this.onLoading,
+    this.onTwoLevel,
+    this.enablePullDown,
+    this.enablePullUp,
+    this.enableTwoLevel,
+    this.header,
+    this.footer,
   })  : isScroll = isScroll ?? false,
         addCard = addCard ?? false,
         semanticContainer = semanticContainer ?? true,
@@ -390,6 +399,17 @@ class Universal extends StatelessWidget {
   final bool isStack;
   final StackFit stackFit;
 
+  ///  ****** Refreshed ******  ///
+  final RefreshController refreshController;
+  final VoidCallback onRefresh;
+  final VoidCallback onLoading;
+  final VoidCallback onTwoLevel;
+  final bool enablePullDown;
+  final bool enablePullUp;
+  final bool enableTwoLevel;
+  final Widget header;
+  final Widget footer;
+
   @override
   Widget build(BuildContext context) {
     Widget widget = Container();
@@ -401,39 +421,54 @@ class Universal extends StatelessWidget {
         widget = flexWidget(children: children);
       }
     }
-    if (isScroll) widget = singleChildScrollViewWidget(widget: widget);
-    if (padding != null ||
-        margin != null ||
-        height != null ||
-        width != null ||
-        color != null ||
-        constraints != null ||
-        alignment != null ||
-        decoration != null) {
-      widget = containerWidget(widget: widget);
-    }
-
+    if (isScroll) widget = singleChildScrollViewWidget(widget);
+    widget = containerWidget(widget);
     if (enabled || onTap != null) {
       if (addInkWell)
-        widget = inkWellWidget(widget: widget);
+        widget = inkWellWidget(widget);
       else
-        widget = gestureDetectorWidget(widget: widget);
+        widget = gestureDetectorWidget(widget);
     }
     if (sizedBoxExpand) widget = SizedBox.expand(child: widget);
-    if (heroTag != null) widget = heroWidget(widget: widget);
-    if (addCard) widget = cardWidget(widget: widget);
-    if (isCircleAvatar) widget = circleAvatarWidget(widget: widget);
-    if (isClip) widget = clipWidget(widget: widget);
-    if (!visible) widget = visibilityWidget(widget: widget);
-    if (offstage) widget = offstageWidget(widget: widget);
-    if (isFlexible || expanded) widget = flexibleWidget(widget: widget);
+    if (heroTag != null) widget = heroWidget(widget);
+    if (addCard) widget = cardWidget(widget);
+    if (isCircleAvatar) widget = circleAvatarWidget(widget);
+    if (isClip) widget = clipWidget(widget);
+    widget = refreshedWidget(widget);
+    if (isFlexible || expanded) widget = flexibleWidget(widget);
+    if (offstage) widget = offstageWidget(widget);
+    if (!visible) widget = visibilityWidget(widget);
     return widget;
   }
 
-  Widget offstageWidget({Widget widget}) =>
+  Widget refreshedWidget(Widget widget) {
+    if (refreshController != null ||
+        onRefresh != null ||
+        onLoading != null ||
+        onTwoLevel != null ||
+        enablePullDown != null ||
+        enablePullUp != null ||
+        enableTwoLevel != null ||
+        footer != null ||
+        header != null)
+      return Refreshed(
+          controller: refreshController,
+          child: widget,
+          onRefresh: onRefresh,
+          onLoading: onLoading,
+          onTwoLevel: onTwoLevel,
+          enablePullDown: enablePullDown,
+          enablePullUp: enablePullUp,
+          enableTwoLevel: enableTwoLevel,
+          header: header,
+          footer: footer);
+    return widget;
+  }
+
+  Widget offstageWidget(Widget widget) =>
       Offstage(child: widget, offstage: offstage);
 
-  Widget cardWidget({Widget widget}) => Card(
+  Widget cardWidget(Widget widget) => Card(
       child: widget,
       color: color,
       clipBehavior: clipBehavior,
@@ -444,21 +479,21 @@ class Universal extends StatelessWidget {
       margin: margin,
       semanticContainer: semanticContainer ?? true);
 
-  Widget clipWidget({Widget widget}) {
+  Widget clipWidget(Widget widget) {
     Clip behavior = clipBehavior;
     if (clipBehavior == Clip.none) behavior = null;
-    if (clipperRect != null) {
+    if (clipperRect != null)
       return ClipRect(
           child: widget,
           clipper: clipperRect,
           clipBehavior: behavior ?? Clip.hardEdge);
-    }
-    if (clipperPath != null) {
+
+    if (clipperPath != null)
       return ClipPath(
           child: widget,
           clipper: clipperPath,
           clipBehavior: behavior ?? Clip.antiAlias);
-    }
+
     return ClipRRect(
         child: widget,
         borderRadius: borderRadius,
@@ -466,7 +501,7 @@ class Universal extends StatelessWidget {
         clipBehavior: behavior ?? Clip.antiAlias);
   }
 
-  Widget circleAvatarWidget({Widget widget}) => CircleAvatar(
+  Widget circleAvatarWidget(Widget widget) => CircleAvatar(
       child: widget,
       backgroundColor: color,
       backgroundImage: backgroundImage,
@@ -482,7 +517,7 @@ class Universal extends StatelessWidget {
       fit: stackFit,
       children: children);
 
-  Widget heroWidget({Widget widget}) => Hero(
+  Widget heroWidget(Widget widget) => Hero(
       tag: heroTag,
       createRectTween: createRectTween,
       flightShuttleBuilder: flightShuttleBuilder,
@@ -490,7 +525,7 @@ class Universal extends StatelessWidget {
       transitionOnUserGestures: transitionOnUserGestures,
       child: widget);
 
-  Widget visibilityWidget({Widget widget}) => Visibility(
+  Widget visibilityWidget(Widget widget) => Visibility(
       child: widget,
       replacement: replacement,
       visible: visible,
@@ -500,21 +535,13 @@ class Universal extends StatelessWidget {
       maintainSemantics: maintainSemantics,
       maintainInteractivity: maintainInteractivity);
 
-  Widget flexibleWidget({Widget widget}) {
-    if (isFlexible) {
-      return Flexible(
-        child: widget,
-        flex: flex,
-        fit: flexFit,
-      );
-    }
-    if (expanded) {
-      return Flexible(child: widget, flex: 1, fit: FlexFit.tight);
-    }
+  Widget flexibleWidget(Widget widget) {
+    if (isFlexible) return Flexible(child: widget, flex: flex, fit: flexFit);
+    if (expanded) return Flexible(child: widget, flex: 1, fit: FlexFit.tight);
     return widget;
   }
 
-  Widget inkWellWidget({Widget widget}) => Material(
+  Widget inkWellWidget(Widget widget) => Material(
       color: color,
       type: type,
       elevation: elevation,
@@ -528,31 +555,30 @@ class Universal extends StatelessWidget {
       child: Ink(
           decoration: decoration,
           child: InkWell(
-            child: widget,
-            onTap: onTap,
-            onLongPress: onLongPress,
-            onDoubleTap: onDoubleTap,
-            onTapDown: onTapDown,
-            onTapCancel: onTapCancel,
-            onHighlightChanged: onHighlightChanged,
-            onHover: onHover,
-            focusColor: focusColor,
-            hoverColor: hoverColor,
-            highlightColor: highlightColor,
-            splashColor: splashColor,
-            splashFactory: splashFactory,
-            radius: radius,
-            borderRadius: borderRadius,
-            customBorder: customBorder,
-            enableFeedback: enableFeedback,
-            excludeFromSemantics: excludeFromSemantics,
-            focusNode: focusNode,
-            canRequestFocus: canRequestFocus,
-            onFocusChange: onFocusChange,
-            autofocus: autoFocus,
-          )));
+              child: widget,
+              onTap: onTap,
+              onLongPress: onLongPress,
+              onDoubleTap: onDoubleTap,
+              onTapDown: onTapDown,
+              onTapCancel: onTapCancel,
+              onHighlightChanged: onHighlightChanged,
+              onHover: onHover,
+              focusColor: focusColor,
+              hoverColor: hoverColor,
+              highlightColor: highlightColor,
+              splashColor: splashColor,
+              splashFactory: splashFactory,
+              radius: radius,
+              borderRadius: borderRadius,
+              customBorder: customBorder,
+              enableFeedback: enableFeedback,
+              excludeFromSemantics: excludeFromSemantics,
+              focusNode: focusNode,
+              canRequestFocus: canRequestFocus,
+              onFocusChange: onFocusChange,
+              autofocus: autoFocus)));
 
-  Widget singleChildScrollViewWidget({Widget widget}) => SingleChildScrollView(
+  Widget singleChildScrollViewWidget(Widget widget) => SingleChildScrollView(
       physics: physics,
       reverse: reverse,
       primary: primary,
@@ -571,21 +597,32 @@ class Universal extends StatelessWidget {
       textDirection: textDirection,
       mainAxisSize: mainAxisSize);
 
-  Widget containerWidget({Widget widget}) => Container(
-      foregroundDecoration: foregroundDecoration,
-      clipBehavior: clipBehavior,
-      transform: transform,
-      constraints: constraints,
-      alignment: alignment,
-      color: decoration == null ? color : null,
-      width: width,
-      height: height,
-      padding: padding,
-      margin: margin,
-      decoration: decoration,
-      child: widget);
+  Widget containerWidget(Widget widget) {
+    if (padding != null ||
+        margin != null ||
+        height != null ||
+        width != null ||
+        color != null ||
+        constraints != null ||
+        alignment != null ||
+        decoration != null)
+      Container(
+          foregroundDecoration: foregroundDecoration,
+          clipBehavior: clipBehavior,
+          transform: transform,
+          constraints: constraints,
+          alignment: alignment,
+          color: decoration == null ? color : null,
+          width: width,
+          height: height,
+          padding: padding,
+          margin: margin,
+          decoration: decoration,
+          child: widget);
+    return widget;
+  }
 
-  Widget gestureDetectorWidget({Widget widget}) => GestureDetector(
+  Widget gestureDetectorWidget(Widget widget) => GestureDetector(
       onTapDown: onTapDown,
       onTapUp: onTapUp,
       onTap: onTap,

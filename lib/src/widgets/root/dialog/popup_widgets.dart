@@ -7,11 +7,9 @@ import 'package:flutter_waya/src/constant/way.dart';
 
 typedef ValueCallback<int> = void Function(int titleIndex, int valueIndex);
 
-class PopupBase extends StatefulWidget {
+class PopupBase extends StatelessWidget {
   const PopupBase(
       {Key key,
-      this.child,
-      this.onTap,
       double fuzzyDegree,
       bool gaussian,
       this.color,
@@ -22,7 +20,16 @@ class PopupBase extends StatefulWidget {
       double right,
       double bottom,
       AlignmentGeometry alignment,
-      this.behavior})
+      this.behavior,
+      this.child,
+      this.onTap,
+      this.children,
+      this.mainAxisAlignment,
+      this.crossAxisAlignment,
+      this.direction,
+      this.mainAxisSize,
+      this.isScroll,
+      this.isStack})
       : top = top ?? 0,
         left = left ?? 0,
         right = right ?? 0,
@@ -36,6 +43,7 @@ class PopupBase extends StatefulWidget {
 
   /// 顶层组件
   final Widget child;
+  final List<Widget> children;
 
   /// 背景事件
   final GestureTapCallback onTap;
@@ -65,39 +73,52 @@ class PopupBase extends StatefulWidget {
   /// 位置
   final AlignmentGeometry alignment;
 
-  @override
-  _PopupBaseState createState() => _PopupBaseState();
-}
+  //// [children] 不为null 时以下参数有效
+  ///  ****** Flex ******  ///
+  final MainAxisAlignment mainAxisAlignment;
+  final CrossAxisAlignment crossAxisAlignment;
+  final Axis direction;
+  final MainAxisSize mainAxisSize;
 
-class _PopupBaseState extends State<PopupBase> {
+  ///  ****** SingleChildScrollView ******  ///
+  final bool isScroll;
+
+  ///  ****** Stack ******  ///
+  final bool isStack;
+
   @override
   Widget build(BuildContext context) {
     Widget child = childWidget();
-    if (widget.gaussian) child = backdropFilter(child);
-    if (widget.addMaterial)
+    if (gaussian) child = backdropFilter(child);
+    if (addMaterial)
       child = Material(
           color: getColors(transparent),
           child: MediaQuery(
               data: MediaQueryData.fromWindow(window), child: child));
 
-    if (!widget.handleTouch)
-      child = IgnorePointer(ignoring: widget.handleTouch, child: child);
+    if (!handleTouch)
+      child = IgnorePointer(ignoring: handleTouch, child: child);
     return child;
   }
 
   Widget backdropFilter(Widget child) => BackdropFilter(
-      filter: ImageFilter.blur(
-          sigmaX: widget.fuzzyDegree, sigmaY: widget.fuzzyDegree),
+      filter: ImageFilter.blur(sigmaX: fuzzyDegree, sigmaY: fuzzyDegree),
       child: child);
 
   Widget childWidget() => Universal(
-      color: widget.color,
-      onTap: widget.onTap,
-      behavior: widget.behavior,
-      alignment: widget.alignment,
-      padding: EdgeInsets.fromLTRB(
-          widget.left, widget.top, widget.right, widget.bottom),
-      child: widget.child);
+      color: color,
+      onTap: onTap,
+      behavior: behavior,
+      alignment: alignment,
+      padding: EdgeInsets.fromLTRB(left, top, right, bottom),
+      child: child,
+      direction: direction,
+      isScroll: isScroll,
+      isStack: isStack,
+      mainAxisSize: mainAxisSize,
+      mainAxisAlignment: mainAxisAlignment,
+      crossAxisAlignment: crossAxisAlignment,
+      children: children);
 }
 
 class DropdownMenu extends StatefulWidget {

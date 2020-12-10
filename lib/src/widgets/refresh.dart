@@ -184,37 +184,34 @@ class _RefreshedState extends State<Refreshed> {
   void initState() {
     super.initState();
     controller = widget.controller ?? RefreshController(initialRefresh: false);
-    if (widget.controller == null) {
-      Ts.addPostFrameCallback(
-          (Duration callback) => eventListen((dynamic data) {
-                if (data == null) return;
-                if (data != null && data is RefreshCompletedType) {
-                  switch (data) {
-                    case RefreshCompletedType.refresh:
-                      controller.refreshCompleted();
-                      break;
-                    case RefreshCompletedType.refreshFailed:
-                      controller.refreshFailed();
-                      break;
-                    case RefreshCompletedType.refreshToIdle:
-                      controller.refreshToIdle();
-                      break;
-                    case RefreshCompletedType.onLoading:
-                      controller.loadComplete();
-                      break;
-                    case RefreshCompletedType.loadFailed:
-                      controller.loadFailed();
-                      break;
-                    case RefreshCompletedType.loadNoData:
-                      controller.loadNoData();
-                      break;
-                    case RefreshCompletedType.twoLevel:
-                      controller.twoLevelComplete();
-                      break;
-                  }
-                }
-              }));
-    }
+    Ts.addPostFrameCallback((Duration callback) => eventListen((dynamic data) {
+          if (data == null) return;
+          if (data != null && data is RefreshCompletedType) {
+            switch (data) {
+              case RefreshCompletedType.refresh:
+                controller?.refreshCompleted();
+                break;
+              case RefreshCompletedType.refreshFailed:
+                controller?.refreshFailed();
+                break;
+              case RefreshCompletedType.refreshToIdle:
+                controller?.refreshToIdle();
+                break;
+              case RefreshCompletedType.onLoading:
+                controller?.loadComplete();
+                break;
+              case RefreshCompletedType.loadFailed:
+                controller?.loadFailed();
+                break;
+              case RefreshCompletedType.loadNoData:
+                controller?.loadNoData();
+                break;
+              case RefreshCompletedType.twoLevel:
+                controller?.twoLevelComplete();
+                break;
+            }
+          }
+        }));
   }
 
   @override
