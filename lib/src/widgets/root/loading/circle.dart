@@ -67,9 +67,7 @@ class _SpinKitCircleState extends State<SpinKitCircle>
         child: SizedBox.fromSize(
             size: Size.square(widget.size),
             child: Stack(
-
-                ///  ignore: always_specify_types
-                children: List.generate(delays.length, (int index) {
+                children: List<Widget>.generate(delays.length, (int index) {
               final double _position = widget.size * .5;
               return Positioned.fill(
                   left: _position,
@@ -159,9 +157,7 @@ class _SpinKitFadingCircleState extends State<SpinKitFadingCircle>
         child: SizedBox.fromSize(
             size: Size.square(widget.size),
             child: Stack(
-
-                ///  ignore: always_specify_types
-                children: List.generate(12, (int i) {
+                children: List<Widget>.generate(12, (int i) {
               final double _position = widget.size * .5;
               return Positioned.fill(
                 left: _position,

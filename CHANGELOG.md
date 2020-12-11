@@ -6,6 +6,7 @@
   * fix GlobalWidgetsApp did not return materialapp
   * modify styles.dart
   * Universal add Refreshed
+  * add des encode and decode
 ## [1.3.10]
   * fix [ListWheel] The method 'call' was called on null.
   * remove [ListWheel] dispose().

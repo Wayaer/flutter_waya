@@ -276,8 +276,7 @@ class ImageSequenceState extends State<ImageSequence>
 
   @override
   Widget build(BuildContext context) {
-    ///  ignore: always_specify_types
-    return ValueListenableBuilder(
+    return ValueListenableBuilder<int>(
       builder: (BuildContext context, int change, Widget cachedChild) {
         if (currentFrame == null ||
             animationController.value.floor() != previousFrame ||

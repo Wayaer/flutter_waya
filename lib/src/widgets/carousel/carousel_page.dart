@@ -367,9 +367,7 @@ class _CarouselPageViewPageViewState extends State<CarouselPageView> {
       reverse: _pageController.reverse,
     );
     if (_transformer == null) return child;
-
-    ///  ignore: always_specify_types
-    return NotificationListener(
+    return NotificationListener<ScrollNotification>(
         onNotification: (ScrollNotification notification) {
           if (notification is ScrollStartNotification) {
             _calcCurrentPixels();

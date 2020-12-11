@@ -148,11 +148,10 @@ class _ListWheelState extends State<ListWheel> {
         magnification: widget.magnification,
         childDelegate: childDelegate);
     if (widget.onScrollEnd != null) {
-      ///  ignore: always_specify_types
-      wheel = NotificationListener(
+      wheel = NotificationListener<ScrollNotification>(
           child: wheel,
           onNotification: widget.onNotification ??
-              (Notification notification) {
+              (ScrollNotification notification) {
                 if (notification is ScrollStartNotification &&
                     widget.onScrollStart != null)
                   widget.onScrollStart(controller.selectedItem);

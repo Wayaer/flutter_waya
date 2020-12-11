@@ -53,8 +53,7 @@ class _SpinKitDoubleBounceState extends State<SpinKitDoubleBounce>
   Widget build(BuildContext context) {
     return Center(
       child: Stack(
-        ///  ignore: always_specify_types
-        children: List.generate(
+        children: List<Widget>.generate(
             2,
             (int i) => Transform.scale(
                   scale: (1.0 - i - _animation.value.abs()).abs(),
@@ -123,9 +122,7 @@ class _SpinKitThreeBounceState extends State<SpinKitThreeBounce>
         size: Size(widget.size * 2, widget.size),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-
-          ///  ignore: always_specify_types
-          children: List.generate(
+          children: List<Widget>.generate(
               3,
               (int i) => ScaleTransition(
                     scale: DelayTween(begin: 0.0, end: 1.0, delay: i * .2)

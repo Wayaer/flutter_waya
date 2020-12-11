@@ -8,6 +8,8 @@ export 'src/constant/enums.dart';
 export 'src/constant/model.dart';
 export 'src/tools/ali_oss.dart';
 export 'src/tools/date/date_format.dart';
+export 'src/tools/des/des.dart';
+export 'src/tools/des/permuted.dart';
 export 'src/tools/dio.dart';
 export 'src/tools/event.dart';
 export 'src/tools/screen_fit.dart';

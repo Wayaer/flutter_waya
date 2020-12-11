@@ -461,8 +461,7 @@ class _CarouselState extends _CarouselTimerMixin {
         controller: _controller,
       );
       if (widget.autoPlayDisableOnInteraction && widget.autoPlay) {
-        ///  ignore: always_specify_types
-        return NotificationListener(
+        return NotificationListener<ScrollNotification>(
           child: child,
           onNotification: (ScrollNotification notification) {
             if (notification is ScrollStartNotification) {

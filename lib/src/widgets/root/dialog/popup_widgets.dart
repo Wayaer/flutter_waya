@@ -240,9 +240,7 @@ class _DropdownMenuState extends State<DropdownMenu> {
 
   List<Widget> titleChildren() {
     if (title == null || title.isEmpty) return <Widget>[];
-
-    ///  ignore: always_specify_types
-    return List.generate(title.length, (int index) {
+    return List<Widget>.generate(title.length, (int index) {
       titleState.add(false);
       return IconBox(
           onTap: () => onTap(index),
