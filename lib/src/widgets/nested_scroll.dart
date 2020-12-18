@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 
 class NestedScrollSliver extends StatefulWidget {
   const NestedScrollSliver({
@@ -15,9 +16,11 @@ class NestedScrollSliver extends StatefulWidget {
     List<StretchMode> stretchModes,
     CollapseMode collapseMode,
     double titleSpacing,
+    double toolbarHeight,
     bool expanded,
     bool primary,
     bool centerTitle,
+    bool flexibleCenterTitle,
     bool snap,
     bool pinned,
     bool floating,
@@ -25,11 +28,13 @@ class NestedScrollSliver extends StatefulWidget {
     double stretchTriggerOffset,
     Brightness brightness,
     double elevation,
-    bool haveSliverHeader,
-    bool haveSliverAppBar,
+    bool hasSliverAppBar,
     bool automaticallyImplyLeading,
     bool forceElevated,
+    bool autoHeight,
+    bool backgroundPaddingBottom,
     Duration duration,
+    int flex,
     this.physics,
     this.body,
     this.controller,
@@ -46,25 +51,35 @@ class NestedScrollSliver extends StatefulWidget {
     this.flexibleSpaceTitle,
     this.preferredSize,
     this.headerSliverBuilder,
-    this.foldBody,
     this.slivers,
+    this.sliverAppBar,
+    this.sliverPersistentHeader,
+    this.restorationId,
+    this.leadingWidth,
+    this.shape,
+    this.background,
+    this.persistentHeader,
   })  : reverse = reverse ?? false,
         expanded = expanded ?? false,
-        haveSliverAppBar = haveSliverAppBar ?? false,
-        haveSliverHeader = haveSliverHeader ?? false,
-        pinned = pinned ?? false,
+        backgroundPaddingBottom = backgroundPaddingBottom ?? true,
+        autoHeight = autoHeight ?? false,
+        hasSliverAppBar = hasSliverAppBar ?? false,
+        pinned = pinned ?? true,
         floating = floating ?? false,
         floatHeaderSlivers = floatHeaderSlivers ?? true,
         clipBehavior = clipBehavior ?? Clip.hardEdge,
         automaticallyImplyLeading = automaticallyImplyLeading ?? true,
         forceElevated = forceElevated ?? false,
         centerTitle = centerTitle ?? true,
+        flexibleCenterTitle = flexibleCenterTitle ?? true,
         snap = snap ?? false,
         primary = primary ?? true,
         stretch = stretch ?? false,
         brightness = brightness ?? Brightness.light,
         elevation = elevation ?? 0.5,
-        duration = duration ?? const Duration(milliseconds: 400),
+        toolbarHeight = toolbarHeight ?? kToolbarHeight,
+        flex = flex ?? 1,
+        duration = duration ?? const Duration(milliseconds: 100),
         stretchTriggerOffset = stretchTriggerOffset ?? 100,
         stretchModes =
             stretchModes ?? const <StretchMode>[StretchMode.zoomBackground],
@@ -74,7 +89,20 @@ class NestedScrollSliver extends StatefulWidget {
         scrollDirection = scrollDirection ?? Axis.vertical,
         super(key: key);
 
+  ///  当组件内有异步延时渲染时 传递此参数将延时计算高度
+  final Duration duration;
+
+  /// 是否自动计算高度
+  final bool autoHeight;
+
+  ///NestedScrollView 外嵌套Expanded
+  final bool expanded;
+  final int flex;
+
   ///  NestedScrollView
+  ///
+  /// 使用此参数是[sliverAppBar]、[sliverPersistentHeader]、[slivers] 均无效
+  final NestedScrollViewHeaderSliversBuilder headerSliverBuilder;
   final bool floatHeaderSlivers;
   final Clip clipBehavior;
   final bool reverse;
@@ -83,15 +111,16 @@ class NestedScrollSliver extends StatefulWidget {
   final DragStartBehavior dragStartBehavior;
   final Widget body;
   final ScrollController controller;
-  final NestedScrollViewHeaderSliversBuilder headerSliverBuilder;
+  final String restorationId;
+
+  /// headerSliverBuilder 添加额外组件
   final List<Widget> slivers;
-  final bool expanded;
 
-  ///  当组件内有异步延时渲染时 传递此参数将延时计算高度
-  final Duration duration;
+  /// **** SliverAppBar **** ///
+  ///  是否显示[sliverAppBar]
+  final bool hasSliverAppBar;
+  final SliverAppBar sliverAppBar;
 
-  ///  SliverAppBar
-  final bool haveSliverAppBar;
   final bool automaticallyImplyLeading;
   final Widget title;
   final List<Widget> actions;
@@ -112,31 +141,42 @@ class NestedScrollSliver extends StatefulWidget {
   final AsyncCallback onStretchTrigger;
   final double elevation;
   final Widget leading;
+  final double leadingWidth;
 
   ///  title是否固定在顶部不消失
   final bool pinned;
 
-  ///  floating和snap同时为true body在滚动时 foldBody 是否悬浮于body之上
+  ///  floating和snap同时为true body在滚动时  是否悬浮于body之上
   ///  floating:true AppBar会在下拉时就立即展开
   final bool floating;
   final bool snap;
+  final ShapeBorder shape;
 
-  ///  final Widget flexibleSpace;
-  final PreferredSizeWidget bottom;
+  final Widget bottom;
+  final bool backgroundPaddingBottom;
+  final double toolbarHeight;
 
-  ///
-  ///  FlexibleSpaceBar
+  /// **** FlexibleSpaceBar **** ///
   final EdgeInsetsGeometry titlePadding;
   final CollapseMode collapseMode;
   final List<StretchMode> stretchModes;
   final Widget flexibleSpaceTitle;
+  final Widget background;
+  final bool flexibleCenterTitle;
 
+  /// **** FlexibleSpaceBar **** ///
+
+  /// **** SliverAppBar **** ///
+
+  /// **** SliverPersistentHeader **** ///
   ///  SliverPersistentHeader
-  final bool haveSliverHeader;
+  final SliverPersistentHeader sliverPersistentHeader;
   final Size preferredSize;
 
-  ///  需要折叠隐藏的区域
-  final Widget foldBody;
+  /// 译为 一直存在 不会随着滚动消失
+  final Widget persistentHeader;
+
+  /// **** SliverPersistentHeader **** ///
 
   @override
   _NestedScrollSliverState createState() => _NestedScrollSliverState();
@@ -145,53 +185,118 @@ class NestedScrollSliver extends StatefulWidget {
 class _NestedScrollSliverState extends State<NestedScrollSliver> {
   double headerHeight = 0;
   bool showNestedScrollView = false;
-  GlobalKey foldKey = GlobalKey();
-  Size foldSize;
+  GlobalKey backgroundKey = GlobalKey();
+  GlobalKey bottomKey = GlobalKey();
+  GlobalKey persistentHeaderKey = GlobalKey();
+  GlobalKey flexibleSpaceTitleKey = GlobalKey();
+
+  Size backgroundSize;
+  Size bottomSize;
+  Size persistentHeaderSize;
+  Size flexibleSpaceTitleSize;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((Duration callback) {
-      Timer(widget.duration, () {
-        foldSize = foldKey.currentContext.size;
-        showNestedScrollView = true;
-        setState(() {});
-      });
-    });
+    if (widget.autoHeight)
+      Ts.addPostFrameCallback((Duration callback) => Timer(widget.duration, () {
+            showNestedScrollView = true;
+            backgroundSize =
+                backgroundKey?.currentContext?.size ?? const Size(0, 0);
+            bottomSize = bottomKey?.currentContext?.size ?? const Size(0, 0);
+            persistentHeaderSize =
+                persistentHeaderKey?.currentContext?.size ?? const Size(0, 0);
+            flexibleSpaceTitleSize =
+                flexibleSpaceTitleKey?.currentContext?.size ?? const Size(0, 0);
+            log(backgroundSize);
+            log(bottomSize);
+            log(persistentHeaderSize);
+            setState(() {});
+          }));
   }
 
   @override
   Widget build(BuildContext context) {
-    if (!showNestedScrollView)
-      return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[Container(key: foldKey, child: widget.foldBody)]);
-    final NestedScrollView nestedScroll = NestedScrollView(
-        floatHeaderSlivers: widget.floatHeaderSlivers,
-        clipBehavior: widget.clipBehavior,
-        scrollDirection: widget.scrollDirection,
-        reverse: widget.reverse,
-        physics: widget.physics,
-        dragStartBehavior: widget.dragStartBehavior,
-        body: widget.body,
-        controller: widget.controller,
-        headerSliverBuilder: widget.headerSliverBuilder ??
-            (BuildContext context, bool innerBoxIsScrolled) =>
-                headerSliverBuilder());
-    if (widget.expanded) return Expanded(child: nestedScroll);
-    return nestedScroll;
+    log(backgroundSize);
+    log(bottomSize);
+    log(persistentHeaderSize);
+    Widget child;
+    if (!showNestedScrollView &&
+        widget.autoHeight &&
+        widget.headerSliverBuilder == null) {
+      log('先计算了宽高');
+      final List<Widget> column = [];
+      if (widget.background != null)
+        column.add(Container(key: backgroundKey, child: widget.background));
+      if (widget.bottom != null)
+        column.add(Container(key: bottomKey, child: widget.bottom));
+      if (widget.persistentHeader != null)
+        column.add(Container(
+            key: persistentHeaderKey, child: widget.persistentHeader));
+      if (widget.flexibleSpaceTitle != null)
+        column.add(Container(
+            key: flexibleSpaceTitleKey, child: widget.flexibleSpaceTitle));
+      child = Column(mainAxisSize: MainAxisSize.min, children: column);
+    } else {
+      log('然后在初始化数据');
+      log(persistentHeaderKey?.currentContext?.size);
+      child = NestedScrollView(
+          floatHeaderSlivers: widget.floatHeaderSlivers,
+          clipBehavior: widget.clipBehavior,
+          scrollDirection: widget.scrollDirection,
+          reverse: widget.reverse,
+          physics: widget.physics,
+          dragStartBehavior: widget.dragStartBehavior,
+          body: widget.body,
+          restorationId: widget.restorationId,
+          controller: widget.controller,
+          headerSliverBuilder: widget.headerSliverBuilder ??
+              (BuildContext context, bool innerBoxIsScrolled) =>
+                  headerSliverBuilder());
+      if (widget.expanded) child = Expanded(flex: widget.flex, child: child);
+    }
+    return child;
   }
 
   List<Widget> headerSliverBuilder() {
     final List<Widget> children = <Widget>[];
-    if (widget.haveSliverAppBar) children.add(sliverAppBar());
-    if (widget.haveSliverHeader) children.add(sliverPersistentHeader());
+    if (widget.hasSliverAppBar)
+      children.add(widget.sliverAppBar ?? sliverAppBar());
+    if (widget.sliverPersistentHeader != null ||
+        widget.persistentHeader != null)
+      children.add(widget.sliverPersistentHeader ?? sliverPersistentHeader());
     if (widget.slivers != null && widget.slivers.isNotEmpty)
       children.addAll(widget.slivers);
     return children;
   }
 
-  Widget sliverAppBar() => SliverAppBar(
+  Widget sliverPersistentHeader() => SliverPersistentHeader(
+      delegate: FoldPersistentHeader(
+          child: PreferredSize(
+        child: widget.persistentHeader,
+        preferredSize: persistentHeaderSize,
+      )),
+      pinned: widget.pinned,
+      floating: widget.floating);
+
+  Widget sliverAppBar() {
+    double expandedHeight =
+        backgroundSize.height > flexibleSpaceTitleSize.height
+            ? backgroundSize.height
+            : flexibleSpaceTitleSize.height;
+    Widget background = widget.background;
+    Widget flexibleSpaceTitle = widget.flexibleSpaceTitle;
+    if (widget.backgroundPaddingBottom) {
+      expandedHeight += bottomSize.height;
+      background = Padding(
+          padding: EdgeInsets.only(bottom: bottomSize.height),
+          child: background);
+      flexibleSpaceTitle = Padding(
+          padding: EdgeInsets.only(bottom: bottomSize.height),
+          child: flexibleSpaceTitle);
+    }
+
+    return SliverAppBar(
         automaticallyImplyLeading: widget.automaticallyImplyLeading,
         title: widget.title,
         actions: widget.actions,
@@ -201,7 +306,7 @@ class _NestedScrollSliverState extends State<NestedScrollSliver> {
         actionsIconTheme: widget.actionsIconTheme,
         textTheme: widget.textTheme,
         primary: widget.primary,
-        centerTitle: widget.centerTitle,
+        // centerTitle: widget.centerTitle,
         titleSpacing: widget.titleSpacing,
         snap: widget.snap,
         stretch: widget.stretch,
@@ -212,25 +317,73 @@ class _NestedScrollSliverState extends State<NestedScrollSliver> {
         leading: widget.leading,
         pinned: widget.pinned,
         floating: widget.floating,
-        expandedHeight: foldSize.height,
+        expandedHeight: expandedHeight,
+        shape: widget.shape,
+        toolbarHeight: widget.toolbarHeight,
+        leadingWidth: widget.leadingWidth,
+        bottom: widget.bottom == null
+            ? null
+            : PreferredSize(child: widget.bottom, preferredSize: bottomSize),
         flexibleSpace: FlexibleSpaceBar(
-            title: widget.flexibleSpaceTitle,
-            centerTitle: widget.centerTitle,
+            title: flexibleSpaceTitle,
+            centerTitle: widget.flexibleCenterTitle,
             titlePadding: widget.titlePadding,
             collapseMode: widget.collapseMode,
             stretchModes: widget.stretchModes,
-            background: widget.foldBody),
+            background: background));
+  }
+}
+
+class FlexibleSpaceAutoBar extends FlexibleSpaceBar {
+  const FlexibleSpaceAutoBar({
+    Widget title,
+    Widget background,
+    bool centerTitle,
+    EdgeInsetsGeometry titlePadding,
+    CollapseMode collapseMode,
+    List<StretchMode> stretchModes,
+  }) : super(
+            title: title,
+            centerTitle: centerTitle,
+            titlePadding: titlePadding,
+            collapseMode: collapseMode,
+            stretchModes: stretchModes,
+            background: background);
+}
+
+class SliverAutoAppBar extends StatefulWidget {
+  const SliverAutoAppBar({Key key, this.bottom}) : super(key: key);
+
+  final Widget bottom;
+
+  @override
+  _SliverAutoAppBarState createState() => _SliverAutoAppBarState();
+}
+
+class _SliverAutoAppBarState extends State<SliverAutoAppBar> {
+  Size boxSize;
+  GlobalKey key = GlobalKey();
+
+  @override
+  void initState() {
+    super.initState();
+    Ts.addPostFrameCallback((duration) {
+      boxSize = key.currentContext.size;
+      setState(() {});
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (boxSize == null) {
+      return SliverAutoAppBar();
+    } else
+      return SliverAppBar(
         bottom: widget.bottom == null
             ? null
-            : PreferredSize(child: widget.bottom, preferredSize: foldSize),
+            : PreferredSize(child: widget.bottom, preferredSize: boxSize),
       );
-
-  Widget sliverPersistentHeader() => SliverPersistentHeader(
-      delegate: FoldPersistentHeader(
-          child:
-              PreferredSize(child: widget.foldBody, preferredSize: foldSize)),
-      pinned: widget.pinned,
-      floating: widget.floating);
+  }
 }
 
 class FoldPersistentHeader extends SliverPersistentHeaderDelegate {
@@ -250,5 +403,5 @@ class FoldPersistentHeader extends SliverPersistentHeaderDelegate {
   double get minExtent => child.preferredSize.height;
 
   @override
-  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) => true;
+  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) => false;
 }
