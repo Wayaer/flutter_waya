@@ -278,7 +278,6 @@ class OverlayScaffold extends StatefulWidget {
     this.padding,
     this.controller,
     this.onRefresh,
-    this.child,
     this.header,
     this.footer,
     this.footerTextStyle,
@@ -342,7 +341,6 @@ class OverlayScaffold extends StatefulWidget {
   ///  刷新组件相关
   final RefreshController controller;
   final VoidCallback onRefresh;
-  final Widget child;
   final Widget header;
   final Widget footer;
   final TextStyle footerTextStyle;

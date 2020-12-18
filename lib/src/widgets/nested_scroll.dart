@@ -1,9 +1,8 @@
-import 'dart:async';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
+import 'package:flutter_waya/src/widgets/scroll_view.dart';
 
 class NestedScrollSliver extends StatefulWidget {
   const NestedScrollSliver({
@@ -59,6 +58,7 @@ class NestedScrollSliver extends StatefulWidget {
     this.shape,
     this.background,
     this.persistentHeader,
+    this.sliverAutoAppBar,
   })  : reverse = reverse ?? false,
         expanded = expanded ?? false,
         backgroundPaddingBottom = backgroundPaddingBottom ?? true,
@@ -120,6 +120,7 @@ class NestedScrollSliver extends StatefulWidget {
   ///  是否显示[sliverAppBar]
   final bool hasSliverAppBar;
   final SliverAppBar sliverAppBar;
+  final SliverAutoAppBar sliverAutoAppBar;
 
   final bool automaticallyImplyLeading;
   final Widget title;
@@ -198,21 +199,21 @@ class _NestedScrollSliverState extends State<NestedScrollSliver> {
   @override
   void initState() {
     super.initState();
-    if (widget.autoHeight)
-      Ts.addPostFrameCallback((Duration callback) => Timer(widget.duration, () {
-            showNestedScrollView = true;
-            backgroundSize =
-                backgroundKey?.currentContext?.size ?? const Size(0, 0);
-            bottomSize = bottomKey?.currentContext?.size ?? const Size(0, 0);
-            persistentHeaderSize =
-                persistentHeaderKey?.currentContext?.size ?? const Size(0, 0);
-            flexibleSpaceTitleSize =
-                flexibleSpaceTitleKey?.currentContext?.size ?? const Size(0, 0);
-            log(backgroundSize);
-            log(bottomSize);
-            log(persistentHeaderSize);
-            setState(() {});
-          }));
+    // if (widget.autoHeight)
+    // Ts.addPostFrameCallback((Duration callback) => Timer(widget.duration, () {
+    //       showNestedScrollView = true;
+    //       backgroundSize =
+    //           backgroundKey?.currentContext?.size ?? const Size(0, 0);
+    //       bottomSize = bottomKey?.currentContext?.size ?? const Size(0, 0);
+    //       persistentHeaderSize =
+    //           persistentHeaderKey?.currentContext?.size ?? const Size(0, 0);
+    //       flexibleSpaceTitleSize =
+    //           flexibleSpaceTitleKey?.currentContext?.size ?? const Size(0, 0);
+    //       log(backgroundSize);
+    //       log(bottomSize);
+    //       log(persistentHeaderSize);
+    //       setState(() {});
+    //     }));
   }
 
   @override
@@ -260,8 +261,13 @@ class _NestedScrollSliverState extends State<NestedScrollSliver> {
 
   List<Widget> headerSliverBuilder() {
     final List<Widget> children = <Widget>[];
-    if (widget.hasSliverAppBar)
-      children.add(widget.sliverAppBar ?? sliverAppBar());
+    if (widget.sliverAppBar != null) {
+      // SliverAppBar sliverAppBar = widget.sliverAppBar;
+      // sliverAppBar.expandedHeight = 100;
+
+      // children.add(widget.sliverAppBar ?? sliverAppBar());
+    }
+
     if (widget.sliverPersistentHeader != null ||
         widget.persistentHeader != null)
       children.add(widget.sliverPersistentHeader ?? sliverPersistentHeader());
@@ -331,58 +337,6 @@ class _NestedScrollSliverState extends State<NestedScrollSliver> {
             collapseMode: widget.collapseMode,
             stretchModes: widget.stretchModes,
             background: background));
-  }
-}
-
-class FlexibleSpaceAutoBar extends FlexibleSpaceBar {
-  const FlexibleSpaceAutoBar({
-    Widget title,
-    Widget background,
-    bool centerTitle,
-    EdgeInsetsGeometry titlePadding,
-    CollapseMode collapseMode,
-    List<StretchMode> stretchModes,
-  }) : super(
-            title: title,
-            centerTitle: centerTitle,
-            titlePadding: titlePadding,
-            collapseMode: collapseMode,
-            stretchModes: stretchModes,
-            background: background);
-}
-
-class SliverAutoAppBar extends StatefulWidget {
-  const SliverAutoAppBar({Key key, this.bottom}) : super(key: key);
-
-  final Widget bottom;
-
-  @override
-  _SliverAutoAppBarState createState() => _SliverAutoAppBarState();
-}
-
-class _SliverAutoAppBarState extends State<SliverAutoAppBar> {
-  Size boxSize;
-  GlobalKey key = GlobalKey();
-
-  @override
-  void initState() {
-    super.initState();
-    Ts.addPostFrameCallback((duration) {
-      boxSize = key.currentContext.size;
-      setState(() {});
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (boxSize == null) {
-      return SliverAutoAppBar();
-    } else
-      return SliverAppBar(
-        bottom: widget.bottom == null
-            ? null
-            : PreferredSize(child: widget.bottom, preferredSize: boxSize),
-      );
   }
 }
 

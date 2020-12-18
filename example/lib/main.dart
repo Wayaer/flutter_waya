@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:waya/module/DropdownMenuPage.dart';
-import 'package:waya/module/GifImagePage.dart';
-import 'package:waya/module/PickerPage.dart';
-import 'package:waya/module/PinBoxPage.dart';
-import 'package:waya/module/PopupPage.dart';
-import 'package:waya/module/ToastPage.dart';
+import 'package:waya/module/dropdown_menu_page.dart';
+import 'package:waya/module/gif_image_page.dart';
+import 'package:waya/module/nested_scroll_page.dart';
+import 'package:waya/module/picker_page.dart';
+import 'package:waya/module/pin_box_page.dart';
+import 'package:waya/module/popup_page.dart';
+import 'package:waya/module/toast_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,8 +23,6 @@ class Home extends StatelessWidget {
       body: Universal(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          customElasticButton('ElasticButton',
-              onTap: () => showToast('ElasticButton')),
           customElasticButton('Toast', onTap: () => push(widget: ToastPage())),
           customElasticButton('Picker',
               onTap: () => push(widget: PickerPage())),
@@ -32,8 +31,12 @@ class Home extends StatelessWidget {
               onTap: () => push(widget: PinBoxPage())),
           customElasticButton('GifImage',
               onTap: () => push(widget: GifImagePage())),
+          customElasticButton('ElasticButton',
+              onTap: () => showToast('ElasticButton')),
           customElasticButton('DropdownMenu',
               onTap: () => push(widget: DropdownMenuPage())),
+          customElasticButton('NestedScrollSliverPage',
+              onTap: () => push(widget: NestedScrollSliverPage())),
         ],
       ),
     );

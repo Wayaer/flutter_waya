@@ -43,6 +43,7 @@ export 'src/widgets/root/loading/cube.dart';
 export 'src/widgets/root/loading/fading.dart';
 export 'src/widgets/root/loading/ring.dart';
 export 'src/widgets/root/root.dart';
+export 'src/widgets/scroll_view.dart';
 export 'src/widgets/stretchy_header.dart';
 export 'src/widgets/tab_bar.dart';
 export 'src/widgets/text.dart';
