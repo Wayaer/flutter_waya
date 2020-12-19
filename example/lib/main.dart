@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 import 'package:waya/module/dropdown_menu_page.dart';
 import 'package:waya/module/gif_image_page.dart';
-import 'package:waya/module/nested_scroll_page.dart';
 import 'package:waya/module/picker_page.dart';
 import 'package:waya/module/pin_box_page.dart';
 import 'package:waya/module/popup_page.dart';
+import 'package:waya/module/scroll_view_page.dart';
 import 'package:waya/module/toast_page.dart';
 
 void main() {
@@ -33,10 +33,10 @@ class Home extends StatelessWidget {
               onTap: () => push(widget: GifImagePage())),
           customElasticButton('ElasticButton',
               onTap: () => showToast('ElasticButton')),
+          customElasticButton('ScrollViewPage',
+              onTap: () => push(widget: ScrollViewPage())),
           customElasticButton('DropdownMenu',
               onTap: () => push(widget: DropdownMenuPage())),
-          customElasticButton('NestedScrollSliverPage',
-              onTap: () => push(widget: NestedScrollSliverPage())),
         ],
       ),
     );

@@ -5,37 +5,123 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-class NestedScrollAuto extends StatefulWidget {
-  const NestedScrollAuto(
-      {Key key,
-      this.sliverAutoAppBar,
-      this.expanded = false,
-      this.flex,
-      this.headerSliverBuilder,
-      this.floatHeaderSlivers = true,
-      this.clipBehavior = Clip.hardEdge,
-      this.reverse = false,
-      this.physics,
-      this.scrollDirection = Axis.vertical,
-      this.dragStartBehavior = DragStartBehavior.start,
-      this.body,
-      this.controller,
-      this.restorationId,
-      this.slivers,
-      this.persistentHeader,
-      this.headerPinned = false,
-      this.headerFloating = false,
-      this.headerMinHeight})
-      : super(key: key);
+class CustomScrollViewAuto extends StatefulWidget {
+  const CustomScrollViewAuto({
+    Key key,
+    this.scrollDirection = Axis.vertical,
+    this.reverse = false,
+    this.controller,
+    this.primary,
+    this.physics,
+    this.shrinkWrap = false,
+    this.center,
+    this.anchor = 0.0,
+    this.cacheExtent,
+    this.slivers = const <Widget>[],
+    this.semanticChildCount,
+    this.dragStartBehavior = DragStartBehavior.start,
+    this.restorationId,
+    this.clipBehavior = Clip.hardEdge,
+    this.expanded = false,
+    this.flex,
+  }) : super(key: key);
 
-  /// SliverPersistentHeader
-  final Widget persistentHeader;
-  final bool headerPinned;
-  final double headerMinHeight;
-  final bool headerFloating;
+  ///  NestedScrollView 外嵌套Expanded
+  final bool expanded;
+  final int flex;
 
-  ///  SliverAppBar
-  final SliverAutoAppBar sliverAutoAppBar;
+  final Axis scrollDirection;
+
+  final bool reverse;
+
+  final ScrollController controller;
+
+  final bool primary;
+  final ScrollPhysics physics;
+  final bool shrinkWrap;
+
+  final Key center;
+  final double anchor;
+
+  final double cacheExtent;
+  final int semanticChildCount;
+  final DragStartBehavior dragStartBehavior;
+
+  final String restorationId;
+  final Clip clipBehavior;
+
+  /// The slivers to place inside the viewport.
+  final List<Widget> slivers;
+
+  @override
+  _CustomScrollViewAutoState createState() => _CustomScrollViewAutoState();
+}
+
+class _CustomScrollViewAutoState extends State<CustomScrollViewAuto> {
+  bool showScrollView = false;
+  List<GlobalKey> keys =
+      List<GlobalKey>.generate(3, (int index) => GlobalKey());
+  List<Size> sizes = List<Size>.generate(3, (int index) => null);
+
+  List<Widget> slivers;
+
+  @override
+  void initState() {
+    slivers = widget.slivers ?? <Widget>[];
+    super.initState();
+    Ts.addPostFrameCallback((Duration duration) {
+      sizes = _calculate(keys);
+      showScrollView = true;
+      setState(() {});
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (!showScrollView)
+      return _Calculate(
+          slivers: slivers,
+          persistentHeaderKey: keys[0],
+          flexibleSpaceKey: keys[1],
+          bottomKey: keys[2]);
+    final CustomScrollView scrollView = CustomScrollView(
+        slivers: _sliverBuilder(slivers, sizes),
+        scrollDirection: widget.scrollDirection,
+        reverse: widget.reverse,
+        controller: widget.controller,
+        primary: widget.primary,
+        physics: widget.physics,
+        shrinkWrap: widget.shrinkWrap,
+        center: widget.center,
+        anchor: widget.anchor,
+        cacheExtent: widget.cacheExtent,
+        semanticChildCount: widget.semanticChildCount,
+        dragStartBehavior: widget.dragStartBehavior,
+        restorationId: widget.restorationId,
+        clipBehavior: widget.clipBehavior);
+    if (widget.expanded) return Expanded(flex: widget.flex, child: scrollView);
+    return scrollView;
+  }
+}
+
+/// 配合 sliver 家族组件 无需设置高度  自适应高度
+class NestedScrollViewAuto extends StatefulWidget {
+  const NestedScrollViewAuto({
+    Key key,
+    this.expanded = false,
+    this.flex,
+    this.headerSliverBuilder,
+    this.floatHeaderSlivers = true,
+    this.clipBehavior = Clip.hardEdge,
+    this.reverse = false,
+    this.physics,
+    this.scrollDirection = Axis.vertical,
+    this.dragStartBehavior = DragStartBehavior.start,
+    this.body,
+    this.controller,
+    this.restorationId,
+    this.slivers,
+  }) : super(key: key);
 
   ///  NestedScrollView 外嵌套Expanded
   final bool expanded;
@@ -43,7 +129,7 @@ class NestedScrollAuto extends StatefulWidget {
 
   ///  NestedScrollView
   ///
-  /// 使用此参数是[sliverAppBar]、[sliverPersistentHeader]、[slivers] 均无效
+  /// 使用此参数 [slivers] 无效
   final NestedScrollViewHeaderSliversBuilder headerSliverBuilder;
   final bool floatHeaderSlivers;
   final Clip clipBehavior;
@@ -59,30 +145,22 @@ class NestedScrollAuto extends StatefulWidget {
   final List<Widget> slivers;
 
   @override
-  _NestedScrollAutoState createState() => _NestedScrollAutoState();
+  _NestedScrollViewAutoState createState() => _NestedScrollViewAutoState();
 }
 
-class _NestedScrollAutoState extends State<NestedScrollAuto> {
+class _NestedScrollViewAutoState extends State<NestedScrollViewAuto> {
   bool showNestedScroll = false;
-  GlobalKey persistentHeaderKey = GlobalKey();
-  Size persistentHeaderSize;
-  GlobalKey flexibleSpaceKey = GlobalKey();
-  Size flexibleSpaceSize;
-
-  GlobalKey bottomKey = GlobalKey();
-  Size bottomSize;
+  List<GlobalKey> keys =
+      List<GlobalKey>.generate(3, (int index) => GlobalKey());
+  List<Size> sizes = List<Size>.generate(3, (int index) => null);
+  List<Widget> slivers;
 
   @override
   void initState() {
+    slivers = widget.slivers ?? <Widget>[];
     super.initState();
     Ts.addPostFrameCallback((Duration duration) {
-      persistentHeaderSize =
-          persistentHeaderKey?.currentContext?.size ?? const Size(0, 0);
-      flexibleSpaceSize =
-          flexibleSpaceKey?.currentContext?.size ?? const Size(0, 0);
-      bottomSize = bottomKey?.currentContext?.size ?? const Size(0, 0);
-      if (bottomSize.height > kToolbarHeight)
-        bottomSize = Size(bottomSize.width, kToolbarHeight);
+      sizes = _calculate(keys);
       showNestedScroll = true;
       setState(() {});
     });
@@ -90,33 +168,12 @@ class _NestedScrollAutoState extends State<NestedScrollAuto> {
 
   @override
   Widget build(BuildContext context) {
-    if (!showNestedScroll) {
-      final List<Widget> column = <Widget>[];
-      if (widget.sliverAutoAppBar != null) {
-        final Widget flexibleSpace = widget.sliverAutoAppBar.flexibleSpace;
-        if (flexibleSpace != null) {
-          final List<Widget> stack = <Widget>[];
-          if (flexibleSpace is FlexibleSpaceBar) {
-            final FlexibleSpaceBar space = flexibleSpace;
-            if (space.title != null) stack.add(space.title);
-            if (space.background != null) stack.add(space.background);
-          } else {
-            stack.add(flexibleSpace);
-          }
-          column.add(Stack(key: flexibleSpaceKey, children: stack));
-        }
-        if (widget.sliverAutoAppBar.bottom != null) {
-          column.add(
-              Container(key: bottomKey, child: widget.sliverAutoAppBar.bottom));
-        }
-      }
-
-      if (widget.persistentHeader != null) {
-        column.add(Container(
-            key: persistentHeaderKey, child: widget.persistentHeader));
-      }
-      return Column(children: column);
-    }
+    if (!showNestedScroll)
+      return _Calculate(
+          slivers: slivers,
+          persistentHeaderKey: keys[0],
+          flexibleSpaceKey: keys[1],
+          bottomKey: keys[2]);
     final NestedScrollView nestedScroll = NestedScrollView(
         floatHeaderSlivers: widget.floatHeaderSlivers,
         clipBehavior: widget.clipBehavior,
@@ -129,71 +186,172 @@ class _NestedScrollAutoState extends State<NestedScrollAuto> {
         controller: widget.controller,
         headerSliverBuilder: widget.headerSliverBuilder ??
             (BuildContext context, bool innerBoxIsScrolled) =>
-                headerSliverBuilder);
+                _sliverBuilder(slivers, sizes));
     if (widget.expanded)
       return Expanded(flex: widget.flex, child: nestedScroll);
     return nestedScroll;
   }
-
-  List<Widget> get headerSliverBuilder {
-    final List<Widget> children = <Widget>[];
-    if (widget.sliverAutoAppBar != null) children.add(sliverAppBar);
-    if (widget.persistentHeader != null) children.add(persistentHeader);
-    if (widget.slivers != null && widget.slivers.isNotEmpty)
-      children.addAll(widget.slivers);
-    return children;
-  }
-
-  Widget get persistentHeader => SliverPersistentHeader(
-        pinned: widget.headerPinned,
-        floating: widget.headerFloating,
-        delegate: widget.headerPinned
-            ? PinnedPersistentHeaderDelegate(
-                height: persistentHeaderSize.height,
-                child: widget.persistentHeader)
-            : NoPinnedPersistentHeaderDelegate(
-                child: widget.persistentHeader,
-                minHeight:
-                    widget.headerMinHeight ?? persistentHeaderSize.height,
-                maxHeight: persistentHeaderSize.height),
-      );
-
-  Widget get sliverAppBar => SliverAppBar(
-      automaticallyImplyLeading:
-          widget.sliverAutoAppBar.automaticallyImplyLeading,
-      title: widget.sliverAutoAppBar.title,
-      actions: widget.sliverAutoAppBar.actions,
-      forceElevated: widget.sliverAutoAppBar.forceElevated,
-      backgroundColor: widget.sliverAutoAppBar.backgroundColor,
-      iconTheme: widget.sliverAutoAppBar.iconTheme,
-      actionsIconTheme: widget.sliverAutoAppBar.actionsIconTheme,
-      textTheme: widget.sliverAutoAppBar.textTheme,
-      primary: widget.sliverAutoAppBar.primary,
-      centerTitle: widget.sliverAutoAppBar.centerTitle,
-      titleSpacing: widget.sliverAutoAppBar.titleSpacing,
-      snap: widget.sliverAutoAppBar.snap,
-      stretch: widget.sliverAutoAppBar.stretch,
-      stretchTriggerOffset: widget.sliverAutoAppBar.stretchTriggerOffset,
-      onStretchTrigger: widget.sliverAutoAppBar.onStretchTrigger,
-      elevation: widget.sliverAutoAppBar.elevation,
-      brightness: widget.sliverAutoAppBar.brightness,
-      leading: widget.sliverAutoAppBar.leading,
-      pinned: widget.sliverAutoAppBar.pinned,
-      floating: widget.sliverAutoAppBar.floating,
-      expandedHeight: math.max(flexibleSpaceSize.height, kToolbarHeight),
-      shape: widget.sliverAutoAppBar.shape,
-      toolbarHeight: widget.sliverAutoAppBar.toolbarHeight,
-      leadingWidth: widget.sliverAutoAppBar.leadingWidth,
-      bottom: widget.sliverAutoAppBar.bottom == null
-          ? null
-          : PreferredSize(
-              child: ConstrainedBox(
-                  constraints: BoxConstraints(maxHeight: bottomSize.height),
-                  child: widget.sliverAutoAppBar.bottom),
-              preferredSize: bottomSize),
-      flexibleSpace: widget.sliverAutoAppBar.flexibleSpace);
 }
 
+/// 自动初始化 delegate
+class SliverAutoPersistentHeader extends StatelessWidget {
+  const SliverAutoPersistentHeader(
+      {Key key,
+      this.pinned = true,
+      this.floating = true,
+      this.minHeight,
+      this.maxHeight,
+      this.child})
+      : super(key: key);
+
+  /// 是否折叠 [child]
+  final bool pinned;
+  final bool floating;
+
+  /// 默认为 [kToolbarHeight]
+  final double minHeight;
+
+  /// 默认为 [kToolbarHeight]
+  final double maxHeight;
+
+  /// header 内容
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) => SliverPersistentHeader(
+      pinned: pinned,
+      floating: floating,
+      delegate: pinned
+          ? _PinnedPersistentHeaderDelegate(height: maxHeight, child: child)
+          : _NoPinnedPersistentHeaderDelegate(
+              minHeight: minHeight, maxHeight: maxHeight, child: child));
+}
+
+/// 组合使用 [FlexibleSpaceBar]、[SliverAppBar]
+/// bottom 添加PreferredSize
+/// 配合 [NestedScrollViewAuto] 使用 无需设置 [expandedHeight]
+class SliverAutoAppBar extends SliverAppBar {
+  SliverAutoAppBar({
+    Key key,
+
+    /// 是否提供控件占位。
+    bool automaticallyImplyLeading = true,
+
+    /// 左侧的图标或文字，多为返回箭头
+    Widget leading,
+    double leadingWidth,
+
+    /// 已被显示最高为 [kToolbarHeight]
+    Widget title,
+
+    /// 标题是否居中显示
+    bool centerTitle = true,
+
+    /// 标题右侧的操作
+    List<Widget> actions,
+
+    /// 已被限制显示最高为 [kToolbarHeight]
+    /// SliverAppBar的底部区
+    Widget bottom,
+    Size bottomSize,
+
+    /// 阴影
+    double elevation,
+
+    /// 是否显示阴影
+    bool forceElevated = false,
+
+    /// FlexibleSpaceBar
+    /// 可以理解为SliverAppBar的背景内容区
+    Widget flexibleSpaceTitle,
+    Widget flexibleSpace,
+    Widget background,
+    bool flexibleCenterTitle = true,
+    EdgeInsetsGeometry titlePadding,
+    CollapseMode collapseMode = CollapseMode.pin,
+    List<StretchMode> stretchModes = const <StretchMode>[
+      StretchMode.zoomBackground
+    ],
+    double expandedHeight,
+
+    /// 背景颜色
+    Color backgroundColor,
+
+    /// SliverAppBar图标主题
+    IconThemeData iconTheme,
+
+    /// 文字主题
+    TextTheme textTheme,
+
+    /// action图标主题
+    IconThemeData actionsIconTheme,
+
+    /// 如果希望title占用所有可用空间，请将此值设置为0.0。
+    double titleSpacing = NavigationToolbar.kMiddleSpacing,
+
+    /// 是否显示在状态栏的下面,false就会占领状态栏的高度
+    bool primary = true,
+
+    /// 状态栏主题，默认Brightness.dark
+    Brightness brightness,
+    AsyncCallback onStretchTrigger,
+
+    ///[pinned]=true AppBar[title]不消失
+    bool pinned = false,
+
+    /// [floating]=true，AppBar下拉手势时立即展开（即使下面滚动组件不在顶部）
+    bool floating = false,
+
+    /// [floating]&&[snap] is true，AppBar下拉手势时立即全部展开
+    bool snap = false,
+    bool stretch = true,
+    double stretchTriggerOffset = 100,
+    ShapeBorder shape,
+    double toolbarHeight = kToolbarHeight,
+    double collapsedHeight,
+  }) : super(
+            key: key,
+            title: title,
+            actions: actions,
+            forceElevated: forceElevated,
+            backgroundColor: backgroundColor,
+            iconTheme: iconTheme,
+            textTheme: textTheme,
+            actionsIconTheme: actionsIconTheme,
+            titleSpacing: titleSpacing,
+            primary: primary,
+            centerTitle: centerTitle,
+            stretch: stretch,
+            stretchTriggerOffset: stretchTriggerOffset,
+            brightness: brightness,
+            onStretchTrigger: onStretchTrigger,
+            elevation: elevation,
+            leading: leading,
+            leadingWidth: leadingWidth,
+            pinned: pinned,
+            floating: floating,
+            snap: snap,
+            shape: shape,
+            expandedHeight: expandedHeight,
+            toolbarHeight: toolbarHeight,
+            collapsedHeight: collapsedHeight,
+            automaticallyImplyLeading: automaticallyImplyLeading,
+            bottom: bottom == null
+                ? null
+                : PreferredSize(child: bottom, preferredSize: bottomSize),
+            flexibleSpace: flexibleSpace ??
+                (flexibleSpaceTitle != null || background != null
+                    ? FlexibleSpaceBar(
+                        title: flexibleSpaceTitle,
+                        centerTitle: flexibleCenterTitle,
+                        titlePadding: titlePadding,
+                        collapseMode: collapseMode,
+                        stretchModes: stretchModes,
+                        background: background)
+                    : null));
+}
+
+/// 简化部分参数 [FlexibleSpaceBar]
 class FlexibleSpaceAutoBar extends StatelessWidget {
   const FlexibleSpaceAutoBar(
       {this.title,
@@ -221,88 +379,76 @@ class FlexibleSpaceAutoBar extends StatelessWidget {
       background: background);
 }
 
-class SliverAutoAppBar extends SliverAppBar {
-  SliverAutoAppBar(
-      {Key key,
-      bool automaticallyImplyLeading = true,
-      Widget title,
-      List<Widget> actions,
-      bool forceElevated = false,
-      Color backgroundColor,
-      IconThemeData iconTheme,
-      TextTheme textTheme,
-      IconThemeData actionsIconTheme,
-      double titleSpacing = NavigationToolbar.kMiddleSpacing,
-      bool primary = true,
-      bool centerTitle = true,
-      bool stretch = false,
-      double stretchTriggerOffset = 100,
-      Brightness brightness,
-      AsyncCallback onStretchTrigger,
-      double elevation,
-      Widget leading,
-      double leadingWidth,
-      bool pinned = false,
-      bool floating = false,
-      bool snap = false,
-      ShapeBorder shape,
-      double toolbarHeight = kToolbarHeight,
-      double collapsedHeight,
-      Widget bottom,
-      Widget flexibleSpace,
-      Size bottomSize,
+List<Widget> _sliverBuilder(List<Widget> slivers, List<Size> sizes) =>
+    slivers.map((Widget element) {
+      if (element is SliverAppBar) {
+        return _SliverAppBar(
+            sliverAppBar: element,
+            bottomSize: sizes[2],
+            expandedHeight:
+                math.max(sizes[1]?.height, kToolbarHeight + sizes[2].height));
+      } else if (element is SliverAutoPersistentHeader) {
+        return _SliverAutoPersistentHeader(
+            header: element, maxHeight: sizes[0].height);
+      }
+      return element;
+    }).toList();
 
-      /// FlexibleSpaceBar
-      Widget flexibleSpaceTitle,
-      Widget background,
-      bool flexibleCenterTitle = true,
-      EdgeInsetsGeometry titlePadding,
-      CollapseMode collapseMode = CollapseMode.parallax,
-      List<StretchMode> stretchModes = const <StretchMode>[
-        StretchMode.zoomBackground
-      ]})
-      : super(
-            key: key,
-            title: title,
-            actions: actions,
-            forceElevated: forceElevated,
-            backgroundColor: backgroundColor,
-            iconTheme: iconTheme,
-            textTheme: textTheme,
-            actionsIconTheme: actionsIconTheme,
-            titleSpacing: titleSpacing,
-            primary: primary,
-            centerTitle: centerTitle,
-            stretch: stretch,
-            stretchTriggerOffset: stretchTriggerOffset,
-            brightness: brightness,
-            onStretchTrigger: onStretchTrigger,
-            elevation: elevation,
-            leading: leading,
-            leadingWidth: leadingWidth,
-            pinned: pinned,
-            floating: floating,
-            snap: snap,
-            shape: shape,
-            toolbarHeight: toolbarHeight,
-            collapsedHeight: collapsedHeight,
-            automaticallyImplyLeading: automaticallyImplyLeading,
-            bottom: bottom == null
-                ? null
-                : PreferredSize(child: bottom, preferredSize: bottomSize),
-            flexibleSpace: flexibleSpace ??
-                FlexibleSpaceBar(
-                    title: flexibleSpaceTitle,
-                    centerTitle: flexibleCenterTitle,
-                    titlePadding: titlePadding,
-                    collapseMode: collapseMode,
-                    stretchModes: stretchModes,
-                    background: background));
+List<Size> _calculate(List<GlobalKey> keys) {
+  final Size size1 = keys[0]?.currentContext?.size ?? const Size(0, 0);
+  final Size size2 = keys[1]?.currentContext?.size ?? const Size(0, 0);
+  Size size3 = keys[2]?.currentContext?.size ?? const Size(0, 0);
+  if (size3.height > kToolbarHeight) size3 = Size(size3.width, kToolbarHeight);
+  return <Size>[size1, size2, size3];
+}
+
+class _Calculate extends StatelessWidget {
+  const _Calculate(
+      {Key key,
+      @required this.slivers,
+      @required this.persistentHeaderKey,
+      @required this.flexibleSpaceKey,
+      @required this.bottomKey})
+      : super(key: key);
+  final List<Widget> slivers;
+  final GlobalKey persistentHeaderKey;
+
+  final GlobalKey flexibleSpaceKey;
+  final GlobalKey bottomKey;
+
+  @override
+  Widget build(BuildContext context) {
+    final List<Widget> column = <Widget>[];
+    if (slivers != null && slivers.isNotEmpty) {
+      for (final Widget element in slivers) {
+        if (element is SliverAppBar) {
+          final Widget flexibleSpace = element.flexibleSpace;
+          if (flexibleSpace != null) {
+            if (flexibleSpace is FlexibleSpaceBar) {
+              final List<Widget> stack = <Widget>[];
+              final FlexibleSpaceBar space = flexibleSpace;
+              if (space.title != null) stack.add(space.title);
+              if (space.background != null) stack.add(space.background);
+              column.add(Stack(key: flexibleSpaceKey, children: stack));
+            } else {
+              column
+                  .add(Container(key: flexibleSpaceKey, child: flexibleSpace));
+            }
+          }
+          if (element.bottom != null)
+            column.add(Container(key: bottomKey, child: element.bottom));
+        } else if (element is SliverAutoPersistentHeader) {
+          column.add(Container(key: persistentHeaderKey, child: element.child));
+        }
+      }
+    }
+    return Column(children: column);
+  }
 }
 
 /// SliverPersistentHeader 固定
-class PinnedPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
-  PinnedPersistentHeaderDelegate({
+class _PinnedPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
+  _PinnedPersistentHeaderDelegate({
     @required this.child,
     @required this.height,
   });
@@ -326,8 +472,8 @@ class PinnedPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
 }
 
 /// SliverPersistentHeader 不固定
-class NoPinnedPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
-  NoPinnedPersistentHeaderDelegate({
+class _NoPinnedPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
+  _NoPinnedPersistentHeaderDelegate({
     @required this.minHeight,
     @required this.maxHeight,
     @required this.child,
@@ -349,8 +495,72 @@ class NoPinnedPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
       child;
 
   @override
-  bool shouldRebuild(NoPinnedPersistentHeaderDelegate oldDelegate) =>
+  bool shouldRebuild(_NoPinnedPersistentHeaderDelegate oldDelegate) =>
       maxHeight != oldDelegate.maxHeight ||
       minHeight != oldDelegate.minHeight ||
       child != oldDelegate.child;
+}
+
+class _SliverAutoPersistentHeader extends SliverPersistentHeader {
+  _SliverAutoPersistentHeader({Key key, @required this.header, this.maxHeight})
+      : super(
+            key: key,
+            pinned: header.pinned,
+            floating: header.floating,
+            delegate: header.pinned
+                ? _PinnedPersistentHeaderDelegate(
+                    height: header?.maxHeight ?? maxHeight, child: header.child)
+                : _NoPinnedPersistentHeaderDelegate(
+                    child: header.child,
+                    minHeight: header?.minHeight ?? maxHeight,
+                    maxHeight: header?.maxHeight ?? maxHeight,
+                  ));
+
+  final SliverAutoPersistentHeader header;
+  final double maxHeight;
+}
+
+class _SliverAppBar extends SliverAppBar {
+  _SliverAppBar({
+    Key key,
+    this.sliverAppBar,
+    double expandedHeight,
+    Size bottomSize,
+  }) : super(
+            key: key,
+            automaticallyImplyLeading: sliverAppBar?.automaticallyImplyLeading,
+            title: sliverAppBar?.title,
+            actions: sliverAppBar?.actions,
+            forceElevated: sliverAppBar?.forceElevated,
+            backgroundColor: sliverAppBar?.backgroundColor,
+            iconTheme: sliverAppBar?.iconTheme,
+            actionsIconTheme: sliverAppBar?.actionsIconTheme,
+            textTheme: sliverAppBar?.textTheme,
+            primary: sliverAppBar?.primary,
+            centerTitle: sliverAppBar?.centerTitle,
+            titleSpacing: sliverAppBar?.titleSpacing,
+            snap: sliverAppBar?.snap,
+            stretch: sliverAppBar?.stretch,
+            stretchTriggerOffset: sliverAppBar?.stretchTriggerOffset,
+            onStretchTrigger: sliverAppBar?.onStretchTrigger,
+            elevation: sliverAppBar?.elevation,
+            brightness: sliverAppBar?.brightness,
+            leading: sliverAppBar?.leading,
+            pinned: sliverAppBar?.pinned,
+            floating: sliverAppBar?.floating,
+            expandedHeight: sliverAppBar?.expandedHeight ?? expandedHeight,
+            shape: sliverAppBar?.shape,
+            toolbarHeight: sliverAppBar?.toolbarHeight,
+            leadingWidth: sliverAppBar?.leadingWidth,
+            bottom: sliverAppBar?.bottom == null
+                ? null
+                : PreferredSize(
+                    child: ConstrainedBox(
+                        constraints:
+                            BoxConstraints(maxHeight: bottomSize.height),
+                        child: sliverAppBar?.bottom),
+                    preferredSize: bottomSize),
+            flexibleSpace: sliverAppBar?.flexibleSpace);
+
+  final SliverAppBar sliverAppBar;
 }

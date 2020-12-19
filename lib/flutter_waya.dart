@@ -32,7 +32,6 @@ export 'src/widgets/image_sequence.dart';
 export 'src/widgets/input_field.dart';
 export 'src/widgets/list_builder.dart';
 export 'src/widgets/list_wheel.dart';
-export 'src/widgets/nested_scroll.dart';
 export 'src/widgets/pin_box.dart';
 export 'src/widgets/refresh.dart';
 export 'src/widgets/root/dialog/picker.dart';
