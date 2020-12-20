@@ -41,7 +41,7 @@ class ScrollViewAuto extends StatefulWidget {
 
   /// **** NestedScrollView **** ///
   /// **** CustomScrollView **** ///
-  /// 使用此参数 [slivers] 无效 仅[isNestedScrollView]=true 有效
+  /// 当[isNestedScrollView]=true , 使用 [headerSliverBuilder] 时 [slivers] 无效,
   final NestedScrollViewHeaderSliversBuilder headerSliverBuilder;
   final bool floatHeaderSlivers;
   final Clip clipBehavior;

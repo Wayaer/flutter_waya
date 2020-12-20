@@ -39,21 +39,12 @@ class RichSpan extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<TextSpan> children = <TextSpan>[];
-    final List<TextStyle> styles = <TextStyle>[];
-    if (textStyle == null) {
-      styles.add(const TextStyle(fontSize: 14));
-    } else {
-      styles.addAll(textStyle);
-    }
+    final List<TextStyle> styles =
+        textStyle ?? <TextStyle>[const TextStyle(fontSize: 14)];
     if (text.length > styles.length) {
-      final int poor = text.length - styles.length;
-      for (int i = 0; i <= poor; i++) styles.add(styles.last);
+      styles.addAll(List<TextStyle>.generate(
+          text.length - styles.length, (int index) => styles.last));
     }
-    text
-        .map((String value) => children
-            .add(TextSpan(text: value, style: styles[text.indexOf(value)])))
-        .toList();
     return RichText(
       textDirection: textDirection,
       softWrap: softWrap,
@@ -64,7 +55,14 @@ class RichSpan extends StatelessWidget {
       strutStyle: strutStyle,
       textWidthBasis: textWidthBasis,
       textHeightBehavior: textHeightBehavior,
-      text: TextSpan(text: '', children: children),
+      text: TextSpan(
+          text: '',
+          children: text
+              .asMap()
+              .entries
+              .map((MapEntry<int, String> entry) =>
+                  TextSpan(text: entry.value, style: styles[entry.key]))
+              .toList()),
       textAlign: textAlign,
     );
   }
