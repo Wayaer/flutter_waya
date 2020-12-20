@@ -5,87 +5,113 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-class CustomScrollViewAuto extends StatefulWidget {
-  const CustomScrollViewAuto({
-    Key key,
-    this.scrollDirection = Axis.vertical,
-    this.reverse = false,
-    this.controller,
-    this.primary,
-    this.physics,
-    this.shrinkWrap = false,
-    this.center,
-    this.anchor = 0.0,
-    this.cacheExtent,
-    this.slivers = const <Widget>[],
-    this.semanticChildCount,
-    this.dragStartBehavior = DragStartBehavior.start,
-    this.restorationId,
-    this.clipBehavior = Clip.hardEdge,
-    this.expanded = false,
-    this.flex,
-  }) : super(key: key);
+/// 配合 sliver 家族组件 无需设置高度  自适应高度
+/// [isNestedScrollView] 切换使用 [CustomScrollView] 或 [NestedScrollView]
+class ScrollViewAuto extends StatefulWidget {
+  const ScrollViewAuto(
+      {Key key,
+      this.expanded = false,
+      this.flex,
+      this.headerSliverBuilder,
+      this.floatHeaderSlivers = true,
+      this.clipBehavior = Clip.hardEdge,
+      this.reverse = false,
+      this.physics,
+      this.scrollDirection = Axis.vertical,
+      this.dragStartBehavior = DragStartBehavior.start,
+      this.body,
+      this.controller,
+      this.restorationId,
+      this.slivers = const <Widget>[],
+      this.isNestedScrollView = true,
+      this.primary,
+      this.shrinkWrap = false,
+      this.center,
+      this.anchor = 0.0,
+      this.cacheExtent,
+      this.semanticChildCount})
+      : super(key: key);
 
-  ///  NestedScrollView 外嵌套Expanded
+  /// 是否使用 [NestedScrollView] 默认true
+  final bool isNestedScrollView;
+
+  /// ScrollView 外嵌套Expanded
   final bool expanded;
   final int flex;
 
-  final Axis scrollDirection;
-
+  /// **** NestedScrollView **** ///
+  /// **** CustomScrollView **** ///
+  /// 使用此参数 [slivers] 无效 仅[isNestedScrollView]=true 有效
+  final NestedScrollViewHeaderSliversBuilder headerSliverBuilder;
+  final bool floatHeaderSlivers;
+  final Clip clipBehavior;
   final bool reverse;
-
-  final ScrollController controller;
-
-  final bool primary;
   final ScrollPhysics physics;
-  final bool shrinkWrap;
+  final Axis scrollDirection;
+  final DragStartBehavior dragStartBehavior;
+  final Widget body;
+  final ScrollController controller;
+  final String restorationId;
 
+  /// **** CustomScrollView **** ///
+  final List<Widget> slivers;
+  final bool primary;
+  final bool shrinkWrap;
   final Key center;
   final double anchor;
-
   final double cacheExtent;
   final int semanticChildCount;
-  final DragStartBehavior dragStartBehavior;
-
-  final String restorationId;
-  final Clip clipBehavior;
-
-  /// The slivers to place inside the viewport.
-  final List<Widget> slivers;
 
   @override
-  _CustomScrollViewAutoState createState() => _CustomScrollViewAutoState();
+  _ScrollViewAutoState createState() => _ScrollViewAutoState();
 }
 
-class _CustomScrollViewAutoState extends State<CustomScrollViewAuto> {
-  bool showScrollView = false;
-  List<GlobalKey> keys =
-      List<GlobalKey>.generate(3, (int index) => GlobalKey());
-  List<Size> sizes = List<Size>.generate(3, (int index) => null);
-
+class _ScrollViewAutoState extends State<ScrollViewAuto> {
+  bool showNestedScroll = false;
   List<Widget> slivers;
+  List<_SliverModel> sliverModel = <_SliverModel>[];
 
   @override
   void initState() {
     slivers = widget.slivers ?? <Widget>[];
     super.initState();
     Ts.addPostFrameCallback((Duration duration) {
-      sizes = _calculate(keys);
-      showScrollView = true;
+      _calculate(slivers, sliverModel);
+      showNestedScroll = true;
       setState(() {});
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    if (!showScrollView)
+    if (!showNestedScroll)
       return _Calculate(
-          slivers: slivers,
-          persistentHeaderKey: keys[0],
-          flexibleSpaceKey: keys[1],
-          bottomKey: keys[2]);
-    final CustomScrollView scrollView = CustomScrollView(
-        slivers: _sliverBuilder(slivers, sizes),
+        slivers: slivers,
+        sliverModel: sliverModel,
+      );
+    return expanded(
+        widget.isNestedScrollView ? nestedScrollView : customScrollView);
+  }
+
+  Widget expanded(Widget child) =>
+      widget.expanded ? Expanded(flex: widget.flex, child: child) : child;
+
+  NestedScrollView get nestedScrollView => NestedScrollView(
+      floatHeaderSlivers: widget.floatHeaderSlivers,
+      clipBehavior: widget.clipBehavior,
+      scrollDirection: widget.scrollDirection,
+      reverse: widget.reverse,
+      physics: widget.physics,
+      dragStartBehavior: widget.dragStartBehavior,
+      body: widget.body,
+      restorationId: widget.restorationId,
+      controller: widget.controller,
+      headerSliverBuilder: widget.headerSliverBuilder ??
+          (BuildContext context, bool innerBoxIsScrolled) =>
+              _sliverBuilder(slivers, sliverModel));
+
+  CustomScrollView get customScrollView => CustomScrollView(
+        slivers: _sliverBuilder(slivers, sliverModel),
         scrollDirection: widget.scrollDirection,
         reverse: widget.reverse,
         controller: widget.controller,
@@ -98,99 +124,8 @@ class _CustomScrollViewAutoState extends State<CustomScrollViewAuto> {
         semanticChildCount: widget.semanticChildCount,
         dragStartBehavior: widget.dragStartBehavior,
         restorationId: widget.restorationId,
-        clipBehavior: widget.clipBehavior);
-    if (widget.expanded) return Expanded(flex: widget.flex, child: scrollView);
-    return scrollView;
-  }
-}
-
-/// 配合 sliver 家族组件 无需设置高度  自适应高度
-class NestedScrollViewAuto extends StatefulWidget {
-  const NestedScrollViewAuto({
-    Key key,
-    this.expanded = false,
-    this.flex,
-    this.headerSliverBuilder,
-    this.floatHeaderSlivers = true,
-    this.clipBehavior = Clip.hardEdge,
-    this.reverse = false,
-    this.physics,
-    this.scrollDirection = Axis.vertical,
-    this.dragStartBehavior = DragStartBehavior.start,
-    this.body,
-    this.controller,
-    this.restorationId,
-    this.slivers,
-  }) : super(key: key);
-
-  ///  NestedScrollView 外嵌套Expanded
-  final bool expanded;
-  final int flex;
-
-  ///  NestedScrollView
-  ///
-  /// 使用此参数 [slivers] 无效
-  final NestedScrollViewHeaderSliversBuilder headerSliverBuilder;
-  final bool floatHeaderSlivers;
-  final Clip clipBehavior;
-  final bool reverse;
-  final ScrollPhysics physics;
-  final Axis scrollDirection;
-  final DragStartBehavior dragStartBehavior;
-  final Widget body;
-  final ScrollController controller;
-  final String restorationId;
-
-  /// headerSliverBuilder 添加额外组件
-  final List<Widget> slivers;
-
-  @override
-  _NestedScrollViewAutoState createState() => _NestedScrollViewAutoState();
-}
-
-class _NestedScrollViewAutoState extends State<NestedScrollViewAuto> {
-  bool showNestedScroll = false;
-  List<GlobalKey> keys =
-      List<GlobalKey>.generate(3, (int index) => GlobalKey());
-  List<Size> sizes = List<Size>.generate(3, (int index) => null);
-  List<Widget> slivers;
-
-  @override
-  void initState() {
-    slivers = widget.slivers ?? <Widget>[];
-    super.initState();
-    Ts.addPostFrameCallback((Duration duration) {
-      sizes = _calculate(keys);
-      showNestedScroll = true;
-      setState(() {});
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (!showNestedScroll)
-      return _Calculate(
-          slivers: slivers,
-          persistentHeaderKey: keys[0],
-          flexibleSpaceKey: keys[1],
-          bottomKey: keys[2]);
-    final NestedScrollView nestedScroll = NestedScrollView(
-        floatHeaderSlivers: widget.floatHeaderSlivers,
         clipBehavior: widget.clipBehavior,
-        scrollDirection: widget.scrollDirection,
-        reverse: widget.reverse,
-        physics: widget.physics,
-        dragStartBehavior: widget.dragStartBehavior,
-        body: widget.body,
-        restorationId: widget.restorationId,
-        controller: widget.controller,
-        headerSliverBuilder: widget.headerSliverBuilder ??
-            (BuildContext context, bool innerBoxIsScrolled) =>
-                _sliverBuilder(slivers, sizes));
-    if (widget.expanded)
-      return Expanded(flex: widget.flex, child: nestedScroll);
-    return nestedScroll;
-  }
+      );
 }
 
 /// 自动初始化 delegate
@@ -229,7 +164,7 @@ class SliverAutoPersistentHeader extends StatelessWidget {
 
 /// 组合使用 [FlexibleSpaceBar]、[SliverAppBar]
 /// bottom 添加PreferredSize
-/// 配合 [NestedScrollViewAuto] 使用 无需设置 [expandedHeight]
+/// 配合 [ScrollViewAuto] 使用 无需设置 [expandedHeight]
 class SliverAutoAppBar extends SliverAppBar {
   SliverAutoAppBar({
     Key key,
@@ -379,51 +314,76 @@ class FlexibleSpaceAutoBar extends StatelessWidget {
       background: background);
 }
 
-List<Widget> _sliverBuilder(List<Widget> slivers, List<Size> sizes) =>
-    slivers.map((Widget element) {
+class _SliverModel {
+  _SliverModel(
+      {this.sliver,
+      this.key,
+      this.size = const Size(0, 0),
+      this.extraKey,
+      this.extraSize = const Size(0, 0)});
+
+  Widget sliver;
+  GlobalKey key;
+  Size size;
+  GlobalKey extraKey;
+  Size extraSize;
+}
+
+List<Widget> _sliverBuilder(List<Widget> slivers, List<_SliverModel> _sliver) =>
+    slivers.asMap().entries.map<Widget>((MapEntry<int, Widget> entry) {
+      final Widget element = entry.value;
+      final int index = entry.key;
+      final _SliverModel sliver = _sliver[index];
       if (element is SliverAppBar) {
         return _SliverAppBar(
             sliverAppBar: element,
-            bottomSize: sizes[2],
-            expandedHeight:
-                math.max(sizes[1]?.height, kToolbarHeight + sizes[2].height));
+            bottomSize: sliver.extraSize,
+            expandedHeight: math.max(
+                sliver.size.height, kToolbarHeight + sliver.extraSize.height));
       } else if (element is SliverAutoPersistentHeader) {
         return _SliverAutoPersistentHeader(
-            header: element, maxHeight: sizes[0].height);
+            header: element, maxHeight: sliver.size.height);
       }
       return element;
     }).toList();
 
-List<Size> _calculate(List<GlobalKey> keys) {
-  final Size size1 = keys[0]?.currentContext?.size ?? const Size(0, 0);
-  final Size size2 = keys[1]?.currentContext?.size ?? const Size(0, 0);
-  Size size3 = keys[2]?.currentContext?.size ?? const Size(0, 0);
-  if (size3.height > kToolbarHeight) size3 = Size(size3.width, kToolbarHeight);
-  return <Size>[size1, size2, size3];
+void _calculate(List<Widget> slivers, List<_SliverModel> sliver) {
+  sliver.asMap().entries.map((MapEntry<int, _SliverModel> entry) {
+    final _SliverModel value = entry.value;
+    final int i = entry.key;
+    if (value.key != null) {
+      sliver[i].size = value.key?.currentContext?.size ?? const Size(0, 0);
+      if (value.extraKey != null) {
+        sliver[i].extraSize =
+            value.extraKey?.currentContext?.size ?? const Size(0, 0);
+        if (sliver[i].extraSize.height > kToolbarHeight) {
+          sliver[i].extraSize = Size(sliver[i].extraSize.width, kToolbarHeight);
+        }
+      }
+    }
+  }).toList();
 }
 
 class _Calculate extends StatelessWidget {
-  const _Calculate(
-      {Key key,
-      @required this.slivers,
-      @required this.persistentHeaderKey,
-      @required this.flexibleSpaceKey,
-      @required this.bottomKey})
-      : super(key: key);
+  const _Calculate({
+    Key key,
+    @required this.slivers,
+    this.sliverModel,
+  }) : super(key: key);
   final List<Widget> slivers;
-  final GlobalKey persistentHeaderKey;
-
-  final GlobalKey flexibleSpaceKey;
-  final GlobalKey bottomKey;
+  final List<_SliverModel> sliverModel;
 
   @override
   Widget build(BuildContext context) {
     final List<Widget> column = <Widget>[];
     if (slivers != null && slivers.isNotEmpty) {
       for (final Widget element in slivers) {
+        final _SliverModel _sliver = _SliverModel();
+        _sliver.sliver = element;
         if (element is SliverAppBar) {
           final Widget flexibleSpace = element.flexibleSpace;
           if (flexibleSpace != null) {
+            final GlobalKey flexibleSpaceKey = GlobalKey();
             if (flexibleSpace is FlexibleSpaceBar) {
               final List<Widget> stack = <Widget>[];
               final FlexibleSpaceBar space = flexibleSpace;
@@ -434,12 +394,19 @@ class _Calculate extends StatelessWidget {
               column
                   .add(Container(key: flexibleSpaceKey, child: flexibleSpace));
             }
+            _sliver.key = flexibleSpaceKey;
           }
-          if (element.bottom != null)
+          if (element.bottom != null) {
+            final GlobalKey bottomKey = GlobalKey();
             column.add(Container(key: bottomKey, child: element.bottom));
+            _sliver.extraKey = bottomKey;
+          }
         } else if (element is SliverAutoPersistentHeader) {
+          final GlobalKey persistentHeaderKey = GlobalKey();
           column.add(Container(key: persistentHeaderKey, child: element.child));
+          _sliver.key = persistentHeaderKey;
         }
+        sliverModel.add(_sliver);
       }
     }
     return Column(children: column);

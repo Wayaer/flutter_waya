@@ -8,7 +8,7 @@
   * Universal add Refreshed
   * add des encode and decode
   * remove [NestedScroll]
-  * add [CustomScrollViewAuto] [NestedScrollViewAuto] [SliverAutoPersistentHeader] [SliverAutoAppBar]
+  * add [ScrollViewAuto] [SliverAutoPersistentHeader] [SliverAutoAppBar]
 ## [1.3.10]
   * fix [ListWheel] The method 'call' was called on null.
   * remove [ListWheel] dispose().
