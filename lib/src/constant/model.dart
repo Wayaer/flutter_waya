@@ -124,6 +124,6 @@ class DateTimePickerUnit {
     return i;
   }
 
-  DateTimePickerUnit getDefaultUnit() => DateTimePickerUnit(
+  DateTimePickerUnit get getDefaultUnit => DateTimePickerUnit(
       year: 'Y', month: 'M', day: 'D', hour: 'H', minute: 'M', second: 'S');
 }

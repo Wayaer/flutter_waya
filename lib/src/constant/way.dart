@@ -220,6 +220,7 @@ class BaseTextStyle extends TextStyle {
             fontSize: fontSize ?? 14,
             height: height,
             decoration: TextDecoration.none,
+            decorationStyle: TextDecorationStyle.dashed,
             fontFamily: fontFamily,
             fontWeight: fontWeight);
 }

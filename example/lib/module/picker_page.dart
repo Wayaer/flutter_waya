@@ -18,8 +18,11 @@ class PickerPage extends StatelessWidget {
   }
 
   Future<void> selectTime() async {
-    final String data = await showDateTimePicker<String>();
-    showToast(data.toString());
+    final String text = await showDateTimePicker<String>(
+        startDate: DateTime(2020, 12, 20),
+        defaultDate: DateTime(2021, 11, 16),
+        endDate: DateTime(2022, 1, 10));
+    if (text != null) showToast(text);
   }
 
   Future<void> selectCity() async {

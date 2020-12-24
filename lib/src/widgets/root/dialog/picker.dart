@@ -12,14 +12,16 @@ class PickerTitle {
       double height,
       Color backgroundColor,
       this.titleBottom,
-      this.contentStyle,
+      TextStyle contentStyle,
       this.cancelTap,
-      this.sureTap})
+      this.sureTap,
+      this.sureIndexTap})
       : sure = sure ?? TextDefault('sure'),
         title = title ?? TextDefault('title'),
         cancel = cancel ?? TextDefault('cancel'),
         height = height ?? ConstConstant.pickerHeight,
         backgroundColor = backgroundColor ?? getColors(white),
+        contentStyle = contentStyle ?? BaseTextStyle(fontSize: 13),
         titlePadding =
             titlePadding ?? const EdgeInsets.symmetric(horizontal: 10);
 
@@ -43,6 +45,7 @@ class PickerTitle {
   ///  点击事件
   GestureTapCallback cancelTap;
   ValueChanged<String> sureTap;
+  ValueChanged<int> sureIndexTap;
 }
 
 class PickerWheel {
@@ -132,20 +135,9 @@ class _AreaPickerState extends State<AreaPicker> {
   @override
   void initState() {
     super.initState();
-    initData();
-    controllerCity = FixedExtentScrollController(initialItem: cityIndex);
-    controllerDistrict =
-        FixedExtentScrollController(initialItem: districtIndex);
-  }
 
-  void initData() {
     ///  样式设置
-    contentStyle = widget?.pickerTitle?.contentStyle ??
-        TextStyle(
-            fontSize: 13,
-            color: getColors(black),
-            decoration: TextDecoration.none,
-            decorationStyle: TextDecorationStyle.dashed);
+    contentStyle = widget?.pickerTitle?.contentStyle;
 
     ///  省
     province = areaData?.keys?.toList();
@@ -170,6 +162,10 @@ class _AreaPickerState extends State<AreaPicker> {
 
     ///  街道
     ///    street = districtData[districtIndex];
+
+    controllerCity = FixedExtentScrollController(initialItem: cityIndex);
+    controllerDistrict =
+        FixedExtentScrollController(initialItem: districtIndex);
   }
 
   ///  点击确定返回选择的地区
@@ -206,34 +202,31 @@ class _AreaPickerState extends State<AreaPicker> {
     final Row row =
         Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
       Expanded(
-        child: wheelItem(province, initialIndex: provinceIndex,
-            onChanged: (int newIndex) {
-          provinceIndex = newIndex;
-          refreshCity();
-        }),
-      ),
-      Expanded(
-        child: StatefulBuilder(
-            builder: (BuildContext context, StateSetter setState) {
-          cityState = setState;
-          return wheelItem(city,
-              childDelegateType: ListWheelChildDelegateType.list,
-              controller: controllerCity, onChanged: (int newIndex) {
-            cityIndex = newIndex;
-            refreshDistrict();
-          });
-        }),
-      ),
-      Expanded(
-        child: StatefulBuilder(
-            builder: (BuildContext context, StateSetter setState) {
-          districtState = setState;
-          return wheelItem(district,
-              childDelegateType: ListWheelChildDelegateType.list,
-              controller: controllerDistrict,
-              onChanged: (int newIndex) => districtIndex = newIndex);
-        }),
-      )
+          child: wheelItem(province, initialIndex: provinceIndex,
+              onChanged: (int newIndex) {
+        provinceIndex = newIndex;
+        refreshCity();
+      })),
+      Universal(
+          expanded: true,
+          builder: (BuildContext context, StateSetter setState) {
+            cityState = setState;
+            return wheelItem(city,
+                childDelegateType: ListWheelChildDelegateType.list,
+                controller: controllerCity, onChanged: (int newIndex) {
+              cityIndex = newIndex;
+              refreshDistrict();
+            });
+          }),
+      Universal(
+          expanded: true,
+          builder: (BuildContext context, StateSetter setState) {
+            districtState = setState;
+            return wheelItem(district,
+                childDelegateType: ListWheelChildDelegateType.list,
+                controller: controllerDistrict,
+                onChanged: (int newIndex) => districtIndex = newIndex);
+          }),
     ]);
 
     final List<Widget> columnChildren = <Widget>[];
@@ -260,34 +253,31 @@ class _AreaPickerState extends State<AreaPicker> {
   }
 
   Widget wheelItem(List<String> list,
-      {FixedExtentScrollController controller,
-      int initialIndex,
-      ListWheelChildDelegateType childDelegateType,
-      ValueChanged<int> onChanged}) {
-    return ListWheel(
-        controller: controller,
-        initialIndex: initialIndex,
-        itemExtent: widget?.pickerWheel?.itemHeight,
-        diameterRatio: widget?.pickerWheel?.diameterRatio,
-        offAxisFraction: widget?.pickerWheel?.offAxisFraction,
-        perspective: widget?.pickerWheel?.perspective,
-        magnification: widget?.pickerWheel?.magnification,
-        useMagnifier: widget?.pickerWheel?.useMagnifier,
-        squeeze: widget?.pickerWheel?.squeeze,
-        physics: widget?.pickerWheel?.physics,
-        childDelegateType: childDelegateType,
-        children: list.map((String value) => item(value)).toList(),
-        itemBuilder: (BuildContext context, int index) => item(list[index]),
-        itemCount: list.length,
-        onChanged: onChanged);
-  }
+          {FixedExtentScrollController controller,
+          int initialIndex,
+          ListWheelChildDelegateType childDelegateType,
+          ValueChanged<int> onChanged}) =>
+      ListWheel(
+          controller: controller,
+          initialIndex: initialIndex,
+          itemExtent: widget?.pickerWheel?.itemHeight,
+          diameterRatio: widget?.pickerWheel?.diameterRatio,
+          offAxisFraction: widget?.pickerWheel?.offAxisFraction,
+          perspective: widget?.pickerWheel?.perspective,
+          magnification: widget?.pickerWheel?.magnification,
+          useMagnifier: widget?.pickerWheel?.useMagnifier,
+          squeeze: widget?.pickerWheel?.squeeze,
+          physics: widget?.pickerWheel?.physics,
+          childDelegateType: childDelegateType,
+          children: list.map((String value) => item(value)).toList(),
+          itemBuilder: (BuildContext context, int index) => item(list[index]),
+          itemCount: list.length,
+          onChanged: onChanged);
 
-  Widget item(String value) {
-    return Container(
-        alignment: Alignment.center,
-        child: TextSmall(value,
-            overflow: TextOverflow.ellipsis, style: contentStyle));
-  }
+  Widget item(String value) => Container(
+      alignment: Alignment.center,
+      child: TextSmall(value,
+          overflow: TextOverflow.ellipsis, style: contentStyle));
 
   void jumpToIndex(int index, FixedExtentScrollController controller,
       {Duration duration}) {
@@ -330,9 +320,8 @@ class MultipleChoicePicker extends StatelessWidget {
           Universal(
               child: pickerTitle?.sure,
               onTap: () {
-                if (pickerTitle?.sureTap != null)
-                  pickerTitle
-                      ?.sureTap((controller?.selectedItem ?? 0).toString());
+                if (pickerTitle?.sureIndexTap != null)
+                  pickerTitle?.sureIndexTap(controller?.selectedItem ?? 0);
               })
         ]));
     if (pickerTitle?.titleBottom != null)
@@ -353,7 +342,7 @@ class MultipleChoicePicker extends StatelessWidget {
     return Universal(
         mainAxisSize: MainAxisSize.min,
         height: pickerTitle?.height,
-        decoration: BoxDecoration(color: pickerTitle?.backgroundColor),
+        color: pickerTitle?.backgroundColor,
         children: children);
   }
 }
@@ -371,7 +360,7 @@ class DateTimePicker extends StatefulWidget {
     this.endDate,
     this.pickerTitle,
     this.pickerWheel,
-  })  : unit = unit ?? DateTimePickerUnit().getDefaultUnit(),
+  })  : unit = unit ?? DateTimePickerUnit().getDefaultUnit,
         showUnit = showUnit ?? true,
         dual = dual ?? true,
         super(key: key);
@@ -386,6 +375,7 @@ class DateTimePicker extends StatefulWidget {
   final bool showUnit;
 
   ///  时间选择器单位
+  ///  通过单位参数确定是否显示对应的年月日时分秒
   final DateTimePickerUnit unit;
 
   ///  字体样式
@@ -401,13 +391,15 @@ class DateTimePicker extends StatefulWidget {
 }
 
 class _DateTimePickerState extends State<DateTimePicker> {
-  List<String> yearData = <String>[],
-      monthData = <String>[],
-      dayData = <String>[],
-      hourData = <String>[],
-      minuteData = <String>[],
-      secondData = <String>[];
+  List<int> yearData = <int>[],
+      monthData = <int>[],
+      dayData = <int>[],
+      hourData = <int>[],
+      minuteData = <int>[],
+      secondData = <int>[];
+
   FixedExtentScrollController controllerDay;
+  FixedExtentScrollController controllerMonth;
 
   ///  字体样式
   TextStyle contentStyle;
@@ -420,6 +412,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
 
   DateTimePickerUnit unit;
   double itemWidth;
+
   int yearIndex = 0;
   int monthIndex = 0;
   int dayIndex = 0;
@@ -435,31 +428,40 @@ class _DateTimePickerState extends State<DateTimePicker> {
         widget?.pickerWheel?.itemWidth ?? (deviceWidth - 20) / unit.getLength();
 
     ///  样式设置
-    contentStyle = widget?.pickerTitle?.contentStyle ?? textStyleVoid();
-    unitStyle = widget.unitStyle ?? textStyleVoid();
+    contentStyle = widget?.pickerTitle?.contentStyle;
+    unitStyle = widget.unitStyle ?? contentStyle;
     startDate = widget.startDate ?? DateTime.now();
-    endDate = initEndDate();
+    endDate = initEndDate;
     defaultDate = initDefaultDate();
-
-    ///  初始化每个Wheel数组
-    final int year = (endDate.year - startDate.year) + 1;
-    for (int i = 0; i < year; i++) {
-      yearData.add((startDate.year + i).toString());
+    if (unit?.year != null) {
+      ///  初始化每个Wheel数组
+      final int year = (endDate.year - startDate.year) + 1;
+      yearData =
+          List<int>.generate(year, (int index) => startDate.year + index);
+      yearIndex = defaultDate.year - startDate.year;
     }
-
-    yearIndex = defaultDate.year - startDate.year;
-    monthIndex = defaultDate.month - 1;
-    dayIndex = defaultDate.day - 1;
-    hourIndex = defaultDate.hour;
-    minuteIndex = defaultDate.minute;
-    secondIndex = defaultDate.second;
-
-    monthData = addList(12, startNumber: 1).cast<String>();
-    dayData = calculateDayNumber(isFirst: true).cast<String>();
-    hourData = addList(24).cast<String>();
-    minuteData = addList(60).cast<String>();
-    secondData = addList(60).cast<String>();
-    controllerDay = FixedExtentScrollController(initialItem: dayIndex);
+    if (unit?.month != null) {
+      monthData = addList(12);
+      monthIndex = defaultDate.month - 1;
+      controllerMonth = FixedExtentScrollController(initialItem: monthIndex);
+    }
+    if (unit?.day != null) {
+      dayData = calculateDayNumber(isFirst: true);
+      dayIndex = defaultDate.day - 1;
+      controllerDay = FixedExtentScrollController(initialItem: dayIndex);
+    }
+    if (unit?.hour != null) {
+      hourData = addList(24);
+      hourIndex = defaultDate.hour;
+    }
+    if (unit?.minute != null) {
+      minuteData = addList(60);
+      minuteIndex = defaultDate.minute;
+    }
+    if (unit?.second != null) {
+      secondData = addList(60);
+      secondIndex = defaultDate.second;
+    }
   }
 
   DateTime initDefaultDate() {
@@ -469,35 +471,21 @@ class _DateTimePickerState extends State<DateTimePicker> {
     return widget.defaultDate;
   }
 
-  DateTime initEndDate() {
-    if (widget.endDate != null && startDate.isBefore(widget.endDate))
-      return widget.endDate;
-    return startDate.add(const Duration(days: 3650));
-  }
-
-  TextStyle textStyleVoid() => TextStyle(
-      fontSize: 14,
-      color: getColors(black),
-      decoration: TextDecoration.none,
-      decorationStyle: TextDecorationStyle.dashed);
+  DateTime get initEndDate =>
+      (widget.endDate != null && startDate.isBefore(widget.endDate))
+          ? widget.endDate
+          : startDate.add(const Duration(days: 3650));
 
   ///  显示双数还是单数
-  String valuePadLeft(String value) =>
-      widget.dual ? value.padLeft(2, '0') : value;
+  String valuePadLeft(int value) =>
+      widget.dual ? value.toString().padLeft(2, '0') : value.toString();
 
   ///  wheel数组添加数据
-  List<String> addList(int maxNumber, {int startNumber = 0}) {
-    final List<String> list = <String>[];
-    for (int i = startNumber;
-        i < (startNumber == 0 ? maxNumber : maxNumber + 1);
-        i++) {
-      list.add(valuePadLeft(i.toString()));
-    }
-    return list;
-  }
+  List<int> addList(int maxNumber) =>
+      List<int>.generate(maxNumber, (int index) => index);
 
   ///  计算每月day的数量
-  List<String> calculateDayNumber({bool isFirst = false}) {
+  List<int> calculateDayNumber({bool isFirst = false}) {
     final int selectYearItem =
         isFirst ? (defaultDate.year - startDate.year) : yearIndex;
     final int selectMonthItem = isFirst ? defaultDate.month : monthIndex + 1;
@@ -508,23 +496,34 @@ class _DateTimePickerState extends State<DateTimePicker> {
         selectMonthItem == 8 ||
         selectMonthItem == 10 ||
         selectMonthItem == 12) {
-      return addList(31, startNumber: 1);
+      return addList(31);
     }
-    if (selectMonthItem == 2) {
-      return addList(
-          DateTime(int.parse(yearData[selectYearItem]), 3)
-              .difference(DateTime(int.parse(yearData[selectYearItem]), 2))
-              .inDays,
-          startNumber: 1);
-    } else {
-      return addList(30, startNumber: 1);
-    }
+    return selectMonthItem == 2
+        ? addList(DateTime(yearData[selectYearItem], 3)
+            .difference(DateTime(yearData[selectYearItem], 2))
+            .inDays)
+        : addList(30);
   }
 
-  ///  刷新day数
+  void sureTapVoid() {
+    if (widget?.pickerTitle?.sureTap == null) return;
+    String dateTime = '';
+    if (unit?.year != null) dateTime = yearData[yearIndex].toString() + '-';
+    if (unit?.month != null)
+      dateTime += valuePadLeft(monthData[monthIndex] + 1) + '-';
+    if (unit?.day != null)
+      dateTime += valuePadLeft(dayData[dayIndex] + 1) + ' ';
+    if (unit?.hour != null) dateTime += valuePadLeft(hourData[hourIndex]);
+    if (unit?.minute != null)
+      dateTime += ':' + valuePadLeft(minuteData[minuteIndex]);
+    if (unit?.second != null)
+      dateTime += ':' + valuePadLeft(secondData[secondIndex]);
+    widget?.pickerTitle?.sureTap(dateTime.trim());
+  }
+
   void refreshDay() {
     int oldDayIndex = dayIndex;
-    final List<String> newDayList = calculateDayNumber().cast<String>();
+    final List<int> newDayList = calculateDayNumber();
     if (newDayList.length != dayData.length) {
       dayData = newDayList;
       if (oldDayIndex > 25) {
@@ -532,25 +531,34 @@ class _DateTimePickerState extends State<DateTimePicker> {
         final int newDayIndex = newDayList.length - 1;
         if (oldDayIndex > newDayIndex) oldDayIndex = newDayIndex;
       }
-      datState(() {});
+      dayState(() {});
       jumpToIndex(oldDayIndex, controllerDay);
     }
   }
 
-  ///  点击确定返回日期
-  void sureTapVoid() {
-    if (widget?.pickerTitle?.sureTap == null) return;
-    String dateTime = '';
-    if (unit?.year != null) dateTime = yearData[yearIndex] + '-';
-    if (unit?.month != null) dateTime += monthData[monthIndex] + '-';
-    if (unit?.day != null) dateTime += dayData[dayIndex] + ' ';
-    if (unit?.hour != null) dateTime += hourData[hourIndex];
-    if (unit?.minute != null) dateTime += ':' + minuteData[minuteIndex];
-    if (unit?.second != null) dateTime += ':' + secondData[secondIndex];
-    widget?.pickerTitle?.sureTap(dateTime.trim());
+  void checkMonthAndDay() {
+    if (yearData[yearIndex] == startDate.year) {
+      if (monthIndex < startDate.month - 1) {
+        jumpToIndex(startDate.month - 1, controllerMonth);
+        if (dayIndex < startDate.day - 1)
+          jumpToIndex(startDate.day - 1, controllerDay);
+      } else {
+        if (dayIndex < startDate.day - 1)
+          jumpToIndex(startDate.day - 1, controllerDay);
+      }
+    } else if (yearData[yearIndex] == endDate.year) {
+      if (monthIndex > endDate.month - 1) {
+        jumpToIndex(endDate.month - 1, controllerMonth);
+        if (dayIndex > endDate.day - 1)
+          jumpToIndex(endDate.day - 1, controllerDay);
+      } else {
+        if (dayIndex > endDate.day - 1)
+          jumpToIndex(endDate.day - 1, controllerDay);
+      }
+    }
   }
 
-  StateSetter datState;
+  StateSetter dayState;
 
   @override
   Widget build(BuildContext context) {
@@ -559,52 +567,51 @@ class _DateTimePickerState extends State<DateTimePicker> {
       rowChildren.add(wheelItem(yearData,
           initialIndex: yearIndex, unit: unit?.year, onChanged: (int newIndex) {
         yearIndex = newIndex;
+        if (unit.month != null) checkMonthAndDay();
         if (unit.day != null) refreshDay();
-        limitStartAndEnd();
       }));
 
     if (unit.month != null)
       rowChildren.add(wheelItem(monthData,
-          initialIndex: monthIndex,
+          startZero: false,
+          controller: controllerMonth,
           unit: unit?.month, onChanged: (int newIndex) {
         monthIndex = newIndex;
+        Ts.timerTs(const Duration(milliseconds: 100), () => checkMonthAndDay());
         if (unit.day != null) refreshDay();
-        limitStartAndEnd();
       }));
 
     if (unit.day != null)
       rowChildren.add(StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
-        datState = setState;
-        return wheelItem(dayData, controller: controllerDay, unit: unit?.day,
-            onChanged: (int newIndex) {
+        dayState = setState;
+        return wheelItem(dayData,
+            startZero: false,
+            controller: controllerDay,
+            unit: unit?.day, onChanged: (int newIndex) {
           dayIndex = newIndex;
-          limitStartAndEnd();
+          Ts.timerTs(
+              const Duration(milliseconds: 200), () => checkMonthAndDay());
         });
       }));
 
     if (unit.hour != null)
       rowChildren.add(wheelItem(hourData,
-          unit: unit?.hour, initialIndex: hourIndex, onChanged: (int newIndex) {
-        hourIndex = newIndex;
-        limitStartAndEnd();
-      }));
+          unit: unit?.hour,
+          initialIndex: hourIndex,
+          onChanged: (int newIndex) => hourIndex = newIndex));
 
     if (unit.minute != null)
       rowChildren.add(wheelItem(minuteData,
           initialIndex: minuteIndex,
-          unit: unit?.minute, onChanged: (int newIndex) {
-        minuteIndex = newIndex;
-        limitStartAndEnd();
-      }));
+          unit: unit?.minute,
+          onChanged: (int newIndex) => minuteIndex = newIndex));
 
     if (unit.second != null)
       rowChildren.add(wheelItem(secondData,
           initialIndex: secondIndex,
-          unit: unit?.second, onChanged: (int newIndex) {
-        secondIndex = newIndex;
-        limitStartAndEnd();
-      }));
+          unit: unit?.second,
+          onChanged: (int newIndex) => secondIndex = newIndex));
 
     final List<Widget> columnChildren = <Widget>[];
     columnChildren.add(Universal(
@@ -634,42 +641,45 @@ class _DateTimePickerState extends State<DateTimePicker> {
         children: columnChildren);
   }
 
-  Widget wheelItem(List<String> list,
-      {FixedExtentScrollController controller,
-      String unit,
-      int initialIndex,
-      ValueChanged<int> onChanged}) {
-    return Universal(
-        direction: Axis.horizontal,
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        width: itemWidth,
-        children: !widget.showUnit
-            ? null
-            : <Widget>[
-                Expanded(
-                    child: listWheel(
-                        list: list,
-                        initialIndex: initialIndex,
-                        controller: controller,
-                        onChanged: onChanged)),
-                Container(
-                    margin: const EdgeInsets.only(left: 2),
-                    alignment: Alignment.center,
-                    height: double.infinity,
-                    child: Text(unit, style: unitStyle))
-              ],
-        child: widget.showUnit
-            ? null
-            : listWheel(
-                list: list,
-                initialIndex: initialIndex,
-                controller: controller,
-                onChanged: onChanged));
-  }
+  Widget wheelItem(List<int> list,
+          {FixedExtentScrollController controller,
+          String unit,
+          int initialIndex,
+          bool startZero,
+          ValueChanged<int> onChanged}) =>
+      Universal(
+          direction: Axis.horizontal,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          width: itemWidth,
+          children: !widget.showUnit
+              ? null
+              : <Widget>[
+                  Expanded(
+                      child: listWheel(
+                          list: list,
+                          startZero: startZero,
+                          initialIndex: initialIndex,
+                          controller: controller,
+                          onChanged: onChanged)),
+                  Container(
+                      margin: const EdgeInsets.only(left: 2),
+                      alignment: Alignment.center,
+                      height: double.infinity,
+                      child: Text(unit, style: unitStyle))
+                ],
+          child: widget.showUnit
+              ? null
+              : listWheel(
+                  list: list,
+                  startZero: startZero,
+                  initialIndex: initialIndex,
+                  controller: controller,
+                  onChanged: onChanged));
 
   Widget listWheel(
-      {List<String> list,
+      {List<int> list,
+      bool startZero,
       int initialIndex,
       FixedExtentScrollController controller,
       ValueChanged<int> onChanged}) {
@@ -684,26 +694,24 @@ class _DateTimePickerState extends State<DateTimePicker> {
         squeeze: widget?.pickerWheel?.squeeze,
         physics: widget?.pickerWheel?.physics,
         initialIndex: initialIndex,
-        itemBuilder: (_, int index) =>
-            TextSmall(list[index].toString(), style: contentStyle),
+        itemBuilder: (_, int index) => TextSmall(
+            padLeft(startZero ?? true ? list[index] : list[index] + 1),
+            style: contentStyle),
         itemCount: list.length,
-        onChanged: onChanged);
+        onScrollEnd: onChanged);
   }
 
-  bool limitStartAndEnd() {
-    final DateTime selectDateTime = DateTime.parse(
-        '${yearData[yearIndex]}-${monthData[monthIndex]}-${dayData[dayIndex]} ${hourData[hourIndex]}:${minuteData[minuteIndex]}:${secondData[dayIndex]}');
-    if (selectDateTime.isBefore(startDate)) {
-      return true;
-    } else if (selectDateTime.isAfter(endDate)) {
-      return false;
-    } else {
-      return null;
-    }
-  }
+  String padLeft(int value) => value.toString().padLeft(2, '0');
 
   void jumpToIndex(int index, FixedExtentScrollController controller,
       {Duration duration}) {
     if (controller != null) controller.jumpToItem(index);
+  }
+
+  @override
+  void dispose() {
+    controllerMonth?.dispose();
+    controllerDay?.dispose();
+    super.dispose();
   }
 }

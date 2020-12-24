@@ -742,12 +742,11 @@ class SimpleButton extends StatelessWidget {
     if (child != null) widget = child;
     if (isElastic)
       return ElasticButton(
-        child: universal(widget),
-        onTap: onTap,
-        elasticButtonType: elasticButtonType,
-        scaleCoefficient: scaleCoefficient,
-        useCache: useCache,
-      );
+          child: universal(widget),
+          onTap: onTap,
+          elasticButtonType: elasticButtonType,
+          scaleCoefficient: scaleCoefficient,
+          useCache: useCache);
     return universal(widget, onTap: onTap);
   }
 

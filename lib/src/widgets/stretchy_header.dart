@@ -235,17 +235,16 @@ class _StretchyHeaderBaseState extends State<StretchyHeaderBase> {
       color: widget.headerData.backgroundColor,
       children: <Widget>[
         SizedBox(
-          child: ClipRect(
-              clipper: HeaderClipper(_headerSize - _offset),
-              child: widget.headerData.header),
-          height: _scrollController.hasClients &&
-                  _scrollController.position.extentAfter == 0.0
-              ? _headerSize
-              : _offset <= _headerSize
-                  ? _headerSize - _offset
-                  : 0.0,
-          width: MediaQuery.of(context).size.width,
-        ),
+            child: ClipRect(
+                clipper: HeaderClipper(_headerSize - _offset),
+                child: widget.headerData.header),
+            height: _scrollController.hasClients &&
+                    _scrollController.position.extentAfter == 0.0
+                ? _headerSize
+                : _offset <= _headerSize
+                    ? _headerSize - _offset
+                    : 0.0,
+            width: deviceWidth),
         IgnorePointer(
           child: widget.headerData.blurContent
               ? ClipRect(

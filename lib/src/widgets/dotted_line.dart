@@ -25,6 +25,7 @@ class DottedLine extends StatelessWidget {
   final double height;
   final EdgeInsetsGeometry padding;
   final EdgeInsetsGeometry margin;
+
   @override
   Widget build(BuildContext context) => Container(
       width: width ?? getWidth(0),
@@ -41,9 +42,11 @@ class DottedPainter extends CustomPainter {
       {this.strokeWidth = 5.0,
       this.color = Colors.greenAccent,
       this.gap = 5.0});
+
   double strokeWidth;
   Color color;
   double gap;
+
   @override
   void paint(Canvas canvas, Size size) {
     final Paint dashedPaint = Paint()

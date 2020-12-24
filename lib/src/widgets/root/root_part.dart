@@ -396,10 +396,9 @@ Future<T> showDateTimePicker<T>({
   PickerWheel pickerWheel,
 }) {
   Ts.focusNode(_globalNavigatorKey.currentContext);
-  if (pickerTitle?.cancelTap == null)
-    pickerTitle.cancelTap ??= () => closePopup();
-  if (pickerTitle?.sureTap == null)
-    pickerTitle.sureTap ??= (String text) => closePopup(text);
+  pickerTitle ??= PickerTitle();
+  pickerTitle?.cancelTap ??= () => closePopup();
+  pickerTitle?.sureTap ??= (String text) => closePopup(text);
   final Widget widget = DateTimePicker(
       pickerTitle: pickerTitle,
       pickerWheel: pickerWheel,
@@ -431,10 +430,9 @@ Future<T> showAreaPicker<T>({
   PickerWheel pickerWheel,
 }) {
   Ts.focusNode(_globalNavigatorKey.currentContext);
-  if (pickerTitle?.cancelTap == null)
-    pickerTitle.cancelTap ??= () => closePopup();
-  if (pickerTitle?.sureTap == null)
-    pickerTitle.sureTap ??= (String text) => closePopup(text);
+  pickerTitle ??= PickerTitle();
+  pickerTitle?.cancelTap ??= () => closePopup();
+  pickerTitle?.sureTap ??= (String text) => closePopup(text);
   final Widget widget = AreaPicker(
       defaultProvince: defaultProvince,
       defaultCity: defaultCity,
@@ -460,10 +458,9 @@ Future<T> showMultipleChoicePicker<T>({
   PickerWheel pickerWheel,
 }) {
   Ts.focusNode(_globalNavigatorKey.currentContext);
-  if (pickerTitle?.cancelTap == null)
-    pickerTitle.cancelTap ??= () => closePopup();
-  if (pickerTitle?.sureTap == null)
-    pickerTitle.sureTap ??= (String text) => closePopup(text);
+  pickerTitle ??= PickerTitle();
+  pickerTitle?.cancelTap ??= () => closePopup();
+  pickerTitle?.sureIndexTap ??= (int index) => closePopup(index);
   final Widget widget = MultipleChoicePicker(
       itemCount: itemCount,
       itemBuilder: itemBuilder,
