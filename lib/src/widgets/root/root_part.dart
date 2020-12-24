@@ -66,20 +66,19 @@ OverlayEntryMap showLoading({
   String semanticsValue,
   LoadingType loadingType,
   TextStyle textStyle,
-}) {
-  return showOverlay(Loading(
-      custom: custom,
-      gaussian: gaussian,
-      text: text,
-      value: value,
-      backgroundColor: backgroundColor,
-      valueColor: valueColor,
-      strokeWidth: strokeWidth ?? 4.0,
-      semanticsLabel: semanticsLabel,
-      semanticsValue: semanticsValue,
-      loadingType: loadingType ?? LoadingType.circular,
-      textStyle: textStyle));
-}
+}) =>
+    showOverlay(Loading(
+        custom: custom,
+        gaussian: gaussian,
+        text: text,
+        value: value,
+        backgroundColor: backgroundColor,
+        valueColor: valueColor,
+        strokeWidth: strokeWidth ?? 4.0,
+        semanticsLabel: semanticsLabel,
+        semanticsValue: semanticsValue,
+        loadingType: loadingType ?? LoadingType.circular,
+        textStyle: textStyle));
 
 ///  Toast
 Duration _duration = const Duration(milliseconds: 1300);
@@ -220,17 +219,17 @@ Future<T> showDialogPopup<T>({
     };
   }
   return showGeneralDialog(
-    context: _globalNavigatorKey.currentContext,
-    pageBuilder: pageBuilder ??
-        (BuildContext context, Animation<double> animation, _) => widget,
-    barrierDismissible: barrierDismissible ?? true,
-    barrierLabel: barrierLabel ?? '',
-    barrierColor: backgroundColor ?? getColors(transparent),
-    transitionDuration: transitionDuration ?? const Duration(milliseconds: 80),
-    transitionBuilder: transitionBuilder,
-    useRootNavigator: useRootNavigator ?? true,
-    routeSettings: routeSettings,
-  );
+      context: _globalNavigatorKey.currentContext,
+      pageBuilder: pageBuilder ??
+          (BuildContext context, Animation<double> animation, _) => widget,
+      barrierDismissible: barrierDismissible ?? true,
+      barrierLabel: barrierLabel ?? '',
+      barrierColor: backgroundColor ?? getColors(transparent),
+      transitionDuration:
+          transitionDuration ?? const Duration(milliseconds: 80),
+      transitionBuilder: transitionBuilder,
+      useRootNavigator: useRootNavigator ?? true,
+      routeSettings: routeSettings);
 }
 
 ///  showModalBottomSheet 去除context
@@ -249,18 +248,17 @@ Future<T> showBottomPopup<T>({
 }) {
   assert(builder != null || widget != null);
   return showModalBottomSheet(
-    context: _globalNavigatorKey.currentContext,
-    builder: builder ?? (BuildContext context) => widget,
-    backgroundColor: backgroundColor ?? getColors(transparent),
-    elevation: elevation,
-    shape: shape,
-    clipBehavior: clipBehavior,
-    barrierColor: barrierColor,
-    isScrollControlled: false,
-    useRootNavigator: useRootNavigator,
-    isDismissible: isDismissible,
-    enableDrag: enableDrag,
-  );
+      context: _globalNavigatorKey.currentContext,
+      builder: builder ?? (BuildContext context) => widget,
+      backgroundColor: backgroundColor ?? getColors(transparent),
+      elevation: elevation,
+      shape: shape,
+      clipBehavior: clipBehavior,
+      barrierColor: barrierColor,
+      isScrollControlled: false,
+      useRootNavigator: useRootNavigator,
+      isDismissible: isDismissible,
+      enableDrag: enableDrag);
 }
 
 ///  showModalBottomSheet
@@ -280,18 +278,17 @@ Future<T> showBottomPagePopup<T>({
 }) {
   assert(builder != null || widget != null);
   return showModalBottomSheet(
-    context: _globalNavigatorKey.currentContext,
-    builder: builder ?? (BuildContext context) => widget,
-    backgroundColor: backgroundColor ?? getColors(transparent),
-    elevation: elevation,
-    shape: shape,
-    clipBehavior: clipBehavior,
-    barrierColor: barrierColor,
-    isScrollControlled: true,
-    useRootNavigator: useRootNavigator,
-    isDismissible: isDismissible,
-    enableDrag: enableDrag,
-  );
+      context: _globalNavigatorKey.currentContext,
+      builder: builder ?? (BuildContext context) => widget,
+      backgroundColor: backgroundColor ?? getColors(transparent),
+      elevation: elevation,
+      shape: shape,
+      clipBehavior: clipBehavior,
+      barrierColor: barrierColor,
+      isScrollControlled: true,
+      useRootNavigator: useRootNavigator,
+      isDismissible: isDismissible,
+      enableDrag: enableDrag);
 }
 
 ///  showCupertinoModalPopup
@@ -343,21 +340,20 @@ Future<T> dialogSureCancel<T>({
   bool addMaterial,
 }) {
   final PopupSureCancel widget = PopupSureCancel(
-    backsideTap: () {
-      if (isDismissible) isOverlay ? closeOverlay() : closePopup();
-    },
-    width: width,
-    addMaterial: addMaterial,
-    gaussian: gaussian,
-    content: content,
-    decoration: decoration,
-    alignment: alignment,
-    height: height,
-    sure: sure,
-    cancel: cancel,
-    backgroundColor: backgroundColor,
-    padding: padding,
-  );
+      backsideTap: () {
+        if (isDismissible) isOverlay ? closeOverlay() : closePopup();
+      },
+      width: width,
+      addMaterial: addMaterial,
+      gaussian: gaussian,
+      content: content,
+      decoration: decoration,
+      alignment: alignment,
+      height: height,
+      sure: sure,
+      cancel: cancel,
+      backgroundColor: backgroundColor,
+      padding: padding);
   if (isOverlay ?? false) {
     showOverlay(widget);
     return null;
@@ -372,39 +368,8 @@ void closePopup([dynamic value]) => pop(value);
 ///  日期选择器
 ///  关闭 closePopup()
 Future<T> showDateTimePicker<T>({
-  ///  背景色
-  Color backgroundColor,
-
-  ///  头部
-  Widget titleBottom,
-  Widget title,
-
-  ///  头部右侧 确定
-  Widget sure,
-
-  ///  头部左侧 取消
-  Widget cancel,
-
-  ///  内容文字样式
-  TextStyle contentStyle,
-
   ///  选择框内单位文字样式
   TextStyle unitStyle,
-
-  ///  取消点击事件
-  GestureTapCallback cancelTap,
-
-  ///  确认点击事件
-  ValueChanged<String> sureTap,
-
-  ///  单个item的高度
-  double itemHeight,
-
-  ///  单个item的宽度
-  double itemWidth,
-
-  ///  整个弹框高度
-  double height,
 
   ///  开始时间
   DateTime startDate,
@@ -424,128 +389,58 @@ Future<T> showDateTimePicker<T>({
   ///  单位设置
   DateTimePickerUnit unit,
 
-  ///  半径大小,越大则越平面,越小则间距越大
-  double diameterRatio,
+  /// 头部和背景色配置
+  PickerTitle pickerTitle,
 
-  ///  选中item偏移
-  double offAxisFraction,
-
-  ///  表示车轮水平偏离中心的程度  范围[0,0.01]
-  double perspective,
-
-  ///  放大倍率
-  double magnification,
-
-  ///  是否启用放大镜
-  bool useMagnifier,
-
-  ///  1或者2
-  double squeeze,
-  ScrollPhysics physics,
+  /// Wheel配置信息
+  PickerWheel pickerWheel,
 }) {
   Ts.focusNode(_globalNavigatorKey.currentContext);
+  if (pickerTitle?.cancelTap == null)
+    pickerTitle.cancelTap ??= () => closePopup();
+  if (pickerTitle?.sureTap == null)
+    pickerTitle.sureTap ??= (String text) => closePopup(text);
   final Widget widget = DateTimePicker(
-      diameterRatio: diameterRatio,
-      offAxisFraction: offAxisFraction,
-      perspective: perspective,
-      magnification: magnification,
-      useMagnifier: useMagnifier,
-      squeeze: squeeze,
-      itemHeight: itemHeight,
-      itemWidth: itemWidth,
-      height: height,
+      pickerTitle: pickerTitle,
+      pickerWheel: pickerWheel,
       startDate: startDate,
       endDate: endDate,
       defaultDate: defaultDate,
       dual: dual,
       showUnit: showUnit,
-      unit: unit,
-      backgroundColor: backgroundColor,
-      sure: sure,
-      title: title,
-      cancel: cancel,
-      titleBottom: titleBottom,
-      contentStyle: contentStyle,
-      unitStyle: unitStyle,
-      cancelTap: cancelTap ?? () => closePopup(),
-      sureTap: sureTap ?? (String text) => closePopup(text));
+      unit: unit);
   return showBottomPopup(widget: widget);
 }
 
 ///  地区选择器
 ///  关闭 closePopup()
 Future<T> showAreaPicker<T>({
-  ///  背景色
-  Color backgroundColor,
-
-  ///  头部
-  Widget titleBottom,
-  Widget title,
-
-  ///  头部右侧 确定
-  Widget sure,
-
-  ///  头部左侧 取消
-  Widget cancel,
-
-  ///  内容文字样式
-  TextStyle contentStyle,
-
-  ///  取消点击事件
-  GestureTapCallback cancelTap,
-
-  ///  确认点击事件
-  ValueChanged<String> sureTap,
-
-  ///  单个item的高度
-  double itemHeight,
-
-  ///  整个弹框高度
-  double height,
-
-  ///  半径大小,越大则越平面,越小则间距越大
-  double diameterRatio,
-
-  ///  选中item偏移
-  double offAxisFraction,
-
-  ///  表示车轮水平偏离中心的程度  范围[0,0.01]
-  double perspective,
-
-  ///  放大倍率
-  double magnification,
-
-  ///  是否启用放大镜
-  bool useMagnifier,
-
-  ///  1或者2
-  double squeeze,
-  ScrollPhysics physics,
+  /// 默认选择的省
   String defaultProvince,
+
+  /// 默认选择的市
   String defaultCity,
+
+  /// 默认选择的区
   String defaultDistrict,
+
+  /// 头部和背景色配置
+  PickerTitle pickerTitle,
+
+  /// Wheel配置信息
+  PickerWheel pickerWheel,
 }) {
   Ts.focusNode(_globalNavigatorKey.currentContext);
+  if (pickerTitle?.cancelTap == null)
+    pickerTitle.cancelTap ??= () => closePopup();
+  if (pickerTitle?.sureTap == null)
+    pickerTitle.sureTap ??= (String text) => closePopup(text);
   final Widget widget = AreaPicker(
       defaultProvince: defaultProvince,
       defaultCity: defaultCity,
       defaultDistrict: defaultDistrict,
-      diameterRatio: diameterRatio,
-      offAxisFraction: offAxisFraction,
-      perspective: perspective,
-      magnification: magnification,
-      useMagnifier: useMagnifier,
-      squeeze: squeeze,
-      itemHeight: itemHeight,
-      height: height,
-      backgroundColor: backgroundColor,
-      sure: sure,
-      title: title,
-      cancel: cancel,
-      titleBottom: titleBottom,
-      contentStyle: contentStyle,
-      cancelTap: cancelTap ?? () => closePopup(),
-      sureTap: sureTap ?? (String text) => closePopup(text));
+      pickerTitle: pickerTitle,
+      pickerWheel: pickerWheel);
   return showBottomPopup(widget: widget);
 }
 
@@ -554,79 +449,27 @@ Future<T> showAreaPicker<T>({
 Future<T> showMultipleChoicePicker<T>({
   ///  默认选中
   int initialIndex,
-
-  ///  背景色
-  Color color,
-
-  ///  确认按钮
-  Widget sure,
-
-  ///  取消按钮
-  Widget cancel,
-
-  ///  头部文字
-  Widget title,
-
-  ///  头部下面
-  Widget titleBottom,
-
-  ///  取消点击事件
-  GestureTapCallback cancelTap,
-
-  ///  确认点击事件
-  ValueChanged<int> sureTap,
-
-  ///  单个item的高度
-  double itemHeight,
-
-  ///  单个item的宽度
-  double itemWidth,
-
-  ///  整个弹框高度
-  double height,
-
-  ///  半径大小,越大则越平面,越小则间距越大
-  double diameterRatio,
-
-  ///  选中item偏移
-  double offAxisFraction,
-
-  ///  表示车轮水平偏离中心的程度  范围[0,0.01]
-  double perspective,
-
-  ///  放大倍率
-  double magnification,
-
-  ///  是否启用放大镜
-  bool useMagnifier,
-
-  ///  1或者2
-  double squeeze,
   ScrollPhysics physics,
   @required int itemCount,
   @required IndexedWidgetBuilder itemBuilder,
+
+  /// 头部和背景色配置
+  PickerTitle pickerTitle,
+
+  /// Wheel配置信息
+  PickerWheel pickerWheel,
 }) {
   Ts.focusNode(_globalNavigatorKey.currentContext);
+  if (pickerTitle?.cancelTap == null)
+    pickerTitle.cancelTap ??= () => closePopup();
+  if (pickerTitle?.sureTap == null)
+    pickerTitle.sureTap ??= (String text) => closePopup(text);
   final Widget widget = MultipleChoicePicker(
       itemCount: itemCount,
       itemBuilder: itemBuilder,
-      diameterRatio: diameterRatio,
-      offAxisFraction: offAxisFraction,
-      perspective: perspective,
-      magnification: magnification,
-      useMagnifier: useMagnifier,
-      squeeze: squeeze,
-      itemHeight: itemHeight,
-      itemWidth: itemWidth,
-      height: height,
-      initialIndex: initialIndex,
-      sure: sure,
-      cancel: cancel,
-      title: title,
-      titleBottom: titleBottom,
-      color: color,
-      cancelTap: cancelTap ?? () => closePopup(),
-      sureTap: sureTap ?? (int index) => closePopup(index));
+      pickerTitle: pickerTitle,
+      pickerWheel: pickerWheel,
+      initialIndex: initialIndex);
   return showBottomPopup(widget: widget);
 }
 
@@ -642,12 +485,11 @@ Future<T> showSimpleCupertinoDialog<T>({
 }) {
   assert(builder != null || widget != null);
   return showCupertinoDialog(
-    context: _globalNavigatorKey.currentContext,
-    builder: builder ?? (BuildContext context) => widget,
-    useRootNavigator: useRootNavigator,
-    barrierDismissible: barrierDismissible,
-    routeSettings: routeSettings,
-  );
+      context: _globalNavigatorKey.currentContext,
+      builder: builder ?? (BuildContext context) => widget,
+      useRootNavigator: useRootNavigator,
+      barrierDismissible: barrierDismissible,
+      routeSettings: routeSettings);
 }
 
 ///  showDialog 去除context
@@ -686,14 +528,13 @@ Future<T> showMenuPopup<T>({
   bool useRootNavigator = false,
 }) {
   return showMenu(
-    context: _globalNavigatorKey.currentContext,
-    items: items,
-    initialValue: initialValue,
-    elevation: elevation,
-    semanticLabel: semanticLabel,
-    shape: shape,
-    color: color,
-    useRootNavigator: useRootNavigator,
-    position: position,
-  );
+      context: _globalNavigatorKey.currentContext,
+      items: items,
+      initialValue: initialValue,
+      elevation: elevation,
+      semanticLabel: semanticLabel,
+      shape: shape,
+      color: color,
+      useRootNavigator: useRootNavigator,
+      position: position);
 }

@@ -338,14 +338,13 @@ class PopupSureCancel extends StatelessWidget {
         color: barrierColor,
         alignment: alignment ?? Alignment.center,
         child: Universal(
-          onTap: () {},
-          width: width,
-          height: height,
-          decoration: decoration ?? BoxDecoration(color: backgroundColor),
-          padding: padding,
-          mainAxisSize: MainAxisSize.min,
-          children: widgets,
-        ));
+            onTap: () {},
+            width: width,
+            height: height,
+            decoration: decoration ?? BoxDecoration(color: backgroundColor),
+            padding: padding,
+            mainAxisSize: MainAxisSize.min,
+            children: widgets));
   }
 
   Widget sureCancel() =>

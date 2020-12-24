@@ -9,6 +9,8 @@
   * add des encode and decode
   * remove [NestedScroll]
   * add [ScrollViewAuto] [SliverAutoPersistentHeader] [SliverAutoAppBar]
+  * Universal add[StatefulWidgetBuilder] [SizedBox]
+  * picker add [PickerTitle] [PickerWheel]
 ## [1.3.10]
   * fix [ListWheel] The method 'call' was called on null.
   * remove [ListWheel] dispose().

@@ -3,38 +3,31 @@ import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/area.dart';
 import 'package:flutter_waya/src/constant/way.dart';
 
-///  省市区三级联动
-class AreaPicker extends StatefulWidget {
-  AreaPicker({
-    Key key,
-    Widget sure,
-    Widget title,
-    Widget cancel,
-    double height,
-    this.titleBottom,
-    this.backgroundColor,
-    this.cancelTap,
-    this.sureTap,
-    this.contentStyle,
-    this.itemHeight,
-    this.diameterRatio,
-    this.offAxisFraction,
-    this.perspective,
-    this.magnification,
-    this.useMagnifier,
-    this.squeeze,
-    this.physics,
-    this.defaultProvince,
-    this.defaultCity,
-    this.defaultDistrict,
-  })  : sure = sure ?? TextDefault('sure'),
+class PickerTitle {
+  PickerTitle(
+      {EdgeInsetsGeometry titlePadding,
+      Widget sure,
+      Widget title,
+      Widget cancel,
+      double height,
+      Color backgroundColor,
+      this.titleBottom,
+      this.contentStyle,
+      this.cancelTap,
+      this.sureTap})
+      : sure = sure ?? TextDefault('sure'),
         title = title ?? TextDefault('title'),
         cancel = cancel ?? TextDefault('cancel'),
         height = height ?? ConstConstant.pickerHeight,
-        super(key: key);
+        backgroundColor = backgroundColor ?? getColors(white),
+        titlePadding =
+            titlePadding ?? const EdgeInsets.symmetric(horizontal: 10);
 
   ///  容器属性
+  ///  整个Picker的背景色
   final Color backgroundColor;
+
+  ///  整个Picker的高度
   final double height;
 
   ///  [title]底部内容
@@ -42,17 +35,33 @@ class AreaPicker extends StatefulWidget {
   final Widget sure;
   final Widget cancel;
   final Widget title;
+  final EdgeInsetsGeometry titlePadding;
 
   ///  字体样式
   final TextStyle contentStyle;
 
   ///  点击事件
-  final GestureTapCallback cancelTap;
-  final ValueChanged<String> sureTap;
+  GestureTapCallback cancelTap;
+  ValueChanged<String> sureTap;
+}
+
+class PickerWheel {
+  PickerWheel(
+      {double itemHeight,
+      this.itemWidth,
+      this.diameterRatio,
+      this.offAxisFraction,
+      this.perspective,
+      this.magnification,
+      this.useMagnifier,
+      this.squeeze,
+      this.physics})
+      : itemHeight = itemHeight ?? 18;
 
   ///  以下为ListWheel属性
   ///  高度
   final double itemHeight;
+  final double itemWidth;
 
   ///  半径大小,越大则越平面,越小则间距越大
   final double diameterRatio;
@@ -72,8 +81,28 @@ class AreaPicker extends StatefulWidget {
   ///  1或者2
   final double squeeze;
   final ScrollPhysics physics;
+}
+
+///  省市区三级联动
+class AreaPicker extends StatefulWidget {
+  const AreaPicker({
+    Key key,
+    this.defaultProvince,
+    this.defaultCity,
+    this.defaultDistrict,
+    this.pickerTitle,
+    this.pickerWheel,
+  }) : super(key: key);
+  final PickerTitle pickerTitle;
+  final PickerWheel pickerWheel;
+
+  /// 默认选择的省
   final String defaultProvince;
+
+  /// 默认选择的市
   final String defaultCity;
+
+  /// 默认选择的区
   final String defaultDistrict;
 
   @override
@@ -87,9 +116,7 @@ class _AreaPickerState extends State<AreaPicker> {
 
   ///  List<String> street = <String>[];
   Map<String, dynamic> areaData = area;
-  double itemHeight;
 
-  ///  字体样式
   TextStyle contentStyle;
 
   int provinceIndex = 0;
@@ -113,13 +140,12 @@ class _AreaPickerState extends State<AreaPicker> {
 
   void initData() {
     ///  样式设置
-    contentStyle = widget.contentStyle ??
+    contentStyle = widget?.pickerTitle?.contentStyle ??
         TextStyle(
             fontSize: 13,
             color: getColors(black),
             decoration: TextDecoration.none,
             decorationStyle: TextDecorationStyle.dashed);
-    itemHeight = widget.itemHeight ?? 18;
 
     ///  省
     province = areaData?.keys?.toList();
@@ -148,10 +174,10 @@ class _AreaPickerState extends State<AreaPicker> {
 
   ///  点击确定返回选择的地区
   void sureTapVoid() {
-    if (widget.sureTap == null) return;
+    if (widget?.pickerTitle?.sureTap == null) return;
     final String areaString =
         '${province[provinceIndex]} ${city[cityIndex]} ${district[districtIndex]}';
-    widget.sureTap(areaString);
+    widget?.pickerTitle?.sureTap(areaString);
   }
 
   void refreshCity() {
@@ -216,18 +242,20 @@ class _AreaPickerState extends State<AreaPicker> {
         padding: const EdgeInsets.all(10),
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Universal(child: widget.cancel, onTap: widget.cancelTap),
-          Container(child: widget.title),
-          Universal(child: widget.sure, onTap: sureTapVoid)
+          Universal(
+              child: widget?.pickerTitle?.cancel,
+              onTap: widget?.pickerTitle?.cancelTap),
+          Container(child: widget?.pickerTitle?.title),
+          Universal(child: widget?.pickerTitle?.sure, onTap: sureTapVoid)
         ]));
-    if (widget.titleBottom != null) columnChildren.add(widget.titleBottom);
+    if (widget?.pickerTitle?.titleBottom != null)
+      columnChildren.add(widget?.pickerTitle?.titleBottom);
     columnChildren.add(Expanded(child: row));
     return Universal(
         onTap: () {},
         mainAxisSize: MainAxisSize.min,
-        height: widget.height,
-        decoration:
-            BoxDecoration(color: widget.backgroundColor ?? getColors(white)),
+        height: widget?.pickerTitle?.height,
+        decoration: BoxDecoration(color: widget?.pickerTitle?.backgroundColor),
         children: columnChildren);
   }
 
@@ -239,14 +267,14 @@ class _AreaPickerState extends State<AreaPicker> {
     return ListWheel(
         controller: controller,
         initialIndex: initialIndex,
-        itemExtent: itemHeight,
-        diameterRatio: widget.diameterRatio,
-        offAxisFraction: widget.offAxisFraction,
-        perspective: widget.perspective,
-        magnification: widget.magnification,
-        useMagnifier: widget.useMagnifier,
-        squeeze: widget.squeeze,
-        physics: widget.physics,
+        itemExtent: widget?.pickerWheel?.itemHeight,
+        diameterRatio: widget?.pickerWheel?.diameterRatio,
+        offAxisFraction: widget?.pickerWheel?.offAxisFraction,
+        perspective: widget?.pickerWheel?.perspective,
+        magnification: widget?.pickerWheel?.magnification,
+        useMagnifier: widget?.pickerWheel?.useMagnifier,
+        squeeze: widget?.pickerWheel?.squeeze,
+        physics: widget?.pickerWheel?.physics,
         childDelegateType: childDelegateType,
         children: list.map((String value) => item(value)).toList(),
         itemBuilder: (BuildContext context, int index) => item(list[index]),
@@ -271,73 +299,22 @@ class _AreaPickerState extends State<AreaPicker> {
 class MultipleChoicePicker extends StatelessWidget {
   MultipleChoicePicker({
     Key key,
-    Color color,
-    double height,
-    this.cancelTap,
-    this.sureTap,
-    this.itemHeight,
-    this.itemWidth,
-    this.diameterRatio,
-    this.offAxisFraction,
-    this.perspective,
-    this.magnification,
-    this.useMagnifier,
-    this.squeeze,
-    this.physics,
     this.initialIndex,
     @required this.itemCount,
     @required this.itemBuilder,
-    Widget sure,
-    Widget cancel,
-    Widget title,
-    this.titleBottom,
-  })  : height = height ?? ConstConstant.pickerHeight,
-        sure = sure ?? TextDefault('sure'),
-        title = title ?? TextDefault('title'),
-        cancel = cancel ?? TextDefault('cancel'),
-        color = color ?? getColors(white),
-        controller =
+    this.pickerTitle,
+    this.pickerWheel,
+    FixedExtentScrollController controller,
+  })  : controller = controller ??
             FixedExtentScrollController(initialItem: initialIndex ?? 0),
         super(key: key);
+  final PickerTitle pickerTitle;
+  final PickerWheel pickerWheel;
 
-  ///  点击事件
-  final GestureTapCallback cancelTap;
-  final ValueChanged<int> sureTap;
-
-  ///  [title]底部内容
-  final Widget titleBottom;
-  final Widget sure;
-  final Widget cancel;
-  final Widget title;
-
-  final Color color;
-  final double height;
-
-  ///  以下为ListWheel属性
   final int initialIndex;
-  final double itemHeight;
   final int itemCount;
   final IndexedWidgetBuilder itemBuilder;
-  final double itemWidth;
 
-  ///  半径大小,越大则越平面,越小则间距越大
-  final double diameterRatio;
-
-  ///  选中item偏移
-  final double offAxisFraction;
-
-  ///  表示ListWheel水平偏离中心的程度  范围[0,0.01]
-  final double perspective;
-
-  ///  放大倍率
-  final double magnification;
-
-  ///  是否启用放大镜
-  final bool useMagnifier;
-
-  ///  1或者2
-  final double squeeze;
-  final ScrollPhysics physics;
   final FixedExtentScrollController controller;
 
   @override
@@ -348,32 +325,35 @@ class MultipleChoicePicker extends StatelessWidget {
         padding: const EdgeInsets.all(10),
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Universal(child: cancel, onTap: cancelTap),
-          Universal(child: title),
+          Universal(child: pickerTitle?.cancel, onTap: pickerTitle?.cancelTap),
+          Universal(child: pickerTitle?.title),
           Universal(
-              child: sure,
+              child: pickerTitle?.sure,
               onTap: () {
-                if (sureTap != null) sureTap(controller.selectedItem ?? 0);
+                if (pickerTitle?.sureTap != null)
+                  pickerTitle
+                      ?.sureTap((controller?.selectedItem ?? 0).toString());
               })
         ]));
-    if (titleBottom != null) children.add(titleBottom);
+    if (pickerTitle?.titleBottom != null)
+      children.add(pickerTitle?.titleBottom);
     children.add(Expanded(
         child: ListWheel(
             controller: controller,
-            itemExtent: itemHeight,
-            diameterRatio: diameterRatio,
-            offAxisFraction: offAxisFraction,
-            perspective: perspective,
-            magnification: magnification,
-            useMagnifier: useMagnifier,
-            squeeze: squeeze,
-            physics: physics,
+            itemExtent: pickerWheel?.itemHeight,
+            diameterRatio: pickerWheel?.diameterRatio,
+            offAxisFraction: pickerWheel?.offAxisFraction,
+            perspective: pickerWheel?.perspective,
+            magnification: pickerWheel?.magnification,
+            useMagnifier: pickerWheel?.useMagnifier,
+            squeeze: pickerWheel?.squeeze,
+            physics: pickerWheel?.physics,
             itemBuilder: itemBuilder,
             itemCount: itemCount)));
     return Universal(
         mainAxisSize: MainAxisSize.min,
-        height: height,
-        decoration: BoxDecoration(color: color ?? getColors(white)),
+        height: pickerTitle?.height,
+        decoration: BoxDecoration(color: pickerTitle?.backgroundColor),
         children: children);
   }
 }
@@ -384,37 +364,20 @@ class DateTimePicker extends StatefulWidget {
     Key key,
     bool dual,
     bool showUnit,
-    double height,
-    this.itemWidth,
-    Widget sure,
-    Widget cancel,
-    Widget title,
-    this.diameterRatio,
-    this.offAxisFraction,
-    this.perspective,
-    this.magnification,
-    this.useMagnifier,
-    this.squeeze,
-    this.itemHeight,
-    this.physics,
-    this.backgroundColor,
-    this.cancelTap,
-    this.sureTap,
     DateTimePickerUnit unit,
     this.unitStyle,
-    this.contentStyle,
     this.startDate,
     this.defaultDate,
     this.endDate,
-    this.titleBottom,
+    this.pickerTitle,
+    this.pickerWheel,
   })  : unit = unit ?? DateTimePickerUnit().getDefaultUnit(),
-        sure = sure ?? TextDefault('sure'),
-        title = title ?? TextDefault('title'),
-        cancel = cancel ?? TextDefault('cancel'),
-        height = height ?? ConstConstant.pickerHeight,
         showUnit = showUnit ?? true,
         dual = dual ?? true,
         super(key: key);
+
+  final PickerTitle pickerTitle;
+  final PickerWheel pickerWheel;
 
   ///  补全双位数
   final bool dual;
@@ -422,55 +385,16 @@ class DateTimePicker extends StatefulWidget {
   ///  单位是否显示
   final bool showUnit;
 
-  ///  点击事件
-  final GestureTapCallback cancelTap;
-  final ValueChanged<String> sureTap;
-
-  ///  [title]底部内容
-  final Widget titleBottom;
-  final Widget sure;
-  final Widget cancel;
-  final Widget title;
-
-  ///  容器属性
-  final Color backgroundColor;
-  final double height;
-
   ///  时间选择器单位
   final DateTimePickerUnit unit;
 
   ///  字体样式
   final TextStyle unitStyle;
-  final TextStyle contentStyle;
 
   ///  时间
   final DateTime startDate;
   final DateTime defaultDate;
   final DateTime endDate;
-
-  ///  以下为ListWheel属性
-  ///  高度
-  final double itemHeight;
-  final double itemWidth;
-
-  ///  半径大小,越大则越平面,越小则间距越大
-  final double diameterRatio;
-
-  ///  选中item偏移
-  final double offAxisFraction;
-
-  ///  表示ListWheel水平偏离中心的程度  范围[0,0.01]
-  final double perspective;
-
-  ///  放大倍率
-  final double magnification;
-
-  ///  是否启用放大镜
-  final bool useMagnifier;
-
-  ///  1或者2
-  final double squeeze;
-  final ScrollPhysics physics;
 
   @override
   _DateTimePickerState createState() => _DateTimePickerState();
@@ -508,10 +432,10 @@ class _DateTimePickerState extends State<DateTimePicker> {
     super.initState();
     unit = widget.unit;
     itemWidth =
-        widget.itemWidth ?? (getWidth(0) - getWidth(20)) / unit.getLength();
+        widget?.pickerWheel?.itemWidth ?? (deviceWidth - 20) / unit.getLength();
 
     ///  样式设置
-    contentStyle = widget.contentStyle ?? textStyleVoid();
+    contentStyle = widget?.pickerTitle?.contentStyle ?? textStyleVoid();
     unitStyle = widget.unitStyle ?? textStyleVoid();
     startDate = widget.startDate ?? DateTime.now();
     endDate = initEndDate();
@@ -615,7 +539,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
 
   ///  点击确定返回日期
   void sureTapVoid() {
-    if (widget.sureTap == null) return;
+    if (widget?.pickerTitle?.sureTap == null) return;
     String dateTime = '';
     if (unit?.year != null) dateTime = yearData[yearIndex] + '-';
     if (unit?.month != null) dateTime += monthData[monthIndex] + '-';
@@ -623,7 +547,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
     if (unit?.hour != null) dateTime += hourData[hourIndex];
     if (unit?.minute != null) dateTime += ':' + minuteData[minuteIndex];
     if (unit?.second != null) dateTime += ':' + secondData[secondIndex];
-    widget.sureTap(dateTime.trim());
+    widget?.pickerTitle?.sureTap(dateTime.trim());
   }
 
   StateSetter datState;
@@ -685,14 +609,18 @@ class _DateTimePickerState extends State<DateTimePicker> {
     final List<Widget> columnChildren = <Widget>[];
     columnChildren.add(Universal(
         direction: Axis.horizontal,
-        padding: const EdgeInsets.all(10),
+        height: 44,
+        padding: widget?.pickerTitle?.titlePadding,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Universal(child: widget.cancel, onTap: widget.cancelTap),
-          Container(child: widget.title),
-          Universal(child: widget.sure, onTap: sureTapVoid)
+          Universal(
+              child: widget?.pickerTitle?.cancel,
+              onTap: widget?.pickerTitle?.cancelTap),
+          Container(child: widget?.pickerTitle?.title),
+          Universal(child: widget?.pickerTitle?.sure, onTap: sureTapVoid)
         ]));
-    if (widget.titleBottom != null) columnChildren.add(widget.titleBottom);
+    if (widget?.pickerTitle?.titleBottom != null)
+      columnChildren.add(widget?.pickerTitle?.titleBottom);
     columnChildren.add(Expanded(
         child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -700,9 +628,9 @@ class _DateTimePickerState extends State<DateTimePicker> {
     return Universal(
         onTap: () {},
         mainAxisSize: MainAxisSize.min,
-        height: widget.height,
-        decoration:
-            BoxDecoration(color: widget.backgroundColor ?? getColors(white)),
+        height: widget?.pickerTitle?.height,
+        decoration: BoxDecoration(
+            color: widget?.pickerTitle?.backgroundColor ?? getColors(white)),
         children: columnChildren);
   }
 
@@ -747,14 +675,14 @@ class _DateTimePickerState extends State<DateTimePicker> {
       ValueChanged<int> onChanged}) {
     return ListWheel(
         controller: controller,
-        itemExtent: widget.itemHeight,
-        diameterRatio: widget.diameterRatio,
-        offAxisFraction: widget.offAxisFraction,
-        perspective: widget.perspective,
-        magnification: widget.magnification,
-        useMagnifier: widget.useMagnifier,
-        squeeze: widget.squeeze,
-        physics: widget.physics,
+        itemExtent: widget?.pickerWheel?.itemHeight,
+        diameterRatio: widget?.pickerWheel?.diameterRatio,
+        offAxisFraction: widget?.pickerWheel?.offAxisFraction,
+        perspective: widget?.pickerWheel?.perspective,
+        magnification: widget?.pickerWheel?.magnification,
+        useMagnifier: widget?.pickerWheel?.useMagnifier,
+        squeeze: widget?.pickerWheel?.squeeze,
+        physics: widget?.pickerWheel?.physics,
         initialIndex: initialIndex,
         itemBuilder: (_, int index) =>
             TextSmall(list[index].toString(), style: contentStyle),

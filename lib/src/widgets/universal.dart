@@ -16,6 +16,7 @@ class Universal extends StatelessWidget {
     bool excludeFromSemantics,
     bool autoFocus,
     bool sizedBoxExpand,
+    bool sizedBoxShrink,
     bool visible,
     bool offstage,
     bool maintainState,
@@ -133,6 +134,8 @@ class Universal extends StatelessWidget {
     this.enableTwoLevel,
     this.header,
     this.footer,
+    this.size,
+    this.builder,
   })  : isScroll = isScroll ?? false,
         addCard = addCard ?? false,
         semanticContainer = semanticContainer ?? true,
@@ -152,6 +155,7 @@ class Universal extends StatelessWidget {
         reverse = reverse ?? false,
         autoFocus = autoFocus ?? false,
         sizedBoxExpand = sizedBoxExpand ?? false,
+        sizedBoxShrink = sizedBoxShrink ?? false,
         excludeFromSemantics = excludeFromSemantics ?? false,
         borderOnForeground = borderOnForeground ?? true,
         enableFeedback = enableFeedback ?? true,
@@ -186,13 +190,20 @@ class Universal extends StatelessWidget {
   final AlignmentGeometry alignment;
   final BorderRadius borderRadius;
 
-  ///  ****** child ******  ///
+  ///  ****** child  children ******  ///
+  ///  child < children < builder
+  ///  三个只有一个有效
   final Widget child;
+  final List<Widget> children;
+  final StatefulWidgetBuilder builder;
 
   ///  ****** Flexible ******  ///
+  ///  添加[Expanded]组件
   final bool expanded;
-  final int flex;
+
+  ///  添加[Flexible]组件
   final bool isFlexible;
+  final int flex;
   final FlexFit flexFit;
 
   ///  ****** Container ******  ///
@@ -204,9 +215,6 @@ class Universal extends StatelessWidget {
   final double height;
   final EdgeInsetsGeometry margin;
   final Decoration decoration;
-
-  ///  ****** children ******  ///
-  final List<Widget> children;
 
   ///  ****** Card ******  ///
   final bool addCard;
@@ -242,8 +250,13 @@ class Universal extends StatelessWidget {
   final bool reverse;
   final bool primary;
 
-  ///  ****** Visibility ******  ///
+  ///  ****** SizedBox ******  ///
+  ///  SizedBox 参数会导致 [Container]的[height]、[width]无效
   final bool sizedBoxExpand;
+  final bool sizedBoxShrink;
+  final Size size;
+
+  ///  ****** Visibility ******  ///
   final Widget replacement;
   final bool visible;
   final bool maintainState;
@@ -254,7 +267,41 @@ class Universal extends StatelessWidget {
   final bool offstage;
 
   ///  ****** 点击事件相关 ******  ///
+  ///  ****** Material ******  ///
+  final MaterialType type;
+  final double elevation;
+  final Color shadowColor;
+  final TextStyle textStyle;
+  final ShapeBorder shape;
+  final bool borderOnForeground;
+
+  ///  ****** InkWell ******  ///
+  ///  高亮变化回调
+  final ValueChanged<bool> onHighlightChanged;
+  final ValueChanged<bool> onHover;
+  final Color focusColor;
+  final Color hoverColor;
+
+  ///  高亮颜色
+  final Color highlightColor;
+
+  ///  水波纹颜色
+  final Color splashColor;
+  final InteractiveInkFeatureFactory splashFactory;
+
+  ///  水波半径
+  final double radius;
+  final ShapeBorder customBorder;
+  final bool enableFeedback;
+  final FocusNode focusNode;
+  final bool canRequestFocus;
+  final ValueChanged<bool> onFocusChange;
+  final bool autoFocus;
   final bool addInkWell;
+
+  /// [enabled]默认为false [addInkWell]默认为false
+  /// ([enabled]=false || [addInkWell]=true ) 除[onTap]外[GestureDetector]属性无效
+  /// ([enabled]=true && [addInkWell]=false ) [GestureDetector]属性全部有效
   final bool enabled;
 
   ///  短暂触摸屏幕时触发
@@ -357,37 +404,6 @@ class Universal extends StatelessWidget {
   ///  HitTestBehavior.translucent 自己和child都可以接收事件
   final HitTestBehavior behavior;
 
-  ///  ****** Material ******  ///
-  final MaterialType type;
-  final double elevation;
-  final Color shadowColor;
-  final TextStyle textStyle;
-  final ShapeBorder shape;
-  final bool borderOnForeground;
-
-  ///  ****** InkWell ******  ///
-  ///  高亮变化回调
-  final ValueChanged<bool> onHighlightChanged;
-  final ValueChanged<bool> onHover;
-  final Color focusColor;
-  final Color hoverColor;
-
-  ///  高亮颜色
-  final Color highlightColor;
-
-  ///  水波纹颜色
-  final Color splashColor;
-  final InteractiveInkFeatureFactory splashFactory;
-
-  ///  水波半径
-  final double radius;
-  final ShapeBorder customBorder;
-  final bool enableFeedback;
-  final FocusNode focusNode;
-  final bool canRequestFocus;
-  final ValueChanged<bool> onFocusChange;
-  final bool autoFocus;
-
   ///  ****** Hero ******  ///
   final String heroTag;
   final CreateRectTween createRectTween;
@@ -415,12 +431,11 @@ class Universal extends StatelessWidget {
     Widget widget = Container();
     if (child != null) widget = child;
     if (children != null && children.isNotEmpty) {
-      if (isStack) {
-        widget = stackWidget(children: children);
-      } else {
-        widget = flexWidget(children: children);
-      }
+      widget = isStack
+          ? stackWidget(children: children)
+          : flexWidget(children: children);
     }
+    if (builder != null) widget = statefulBuilder();
     if (isScroll) widget = singleChildScrollViewWidget(widget);
     if (padding != null ||
         margin != null ||
@@ -437,7 +452,9 @@ class Universal extends StatelessWidget {
       widget =
           addInkWell ? inkWellWidget(widget) : gestureDetectorWidget(widget);
     }
+    if (sizedBoxShrink) widget = SizedBox.shrink(child: widget);
     if (sizedBoxExpand) widget = SizedBox.expand(child: widget);
+    if (size != null) widget = SizedBox.fromSize(size: size, child: widget);
     if (heroTag != null) widget = heroWidget(widget);
     if (addCard) widget = cardWidget(widget);
     if (isCircleAvatar) widget = circleAvatarWidget(widget);
@@ -459,6 +476,8 @@ class Universal extends StatelessWidget {
     if (!visible) widget = visibilityWidget(widget);
     return widget;
   }
+
+  Widget statefulBuilder() => StatefulBuilder(builder: builder);
 
   Widget refreshedWidget(Widget widget) => Refreshed(
       controller: refreshController,
