@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
+import 'package:waya/module/carousel_page.dart';
 import 'package:waya/module/dropdown_menu_page.dart';
-import 'package:waya/module/gif_image_page.dart';
+import 'package:waya/module/image_page.dart';
 import 'package:waya/module/picker_page.dart';
 import 'package:waya/module/pin_box_page.dart';
 import 'package:waya/module/popup_page.dart';
@@ -29,14 +30,16 @@ class Home extends StatelessWidget {
           customElasticButton('Popup', onTap: () => push(widget: PopupPage())),
           customElasticButton('PinBox',
               onTap: () => push(widget: PinBoxPage())),
-          customElasticButton('GifImage',
-              onTap: () => push(widget: GifImagePage())),
+          customElasticButton('Image', onTap: () => push(widget: ImagePage())),
+          customElasticButton('Carousel',
+              onTap: () => push(widget: CarouselPage())),
           customElasticButton('ElasticButton',
               onTap: () => showToast('ElasticButton')),
           customElasticButton('ScrollViewPage',
               onTap: () => push(widget: ScrollViewPage())),
           customElasticButton('DropdownMenu',
               onTap: () => push(widget: DropdownMenuPage())),
+          const DottedLine(),
         ],
       ),
     );

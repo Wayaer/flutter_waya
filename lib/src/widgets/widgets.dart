@@ -5,6 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/constant/way.dart';
 
+class NoScrollBehavior extends ScrollBehavior {
+  @override
+  Widget buildViewportChrome(
+          BuildContext context, Widget child, AxisDirection axisDirection) =>
+      child;
+}
+
 ///  发送验证码
 class SendSMS extends StatefulWidget {
   const SendSMS(
@@ -195,88 +202,66 @@ class _CountDownSkipState extends State<CountDownSkip> {
 }
 
 ///  侧滑菜单
-class CustomDismissible extends StatelessWidget {
+class CustomDismissible extends Dismissible {
   const CustomDismissible(
       {Key key,
-      this.background,
-      this.secondaryBackground,
-      this.confirmDismiss,
-      this.onResize,
-      this.onDismissed,
+
+      ///  滑动时组件下一层显示的内容
+      ///  没有设置secondaryBackground时，从右往左或者从左往右滑动都显示该内容
+      ///  设置了secondaryBackground后，从左往右滑动显示该内容，从右往左滑动显示secondaryBackground的内容
+      Widget background,
+
+      ///  不能单独设置，只能在已经设置了background后才能设置，从右往左滑动时显示
+      Widget secondaryBackground,
+
+      ///  组件消失前回调，可以弹出是否消失确认窗口。
+      ConfirmDismissCallback confirmDismiss,
+
+      ///  组件大小改变时回调
+      VoidCallback onResize,
+
+      ///  组件消失后回调
+      DismissDirectionCallback onDismissed,
+
+      ///  滑动方向（水平、垂直）
+      ///  默认DismissDirection.horizontal 水平
       DismissDirection direction,
+
+      ///  组件大小改变的时长，默认300毫秒。Duration(milliseconds: 300)
       Duration resizeDuration,
+
+      ///  必须拖动项目的偏移阈值才能被视为已解除
       Map<DismissDirection, double> dismissThresholds,
+
+      ///  组件消失的时长，默认200毫秒。Duration(milliseconds: 200)
       Duration movementDuration,
+
+      ///  滑动时偏移量，默认0.0，
       double crossAxisEndOffset,
+
+      ///  拖动消失后组件大小改变方式
+      ///  start：下面组件向上滑动
+      ///  down：上面组件向下滑动
+      ///  默认DragStartBehavior.start
       DragStartBehavior dragStartBehavior,
-      this.child})
-      : direction = direction ?? DismissDirection.horizontal,
-        resizeDuration = resizeDuration ?? const Duration(milliseconds: 300),
-        dismissThresholds =
-            dismissThresholds ?? const <DismissDirection, double>{},
-        movementDuration =
-            movementDuration ?? const Duration(milliseconds: 200),
-        crossAxisEndOffset = crossAxisEndOffset ?? 0.0,
-        dragStartBehavior = dragStartBehavior ?? DragStartBehavior.start,
-        super(key: key);
-
-  ///  子组件
-  final Widget child;
-
-  ///  滑动时组件下一层显示的内容
-  ///  没有设置secondaryBackground时，从右往左或者从左往右滑动都显示该内容
-  ///  设置了secondaryBackground后，从左往右滑动显示该内容，从右往左滑动显示secondaryBackground的内容
-  final Widget background;
-
-  ///  不能单独设置，只能在已经设置了background后才能设置，从右往左滑动时显示
-  final Widget secondaryBackground;
-
-  ///  组件消失前回调，可以弹出是否消失确认窗口。
-  final ConfirmDismissCallback confirmDismiss;
-
-  ///  组件大小改变时回调
-  final VoidCallback onResize;
-
-  ///  组件消失后回调
-  final DismissDirectionCallback onDismissed;
-
-  ///  滑动方向（水平、垂直）
-  ///  默认DismissDirection.horizontal 水平
-  final DismissDirection direction;
-
-  ///  组件大小改变的时长，默认300毫秒。Duration(milliseconds: 300)
-  final Duration resizeDuration;
-
-  ///  必须拖动项目的偏移阈值才能被视为已解除
-  final Map<DismissDirection, double> dismissThresholds;
-
-  ///  组件消失的时长，默认200毫秒。Duration(milliseconds: 200)
-  final Duration movementDuration;
-
-  ///  滑动时偏移量，默认0.0，
-  final double crossAxisEndOffset;
-
-  ///  拖动消失后组件大小改变方式
-  ///  start：下面组件向上滑动
-  ///  down：上面组件向下滑动
-  ///  默认DragStartBehavior.start
-  final DragStartBehavior dragStartBehavior;
-
-  @override
-  Widget build(BuildContext context) => Dismissible(
-      child: child,
-      key: key,
-      background: background,
-      secondaryBackground: secondaryBackground,
-      confirmDismiss: confirmDismiss,
-      onResize: onResize,
-      onDismissed: onDismissed,
-      direction: direction,
-      resizeDuration: resizeDuration,
-      dismissThresholds: dismissThresholds,
-      movementDuration: movementDuration,
-      crossAxisEndOffset: crossAxisEndOffset,
-      dragStartBehavior: dragStartBehavior);
+      Widget child})
+      : super(
+          key: key,
+          child: child,
+          background: background,
+          secondaryBackground: secondaryBackground,
+          confirmDismiss: confirmDismiss,
+          onResize: onResize,
+          onDismissed: onDismissed,
+          direction: direction ?? DismissDirection.horizontal,
+          resizeDuration: resizeDuration ?? const Duration(milliseconds: 300),
+          dismissThresholds:
+              dismissThresholds ?? const <DismissDirection, double>{},
+          movementDuration:
+              movementDuration ?? const Duration(milliseconds: 200),
+          crossAxisEndOffset: crossAxisEndOffset ?? 0.0,
+          dragStartBehavior: dragStartBehavior ?? DragStartBehavior.start,
+        );
 }
 
 ///  组件右上角加红点
@@ -322,7 +307,7 @@ class HintDot extends StatelessWidget {
     if (hide) return child;
     final List<Widget> children = <Widget>[];
     if (child != null) children.add(child);
-    Widget dot = dotWidget();
+    Widget dot = dotWidget;
     if (alignment != null) dot = Align(alignment: alignment, child: dot);
     if (right != null || top != null || bottom != null || left != null)
       dot = Positioned(
@@ -337,7 +322,7 @@ class HintDot extends StatelessWidget {
         children: children);
   }
 
-  Widget dotWidget() => Container(
+  Widget get dotWidget => Container(
       child: pointChild,
       padding: pointPadding,
       width: pointChild == null ? (pointSize ?? 4) : null,
@@ -354,7 +339,7 @@ class CustomDrawer extends StatefulWidget {
     @required this.child,
     this.backgroundColor,
     this.callback,
-  })  : width = width ?? getWidth(0) * 0.7,
+  })  : width = width ?? deviceWidth * 0.7,
         elevation = elevation ?? 16.0,
         super(key: key);
 
@@ -382,9 +367,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return ConstrainedBox(
-        constraints: BoxConstraints(maxWidth: widget.width),
-        child: PopupBase(color: widget.backgroundColor, child: widget.child));
-  }
+  Widget build(BuildContext context) => ConstrainedBox(
+      constraints: BoxConstraints(maxWidth: widget.width),
+      child: PopupBase(color: widget.backgroundColor, child: widget.child));
 }

@@ -31,6 +31,7 @@ class Universal extends StatelessWidget {
     bool addCard,
     bool transitionOnUserGestures,
     bool semanticContainer,
+    bool noScrollBehavior,
     MaterialType type,
     double elevation,
     Clip clipBehavior,
@@ -162,6 +163,7 @@ class Universal extends StatelessWidget {
         canRequestFocus = canRequestFocus ?? true,
         visible = visible ?? true,
         offstage = offstage ?? false,
+        noScrollBehavior = noScrollBehavior ?? true,
         dragStartBehavior = dragStartBehavior ?? DragStartBehavior.start,
         type = type ?? MaterialType.canvas,
         elevation = elevation ?? 0.0,
@@ -244,6 +246,8 @@ class Universal extends StatelessWidget {
   final double maxRadius;
 
   ///  ****** SingleChildScrollView ******  ///
+  ///  移出头部和底部蓝色阴影
+  final bool noScrollBehavior;
   final bool isScroll;
   final ScrollPhysics physics;
   final ScrollController scrollController;
@@ -431,12 +435,15 @@ class Universal extends StatelessWidget {
     Widget widget = Container();
     if (child != null) widget = child;
     if (children != null && children.isNotEmpty) {
-      widget = isStack
-          ? stackWidget(children: children)
-          : flexWidget(children: children);
+      widget = isStack ? stackWidget(children) : flexWidget(children);
     }
-    if (builder != null) widget = statefulBuilder();
-    if (isScroll) widget = singleChildScrollViewWidget(widget);
+    if (builder != null) widget = statefulBuilder;
+    if (isScroll)
+      widget = noScrollBehavior
+          ? ScrollConfiguration(
+              behavior: NoScrollBehavior(),
+              child: singleChildScrollViewWidget(widget))
+          : singleChildScrollViewWidget(widget);
     if (padding != null ||
         margin != null ||
         height != null ||
@@ -470,14 +477,13 @@ class Universal extends StatelessWidget {
         header != null) {
       widget = refreshedWidget(widget);
     }
-
     if (isFlexible || expanded) widget = flexibleWidget(widget);
     if (offstage) widget = offstageWidget(widget);
     if (!visible) widget = visibilityWidget(widget);
     return widget;
   }
 
-  Widget statefulBuilder() => StatefulBuilder(builder: builder);
+  Widget get statefulBuilder => StatefulBuilder(builder: builder);
 
   Widget refreshedWidget(Widget widget) => Refreshed(
       controller: refreshController,
@@ -539,7 +545,7 @@ class Universal extends StatelessWidget {
       minRadius: minRadius,
       maxRadius: maxRadius);
 
-  Widget stackWidget({List<Widget> children}) => Stack(
+  Widget stackWidget(List<Widget> children) => Stack(
       alignment: alignment ?? AlignmentDirectional.topStart,
       textDirection: textDirection,
       fit: stackFit,
@@ -615,7 +621,7 @@ class Universal extends StatelessWidget {
       scrollDirection: direction,
       child: widget);
 
-  Widget flexWidget({List<Widget> children}) => Flex(
+  Widget flexWidget(List<Widget> children) => Flex(
       children: children,
       mainAxisAlignment: mainAxisAlignment,
       crossAxisAlignment: crossAxisAlignment,

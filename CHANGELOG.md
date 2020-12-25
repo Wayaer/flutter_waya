@@ -12,6 +12,7 @@
   * Universal add[StatefulWidgetBuilder] [SizedBox]
   * picker add [PickerTitle] [PickerWheel]
   * DateTimePicker add Start end range
+  * add ScrollConfiguration
 ## [1.3.10]
   * fix [ListWheel] The method 'call' was called on null.
   * remove [ListWheel] dispose().

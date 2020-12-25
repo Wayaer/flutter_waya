@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
+/// 指示器
 class Indicator extends StatefulWidget {
   const Indicator(
       {Key key,
+      @required this.count,
+      @required this.controller,
       this.size = 20.0,
       this.space = 5.0,
-      @required this.count,
       this.activeSize = 20.0,
-      @required this.controller,
       this.color = Colors.white30,
       this.layout = IndicatorType.slide,
       this.activeColor = Colors.white,
@@ -131,9 +132,6 @@ class _WarmPainter extends _IndicatorPainter {
     if (progress > 0.5) {
       final double right = start + size + distance;
 
-      /// progress=>0.5-1.0
-      /// left:0.0=>distance
-
       final double left = index * distance + distance * (progress - 0.5) * 2;
       canvas.drawRRect(
           RRect.fromLTRBR(left, 0.0, right, size, Radius.circular(radius)),
@@ -198,7 +196,6 @@ class _ScalePainter extends _IndicatorPainter {
   _ScalePainter(Indicator widget, double page, int index, Paint paint)
       : super(widget, page, index, paint);
 
-  ///  连续的两个点，含有最后一个和第一个
   @override
   bool _shouldSkip(int i) {
     if (index == widget.count - 1) return i == 0 || i == index;
@@ -244,7 +241,6 @@ class _ColorPainter extends _IndicatorPainter {
   _ColorPainter(Indicator widget, double page, int index, Paint paint)
       : super(widget, page, index, paint);
 
-  ///  连续的两个点，含有最后一个和第一个
   @override
   bool _shouldSkip(int i) {
     if (index == widget.count - 1) return i == 0 || i == index;
@@ -283,8 +279,6 @@ abstract class _IndicatorPainter extends CustomPainter {
   void draw(Canvas canvas, double space, double size, double radius);
 
   bool _shouldSkip(int index) => false;
-
-  /// double secondOffset = index == widget.count-1 ? radius : radius + ((index + 1) * (size + space));
 
   @override
   void paint(Canvas canvas, Size size) {

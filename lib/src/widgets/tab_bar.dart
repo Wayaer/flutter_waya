@@ -148,12 +148,12 @@ class TabBarBox extends StatelessWidget {
     if (tabBarLevel != null) {
       switch (levelPosition) {
         case TabBarLevelPosition.right:
-          children.add(Expanded(child: tabBarWidget()));
+          children.add(Expanded(child: tabBarWidget));
           children.add(tabBarLevel);
           break;
         case TabBarLevelPosition.left:
           children.add(tabBarLevel);
-          children.add(Expanded(child: tabBarWidget()));
+          children.add(Expanded(child: tabBarWidget));
           break;
       }
     }
@@ -166,10 +166,10 @@ class TabBarBox extends StatelessWidget {
         direction: Axis.horizontal,
         decoration: decoration,
         children: children,
-        child: tabBarLevel == null ? tabBarWidget() : null);
+        child: tabBarLevel == null ? tabBarWidget : null);
   }
 
-  Widget tabBarWidget() => TabBar(
+  Widget get tabBarWidget => TabBar(
         controller: controller,
         labelPadding: labelPadding,
         tabs: tabs,

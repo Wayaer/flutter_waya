@@ -7,23 +7,25 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 class GridBuilder extends StatelessWidget {
   GridBuilder({
     Key key,
-    bool shrinkWrap,
+    @required this.itemBuilder,
     @required int itemCount,
+    bool shrinkWrap,
     double mainAxisSpacing,
     double crossAxisSpacing,
     double childAspectRatio,
+    EdgeInsetsGeometry padding,
+    Axis scrollDirection,
+    int crossAxisCount,
+    bool noScrollBehavior,
     bool reverse,
     this.noData,
     this.controller,
-    EdgeInsetsGeometry padding,
     this.physics,
-    @required this.itemBuilder,
     this.maxCrossAxisExtent,
-    Axis scrollDirection,
-    int crossAxisCount,
   })  : itemCount = itemCount ?? 0,
         scrollDirection = scrollDirection ?? Axis.vertical,
         reverse = reverse ?? false,
+        noScrollBehavior = noScrollBehavior ?? true,
         shrinkWrap = shrinkWrap = true,
         crossAxisSpacing = crossAxisSpacing ?? 0.0,
         childAspectRatio = childAspectRatio ?? 1.0,
@@ -32,6 +34,8 @@ class GridBuilder extends StatelessWidget {
         padding = padding ?? EdgeInsets.zero,
         super(key: key);
 
+  ///  移出头部和底部蓝色阴影
+  final bool noScrollBehavior;
   final ScrollController controller;
   final EdgeInsetsGeometry padding;
 
@@ -65,23 +69,28 @@ class GridBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     if (itemCount == 0)
       return noData ?? NotData(margin: EdgeInsets.all(getWidth(10)));
-    return GridView.builder(
-      physics: physics,
-      itemCount: itemCount,
-      scrollDirection: scrollDirection,
-      padding: padding,
-      reverse: reverse,
-      shrinkWrap: shrinkWrap,
-      itemBuilder: itemBuilder,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-
-          /// axCrossAxisExtent: maxCrossAisExtent,
-          childAspectRatio: childAspectRatio,
-          mainAxisSpacing: mainAxisSpacing,
-          crossAxisCount: crossAxisCount,
-          crossAxisSpacing: crossAxisSpacing),
-    );
+    return noScrollBehavior
+        ? ScrollConfiguration(
+            behavior: NoScrollBehavior(), child: gridViewBuilder)
+        : gridViewBuilder;
   }
+
+  Widget get gridViewBuilder => GridView.builder(
+        physics: physics,
+        itemCount: itemCount,
+        scrollDirection: scrollDirection,
+        padding: padding,
+        reverse: reverse,
+        shrinkWrap: shrinkWrap,
+        itemBuilder: itemBuilder,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+
+            /// axCrossAxisExtent: maxCrossAisExtent,
+            childAspectRatio: childAspectRatio,
+            mainAxisSpacing: mainAxisSpacing,
+            crossAxisCount: crossAxisCount,
+            crossAxisSpacing: crossAxisSpacing),
+      );
 }
 
 class ListBuilder extends StatelessWidget {
@@ -92,6 +101,7 @@ class ListBuilder extends StatelessWidget {
     Axis scrollDirection,
     EdgeInsetsGeometry padding,
     bool reverse,
+    bool noScrollBehavior,
     this.separatorBuilder,
     this.dragStartBehavior = DragStartBehavior.start,
     this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
@@ -119,6 +129,7 @@ class ListBuilder extends StatelessWidget {
   })  : padding = padding ?? EdgeInsets.zero,
         scrollDirection = scrollDirection ?? Axis.vertical,
         reverse = reverse ?? false,
+        noScrollBehavior = noScrollBehavior ?? true,
         super(key: key) {
     if (listType == null || listType == ListType.builder)
       assert(itemBuilder != null);
@@ -128,6 +139,8 @@ class ListBuilder extends StatelessWidget {
           itemBuilder != null && separatorBuilder != null && itemCount != null);
   }
 
+  ///  移出头部和底部蓝色阴影
+  final bool noScrollBehavior;
   final ListType listType;
 
   final bool shrinkWrap;
@@ -167,16 +180,22 @@ class ListBuilder extends StatelessWidget {
   final IndexedWidgetBuilder separatorBuilder;
 
   @override
-  Widget build(BuildContext context) =>
-      (enablePullDown || enablePullUp) ? refresherListView() : list();
+  Widget build(BuildContext context) => (enablePullDown || enablePullUp)
+      ? refresherListView
+      : noScrollBehavior
+          ? scrollConfiguration
+          : list;
 
-  Widget list() {
-    if (listType == ListType.separated) return listViewSeparated();
-    if (listType == ListType.custom) return listViewCustom();
-    return listViewBuilder();
+  Widget get scrollConfiguration =>
+      ScrollConfiguration(behavior: NoScrollBehavior(), child: list);
+
+  Widget get list {
+    if (listType == ListType.separated) return listViewSeparated;
+    if (listType == ListType.custom) return listViewCustom;
+    return listViewBuilder;
   }
 
-  Widget listViewBuilder() {
+  Widget get listViewBuilder {
     if (itemCount == 0)
       return noData ?? NotData(margin: EdgeInsets.all(getWidth(10)));
     return ListView.builder(
@@ -200,7 +219,7 @@ class ListBuilder extends StatelessWidget {
     );
   }
 
-  Widget listViewCustom() {
+  Widget get listViewCustom {
     if (itemCount == 0)
       return noData ?? NotData(margin: EdgeInsets.all(getWidth(10)));
     return ListView.custom(
@@ -219,7 +238,7 @@ class ListBuilder extends StatelessWidget {
         keyboardDismissBehavior: keyboardDismissBehavior);
   }
 
-  Widget listViewSeparated() {
+  Widget get listViewSeparated {
     if (itemCount == 0)
       return noData ?? NotData(margin: EdgeInsets.all(getWidth(10)));
     return ListView.separated(
@@ -241,13 +260,13 @@ class ListBuilder extends StatelessWidget {
         addSemanticIndexes: addSemanticIndexes);
   }
 
-  Widget refresherListView() => Refreshed(
+  Widget get refresherListView => Refreshed(
       enablePullDown: enablePullDown,
       enablePullUp: enablePullUp,
       controller: refreshController,
       onLoading: onLoading,
       onRefresh: onRefresh,
-      child: list(),
+      child: list,
       header: header,
       footer: footer,
       footerTextStyle: footerTextStyle);
@@ -355,8 +374,8 @@ class ListEntry extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<Widget> children = <Widget>[];
     if (prefix != null) children.add(prefix);
-    children.add(listTile());
-    if (arrow || arrowIcon != null) children.add(arrowIcon ?? arrowWidget());
+    children.add(listTile);
+    if (arrow || arrowIcon != null) children.add(arrowIcon ?? arrowWidget);
     return Universal(
         height: height,
         addInkWell: inkWell,
@@ -367,19 +386,19 @@ class ListEntry extends StatelessWidget {
         onTap: enabled ? onTap : null,
         direction: Axis.horizontal,
         mainAxisAlignment: MainAxisAlignment.center,
-        decoration: decoration ?? defaultDecoration(),
+        decoration: decoration ?? defaultDecoration,
         children: children);
   }
 
-  Decoration defaultDecoration() => underlineColor != null || color != null
+  Decoration get defaultDecoration => underlineColor != null || color != null
       ? WayStyles.containerUnderlineBackground(
           underlineColor: underlineColor, color: color)
       : null;
 
-  Widget arrowWidget() =>
+  Widget get arrowWidget =>
       Icon(ConstIcon.arrowRight, size: arrowSize, color: arrowColor);
 
-  Widget listTile() => Expanded(
+  Widget get listTile => Expanded(
           child: ListTile(
         contentPadding: contentPadding,
         title: hero(title ?? Text(titleText, style: titleStyle)),

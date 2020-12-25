@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
+import 'package:flutter_waya/src/widgets/carousel/controller.dart';
 
 typedef CarouselOnTap = void Function(int index);
 
@@ -445,7 +446,7 @@ class _CarouselState extends _CarouselTimerMixin {
         transformer =
             ScaleAndFadeTransformer(scale: widget.scale, fade: widget.fade);
 
-      final Widget child = CarouselPageView(
+      final Widget child = TransformerPageView(
         pageController: _pageController,
         loop: widget.loop,
         itemCount: widget.itemCount,
@@ -466,7 +467,6 @@ class _CarouselState extends _CarouselTimerMixin {
           onNotification: (ScrollNotification notification) {
             if (notification is ScrollStartNotification) {
               if (notification.dragDetails != null) {
-                /// by human
                 if (_timer != null) _stopAutoPlay();
               }
             } else if (notification is ScrollEndNotification) {
@@ -572,7 +572,6 @@ class _CarouselState extends _CarouselTimerMixin {
       CarouselPlugin pagination, Widget carousel, CarouselPluginConfig config) {
     final List<Widget> list = <Widget>[];
 
-    /// Only support bottom yet!
     list.add((widget.containerHeight != null || widget.containerWidth != null)
         ? carousel
         : Expanded(child: carousel));
@@ -864,7 +863,7 @@ class ScaleAndFadeTransformer extends PageTransformer {
   }
 }
 
-///  /CustomLayout
+///  CustomLayout
 abstract class _CustomLayoutStateBase<T extends _SubCarousel> extends State<T>
     with SingleTickerProviderStateMixin {
   double _carouselWidth;

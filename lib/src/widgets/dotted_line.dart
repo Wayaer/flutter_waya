@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/flutter_waya.dart';
 
+/// 虚线
 class DottedLine extends StatelessWidget {
   const DottedLine(
       {Key key,
@@ -16,7 +16,7 @@ class DottedLine extends StatelessWidget {
         color = color ?? Colors.greenAccent,
         gap = gap ?? 5.0,
         height = height ?? 1.0,
-        width = width ?? 100,
+        width = width ?? double.infinity,
         super(key: key);
   final double strokeWidth;
   final Color color;
@@ -28,17 +28,17 @@ class DottedLine extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-      width: width ?? getWidth(0),
+      width: width,
       height: height,
       margin: margin,
       padding: padding ?? EdgeInsets.all(strokeWidth / 2),
       child: CustomPaint(
-          painter:
-              DottedPainter(color: color, strokeWidth: strokeWidth, gap: gap)));
+          painter: _DottedPainter(
+              color: color, strokeWidth: strokeWidth, gap: gap)));
 }
 
-class DottedPainter extends CustomPainter {
-  DottedPainter(
+class _DottedPainter extends CustomPainter {
+  _DottedPainter(
       {this.strokeWidth = 5.0,
       this.color = Colors.greenAccent,
       this.gap = 5.0});

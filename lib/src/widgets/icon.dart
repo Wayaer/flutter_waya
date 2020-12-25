@@ -86,47 +86,45 @@ class IconBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Widget> listWidget = <Widget>[];
-    if (isChildren()) {
+    if (isChildren) {
       if (reversal) {
-        listWidget.add(titleWidget());
-        listWidget.add(spacingWidget());
-        listWidget.addAll(iconWidget());
+        listWidget.add(titleWidget);
+        listWidget.add(spacingWidget);
+        listWidget.addAll(iconWidget);
       } else {
-        listWidget.addAll(iconWidget());
-        listWidget.add(spacingWidget());
-        listWidget.add(titleWidget());
+        listWidget.addAll(iconWidget);
+        listWidget.add(spacingWidget);
+        listWidget.add(titleWidget);
       }
       return universal(children: listWidget);
     }
-    if (iconWidget().isNotEmpty) return universal(child: iconWidget()[0]);
+    if (iconWidget.isNotEmpty) return universal(child: iconWidget[0]);
     return Container();
   }
 
-  Widget universal({List<Widget> children, Widget child}) {
-    return Universal(
-        heroTag: heroTag,
-        addInkWell: addInkWell,
-        child: child,
-        visible: visible,
-        direction: direction,
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: crossAxisAlignment,
-        mainAxisAlignment: mainAxisAlignment,
-        children: children,
-        width: width,
-        height: height,
-        onTap: onTap,
-        margin: margin,
-        decoration: decoration ?? BoxDecoration(color: background),
-        padding: padding,
-        alignment: alignment);
-  }
+  Widget universal({List<Widget> children, Widget child}) => Universal(
+      heroTag: heroTag,
+      addInkWell: addInkWell,
+      child: child,
+      visible: visible,
+      direction: direction,
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: crossAxisAlignment,
+      mainAxisAlignment: mainAxisAlignment,
+      children: children,
+      width: width,
+      height: height,
+      onTap: onTap,
+      margin: margin,
+      decoration: decoration ?? BoxDecoration(color: background),
+      padding: padding,
+      alignment: alignment);
 
-  Widget spacingWidget() => Container(
+  Widget get spacingWidget => Container(
       width: direction == Axis.horizontal ? spacing : 0,
       height: direction == Axis.vertical ? spacing : 0);
 
-  Widget titleWidget() {
+  Widget get titleWidget {
     if (title != null) return title;
     return Text(titleText ?? '',
         style: titleStyle,
@@ -136,14 +134,14 @@ class IconBox extends StatelessWidget {
         overflow: overflow);
   }
 
-  bool isChildren() =>
+  bool get isChildren =>
       (titleText != null || title != null) &&
       (icon != null ||
           image != null ||
           widget != null ||
           imageProvider != null);
 
-  List<Widget> iconWidget() {
+  List<Widget> get iconWidget {
     final List<Widget> listWidget = <Widget>[];
     if (icon != null)
       listWidget.add(Icon(icon,
@@ -235,7 +233,7 @@ class _CheckBoxState extends State<CheckBox> {
       if (widget.checkIcon != null && widget.uncheckIcon != null) {
         icon = value ? widget.checkIcon : widget.uncheckIcon;
       } else {
-        check = checkBoxWidget();
+        check = checkBoxWidget;
       }
     }
     return IconBox(
@@ -259,7 +257,7 @@ class _CheckBoxState extends State<CheckBox> {
         });
   }
 
-  Widget checkBoxWidget() => Checkbox(
+  Widget get checkBoxWidget => Checkbox(
       tristate: false,
       activeColor: widget.activeColor,
       checkColor: widget.checkColor,

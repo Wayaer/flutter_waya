@@ -85,10 +85,7 @@ class _ScrollViewAutoState extends State<ScrollViewAuto> {
   @override
   Widget build(BuildContext context) {
     if (!showNestedScroll)
-      return _Calculate(
-        slivers: slivers,
-        sliverModel: sliverModel,
-      );
+      return _Calculate(slivers: slivers, sliverModel: sliverModel);
     return expanded(
         widget.isNestedScrollView ? nestedScrollView : customScrollView);
   }

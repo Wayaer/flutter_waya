@@ -1,7 +1,5 @@
 import 'dart:math';
-
 import 'package:flutter/widgets.dart';
-
 import 'tweens/delay_tween.dart';
 
 class SpinKitCircle extends StatefulWidget {

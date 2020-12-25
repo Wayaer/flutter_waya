@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_waya/flutter_waya.dart';
+import 'package:flutter_waya/src/widgets/carousel/controller.dart';
 
 abstract class CarouselPlugin {
   const CarouselPlugin();
@@ -32,15 +33,17 @@ class CarouselPluginConfig {
   final CarouselLayout layout;
 }
 
-class CarouselPluginView extends StatelessWidget {
-  const CarouselPluginView(this.plugin, this.config);
 
-  final CarouselPlugin plugin;
-  final CarouselPluginConfig config;
 
-  @override
-  Widget build(BuildContext context) => plugin.build(context, config);
-}
+// class CarouselPluginView extends StatelessWidget {
+//   const CarouselPluginView(this.plugin, this.config);
+//
+//   final CarouselPlugin plugin;
+//   final CarouselPluginConfig config;
+//
+//   @override
+//   Widget build(BuildContext context) => plugin.build(context, config);
+// }
 
 ///  Control
 class CarouselControl extends CarouselPlugin {
@@ -136,46 +139,6 @@ class CarouselControl extends CarouselPlugin {
     }
     return Container(
         height: double.infinity, child: child, width: double.infinity);
-  }
-}
-
-class CarouselController extends IndexController {
-  CarouselController();
-
-  ///  AutoPlay started
-  static const int START_AUTOPLAY = 2;
-
-  ///  AutoPlay stopped.
-  static const int STOP_AUTOPLAY = 3;
-
-  ///  Indicate that the user is swiping
-  static const int SWIPE = 4;
-
-  ///  Indicate that the `Carousel` has changed it's index and is building it's ui ,so that the
-  ///  `CarouselPluginConfig` is available.
-  static const int BUILD = 5;
-
-  ///  available when `event` == CarouselController.BUILD
-  CarouselPluginConfig config;
-
-  ///  available when `event` == CarouselController.SWIPE
-  ///  this value is PageViewController.pos
-  double pos;
-
-  bool autoPlay;
-
-  ///  开始自动播放
-  void startAutoPlay() {
-    event = CarouselController.START_AUTOPLAY;
-    autoPlay = true;
-    notifyListeners();
-  }
-
-  ///  停止自动播放
-  void stopAutoPlay() {
-    event = CarouselController.STOP_AUTOPLAY;
-    autoPlay = false;
-    notifyListeners();
   }
 }
 

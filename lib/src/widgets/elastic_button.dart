@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
+/// 弹性按钮
 class ElasticButton extends StatefulWidget {
   const ElasticButton({
     Key key,
@@ -130,7 +131,7 @@ class _ElasticButtonState extends State<ElasticButton>
     if (scaleCoefficient > 1.0) scaleCoefficient = 1;
     useCache = widget.useCache;
     alignment = widget.alignment;
-    if (useCache) uiChild = wrapper();
+    if (useCache) uiChild = wrapper;
     animationController = AnimationController(
         vsync: this,
         lowerBound: 0.0,
@@ -256,7 +257,7 @@ class _ElasticButtonState extends State<ElasticButton>
     if (!isSpringDown) animationController.value = 1;
   }
 
-  Widget wrapper() => GestureDetector(
+  Widget get wrapper => GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTapDown: !hasTap
             ? null
@@ -497,7 +498,7 @@ class _ElasticButtonState extends State<ElasticButton>
           final Transform transform = Transform.scale(
               scale: animation.value,
               alignment: alignment,
-              child: useCache ? cachedChild : wrapper());
+              child: useCache ? cachedChild : wrapper);
           if (elasticButtonType == ElasticButtonType.withOpacity)
             return Opacity(
                 opacity: animation.value.clamp(0.5, 1.0).toDouble(),

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-class GifImagePage extends StatefulWidget {
+class ImagePage extends StatefulWidget {
   @override
-  _GifImagePageState createState() => _GifImagePageState();
+  _ImagePageState createState() => _ImagePageState();
 }
 
-class _GifImagePageState extends State<GifImagePage>
+class _ImagePageState extends State<ImagePage>
     with TickerProviderStateMixin {
   GifController controller;
 
