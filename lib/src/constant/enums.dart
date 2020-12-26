@@ -23,7 +23,7 @@ enum ToastType { success, fail, info, warning, smile, custom }
 
 enum IndicatorType { none, slide, warm, color, scale, drop }
 
-enum CarouselLayout { none, stack, tinder, custom }
+enum CarouselLayout { stack, tinder }
 
 enum DateType {
   ///  2020-1-1 00:00:00

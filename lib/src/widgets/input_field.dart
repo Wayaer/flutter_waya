@@ -791,24 +791,24 @@ class NumberLimitFormatter extends TextInputFormatter {
 }
 
 class PinBox extends StatefulWidget {
-  const PinBox(
-      {Key key,
-      this.inputTextType,
-      this.autoFocus = true,
-      this.controller,
-      this.maxLength = 4,
-      this.inputFormatter,
-      this.boxSpacing = 1,
-      this.pinDecoration,
-      this.hasFocusPinDecoration,
-      this.pinTextStyle,
-      this.decoration,
-      this.boxSize = const Size(50, 50),
-      this.width,
-      this.focusNode,
-      this.onChanged,
-      this.onDone})
-      : super(key: key);
+  const PinBox({
+    Key key,
+    this.inputTextType,
+    this.autoFocus = true,
+    this.controller,
+    this.maxLength = 4,
+    this.inputFormatter,
+    this.boxSpacing = 1,
+    this.pinDecoration,
+    this.hasFocusPinDecoration,
+    this.pinTextStyle,
+    this.decoration,
+    this.boxSize = const Size(50, 50),
+    this.width,
+    this.focusNode,
+    this.onChanged,
+    this.onDone,
+  }) : super(key: key);
 
   ///  输入内容监听
   final ValueChanged<String> onChanged;
@@ -837,13 +837,13 @@ class PinBox extends StatefulWidget {
   ///  输入框焦点管理
   final FocusNode focusNode;
 
-  ///  整默认输入框装饰器
+  ///  默认输入框装饰器
   final Decoration pinDecoration;
 
   ///  整个组件装饰器
   final Decoration decoration;
 
-  ///  获取焦点后的输入框装饰器
+  ///  有文字后的输入框装饰器
   final Decoration hasFocusPinDecoration;
 
   ///  box 内文字样式
@@ -879,6 +879,7 @@ class _PinBoxState extends State<PinBox> {
         widget.boxSpacing * (widget.maxLength - 1);
     return Universal(
         isStack: true,
+        alignment: Alignment.center,
         width: widget.width ?? width,
         height: size.height,
         decoration: widget.decoration,

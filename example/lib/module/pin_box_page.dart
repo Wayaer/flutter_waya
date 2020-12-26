@@ -7,13 +7,19 @@ class PinBoxPage extends StatelessWidget {
     return OverlayScaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(title: const Text('PinBoxPage Demo'), centerTitle: true),
-      body: const Universal(
+      body: Universal(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             PinBox(
-              maxLength: 6,
-              pinTextStyle: TextStyle(fontSize: 10),
-            ),
+                maxLength: 6,
+                autoFocus: false,
+                decoration: const BoxDecoration(color: Colors.black26),
+                hasFocusPinDecoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(color: Colors.blue)),
+                pinDecoration:
+                    BoxDecoration(border: Border.all(color: Colors.red)),
+                pinTextStyle: const TextStyle(color: Colors.white)),
           ]),
     );
   }

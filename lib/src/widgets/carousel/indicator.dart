@@ -55,7 +55,7 @@ class _IndicatorState extends State<Indicator> {
   int index = 0;
   final Paint _paint = Paint();
 
-  _IndicatorPainter _createPainter() {
+  _IndicatorPainter createPainter() {
     switch (widget.layout) {
       case IndicatorType.none:
         return _NonePainter(
@@ -85,7 +85,7 @@ class _IndicatorState extends State<Indicator> {
     Widget child = SizedBox(
         width: widget.count * widget.size + (widget.count - 1) * widget.space,
         height: widget.size,
-        child: CustomPaint(painter: _createPainter()));
+        child: CustomPaint(painter: createPainter()));
     if (widget.layout == IndicatorType.scale ||
         widget.layout == IndicatorType.color) child = ClipRect(child: child);
     return IgnorePointer(child: child);
@@ -99,7 +99,7 @@ class _IndicatorState extends State<Indicator> {
 
   @override
   void initState() {
-    widget.controller.addListener(_onController);
+    widget.controller?.addListener(_onController);
     super.initState();
   }
 
@@ -114,7 +114,7 @@ class _IndicatorState extends State<Indicator> {
 
   @override
   void dispose() {
-    widget.controller.removeListener(_onController);
+    widget.controller?.removeListener(_onController);
     super.dispose();
   }
 }

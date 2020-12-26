@@ -1,17 +1,17 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_waya/flutter_waya.dart';
+import 'package:flutter_waya/src/widgets/carousel/transformers.dart';
 
 typedef PaintCallback = void Function(Canvas canvas, Size siz);
 
-class ColorPainter extends CustomPainter {
-  ColorPainter(this._paint, this.info, this.colors);
+class _ColorPainter extends CustomPainter {
+  _ColorPainter(this.info, this.colors);
 
-  final Paint _paint;
   final TransformInfo info;
   final List<Color> colors;
 
   @override
   void paint(Canvas canvas, Size size) {
+    final Paint _paint = Paint();
     final int index = info.fromIndex;
     _paint.color = colors[index];
     canvas.drawRect(Rect.fromLTWH(0.0, 0.0, size.width, size.height), _paint);
@@ -52,10 +52,10 @@ class ColorPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(ColorPainter oldDelegate) => oldDelegate.info != info;
+  bool shouldRepaint(_ColorPainter oldDelegate) => oldDelegate.info != info;
 }
 
-class ParallaxColor extends StatefulWidget {
+class ParallaxColor extends StatelessWidget {
   const ParallaxColor({
     @required this.colors,
     @required this.info,
@@ -69,16 +69,8 @@ class ParallaxColor extends StatefulWidget {
   final TransformInfo info;
 
   @override
-  _ParallaxColorState createState() => _ParallaxColorState();
-}
-
-class _ParallaxColorState extends State<ParallaxColor> {
-  Paint paint = Paint();
-
-  @override
-  Widget build(BuildContext context) => CustomPaint(
-      painter: ColorPainter(paint, widget.info, widget.colors),
-      child: widget.child);
+  Widget build(BuildContext context) =>
+      CustomPaint(painter: _ColorPainter(info, colors), child: child);
 }
 
 class ParallaxContainer extends StatelessWidget {
