@@ -145,6 +145,10 @@ class _ListWheelState extends State<ListWheel> {
     final ListWheelChildDelegateType childDelegateType =
         widget?.childDelegateType ?? ListWheelChildDelegateType.builder;
     Widget wheel;
+
+    final Function(int index) onSelectedItemChanged = (int index) {
+      if (widget?.onChanged != null) widget.onChanged(index);
+    };
     if (widget.isCupertino) {
       wheel = childDelegateType == ListWheelChildDelegateType.builder
           ? CupertinoPicker.builder(
@@ -153,9 +157,7 @@ class _ListWheelState extends State<ListWheel> {
               backgroundColor: widget.backgroundColor,
               itemExtent: widget.itemExtent,
               diameterRatio: widget.diameterRatio,
-              onSelectedItemChanged: (int index) {
-                if (widget?.onChanged != null) widget.onChanged(index);
-              },
+              onSelectedItemChanged: onSelectedItemChanged,
               offAxisFraction: widget.offAxisFraction,
               useMagnifier: widget.useMagnifier,
               squeeze: widget.squeeze,
@@ -166,9 +168,7 @@ class _ListWheelState extends State<ListWheel> {
               looping: childDelegateType == ListWheelChildDelegateType.looping,
               itemExtent: widget.itemExtent,
               diameterRatio: widget.diameterRatio,
-              onSelectedItemChanged: (int index) {
-                if (widget?.onChanged != null) widget.onChanged(index);
-              },
+              onSelectedItemChanged: onSelectedItemChanged,
               offAxisFraction: widget.offAxisFraction,
               useMagnifier: widget.useMagnifier,
               squeeze: widget.squeeze,
@@ -179,9 +179,7 @@ class _ListWheelState extends State<ListWheel> {
           itemExtent: widget.itemExtent,
           physics: widget.physics,
           diameterRatio: widget.diameterRatio,
-          onSelectedItemChanged: (int index) {
-            if (widget?.onChanged != null) widget.onChanged(index);
-          },
+          onSelectedItemChanged: onSelectedItemChanged,
           offAxisFraction: widget.offAxisFraction,
           perspective: widget.perspective,
           useMagnifier: widget.useMagnifier,
