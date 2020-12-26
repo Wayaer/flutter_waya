@@ -1,11 +1,13 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 class ListWheel extends StatefulWidget {
   ListWheel({
     Key key,
+    bool looping,
     double itemExtent,
     double diameterRatio,
     double offAxisFraction,
@@ -14,6 +16,7 @@ class ListWheel extends StatefulWidget {
     double magnification,
     bool useMagnifier,
     double squeeze,
+    bool isCupertino,
     ScrollPhysics physics,
     this.itemBuilder,
     this.itemCount,
@@ -25,13 +28,16 @@ class ListWheel extends StatefulWidget {
     this.onNotification,
     this.onScrollStart,
     this.onScrollUpdate,
+    this.backgroundColor,
   })  : diameterRatio = diameterRatio ?? 1,
         offAxisFraction = offAxisFraction ?? 0,
         initialIndex = initialIndex ?? 0,
         perspective = perspective ?? 0.01,
         magnification = magnification ?? ConstConstant.listWheelMagnification,
-        useMagnifier = useMagnifier ?? true,
+        useMagnifier = useMagnifier ?? false,
+        looping = looping ?? false,
         squeeze = squeeze ?? 1,
+        isCupertino = isCupertino ?? true,
         itemExtent = itemExtent ?? ConstConstant.pickerItemHeight,
         physics = physics ?? const FixedExtentScrollPhysics(),
         super(key: key) {
@@ -48,6 +54,9 @@ class ListWheel extends StatefulWidget {
 
   ///  每个Item的高度,固定的
   final double itemExtent;
+
+  ///  子组件
+  final List<Widget> children;
 
   ///  条目构造器
   final IndexedWidgetBuilder itemBuilder;
@@ -82,9 +91,11 @@ class ListWheel extends StatefulWidget {
   ///
   final ScrollPhysics physics;
 
+  ///  滚轮类型
   final ListWheelChildDelegateType childDelegateType;
+
+  ///  控制器
   final FixedExtentScrollController controller;
-  final List<Widget> children;
 
   ///  滚动监听 添加此方法  [onScrollStart],[onScrollUpdate],[onScrollEnd] 无效
   final NotificationListenerCallback<dynamic> onNotification;
@@ -97,6 +108,14 @@ class ListWheel extends StatefulWidget {
 
   ///  动结束回调
   final ValueChanged<int> onScrollEnd;
+
+  final bool looping;
+
+  ///  是否使用ios 样式
+  final bool isCupertino;
+
+  ///  [isCupertino]=true生效
+  final Color backgroundColor;
 
   @override
   _ListWheelState createState() => _ListWheelState();
@@ -112,41 +131,64 @@ class _ListWheelState extends State<ListWheel> {
         FixedExtentScrollController(initialItem: widget.initialIndex);
   }
 
+  ListWheelChildDelegate getDelegate(ListWheelChildDelegateType type) {
+    if (type == ListWheelChildDelegateType.list)
+      return ListWheelChildListDelegate(children: widget.children);
+    if (type == ListWheelChildDelegateType.looping)
+      return ListWheelChildLoopingListDelegate(children: widget.children);
+    return ListWheelChildBuilderDelegate(
+        builder: widget.itemBuilder, childCount: widget.itemCount);
+  }
+
   @override
   Widget build(BuildContext context) {
-    ListWheelChildDelegate childDelegate;
-    switch (widget?.childDelegateType) {
-      case ListWheelChildDelegateType.builder:
-        childDelegate = ListWheelChildBuilderDelegate(
-            builder: widget.itemBuilder, childCount: widget.itemCount);
-        break;
-      case ListWheelChildDelegateType.list:
-        childDelegate = ListWheelChildListDelegate(children: widget.children);
-        break;
-      case ListWheelChildDelegateType.looping:
-        childDelegate =
-            ListWheelChildLoopingListDelegate(children: widget.children);
-        break;
-      default:
-        childDelegate = ListWheelChildBuilderDelegate(
-            builder: widget.itemBuilder, childCount: widget.itemCount);
-        break;
+    final ListWheelChildDelegateType childDelegateType =
+        widget?.childDelegateType ?? ListWheelChildDelegateType.builder;
+    Widget wheel;
+    if (widget.isCupertino) {
+      wheel = childDelegateType == ListWheelChildDelegateType.builder
+          ? CupertinoPicker.builder(
+              childCount: widget.itemCount,
+              itemBuilder: widget.itemBuilder,
+              backgroundColor: widget.backgroundColor,
+              itemExtent: widget.itemExtent,
+              diameterRatio: widget.diameterRatio,
+              onSelectedItemChanged: (int index) {
+                if (widget?.onChanged != null) widget.onChanged(index);
+              },
+              offAxisFraction: widget.offAxisFraction,
+              useMagnifier: widget.useMagnifier,
+              squeeze: widget.squeeze,
+              magnification: widget.magnification)
+          : CupertinoPicker(
+              children: widget.children,
+              backgroundColor: widget.backgroundColor,
+              looping: childDelegateType == ListWheelChildDelegateType.looping,
+              itemExtent: widget.itemExtent,
+              diameterRatio: widget.diameterRatio,
+              onSelectedItemChanged: (int index) {
+                if (widget?.onChanged != null) widget.onChanged(index);
+              },
+              offAxisFraction: widget.offAxisFraction,
+              useMagnifier: widget.useMagnifier,
+              squeeze: widget.squeeze,
+              magnification: widget.magnification);
+    } else {
+      wheel = ListWheelScrollView.useDelegate(
+          controller: controller,
+          itemExtent: widget.itemExtent,
+          physics: widget.physics,
+          diameterRatio: widget.diameterRatio,
+          onSelectedItemChanged: (int index) {
+            if (widget?.onChanged != null) widget.onChanged(index);
+          },
+          offAxisFraction: widget.offAxisFraction,
+          perspective: widget.perspective,
+          useMagnifier: widget.useMagnifier,
+          squeeze: widget.squeeze,
+          magnification: widget.magnification,
+          childDelegate: getDelegate(childDelegateType));
     }
-
-    Widget wheel = ListWheelScrollView.useDelegate(
-        controller: controller,
-        itemExtent: widget.itemExtent,
-        physics: widget.physics,
-        diameterRatio: widget.diameterRatio,
-        onSelectedItemChanged: (int index) {
-          if (widget?.onChanged != null) widget.onChanged(index);
-        },
-        offAxisFraction: widget.offAxisFraction,
-        perspective: widget.perspective,
-        useMagnifier: widget.useMagnifier,
-        squeeze: widget.squeeze,
-        magnification: widget.magnification,
-        childDelegate: childDelegate);
     if (widget.onScrollEnd != null) {
       wheel = NotificationListener<ScrollNotification>(
           child: wheel,

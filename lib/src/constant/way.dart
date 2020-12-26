@@ -216,7 +216,7 @@ class BaseTextStyle extends TextStyle {
       String fontFamily,
       FontWeight fontWeight})
       : super(
-            color: color ?? getColors(black70),
+            color: color ?? getColors(black90),
             fontSize: fontSize ?? 14,
             height: height,
             decoration: TextDecoration.none,

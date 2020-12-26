@@ -1,7 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_waya/src/widgets/carousel/transformers.dart';
-
-typedef PaintCallback = void Function(Canvas canvas, Size siz);
+import 'package:flutter_waya/flutter_waya.dart';
+import 'package:flutter_waya/src/widgets/carousel/transformer.dart';
 
 class _ColorPainter extends CustomPainter {
   _ColorPainter(this.info, this.colors);
@@ -63,9 +62,7 @@ class ParallaxColor extends StatelessWidget {
   });
 
   final Widget child;
-
   final List<Color> colors;
-
   final TransformInfo info;
 
   @override
@@ -87,25 +84,53 @@ class ParallaxContainer extends StatelessWidget {
   final double opacityFactor;
 
   @override
-  Widget build(BuildContext context) {
-    return Opacity(
-        opacity:
-            ((1 - position.abs()).clamp(0.0, 1.0) * opacityFactor).toDouble(),
-        child: Transform.translate(
-            offset: Offset(position * translationFactor, 0.0), child: child));
-  }
+  Widget build(BuildContext context) => Opacity(
+      opacity:
+          ((1 - position.abs()).clamp(0.0, 1.0) * opacityFactor).toDouble(),
+      child: Transform.translate(
+          offset: Offset(position * translationFactor, 0.0), child: child));
 }
 
-class ParallaxImage extends StatelessWidget {
-  ParallaxImage.asset(String name, {double position, this.imageFactor = 0.3})
-      : assert(imageFactor != null),
-        image = Image.asset(name,
+class ParallaxImage extends Image {
+  ParallaxImage(
+    ImageProvider image, {
+    double imageFactor = 0.3,
+    @required double position,
+    Key key,
+    ImageFrameBuilder frameBuilder,
+    ImageLoadingBuilder loadingBuilder,
+    ImageErrorWidgetBuilder errorBuilder,
+    String semanticLabel,
+    bool excludeFromSemantics,
+    double width,
+    double height,
+    Color color,
+    BlendMode colorBlendMode,
+    ImageRepeat repeat,
+    Rect centerSlice,
+    bool matchTextDirection,
+    bool gapLessPlayback,
+    bool isAntiAlias,
+    FilterQuality filterQuality,
+  })  : assert(imageFactor != null),
+        super(
+            key: key,
+            image: image,
+            frameBuilder: frameBuilder,
+            loadingBuilder: loadingBuilder,
+            errorBuilder: errorBuilder,
+            semanticLabel: semanticLabel,
+            excludeFromSemantics: excludeFromSemantics ?? false,
+            width: width,
+            height: height,
+            color: color,
+            colorBlendMode: colorBlendMode,
             fit: BoxFit.cover,
-            alignment: FractionalOffset(0.5 + position * imageFactor, 0.5));
-
-  final Image image;
-  final double imageFactor;
-
-  @override
-  Widget build(BuildContext context) => image;
+            alignment: FractionalOffset(0.5 + position * imageFactor, 0.5),
+            repeat: repeat ?? ImageRepeat.noRepeat,
+            centerSlice: centerSlice ?? centerSlice,
+            matchTextDirection: matchTextDirection ?? false,
+            gaplessPlayback: gapLessPlayback ?? false,
+            isAntiAlias: isAntiAlias ?? false,
+            filterQuality: filterQuality ?? FilterQuality.low);
 }

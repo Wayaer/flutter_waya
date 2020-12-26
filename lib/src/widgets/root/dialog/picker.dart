@@ -50,7 +50,7 @@ class PickerTitle {
 
 class PickerWheel {
   PickerWheel(
-      {double itemHeight,
+      {this.itemHeight,
       this.itemWidth,
       this.diameterRatio,
       this.offAxisFraction,
@@ -58,8 +58,7 @@ class PickerWheel {
       this.magnification,
       this.useMagnifier,
       this.squeeze,
-      this.physics})
-      : itemHeight = itemHeight ?? 18;
+      this.physics});
 
   ///  以下为ListWheel属性
   ///  高度
@@ -694,9 +693,12 @@ class _DateTimePickerState extends State<DateTimePicker> {
         squeeze: widget?.pickerWheel?.squeeze,
         physics: widget?.pickerWheel?.physics,
         initialIndex: initialIndex,
-        itemBuilder: (_, int index) => TextSmall(
-            padLeft(startZero ?? true ? list[index] : list[index] + 1),
-            style: contentStyle),
+        itemBuilder: (_, int index) => Container(
+              alignment: Alignment.center,
+              child: TextSmall(
+                  padLeft(startZero ?? true ? list[index] : list[index] + 1),
+                  style: contentStyle),
+            ),
         itemCount: list.length,
         onScrollEnd: onChanged);
   }

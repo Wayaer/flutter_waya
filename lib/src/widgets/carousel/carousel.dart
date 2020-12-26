@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/widgets/carousel/controller.dart';
-import 'package:flutter_waya/src/widgets/carousel/transformers.dart';
 
 typedef CarouselOnTap = void Function(int index);
 
@@ -19,7 +18,6 @@ class Carousel extends StatefulWidget {
     Key key,
     @required this.itemBuilder,
     @required this.itemCount,
-    this.transformer,
     this.autoPlay = false,
     CarouselLayout layout,
     this.autoPlayDelay = kDefaultAutoPlayDelay,
@@ -34,14 +32,9 @@ class Carousel extends StatefulWidget {
     this.pagination,
     this.physics,
     this.controller,
-    this.viewportFraction = 1.0,
     this.itemHeight,
     this.itemWidth,
-    this.scale,
-    this.fade,
   })  : layout = layout ?? CarouselLayout.stack,
-        assert(itemBuilder != null || transformer != null,
-            'itemBuilder and transformItemBuilder must not be both null'),
         super(key: key);
 
   ///  Inner item height, this property is valid if layout=stack or layout=tinder or LAYOUT=custom,
@@ -52,10 +45,6 @@ class Carousel extends StatefulWidget {
 
   ///  Build item on index
   final IndexedWidgetBuilder itemBuilder;
-
-  ///  Support transform like Android PageView did
-  ///  `itemBuilder` and `transformItemBuilder` must have one not null
-  final PageTransformer transformer;
 
   ///  count of the display items
   final int itemCount;
@@ -107,20 +96,8 @@ class Carousel extends StatefulWidget {
 
   final ScrollPhysics physics;
 
-  ///
-  final double viewportFraction;
-
   ///  Build in layouts
   final CarouselLayout layout;
-
-  ///  This value is valid when viewportFraction is set and < 1.0
-  final double scale;
-
-  ///  This value is valid when viewportFraction is set and < 1.0
-  final double fade;
-
-  ///  底部指示器样式
-  // final IndicatorType indicatorLayout;
 
   @override
   _CarouselState createState() => _CarouselState();
@@ -456,6 +433,7 @@ abstract class _LayoutState<T extends _SubCarousel> extends State<T>
   AnimationController _animationController;
   int _startIndex;
   int _animationCount;
+  int _currentIndex = 0;
 
   @override
   void initState() {
@@ -642,6 +620,4 @@ abstract class _LayoutState<T extends _SubCarousel> extends State<T>
     }
     _animationController.value = value;
   }
-
-  int _currentIndex = 0;
 }

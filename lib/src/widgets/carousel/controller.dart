@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/flutter_waya.dart';
 
 enum CarouselEvent { move, next, previous, start, stop }
 
@@ -51,35 +50,41 @@ class CarouselController extends ChangeNotifier {
   }
 }
 
+const int kMaxValue = 2000000000;
+const int kMiddleValue = 1000000000;
+
 class TransformerController extends PageController {
   TransformerController({
     int initialPage = 0,
     bool keepPage,
     double viewportFraction = 1.0,
-    this.loop = false,
-    this.itemCount,
-    bool reverse,
-  })  : reverse = reverse ?? false,
+    bool loop = false,
+    int itemCount = 0,
+    bool reverse = false,
+  })  : _reverse = reverse ?? false,
+        _loop = loop ?? false,
+        _itemCount = itemCount ?? 0,
         super(
             initialPage: _getRealIndexFromRenderIndex(
-                initialPage ?? 1, loop, itemCount, reverse ?? false),
+                initialPage, loop, itemCount, reverse),
             keepPage: keepPage ?? true,
             viewportFraction: viewportFraction ?? 1.0);
 
-  final bool loop;
-  final int itemCount;
-  final bool reverse;
+  final bool _loop;
 
-  int getRenderIndexFromRealIndex(int index) =>
-      _getRenderIndexFromRealIndex(index, loop, itemCount, reverse);
+  final bool _reverse;
 
-  int getRealItemCount() {
-    if (itemCount == 0) return 0;
-    return loop ? itemCount + kMaxValue : itemCount;
-  }
+  int _itemCount;
 
-  static int _getRenderIndexFromRealIndex(
-      int index, bool loop, int itemCount, bool reverse) {
+  void setItemCount(int count) => _itemCount = count;
+
+  int get itemCount => _itemCount;
+
+  bool get reverse => _reverse;
+
+  bool get loop => _loop;
+
+  int getRenderIndexFromRealIndex(int index) {
     if (itemCount == 0) return 0;
     int renderIndex;
     if (loop) {
@@ -95,12 +100,17 @@ class TransformerController extends PageController {
     return renderIndex;
   }
 
+  int getRealItemCount() {
+    if (itemCount == 0) return 0;
+    return _loop ? itemCount + kMaxValue : itemCount;
+  }
+
   double get realPage =>
       (position?.maxScrollExtent == null || position?.minScrollExtent == null)
           ? 0.0
           : super.page;
 
-  static double _getRenderPageFromRealPage(
+  double getRenderPageFromRealPage(
       double page, bool loop, int itemCount, bool reverse) {
     double renderPage;
     if (loop) {
@@ -115,8 +125,8 @@ class TransformerController extends PageController {
   }
 
   @override
-  double get page => loop
-      ? _getRenderPageFromRealPage(realPage, loop, itemCount, reverse)
+  double get page => _loop
+      ? getRenderPageFromRealPage(realPage, _loop, itemCount, reverse)
       : realPage;
 
   int getRealIndexFromRenderIndex(num index) =>

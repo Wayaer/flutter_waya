@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/src/widgets/carousel/transformer_page.dart';
 import 'package:vector_math/vector_math_64.dart';
 
+typedef PageTransformerBuilderCallback = Widget Function(
+    Widget child, TransformInfo info);
+
 class TransformInfo {
   TransformInfo(
       {this.index,
@@ -62,15 +65,15 @@ abstract class PageTransformer {
   Widget transform(Widget child, TransformInfo info);
 }
 
-// class PageTransformerBuilder extends PageTransformer {
-//   PageTransformerBuilder({bool reverse = false, @required this.builder})
-//       : assert(builder != null),
-//         super(reverse: reverse);
-//   final PageTransformerBuilderCallback builder;
-//
-//   @override
-//   Widget transform(Widget child, TransformInfo info) => builder(child, info);
-// }
+class PageTransformerBuilder extends PageTransformer {
+  PageTransformerBuilder({bool reverse = false, @required this.builder})
+      : assert(builder != null),
+        super(reverse: reverse);
+  final PageTransformerBuilderCallback builder;
+
+  @override
+  Widget transform(Widget child, TransformInfo info) => builder(child, info);
+}
 
 class AccordionTransformer extends PageTransformer {
   @override
@@ -158,7 +161,6 @@ class DepthPageTransformer extends PageTransformer {
               child: Transform.scale(scale: 1.0, child: child)));
     } else if (position <= 1) {
       const double minScale = 0.75;
-      // Scale the page down (between minScale and 1)
       final double scaleFactor = minScale + (1 - minScale) * (1 - position);
       return Opacity(
           opacity: 1.0 - position,
@@ -188,85 +190,85 @@ class ScaleAndFadeTransformer extends PageTransformer {
         opacity: opacity, child: Transform.scale(scale: scale, child: child));
   }
 }
-
-abstract class TransformBuilder<T> {
-  TransformBuilder({this.values});
-
-  List<T> values;
-
-  Widget build(int i, double animationValue, Widget widget);
-}
-
-double _getValue(List<double> values, double animationValue, int index) {
-  double s = values[index];
-  if (animationValue >= 0.5) {
-    if (index < values.length - 1)
-      s = s + (values[index + 1] - s) * (animationValue - 0.5) * 2.0;
-  } else {
-    if (index != 0)
-      s = s - (s - values[index - 1]) * (0.5 - animationValue) * 2.0;
-  }
-  return s;
-}
-
-class ScaleTransformBuilder extends TransformBuilder<double> {
-  ScaleTransformBuilder(
-      {List<double> values, this.alignment = Alignment.center})
-      : super(values: values);
-
-  final Alignment alignment;
-
-  @override
-  Widget build(int i, double animationValue, Widget widget) {
-    final double s = _getValue(values, animationValue, i);
-    return Transform.scale(scale: s, child: widget);
-  }
-}
-
-class OpacityTransformBuilder extends TransformBuilder<double> {
-  OpacityTransformBuilder({List<double> values}) : super(values: values);
-
-  @override
-  Widget build(int i, double animationValue, Widget widget) {
-    final double v = _getValue(values, animationValue, i);
-    return Opacity(opacity: v, child: widget);
-  }
-}
-
-class RotateTransformBuilder extends TransformBuilder<double> {
-  RotateTransformBuilder({List<double> values}) : super(values: values);
-
-  @override
-  Widget build(int i, double animationValue, Widget widget) {
-    final double v = _getValue(values, animationValue, i);
-    return Transform.rotate(angle: v, child: widget);
-  }
-}
-
-class TranslateTransformBuilder extends TransformBuilder<Offset> {
-  TranslateTransformBuilder({List<Offset> values}) : super(values: values);
-
-  @override
-  Widget build(int i, double animationValue, Widget widget) {
-    final Offset s = _getOffsetValue(values, animationValue, i);
-    return Transform.translate(offset: s, child: widget);
-  }
-}
-
-Offset _getOffsetValue(List<Offset> values, double animationValue, int index) {
-  final Offset s = values[index];
-  double dx = s.dx;
-  double dy = s.dy;
-  if (animationValue >= 0.5) {
-    if (index < values.length - 1) {
-      dx = dx + (values[index + 1].dx - dx) * (animationValue - 0.5) * 2.0;
-      dy = dy + (values[index + 1].dy - dy) * (animationValue - 0.5) * 2.0;
-    }
-  } else {
-    if (index != 0) {
-      dx = dx - (dx - values[index - 1].dx) * (0.5 - animationValue) * 2.0;
-      dy = dy - (dy - values[index - 1].dy) * (0.5 - animationValue) * 2.0;
-    }
-  }
-  return Offset(dx, dy);
-}
+///
+/// abstract class TransformBuilder<T> {
+///   TransformBuilder({this.values});
+///
+///   List<T> values;
+///
+///   Widget build(int i, double animationValue, Widget widget);
+/// }
+///
+/// double _getValue(List<double> values, double animationValue, int index) {
+///   double s = values[index];
+///   if (animationValue >= 0.5) {
+///     if (index < values.length - 1)
+///       s = s + (values[index + 1] - s) * (animationValue - 0.5) * 2.0;
+///   } else {
+///     if (index != 0)
+///       s = s - (s - values[index - 1]) * (0.5 - animationValue) * 2.0;
+///   }
+///   return s;
+/// }
+///
+/// class ScaleTransformBuilder extends TransformBuilder<double> {
+///   ScaleTransformBuilder(
+///       {List<double> values, this.alignment = Alignment.center})
+///       : super(values: values);
+///
+///   final Alignment alignment;
+///
+///   @override
+///   Widget build(int i, double animationValue, Widget widget) {
+///     final double s = _getValue(values, animationValue, i);
+///     return Transform.scale(scale: s, child: widget);
+///   }
+/// }
+///
+/// class OpacityTransformBuilder extends TransformBuilder<double> {
+///   OpacityTransformBuilder({List<double> values}) : super(values: values);
+///
+///   @override
+///   Widget build(int i, double animationValue, Widget widget) {
+///     final double v = _getValue(values, animationValue, i);
+///     return Opacity(opacity: v, child: widget);
+///   }
+/// }
+///
+/// class RotateTransformBuilder extends TransformBuilder<double> {
+///   RotateTransformBuilder({List<double> values}) : super(values: values);
+///
+///   @override
+///   Widget build(int i, double animationValue, Widget widget) {
+///     final double v = _getValue(values, animationValue, i);
+///     return Transform.rotate(angle: v, child: widget);
+///   }
+/// }
+///
+/// class TranslateTransformBuilder extends TransformBuilder<Offset> {
+///   TranslateTransformBuilder({List<Offset> values}) : super(values: values);
+///
+///   @override
+///   Widget build(int i, double animationValue, Widget widget) {
+///     final Offset s = _getOffsetValue(values, animationValue, i);
+///     return Transform.translate(offset: s, child: widget);
+///   }
+/// }
+///
+/// Offset _getOffsetValue(List<Offset> values, double animationValue, int index) {
+///   final Offset s = values[index];
+///   double dx = s.dx;
+///   double dy = s.dy;
+///   if (animationValue >= 0.5) {
+///     if (index < values.length - 1) {
+///       dx = dx + (values[index + 1].dx - dx) * (animationValue - 0.5) * 2.0;
+///       dy = dy + (values[index + 1].dy - dy) * (animationValue - 0.5) * 2.0;
+///     }
+///   } else {
+///     if (index != 0) {
+///       dx = dx - (dx - values[index - 1].dx) * (0.5 - animationValue) * 2.0;
+///       dy = dy - (dy - values[index - 1].dy) * (0.5 - animationValue) * 2.0;
+///     }
+///   }
+///   return Offset(dx, dy);
+/// }

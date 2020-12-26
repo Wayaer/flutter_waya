@@ -26,13 +26,13 @@ class ConstConstant {
   static const int errorCode450 = 450;
 
   /// picker itemHeight
-  static const double pickerItemHeight = 18;
+  static const double pickerItemHeight = 22;
 
   /// picker 高
   static const double pickerHeight = 200;
 
   /// 放大倍率
-  static const double listWheelMagnification = 1.2;
+  static const double listWheelMagnification = 1.1;
 
   static const String success = 'success';
 

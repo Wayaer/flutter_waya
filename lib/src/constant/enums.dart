@@ -138,10 +138,10 @@ enum TabBarLevelPosition {
 }
 enum PopupMode { left, top, right, bottom, center }
 enum ListWheelChildDelegateType {
-  ///  有大量子控件时使用
+  ///  有大量子控件时使用 子组件不会全部渲染
   builder,
 
-  ///  普通的类似 ListView
+  ///  不推荐使用 子组件会全部渲染
   list,
 
   ///  一个提供无限通过循环显式列表的子级

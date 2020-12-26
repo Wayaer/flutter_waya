@@ -53,9 +53,14 @@ class Indicator extends StatefulWidget {
 
 class _IndicatorState extends State<Indicator> {
   int index = 0;
-  final Paint _paint = Paint();
+  @override
+  void initState() {
+    widget.controller?.addListener(_onController);
+    super.initState();
+  }
 
   _IndicatorPainter createPainter() {
+    final Paint _paint = Paint();
     switch (widget.layout) {
       case IndicatorType.none:
         return _NonePainter(
@@ -97,20 +102,6 @@ class _IndicatorState extends State<Indicator> {
     setState(() {});
   }
 
-  @override
-  void initState() {
-    widget.controller?.addListener(_onController);
-    super.initState();
-  }
-
-  @override
-  void didUpdateWidget(Indicator oldWidget) {
-    if (widget.controller != oldWidget.controller) {
-      oldWidget.controller.removeListener(_onController);
-      widget.controller.addListener(_onController);
-    }
-    super.didUpdateWidget(oldWidget);
-  }
 
   @override
   void dispose() {
