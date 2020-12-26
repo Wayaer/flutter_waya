@@ -189,7 +189,6 @@ abstract class _CarouselTimerMixin extends State<Carousel> {
 
   @override
   void dispose() {
-    _controller?.removeListener(_onController);
     _stopAutoPlay();
     super.dispose();
   }
@@ -508,7 +507,6 @@ abstract class _LayoutState<T extends _SubCarousel> extends State<T>
 
   @override
   void dispose() {
-    widget.controller.removeListener(_onController);
     _animationController?.dispose();
     super.dispose();
   }

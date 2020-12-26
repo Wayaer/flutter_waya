@@ -10,7 +10,7 @@ class _CarouselPageState extends State<CarouselPage> {
   CarouselController controller = CarouselController();
   TransformerController transformerController;
 
-  List<Color> list = [
+  List<Color> list = <Color>[
     Colors.tealAccent,
     Colors.blueAccent,
     Colors.green,
@@ -20,8 +20,7 @@ class _CarouselPageState extends State<CarouselPage> {
   @override
   void initState() {
     super.initState();
-    transformerController =
-        TransformerController(initialPage: 1, itemCount: list.length);
+    transformerController = TransformerController(initialPage: 0, loop: false);
   }
 
   @override
@@ -37,33 +36,24 @@ class _CarouselPageState extends State<CarouselPage> {
           width: double.infinity,
           children: <Widget>[
             TransformerPageView(
-              index: 1,
-              loop: false,
-              pageController: transformerController,
-              // transformer: PageTransformerBuilder(
-              //     builder: (Widget child, TransformInfo info) {
-              //   return ParallaxColor(
-              //     info: info,
-              //     colors: list,
-              //     child: Container(width: 100, height: 100),
-              //   );
-              // }),
+              index: 0,
+              controller: controller,
+              // pageController: transformerController,
               itemCount: list.length,
               viewportFraction: 0.8,
-              transformer: ScaleAndFadeTransformer(),
+              transformer: ZoomInPageTransformer(),
               itemBuilder: (BuildContext context, int index) => Container(
                   alignment: Alignment.center,
                   color: list[index],
                   height: 100,
                   width: 100),
             ),
-            Align(
-              child: Indicator(
-                count: list.length,
-                layout: IndicatorType.warm,
-                controller: transformerController,
-              ),
-            ),
+            // Align(
+            //   child: Indicator(
+            //       count: list.length,
+            //       layout: IndicatorType.warm,
+            //       controller: transformerController),
+            // ),
           ],
         ),
         Container(
@@ -80,7 +70,7 @@ class _CarouselPageState extends State<CarouselPage> {
                 CarouselPagination(
                     alignment: Alignment.center, builder: FractionPagination()),
               ],
-              autoPlay: true,
+              autoPlay: false,
               controller: controller,
               itemWidth: 200,
               itemHeight: double.infinity,
@@ -96,7 +86,9 @@ class _CarouselPageState extends State<CarouselPage> {
 
   @override
   void dispose() {
+    log(controller == null);
+    controller?.dispose();
+    transformerController?.dispose();
     super.dispose();
-    controller.dispose();
   }
 }

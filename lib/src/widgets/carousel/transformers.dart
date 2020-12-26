@@ -62,15 +62,15 @@ abstract class PageTransformer {
   Widget transform(Widget child, TransformInfo info);
 }
 
-class PageTransformerBuilder extends PageTransformer {
-  PageTransformerBuilder({bool reverse = false, @required this.builder})
-      : assert(builder != null),
-        super(reverse: reverse);
-  final PageTransformerBuilderCallback builder;
-
-  @override
-  Widget transform(Widget child, TransformInfo info) => builder(child, info);
-}
+// class PageTransformerBuilder extends PageTransformer {
+//   PageTransformerBuilder({bool reverse = false, @required this.builder})
+//       : assert(builder != null),
+//         super(reverse: reverse);
+//   final PageTransformerBuilderCallback builder;
+//
+//   @override
+//   Widget transform(Widget child, TransformInfo info) => builder(child, info);
+// }
 
 class AccordionTransformer extends PageTransformer {
   @override

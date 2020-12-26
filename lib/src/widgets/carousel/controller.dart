@@ -5,13 +5,13 @@ import 'package:flutter_waya/flutter_waya.dart';
 
 enum CarouselEvent { move, next, previous, start, stop }
 
-class CarouselController extends PageController {
+class CarouselController extends ChangeNotifier {
   Completer<dynamic> _completer;
 
   int index;
   bool animation;
   CarouselEvent event;
-  CarouselPluginConfig config;
+
   bool autoPlay;
 
   ///  开始自动播放
@@ -26,16 +26,6 @@ class CarouselController extends PageController {
     event = CarouselEvent.stop;
     autoPlay = false;
     notifyListeners();
-  }
-
-  ///  移动到指定下标
-  Future<void> move(int index, {bool animation = true}) {
-    this.animation = animation ?? true;
-    this.index = index;
-    event = CarouselEvent.move;
-    _completer = Completer<dynamic>();
-    notifyListeners();
-    return _completer.future;
   }
 
   ///  下一页
@@ -63,18 +53,18 @@ class CarouselController extends PageController {
 
 class TransformerController extends PageController {
   TransformerController({
-    int initialPage,
-    bool keepPage = true,
+    int initialPage = 0,
+    bool keepPage,
     double viewportFraction = 1.0,
-    this.loop = true,
-    @required this.itemCount,
+    this.loop = false,
+    this.itemCount,
     bool reverse,
   })  : reverse = reverse ?? false,
         super(
             initialPage: _getRealIndexFromRenderIndex(
-                initialPage ?? 0, loop, itemCount, reverse ?? false),
-            keepPage: keepPage,
-            viewportFraction: viewportFraction);
+                initialPage ?? 1, loop, itemCount, reverse ?? false),
+            keepPage: keepPage ?? true,
+            viewportFraction: viewportFraction ?? 1.0);
 
   final bool loop;
   final int itemCount;
@@ -135,9 +125,7 @@ class TransformerController extends PageController {
   static int _getRealIndexFromRenderIndex(
       num index, bool loop, int itemCount, bool reverse) {
     int result = (reverse ? (itemCount - index - 1) : index) as int;
-    if (loop) {
-      result += kMiddleValue;
-    }
+    if (loop) result += kMiddleValue;
     return result;
   }
 }
