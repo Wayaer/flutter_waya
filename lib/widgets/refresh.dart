@@ -98,8 +98,8 @@ class _RefreshedState extends State<Refreshed> {
   @override
   Widget build(BuildContext context) => SmartRefresher(
       controller: controller,
-      enablePullDown: widget.enablePullDown,
-      enablePullUp: widget.enablePullUp,
+      enablePullDown: widget.enablePullDown ?? false,
+      enablePullUp: widget.enablePullUp ?? false,
       header: widget.header ??
           BezierCircleHeader(bezierColor: getColors(transparent)),
       footer: widget.footer ?? customFooter,

@@ -30,7 +30,6 @@ class Carousel extends StatefulWidget {
     this.curve = Curves.ease,
     this.scrollDirection = Axis.horizontal,
     this.pagination,
-    this.physics,
     this.controller,
     this.itemHeight,
     this.itemWidth,
@@ -93,8 +92,6 @@ class Carousel extends StatefulWidget {
 
   ///  控制器
   final CarouselController controller;
-
-  final ScrollPhysics physics;
 
   ///  Build in layouts
   final CarouselLayout layout;
