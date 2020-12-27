@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:flutter_waya/src/widgets/carousel/controller.dart';
+import 'package:flutter_waya/widgets/carousel/controller.dart';
 
 typedef CarouselOnTap = void Function(int index);
 

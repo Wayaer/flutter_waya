@@ -53,6 +53,7 @@ class Indicator extends StatefulWidget {
 
 class _IndicatorState extends State<Indicator> {
   int index = 0;
+
   @override
   void initState() {
     widget.controller?.addListener(_onController);
@@ -101,7 +102,6 @@ class _IndicatorState extends State<Indicator> {
     index = page.floor();
     setState(() {});
   }
-
 
   @override
   void dispose() {

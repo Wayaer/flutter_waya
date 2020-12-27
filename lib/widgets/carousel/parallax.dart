@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:flutter_waya/src/widgets/carousel/transformer.dart';
+import 'package:flutter_waya/widgets/carousel/transformer.dart';
 
 class _ColorPainter extends CustomPainter {
   _ColorPainter(this.info, this.colors);

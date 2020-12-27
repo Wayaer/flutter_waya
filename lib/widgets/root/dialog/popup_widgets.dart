@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_waya/constant/way.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:flutter_waya/src/constant/way.dart';
 
 typedef ValueCallback<int> = void Function(int titleIndex, int valueIndex);
 

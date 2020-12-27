@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/src/widgets/carousel/transformer_page.dart';
+import 'package:flutter_waya/widgets/carousel/transformer_page.dart';
 import 'package:vector_math/vector_math_64.dart';
 
 typedef PageTransformerBuilderCallback = Widget Function(
@@ -190,6 +190,7 @@ class ScaleAndFadeTransformer extends PageTransformer {
         opacity: opacity, child: Transform.scale(scale: scale, child: child));
   }
 }
+
 ///
 /// abstract class TransformBuilder<T> {
 ///   TransformBuilder({this.values});

@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:flutter_waya/src/widgets/carousel/controller.dart';
-import 'package:flutter_waya/src/widgets/carousel/transformer.dart';
+import 'package:flutter_waya/widgets/carousel/controller.dart';
+import 'package:flutter_waya/widgets/carousel/transformer.dart';
 
 ///  默认自动播放转换持续时间（毫秒）
 const int kDefaultTransactionDuration = 300;

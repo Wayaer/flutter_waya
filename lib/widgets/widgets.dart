@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_waya/constant/way.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:flutter_waya/src/constant/way.dart';
 
 class NoScrollBehavior extends ScrollBehavior {
   @override

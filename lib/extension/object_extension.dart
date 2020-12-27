@@ -3,7 +3,7 @@ import 'dart:typed_data';
 
 import 'package:crypto/crypto.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_waya/src/constant/enums.dart';
+import 'package:flutter_waya/constant/enums.dart';
 
 /// num 扩展
 extension ExtensionNum on num {
