@@ -137,6 +137,12 @@ class Universal extends StatelessWidget {
     this.footer,
     this.size,
     this.builder,
+    this.onSecondaryTap,
+    this.onSecondaryLongPressMoveUpdate,
+    this.onSecondaryLongPressUp,
+    this.onSecondaryLongPress,
+    this.onSecondaryLongPressEnd,
+    this.onSecondaryLongPressStart,
   })  : isScroll = isScroll ?? false,
         addCard = addCard ?? false,
         semanticContainer = semanticContainer ?? true,
@@ -402,6 +408,12 @@ class Universal extends StatelessWidget {
   final GestureForcePressPeakCallback onForcePressPeak;
   final GestureForcePressUpdateCallback onForcePressUpdate;
   final GestureForcePressEndCallback onForcePressEnd;
+  final GestureTapCallback onSecondaryTap;
+  final GestureLongPressMoveUpdateCallback onSecondaryLongPressMoveUpdate;
+  final GestureLongPressCallback onSecondaryLongPressUp;
+  final GestureLongPressCallback onSecondaryLongPress;
+  final GestureLongPressEndCallback onSecondaryLongPressEnd;
+  final GestureLongPressStartCallback onSecondaryLongPressStart;
 
   ///  HitTestBehavior.opaque 自己处理事件
   ///  HitTestBehavior.deferToChild child处理事件
@@ -654,6 +666,12 @@ class Universal extends StatelessWidget {
       onSecondaryTapUp: onSecondaryTapUp,
       onSecondaryTapCancel: onSecondaryTapCancel,
       onDoubleTap: onDoubleTap,
+      onSecondaryTap: onSecondaryTap,
+      onSecondaryLongPressMoveUpdate: onSecondaryLongPressMoveUpdate,
+      onSecondaryLongPressUp: onSecondaryLongPressUp,
+      onSecondaryLongPress: onSecondaryLongPress,
+      onSecondaryLongPressEnd: onSecondaryLongPressEnd,
+      onSecondaryLongPressStart: onSecondaryLongPressStart,
       onLongPress: onLongPress,
       onLongPressStart: onLongPressStart,
       onLongPressMoveUpdate: onLongPressMoveUpdate,

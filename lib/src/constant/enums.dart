@@ -25,33 +25,40 @@ enum IndicatorType { none, slide, warm, color, scale, drop }
 
 enum CarouselLayout { stack, tinder }
 
-enum DateType {
-  ///  2020-1-1 00:00:00
+enum DateTimeDist {
+  ///  2020-01-01 00:00:00
   yearSecond,
 
-  ///  2020-1-1 00:00
+  ///  2020-01-01 00:00
   yearMinute,
 
-  ///  2020-1-1 00
-  ///  yearHour,
-  ///   ///  2020-1-1
+  ///  2020-01-01 00
+  yearHour,
+
+  ///  2020-01-01
   yearDay,
 
-  ///  1-1 00:00:00
+  ///  01-01 00:00:00
   monthSecond,
 
-  ///  1-1 00:00
+  ///  01-01 00:00
   monthMinute,
 
-  ///  1-1 00
-  ///  monthHour,
+  ///  01-01 00
+  monthHour,
+
+  ///  01-01
   monthDay,
 
-  ///  1-1
-  ///  daySecond, ///  1 00:00:00
-  ///  dayMinute, ///  1 00:00
-  ///  dayHour, ///  1 00
-  ///
+  ///  01 00:00:00
+  daySecond,
+
+  ///  01 00:00
+  dayMinute,
+
+  ///  01 00
+  dayHour,
+
   ///  00:00:00
   hourSecond,
 

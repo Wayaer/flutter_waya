@@ -18,27 +18,29 @@ void main() {
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final DateTime now = DateTime.now();
+    DateTimeDist.values.map((DateTimeDist e) {
+      log(now.format(e));
+    }).toList();
+
     return OverlayScaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(title: const Text('Waya Demo'), centerTitle: true),
       body: Universal(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          customElasticButton('Toast', onTap: () => push(widget: ToastPage())),
-          customElasticButton('Picker',
-              onTap: () => push(widget: PickerPage())),
-          customElasticButton('Popup', onTap: () => push(widget: PopupPage())),
-          customElasticButton('PinBox',
-              onTap: () => push(widget: PinBoxPage())),
-          customElasticButton('Image', onTap: () => push(widget: ImagePage())),
-          customElasticButton('Carousel',
-              onTap: () => push(widget: CarouselPage())),
+          customElasticButton('Toast', onTap: () => push(ToastPage())),
+          customElasticButton('Picker', onTap: () => push(PickerPage())),
+          customElasticButton('Popup', onTap: () => push(PopupPage())),
+          customElasticButton('PinBox', onTap: () => push(PinBoxPage())),
+          customElasticButton('Image', onTap: () => push(ImagePage())),
+          customElasticButton('Carousel', onTap: () => push(CarouselPage())),
           customElasticButton('ElasticButton',
               onTap: () => showToast('ElasticButton')),
           customElasticButton('ScrollViewPage',
-              onTap: () => push(widget: ScrollViewPage())),
+              onTap: () => push(ScrollViewPage())),
           customElasticButton('DropdownMenu',
-              onTap: () => push(widget: DropdownMenuPage())),
+              onTap: () => push(DropdownMenuPage())),
           const SizedBox(height: 10),
           const DottedLine(),
         ],

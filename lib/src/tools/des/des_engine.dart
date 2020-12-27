@@ -1,4 +1,6 @@
-part of 'des.dart';
+import 'dart:math';
+
+import 'package:flutter_waya/flutter_waya.dart';
 
 abstract class Engine {
   void init(bool forEncryption, List<int> key);
@@ -90,8 +92,9 @@ class DESEngine extends BaseEngine {
     final List<int> keyBits = List<int>(56);
     for (int i = 0; i < 56; i++) {
       final int keyBitPos = pc1[i] - 1;
-      keyBits[i] = (_rightShift32(this.key[_rightShift32(keyBitPos, 5)],
-              (31 - keyBitPos % 32).toInt())) &
+      keyBits[i] = (this
+              .key[keyBitPos.rightShift32(5)]
+              .rightShift32((31 - keyBitPos % 32).toInt())) &
           1;
     }
 
@@ -109,24 +112,23 @@ class DESEngine extends BaseEngine {
       ///  Select 48 bits according to pc2
       for (int i = 0; i < 24; i++) {
         ///  Select from the left 28 key bits
-        subKey[(i ~/ 6) | 0] |= _leftShift32(
-            keyBits[((pc2[i] - 1) + bitShift) % 28], (31 - i % 6).toInt());
+        subKey[(i ~/ 6) | 0] |= keyBits[((pc2[i] - 1) + bitShift) % 28]
+            .leftShift32((31 - i % 6).toInt());
 
         ///  Select from the right 28 key bits
-        subKey[4 + ((i ~/ 6) | 0)] |= _leftShift32(
-            keyBits[28 + (((pc2[i + 24] - 1) + bitShift) % 28)],
-            (31 - i % 6).toInt());
+        subKey[4 + ((i ~/ 6) | 0)] |=
+            keyBits[28 + (((pc2[i + 24] - 1) + bitShift) % 28)]
+                .leftShift32((31 - i % 6).toInt());
       }
 
       ///  Since each subKey is applied to an expanded 32-bit input,
       ///  the subKey can be broken into 8 values scaled to 32-bits,
       ///  which allows the key to be used without expansion
-      subKey[0] = (subKey[0] << 1).toSigned(32) | _rightShift32(subKey[0], 31);
+      subKey[0] = (subKey[0] << 1).toSigned(32) | subKey[0].rightShift32(31);
       for (int i = 1; i < 7; i++) {
-        subKey[i] = _rightShift32(subKey[i], ((i - 1) * 4 + 3).toInt());
+        subKey[i] = subKey[i].rightShift32(((i - 1) * 4 + 3).toInt());
       }
-      subKey[7] =
-          (subKey[7] << 5).toSigned(32) | (_rightShift32(subKey[7], 27));
+      subKey[7] = (subKey[7] << 5).toSigned(32) | (subKey[7].rightShift32(27));
     }
   }
 
@@ -198,16 +200,15 @@ class DESEngine extends BaseEngine {
   ///  Swap bits across the left and right words
   void exchangeLR(int offset, int mask) {
     final int t =
-        (((_rightShift32(_lBlock, offset)).toSigned(32) ^ _rBlock) & mask)
+        (((_lBlock.rightShift32(offset)).toSigned(32) ^ _rBlock) & mask)
             .toSigned(32);
     (_rBlock ^= t).toSigned(32);
     _lBlock ^= (t << offset).toSigned(32);
   }
 
   void exchangeRL(int offset, int mask) {
-    final int t =
-        (((_rightShift32(_rBlock, offset)).toSigned(32) ^ _lBlock) & mask)
-            .toSigned(32);
+    final int t = ((_rBlock.rightShift32(offset).toSigned(32) ^ _lBlock) & mask)
+        .toSigned(32);
     (_lBlock ^= t).toSigned(32);
     _rBlock ^= (t << offset).toSigned(32);
   }
@@ -240,10 +241,6 @@ class DES3Engine extends BaseEngine {
   }
 }
 
-int _rightShift32(int num, int n) => ((num & 0xFFFFFFFF) >> n).toSigned(32);
-
-int _leftShift32(int num, int n) => ((num & 0xFFFFFFFF) << n).toSigned(32);
-
 void _pkc7Pad(List<int> data, int blockSize) {
   final int blockSizeBytes = blockSize * 4;
 
@@ -268,7 +265,7 @@ void _pkc7Pad(List<int> data, int blockSize) {
 
 void _pkc7UnPad(List<int> data, int blockSize) {
   final int sigBytes = data.length;
-  final int nPaddingBytes = data[_rightShift32(sigBytes - 1, 2)] & 0xff;
+  final int nPaddingBytes = data[(sigBytes - 1).rightShift32(2)] & 0xff;
   data.length -= nPaddingBytes;
 }
 
@@ -320,101 +317,7 @@ void _clamp(List<int> data) {
   final int sigBytes = data.length;
 
   ///  Clamp
-  words[_rightShift32(sigBytes, 2)] &=
+  words[sigBytes.rightShift32(2)] &=
       (0xffffffff << (32 - (sigBytes % 4) * 8)).toSigned(32);
   words.length = (sigBytes / 4).ceil();
-}
-
-///  Latin1.parse
-List<int> _utf8ToWords(String inp) {
-  final List<int> words = List<int>.generate(inp.length, (_) => 0);
-  for (int i = 0; i < inp.length; i++) {
-    words[i >> 2] |= (inp.codeUnitAt(i) & 0xff).toSigned(32) <<
-        (24 - (i % 4) * 8).toSigned(32);
-  }
-  return words;
-}
-
-///  Latin1.stringify
-String _wordsToUtf8(List<int> words) {
-  final int sigBytes = words.length;
-  final List<int> chars = <int>[];
-  for (int i = 0; i < sigBytes; i++) {
-    if (words[i >> 2] == null) words[i >> 2] = 0;
-    final int bite =
-        ((words[i >> 2]).toSigned(32) >> (24 - (i % 4) * 8)) & 0xff;
-    chars.add(bite);
-  }
-  return String.fromCharCodes(chars);
-}
-
-List<int> _parseBase64(String base64Str) {
-  const String map =
-      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
-  List<int> reverseMap;
-
-  ///  Shortcuts
-  int base64StrLength = base64Str.length;
-
-  if (reverseMap == null) {
-    reverseMap = List<int>(123);
-    for (int j = 0; j < map.length; j++) reverseMap[map.codeUnits[j]] = j;
-  }
-
-  ///  Ignore padding
-  final int paddingChar = map.codeUnits[64];
-  if (paddingChar != null) {
-    final int paddingIndex = base64Str.codeUnits.indexOf(paddingChar);
-    if (paddingIndex != -1) base64StrLength = paddingIndex;
-  }
-
-  List<int> parseLoop(
-      String base64Str, int base64StrLength, List<int> reverseMap) {
-    final List<int> words = <int>[];
-    int nBytes = 0;
-    for (int i = 0; i < base64StrLength; i++) {
-      if (i % 4 != 0) {
-        final int bits1 = reverseMap[base64Str.codeUnits[i - 1]] <<
-            ((i % 4) * 2).toSigned(32);
-        final int bits2 = _rightShift32(
-                reverseMap[base64Str.codeUnits[i]], (6 - (i % 4) * 2).toInt())
-            .toSigned(32);
-        final int idx = _rightShift32(nBytes, 2);
-        if (words.length <= idx) words.length = idx + 1;
-
-        for (int i = 0; i < words.length; i++)
-          if (words[i] == null) words[i] = 0;
-
-        words[idx] |= ((bits1 | bits2) << (24 - (nBytes % 4) * 8)).toSigned(32);
-        nBytes++;
-      }
-    }
-    return List<int>.generate(
-        nBytes, (int i) => i < words.length ? words[i] : 0);
-  }
-
-  return parseLoop(base64Str, base64StrLength, reverseMap);
-}
-
-Uint8List uInt8ListFrom32BitList(List<int> bit32) {
-  final Uint8List result = Uint8List(bit32.length * 4);
-  for (int i = 0; i < bit32.length; i++) {
-    for (int j = 0; j < 4; j++) {
-      result[i * 4 + j] = bit32[i] /*.toSigned(32)*/ >> (j * 8);
-    }
-  }
-  return result;
-}
-
-List<int> bit32ListFromUInt8List(Uint8List bytes) {
-  final int additionalLength = bytes.length % 4 > 0 ? 4 : 0;
-  final List<int> result =
-      List<int>.generate(bytes.length ~/ 4 + additionalLength, (_) => 0);
-  for (int i = 0; i < bytes.length; i++) {
-    final int resultIdx = i ~/ 4;
-    final int bitShiftAmount = (3 - i % 4).toInt();
-    result[resultIdx] |= bytes[i] << bitShiftAmount;
-  }
-  for (int i = 0; i < result.length; i++) result[i] = result[i] << 24;
-  return result;
 }

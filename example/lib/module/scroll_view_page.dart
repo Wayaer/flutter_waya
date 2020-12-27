@@ -12,12 +12,10 @@ class ScrollViewPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           customElasticButton('NestedScrollView',
-              onTap: () => push(widget: const ScrollViewAutoPage())),
+              onTap: () => push(const ScrollViewAutoPage())),
           customElasticButton('CustomScrollViewAutoPage',
-              onTap: () => push(
-                      widget: const ScrollViewAutoPage(
-                    isNestedScrollView: false,
-                  ))),
+              onTap: () =>
+                  push(const ScrollViewAutoPage(isNestedScrollView: false))),
         ],
       ),
     );

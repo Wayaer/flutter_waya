@@ -45,6 +45,7 @@ class RichSpan extends StatelessWidget {
       styles.addAll(List<TextStyle>.generate(
           text.length - styles.length, (int index) => styles.last));
     }
+
     return RichText(
         textDirection: textDirection,
         softWrap: softWrap,

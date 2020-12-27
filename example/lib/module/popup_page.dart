@@ -12,7 +12,7 @@ class PopupPage extends StatelessWidget {
       body: Universal(children: <Widget>[
         customElasticButton('showBottomPopup', onTap: () => showBottom()),
         customElasticButton('showDialogSureCancel',
-            onTap: () => push(widget: ContentPage())),
+            onTap: () => push(ContentPage())),
         customElasticButton('showBottomPagePopup',
             onTap: () => showBottomPage()),
       ]),

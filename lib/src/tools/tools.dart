@@ -1,15 +1,12 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:ui';
 import 'dart:ui' as ui show Image;
 
-import 'package:crypto/crypto.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:flutter_waya/src/constant/enums.dart';
 
 bool get isDebug => !kReleaseMode;
 const int _limitLength = 800;
@@ -46,15 +43,6 @@ void _segmentationLog(String msg) {
 class Ts {
   static Future<void> exitApp() async => await SystemNavigator.pop();
 
-  ///  手机号验证
-  static bool isChinaPhoneLegal(String str) =>
-      RegExp(r'^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$')
-          .hasMatch(str);
-
-  ///  邮箱验证
-  static bool isEmail(String str) =>
-      RegExp(r'^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$').hasMatch(str);
-
   ///  截屏
   static Future<ByteData> screenshots(GlobalKey globalKey,
       {ImageByteFormat format}) async {
@@ -67,56 +55,6 @@ class Ts {
 
     ///  Uint8List uint8list = byteData.buffer.asUint8List();
     return byteData;
-  }
-
-  ///  复制到粘贴板
-  static void copy(String text) => Clipboard.setData(ClipboardData(text: text));
-
-  ///  时间戳转换
-  static String stampToDate(int s, {DateType dateType, bool micro}) {
-    micro ??= false;
-
-    ///  微秒:毫秒
-    return micro
-        ? formatDate(DateTime.fromMicrosecondsSinceEpoch(s), dateType)
-        : formatDate(DateTime.fromMillisecondsSinceEpoch(s), dateType);
-  }
-
-  ///  格式化时间
-  static String formatDate(DateTime date, [DateType dateType]) {
-    dateType ??= DateType.yearSecond;
-    final String year = date.year.toString();
-    final String month = date.month.toString().padLeft(2, '0');
-    final String day = date.day.toString().padLeft(2, '0');
-    final String hour = date.hour.toString().padLeft(2, '0');
-    final String minute = date.minute.toString().padLeft(2, '0');
-    final String second = date.second.toString().padLeft(2, '0');
-    switch (dateType) {
-      case DateType.yearSecond:
-        return '$year-$month-$day $hour:$minute:$second';
-      case DateType.yearMinute:
-        return '$year-$month-$day $hour:$minute';
-        break;
-      case DateType.yearDay:
-        return '$year-$month-$day';
-        break;
-      case DateType.monthSecond:
-        return '$month-$day $hour:$minute:$second';
-        break;
-      case DateType.monthMinute:
-        return '$month-$day $hour:$minute';
-        break;
-      case DateType.monthDay:
-        return '$month-$day';
-        break;
-      case DateType.hourSecond:
-        return '$hour:$minute:$second';
-        break;
-      case DateType.hourMinute:
-        return '$hour:$minute';
-        break;
-    }
-    return date.toString();
   }
 
   ///  移出焦点 focusNode==null  移出焦点 （可用于关闭键盘） focusNode！!= null 获取焦点
@@ -143,17 +81,6 @@ class Ts {
   ///  需要手动释放timer
   static Timer timerPeriodic(Duration duration, [void callback(Timer timer)]) =>
       Timer.periodic(duration, (Timer time) => callback(time));
-
-  ///  md5 加密
-  static String setMd5(String data) =>
-      md5.convert(utf8.encode(data)).toString();
-
-  ///  Base64加密
-  static String encodeBase64(String data) => base64Encode(utf8.encode(data));
-
-  ///  Base64解密
-  static String decodeBase64(String data) =>
-      String.fromCharCodes(base64Decode(data));
 
   static void setStatusBarLight(bool isLight) {
     final Color color = getColors(transparent);

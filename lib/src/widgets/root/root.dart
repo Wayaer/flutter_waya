@@ -469,9 +469,8 @@ class _OverlayScaffoldState extends State<OverlayScaffold> {
 ///  ************ 以下为 路由跳转 *****************  ///
 ///
 ///  打开新页面
-Future<dynamic> push(
+Future<dynamic> push(Widget widget,
     {WidgetBuilder builder,
-    Widget widget,
     String title,
     RouteSettings settings,
     bool maintainState,
@@ -482,15 +481,13 @@ Future<dynamic> push(
       maintainState: maintainState,
       fullscreenDialog: fullscreenDialog,
       settings: settings,
-      builder: builder,
       pushMode: widgetMode,
       widget: widget));
 }
 
 /// 打开新页面替换当前页面
-Future<dynamic> pushReplacement(
+Future<dynamic> pushReplacement(Widget widget,
     {WidgetBuilder builder,
-    Widget widget,
     String title,
     RouteSettings settings,
     bool maintainState,
@@ -501,15 +498,13 @@ Future<dynamic> pushReplacement(
       maintainState: maintainState,
       fullscreenDialog: fullscreenDialog,
       settings: settings,
-      builder: builder,
       pushMode: widgetMode,
       widget: widget));
 }
 
 /// 打开新页面 并移出堆栈所有页面
-Future<dynamic> pushAndRemoveUntil(
+Future<dynamic> pushAndRemoveUntil(Widget widget,
     {WidgetBuilder builder,
-    Widget widget,
     String title,
     RouteSettings settings,
     bool maintainState,

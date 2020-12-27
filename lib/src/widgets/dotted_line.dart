@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 
 /// 虚线
@@ -56,25 +57,17 @@ class _DottedPainter extends CustomPainter {
     final double x = size.width;
     final double y = size.height;
     final Path _topPath = getDashedPath(
-      a: const math.Point<double>(0, 0),
-      b: math.Point<double>(x, 0),
-      gap: gap,
-    );
+        a: const math.Point<double>(0, 0),
+        b: math.Point<double>(x, 0),
+        gap: gap);
     final Path _rightPath = getDashedPath(
-      a: math.Point<double>(x, 0),
-      b: math.Point<double>(x, y),
-      gap: gap,
-    );
+        a: math.Point<double>(x, 0), b: math.Point<double>(x, y), gap: gap);
     final Path _bottomPath = getDashedPath(
-      a: math.Point<double>(0, y),
-      b: math.Point<double>(x, y),
-      gap: gap,
-    );
+        a: math.Point<double>(0, y), b: math.Point<double>(x, y), gap: gap);
     final Path _leftPath = getDashedPath(
-      a: const math.Point<double>(0, 0),
-      b: math.Point<double>(0.001, y),
-      gap: gap,
-    );
+        a: const math.Point<double>(0, 0),
+        b: math.Point<double>(0.001, y),
+        gap: gap);
     canvas.drawPath(_topPath, dashedPaint);
     canvas.drawPath(_rightPath, dashedPaint);
     canvas.drawPath(_bottomPath, dashedPaint);
