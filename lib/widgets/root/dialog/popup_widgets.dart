@@ -207,6 +207,7 @@ class _DropdownMenuState extends State<DropdownMenu> {
             ));
     final Widget popup = PopupBase(
       top: local.dy + titleHeight,
+      alignment: Alignment.center,
       onTap: () {
         changeState(index);
         pop();
