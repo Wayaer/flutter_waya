@@ -187,7 +187,7 @@ class _DropdownMenuState extends State<DropdownMenu> {
     final Offset local = title.localToGlobal(Offset.zero);
     final double titleHeight = context.size.height;
 
-    final ListBuilder listBuilder = ListBuilder(
+    final SimpleList listBuilder = SimpleList.builder(
         itemCount: value[index].length,
         itemBuilder: (_, int i) => SimpleButton(
               text: value[index][i],
