@@ -33,7 +33,8 @@ class _CarouselPageState extends State<CarouselPage> {
         Container(
           height: 200,
           width: double.infinity,
-          child: Carousel(
+          child: Carousel.builder(
+              autoPlay: true,
               pagination: const <CarouselPagination>[
                 CarouselPagination(
                     alignment: Alignment.bottomCenter,
@@ -44,7 +45,6 @@ class _CarouselPageState extends State<CarouselPage> {
                 CarouselPagination(
                     alignment: Alignment.center, builder: FractionPagination()),
               ],
-              autoPlay: false,
               controller: controller,
               itemWidth: 340,
               layout: CarouselLayout.tinder,
@@ -60,7 +60,8 @@ class _CarouselPageState extends State<CarouselPage> {
             // Indicator(count: list.length, controller: transformerController),
             Container(
               height: 400,
-              child: TransformerPageView(
+              child: Carousel.pageView(
+                  autoPlay: true,
                   controller: controller,
                   pageController: transformerController,
                   itemCount: images.length,
@@ -101,7 +102,8 @@ class _CarouselPageState extends State<CarouselPage> {
             const Divider(),
             Container(
               height: 100,
-              child: TransformerPageView(
+              child: Carousel.pageView(
+                  autoPlay: true,
                   controller: controller,
                   loop: false,
                   itemCount: list.length,
@@ -123,7 +125,8 @@ class _CarouselPageState extends State<CarouselPage> {
             const Divider(),
             Container(
               height: 100,
-              child: TransformerPageView(
+              child: Carousel.pageView(
+                  autoPlay: true,
                   controller: controller,
                   itemCount: list.length,
                   viewportFraction: 0.8,
@@ -137,7 +140,8 @@ class _CarouselPageState extends State<CarouselPage> {
             const Divider(),
             Container(
                 height: 100,
-                child: TransformerPageView(
+                child: Carousel.pageView(
+                    autoPlay: true,
                     controller: controller,
                     itemCount: list.length,
                     viewportFraction: 0.8,
@@ -150,7 +154,8 @@ class _CarouselPageState extends State<CarouselPage> {
             const Divider(),
             Container(
               height: 100,
-              child: TransformerPageView(
+              child: Carousel.pageView(
+                  autoPlay: true,
                   controller: controller,
                   itemCount: list.length,
                   viewportFraction: 0.8,
@@ -164,7 +169,8 @@ class _CarouselPageState extends State<CarouselPage> {
             const Divider(),
             Container(
               height: 100,
-              child: TransformerPageView(
+              child: Carousel.pageView(
+                  autoPlay: true,
                   controller: controller,
                   itemCount: list.length,
                   viewportFraction: 0.8,
@@ -178,7 +184,8 @@ class _CarouselPageState extends State<CarouselPage> {
             const Divider(),
             Container(
               height: 100,
-              child: TransformerPageView(
+              child: Carousel.pageView(
+                  autoPlay: true,
                   controller: controller,
                   itemCount: list.length,
                   viewportFraction: 0.8,

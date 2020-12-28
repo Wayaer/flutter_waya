@@ -1,7 +1,6 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/widgets/carousel/transformer_page.dart';
 import 'package:vector_math/vector_math_64.dart';
 
 typedef PageTransformerBuilderCallback = Widget Function(
@@ -20,10 +19,10 @@ class TransformInfo {
       this.viewportFraction,
       this.scrollDirection});
 
-  ///  The `width` of the `TransformerPageView`
+  ///  The `width` of the `CarouselPageView`
   final double width;
 
-  ///  The `height` of the `TransformerPageView`
+  ///  The `height` of the `CarouselPageView`
   final double height;
 
   ///  The `position` of the widget pass to [PageTransformer.transform]
@@ -50,10 +49,10 @@ class TransformInfo {
   ///  User drag is done.
   final bool done;
 
-  ///  Same as [TransformerPageView.viewportFraction]
+  ///  Same as [CarouselPageView.viewportFraction]
   final double viewportFraction;
 
-  ///  Copy from [TransformerPageView.scrollDirection]
+  ///  Copy from [CarouselPageView.scrollDirection]
   final Axis scrollDirection;
 }
 

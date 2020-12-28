@@ -22,7 +22,6 @@ export 'widgets/carousel/indicator.dart';
 export 'widgets/carousel/pagination.dart';
 export 'widgets/carousel/parallax.dart';
 export 'widgets/carousel/transformer.dart';
-export 'widgets/carousel/transformer_page.dart';
 export 'widgets/dotted_line.dart';
 export 'widgets/elastic_button.dart';
 export 'widgets/gesture_widgets.dart';

@@ -9,18 +9,15 @@ class CarouselPluginConfig {
     int itemCount,
     Axis scrollDirection,
     bool loop,
-    CarouselLayout layout,
   })  : itemCount = itemCount ?? 0,
         activeIndex = activeIndex ?? 0,
         loop = loop ?? true,
-        scrollDirection = scrollDirection ?? Axis.horizontal,
-        layout = layout ?? CarouselLayout.stack;
+        scrollDirection = scrollDirection ?? Axis.horizontal;
   final int activeIndex;
   final int itemCount;
   final Axis scrollDirection;
   final bool loop;
   final CarouselController controller;
-  final CarouselLayout layout;
 }
 
 abstract class CarouselPlugin {

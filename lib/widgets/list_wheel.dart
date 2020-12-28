@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-class ListWheel extends StatefulWidget {
+class ListWheel extends StatelessWidget {
   ListWheel({
     Key key,
     bool looping,
@@ -18,10 +18,10 @@ class ListWheel extends StatefulWidget {
     double squeeze,
     bool isCupertino,
     ScrollPhysics physics,
+    FixedExtentScrollController controller,
     this.itemBuilder,
     this.itemCount,
     this.childDelegateType,
-    this.controller,
     this.onChanged,
     this.onScrollEnd,
     this.children,
@@ -40,6 +40,8 @@ class ListWheel extends StatefulWidget {
         isCupertino = isCupertino ?? true,
         itemExtent = itemExtent ?? ConstConstant.pickerItemHeight,
         physics = physics ?? const FixedExtentScrollPhysics(),
+        controller = controller ??
+            FixedExtentScrollController(initialItem: initialIndex),
         super(key: key) {
     if (childDelegateType == ListWheelChildDelegateType.list ||
         childDelegateType == ListWheelChildDelegateType.looping) {
@@ -117,92 +119,77 @@ class ListWheel extends StatefulWidget {
   ///  [isCupertino]=true生效
   final Color backgroundColor;
 
-  @override
-  _ListWheelState createState() => _ListWheelState();
-}
-
-class _ListWheelState extends State<ListWheel> {
-  FixedExtentScrollController controller;
-
-  @override
-  void initState() {
-    super.initState();
-    controller = widget.controller ??
-        FixedExtentScrollController(initialItem: widget.initialIndex);
-  }
-
   ListWheelChildDelegate getDelegate(ListWheelChildDelegateType type) {
     if (type == ListWheelChildDelegateType.list)
-      return ListWheelChildListDelegate(children: widget.children);
+      return ListWheelChildListDelegate(children: children);
     if (type == ListWheelChildDelegateType.looping)
-      return ListWheelChildLoopingListDelegate(children: widget.children);
+      return ListWheelChildLoopingListDelegate(children: children);
     return ListWheelChildBuilderDelegate(
-        builder: widget.itemBuilder, childCount: widget.itemCount);
+        builder: itemBuilder, childCount: itemCount);
   }
 
   @override
   Widget build(BuildContext context) {
-    final ListWheelChildDelegateType childDelegateType =
-        widget?.childDelegateType ?? ListWheelChildDelegateType.builder;
+    final ListWheelChildDelegateType type =
+        childDelegateType ?? ListWheelChildDelegateType.builder;
     Widget wheel;
-
-    final Function(int index) onSelectedItemChanged = (int index) {
-      if (widget?.onChanged != null) widget.onChanged(index);
-    };
-    if (widget.isCupertino) {
-      wheel = childDelegateType == ListWheelChildDelegateType.builder
+    final Function(int index) onSelectedItemChanged =
+        (int index) => onChanged != null ? onChanged(index) : null;
+    if (isCupertino) {
+      wheel = type == ListWheelChildDelegateType.builder
           ? CupertinoPicker.builder(
-              childCount: widget.itemCount,
-              itemBuilder: widget.itemBuilder,
-              backgroundColor: widget.backgroundColor,
-              itemExtent: widget.itemExtent,
-              diameterRatio: widget.diameterRatio,
+              scrollController: controller,
+              childCount: itemCount,
+              itemBuilder: itemBuilder,
+              backgroundColor: backgroundColor,
+              itemExtent: itemExtent,
+              diameterRatio: diameterRatio,
               onSelectedItemChanged: onSelectedItemChanged,
-              offAxisFraction: widget.offAxisFraction,
-              useMagnifier: widget.useMagnifier,
-              squeeze: widget.squeeze,
-              magnification: widget.magnification)
+              offAxisFraction: offAxisFraction,
+              useMagnifier: useMagnifier,
+              squeeze: squeeze,
+              magnification: magnification)
           : CupertinoPicker(
-              children: widget.children,
-              backgroundColor: widget.backgroundColor,
-              looping: childDelegateType == ListWheelChildDelegateType.looping,
-              itemExtent: widget.itemExtent,
-              diameterRatio: widget.diameterRatio,
+              scrollController: controller,
+              children: children,
+              backgroundColor: backgroundColor,
+              looping: type == ListWheelChildDelegateType.looping,
+              itemExtent: itemExtent,
+              diameterRatio: diameterRatio,
               onSelectedItemChanged: onSelectedItemChanged,
-              offAxisFraction: widget.offAxisFraction,
-              useMagnifier: widget.useMagnifier,
-              squeeze: widget.squeeze,
-              magnification: widget.magnification);
+              offAxisFraction: offAxisFraction,
+              useMagnifier: useMagnifier,
+              squeeze: squeeze,
+              magnification: magnification);
     } else {
       wheel = ListWheelScrollView.useDelegate(
           controller: controller,
-          itemExtent: widget.itemExtent,
-          physics: widget.physics,
-          diameterRatio: widget.diameterRatio,
+          itemExtent: itemExtent,
+          physics: physics,
+          diameterRatio: diameterRatio,
           onSelectedItemChanged: onSelectedItemChanged,
-          offAxisFraction: widget.offAxisFraction,
-          perspective: widget.perspective,
-          useMagnifier: widget.useMagnifier,
-          squeeze: widget.squeeze,
-          magnification: widget.magnification,
-          childDelegate: getDelegate(childDelegateType));
+          offAxisFraction: offAxisFraction,
+          perspective: perspective,
+          useMagnifier: useMagnifier,
+          squeeze: squeeze,
+          magnification: magnification,
+          childDelegate: getDelegate(type));
     }
-    if (widget.onScrollEnd != null) {
+    if (onScrollEnd != null) {
       wheel = NotificationListener<ScrollNotification>(
           child: wheel,
-          onNotification: widget.onNotification ??
+          onNotification: onNotification ??
               (ScrollNotification notification) {
                 if (notification is ScrollStartNotification &&
-                    widget.onScrollStart != null)
-                  widget.onScrollStart(controller.selectedItem);
+                    onScrollStart != null)
+                  onScrollStart(controller.selectedItem);
 
                 if (notification is ScrollUpdateNotification &&
-                    widget.onScrollUpdate != null)
-                  widget.onScrollUpdate(controller.selectedItem);
+                    onScrollUpdate != null)
+                  onScrollUpdate(controller.selectedItem);
 
                 if (notification is ScrollEndNotification &&
-                    widget.onScrollEnd != null)
-                  widget.onScrollEnd(controller.selectedItem);
+                    onScrollEnd != null) onScrollEnd(controller.selectedItem);
                 return true;
               });
     }

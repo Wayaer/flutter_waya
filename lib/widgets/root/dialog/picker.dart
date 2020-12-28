@@ -51,6 +51,7 @@ class PickerTitle {
 class PickerWheel {
   PickerWheel(
       {this.itemHeight,
+      this.isCupertino,
       this.itemWidth,
       this.diameterRatio,
       this.offAxisFraction,
@@ -76,6 +77,7 @@ class PickerWheel {
 
   ///  放大倍率
   final double magnification;
+  final bool isCupertino;
 
   ///  是否启用放大镜
   final bool useMagnifier;
@@ -259,6 +261,7 @@ class _AreaPickerState extends State<AreaPicker> {
       ListWheel(
           controller: controller,
           initialIndex: initialIndex,
+          isCupertino: widget?.pickerWheel?.isCupertino,
           itemExtent: widget?.pickerWheel?.itemHeight,
           diameterRatio: widget?.pickerWheel?.diameterRatio,
           offAxisFraction: widget?.pickerWheel?.offAxisFraction,
@@ -327,6 +330,7 @@ class MultipleChoicePicker extends StatelessWidget {
       children.add(pickerTitle?.titleBottom);
     children.add(Expanded(
         child: ListWheel(
+            isCupertino: pickerWheel?.isCupertino,
             controller: controller,
             itemExtent: pickerWheel?.itemHeight,
             diameterRatio: pickerWheel?.diameterRatio,
@@ -683,6 +687,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
       FixedExtentScrollController controller,
       ValueChanged<int> onChanged}) {
     return ListWheel(
+        isCupertino: widget?.pickerWheel?.isCupertino,
         controller: controller,
         itemExtent: widget?.pickerWheel?.itemHeight,
         diameterRatio: widget?.pickerWheel?.diameterRatio,
