@@ -95,8 +95,8 @@ class LineVertical extends Container {
 }
 
 ///  暂无数据
-class NotData extends StatelessWidget {
-  const NotData({Key key, this.margin}) : super(key: key);
+class PlaceholderChild extends StatelessWidget {
+  const PlaceholderChild({Key key, this.margin}) : super(key: key);
 
   final EdgeInsetsGeometry margin;
 

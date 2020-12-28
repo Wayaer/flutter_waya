@@ -406,7 +406,7 @@ class InputField extends StatelessWidget {
               /// 显示在输入框内的提示语，一旦输入框获取焦点就字体缩小并上移到输入上方，作为提示使用
               labelStyle: labelStyle,
 
-              ///            hasFloatingPlaceholder: labelFloating,
+              ///  hasFloatingPlaceholder: labelFloating,
               floatingLabelBehavior: floatingLabelBehavior,
 
               /// 默认为true，表示labelText是否上浮，true上浮，false表示获取焦点后labelText消失

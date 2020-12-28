@@ -5,29 +5,33 @@ import 'package:flutter_waya/flutter_waya.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class Refreshed extends StatefulWidget {
-  const Refreshed(
-      {Key key,
-      this.child,
-      this.onTwoLevel,
-      this.enablePullDown,
-      this.onLoading,
-      this.enablePullUp,
-      this.onRefresh,
-      this.header,
-      this.footer,
-      this.controller,
-      this.onOffsetChange,
-      this.scrollDirection,
-      this.reverse,
-      this.scrollController,
-      this.primary,
-      this.physics,
-      this.cacheExtent,
-      this.semanticChildCount,
-      this.dragStartBehavior,
-      this.footerTextStyle,
-      this.enableTwoLevel})
-      : super(key: key);
+  Refreshed({
+    Key key,
+    this.child,
+    bool enablePullUp,
+    bool enableTwoLevel,
+    bool enablePullDown,
+    Widget header,
+    this.onLoading,
+    this.onRefresh,
+    this.footer,
+    this.controller,
+    this.onOffsetChange,
+    this.scrollDirection,
+    this.reverse,
+    this.scrollController,
+    this.primary,
+    this.physics,
+    this.cacheExtent,
+    this.semanticChildCount,
+    this.dragStartBehavior,
+    this.onTwoLevel,
+  })  : enablePullUp = enablePullUp ?? false,
+        enableTwoLevel = enableTwoLevel ?? false,
+        enablePullDown = enablePullDown ?? false,
+        header =
+            header ?? BezierCircleHeader(bezierColor: getColors(transparent)),
+        super(key: key);
 
   ///  可不传controller，
   ///  若想关闭刷新组件可以通过发送消息
@@ -40,7 +44,11 @@ class Refreshed extends StatefulWidget {
   final bool enablePullDown;
   final bool enablePullUp;
   final bool enableTwoLevel;
+
+  /// CustomHeader
   final Widget header;
+
+  /// CustomFooter
   final Widget footer;
 
   final OnOffsetChange onOffsetChange;
@@ -52,7 +60,6 @@ class Refreshed extends StatefulWidget {
   final double cacheExtent;
   final int semanticChildCount;
   final DragStartBehavior dragStartBehavior;
-  final TextStyle footerTextStyle;
 
   @override
   _RefreshedState createState() => _RefreshedState();
@@ -97,17 +104,16 @@ class _RefreshedState extends State<Refreshed> {
 
   @override
   Widget build(BuildContext context) => SmartRefresher(
-      controller: controller,
-      enablePullDown: widget.enablePullDown ?? false,
-      enablePullUp: widget.enablePullUp ?? false,
-      header: widget.header ??
-          BezierCircleHeader(bezierColor: getColors(transparent)),
-      footer: widget.footer ?? customFooter,
-      onRefresh: widget.onRefresh ?? onRefreshVoid,
-      onLoading: widget.onLoading ?? onLoadingVoid,
       child: widget.child,
-      enableTwoLevel: widget.enableTwoLevel ?? false,
-      onTwoLevel: widget.onTwoLevel ?? onTwoLevelVoid,
+      controller: controller,
+      enablePullDown: widget.enablePullDown,
+      enablePullUp: widget.enablePullUp,
+      enableTwoLevel: widget.enableTwoLevel,
+      header: widget.header,
+      footer: widget.footer ?? customFooter,
+      onRefresh: widget.onRefresh ?? onRefresh,
+      onLoading: widget.onLoading ?? onLoading,
+      onTwoLevel: widget.onTwoLevel ?? onTwoLevel,
       onOffsetChange: widget.onOffsetChange,
       dragStartBehavior: widget.dragStartBehavior,
       primary: widget.primary,
@@ -137,21 +143,20 @@ class _RefreshedState extends State<Refreshed> {
         },
       );
 
-  Widget footerText(String text) => Text(text,
-      style: widget.footerTextStyle ??
-          BaseTextStyle(fontSize: 13, color: getColors(black70)));
+  Widget footerText(String text) =>
+      Text(text, style: BaseTextStyle(fontSize: 13, color: getColors(black70)));
 
-  void onTwoLevelVoid() {
+  void onTwoLevel() {
     log('onTwoLevel');
     Ts.timerTs(const Duration(seconds: 2), () => controller.twoLevelComplete());
   }
 
-  void onRefreshVoid() {
+  void onRefresh() {
     log('onRefresh');
     Ts.timerTs(const Duration(seconds: 2), () => controller.refreshCompleted());
   }
 
-  void onLoadingVoid() {
+  void onLoading() {
     log('onLoading');
     Ts.timerTs(const Duration(seconds: 2), () => controller.loadComplete());
   }

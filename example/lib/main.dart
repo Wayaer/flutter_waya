@@ -18,11 +18,6 @@ void main() {
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final DateTime now = DateTime.now();
-    DateTimeDist.values.map((DateTimeDist e) {
-      log(now.format(e));
-    }).toList();
-
     return OverlayScaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(title: const Text('Waya Demo'), centerTitle: true),

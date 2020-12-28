@@ -714,11 +714,4 @@ class _DateTimePickerState extends State<DateTimePicker> {
       {Duration duration}) {
     if (controller != null) controller.jumpToItem(index);
   }
-
-  @override
-  void dispose() {
-    controllerMonth?.dispose();
-    controllerDay?.dispose();
-    super.dispose();
-  }
 }
