@@ -27,7 +27,7 @@ class PickerPage extends StatelessWidget {
 
   Future<void> selectCity() async {
     final String data = await showAreaPicker<String>();
-    showToast(data.toString());
+    if (data != null) showToast(data.toString());
   }
 
   Future<void> showChoicePicker() async {

@@ -4,6 +4,7 @@ import 'package:flutter_waya/flutter_waya.dart';
 import 'package:waya/module/carousel_page.dart';
 import 'package:waya/module/dropdown_menu_page.dart';
 import 'package:waya/module/image_page.dart';
+import 'package:waya/module/list_page.dart';
 import 'package:waya/module/picker_page.dart';
 import 'package:waya/module/pin_box_page.dart';
 import 'package:waya/module/popup_page.dart';
@@ -21,25 +22,22 @@ class Home extends StatelessWidget {
     return OverlayScaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(title: const Text('Waya Demo'), centerTitle: true),
-      body: Universal(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          customElasticButton('Toast', onTap: () => push(ToastPage())),
-          customElasticButton('Picker', onTap: () => push(PickerPage())),
-          customElasticButton('Popup', onTap: () => push(PopupPage())),
-          customElasticButton('PinBox', onTap: () => push(PinBoxPage())),
-          customElasticButton('Image', onTap: () => push(ImagePage())),
-          customElasticButton('Carousel', onTap: () => push(CarouselPage())),
-          customElasticButton('ElasticButton',
-              onTap: () => showToast('ElasticButton')),
-          customElasticButton('ScrollViewPage',
-              onTap: () => push(ScrollViewPage())),
-          customElasticButton('DropdownMenu',
-              onTap: () => push(DropdownMenuPage())),
-          const SizedBox(height: 10),
-          const DottedLine(),
-        ],
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      body: Wrap(runSpacing: 10, spacing: 10, children: <Widget>[
+        customElasticButton('Toast', onTap: () => push(ToastPage())),
+        customElasticButton('Picker', onTap: () => push(PickerPage())),
+        customElasticButton('Popup', onTap: () => push(PopupPage())),
+        customElasticButton('PinBox', onTap: () => push(PinBoxPage())),
+        customElasticButton('Image', onTap: () => push(ImagePage())),
+        customElasticButton('Carousel', onTap: () => push(CarouselPage())),
+        customElasticButton('SimpleList', onTap: () => push(ListPage())),
+        customElasticButton('ElasticButton',
+            onTap: () => showToast('ElasticButton')),
+        customElasticButton('ScrollViewPage',
+            onTap: () => push(ScrollViewPage())),
+        customElasticButton('DropdownMenu',
+            onTap: () => push(DropdownMenuPage())),
+      ]),
     );
   }
 

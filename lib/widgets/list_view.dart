@@ -1,7 +1,8 @@
 import 'dart:math' as math;
-import 'package:flutter/rendering.dart';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_waya/constant/way.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -14,9 +15,8 @@ class SimpleList extends BoxScrollView {
     ScrollController controller,
     bool primary,
     ScrollPhysics physics,
-    bool shrinkWrap = false,
+    bool shrinkWrap = true,
     EdgeInsetsGeometry padding,
-    this.itemExtent,
     bool addAutomaticKeepALives = true,
     bool addRepaintBoundaries = true,
     bool addSemanticIndexes = true,
@@ -26,6 +26,7 @@ class SimpleList extends BoxScrollView {
     ScrollViewKeyboardDismissBehavior keyboardDismissBehavior,
     String restorationId,
     Clip clipBehavior = Clip.hardEdge,
+    this.itemExtent,
     this.placeholder,
     this.enablePullDown,
     this.enablePullUp,
@@ -48,7 +49,7 @@ class SimpleList extends BoxScrollView {
         noScrollBehavior = noScrollBehavior ?? true,
         crossAxisCount = crossAxisCount ?? 1,
         crossAxisFlex = crossAxisFlex ?? false,
-        assert(crossAxisFlex ||
+        assert(!(crossAxisFlex ?? false) ||
             (maxCrossAxisExtent != null && maxCrossAxisExtent > 0)),
         mainAxisSpacing = mainAxisSpacing ?? 0,
         crossAxisSpacing = crossAxisSpacing ?? 0,
@@ -61,7 +62,7 @@ class SimpleList extends BoxScrollView {
             controller: controller,
             primary: primary ?? false,
             physics: physics,
-            shrinkWrap: shrinkWrap ?? false,
+            shrinkWrap: shrinkWrap ?? true,
             padding: padding ?? EdgeInsets.zero,
             cacheExtent: cacheExtent,
             semanticChildCount: children?.length ?? 0,
@@ -78,7 +79,7 @@ class SimpleList extends BoxScrollView {
     ScrollController controller,
     bool primary,
     ScrollPhysics physics,
-    bool shrinkWrap = false,
+    bool shrinkWrap = true,
     EdgeInsetsGeometry padding,
     this.itemExtent,
     @required IndexedWidgetBuilder itemBuilder,
@@ -98,8 +99,8 @@ class SimpleList extends BoxScrollView {
     bool crossAxisFlex,
     double mainAxisSpacing,
     double crossAxisSpacing,
-    this.maxCrossAxisExtent,
     double childAspectRatio,
+    this.maxCrossAxisExtent,
     this.placeholder,
     this.enablePullDown,
     this.enablePullUp,
@@ -114,7 +115,7 @@ class SimpleList extends BoxScrollView {
         noScrollBehavior = noScrollBehavior ?? true,
         crossAxisCount = crossAxisCount ?? 1,
         crossAxisFlex = crossAxisFlex ?? false,
-        assert(crossAxisFlex ||
+        assert(!(crossAxisFlex ?? false) ||
             (maxCrossAxisExtent != null && maxCrossAxisExtent > 0)),
         mainAxisSpacing = mainAxisSpacing ?? 0,
         crossAxisSpacing = crossAxisSpacing ?? 0,
@@ -131,7 +132,7 @@ class SimpleList extends BoxScrollView {
             controller: controller,
             primary: primary ?? false,
             physics: physics,
-            shrinkWrap: shrinkWrap ?? false,
+            shrinkWrap: shrinkWrap ?? true,
             padding: padding ?? EdgeInsets.zero,
             cacheExtent: cacheExtent,
             semanticChildCount: semanticChildCount ?? itemCount,
@@ -148,7 +149,7 @@ class SimpleList extends BoxScrollView {
     ScrollController controller,
     bool primary,
     ScrollPhysics physics,
-    bool shrinkWrap = false,
+    bool shrinkWrap = true,
     EdgeInsetsGeometry padding,
     @required IndexedWidgetBuilder itemBuilder,
     @required int itemCount,
@@ -214,7 +215,7 @@ class SimpleList extends BoxScrollView {
             controller: controller,
             primary: primary ?? false,
             physics: physics,
-            shrinkWrap: shrinkWrap ?? false,
+            shrinkWrap: shrinkWrap ?? true,
             padding: padding ?? EdgeInsets.zero,
             cacheExtent: cacheExtent,
             semanticChildCount: itemCount,
@@ -246,9 +247,9 @@ class SimpleList extends BoxScrollView {
 
   /// 滑动类型设置
   /// AlwaysScrollableScrollPhysics() 总是可以滑动
-  /// NeverScrollableScrollPhysics禁止滚动
-  /// BouncingScrollPhysics 内容超过一屏 上拉有回弹效果
-  /// ClampingScrollPhysics 包裹内容 不会有回弹
+  /// NeverScrollableScrollPhysics() 禁止滚动
+  /// BouncingScrollPhysics()  内容超过一屏 上拉有回弹效果
+  /// ClampingScrollPhysics()  包裹内容 不会有回弹
   /// final ScrollPhysics physics;
 
   /// 是否显示头部和底部蓝色阴影
@@ -312,9 +313,9 @@ class SimpleList extends BoxScrollView {
 
   @override
   Widget buildChildLayout(BuildContext context) {
-    Widget list = Container();
+    Widget list = SliverToBoxAdapter(child: Container());
     if (showPlaceholder) {
-      list = placeholder;
+      list = SliverToBoxAdapter(child: placeholder);
     } else {
       if (crossAxisCount > 1 || crossAxisFlex) {
         list = SliverGrid(
@@ -356,6 +357,7 @@ class SimpleList extends BoxScrollView {
       math.max(0, itemCount * 2 - 1);
 }
 
+@deprecated
 class GridBuilder extends StatelessWidget {
   GridBuilder({
     Key key,
@@ -448,6 +450,7 @@ class GridBuilder extends StatelessWidget {
       );
 }
 
+@deprecated
 class ListBuilder extends StatelessWidget {
   ListBuilder({
     Key key,
@@ -741,4 +744,325 @@ class ListEntry extends StatelessWidget {
     if (heroTag != null) return Hero(tag: heroTag, child: text);
     return text;
   }
+}
+
+class CustomList extends BoxScrollView {
+  CustomList({
+    Key key,
+    Axis scrollDirection = Axis.vertical,
+    bool reverse = false,
+    ScrollController controller,
+    bool primary,
+    ScrollPhysics physics,
+    bool shrinkWrap = false,
+    EdgeInsetsGeometry padding,
+    this.itemExtent,
+    this.gridDelegate,
+    bool addAutomaticKeepAlives = true,
+    bool addRepaintBoundaries = true,
+    bool addSemanticIndexes = true,
+    double cacheExtent,
+    List<Widget> children = const <Widget>[],
+    int semanticChildCount,
+    DragStartBehavior dragStartBehavior = DragStartBehavior.start,
+    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
+        ScrollViewKeyboardDismissBehavior.manual,
+    String restorationId,
+    Clip clipBehavior = Clip.hardEdge,
+  })  : childrenDelegate = SliverChildListDelegate(children,
+            addAutomaticKeepAlives: addAutomaticKeepAlives,
+            addRepaintBoundaries: addRepaintBoundaries,
+            addSemanticIndexes: addSemanticIndexes),
+        super(
+            key: key,
+            scrollDirection: scrollDirection,
+            reverse: reverse,
+            controller: controller,
+            primary: primary,
+            physics: physics,
+            shrinkWrap: shrinkWrap,
+            padding: padding,
+            cacheExtent: cacheExtent,
+            semanticChildCount: semanticChildCount ?? children.length,
+            dragStartBehavior: dragStartBehavior,
+            keyboardDismissBehavior: keyboardDismissBehavior,
+            restorationId: restorationId,
+            clipBehavior: clipBehavior);
+
+  CustomList.builder({
+    Key key,
+    Axis scrollDirection = Axis.vertical,
+    bool reverse = false,
+    ScrollController controller,
+    bool primary,
+    ScrollPhysics physics,
+    bool shrinkWrap = false,
+    EdgeInsetsGeometry padding,
+    this.itemExtent,
+    this.gridDelegate,
+    @required IndexedWidgetBuilder itemBuilder,
+    int itemCount,
+    bool addAutomaticKeepAlives = true,
+    bool addRepaintBoundaries = true,
+    bool addSemanticIndexes = true,
+    double cacheExtent,
+    int semanticChildCount,
+    DragStartBehavior dragStartBehavior = DragStartBehavior.start,
+    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
+        ScrollViewKeyboardDismissBehavior.manual,
+    String restorationId,
+    Clip clipBehavior = Clip.hardEdge,
+  })  : assert(itemCount == null || itemCount >= 0),
+        assert(semanticChildCount == null || semanticChildCount <= itemCount),
+        childrenDelegate = SliverChildBuilderDelegate(itemBuilder,
+            childCount: itemCount,
+            addAutomaticKeepAlives: addAutomaticKeepAlives,
+            addRepaintBoundaries: addRepaintBoundaries,
+            addSemanticIndexes: addSemanticIndexes),
+        super(
+            key: key,
+            scrollDirection: scrollDirection,
+            reverse: reverse,
+            controller: controller,
+            primary: primary,
+            physics: physics,
+            shrinkWrap: shrinkWrap,
+            padding: padding,
+            cacheExtent: cacheExtent,
+            semanticChildCount: semanticChildCount ?? itemCount,
+            dragStartBehavior: dragStartBehavior,
+            keyboardDismissBehavior: keyboardDismissBehavior,
+            restorationId: restorationId,
+            clipBehavior: clipBehavior);
+
+  CustomList.separated({
+    Key key,
+    Axis scrollDirection = Axis.vertical,
+    bool reverse = false,
+    ScrollController controller,
+    bool primary,
+    ScrollPhysics physics,
+    bool shrinkWrap = false,
+    EdgeInsetsGeometry padding,
+    @required IndexedWidgetBuilder itemBuilder,
+    @required IndexedWidgetBuilder separatorBuilder,
+    @required int itemCount,
+    bool addAutomaticKeepAlives = true,
+    bool addRepaintBoundaries = true,
+    bool addSemanticIndexes = true,
+    double cacheExtent,
+    DragStartBehavior dragStartBehavior = DragStartBehavior.start,
+    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
+        ScrollViewKeyboardDismissBehavior.manual,
+    String restorationId,
+    Clip clipBehavior = Clip.hardEdge,
+  })  : assert(itemBuilder != null),
+        assert(separatorBuilder != null),
+        assert(itemCount != null && itemCount >= 0),
+        itemExtent = null,
+        gridDelegate = null,
+        childrenDelegate = SliverChildBuilderDelegate(
+            (BuildContext context, int index) {
+          final int itemIndex = index ~/ 2;
+          Widget widget;
+          if (index.isEven) {
+            widget = itemBuilder(context, itemIndex);
+          } else {
+            widget = separatorBuilder(context, itemIndex);
+            assert(() {
+              if (widget == null)
+                throw FlutterError('separatorBuilder cannot return null.');
+              return true;
+            }());
+          }
+          return widget;
+        },
+            childCount: _computeActualChildCount(itemCount),
+            addAutomaticKeepAlives: addAutomaticKeepAlives,
+            addRepaintBoundaries: addRepaintBoundaries,
+            addSemanticIndexes: addSemanticIndexes,
+            semanticIndexCallback: (Widget _, int index) =>
+                index.isEven ? index ~/ 2 : null),
+        super(
+            key: key,
+            scrollDirection: scrollDirection,
+            reverse: reverse,
+            controller: controller,
+            primary: primary,
+            physics: physics,
+            shrinkWrap: shrinkWrap,
+            padding: padding,
+            cacheExtent: cacheExtent,
+            semanticChildCount: itemCount,
+            dragStartBehavior: dragStartBehavior,
+            keyboardDismissBehavior: keyboardDismissBehavior,
+            restorationId: restorationId,
+            clipBehavior: clipBehavior);
+
+  const CustomList.custom({
+    Key key,
+    Axis scrollDirection = Axis.vertical,
+    bool reverse = false,
+    ScrollController controller,
+    bool primary,
+    ScrollPhysics physics,
+    bool shrinkWrap = false,
+    EdgeInsetsGeometry padding,
+    this.itemExtent,
+    this.gridDelegate,
+    @required this.childrenDelegate,
+    double cacheExtent,
+    int semanticChildCount,
+    DragStartBehavior dragStartBehavior = DragStartBehavior.start,
+    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
+        ScrollViewKeyboardDismissBehavior.manual,
+    String restorationId,
+    Clip clipBehavior = Clip.hardEdge,
+  })  : assert(childrenDelegate != null),
+        super(
+            key: key,
+            scrollDirection: scrollDirection,
+            reverse: reverse,
+            controller: controller,
+            primary: primary,
+            physics: physics,
+            shrinkWrap: shrinkWrap,
+            padding: padding,
+            cacheExtent: cacheExtent,
+            semanticChildCount: semanticChildCount,
+            dragStartBehavior: dragStartBehavior,
+            keyboardDismissBehavior: keyboardDismissBehavior,
+            restorationId: restorationId,
+            clipBehavior: clipBehavior);
+
+  CustomList.count({
+    Key key,
+    Axis scrollDirection = Axis.vertical,
+    bool reverse = false,
+    ScrollController controller,
+    bool primary,
+    ScrollPhysics physics,
+    bool shrinkWrap = false,
+    EdgeInsetsGeometry padding,
+    @required int crossAxisCount,
+    double mainAxisSpacing = 0.0,
+    double crossAxisSpacing = 0.0,
+    double childAspectRatio = 1.0,
+    bool addAutomaticKeepAlives = true,
+    bool addRepaintBoundaries = true,
+    bool addSemanticIndexes = true,
+    double cacheExtent,
+    List<Widget> children = const <Widget>[],
+    int semanticChildCount,
+    DragStartBehavior dragStartBehavior = DragStartBehavior.start,
+    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
+        ScrollViewKeyboardDismissBehavior.manual,
+    String restorationId,
+    Clip clipBehavior = Clip.hardEdge,
+  })  : gridDelegate = SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: crossAxisCount,
+            mainAxisSpacing: mainAxisSpacing,
+            crossAxisSpacing: crossAxisSpacing,
+            childAspectRatio: childAspectRatio),
+        childrenDelegate = SliverChildListDelegate(children,
+            addAutomaticKeepAlives: addAutomaticKeepAlives,
+            addRepaintBoundaries: addRepaintBoundaries,
+            addSemanticIndexes: addSemanticIndexes),
+        itemExtent = null,
+        super(
+            key: key,
+            scrollDirection: scrollDirection,
+            reverse: reverse,
+            controller: controller,
+            primary: primary,
+            physics: physics,
+            shrinkWrap: shrinkWrap,
+            padding: padding,
+            cacheExtent: cacheExtent,
+            semanticChildCount: semanticChildCount ?? children.length,
+            dragStartBehavior: dragStartBehavior,
+            keyboardDismissBehavior: keyboardDismissBehavior,
+            restorationId: restorationId,
+            clipBehavior: clipBehavior);
+
+  CustomList.extent({
+    Key key,
+    Axis scrollDirection = Axis.vertical,
+    bool reverse = false,
+    ScrollController controller,
+    bool primary,
+    ScrollPhysics physics,
+    bool shrinkWrap = false,
+    EdgeInsetsGeometry padding,
+    @required double maxCrossAxisExtent,
+    double mainAxisSpacing = 0.0,
+    double crossAxisSpacing = 0.0,
+    double childAspectRatio = 1.0,
+    bool addAutomaticKeepAlives = true,
+    bool addRepaintBoundaries = true,
+    bool addSemanticIndexes = true,
+    double cacheExtent,
+    List<Widget> children = const <Widget>[],
+    int semanticChildCount,
+    DragStartBehavior dragStartBehavior = DragStartBehavior.start,
+    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
+        ScrollViewKeyboardDismissBehavior.manual,
+    String restorationId,
+    Clip clipBehavior = Clip.hardEdge,
+  })  : gridDelegate = SliverGridDelegateWithMaxCrossAxisExtent(
+            maxCrossAxisExtent: maxCrossAxisExtent,
+            mainAxisSpacing: mainAxisSpacing,
+            crossAxisSpacing: crossAxisSpacing,
+            childAspectRatio: childAspectRatio),
+        childrenDelegate = SliverChildListDelegate(children,
+            addAutomaticKeepAlives: addAutomaticKeepAlives,
+            addRepaintBoundaries: addRepaintBoundaries,
+            addSemanticIndexes: addSemanticIndexes),
+        itemExtent = null,
+        super(
+            key: key,
+            scrollDirection: scrollDirection,
+            reverse: reverse,
+            controller: controller,
+            primary: primary,
+            physics: physics,
+            shrinkWrap: shrinkWrap,
+            padding: padding,
+            cacheExtent: cacheExtent,
+            semanticChildCount: semanticChildCount ?? children.length,
+            dragStartBehavior: dragStartBehavior,
+            keyboardDismissBehavior: keyboardDismissBehavior,
+            restorationId: restorationId,
+            clipBehavior: clipBehavior);
+
+  final double itemExtent;
+
+  ///  SliverChildBuilderDelegate
+  ///  SliverChildListDelegate
+  final SliverChildDelegate childrenDelegate;
+
+  /// SliverGridDelegateWithMaxCrossAxisExtent
+  /// SliverGridDelegateWithFixedCrossAxisCount
+  final SliverGridDelegate gridDelegate;
+
+  @override
+  Widget buildChildLayout(BuildContext context) {
+    if (gridDelegate != null)
+      return SliverGrid(delegate: childrenDelegate, gridDelegate: gridDelegate);
+    if (itemExtent != null)
+      return SliverFixedExtentList(
+          delegate: childrenDelegate, itemExtent: itemExtent);
+    return SliverList(delegate: childrenDelegate);
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    if (itemExtent != null)
+      properties
+          .add(DoubleProperty('itemExtent', itemExtent, defaultValue: null));
+  }
+
+  static int _computeActualChildCount(int itemCount) =>
+      math.max(0, itemCount * 2 - 1);
 }

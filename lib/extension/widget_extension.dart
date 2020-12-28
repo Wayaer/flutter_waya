@@ -70,7 +70,7 @@ extension ExtensionWidget on Widget {
   }) =>
       Container(
           foregroundDecoration: foregroundDecoration,
-          clipBehavior: clipBehavior,
+          clipBehavior: clipBehavior ?? Clip.none,
           transform: transform,
           constraints: constraints,
           alignment: alignment,

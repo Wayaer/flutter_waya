@@ -10,7 +10,6 @@ class DottedLine extends StatelessWidget {
       Color color,
       double gap,
       double width,
-      this.padding,
       this.margin,
       double height})
       : strokeWidth = strokeWidth ?? 1,
@@ -24,7 +23,6 @@ class DottedLine extends StatelessWidget {
   final double gap;
   final double width;
   final double height;
-  final EdgeInsetsGeometry padding;
   final EdgeInsetsGeometry margin;
 
   @override
@@ -32,7 +30,6 @@ class DottedLine extends StatelessWidget {
       width: width,
       height: height,
       margin: margin,
-      padding: padding ?? EdgeInsets.all(strokeWidth / 2),
       child: CustomPaint(
           painter: _DottedPainter(
               color: color, strokeWidth: strokeWidth, gap: gap)));
