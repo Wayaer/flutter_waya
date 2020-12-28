@@ -390,17 +390,17 @@ Future<T> showDateTimePicker<T>({
   DateTimePickerUnit unit,
 
   /// 头部和背景色配置
-  PickerTitle pickerTitle,
+  PickerSub pickerSub,
 
   /// Wheel配置信息
   PickerWheel pickerWheel,
 }) {
   Ts.focusNode(_globalNavigatorKey.currentContext);
-  pickerTitle ??= PickerTitle();
-  pickerTitle?.cancelTap ??= () => closePopup();
-  pickerTitle?.sureTap ??= (String text) => closePopup(text);
+  pickerSub ??= PickerSub();
+  pickerSub?.cancelTap ??= () => closePopup();
+  pickerSub?.sureTap ??= (String text) => closePopup(text);
   final Widget widget = DateTimePicker(
-      pickerTitle: pickerTitle,
+      pickerSub: pickerSub,
       pickerWheel: pickerWheel,
       startDate: startDate,
       endDate: endDate,
@@ -424,20 +424,20 @@ Future<T> showAreaPicker<T>({
   String defaultDistrict,
 
   /// 头部和背景色配置
-  PickerTitle pickerTitle,
+  PickerSub pickerSub,
 
   /// Wheel配置信息
   PickerWheel pickerWheel,
 }) {
   Ts.focusNode(_globalNavigatorKey.currentContext);
-  pickerTitle ??= PickerTitle();
-  pickerTitle?.cancelTap ??= () => closePopup();
-  pickerTitle?.sureTap ??= (String text) => closePopup(text);
+  pickerSub ??= PickerSub();
+  pickerSub?.cancelTap ??= () => closePopup();
+  pickerSub?.sureTap ??= (String text) => closePopup(text);
   final Widget widget = AreaPicker(
       defaultProvince: defaultProvince,
       defaultCity: defaultCity,
       defaultDistrict: defaultDistrict,
-      pickerTitle: pickerTitle,
+      pickerSub: pickerSub,
       pickerWheel: pickerWheel);
   return showBottomPopup(widget: widget);
 }
@@ -452,19 +452,19 @@ Future<T> showMultipleChoicePicker<T>({
   @required IndexedWidgetBuilder itemBuilder,
 
   /// 头部和背景色配置
-  PickerTitle pickerTitle,
+  PickerSub pickerSub,
 
   /// Wheel配置信息
   PickerWheel pickerWheel,
 }) {
   Ts.focusNode(_globalNavigatorKey.currentContext);
-  pickerTitle ??= PickerTitle();
-  pickerTitle?.cancelTap ??= () => closePopup();
-  pickerTitle?.sureIndexTap ??= (int index) => closePopup(index);
+  pickerSub ??= PickerSub();
+  pickerSub?.cancelTap ??= () => closePopup();
+  pickerSub?.sureIndexTap ??= (int index) => closePopup(index);
   final Widget widget = MultipleChoicePicker(
       itemCount: itemCount,
       itemBuilder: itemBuilder,
-      pickerTitle: pickerTitle,
+      pickerSub: pickerSub,
       pickerWheel: pickerWheel,
       initialIndex: initialIndex);
   return showBottomPopup(widget: widget);
