@@ -106,7 +106,7 @@ class _RefreshedState extends State<Refreshed> {
       onRefresh: widget.onRefresh ?? onRefreshVoid,
       onLoading: widget.onLoading ?? onLoadingVoid,
       child: widget.child,
-      enableTwoLevel: widget.enableTwoLevel,
+      enableTwoLevel: widget.enableTwoLevel ?? false,
       onTwoLevel: widget.onTwoLevel ?? onTwoLevelVoid,
       onOffsetChange: widget.onOffsetChange,
       dragStartBehavior: widget.dragStartBehavior,
