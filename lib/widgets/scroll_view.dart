@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 /// 配合 sliver 家族组件 无需设置高度  自适应高度
-/// [isNestedScrollView] 切换使用 [CustomScrollView] 或 [NestedScrollView]
 class ScrollViewAuto extends StatefulWidget {
   const ScrollViewAuto(
       {Key key,
@@ -23,14 +22,38 @@ class ScrollViewAuto extends StatefulWidget {
       this.controller,
       this.restorationId,
       this.slivers = const <Widget>[],
-      this.isNestedScrollView = true,
       this.primary,
       this.shrinkWrap = false,
       this.center,
       this.anchor = 0.0,
       this.cacheExtent,
       this.semanticChildCount})
-      : super(key: key);
+      : isNestedScrollView = false,
+        super(key: key);
+
+  const ScrollViewAuto.nested(
+      {Key key,
+      this.expanded = false,
+      this.flex,
+      this.headerSliverBuilder,
+      this.floatHeaderSlivers = true,
+      this.clipBehavior = Clip.hardEdge,
+      this.reverse = false,
+      this.physics,
+      this.scrollDirection = Axis.vertical,
+      this.dragStartBehavior = DragStartBehavior.start,
+      this.body,
+      this.controller,
+      this.restorationId,
+      this.slivers = const <Widget>[]})
+      : isNestedScrollView = true,
+        primary = null,
+        shrinkWrap = null,
+        center = null,
+        anchor = null,
+        cacheExtent = null,
+        semanticChildCount = null,
+        super(key: key);
 
   /// 是否使用 [NestedScrollView] 默认true
   final bool isNestedScrollView;
@@ -108,21 +131,20 @@ class _ScrollViewAutoState extends State<ScrollViewAuto> {
               _sliverBuilder(slivers, sliverModel));
 
   CustomScrollView get customScrollView => CustomScrollView(
-        slivers: _sliverBuilder(slivers, sliverModel),
-        scrollDirection: widget.scrollDirection,
-        reverse: widget.reverse,
-        controller: widget.controller,
-        primary: widget.primary,
-        physics: widget.physics,
-        shrinkWrap: widget.shrinkWrap,
-        center: widget.center,
-        anchor: widget.anchor,
-        cacheExtent: widget.cacheExtent,
-        semanticChildCount: widget.semanticChildCount,
-        dragStartBehavior: widget.dragStartBehavior,
-        restorationId: widget.restorationId,
-        clipBehavior: widget.clipBehavior,
-      );
+      slivers: _sliverBuilder(slivers, sliverModel),
+      scrollDirection: widget.scrollDirection,
+      reverse: widget.reverse,
+      controller: widget.controller,
+      primary: widget.primary,
+      physics: widget.physics,
+      shrinkWrap: widget.shrinkWrap,
+      center: widget.center,
+      anchor: widget.anchor,
+      cacheExtent: widget.cacheExtent,
+      semanticChildCount: widget.semanticChildCount,
+      dragStartBehavior: widget.dragStartBehavior,
+      restorationId: widget.restorationId,
+      clipBehavior: widget.clipBehavior);
 }
 
 /// 自动初始化 delegate

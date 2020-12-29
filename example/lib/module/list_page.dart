@@ -9,17 +9,35 @@ class ListPage extends StatefulWidget {
 }
 
 class _ListPageState extends State<ListPage> {
-  List<Color> colors = List<Color>.generate(7, (int index) => Colors.blue);
+  List<Color> colors = <Color>[];
+
+  @override
+  void initState() {
+    super.initState();
+    colors.addAll(Colors.accents);
+    colors.addAll(Colors.primaries);
+  }
 
   @override
   Widget build(BuildContext context) {
     return OverlayScaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(title: const Text('PinBoxPage Demo'), centerTitle: true),
+      appBar: AppBar(title: const Text('SimpleList Demo'), centerTitle: true),
       body: Universal(
           isScroll: true,
+          enablePullDown: true,
+          header: BezierCircleHeader(bezierColor: colors[0]),
           padding: const EdgeInsets.symmetric(horizontal: 10),
           children: <Widget>[
+            SimpleButton(
+                text: 'SimpleList Refreshed',
+                textStyle: const TextStyle(color: Colors.white),
+                margin: const EdgeInsets.only(top: 10),
+                alignment: Alignment.center,
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                width: double.infinity,
+                color: colors[0],
+                onTap: () => push(SimpleListRefreshed(colors))),
             const Text('SimpleList.custom 单列')
                 .padding(const EdgeInsets.only(top: 10)),
             SimpleList.custom(
@@ -65,7 +83,7 @@ class _ListPageState extends State<ListPage> {
                     const Text('没有数据', style: TextStyle(color: Colors.white))
                         .container(
                             alignment: Alignment.center,
-                            color: Colors.blue,
+                            color: colors.last,
                             padding: const EdgeInsets.symmetric(vertical: 10))),
             const Text('SimpleList.builder 单列')
                 .padding(const EdgeInsets.symmetric(vertical: 10)),
@@ -111,7 +129,7 @@ class _ListPageState extends State<ListPage> {
                     const Text('没有数据', style: TextStyle(color: Colors.white))
                         .container(
                             alignment: Alignment.center,
-                            color: Colors.blue,
+                            color: colors.last,
                             padding: const EdgeInsets.symmetric(vertical: 10)),
                 itemBuilder: (_, int index) => Container()),
             const Text('SimpleList.separated')
@@ -132,7 +150,7 @@ class _ListPageState extends State<ListPage> {
                     const Text('没有数据', style: TextStyle(color: Colors.white))
                         .container(
                             alignment: Alignment.center,
-                            color: Colors.blue,
+                            color: colors.last,
                             padding: const EdgeInsets.symmetric(vertical: 10)),
                 itemBuilder: (_, int index) => Container(),
                 separatorBuilder: (BuildContext context, int index) =>
@@ -140,9 +158,35 @@ class _ListPageState extends State<ListPage> {
                             style: TextStyle(color: Colors.white))
                         .container(
                             alignment: Alignment.center,
-                            color: Colors.blue,
+                            color: colors.last,
                             padding: const EdgeInsets.symmetric(vertical: 10))),
           ]),
+    );
+  }
+}
+
+class SimpleListRefreshed extends StatelessWidget {
+  const SimpleListRefreshed(this.colors, {Key key}) : super(key: key);
+
+  final List<Color> colors;
+
+  @override
+  Widget build(BuildContext context) {
+    return OverlayScaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(title: const Text('SimpleList Demo'), centerTitle: true),
+      body: SimpleList.builder(
+          enablePullDown: true,
+          enablePullUp: true,
+          padding: const EdgeInsets.all(10),
+          header: BezierCircleHeader(bezierColor: colors[0]),
+          maxCrossAxisExtent: 60,
+          mainAxisSpacing: 10,
+          crossAxisSpacing: 10,
+          crossAxisCount: 4,
+          itemCount: colors.length,
+          itemBuilder: (_, int index) => Container(
+              color: colors[index], width: double.infinity, height: 40)),
     );
   }
 }

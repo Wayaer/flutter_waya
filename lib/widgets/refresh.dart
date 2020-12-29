@@ -158,6 +158,6 @@ class _RefreshedState extends State<Refreshed> {
 
   void onLoading() {
     log('onLoading');
-    Ts.timerTs(const Duration(seconds: 2), () => controller.loadComplete());
+    Ts.timerTs(const Duration(seconds: 2), () => controller.loadNoData());
   }
 }
