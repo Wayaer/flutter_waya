@@ -21,6 +21,5 @@
 <img src="example/screen/area_picker.png" width="360px"/> <img src="example/screen/choice_picker.png" width="360px"/>
 <img src="example/screen/date_time_picker.png" width="360px"/> <img src="example/screen/" width="360px"/>
 <img src="example/screen/pin_box.png" width="360px"/> <img src="example/screen/carousel.png" width="360px"/>
-<img src="example/screen/simple_list.png" width="360px"/> <img src="example/screen/" width="360px"/>
-<img src="example/screen/scroll_view_auto.png" width="360px"/> <img src="example/screen/scroll_view_auto_nested.png" width="360px"/>
-<img src="example/screen/dropdown_menu.png" width="360px"/>
+<img src="example/screen/simple_list.png" width="360px"/> <img src="example/screen/scroll_view_auto.png" width="360px"/>
+<img src="example/screen/scroll_view_auto_nested.png" width="360px"/> <img src="example/screen/dropdown_menu.png" width="360px"/>
