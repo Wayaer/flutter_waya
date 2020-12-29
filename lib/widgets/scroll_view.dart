@@ -55,7 +55,7 @@ class ScrollViewAuto extends StatefulWidget {
         semanticChildCount = null,
         super(key: key);
 
-  /// 是否使用 [NestedScrollView] 默认true
+  /// 是否使用 [NestedScrollView]
   final bool isNestedScrollView;
 
   /// ScrollView 外嵌套Expanded
@@ -63,16 +63,19 @@ class ScrollViewAuto extends StatefulWidget {
   final int flex;
 
   /// **** NestedScrollView **** ///
-  /// **** CustomScrollView **** ///
+  final Widget body;
+
   /// 当[isNestedScrollView]=true , 使用 [headerSliverBuilder] 时 [slivers] 无效,
   final NestedScrollViewHeaderSliversBuilder headerSliverBuilder;
+
+  /// **** CustomScrollView **** ///
   final bool floatHeaderSlivers;
   final Clip clipBehavior;
   final bool reverse;
   final ScrollPhysics physics;
   final Axis scrollDirection;
   final DragStartBehavior dragStartBehavior;
-  final Widget body;
+
   final ScrollController controller;
   final String restorationId;
 
