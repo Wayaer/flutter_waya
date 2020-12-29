@@ -6,7 +6,7 @@ class PinBoxPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return OverlayScaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(title: const Text('PinBoxPage Demo'), centerTitle: true),
+      appBar: AppBar(title: const Text('PinBox Demo'), centerTitle: true),
       body: Universal(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[

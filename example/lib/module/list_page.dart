@@ -174,7 +174,8 @@ class SimpleListRefreshed extends StatelessWidget {
   Widget build(BuildContext context) {
     return OverlayScaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(title: const Text('SimpleList Demo'), centerTitle: true),
+      appBar: AppBar(
+          title: const Text('SimpleList Refreshed Demo'), centerTitle: true),
       body: SimpleList.builder(
           enablePullDown: true,
           enablePullUp: true,

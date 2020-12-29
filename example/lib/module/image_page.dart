@@ -6,8 +6,7 @@ class ImagePage extends StatefulWidget {
   _ImagePageState createState() => _ImagePageState();
 }
 
-class _ImagePageState extends State<ImagePage>
-    with TickerProviderStateMixin {
+class _ImagePageState extends State<ImagePage> with TickerProviderStateMixin {
   GifController controller;
 
   String uri =
@@ -32,5 +31,11 @@ class _ImagePageState extends State<ImagePage>
         GifImage(image: NetworkImage(uri), controller: controller),
       ]),
     );
+  }
+
+  @override
+  void dispose() {
+    controller?.dispose();
+    super.dispose();
   }
 }

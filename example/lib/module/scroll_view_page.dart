@@ -69,14 +69,15 @@ class ScrollViewPage extends StatelessWidget {
     ];
     return OverlayScaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(title: const Text('Waya Demo'), centerTitle: true),
+      appBar:
+          AppBar(title: const Text('ScrollViewAuto Demo'), centerTitle: true),
       body: Universal(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          customElasticButton('NestedScrollView',
-              onTap: () => push(ScrollViewAutoNestedPage(slivers))),
-          customElasticButton('CustomScrollViewAutoPage',
+          customElasticButton('ScrollViewAuto',
               onTap: () => push(ScrollViewAutoPage(slivers))),
+          customElasticButton('ScrollViewAuto.nested',
+              onTap: () => push(ScrollViewAutoNestedPage(slivers))),
         ],
       ),
     );

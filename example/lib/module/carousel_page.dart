@@ -28,7 +28,7 @@ class _CarouselPageState extends State<CarouselPage> {
     return OverlayScaffold(
       isScroll: true,
       backgroundColor: Colors.white,
-      appBar: AppBar(title: const Text('CarouselPage Demo'), centerTitle: true),
+      appBar: AppBar(title: const Text('Carousel Demo'), centerTitle: true),
       body: Universal(children: <Widget>[
         Container(
           height: 200,
