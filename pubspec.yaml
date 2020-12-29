@@ -16,6 +16,7 @@ dependencies:
   http_parser: ^3.1.4
   pull_to_refresh: ^1.6.3
   cookie_jar: ^1.0.1
+  vector_math: ^2.0.8
 
 dev_dependencies:
   pedantic: ^1.9.0
