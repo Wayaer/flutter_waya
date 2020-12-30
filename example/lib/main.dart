@@ -8,6 +8,7 @@ import 'package:waya/module/list_page.dart';
 import 'package:waya/module/picker_page.dart';
 import 'package:waya/module/pin_box_page.dart';
 import 'package:waya/module/popup_page.dart';
+import 'package:waya/module/progress_page.dart';
 import 'package:waya/module/scroll_view_page.dart';
 import 'package:waya/module/toast_page.dart';
 
@@ -31,6 +32,7 @@ class Home extends StatelessWidget {
         customElasticButton('Image', onTap: () => push(ImagePage())),
         customElasticButton('Carousel', onTap: () => push(CarouselPage())),
         customElasticButton('SimpleList', onTap: () => push(ListPage())),
+        customElasticButton('Progress', onTap: () => push(ProgressPage())),
         customElasticButton('ScrollView', onTap: () => push(ScrollViewPage())),
         customElasticButton('ElasticButton',
             onTap: () => showToast('ElasticButton')),

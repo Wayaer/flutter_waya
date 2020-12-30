@@ -1,3 +1,5 @@
+## [1.5.1]
+  * add [Progress.circular] [Progress.linear]
 ## [1.5.0]
   * change Tools to Ts.
   * change GlobalMaterial to GlobalWidgetsApp.
@@ -28,8 +30,6 @@
 ## [1.3.2]
   * remove some widget
   * format code
-## [1.2.2]
- * add lint
 ## [1.2.1]
  * Refactoring all file names and classes
  * Optimize overlay [toast loading]
@@ -51,8 +51,6 @@
  * Add hero component
 ## [1.0.2]
  * Fix download upload method catch exception failed to return
-## [1.0.1]
- * Modify crypto and fluent_ Test conflict
 ## [1.0.0]
  * Release of official version
 ## [0.0.1]

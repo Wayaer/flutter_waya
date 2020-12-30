@@ -682,17 +682,16 @@ class ListEntry extends StatelessWidget {
       Icon(ConstIcon.arrowRight, size: arrowSize, color: arrowColor);
 
   Widget get listTile => Expanded(
-          child: ListTile(
-        contentPadding: contentPadding,
-        title: hero(title ?? Text(titleText, style: titleStyle)),
-        subtitle: subtitle,
-        leading: leading,
-        trailing: child,
-        isThreeLine: isThreeLine,
-        dense: dense,
-        enabled: false,
-        selected: selected ?? false,
-      ));
+      child: ListTile(
+          contentPadding: contentPadding,
+          title: hero(title ?? Text(titleText, style: titleStyle)),
+          subtitle: subtitle,
+          leading: leading,
+          trailing: child,
+          isThreeLine: isThreeLine,
+          dense: dense,
+          enabled: false,
+          selected: selected ?? false));
 
   Widget hero(Widget text) {
     if (heroTag != null) return Hero(tag: heroTag, child: text);

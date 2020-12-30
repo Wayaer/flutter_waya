@@ -30,6 +30,7 @@ export 'widgets/image.dart';
 export 'widgets/input_field.dart';
 export 'widgets/list_view.dart';
 export 'widgets/list_wheel.dart';
+export 'widgets/progress/progress.dart';
 export 'widgets/refresh.dart';
 export 'widgets/root/dialog/picker.dart';
 export 'widgets/root/dialog/popup_widgets.dart';
