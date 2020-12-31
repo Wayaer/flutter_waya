@@ -217,30 +217,36 @@ class InterceptorWrap extends InterceptorsWrapper {
   Future<String> onError(DioError err) async {
     responseModel.type = err.type.toString();
     if (err.type == DioErrorType.DEFAULT) {
-      responseModel.statusCode = ConstConstant.errorCode404;
-      responseModel.statusMessage = ConstConstant.errorMessage404;
-      responseModel.statusMessageT = ConstConstant.errorMessageT404;
+      final HttpStatus status = ConstConstant.httpStatus[404];
+      responseModel.statusCode = status.code;
+      responseModel.statusMessage = status.message;
+      responseModel.statusMessageT = status.messageT;
     } else if (err.type == DioErrorType.CANCEL) {
-      responseModel.statusCode = ConstConstant.errorCode420;
-      responseModel.statusMessage = ConstConstant.errorMessage420;
-      responseModel.statusMessageT = ConstConstant.errorMessageT420;
+      final HttpStatus status = ConstConstant.httpStatus[420];
+      responseModel.statusCode = status.code;
+      responseModel.statusMessage = status.message;
+      responseModel.statusMessageT = status.messageT;
     } else if (err.type == DioErrorType.CONNECT_TIMEOUT) {
-      responseModel.statusCode = ConstConstant.errorCode408;
-      responseModel.statusMessage = ConstConstant.errorMessage408;
-      responseModel.statusMessageT = ConstConstant.errorMessageT408;
+      final HttpStatus status = ConstConstant.httpStatus[408];
+      responseModel.statusCode = status.code;
+      responseModel.statusMessage = status.message;
+      responseModel.statusMessageT = status.messageT;
     } else if (err.type == DioErrorType.RECEIVE_TIMEOUT) {
-      responseModel.statusCode = ConstConstant.errorCode502;
-      responseModel.statusMessage = ConstConstant.errorMessage502;
-      responseModel.statusMessageT = ConstConstant.errorMessageT502;
+      final HttpStatus status = ConstConstant.httpStatus[502];
+      responseModel.statusCode = status.code;
+      responseModel.statusMessage = status.message;
+      responseModel.statusMessageT = status.messageT;
     } else if (err.type == DioErrorType.SEND_TIMEOUT) {
-      responseModel.statusCode = ConstConstant.errorCode450;
-      responseModel.statusMessage = ConstConstant.errorMessage450;
-      responseModel.statusMessageT = ConstConstant.errorMessageT450;
+      final HttpStatus status = ConstConstant.httpStatus[450];
+      responseModel.statusCode = status.code;
+      responseModel.statusMessage = status.message;
+      responseModel.statusMessageT = status.messageT;
     } else if (err.type == DioErrorType.RESPONSE) {
+      final HttpStatus status = ConstConstant.httpStatus[500];
       responseModel.statusCode = err.response.statusCode;
       responseModel.statusMessage =
-          ConstConstant.errorMessage500 + err.response.statusCode.toString();
-      responseModel.statusMessageT = ConstConstant.errorMessageT500;
+          err.response.statusCode.toString() + ':' + status.message;
+      responseModel.statusMessageT = status.messageT;
     }
     responseModel.request = err?.request;
     responseModel.headers = err?.response?.headers;

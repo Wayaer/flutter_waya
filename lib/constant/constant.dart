@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_waya/constant/model.dart';
+
+import 'enums.dart';
 
 class ConstConstant {
   /// 全局圆角大小
@@ -9,21 +12,6 @@ class ConstConstant {
 
   /// 导航栏高度
   static const double appBarHeight = 43;
-
-  /// 网络请求失败
-  static const int errorCode404 = 404;
-
-  /// 网络请求已取消
-  static const int errorCode420 = 420;
-
-  /// 网络连接超时
-  static const int errorCode408 = 408;
-
-  /// 网络接收超时
-  static const int errorCode502 = 502;
-
-  /// 网络发送超时
-  static const int errorCode450 = 450;
 
   /// picker itemHeight
   static const double pickerItemHeight = 22;
@@ -38,77 +26,58 @@ class ConstConstant {
 
   static const String unknownException = 'unknown exception';
 
-  /// 网络请求失败
-  static const String errorMessage404 = '网络请求失败';
+  static const Map<int, HttpStatus> httpStatus = {
+    404: HttpStatus(404, '网络请求失败', 'Failed'),
+    420: HttpStatus(420, '网络请求已取消', 'Cancel'),
+    408: HttpStatus(408, '网络连接超时', 'Connect Timeout'),
+    450: HttpStatus(450, '网络发送超时', 'Send Timeout'),
+    502: HttpStatus(502, '网络接收超时', 'Receive Timeout'),
+    500: HttpStatus(500, '服务器错误', 'Server Error')
+  };
 
-  /// 网络请求已取消
-  static const String errorMessage420 = '网络请求已取消';
+  static const Map<InputTextType, String> regExp = <InputTextType, String>{
+    ///  字母和数字
+    InputTextType.lettersNumbers: '[a-zA-Z0-9]',
 
-  /// 网络连接超时
-  static const String errorMessage408 = '网络连接超时';
+    ///  密码 字母和数字和.
+    InputTextType.password: '[a-zA-Z0-9.]',
 
-  /// 网络接收超时
-  static const String errorMessage502 = '网络接收超时';
+    ///  整数
+    InputTextType.number: null,
 
-  /// 网络发送超时
-  static const String errorMessage450 = '网络发送超时';
+    ///  文本
+    InputTextType.text: null,
 
-  /// 服务器错误
-  static const String errorMessage500 = '服务器错误:';
+    ///  小数
+    InputTextType.decimal: '[0-9.]',
 
-  /// 网络请求失败
-  static const String errorMessageT404 = 'Failed';
+    ///  字母
+    InputTextType.letter: '[a-zA-Z]',
 
-  /// 网络请求已取消
-  static const String errorMessageT420 = 'Cancel';
+    ///  中文
+    InputTextType.chinese: '[\u4e00-\u9fa5]',
 
-  /// 网络连接超时
-  static const String errorMessageT408 = 'Connect Timeout';
+    ///  邮箱
+    InputTextType.email: '[a-zA-Z0-9.@]',
 
-  /// 网络接收超时
-  static const String errorMessageT502 = 'Receive Timeout';
+    ///  手机号码
+    InputTextType.mobilePhone: '[0-9]',
 
-  /// 网络发送超时
-  static const String errorMessageT450 = 'Send Timeout';
+    ///  电话号码
+    InputTextType.phone: '[0-9-]',
 
-  /// 服务器错误
-  static const String errorMessageT500 = 'Response';
+    ///  身份证
+    InputTextType.idCard: '[0-9Xx]',
 
-  /// 正数
-  static const String regExpPositive = '[+0-9.]';
+    ///  ip地址
+    InputTextType.ip: '[0-9:.]',
 
-  /// 负数
-  static const String regExpNegative = '[-0-9.]';
+    ///  正数
+    InputTextType.positive: '[+0-9.]',
 
-  /// 密码 字母数字和点
-  static const String regExpPassword = '[a-zA-Z0-9.]';
-
-  /// 字母和数字
-  static const String regExpLettersNumbers = '[a-zA-Z0-9]';
-
-  /// 小数
-  static const String regExpDecimal = '[0-9.]';
-
-  /// 字母
-  static const String regExpLetter = '[a-zA-Z]';
-
-  /// 中文
-  static const String regExpChinese = '[\u4e00-\u9fa5]';
-
-  /// 邮箱
-  static const String regExpEmail = '[a-zA-Z0-9.@]';
-
-  /// 国内电话号
-  static const String regExpPhone = '[0-9-]';
-
-  /// 国内手机号
-  static const String regExpMobilePhone = '[0-9]';
-
-  /// 身份证
-  static const String regExpIdCard = '[0-9Xx]';
-
-  /// ip
-  static const String regExpIP = '[0-9:.]';
+    ///  负数
+    InputTextType.negative: '[-0-9.]',
+  };
 }
 
 ///  Colors

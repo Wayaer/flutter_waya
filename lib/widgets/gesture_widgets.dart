@@ -29,8 +29,8 @@ class GestureLock extends StatefulWidget {
   final double lineWidth;
   final bool showUnSelectRing;
   final bool immediatelyClear;
-  final Function() onPanDown;
-  final Function(List<int>) onPanUp;
+  final Function onPanDown;
+  final ValueChanged<List<int>> onPanUp;
 
   @override
   _GestureLockState createState() => _GestureLockState();
@@ -49,32 +49,28 @@ class _GestureLockState extends State<GestureLock> {
     points = <_Point>[];
     final double realRingSize = widget.ringRadius + widget.ringWidth / 2;
     final double gapWidth = widget.size / 6 - realRingSize;
-    for (int i = 0; i < 9; i++) {
+    points = List<_Point>.generate(9, (int i) {
       final double x = gapWidth + realRingSize;
       final double y = gapWidth + realRingSize;
-      points.add(
-          _Point(x: (1 + i % 3 * 2) * x, y: (1 + i ~/ 3 * 2) * y, position: i));
-    }
+      return _Point(
+          x: (1 + i % 3 * 2) * x, y: (1 + i ~/ 3 * 2) * y, position: i);
+    });
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Universal(
-      isStack: true,
-      children: <Widget>[
+  Widget build(BuildContext context) => Stack(children: <Widget>[
         Container(
-          child: CustomPaint(
-            size: Size(widget.size, widget.size),
-            painter: _CanvasPoint(
-                ringWidth: widget.ringWidth,
-                ringRadius: widget.ringRadius,
-                showUnSelectRing: widget.showUnSelectRing,
-                circleRadius: widget.circleRadius,
-                selectColor: widget.selectColor,
-                unSelectColor: widget.unSelectColor,
-                points: points),
-          ),
-        ),
+            child: CustomPaint(
+          size: Size(widget.size, widget.size),
+          painter: _CanvasPoint(
+              ringWidth: widget.ringWidth,
+              ringRadius: widget.ringRadius,
+              showUnSelectRing: widget.showUnSelectRing,
+              circleRadius: widget.circleRadius,
+              selectColor: widget.selectColor,
+              unSelectColor: widget.unSelectColor,
+              points: points),
+        )),
         Universal(
             child: CustomPaint(
                 size: Size(widget.size, widget.size),
@@ -86,9 +82,7 @@ class _GestureLockState extends State<GestureLock> {
             onPanDown: onPanDownVoid,
             onPanUpdate: (DragUpdateDetails e) => onPanUpdate(e, context),
             onPanEnd: (DragEndDetails e) => onPanEnd(e, context))
-      ],
-    );
-  }
+      ]);
 
   void onPanDownVoid(DragDownDetails e) {
     clearAllData();
@@ -166,7 +160,6 @@ class _CanvasPoint extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    ///  绘制9个圆
     final Paint ringPaint = Paint()
       ..isAntiAlias = true
       ..color = unSelectColor
@@ -178,9 +171,8 @@ class _CanvasPoint extends CustomPainter {
       ..color = unSelectColor
       ..style = PaintingStyle.fill;
 
-    for (int i = 0; i < points.length; i++) {
-      final _Point point = points[i];
-      final Offset offSet = Offset(point.x, points[i].y);
+    points.map((_Point point) {
+      final Offset offSet = Offset(point.x, point.y);
       final Color color = point.isSelect ? selectColor : unSelectColor;
       circlePaint.color = color;
       ringPaint.color = color;
@@ -189,7 +181,7 @@ class _CanvasPoint extends CustomPainter {
         canvas.drawArc(Rect.fromCircle(center: offSet, radius: ringRadius), 0,
             360, false, ringPaint);
       }
-    }
+    }).toList();
   }
 
   @override
@@ -344,11 +336,7 @@ class _GestureZoomState extends State<GestureZoom>
 
   ///  处理缩放变化 [details]
   void _onScaleUpdate(ScaleUpdateDetails details) => setState(() {
-        if (details.scale != 1.0) {
-          _scaling(details);
-        } else {
-          _dragging(details);
-        }
+        details.scale != 1.0 ? _scaling(details) : _dragging(details);
       });
 
   ///  执行缩放

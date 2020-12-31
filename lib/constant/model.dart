@@ -88,6 +88,14 @@ class ResponseModel {
       '{"type":"${type.toString()}","data":$data,"cookie":$cookie,"statusCode":$statusCode,"statusMessage":"$statusMessage","statusMessageT":"$statusMessageT"}';
 }
 
+class HttpStatus {
+  const HttpStatus(this.code, this.message, this.messageT);
+
+  final int code;
+  final String message;
+  final String messageT;
+}
+
 class AppConfig {
   AppConfig({this.androidVersionCode, this.iosVersionCode, this.open});
 

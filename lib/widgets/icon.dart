@@ -182,8 +182,9 @@ class CheckBox extends StatefulWidget {
       this.title,
       this.visible,
       this.activeColor,
-      this.value})
+      bool value})
       : size = size ?? getWidth(17),
+        value = value ?? false,
         uncheckColor = uncheckColor ?? getColors(black70),
         checkColor = checkColor ?? getColors(white),
         mainAxisAlignment = mainAxisAlignment ?? MainAxisAlignment.center,
@@ -221,8 +222,17 @@ class _CheckBoxState extends State<CheckBox> {
 
   @override
   void initState() {
+    value = widget.value;
     super.initState();
-    if (widget.value != null) value = widget.value;
+  }
+
+  @override
+  void didUpdateWidget(covariant CheckBox oldWidget) {
+    if (oldWidget.value != widget.value)
+      setState(() {
+        value = widget.value;
+      });
+    super.didUpdateWidget(oldWidget);
   }
 
   @override

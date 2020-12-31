@@ -1,6 +1,5 @@
 enum HttpType { get, post, put, delete }
 enum LineType { outline, underline }
-enum ElasticButtonType { onlyScale, withOpacity }
 enum AutoScrollAnimation {
   ///  从左往右执行动画
   l2r,
@@ -168,3 +167,9 @@ enum PopupFromType {
   ///  从底部进入
   fromBottom,
 }
+
+enum CircularStrokeCap { butt, round, square }
+
+enum LinearStrokeCap { butt, round, roundAll }
+
+enum ArcType { half, full }

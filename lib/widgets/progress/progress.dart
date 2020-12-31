@@ -6,14 +6,6 @@ import 'package:vector_math/vector_math.dart';
 
 part 'progress_painter.dart';
 
-enum CircularStrokeCap { butt, round, square }
-
-enum LinearStrokeCap { butt, round, roundAll }
-
-enum ArcType { half, full }
-
-enum ProgressType { circular, linear }
-
 class Progress extends StatefulWidget {
   Progress.circular({
     Key key,
@@ -52,7 +44,7 @@ class Progress extends StatefulWidget {
             'arcType is required when you arcBackgroundColor'),
         backgroundColor = backgroundColor ?? getColors(black30),
         progressColor = progressColor ?? getColors(red),
-        type = ProgressType.circular,
+        type = 0,
         width = null,
         lineHeight = null,
         leading = null,
@@ -96,7 +88,7 @@ class Progress extends StatefulWidget {
             'Cannot provide both linearGradient and progressColor'),
         assert(percent > 0.0 || percent < 1.0,
             'Percent value must be a double between 0.0 and 1.0'),
-        type = ProgressType.linear,
+        type = 1,
         radius = null,
         lineWidth = null,
         backgroundWidth = null,
@@ -157,7 +149,7 @@ class Progress extends StatefulWidget {
   final Widget widgetIndicator;
 
   /// ProgressType
-  final ProgressType type;
+  final int type;
 
   //// circular
 
@@ -230,9 +222,9 @@ class Progress extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     switch (type) {
-      case ProgressType.circular:
+      case 0:
         return _CircularState();
-      case ProgressType.linear:
+      case 1:
         return _LinearState();
       default:
         return null;

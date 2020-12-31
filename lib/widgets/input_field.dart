@@ -318,7 +318,7 @@ class InputField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget child = textField(context);
+    Widget child = textField;
     if (extraPrefix != null || extraSuffix != null) {
       final List<Widget> row = <Widget>[];
       if (extraPrefix != null) row.add(extraPrefix);
@@ -336,7 +336,7 @@ class InputField extends StatelessWidget {
     return child;
   }
 
-  Widget textField(BuildContext context) => TextField(
+  Widget get textField => TextField(
         /// 长按输入的文字时，true显示系统的粘贴板  false不显示
         enableInteractiveSelection: enableInteractiveSelection,
 
@@ -391,7 +391,7 @@ class InputField extends StatelessWidget {
               /// 显示在输入框内，最后面的指定图片或其他Widget
               suffix: suffix,
 
-              ///  显示在输入的下划线外右下角的文字提示
+              /// 显示在输入的下划线外右下角的文字提示
               counterText: counterText,
 
               /// 显示在输入的下划线外右下角的文字提示,会覆盖maxLength的右下角显示的字数限制。
@@ -480,99 +480,15 @@ class InputField extends StatelessWidget {
       );
 
   List<TextInputFormatter> inputType() {
-    switch (inputTextType) {
-      case InputTextType.number:
-        return <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly];
-      case InputTextType.password:
-        return <TextInputFormatter>[
-          FilteringTextInputFormatter(RegExp(ConstConstant.regExpPassword),
-              allow: true)
-        ];
-
-      /// 密码常见类型
-      case InputTextType.lettersNumbers:
-        return <TextInputFormatter>[
-          FilteringTextInputFormatter(
-              RegExp(ConstConstant.regExpLettersNumbers),
-              allow: true)
-        ];
-
-      /// 字母和数字
-      case InputTextType.decimal:
-        return <TextInputFormatter>[
-          FilteringTextInputFormatter(RegExp(ConstConstant.regExpDecimal),
-              allow: true)
-        ];
-
-      /// 只允许输入小数
-      case InputTextType.letter:
-        return <TextInputFormatter>[
-          FilteringTextInputFormatter(RegExp(ConstConstant.regExpLetter),
-              allow: true)
-        ];
-
-      /// 只允许输入字母
-      case InputTextType.chinese:
-        return <TextInputFormatter>[
-          FilteringTextInputFormatter(RegExp(ConstConstant.regExpChinese),
-              allow: true)
-        ];
-
-      /// 只允许输入汉字
-      case InputTextType.email:
-        return <TextInputFormatter>[
-          FilteringTextInputFormatter(RegExp(ConstConstant.regExpEmail),
-              allow: true)
-        ];
-
-      /// 只允许输入邮箱
-      case InputTextType.phone:
-        return <TextInputFormatter>[
-          FilteringTextInputFormatter(RegExp(ConstConstant.regExpPhone),
-              allow: true)
-        ];
-
-      /// 只允许输入国内电话号
-      case InputTextType.mobilePhone:
-        return <TextInputFormatter>[
-          FilteringTextInputFormatter(RegExp(ConstConstant.regExpMobilePhone),
-              allow: true)
-        ];
-
-      /// 只允许输入国内手机号
-      case InputTextType.idCard:
-        return <TextInputFormatter>[
-          FilteringTextInputFormatter(RegExp(ConstConstant.regExpIdCard),
-              allow: true)
-        ];
-
-      /// 只允许输入身份证
-      case InputTextType.ip:
-        return <TextInputFormatter>[
-          FilteringTextInputFormatter(RegExp(ConstConstant.regExpIP),
-              allow: true)
-        ];
-
-      /// 只允许输入IP
-      case InputTextType.positive:
-        return <TextInputFormatter>[
-          FilteringTextInputFormatter(RegExp(ConstConstant.regExpPositive),
-              allow: true)
-        ];
-
-      /// 只允许输入正数
-      case InputTextType.negative:
-        return <TextInputFormatter>[
-          FilteringTextInputFormatter(RegExp(ConstConstant.regExpNegative),
-              allow: true)
-        ];
-
-      /// 只允许输入负数
-      case InputTextType.text:
-        return inputFormatter;
-      default:
-        return inputFormatter;
-    }
+    if (inputTextType == InputTextType.text) return <TextInputFormatter>[];
+    if (inputTextType == InputTextType.number)
+      return <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly];
+    final Map<InputTextType, String> regExpMap = ConstConstant.regExp;
+    final RegExp regExp = RegExp(regExpMap[inputTextType]);
+    if (regExp == null) return <TextInputFormatter>[];
+    return <TextInputFormatter>[
+      FilteringTextInputFormatter(regExp, allow: true)
+    ];
   }
 }
 
@@ -737,7 +653,7 @@ class NumberLimitFormatter extends TextInputFormatter {
   final int decimalLength;
   final int numberLength;
 
-  RegExp exp = RegExp(ConstConstant.regExpDecimal);
+  RegExp exp = RegExp(ConstConstant.regExp[InputTextType.decimal]);
 
   @override
   TextEditingValue formatEditUpdate(

@@ -49,7 +49,7 @@ Widget customElasticButton(String text, {GestureTapCallback onTap}) {
   return Container(
     margin: const EdgeInsets.symmetric(vertical: 10),
     child: ElasticButton(
-      elasticButtonType: ElasticButtonType.onlyScale,
+      withOpacity: true,
       onTap: onTap,
       child: Container(
         color: Colors.blueAccent,

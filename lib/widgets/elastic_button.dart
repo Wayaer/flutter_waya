@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/flutter_waya.dart';
 
 /// 弹性按钮
 class ElasticButton extends StatefulWidget {
   const ElasticButton({
     Key key,
-    ElasticButtonType elasticButtonType,
+    bool withOpacity,
     this.child,
     bool useCache,
     Alignment alignment,
@@ -45,14 +44,13 @@ class ElasticButton extends StatefulWidget {
     this.onScaleStart,
     this.onScaleUpdate,
     this.onScaleEnd,
-  })  : elasticButtonType = elasticButtonType ?? ElasticButtonType.onlyScale,
+  })  : withOpacity = withOpacity ?? false,
         scaleCoefficient = scaleCoefficient ?? 0.80,
         useCache = useCache ?? true,
         alignment = alignment ?? Alignment.center,
         super(key: key);
 
-  ///  Use this value to determine the type of animation to be played.
-  final ElasticButtonType elasticButtonType;
+  final bool withOpacity;
 
   ///  The widget that is to be displayed on your regular UI.
   final Widget child;
@@ -108,29 +106,21 @@ class ElasticButton extends StatefulWidget {
 
 class _ElasticButtonState extends State<ElasticButton>
     with SingleTickerProviderStateMixin {
-  ElasticButtonType elasticButtonType;
   Widget uiChild;
   bool useCache;
-  Alignment alignment;
   double scaleCoefficient;
 
-  ///  The [AnimationController] used to create the elastic effect.
   AnimationController animationController;
   Animation<double> animation;
   bool isSpringDown = false;
   bool isEnabled = true;
 
-  ///  Use this value to determine the depth of debug logging that is actually only here for myself and the Swiss scientists.
-  final int _debugLevel = 0;
-
   @override
   void initState() {
     super.initState();
-    elasticButtonType = widget.elasticButtonType;
     scaleCoefficient = widget.scaleCoefficient;
     if (scaleCoefficient > 1.0) scaleCoefficient = 1;
     useCache = widget.useCache;
-    alignment = widget.alignment;
     if (useCache) uiChild = wrapper;
     animationController = AnimationController(
         vsync: this,
@@ -140,12 +130,6 @@ class _ElasticButtonState extends State<ElasticButton>
     animationController.value = 1;
     animation = Tween<double>(begin: scaleCoefficient, end: 1.0).animate(
         CurvedAnimation(parent: animationController, curve: Curves.elasticOut));
-  }
-
-  @override
-  void dispose() {
-    animationController.dispose();
-    super.dispose();
   }
 
   bool get hasMultiple {
@@ -232,278 +216,271 @@ class _ElasticButtonState extends State<ElasticButton>
 
   void elasticDown() {
     if (!isEnabled) return;
-    if (_debugLevel > 0) print('elasticDown');
     isSpringDown = true;
     animationController.value = 0;
   }
 
   Future<void> elastic() async {
     if (!isEnabled) return;
-    if (_debugLevel > 0) print('elastic-1');
     isSpringDown = false;
     if (hasMultiple)
       await Future<dynamic>.delayed(const Duration(milliseconds: 5));
-    if (_debugLevel > 0) print('elastic-2');
     if (!isSpringDown) animationController.forward();
   }
 
   Future<void> elasticUp() async {
     if (!isEnabled) return;
-    if (_debugLevel > 0) print('elasticUp-1');
     isSpringDown = false;
     if (hasMultiple)
       await Future<dynamic>.delayed(const Duration(milliseconds: 500));
-    if (_debugLevel > 0) print('elasticUp-2');
     if (!isSpringDown) animationController.value = 1;
   }
 
   Widget get wrapper => GestureDetector(
-        behavior: HitTestBehavior.translucent,
-        onTapDown: !hasTap
-            ? null
-            : (_) {
-                elasticDown();
-                if (widget.onTapDown != null && isEnabled) widget.onTapDown(_);
-              },
-        onTapUp: !hasTap
-            ? null
-            : (_) {
-                elastic();
-                if (widget.onTapUp != null && isEnabled) widget.onTapUp(_);
-              },
-        onTap: !hasTap
-            ? null
-            : () {
-                if (widget.onTap != null && isEnabled) widget.onTap();
-              },
-        onTapCancel: !hasTap
-            ? null
-            : () {
-                elasticUp();
-                if (widget.onTapCancel != null && isEnabled)
-                  widget.onTapCancel();
-              },
-        onSecondaryTapDown: !hasSecondaryTap
-            ? null
-            : (_) {
-                elasticDown();
-                if (widget.onSecondaryTapDown != null && isEnabled)
-                  widget.onSecondaryTapDown(_);
-              },
-        onSecondaryTapUp: !hasSecondaryTap
-            ? null
-            : (_) {
-                elastic();
-                if (widget.onSecondaryTapUp != null && isEnabled)
-                  widget.onSecondaryTapUp(_);
-              },
-        onSecondaryTapCancel: !hasSecondaryTap
-            ? null
-            : () {
-                elasticUp();
-                if (widget.onSecondaryTapCancel != null && isEnabled)
-                  widget.onSecondaryTapCancel();
-              },
-        onDoubleTap: !hasDoubleTap
-            ? null
-            : () {
-                elasticDown();
-                elastic();
-                if (widget.onDoubleTap != null && isEnabled)
-                  widget.onDoubleTap();
-              },
-        onLongPress: !hasLongPress
-            ? null
-            : () {
-                if (widget.onLongPress != null && isEnabled)
-                  widget.onLongPress();
-              },
-        onLongPressStart: !hasLongPress
-            ? null
-            : (_) {
-                elasticDown();
-                if (widget.onLongPressStart != null && isEnabled)
-                  widget.onLongPressStart(_);
-              },
-        onLongPressMoveUpdate: !hasLongPress
-            ? null
-            : (_) {
-                if (widget.onLongPressMoveUpdate != null && isEnabled)
-                  widget.onLongPressMoveUpdate(_);
-              },
-        onLongPressUp: !hasLongPress
-            ? null
-            : () {
-                elastic();
-                if (widget.onLongPressUp != null && isEnabled)
-                  widget.onLongPressUp();
-              },
-        onLongPressEnd: !hasLongPress
-            ? null
-            : (_) {
-                if (widget.onLongPressEnd != null && isEnabled)
-                  widget.onLongPressEnd(_);
-              },
-        onVerticalDragDown: !hasVerticalDrag
-            ? null
-            : (_) {
-                if (widget.onVerticalDragDown != null && isEnabled)
-                  widget.onVerticalDragDown(_);
-              },
-        onVerticalDragStart: !hasVerticalDrag
-            ? null
-            : (_) {
-                elasticDown();
-                if (widget.onVerticalDragStart != null && isEnabled)
-                  widget.onVerticalDragStart(_);
-              },
-        onVerticalDragUpdate: !hasVerticalDrag
-            ? null
-            : (_) {
-                if (widget.onVerticalDragUpdate != null && isEnabled)
-                  widget.onVerticalDragUpdate(_);
-              },
-        onVerticalDragEnd: !hasVerticalDrag
-            ? null
-            : (_) {
-                elastic();
-                if (widget.onVerticalDragEnd != null && isEnabled)
-                  widget.onVerticalDragEnd(_);
-              },
-        onVerticalDragCancel: !hasVerticalDrag
-            ? null
-            : () {
-                elasticUp();
-                if (widget.onVerticalDragCancel != null && isEnabled)
-                  widget.onVerticalDragCancel();
-              },
-        onHorizontalDragDown: !hasHorizontalDrag
-            ? null
-            : (_) {
-                if (widget.onHorizontalDragDown != null && isEnabled)
-                  widget.onHorizontalDragDown(_);
-              },
-        onHorizontalDragStart: !hasHorizontalDrag
-            ? null
-            : (_) {
-                elasticDown();
-                if (widget.onHorizontalDragStart != null && isEnabled)
-                  widget.onHorizontalDragStart(_);
-              },
-        onHorizontalDragUpdate: !hasHorizontalDrag
-            ? null
-            : (_) {
-                if (widget.onHorizontalDragUpdate != null && isEnabled)
-                  widget.onHorizontalDragUpdate(_);
-              },
-        onHorizontalDragEnd: !hasHorizontalDrag
-            ? null
-            : (_) {
-                elastic();
-                if (widget.onHorizontalDragEnd != null && isEnabled)
-                  widget.onHorizontalDragEnd(_);
-              },
-        onHorizontalDragCancel: !hasHorizontalDrag
-            ? null
-            : () {
-                elasticUp();
-                if (widget.onHorizontalDragCancel != null && isEnabled)
-                  widget.onHorizontalDragCancel();
-              },
-        onForcePressStart: !hasForcePress
-            ? null
-            : (_) {
-                elasticDown();
-                if (widget.onForcePressStart != null && isEnabled)
-                  widget.onForcePressStart(_);
-              },
-        onForcePressPeak: !hasForcePress
-            ? null
-            : (_) {
-                if (widget.onForcePressPeak != null && isEnabled)
-                  widget.onForcePressPeak(_);
-              },
-        onForcePressUpdate: !hasForcePress
-            ? null
-            : (_) {
-                if (widget.onForcePressUpdate != null && isEnabled)
-                  widget.onForcePressUpdate(_);
-              },
-        onForcePressEnd: !hasForcePress
-            ? null
-            : (_) {
-                elastic();
-                if (widget.onForcePressEnd != null && isEnabled)
-                  widget.onForcePressEnd(_);
-              },
-        onPanDown: !hasPan
-            ? null
-            : (_) {
-                if (widget.onPanDown != null && isEnabled) widget.onPanDown(_);
-              },
-        onPanStart: !hasPan
-            ? null
-            : (_) {
-                elasticDown();
-                if (widget.onPanStart != null && isEnabled)
-                  widget.onPanStart(_);
-              },
-        onPanUpdate: !hasPan
-            ? null
-            : (_) {
-                if (widget.onPanUpdate != null && isEnabled)
-                  widget.onPanUpdate(_);
-              },
-        onPanEnd: !hasPan
-            ? null
-            : (_) {
-                elastic();
-                if (widget.onPanEnd != null && isEnabled) widget.onPanEnd(_);
-              },
-        onPanCancel: !hasPan
-            ? null
-            : () {
-                elasticUp();
-                if (widget.onPanCancel != null && isEnabled)
-                  widget.onPanCancel();
-              },
-        onScaleStart: !hasScale
-            ? null
-            : (_) {
-                elasticDown();
-                if (widget.onScaleStart != null && isEnabled)
-                  widget.onScaleStart(_);
-              },
-        onScaleUpdate: !hasScale
-            ? null
-            : (_) {
-                if (widget.onScaleUpdate != null && isEnabled)
-                  widget.onScaleUpdate(_);
-              },
-        onScaleEnd: !hasScale
-            ? null
-            : (_) {
-                elastic();
-                if (widget.onScaleEnd != null && isEnabled)
-                  widget.onScaleEnd(_);
-              },
-        child: widget.child,
-      );
+      behavior: HitTestBehavior.translucent,
+      onTapDown: !hasTap
+          ? null
+          : (_) {
+              elasticDown();
+              if (widget.onTapDown != null && isEnabled) widget.onTapDown(_);
+            },
+      onTapUp: !hasTap
+          ? null
+          : (_) {
+              elastic();
+              if (widget.onTapUp != null && isEnabled) widget.onTapUp(_);
+            },
+      onTap: !hasTap
+          ? null
+          : () {
+              if (widget.onTap != null && isEnabled) widget.onTap();
+            },
+      onTapCancel: !hasTap
+          ? null
+          : () {
+              elasticUp();
+              if (widget.onTapCancel != null && isEnabled) widget.onTapCancel();
+            },
+      onSecondaryTapDown: !hasSecondaryTap
+          ? null
+          : (_) {
+              elasticDown();
+              if (widget.onSecondaryTapDown != null && isEnabled)
+                widget.onSecondaryTapDown(_);
+            },
+      onSecondaryTapUp: !hasSecondaryTap
+          ? null
+          : (_) {
+              elastic();
+              if (widget.onSecondaryTapUp != null && isEnabled)
+                widget.onSecondaryTapUp(_);
+            },
+      onSecondaryTapCancel: !hasSecondaryTap
+          ? null
+          : () {
+              elasticUp();
+              if (widget.onSecondaryTapCancel != null && isEnabled)
+                widget.onSecondaryTapCancel();
+            },
+      onDoubleTap: !hasDoubleTap
+          ? null
+          : () {
+              elasticDown();
+              elastic();
+              if (widget.onDoubleTap != null && isEnabled) widget.onDoubleTap();
+            },
+      onLongPress: !hasLongPress
+          ? null
+          : () {
+              if (widget.onLongPress != null && isEnabled) widget.onLongPress();
+            },
+      onLongPressStart: !hasLongPress
+          ? null
+          : (_) {
+              elasticDown();
+              if (widget.onLongPressStart != null && isEnabled)
+                widget.onLongPressStart(_);
+            },
+      onLongPressMoveUpdate: !hasLongPress
+          ? null
+          : (_) {
+              if (widget.onLongPressMoveUpdate != null && isEnabled)
+                widget.onLongPressMoveUpdate(_);
+            },
+      onLongPressUp: !hasLongPress
+          ? null
+          : () {
+              elastic();
+              if (widget.onLongPressUp != null && isEnabled)
+                widget.onLongPressUp();
+            },
+      onLongPressEnd: !hasLongPress
+          ? null
+          : (_) {
+              if (widget.onLongPressEnd != null && isEnabled)
+                widget.onLongPressEnd(_);
+            },
+      onVerticalDragDown: !hasVerticalDrag
+          ? null
+          : (_) {
+              if (widget.onVerticalDragDown != null && isEnabled)
+                widget.onVerticalDragDown(_);
+            },
+      onVerticalDragStart: !hasVerticalDrag
+          ? null
+          : (_) {
+              elasticDown();
+              if (widget.onVerticalDragStart != null && isEnabled)
+                widget.onVerticalDragStart(_);
+            },
+      onVerticalDragUpdate: !hasVerticalDrag
+          ? null
+          : (_) {
+              if (widget.onVerticalDragUpdate != null && isEnabled)
+                widget.onVerticalDragUpdate(_);
+            },
+      onVerticalDragEnd: !hasVerticalDrag
+          ? null
+          : (_) {
+              elastic();
+              if (widget.onVerticalDragEnd != null && isEnabled)
+                widget.onVerticalDragEnd(_);
+            },
+      onVerticalDragCancel: !hasVerticalDrag
+          ? null
+          : () {
+              elasticUp();
+              if (widget.onVerticalDragCancel != null && isEnabled)
+                widget.onVerticalDragCancel();
+            },
+      onHorizontalDragDown: !hasHorizontalDrag
+          ? null
+          : (_) {
+              if (widget.onHorizontalDragDown != null && isEnabled)
+                widget.onHorizontalDragDown(_);
+            },
+      onHorizontalDragStart: !hasHorizontalDrag
+          ? null
+          : (_) {
+              elasticDown();
+              if (widget.onHorizontalDragStart != null && isEnabled)
+                widget.onHorizontalDragStart(_);
+            },
+      onHorizontalDragUpdate: !hasHorizontalDrag
+          ? null
+          : (_) {
+              if (widget.onHorizontalDragUpdate != null && isEnabled)
+                widget.onHorizontalDragUpdate(_);
+            },
+      onHorizontalDragEnd: !hasHorizontalDrag
+          ? null
+          : (_) {
+              elastic();
+              if (widget.onHorizontalDragEnd != null && isEnabled)
+                widget.onHorizontalDragEnd(_);
+            },
+      onHorizontalDragCancel: !hasHorizontalDrag
+          ? null
+          : () {
+              elasticUp();
+              if (widget.onHorizontalDragCancel != null && isEnabled)
+                widget.onHorizontalDragCancel();
+            },
+      onForcePressStart: !hasForcePress
+          ? null
+          : (_) {
+              elasticDown();
+              if (widget.onForcePressStart != null && isEnabled)
+                widget.onForcePressStart(_);
+            },
+      onForcePressPeak: !hasForcePress
+          ? null
+          : (_) {
+              if (widget.onForcePressPeak != null && isEnabled)
+                widget.onForcePressPeak(_);
+            },
+      onForcePressUpdate: !hasForcePress
+          ? null
+          : (_) {
+              if (widget.onForcePressUpdate != null && isEnabled)
+                widget.onForcePressUpdate(_);
+            },
+      onForcePressEnd: !hasForcePress
+          ? null
+          : (_) {
+              elastic();
+              if (widget.onForcePressEnd != null && isEnabled)
+                widget.onForcePressEnd(_);
+            },
+      onPanDown: !hasPan
+          ? null
+          : (_) {
+              if (widget.onPanDown != null && isEnabled) widget.onPanDown(_);
+            },
+      onPanStart: !hasPan
+          ? null
+          : (_) {
+              elasticDown();
+              if (widget.onPanStart != null && isEnabled) widget.onPanStart(_);
+            },
+      onPanUpdate: !hasPan
+          ? null
+          : (_) {
+              if (widget.onPanUpdate != null && isEnabled)
+                widget.onPanUpdate(_);
+            },
+      onPanEnd: !hasPan
+          ? null
+          : (_) {
+              elastic();
+              if (widget.onPanEnd != null && isEnabled) widget.onPanEnd(_);
+            },
+      onPanCancel: !hasPan
+          ? null
+          : () {
+              elasticUp();
+              if (widget.onPanCancel != null && isEnabled) widget.onPanCancel();
+            },
+      onScaleStart: !hasScale
+          ? null
+          : (_) {
+              elasticDown();
+              if (widget.onScaleStart != null && isEnabled)
+                widget.onScaleStart(_);
+            },
+      onScaleUpdate: !hasScale
+          ? null
+          : (_) {
+              if (widget.onScaleUpdate != null && isEnabled)
+                widget.onScaleUpdate(_);
+            },
+      onScaleEnd: !hasScale
+          ? null
+          : (_) {
+              elastic();
+              if (widget.onScaleEnd != null && isEnabled) widget.onScaleEnd(_);
+            },
+      child: widget.child);
 
   @override
   Widget build(BuildContext context) => AnimatedBuilder(
-        animation: animation,
-        child: useCache ? uiChild : null,
-        builder: (BuildContext context, Widget cachedChild) {
-          final Transform transform = Transform.scale(
-              scale: animation.value,
-              alignment: alignment,
-              child: useCache ? cachedChild : wrapper);
-          if (elasticButtonType == ElasticButtonType.withOpacity)
-            return Opacity(
-                opacity: animation.value.clamp(0.5, 1.0).toDouble(),
-                child: transform);
-          return transform;
-        },
-      );
+      animation: animation,
+      child: useCache ? uiChild : null,
+      builder: (BuildContext context, Widget cachedChild) {
+        final Transform transform = Transform.scale(
+            scale: animation.value,
+            alignment: widget.alignment,
+            child: useCache ? cachedChild : wrapper);
+        if (widget.withOpacity)
+          return Opacity(
+              opacity: animation.value.clamp(0.5, 1.0).toDouble(),
+              child: transform);
+        return transform;
+      });
+
+  @override
+  void dispose() {
+    animationController?.dispose();
+    super.dispose();
+  }
 }

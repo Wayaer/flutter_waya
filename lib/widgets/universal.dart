@@ -726,7 +726,7 @@ class SimpleButton extends StatelessWidget {
     this.maxLines,
     this.child,
     this.addInkWell,
-    this.elasticButtonType,
+    this.withOpacity,
     this.useCache,
     this.scaleCoefficient,
   })  : text = text ?? 'Button',
@@ -751,24 +751,24 @@ class SimpleButton extends StatelessWidget {
   final bool visible;
   final String heroTag;
   final BoxConstraints constraints;
-  final ElasticButtonType elasticButtonType;
+  final bool withOpacity;
   final bool isElastic;
   final bool useCache;
   final double scaleCoefficient;
 
   @override
   Widget build(BuildContext context) {
-    Widget widget = Text(text,
-        textAlign: TextAlign.start,
-        style: textStyle,
-        maxLines: maxLines,
-        overflow: overflow);
-    if (child != null) widget = child;
+    final Widget widget = child ??
+        Text(text,
+            textAlign: TextAlign.start,
+            style: textStyle,
+            maxLines: maxLines,
+            overflow: overflow);
     if (isElastic && onTap != null)
       return ElasticButton(
           child: universal(widget),
           onTap: onTap,
-          elasticButtonType: elasticButtonType,
+          withOpacity: withOpacity,
           scaleCoefficient: scaleCoefficient,
           useCache: useCache);
     return universal(widget, onTap: onTap);
