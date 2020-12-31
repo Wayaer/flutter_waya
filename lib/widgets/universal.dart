@@ -764,7 +764,7 @@ class SimpleButton extends StatelessWidget {
         maxLines: maxLines,
         overflow: overflow);
     if (child != null) widget = child;
-    if (isElastic)
+    if (isElastic && onTap != null)
       return ElasticButton(
           child: universal(widget),
           onTap: onTap,
