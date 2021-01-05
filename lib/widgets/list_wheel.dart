@@ -304,6 +304,7 @@ class _AutoScrollEntryState extends State<AutoScrollEntry> {
             magnification: 1,
             useMagnifier: false,
             squeeze: 2,
+            isCupertino: false,
             perspective: 0.00001,
             childDelegateType: ListWheelChildDelegateType.looping,
             children: widget.children,
