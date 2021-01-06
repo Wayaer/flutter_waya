@@ -30,13 +30,13 @@ OverlayEntryMap showOverlay(Widget widget, {bool isAutomaticOff}) {
 bool closeOverlay({OverlayEntryMap element}) {
   try {
     if (element != null) {
-      element.overlayEntry.remove();
+      element?.overlayEntry?.remove();
       if (_overlayEntryList.contains(element))
-        return _overlayEntryList.remove(element);
+        return _overlayEntryList?.remove(element);
     } else {
       if (_overlayEntryList.isNotEmpty) {
-        _overlayEntryList.last.overlayEntry.remove();
-        _overlayEntryList.remove(_overlayEntryList.last);
+        _overlayEntryList?.last?.overlayEntry?.remove();
+        _overlayEntryList?.remove(_overlayEntryList?.last);
       }
     }
   } catch (e) {
