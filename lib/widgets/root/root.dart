@@ -427,7 +427,7 @@ class _OverlayScaffoldState extends State<OverlayScaffold> {
         floatingActionButton: widget.floatingActionButton,
         floatingActionButtonAnimator: widget.floatingActionButtonAnimator,
         backgroundColor: widget.backgroundColor ?? getColors(background),
-        appBar: appBar(),
+        appBar: appBar,
         bottomNavigationBar: widget.bottomNavigationBar,
         body: widget.enablePullDown ||
                 widget.enablePullUp ||
@@ -466,7 +466,7 @@ class _OverlayScaffoldState extends State<OverlayScaffold> {
       header: widget.header,
       footer: widget.footer);
 
-  PreferredSizeWidget appBar() {
+  PreferredSizeWidget get appBar {
     if (widget.appBar is AppBar && widget.appBarHeight == null)
       return widget.appBar as AppBar;
     return widget.appBar == null
@@ -478,7 +478,7 @@ class _OverlayScaffoldState extends State<OverlayScaffold> {
   }
 
   Universal get universal => Universal(
-      color: widget.backgroundColor,
+      sizedBoxExpand: true,
       padding: widget.paddingStatusBar
           ? EdgeInsets.only(top: getStatusBarHeight)
           : widget.padding,

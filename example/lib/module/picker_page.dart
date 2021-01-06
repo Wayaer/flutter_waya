@@ -4,18 +4,16 @@ import 'package:waya/main.dart';
 
 class PickerPage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return OverlayScaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(title: const Text('Picker Demo'), centerTitle: true),
-      body: Universal(children: <Widget>[
-        customElasticButton('showAreaPicker', onTap: () => selectCity()),
-        customElasticButton('showChoicePicker',
-            onTap: () => showChoicePicker()),
-        customElasticButton('showDateTimePicker', onTap: () => selectTime()),
-      ]),
-    );
-  }
+  Widget build(BuildContext context) => OverlayScaffold(
+          backgroundColor: Colors.white,
+          appBar: AppBar(title: const Text('Picker Demo'), centerTitle: true),
+          children: <Widget>[
+            customElasticButton('showAreaPicker', onTap: () => selectCity()),
+            customElasticButton('showChoicePicker',
+                onTap: () => showChoicePicker()),
+            customElasticButton('showDateTimePicker',
+                onTap: () => selectTime()),
+          ]);
 
   Future<void> selectTime() async {
     final String text = await showDateTimePicker<String>(

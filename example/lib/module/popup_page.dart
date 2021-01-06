@@ -5,19 +5,16 @@ import 'package:waya/main.dart';
 
 class PopupPage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return OverlayScaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(title: const Text('Popup Demo'), centerTitle: true),
-      body: Universal(children: <Widget>[
-        customElasticButton('showBottomPopup', onTap: () => showBottom()),
-        customElasticButton('showDialogSureCancel',
-            onTap: () => push(ContentPage())),
-        customElasticButton('showBottomPagePopup',
-            onTap: () => showBottomPage()),
-      ]),
-    );
-  }
+  Widget build(BuildContext context) => OverlayScaffold(
+          backgroundColor: Colors.white,
+          appBar: AppBar(title: const Text('Popup Demo'), centerTitle: true),
+          children: <Widget>[
+            customElasticButton('showBottomPopup', onTap: () => showBottom()),
+            customElasticButton('showDialogSureCancel',
+                onTap: () => push(_ContentPage())),
+            customElasticButton('showBottomPagePopup',
+                onTap: () => showBottomPage()),
+          ]);
 
   void showBottomPage() {
     showBottomPagePopup<dynamic>(
@@ -60,16 +57,14 @@ class PopupPage extends StatelessWidget {
   }
 }
 
-class ContentPage extends StatelessWidget {
+class _ContentPage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return OverlayScaffold(
-        appBar: AppBar(title: const Text('Content'), centerTitle: true),
-        body: Center(
-          child: customElasticButton('showDialogSureCancel',
-              onTap: () => showDialogSureCancel()),
-        ));
-  }
+  Widget build(BuildContext context) => OverlayScaffold(
+          appBar: AppBar(title: const Text('Content'), centerTitle: true),
+          children: [
+            customElasticButton('showDialogSureCancel',
+                onTap: () => showDialogSureCancel()),
+          ]);
 
   void showDialogSureCancel() {
     const bool isOverlay = true;

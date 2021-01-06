@@ -68,24 +68,21 @@ class ScrollViewPage extends StatelessWidget {
               child: const Text('SliverAutoPersistentHeader'))),
     ];
     return OverlayScaffold(
-      backgroundColor: Colors.white,
-      appBar:
-          AppBar(title: const Text('ScrollViewAuto Demo'), centerTitle: true),
-      body: Universal(
+        backgroundColor: Colors.white,
+        appBar:
+            AppBar(title: const Text('ScrollViewAuto Demo'), centerTitle: true),
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           customElasticButton('ScrollViewAuto',
-              onTap: () => push(ScrollViewAutoPage(slivers))),
+              onTap: () => push(_ScrollViewAutoPage(slivers))),
           customElasticButton('ScrollViewAuto.nested',
-              onTap: () => push(ScrollViewAutoNestedPage(slivers))),
-        ],
-      ),
-    );
+              onTap: () => push(_ScrollViewAutoNestedPage(slivers))),
+        ]);
   }
 }
 
-class ScrollViewAutoNestedPage extends StatelessWidget {
-  const ScrollViewAutoNestedPage(this.slivers, {Key key}) : super(key: key);
+class _ScrollViewAutoNestedPage extends StatelessWidget {
+  const _ScrollViewAutoNestedPage(this.slivers, {Key key}) : super(key: key);
 
   final List<Widget> slivers;
 
@@ -94,14 +91,15 @@ class ScrollViewAutoNestedPage extends StatelessWidget {
       body: ScrollViewAuto.nested(
           slivers: slivers,
           body: Universal(
+              enablePullDown: true,
               isScroll: true,
               color: Colors.yellow,
               children: List<Widget>.generate(
                   50, (int index) => Text(index.toString())))));
 }
 
-class ScrollViewAutoPage extends StatelessWidget {
-  const ScrollViewAutoPage(this.slivers, {Key key}) : super(key: key);
+class _ScrollViewAutoPage extends StatelessWidget {
+  const _ScrollViewAutoPage(this.slivers, {Key key}) : super(key: key);
 
   final List<Widget> slivers;
 

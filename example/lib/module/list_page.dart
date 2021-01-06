@@ -19,11 +19,10 @@ class _ListPageState extends State<ListPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return OverlayScaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(title: const Text('SimpleList Demo'), centerTitle: true),
-      body: Universal(
+  Widget build(BuildContext context) => OverlayScaffold(
+          backgroundColor: Colors.white,
+          appBar:
+              AppBar(title: const Text('SimpleList Demo'), centerTitle: true),
           isScroll: true,
           enablePullDown: true,
           header: BezierCircleHeader(bezierColor: colors[0]),
@@ -37,7 +36,7 @@ class _ListPageState extends State<ListPage> {
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 width: double.infinity,
                 color: colors[0],
-                onTap: () => push(SimpleListRefreshed(colors))),
+                onTap: () => push(_SimpleListRefreshed(colors))),
             const Text('SimpleList.custom 单列')
                 .padding(const EdgeInsets.only(top: 10)),
             SimpleList.custom(
@@ -160,34 +159,30 @@ class _ListPageState extends State<ListPage> {
                             alignment: Alignment.center,
                             color: colors.last,
                             padding: const EdgeInsets.symmetric(vertical: 10))),
-          ]),
-    );
-  }
+          ]);
 }
 
-class SimpleListRefreshed extends StatelessWidget {
-  const SimpleListRefreshed(this.colors, {Key key}) : super(key: key);
+class _SimpleListRefreshed extends StatelessWidget {
+  const _SimpleListRefreshed(this.colors, {Key key}) : super(key: key);
 
   final List<Color> colors;
 
   @override
-  Widget build(BuildContext context) {
-    return OverlayScaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-          title: const Text('SimpleList Refreshed Demo'), centerTitle: true),
-      body: SimpleList.builder(
-          enablePullDown: true,
-          enablePullUp: true,
-          padding: const EdgeInsets.all(10),
-          header: BezierCircleHeader(bezierColor: colors[0]),
-          maxCrossAxisExtent: 60,
-          mainAxisSpacing: 10,
-          crossAxisSpacing: 10,
-          crossAxisCount: 4,
-          itemCount: colors.length,
-          itemBuilder: (_, int index) => Container(
-              color: colors[index], width: double.infinity, height: 40)),
-    );
-  }
+  Widget build(BuildContext context) => OverlayScaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+            title: const Text('SimpleList Refreshed Demo'), centerTitle: true),
+        body: SimpleList.builder(
+            enablePullDown: true,
+            enablePullUp: true,
+            padding: const EdgeInsets.all(10),
+            header: BezierCircleHeader(bezierColor: colors[0]),
+            maxCrossAxisExtent: 60,
+            mainAxisSpacing: 10,
+            crossAxisSpacing: 10,
+            crossAxisCount: 4,
+            itemCount: colors.length,
+            itemBuilder: (_, int index) => Container(
+                color: colors[index], width: double.infinity, height: 40)),
+      );
 }
