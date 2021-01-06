@@ -89,7 +89,7 @@ class PopupBase extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget child = childWidget();
+    Widget child = childWidget;
     if (gaussian) child = backdropFilter(child);
     if (addMaterial)
       child = Material(
@@ -106,7 +106,7 @@ class PopupBase extends StatelessWidget {
       filter: ImageFilter.blur(sigmaX: fuzzyDegree, sigmaY: fuzzyDegree),
       child: child);
 
-  Widget childWidget() => Universal(
+  Widget get childWidget => Universal(
       color: color,
       onTap: onTap,
       behavior: behavior,
