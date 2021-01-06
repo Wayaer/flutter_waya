@@ -260,27 +260,19 @@ class GlobalWidgetsApp extends StatelessWidget {
 
 ///  OverlayScaffold
 class OverlayScaffold extends StatefulWidget {
-  /// isScroll 和 isolationBody（body隔离出一个横条目）  不可同时使用
   const OverlayScaffold({
     Key key,
-    bool isScroll,
-    bool isolationBody,
     bool paddingStatusBar,
     bool enablePullDown,
+    bool enablePullUp,
+    bool enableTwoLevel,
     bool primary,
-
-    /// 试用使用primary主色
     bool extendBody,
     DragStartBehavior drawerDragStartBehavior,
     bool onWillPopOverlayClose,
     this.appBar,
     this.body,
     this.padding,
-    this.controller,
-    this.onRefresh,
-    this.header,
-    this.footer,
-    this.footerTextStyle,
     this.floatingActionButton,
 
     /// 悬浮按钮
@@ -308,28 +300,62 @@ class OverlayScaffold extends StatefulWidget {
     /// 内容的背景颜色，默认使用的是 ThemeData.scaffoldBackgroundColor 的值
     this.resizeToAvoidBottomPadding,
 
-    /// 类似于 Android 中的 android:windowSoftInputMode=”adjustResize”，控制界面内容 body 是否重新布局来避免底部被覆盖了，比如当键盘显示的时候，重新布局避免被键盘盖住内容。默认值为 true。
+    /// 类似于 Android 中的 android:windowSoftInputMode=”adjustResize”，
+    /// 控制界面内容 body 是否重新布局来避免底部被覆盖了，比如当键盘显示的时候，
+    /// 重新布局避免被键盘盖住内容。默认值为 true。
     this.resizeToAvoidBottomInset,
     this.onWillPop,
     this.appBarHeight,
-  })  : isScroll = isScroll ?? false,
-        isolationBody = isolationBody ?? false,
-        onWillPopOverlayClose = onWillPopOverlayClose ?? false,
+    this.children,
+    this.mainAxisAlignment,
+    this.crossAxisAlignment,
+    this.direction,
+    this.isStack,
+    this.isScroll,
+    this.onLoading,
+    this.onTwoLevel,
+    this.controller,
+    this.onRefresh,
+    this.header,
+    this.footer,
+  })  : onWillPopOverlayClose = onWillPopOverlayClose ?? false,
         paddingStatusBar = paddingStatusBar ?? false,
         enablePullDown = enablePullDown ?? false,
+        enablePullUp = enablePullUp ?? false,
+        enableTwoLevel = enableTwoLevel ?? false,
         primary = primary ?? true,
         extendBody = extendBody ?? false,
         drawerDragStartBehavior =
             drawerDragStartBehavior ?? DragStartBehavior.start,
         super(key: key);
 
-  final EdgeInsetsGeometry padding;
   final Color backgroundColor;
+
+  /// 主体部分
   final Widget body;
+
+  /// 相当于给[body] 套用 [Column]、[Row]、[Stack]
+  final List<Widget> children;
+
+  /// [children].length > 0 && [isStack]=false 有效;
+  final MainAxisAlignment mainAxisAlignment;
+
+  /// [children].length > 0 && [isStack]=false 有效;
+  final CrossAxisAlignment crossAxisAlignment;
+
+  /// [children].length > 0 && [isStack]=false 有效;
+  final Axis direction;
+
+  /// [children].length > 0有效;
+  /// 添加 [Stack]组件
+  final bool isStack;
+
+  /// 是否添加滚动组件
   final bool isScroll;
-  final bool isolationBody;
+
+  /// [body]top padding 出状态栏高度 [padding]!=null 时此参数无效
   final bool paddingStatusBar;
-  final bool enablePullDown;
+  final EdgeInsetsGeometry padding;
 
   ///  true 点击android实体返回按键先关闭Overlay【toast loading ...】但不pop 当前页面
   ///  false 点击android实体返回按键先关闭Overlay【toast loading ...】并pop 当前页面
@@ -340,10 +366,14 @@ class OverlayScaffold extends StatefulWidget {
 
   ///  刷新组件相关
   final RefreshController controller;
-  final VoidCallback onRefresh;
+  final bool enablePullDown;
+  final bool enablePullUp;
+  final bool enableTwoLevel;
   final Widget header;
   final Widget footer;
-  final TextStyle footerTextStyle;
+  final VoidCallback onRefresh;
+  final VoidCallback onLoading;
+  final VoidCallback onTwoLevel;
 
   ///  Scaffold相关属性
   final Widget bottomNavigationBar;
@@ -397,7 +427,11 @@ class _OverlayScaffoldState extends State<OverlayScaffold> {
         backgroundColor: widget.backgroundColor ?? getColors(background),
         appBar: appBar(),
         bottomNavigationBar: widget.bottomNavigationBar,
-        body: widget.enablePullDown ? refresherContainer() : container());
+        body: widget.enablePullDown ||
+                widget.enablePullUp ||
+                widget.enableTwoLevel
+            ? refresherUniversal
+            : universal);
     if (widget.onWillPop != null || widget.onWillPopOverlayClose) {
       scaffold = WillPopScope(
           child: scaffold, onWillPop: widget.onWillPop ?? onWillPop);
@@ -418,12 +452,17 @@ class _OverlayScaffoldState extends State<OverlayScaffold> {
     return true;
   }
 
-  Widget refresherContainer() => Refreshed(
+  Refreshed get refresherUniversal => Refreshed(
       enablePullDown: widget.enablePullDown,
+      enablePullUp: widget.enablePullUp,
+      enableTwoLevel: widget.enableTwoLevel,
+      onLoading: widget.onLoading,
+      onTwoLevel: widget.onTwoLevel,
       controller: widget.controller,
       onRefresh: widget.onRefresh,
-      child: container(),
-      header: widget.header);
+      child: universal,
+      header: widget.header,
+      footer: widget.footer);
 
   PreferredSizeWidget appBar() {
     if (widget.appBar is AppBar && widget.appBarHeight == null)
@@ -436,19 +475,18 @@ class _OverlayScaffoldState extends State<OverlayScaffold> {
                 getStatusBarHeight + widget.appBarHeight ?? 30));
   }
 
-  Widget container() => Container(
+  Universal get universal => Universal(
       color: widget.backgroundColor,
-      margin: widget.isolationBody
-          ? EdgeInsets.only(top: getHeight(10))
-          : EdgeInsets.zero,
       padding: widget.paddingStatusBar
           ? EdgeInsets.only(top: getStatusBarHeight)
           : widget.padding,
-      width: double.infinity,
-      height: double.infinity,
-      child: widget.isScroll
-          ? SingleChildScrollView(child: widget.body)
-          : widget.body);
+      isScroll: widget.isScroll,
+      isStack: widget.isStack,
+      direction: widget.direction,
+      children: widget.children,
+      mainAxisAlignment: widget.mainAxisAlignment,
+      crossAxisAlignment: widget.crossAxisAlignment,
+      child: widget.body);
 
   @override
   void deactivate() {
