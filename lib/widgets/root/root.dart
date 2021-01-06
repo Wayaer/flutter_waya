@@ -268,6 +268,8 @@ class OverlayScaffold extends StatefulWidget {
     bool enableTwoLevel,
     bool primary,
     bool extendBody,
+    bool isStack,
+    bool isScroll,
     DragStartBehavior drawerDragStartBehavior,
     bool onWillPopOverlayClose,
     this.appBar,
@@ -310,8 +312,6 @@ class OverlayScaffold extends StatefulWidget {
     this.mainAxisAlignment,
     this.crossAxisAlignment,
     this.direction,
-    this.isStack,
-    this.isScroll,
     this.onLoading,
     this.onTwoLevel,
     this.controller,
@@ -325,6 +325,8 @@ class OverlayScaffold extends StatefulWidget {
         enableTwoLevel = enableTwoLevel ?? false,
         primary = primary ?? true,
         extendBody = extendBody ?? false,
+        isStack = isStack ?? false,
+        isScroll = isScroll ?? false,
         drawerDragStartBehavior =
             drawerDragStartBehavior ?? DragStartBehavior.start,
         super(key: key);
