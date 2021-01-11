@@ -28,6 +28,21 @@ extension ExtensionNum on num {
     if (n.toString().length != 13) return null;
     return DateTime.fromMillisecondsSinceEpoch(n as int, isUtc: isUtc);
   }
+
+  /// [element] 无论是 int 还是 double  返回 num 自己的类型
+  /// [element] 是String  返回 String 类型
+  dynamic insert(int index, dynamic element) {
+    if (element is! num && element is! String) return this;
+    if (element is String) {
+      return toString().insert(index, element);
+    } else {
+      final String data =
+          toString().insert(index, (element as num).toInt().toString());
+      if (this is int) return num.parse(data).toInt();
+      if (this is double) return num.parse(data).toDouble();
+    }
+    return this;
+  }
 }
 
 /// int 扩展
