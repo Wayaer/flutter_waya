@@ -41,6 +41,9 @@ extension ExtensionInt on int {
 extension ExtensionString on String {
   int get parseInt => int.parse(this);
 
+  String insert(int index, String element) =>
+      '${substring(0, index)}$element${substring(index, length)}';
+
   double get parseDouble => double.parse(this);
 
   ///  md5 加密

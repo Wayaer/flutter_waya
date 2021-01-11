@@ -1,5 +1,6 @@
 ## [1.5.1]
   * add [Progress.circular] [Progress.linear]
+  * ExtensionString add insert void
 ## [1.5.0]
   * change Tools to Ts.
   * change GlobalMaterial to GlobalWidgetsApp.
