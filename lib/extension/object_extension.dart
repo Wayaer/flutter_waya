@@ -43,6 +43,10 @@ extension ExtensionNum on num {
     }
     return this;
   }
+
+  /// 是否包含 [other]
+  bool contains(Pattern other, [int startIndex = 0]) =>
+      toString().contains(other);
 }
 
 /// int 扩展
