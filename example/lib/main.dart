@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 import 'package:waya/module/carousel_page.dart';
+import 'package:waya/module/json_parse_page.dart';
 import 'package:waya/module/pages.dart';
 import 'package:waya/module/list_page.dart';
 import 'package:waya/module/picker_page.dart';
@@ -22,6 +23,7 @@ class Home extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 10),
         body: Wrap(runSpacing: 10, spacing: 10, children: <Widget>[
           customElasticButton('Toast', onTap: () => push(ToastPage())),
+          customElasticButton('JsonParse', onTap: () => push(JsonParsePage())),
           customElasticButton('Picker', onTap: () => push(PickerPage())),
           customElasticButton('Popup', onTap: () => push(PopupPage())),
           customElasticButton('PinBox', onTap: () => push(PinBoxPage())),
@@ -45,12 +47,11 @@ Widget customElasticButton(String text, {GestureTapCallback onTap}) =>
     Container(
       margin: const EdgeInsets.symmetric(vertical: 10),
       child: ElasticButton(
-        withOpacity: true,
-        onTap: onTap,
-        child: Container(
-          color: Colors.blueAccent,
-          padding: const EdgeInsets.all(10),
-          child: Text(text, style: const TextStyle(color: Colors.white)),
-        ),
-      ),
+          withOpacity: true,
+          onTap: onTap,
+          child: Container(
+            color: Colors.blueAccent,
+            padding: const EdgeInsets.all(10),
+            child: Text(text, style: const TextStyle(color: Colors.white)),
+          )),
     );

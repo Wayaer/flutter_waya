@@ -28,6 +28,7 @@ export 'widgets/gesture_widgets.dart';
 export 'widgets/icon.dart';
 export 'widgets/image.dart';
 export 'widgets/input_field.dart';
+export 'widgets/json_parse.dart';
 export 'widgets/list_view.dart';
 export 'widgets/list_wheel.dart';
 export 'widgets/progress/progress.dart';

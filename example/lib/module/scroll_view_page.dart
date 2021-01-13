@@ -14,34 +14,6 @@ class ScrollViewPage extends StatelessWidget {
         flexibleSpaceTitle:
             const Text('title', style: TextStyle(color: Colors.black)),
         background: Container(height: kToolbarHeight * 2, color: Colors.green),
-        // flexibleSpace: Container(
-        //   color: Colors.blue,
-        //   alignment: Alignment.bottomCenter,
-        //   child: Container(
-        //     height: 100,
-        //     margin: EdgeInsets.only(bottom: 10),
-        //     color: Colors.greenAccent,
-        //   ),
-        // ),
-        // flexibleSpace: FlexibleSpaceBar(
-        //   background: const Universal(
-        //     color: Colors.greenAccent,
-        //     alignment: Alignment.bottomLeft,
-        //     crossAxisAlignment: CrossAxisAlignment.start,
-        //     mainAxisAlignment: MainAxisAlignment.end,
-        //     padding: EdgeInsets.only(top: 100),
-        //     children: <Widget>[
-        //       Text('FlexibleSpaceBar background'),
-        //       Text('FlexibleSpaceBar background'),
-        //     ],
-        //   ),
-        //   title: Container(
-        //     alignment: Alignment.bottomRight,
-        //     child: const Text('年月日', style: TextStyle(fontSize: 12)),
-        //   ),
-        // ),
-
-        // bottom: Container(color: Colors.red, width: 100, height: 1),
       ),
       SliverAutoAppBar(
           pinned: true,
