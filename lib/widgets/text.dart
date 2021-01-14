@@ -2,6 +2,7 @@ import 'dart:ui' as ui show TextHeightBehavior;
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 
 //
 // class RichSpan extends StatelessWidget {
@@ -127,14 +128,15 @@ class RichSpan extends RichText {
     ui.TextHeightBehavior textHeightBehavior,
   }) : super(
             text: textSpans(
-                text: text ?? '',
-                style: style ?? const TextStyle(fontSize: 14),
-                texts: texts ?? <String>[],
-                styles: styles ?? <TextStyle>[],
-                recognizer: recognizer,
-                recognizers: recognizers,
-                semanticsLabel: semanticsLabel ?? text,
-                semanticsLabels: semanticsLabels),
+              text: text ?? '',
+              style: style ?? const TextStyle(fontSize: 14),
+              texts: texts ?? <String>[],
+              styles: styles ?? <TextStyle>[],
+              recognizer: recognizer,
+              recognizers: recognizers ?? <GestureRecognizer>[],
+              semanticsLabel: semanticsLabel ?? text,
+              semanticsLabels: semanticsLabels ?? <String>[],
+            ),
             key: key,
             textAlign: textAlign ?? TextAlign.center,
             softWrap: softWrap ?? true,
@@ -157,18 +159,18 @@ class RichSpan extends RichText {
     String semanticsLabel,
     List<String> semanticsLabels,
   }) {
-    if (texts.length > styles.length) {
+    if (texts.length > styles.length && styles.isNotEmpty) {
       styles.addAll(List<TextStyle>.generate(
           texts.length - styles.length, (int index) => styles.last));
     }
-    if (texts.length > semanticsLabels.length) {
+    if (texts.length > semanticsLabels.length && semanticsLabels.isNotEmpty) {
       semanticsLabels.addAll(List<String>.generate(
           texts.length - semanticsLabels.length,
           (int index) => semanticsLabel));
     }
-    if (texts.length > recognizers.length) {
+    if (texts.length > recognizers.length && recognizers.isNotEmpty) {
       recognizers.addAll(List<GestureRecognizer>.generate(
-          texts.length - styles.length, (int index) => recognizer));
+          texts.length - recognizers.length, (int index) => recognizer));
     }
     return TextSpan(
         text: text,
@@ -180,9 +182,10 @@ class RichSpan extends RichText {
             ?.entries
             ?.map((MapEntry<int, String> entry) => TextSpan(
                 text: entry.value,
-                semanticsLabel: semanticsLabels[entry.key],
-                recognizer: recognizers[entry.key],
-                style: styles[entry.key]))
+                semanticsLabel:
+                    semanticsLabels.isEmpty ? null : semanticsLabels[entry.key],
+                recognizer: recognizers.isEmpty ? null : recognizers[entry.key],
+                style: styles.isEmpty ? null : styles[entry.key]))
             ?.toList());
   }
 }
