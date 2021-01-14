@@ -26,7 +26,7 @@ class ConstConstant {
 
   static const String unknownException = 'unknown exception';
 
-  static const Map<int, HttpStatus> httpStatus = {
+  static const Map<int, HttpStatus> httpStatus = <int, HttpStatus>{
     404: HttpStatus(404, '网络请求失败', 'Failed'),
     420: HttpStatus(420, '网络请求已取消', 'Cancel'),
     408: HttpStatus(408, '网络连接超时', 'Connect Timeout'),

@@ -22,7 +22,7 @@ class JsonParsePage extends StatelessWidget {
 class _JsonParsePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Map<dynamic, dynamic> json =
+    final Map<dynamic, dynamic> json =
         jsonDecode('{"name":"BeJson","url":"http://www.bejson.com",'
                 '"page":88,"num":88.88,"isNonProfit":true,"address":'
                 '{"street":"科技园路.","city":"江苏苏州","country":"中国"},'

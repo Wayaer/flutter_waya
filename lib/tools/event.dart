@@ -1,7 +1,7 @@
 import 'dart:async';
 
-class EventBus<T> {
-  EventBus({bool sync = false})
+class Event<T> {
+  Event({bool sync = false})
       : _streamController = StreamController<T>.broadcast(sync: sync);
 
   ///  EventBus.customController(StreamController<T> controller) : _streamController = controller;
@@ -30,14 +30,14 @@ class EventFactory {
   factory EventFactory() => _getInstance();
 
   EventFactory._internal() {
-    event = EventBus<dynamic>();
+    event = Event<dynamic>();
   }
 
   static EventFactory get instance => _getInstance();
 
   static EventFactory _instance;
 
-  EventBus<dynamic> event;
+  Event<dynamic> event;
 
   static EventFactory _getInstance() {
     _instance ??= EventFactory._internal();
@@ -51,3 +51,49 @@ void eventDestroy() => EventFactory.instance.event.close();
 
 void eventListen(void onData(dynamic event)) =>
     EventFactory.instance.event.listen(onData);
+
+/// 订阅者回调签名
+typedef EventCallback = void Function(dynamic data);
+
+class EventBus {
+  /// 工厂构造函数
+  factory EventBus() => _singleton;
+
+  /// 私有构造函数
+  EventBus._internal();
+
+  /// 保存单例
+  static final EventBus _singleton = EventBus._internal();
+
+  /// 保存事件订阅者队列，key:事件名(id)，value: 对应事件的订阅者队列
+  final Map<dynamic, List<EventCallback>> _map =
+      <dynamic, List<EventCallback>>{};
+
+  /// 添加订阅者
+  void add(String eventName, EventCallback eventCallback) {
+    if (eventName == null || eventCallback == null) return;
+    _map[eventName] ??= <EventCallback>[];
+    _map[eventName].add(eventCallback);
+  }
+
+  /// 移除订阅者
+  void remove(dynamic eventName, [EventCallback eventCallback]) {
+    final List<EventCallback> list = _map[eventName];
+    if (eventName == null || list == null) return;
+    if (eventCallback == null) {
+      _map[eventName] = null;
+    } else {
+      list.remove(eventCallback);
+    }
+  }
+
+  /// 触发事件，事件触发后该事件所有订阅者会被调用
+  void emit(dynamic eventName, [dynamic data]) {
+    final List<EventCallback> list = _map[eventName];
+    if (list == null) return;
+    final int len = list.length - 1;
+
+    ///  反向遍历，防止订阅者在回调中移除自身带来的下标错位
+    for (int i = len; i > -1; --i) list[i](data);
+  }
+}

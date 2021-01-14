@@ -61,7 +61,7 @@ class _ContentPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => OverlayScaffold(
           appBar: AppBar(title: const Text('Content'), centerTitle: true),
-          children: [
+          children: <Widget>[
             customElasticButton('showDialogSureCancel',
                 onTap: () => showDialogSureCancel()),
           ]);

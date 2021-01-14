@@ -491,14 +491,6 @@ class _OverlayScaffoldState extends State<OverlayScaffold> {
       child: widget.body);
 
   @override
-  void deactivate() {
-    super.deactivate();
-    if (!widget.onWillPopOverlayClose &&
-        _overlayEntryList.isNotEmpty &&
-        !_overlayEntryList.last.autoOff) closeOverlay();
-  }
-
-  @override
   void dispose() {
     super.dispose();
     if (_scaffoldKeyList.contains(_globalKey))

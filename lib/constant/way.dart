@@ -72,12 +72,6 @@ TextStyle mergeTextStyle(TextStyle startStyle, TextStyle endStyle) {
   return endStyle;
 }
 
-class TitleWidget extends BaseText {
-  TitleWidget(String text)
-      : super(text,
-            color: getColors(white), fontSize: 16, fontWeight: FontWeight.w700);
-}
-
 ///  垂直线
 class LineVertical extends Container {
   LineVertical(
@@ -106,7 +100,7 @@ class PlaceholderChild extends StatelessWidget {
       child: Center(child: TextDefault('暂无数据')));
 }
 
-class TextDefault extends BaseText {
+class TextDefault extends _BaseText {
   TextDefault(String text,
       {Color color,
       int maxLines,
@@ -114,30 +108,34 @@ class TextDefault extends BaseText {
       TextStyle style,
       double fontSize,
       TextOverflow overflow,
+      FontWeight fontWeight,
       TextAlign textAlign})
       : super(text,
             color: color,
             maxLines: maxLines,
             height: height,
+            fontWeight: fontWeight,
             style: style,
             fontSize: fontSize ?? 14,
             overflow: overflow,
             textAlign: textAlign);
 }
 
-class TextSmall extends BaseText {
+class TextSmall extends _BaseText {
   TextSmall(String text,
       {Color color,
       int maxLines,
       double height,
       double fontSize,
       TextStyle style,
+      FontWeight fontWeight,
       TextOverflow overflow,
       TextAlign textAlign})
       : super(text,
             color: color,
             maxLines: maxLines,
             height: height,
+            fontWeight: fontWeight,
             style: style,
             fontSize: fontSize ?? 12,
             overflow: overflow,
@@ -145,8 +143,8 @@ class TextSmall extends BaseText {
 }
 
 ///  BaseText
-class BaseText extends Text {
-  BaseText(
+class _BaseText extends Text {
+  _BaseText(
     String text, {
     Color color,
     int maxLines,

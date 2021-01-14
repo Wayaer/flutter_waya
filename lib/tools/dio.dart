@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:cookie_jar/cookie_jar.dart';
@@ -22,8 +21,9 @@ const List<String> HTTP_CONTENT_TYPE = <String>[
 class DioTools {
   factory DioTools() => getInstance();
 
-  DioTools._internal({BaseOptions options}) {
+  DioTools._internal({BaseOptions options, bool logTs}) {
     _dio = Dio();
+    logTools = logTs ?? false;
     _initOptions(_dio, options: options);
     _dio.interceptors.add(InterceptorWrap());
   }
@@ -40,14 +40,15 @@ class DioTools {
   }
 
   Dio _dio;
+  bool logTools;
   final CancelToken _cancelToken = CancelToken();
 
   static DioTools _instance;
 
   static DioTools get instance => getInstance();
 
-  static DioTools getInstance({BaseOptions options}) =>
-      _instance ??= DioTools._internal(options: options);
+  static DioTools getInstance({BaseOptions options, bool logTs}) =>
+      _instance ??= DioTools._internal(options: options, logTs: logTs);
 
   Future<ResponseModel> getHttp(String url,
       {Map<String, dynamic> params,
@@ -81,24 +82,38 @@ class DioTools {
               queryParameters: params, cancelToken: _cancelToken);
           break;
       }
-      if (response == null) return constResponseModel();
-      final ResponseModel responseModel = response.data as ResponseModel;
-      if (responseModel?.request?.responseType != ResponseType.bytes &&
-          responseModel?.request?.responseType != ResponseType.stream) {
-        log('$httpType url:$url  responseData==  ${responseModel.toMap().toString()}');
+      ResponseModel responseModel = constResponseModel;
+      if (response != null) {
+        responseModel = response as ResponseModel;
+        if (responseModel?.request?.responseType != ResponseType.bytes &&
+            responseModel?.request?.responseType != ResponseType.stream) {
+          log('$httpType url:$url  responseData==  ${responseModel.toMap().toString()}');
+        }
       }
+      if (logTools) setHttpData(url, responseModel);
       return responseModel;
     } on DioError catch (e) {
-      final ResponseModel errorData =
-          ResponseModel.fromJson(jsonDecode(e.message) as Map<String, dynamic>);
-      log('error:$url  errorData==  ${errorData.toMap().toString()}');
-      return errorData;
+      final DioError error = e;
+      final ResponseModel errorResponse = error.response as ResponseModel;
+      errorResponse.type = error.type.toString();
+      errorResponse.request = error.request;
+      // ResponseModel.fromJson(jsonDecode(e.message) as Map<String, dynamic>);
+      log('error:$url  errorData==  ${errorResponse.toMap().toString()}');
+      if (logTools) setHttpData(url, errorResponse);
+      return errorResponse;
     } catch (e) {
-      return constResponseModel();
+      final ResponseModel responseModel = constResponseModel;
+      if (logTools) setHttpData(url, responseModel);
+      return responseModel;
     }
   }
 
-  ResponseModel constResponseModel() => ResponseModel(
+  void setHttpData(String url, ResponseModel res) {
+    httpDataOverlay ??= showOverlay(HttpDataPage(res));
+    eventBus.emit('httpData', res);
+  }
+
+  ResponseModel get constResponseModel => ResponseModel(
       statusCode: 404,
       type: DioErrorType.DEFAULT.toString(),
       statusMessage: ConstConstant.unknownException,
@@ -118,7 +133,7 @@ class DioTools {
       return await dio.download(url, savePath,
           cancelToken: _cancelToken, onReceiveProgress: onReceiveProgress);
     } catch (e) {
-      return constResponse();
+      return constResponse;
     }
   }
 
@@ -141,11 +156,11 @@ class DioTools {
           onSendProgress: onSendProgress,
           onReceiveProgress: onReceiveProgress);
     } catch (e) {
-      return constResponse();
+      return constResponse;
     }
   }
 
-  Response<dynamic> constResponse() => Response<dynamic>(
+  Response<dynamic> get constResponse => Response<dynamic>(
       statusCode: 404,
       statusMessage: ConstConstant.unknownException,
       data: null);
@@ -158,7 +173,7 @@ class InterceptorWrap extends InterceptorsWrapper {
 
   CookieJar cookieJar = CookieJar();
 
-  final ResponseModel responseModel = ResponseModel();
+  ResponseModel responseModel = ResponseModel();
 
   @override
   Future<void> onRequest(RequestOptions options) async {
@@ -207,7 +222,6 @@ class InterceptorWrap extends InterceptorsWrapper {
     responseModel.statusCode = response?.statusCode;
     responseModel.request = response?.request;
     responseModel.headers = response?.headers;
-    responseModel.isRedirect = response?.isRedirect;
     responseModel.redirects = response?.redirects;
     responseModel.extra = response?.extra;
     return responseModel;
@@ -250,7 +264,6 @@ class InterceptorWrap extends InterceptorsWrapper {
     }
     responseModel.request = err?.request;
     responseModel.headers = err?.response?.headers;
-    responseModel.isRedirect = err?.response?.isRedirect;
     responseModel.redirects = err?.response?.redirects;
     responseModel.extra = err?.response?.extra;
     responseModel.data = null;

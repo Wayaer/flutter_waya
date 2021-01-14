@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_waya/constant/way.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 class JsonParse extends StatefulWidget {
@@ -44,9 +45,9 @@ class _JsonParseState extends State<JsonParse> {
         row.add(const SizedBox(width: 14));
       }
       row.addAll(<Widget>[
-        Text(widget.isList || isTap(content) ? '[$key]:' : '$key:',
-            style: TextStyle(
-                color: content == null ? Colors.grey : Colors.purple[800])),
+        TextSmall(widget.isList || isTap(content) ? '[$key]:' : '$key:',
+            fontWeight: FontWeight.w400,
+            color: content == null ? Colors.grey : Colors.purple[800]),
         const SizedBox(width: 4),
         getValueWidget(content)
       ]);
@@ -99,7 +100,8 @@ class _JsonParseState extends State<JsonParse> {
       color = Colors.grey;
     }
     return Expanded(
-        child: Text(text, style: TextStyle(color: color), maxLines: 1));
+        child: TextSmall(text,
+            color: color, fontWeight: FontWeight.w400, maxLines: 1));
   }
 
   bool isTap(dynamic content) => !(content == null ||
@@ -108,4 +110,130 @@ class _JsonParseState extends State<JsonParse> {
       content is bool ||
       content is double ||
       (content is List && content.isEmpty));
+}
+
+OverlayEntryAuto httpDataOverlay;
+
+class HttpDataPage extends StatefulWidget {
+  const HttpDataPage(this.initData, {Key key}) : super(key: key);
+  final ResponseModel initData;
+
+  @override
+  _HttpDataPageState createState() => _HttpDataPageState();
+}
+
+EventBus eventBus = EventBus();
+
+class _HttpDataPageState extends State<HttpDataPage> {
+  List<ResponseModel> httpDataList = <ResponseModel>[];
+  final String eventName = 'httpData';
+  bool showData = false;
+  ValueNotifier<Offset> iconOffSet =
+      ValueNotifier<Offset>(Offset(50, getStatusBarHeight + 20));
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initData != null) httpDataList.insert(0, widget.initData);
+    Ts.addPostFrameCallback((Duration duration) {
+      eventBus.add(eventName, (dynamic data) {
+        if (data is ResponseModel) {
+          httpDataList.insert(0, data);
+          if (httpDataList.length > 20) httpDataList.removeLast();
+        }
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    eventBus.remove(eventName);
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final List<Widget> children = <Widget>[
+      ValueListenableBuilder<Offset>(
+        valueListenable: iconOffSet,
+        builder: (BuildContext context, Offset value, Widget child) =>
+            Positioned(
+                left: value.dx,
+                top: value.dy,
+                child: Universal(
+                    enabled: true,
+                    onTap: () => setState(() {
+                          showData = !showData;
+                        }),
+                    onDoubleTap: () {
+                      httpDataOverlay?.remove();
+                      httpDataOverlay = null;
+                    },
+                    onPanStart: (DragStartDetails details) =>
+                        updatePositioned(details.globalPosition),
+                    onPanUpdate: (DragUpdateDetails details) =>
+                        updatePositioned(details.globalPosition, true),
+                    decoration: BoxDecoration(
+                        color: getColors(blue), shape: BoxShape.circle),
+                    padding: const EdgeInsets.all(4),
+                    child: const Icon(Icons.bug_report_rounded,
+                        size: 16, color: Colors.white))),
+      )
+    ];
+    if (showData) children.insert(0, showUrl);
+    return Stack(children: children);
+  }
+
+  void updatePositioned(Offset offset, [bool isUpdate]) {
+    if (offset.dx > 1 &&
+        offset.dx < deviceWidth - 24 &&
+        offset.dy > getStatusBarHeight &&
+        offset.dy < deviceHeight - getBottomNavigationBarHeight - 24) {
+      double dy = offset.dy;
+      double dx = offset.dx;
+      iconOffSet.value = Offset(dx -= 12, dy -= 26);
+    }
+  }
+
+  Widget get showUrl => Universal(
+        margin: EdgeInsets.fromLTRB(10, getStatusBarHeight + 30, 10, 10),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: Colors.grey.withOpacity(0.8))),
+        child: SimpleList.builder(
+            itemCount: httpDataList.length,
+            padding: const EdgeInsets.all(10),
+            itemBuilder: (_, int index) {
+              final ResponseModel res = httpDataList[index];
+              bool showJson = false;
+              return Universal(
+                margin: const EdgeInsets.only(top: 10),
+                decoration: BoxDecoration(
+                    color: getColors(white), boxShadow: WayStyles.boxShadow()),
+                addInkWell: true,
+                builder: (_, StateSetter state) {
+                  return !showJson
+                      ? title(res.request.path, onTap: () {
+                          showJson = !showJson;
+                          state(() {});
+                        })
+                      : Column(children: <Widget>[
+                          title(res.request.path, onTap: () {
+                            showJson = !showJson;
+                            state(() {});
+                          }),
+                          JsonParse(res.data as Map<dynamic, dynamic>),
+                        ]);
+                },
+              );
+            }),
+      );
+
+  Widget title(String url, {GestureTapCallback onTap}) => SimpleButton(
+      padding: const EdgeInsets.all(10),
+      text: url ?? '',
+      maxLines: 2,
+      child: TextSmall(url),
+      onTap: onTap);
 }
