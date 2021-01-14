@@ -11,7 +11,7 @@ part 'root_part.dart';
 
 GlobalKey<NavigatorState> _globalNavigatorKey = GlobalKey();
 List<GlobalKey<State>> _scaffoldKeyList = <GlobalKey<State>>[];
-List<OverlayEntryMap> _overlayEntryList = <OverlayEntryMap>[];
+List<OverlayEntryAuto> _overlayEntryList = <OverlayEntryAuto>[];
 OverlayState _overlay;
 
 ///  GlobalWidgetsApp
@@ -447,7 +447,7 @@ class _OverlayScaffoldState extends State<OverlayScaffold> {
     if (!scaffoldWillPop) return scaffoldWillPop;
     if (widget.onWillPopOverlayClose &&
         _overlayEntryList.isNotEmpty &&
-        !_overlayEntryList.last.isAutomaticOff) {
+        !_overlayEntryList.last.autoOff) {
       closeOverlay();
       return false;
     }
@@ -495,7 +495,7 @@ class _OverlayScaffoldState extends State<OverlayScaffold> {
     super.deactivate();
     if (!widget.onWillPopOverlayClose &&
         _overlayEntryList.isNotEmpty &&
-        !_overlayEntryList.last.isAutomaticOff) closeOverlay();
+        !_overlayEntryList.last.autoOff) closeOverlay();
   }
 
   @override

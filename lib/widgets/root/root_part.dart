@@ -1,42 +1,47 @@
 part of 'root.dart';
 
 ///  ************ 以下为Scaffold Overlay *****************   ///
-class OverlayEntryMap {
-  OverlayEntryMap({this.overlayEntry, this.isAutomaticOff});
-
-  ///  Overlay
-  final OverlayEntry overlayEntry;
+class OverlayEntryAuto extends OverlayEntry {
+  OverlayEntryAuto({
+    WidgetBuilder builder,
+    bool autoOff = false,
+    Widget widget,
+    bool opaque = false,
+    bool maintainState = false,
+  })  : autoOff = autoOff ?? false,
+        super(
+            builder: builder ?? (_) => widget,
+            opaque: opaque ?? false,
+            maintainState: maintainState ?? false);
 
   ///  是否自动关闭
-  final bool isAutomaticOff;
+  final bool autoOff;
 }
 
 ///  自定义Overlay
-OverlayEntryMap showOverlay(Widget widget, {bool isAutomaticOff}) {
-  if (_overlay != null) _overlay = null;
+OverlayEntryAuto showOverlay(Widget widget, {bool autoOff}) {
   if (_scaffoldKeyList.isEmpty) return null;
-  _overlay =
+  _overlay ??=
       Overlay.of(_scaffoldKeyList?.last?.currentContext, rootOverlay: false);
   if (_overlay == null) return null;
-  final OverlayEntry entry = OverlayEntry(builder: (_) => widget);
-  _overlay.insert(entry);
-  final OverlayEntryMap entryMap = OverlayEntryMap(
-      overlayEntry: entry, isAutomaticOff: isAutomaticOff ?? false);
-  _overlayEntryList.add(entryMap);
-  return entryMap;
+  final OverlayEntryAuto entryAuto =
+      OverlayEntryAuto(autoOff: autoOff ?? false, widget: widget);
+  _overlay.insert(entryAuto);
+  _overlayEntryList.add(entryAuto);
+  return entryAuto;
 }
 
 ///  关闭最顶层的Overlay
-bool closeOverlay({OverlayEntryMap element}) {
+bool closeOverlay({OverlayEntryAuto entry}) {
   try {
-    if (element != null) {
-      element?.overlayEntry?.remove();
-      if (_overlayEntryList.contains(element))
-        return _overlayEntryList?.remove(element);
+    if (entry != null) {
+      entry?.remove();
+      if (_overlayEntryList.contains(entry))
+        return _overlayEntryList?.remove(entry);
     } else {
       if (_overlayEntryList.isNotEmpty) {
-        _overlayEntryList?.last?.overlayEntry?.remove();
-        _overlayEntryList?.remove(_overlayEntryList?.last);
+        _overlayEntryList?.last?.remove();
+        return _overlayEntryList?.remove(_overlayEntryList?.last);
       }
     }
   } catch (e) {
@@ -47,14 +52,13 @@ bool closeOverlay({OverlayEntryMap element}) {
 
 ///  关闭所有Overlay
 void closeAllOverlay() {
-  for (final OverlayEntryMap element in _overlayEntryList)
-    element.overlayEntry.remove();
-  _overlayEntryList = <OverlayEntryMap>[];
+  for (final OverlayEntryAuto element in _overlayEntryList) element?.remove();
+  _overlayEntryList = <OverlayEntryAuto>[];
 }
 
 ///  loading 加载框
 ///  关闭 closeOverlay();
-OverlayEntryMap showLoading({
+OverlayEntryAuto showLoading({
   Widget custom,
   String text,
   double value,
@@ -140,7 +144,7 @@ Future<void> showToast(String message,
     toast = TextDefault(message, color: getColors(white), maxLines: 4);
   }
 
-  final OverlayEntryMap entry = showOverlay(
+  final OverlayEntryAuto entry = showOverlay(
       PopupBase(
           ignoring: true,
           alignment: Alignment.center,
@@ -153,10 +157,10 @@ Future<void> showToast(String message,
                       borderRadius: BorderRadius.circular(5)),
               padding: const EdgeInsets.all(10),
               child: toast)),
-      isAutomaticOff: true);
+      autoOff: true);
   haveToast = true;
   Ts.timerTs(closeDuration ?? _duration, () {
-    closeOverlay(element: entry);
+    closeOverlay(entry: entry);
     haveToast = false;
   });
 }
