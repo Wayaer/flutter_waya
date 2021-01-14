@@ -14,7 +14,7 @@ class PopupBase extends StatelessWidget {
       bool gaussian,
       this.color,
       bool addMaterial,
-      bool handleTouch,
+      bool ignoring,
       double left,
       double top,
       double right,
@@ -37,7 +37,7 @@ class PopupBase extends StatelessWidget {
         alignment = alignment ?? Alignment.topLeft,
         gaussian = gaussian ?? false,
         addMaterial = addMaterial ?? false,
-        handleTouch = handleTouch ?? true,
+        ignoring = ignoring ?? false,
         fuzzyDegree = fuzzyDegree ?? 2,
         mainAxisSize = mainAxisSize ?? MainAxisSize.min,
         super(key: key);
@@ -53,8 +53,8 @@ class PopupBase extends StatelessWidget {
   /// 背景色
   final Color color;
 
-  /// true 底层不响应事件
-  final bool handleTouch;
+  /// false 底层不响应事件  true 底层响应事件
+  final bool ignoring;
 
   /// 是否添加Material Widget 部分组件需要基于Material
   final bool addMaterial;
@@ -96,9 +96,7 @@ class PopupBase extends StatelessWidget {
           color: getColors(transparent),
           child: MediaQuery(
               data: MediaQueryData.fromWindow(window), child: child));
-
-    if (!handleTouch)
-      child = IgnorePointer(ignoring: handleTouch, child: child);
+    if (ignoring) child = IgnorePointer(child: child);
     return child;
   }
 
@@ -364,7 +362,7 @@ class Loading extends Dialog {
     String text,
     Color backgroundColor,
     this.custom,
-    this.handleTouch,
+    this.ignoring,
     this.gaussian,
     this.animatedOpacity,
     this.value,
@@ -396,8 +394,8 @@ class Loading extends Dialog {
   final bool gaussian;
   final bool animatedOpacity;
 
-  /// 是否可以操作背景
-  final bool handleTouch;
+  /// 是否可以操作背景 默认false 不可操作
+  final bool ignoring;
 
   @override
   Widget build(BuildContext context) {
@@ -434,7 +432,7 @@ class Loading extends Dialog {
         margin: const EdgeInsets.only(top: 16),
         child: Text(text, style: textStyle)));
     return PopupBase(
-        handleTouch: handleTouch,
+        ignoring: ignoring,
         gaussian: gaussian,
         alignment: Alignment.center,
         onTap: () {},
