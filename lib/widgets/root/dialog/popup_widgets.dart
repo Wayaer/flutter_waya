@@ -426,7 +426,7 @@ class Loading extends Dialog {
     }
     children.add(Container(
         margin: const EdgeInsets.only(top: 16),
-        child: MergeText(text, style: textStyle)));
+        child: BasisText(text, style: textStyle)));
     return PopupBase(
         ignoring: ignoring,
         gaussian: gaussian,

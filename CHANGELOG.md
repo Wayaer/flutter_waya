@@ -1,7 +1,7 @@
 ## [1.6.0]
   * add [Progress.circular] [Progress.linear]
   * ExtensionString add insert void
-  * add [MergeText]  [BasisTextStyle] 
+  * add [BasisText]  [BasisTextStyle] 
   * modify [RichSpan] to [RichTextSpan]
 ## [1.5.0]
   * change Tools to Ts.

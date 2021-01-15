@@ -139,9 +139,9 @@ Future<void> showToast(String message,
         spacing: spacing ?? 10,
         size: size ?? 30,
         color: ConstColors.white,
-        title: MergeText(message, color: ConstColors.white, maxLines: 4));
+        title: BasisText(message, color: ConstColors.white, maxLines: 4));
   } else {
-    toast = MergeText(message, color: ConstColors.white, maxLines: 4);
+    toast = BasisText(message, color: ConstColors.white, maxLines: 4);
   }
 
   final OverlayEntryAuto entry = showOverlay(

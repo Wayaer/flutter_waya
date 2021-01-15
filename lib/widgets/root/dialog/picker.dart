@@ -15,9 +15,9 @@ class PickerSub {
       this.cancelTap,
       this.sureTap,
       this.sureIndexTap})
-      : sure = sure ?? MergeText('sure'),
-        title = title ?? MergeText('title'),
-        cancel = cancel ?? MergeText('cancel'),
+      : sure = sure ?? BasisText('sure'),
+        title = title ?? BasisText('title'),
+        cancel = cancel ?? BasisText('cancel'),
         height = height ?? ConstConstant.pickerHeight,
         backgroundColor = backgroundColor ?? ConstColors.white,
         titlePadding =
@@ -337,7 +337,7 @@ class _AreaPickerState extends State<AreaPicker> {
 
   Widget item(String value) => Container(
       alignment: Alignment.center,
-      child: MergeText(value,
+      child: BasisText(value,
           fontSize: 12, overflow: TextOverflow.ellipsis, style: contentStyle));
 
   void jumpToIndex(int index, FixedExtentScrollController controller,
@@ -676,7 +676,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
                       margin: const EdgeInsets.only(left: 2),
                       alignment: Alignment.center,
                       height: double.infinity,
-                      child: MergeText(unit, style: unitStyle))
+                      child: BasisText(unit, style: unitStyle))
                 ],
           child: widget.showUnit
               ? null
@@ -698,7 +698,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
           initialIndex: initialIndex,
           itemBuilder: (_, int index) => Container(
                 alignment: Alignment.center,
-                child: MergeText(
+                child: BasisText(
                     padLeft(startZero ?? true ? list[index] : list[index] + 1),
                     fontSize: 12,
                     style: contentStyle),

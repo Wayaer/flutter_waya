@@ -45,7 +45,7 @@ class _JsonParseState extends State<JsonParse> {
         row.add(const SizedBox(width: 14));
       }
       row.addAll(<Widget>[
-        MergeText(widget.isList || isTap(content) ? '[$key]:' : '$key:',
+        BasisText(widget.isList || isTap(content) ? '[$key]:' : '$key:',
             fontWeight: FontWeight.w400,
             color: content == null ? Colors.grey : Colors.purple[800]),
         const SizedBox(width: 4),
@@ -100,7 +100,7 @@ class _JsonParseState extends State<JsonParse> {
       color = Colors.grey;
     }
     return Expanded(
-        child: MergeText(text,
+        child: BasisText(text,
             color: color,
             fontWeight: FontWeight.w400,
             textAlign: TextAlign.left));
@@ -236,6 +236,6 @@ class _HttpDataPageState extends State<HttpDataPage> {
       padding: const EdgeInsets.all(10),
       text: url ?? '',
       maxLines: 2,
-      child: MergeText(url, textAlign: TextAlign.start),
+      child: BasisText(url, textAlign: TextAlign.start),
       onTap: onTap);
 }

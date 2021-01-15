@@ -194,7 +194,7 @@ class _CountDownSkipState extends State<CountDownSkip> {
       padding:
           EdgeInsets.symmetric(horizontal: getHeight(5), vertical: getWidth(4)),
       child:
-          MergeText(seconds.toString() + 's' + widget.skipText, fontSize: 12));
+          BasisText(seconds.toString() + 's' + widget.skipText, fontSize: 12));
 
   @override
   void dispose() {

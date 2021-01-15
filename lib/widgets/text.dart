@@ -143,8 +143,8 @@ class RichTextSpan extends RichText {
   }
 }
 
-class MergeText extends RichTextSpan {
-  MergeText(
+class BasisText extends RichTextSpan {
+  BasisText(
     String text, {
     Key key,
 

@@ -142,7 +142,7 @@ class _RefreshedState extends State<Refreshed> {
         },
       );
 
-  Widget footerText(String text) => MergeText(text,
+  Widget footerText(String text) => BasisText(text,
       style: const BasisTextStyle(fontSize: 13, color: ConstColors.black70));
 
   void onTwoLevel() {

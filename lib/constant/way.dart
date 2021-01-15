@@ -89,5 +89,5 @@ class PlaceholderChild extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
       margin: margin ?? const EdgeInsets.all(100),
-      child: Center(child: MergeText('暂无数据')));
+      child: Center(child: BasisText('暂无数据')));
 }

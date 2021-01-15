@@ -126,7 +126,7 @@ class IconBox extends StatelessWidget {
 
   Widget get titleWidget {
     if (title != null) return title;
-    return MergeText(titleText ?? '',
+    return BasisText(titleText ?? '',
         style:
             const BasisTextStyle(color: ConstColors.black70).merge(titleStyle),
         textAlign: textAlign,

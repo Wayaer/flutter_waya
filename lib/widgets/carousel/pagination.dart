@@ -138,12 +138,12 @@ class FractionPagination extends CarouselPlugin {
         direction: config.scrollDirection,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          MergeText('${config.activeIndex + 1}',
+          BasisText('${config.activeIndex + 1}',
               style:
                   BasisTextStyle(color: activeColor, fontSize: activeFontSize)),
-          MergeText('/',
+          BasisText('/',
               style: BasisTextStyle(color: color, fontSize: fontSize)),
-          MergeText('${config.itemCount}',
+          BasisText('${config.itemCount}',
               style: BasisTextStyle(color: color, fontSize: fontSize))
         ]);
   }

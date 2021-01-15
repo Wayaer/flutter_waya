@@ -759,7 +759,7 @@ class SimpleButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Widget widget = child ??
-        MergeText(text,
+        BasisText(text,
             textAlign: TextAlign.start,
             style: textStyle,
             maxLines: maxLines,

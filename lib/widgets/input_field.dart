@@ -824,7 +824,7 @@ class _PinBoxState extends State<PinBox> {
         decoration:
             hasFocus ? widget.pinDecoration : widget.hasFocusPinDecoration,
         alignment: Alignment.center,
-        child: MergeText(texts[i], style: widget?.pinTextStyle),
+        child: BasisText(texts[i], style: widget?.pinTextStyle),
       ));
     }
     return Row(
