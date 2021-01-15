@@ -12,6 +12,7 @@ GlobalKey<NavigatorState> _globalNavigatorKey = GlobalKey();
 List<GlobalKey<State>> _scaffoldKeyList = <GlobalKey<State>>[];
 List<OverlayEntryAuto> _overlayEntryList = <OverlayEntryAuto>[];
 OverlayState _overlay;
+EventBus eventBus = EventBus();
 
 ///  GlobalWidgetsApp
 class GlobalWidgetsApp extends StatelessWidget {
@@ -317,6 +318,8 @@ class OverlayScaffold extends StatefulWidget {
     this.onRefresh,
     this.header,
     this.footer,
+    this.margin,
+    this.decoration,
   })  : onWillPopOverlayClose = onWillPopOverlayClose ?? false,
         paddingStatusBar = paddingStatusBar ?? false,
         enablePullDown = enablePullDown ?? false,
@@ -357,6 +360,8 @@ class OverlayScaffold extends StatefulWidget {
   /// [body]top padding 出状态栏高度 [padding]!=null 时此参数无效
   final bool paddingStatusBar;
   final EdgeInsetsGeometry padding;
+  final EdgeInsetsGeometry margin;
+  final Decoration decoration;
 
   ///  true 点击android实体返回按键先关闭Overlay【toast loading ...】但不pop 当前页面
   ///  false 点击android实体返回按键先关闭Overlay【toast loading ...】并pop 当前页面
@@ -478,12 +483,14 @@ class _OverlayScaffoldState extends State<OverlayScaffold> {
 
   Universal get universal => Universal(
       expand: true,
+      margin: widget.margin,
       padding: widget.paddingStatusBar
           ? EdgeInsets.only(top: getStatusBarHeight)
           : widget.padding,
       isScroll: widget.isScroll,
       isStack: widget.isStack,
       direction: widget.direction,
+      decoration: widget.decoration,
       children: widget.children,
       mainAxisAlignment: widget.mainAxisAlignment,
       crossAxisAlignment: widget.crossAxisAlignment,

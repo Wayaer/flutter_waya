@@ -81,7 +81,7 @@ class RichTextSpan extends RichText {
             textWidthBasis: textWidthBasis ?? TextWidthBasis.parent,
             textScaleFactor: textScaleFactor ?? 1.0,
             textDirection: textDirection,
-            maxLines: maxLines,
+            maxLines: maxLines == null || maxLines < 1 ? 1 : maxLines,
             locale: locale,
             strutStyle: strutStyle,
             textHeightBehavior: textHeightBehavior);
@@ -107,7 +107,7 @@ class RichTextSpan extends RichText {
     String semanticsLabel,
     List<String> semanticsLabels,
   }) {
-    if (texts.length > styles.length && styles.isNotEmpty && style != null) {
+    if (texts.length > styles.length && styles.isNotEmpty) {
       styles.addAll(List<TextStyle>.generate(
           texts.length - styles.length, (int index) => styles.last));
     }
@@ -289,7 +289,7 @@ class BasisText extends RichTextSpan {
             textWidthBasis: textWidthBasis ?? TextWidthBasis.parent,
             textScaleFactor: textScaleFactor ?? 1.0,
             textDirection: textDirection,
-            maxLines: maxLines ?? 1,
+            maxLines: maxLines,
             locale: locale,
             strutStyle: strutStyle,
             textHeightBehavior: textHeightBehavior);

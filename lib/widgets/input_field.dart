@@ -352,7 +352,7 @@ class InputField extends StatelessWidget {
         focusNode: focusNode,
         autofocus: autoFocus,
         textInputAction: textInputAction,
-        inputFormatters: inputFormatter ?? inputType(),
+        inputFormatters: inputFormatter ?? inputType,
         cursorColor: cursorColor,
         cursorRadius: cursorRadius,
         cursorWidth: cursorWidth,
@@ -432,12 +432,6 @@ class InputField extends StatelessWidget {
               errorStyle: errorStyle,
               errorMaxLines: errorMaxLines,
 
-              /// 做多显示的行数  ，超过行数显示...
-              errorBorder: errorBorder,
-
-              /// 失去焦点时，error时下划线显示的边框样式，不设置则使用默认的的下划线
-              focusedErrorBorder: focusedErrorBorder,
-
               /// 获取焦点时，error时下划线显示的边框样式，不设置则使用默认的的下划线
               /// 输入框内文字 密集显示
               isDense: isDense ?? false,
@@ -453,14 +447,20 @@ class InputField extends StatelessWidget {
               /// 输入框内部的填充颜色  需filled=true
               filled: filled,
 
+              /// 是否启用输入框
+              enabled: enabled,
+
+              /// 做多显示的行数  ，超过行数显示...
+              errorBorder: errorBorder,
+
+              /// 失去焦点时，error时下划线显示的边框样式，不设置则使用默认的的下划线
+              focusedErrorBorder: focusedErrorBorder,
+
               /// 输入框禁用时，下划线的样式.如果设置了errorText，则此属性无效
               disabledBorder: disabledBorder,
 
               /// 输入框启用时，下划线的样式
               enabledBorder: enabledBorder,
-
-              /// 是否启用输入框
-              enabled: enabled,
 
               /// 获取焦点时，下划线的样式
               focusedBorder: focusedBorder,
@@ -481,8 +481,9 @@ class InputField extends StatelessWidget {
         onEditingComplete: onEditingComplete,
       );
 
-  List<TextInputFormatter> inputType() {
-    if (inputTextType == InputTextType.text) return <TextInputFormatter>[];
+  List<TextInputFormatter> get inputType {
+    if (inputTextType == null || inputTextType == InputTextType.text)
+      return <TextInputFormatter>[];
     if (inputTextType == InputTextType.number)
       return <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly];
     const Map<InputTextType, String> regExpMap = ConstConstant.regExp;
@@ -494,147 +495,110 @@ class InputField extends StatelessWidget {
   }
 }
 
-class SearchBox extends StatelessWidget {
-  const SearchBox({
+class SearchBox extends Universal {
+  SearchBox({
     Key key,
-    IconData icon,
-    EdgeInsetsGeometry contentPadding,
-    this.controller,
-    this.suffixIcon,
-    this.extraSuffix,
-    this.onChanged,
-    this.hintText,
-    this.hintStyle,
-    this.color,
-    this.heroTag,
-    double size,
-    this.inputStyle,
-    this.cursorColor,
-    this.labelSpacing,
-    this.searchText,
-    this.defaultBorder,
-    this.focusedBorder,
-    this.focusedBorderColor,
-    this.enabledBorderColor,
-    this.margin,
-    this.extraPrefix,
-    this.prefixIcon,
-    this.searchStyle,
-    this.searchTap,
-    this.search,
-    this.lineType,
-    this.decoration,
-    this.padding,
-    this.alignment,
-    this.fillColor,
-    this.height,
-    this.width,
-    this.autoFocus,
-    this.focusNode,
-    this.borderRadius,
-    this.borderSide,
-  })  : icon = icon ?? ConstIcon.search,
-        size = size ?? 15,
-        contentPadding = contentPadding ?? const EdgeInsets.all(6),
-        super(key: key);
 
-  final BorderSide borderSide;
-  final BorderRadius borderRadius;
-  final EdgeInsetsGeometry margin;
-  final EdgeInsetsGeometry padding;
-  final AlignmentGeometry alignment;
-  final Decoration decoration;
-  final String searchText;
-  final Widget search;
-  final TextStyle searchStyle;
-  final GestureTapCallback searchTap;
-  final double size;
-  final Color color;
-  final IconData icon;
-  final Widget prefixIcon;
-  final double labelSpacing;
-  final LineType lineType;
-  final TextEditingController controller;
-  final ValueChanged<String> onChanged;
-  final String hintText;
-  final TextStyle hintStyle;
-  final TextStyle inputStyle;
-  final Color cursorColor;
-  final InputBorder defaultBorder;
-  final InputBorder focusedBorder;
-  final Color focusedBorderColor;
-  final Color enabledBorderColor;
-  final Widget extraPrefix;
-  final Widget extraSuffix;
-  final EdgeInsetsGeometry contentPadding;
-  final Color fillColor;
-  final double height;
-  final double width;
-  final bool autoFocus;
-  final FocusNode focusNode;
-  final Widget suffixIcon;
-  final String heroTag;
+    /// icon 样式
+    Color color,
+    IconData icon = ConstIcon.search,
+    double size = 15,
 
-  @override
-  Widget build(BuildContext context) {
-    List<Widget> children = <Widget>[];
-    if (extraSuffix == null && extraPrefix == null) {
-      children = null;
-    } else {
-      if (extraPrefix != null) children.add(extraPrefix);
-      children.add(Expanded(child: heroTextInput()));
-      if (extraSuffix != null) children.add(extraSuffix);
-    }
-    return Universal(
-        decoration: decoration,
-        margin: margin,
-        height: height,
-        width: width,
-        alignment: alignment,
-        padding: padding,
-        direction: Axis.horizontal,
-        children: children,
-        child: extraPrefix == null ? heroTextInput() : null);
-  }
+    /// [Universal]
+    EdgeInsetsGeometry margin,
+    EdgeInsetsGeometry padding,
+    AlignmentGeometry alignment,
+    Decoration decoration,
+    double height,
+    double width,
+    String heroTag,
 
-  Widget heroTextInput() {
-    if (heroTag != null) return Hero(tag: heroTag, child: textInput);
-    return textInput;
-  }
+    /// [InputField]
+    EdgeInsetsGeometry contentPadding = const EdgeInsets.all(6),
+    TextEditingController controller,
+    ValueChanged<String> onChanged,
+    Color cursorColor,
+    Color fillColor,
+    bool autoFocus,
+    FocusNode focusNode,
 
-  Widget get textInput => InputField(
-      controller: controller,
-      isDense: true,
-      focusNode: focusNode,
-      fillColor: fillColor,
-      filled: true,
-      focusedBorder: inputBorder(
-          focusedBorderColor ?? enabledBorderColor ?? ConstColors.blue),
-      enabledBorder: inputBorder(enabledBorderColor ?? ConstColors.white50),
-      inputStyle: inputStyle,
-      contentPadding: contentPadding,
-      hintStyle: hintStyle,
-      hintText: hintText,
-      cursorColor: cursorColor ?? enabledBorderColor ?? ConstColors.blue,
-      prefixIcon: prefix,
-      onChanged: onChanged,
-      autoFocus: autoFocus,
-      suffix: suffix,
-      suffixIcon: suffixIcon,
-      enableInteractiveSelection: true);
+    /// Border
+    LineType lineType,
+    BorderSide borderSide,
+    BorderRadius borderRadius,
+    Color focusedBorderColor,
+    Color enabledBorderColor,
 
-  Widget get prefix => prefixIcon ?? Icon(icon, size: size, color: color);
+    /// 文本
+    String searchText,
+    String hintText,
+    TextStyle searchStyle,
+    TextStyle hintStyle,
+    TextStyle inputStyle,
 
-  Widget get suffix =>
-      search ??
-      SimpleButton(
-          text: searchText ?? 'search',
-          onTap: searchTap,
-          padding: const EdgeInsets.symmetric(horizontal: 4),
-          textStyle: const BasisTextStyle(color: ConstColors.white)
-              .merge(searchStyle));
+    /// 前缀和后缀
+    GestureTapCallback searchTap,
+    Widget search,
+    Widget suffixIcon,
+    Widget extraSuffix,
+    Widget prefix,
+    Widget prefixIcon,
+    Widget extraPrefix,
+  }) : super(
+            key: key,
+            decoration: decoration,
+            margin: margin,
+            height: height,
+            width: width,
+            alignment: alignment,
+            padding: padding,
+            heroTag: heroTag,
+            child: InputField(
+                controller: controller,
+                isDense: true,
+                focusNode: focusNode,
+                fillColor: fillColor,
+                filled: true,
+                focusedBorder: inputBorder(
+                    color: focusedBorderColor ??
+                        enabledBorderColor ??
+                        ConstColors.blue,
+                    borderRadius: borderRadius,
+                    borderSide: borderSide,
+                    lineType: lineType),
+                enabledBorder: inputBorder(
+                    color: enabledBorderColor ?? ConstColors.white50,
+                    borderRadius: borderRadius,
+                    borderSide: borderSide,
+                    lineType: lineType),
+                inputStyle: inputStyle,
+                contentPadding: contentPadding,
+                hintStyle: hintStyle,
+                hintText: hintText,
+                cursorColor:
+                    cursorColor ?? enabledBorderColor ?? ConstColors.blue,
+                prefix: prefix,
+                prefixIcon: prefixIcon ?? Icon(icon, size: size, color: color),
+                extraPrefix: extraPrefix,
+                onChanged: onChanged,
+                autoFocus: autoFocus,
+                suffix: search ??
+                    SimpleButton(
+                        text: searchText ?? 'search',
+                        onTap: searchTap,
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        textStyle:
+                            const BasisTextStyle(color: ConstColors.white)
+                                .merge(searchStyle)),
+                suffixIcon: suffixIcon,
+                extraSuffix: extraSuffix,
+                enableInteractiveSelection: true));
 
-  InputBorder inputBorder(Color color) {
+  static InputBorder inputBorder(
+      {@required Color color,
+      @required LineType lineType,
+      @required BorderRadius borderRadius,
+      @required BorderSide borderSide}) {
     if (lineType == LineType.outline) {
       return OutlineInputBorder(
           borderRadius: borderRadius ?? BorderRadius.circular(0),
@@ -868,8 +832,8 @@ class _PinBoxState extends State<PinBox> {
 
   @override
   void dispose() {
-    focusNode.dispose();
-    controller.dispose();
+    focusNode?.dispose();
+    controller?.dispose();
     super.dispose();
   }
 }

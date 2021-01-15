@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/constant/model.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
+const String refreshEvent = 'refreshEvent';
+
 /// Constant
 class ConstConstant {
   /// 全局圆角大小
@@ -23,8 +25,6 @@ class ConstConstant {
   static const double listWheelMagnification = 1.1;
 
   static const String success = 'success';
-
-  // static const String unknownException = 'unknown exception';
 
   static const Map<int, HttpStatus> httpStatus = <int, HttpStatus>{
     100: HttpStatus(100, '未知异常', 'unknown exception'),

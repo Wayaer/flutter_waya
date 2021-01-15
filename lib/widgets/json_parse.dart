@@ -124,7 +124,7 @@ class HttpDataPage extends StatefulWidget {
   _HttpDataPageState createState() => _HttpDataPageState();
 }
 
-EventBus eventBus = EventBus();
+
 
 class _HttpDataPageState extends State<HttpDataPage> {
   List<ResponseModel> httpDataList = <ResponseModel>[];
