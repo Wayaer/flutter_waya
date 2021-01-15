@@ -494,7 +494,7 @@ class Universal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget widget = Container();
+    Widget widget = const SizedBox();
     if (child != null) widget = child;
     if (children != null && children.isNotEmpty) {
       widget = isStack ? stackWidget(children) : flexWidget(children);
