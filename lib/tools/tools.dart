@@ -83,18 +83,18 @@ class Ts {
       Timer.periodic(duration, (Timer time) => callback(time));
 
   static void setStatusBarLight(bool isLight) {
-    final Color color = getColors(transparent);
+    final Color color = ConstColors.transparent;
     if (isLight is bool) {
       SystemChrome.setSystemUIOverlayStyle(isLight
           ? SystemUiOverlayStyle(
-              systemNavigationBarColor: getColors(black70),
-              systemNavigationBarDividerColor: getColors(transparent),
+              systemNavigationBarColor: ConstColors.black70,
+              systemNavigationBarDividerColor: ConstColors.transparent,
               statusBarColor: color,
               systemNavigationBarIconBrightness: Brightness.light,
               statusBarIconBrightness: Brightness.light,
               statusBarBrightness: Brightness.dark)
           : SystemUiOverlayStyle(
-              systemNavigationBarColor: getColors(black70),
+              systemNavigationBarColor: ConstColors.black70,
               systemNavigationBarDividerColor: color,
               statusBarColor: color,
               systemNavigationBarIconBrightness: Brightness.light,

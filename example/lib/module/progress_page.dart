@@ -50,22 +50,22 @@ class _ProgressPageState extends State<ProgressPage> {
                 widgetIndicator:
                     Container(width: 20, height: 20, color: Colors.amber)),
             const SizedBox(height: 20),
-            Progress.circular(
+            const Progress.circular(
                 radius: 120,
                 lineWidth: 15,
                 animation: true,
                 percent: 0.7,
                 arcType: ArcType.full,
                 arcBackgroundColor: Colors.cyan,
-                center: const Text('70.0%',
+                center: Text('70.0%',
                     style:
                         TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0)),
-                footer: const Text('CircularProgress',
+                footer: Text('CircularProgress',
                     style:
                         TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0)),
                 circularStrokeCap: CircularStrokeCap.round,
-                linearGradient: const LinearGradient(
-                    colors: <Color>[Colors.red, Colors.blue]))
+                linearGradient:
+                    LinearGradient(colors: <Color>[Colors.red, Colors.blue]))
           ]);
 
   @override

@@ -3,7 +3,7 @@ import 'package:flutter_waya/flutter_waya.dart';
 
 /// 九宫格解锁
 class GestureLock extends StatefulWidget {
-  GestureLock(
+  const GestureLock(
       {Key key,
       @required this.size,
       Color selectColor,
@@ -16,8 +16,8 @@ class GestureLock extends StatefulWidget {
       this.onPanUp,
       this.onPanDown,
       this.immediatelyClear = true})
-      : selectColor = selectColor ?? getColors(greenAccent),
-        unSelectColor = unSelectColor ?? getColors(black30),
+      : selectColor = selectColor ?? ConstColors.greenAccent,
+        unSelectColor = unSelectColor ?? ConstColors.black30,
         super(key: key);
 
   final double size;

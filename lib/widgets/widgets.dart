@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/constant/way.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 class NoScrollBehavior extends ScrollBehavior {
@@ -92,13 +91,15 @@ class _SendSMSState extends State<SendSMS> {
                   : Border.all(
                       width: widget.borderWidth ?? 0,
                       color: seconds == 0
-                          ? (widget.defaultBorderColor ?? getColors(blue))
-                          : (widget.notTapBorderColor ?? getColors(black70))),
+                          ? (widget.defaultBorderColor ?? ConstColors.blue)
+                          : (widget.notTapBorderColor ?? ConstColors.black70)),
               borderRadius: widget.borderRadius ?? BorderRadius.circular(20)),
       child: Text(verifyStr,
           style: seconds == 0
-              ? widget.defaultTextStyle ?? TextStyleBlue(fontSize: 13)
-              : widget.notTapTextStyle ?? TextStyleBlack70(fontSize: 13)),
+              ? const BasisTextStyle(fontSize: 13, color: ConstColors.blue)
+                  .merge(widget?.defaultTextStyle)
+              : const BasisTextStyle(fontSize: 13, color: ConstColors.black70)
+                  .merge(widget?.notTapTextStyle)),
     );
   }
 
@@ -188,11 +189,12 @@ class _CountDownSkipState extends State<CountDownSkip> {
       onTap: widget.onTap,
       decoration: widget.decoration ??
           BoxDecoration(
-              color: getColors(white50),
+              color: ConstColors.white50,
               borderRadius: BorderRadius.circular(5)),
       padding:
           EdgeInsets.symmetric(horizontal: getHeight(5), vertical: getWidth(4)),
-      child: TextSmall(seconds.toString() + 's' + widget.skipText));
+      child:
+          MergeText(seconds.toString() + 's' + widget.skipText, fontSize: 12));
 
   @override
   void dispose() {
@@ -328,7 +330,7 @@ class HintDot extends StatelessWidget {
       width: pointChild == null ? (pointSize ?? 4) : null,
       height: pointChild == null ? (pointSize ?? 4) : null,
       decoration: BoxDecoration(
-          color: pointColor ?? getColors(red), shape: BoxShape.circle));
+          color: pointColor ?? ConstColors.red, shape: BoxShape.circle));
 }
 
 class CustomDrawer extends StatefulWidget {

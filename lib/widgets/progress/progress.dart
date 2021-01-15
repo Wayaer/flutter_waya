@@ -7,7 +7,7 @@ import 'package:vector_math/vector_math.dart';
 part 'progress_painter.dart';
 
 class Progress extends StatefulWidget {
-  Progress.circular({
+  const Progress.circular({
     Key key,
     this.percent = 0.0,
     this.lineWidth = 5.0,
@@ -42,8 +42,8 @@ class Progress extends StatefulWidget {
             'Percent value must be a double between 0.0 and 1.0'),
         assert(arcType == null || arcBackgroundColor != null,
             'arcType is required when you arcBackgroundColor'),
-        backgroundColor = backgroundColor ?? getColors(black30),
-        progressColor = progressColor ?? getColors(red),
+        backgroundColor = backgroundColor ?? ConstColors.black30,
+        progressColor = progressColor ?? ConstColors.red,
         type = 0,
         width = null,
         lineHeight = null,
@@ -56,7 +56,7 @@ class Progress extends StatefulWidget {
         clipLinearGradient = null,
         super(key: key);
 
-  Progress.linear({
+  const Progress.linear({
     Key key,
     this.percent = 0.0,
     this.lineHeight = 5.0,
@@ -81,8 +81,8 @@ class Progress extends StatefulWidget {
     this.restartAnimation = false,
     this.onAnimationEnd,
     this.widgetIndicator,
-  })  : backgroundColor = backgroundColor ?? getColors(black30),
-        progressColor = progressColor ?? getColors(red),
+  })  : backgroundColor = backgroundColor ?? ConstColors.black30,
+        progressColor = progressColor ?? ConstColors.red,
         assert(curve != null),
         assert(linearGradient != null || progressColor != null,
             'Cannot provide both linearGradient and progressColor'),

@@ -126,8 +126,9 @@ class IconBox extends StatelessWidget {
 
   Widget get titleWidget {
     if (title != null) return title;
-    return Text(titleText ?? '',
-        style: titleStyle,
+    return MergeText(titleText ?? '',
+        style:
+            const BasisTextStyle(color: ConstColors.black70).merge(titleStyle),
         textAlign: textAlign,
         maxLines: maxLines,
         textDirection: textDirection,
@@ -185,8 +186,8 @@ class CheckBox extends StatefulWidget {
       bool value})
       : size = size ?? getWidth(17),
         value = value ?? false,
-        uncheckColor = uncheckColor ?? getColors(black70),
-        checkColor = checkColor ?? getColors(white),
+        uncheckColor = uncheckColor ?? ConstColors.black70,
+        checkColor = checkColor ?? ConstColors.white,
         mainAxisAlignment = mainAxisAlignment ?? MainAxisAlignment.center,
         crossAxisAlignment = crossAxisAlignment ?? CrossAxisAlignment.center,
         super(key: key);

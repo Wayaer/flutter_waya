@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/constant/way.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 typedef ValueCallback<int> = void Function(int titleIndex, int valueIndex);
@@ -93,7 +92,7 @@ class PopupBase extends StatelessWidget {
     if (gaussian) child = backdropFilter(child);
     if (addMaterial)
       child = Material(
-          color: getColors(transparent),
+          color: ConstColors.transparent,
           child: MediaQuery(
               data: MediaQueryData.fromWindow(window), child: child));
     if (ignoring) child = IgnorePointer(child: child);
@@ -190,7 +189,7 @@ class _DropdownMenuState extends State<DropdownMenu> {
         itemBuilder: (_, int i) => SimpleButton(
               text: value[index][i],
               width: double.infinity,
-              textStyle: widget.valueStyle ?? TextStyleBlack70(),
+              textStyle: widget.valueStyle,
               onTap: () {
                 if (widget.valueTap != null) widget.valueTap(index, i);
                 changeState(index);
@@ -199,7 +198,8 @@ class _DropdownMenuState extends State<DropdownMenu> {
               decoration: widget.itemDecoration ??
                   BoxDecoration(
                       color: widget.itemBackground,
-                      border: Border(top: BorderSide(color: getColors(line)))),
+                      border: const Border(
+                          top: BorderSide(color: ConstColors.background))),
               padding: widget.itemPadding,
               height: titleHeight,
             ));
@@ -214,7 +214,7 @@ class _DropdownMenuState extends State<DropdownMenu> {
           width: widget.width ?? double.infinity,
           margin: widget.alertMargin,
           height: double.infinity,
-          color: widget.background ?? getColors(black70).withOpacity(0.2),
+          color: widget.background ?? ConstColors.black70.withOpacity(0.2),
           child: listBuilder),
     );
     showDialogPopup<dynamic>(widget: popup);
@@ -232,7 +232,7 @@ class _DropdownMenuState extends State<DropdownMenu> {
         padding: const EdgeInsets.symmetric(vertical: 10),
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         direction: Axis.horizontal,
-        color: widget.titleBackground ?? getColors(white),
+        color: widget.titleBackground ?? ConstColors.white,
         decoration: widget.decoration,
         children: titleChildren());
   }
@@ -246,7 +246,7 @@ class _DropdownMenuState extends State<DropdownMenu> {
           titleStyle: widget.titleStyle,
           titleText: title[index],
           reversal: true,
-          color: widget.iconColor ?? getColors(black70),
+          color: widget.iconColor ?? ConstColors.black70,
           size: 20,
           icon: titleState[index]
               ? Icons.keyboard_arrow_up
@@ -273,7 +273,7 @@ class _DropdownMenuState extends State<DropdownMenu> {
 }
 
 class PopupSureCancel extends StatelessWidget {
-  PopupSureCancel({
+  const PopupSureCancel({
     Key key,
     Color backgroundColor,
     Color barrierColor,
@@ -289,8 +289,8 @@ class PopupSureCancel extends StatelessWidget {
     this.gaussian,
     this.addMaterial,
   })  : width = width ?? 300,
-        backgroundColor = backgroundColor ?? getColors(white),
-        barrierColor = barrierColor ?? getColors(black50),
+        backgroundColor = backgroundColor ?? ConstColors.white,
+        barrierColor = barrierColor ?? ConstColors.black50,
         super(key: key);
 
   final Widget content;
@@ -354,10 +354,10 @@ class PopupSureCancel extends StatelessWidget {
 }
 
 class Loading extends Dialog {
-  Loading({
+  const Loading({
     Key key,
     LoadingType loadingType,
-    TextStyle textStyle,
+    this.textStyle,
     double strokeWidth,
     String text,
     Color backgroundColor,
@@ -370,14 +370,12 @@ class Loading extends Dialog {
     this.semanticsLabel,
     this.semanticsValue,
   })  : text = text ?? '加载中...',
-        textStyle = textStyle ?? TextStyleBlack70(),
         strokeWidth = strokeWidth ?? 4.0,
-        color = backgroundColor ?? getColors(white),
+        color = backgroundColor ?? ConstColors.white,
         loadingType = loadingType ?? LoadingType.circular,
         super(key: key);
 
   final double value;
-
   final Animation<Color> valueColor;
   final String semanticsLabel;
   final String semanticsValue;
@@ -385,9 +383,7 @@ class Loading extends Dialog {
   final TextStyle textStyle;
   final double strokeWidth;
   final String text;
-
   final Widget custom;
-
   final Color color;
 
   /// 是否开始背景模糊
@@ -430,7 +426,7 @@ class Loading extends Dialog {
     }
     children.add(Container(
         margin: const EdgeInsets.only(top: 16),
-        child: Text(text, style: textStyle)));
+        child: MergeText(text, style: textStyle)));
     return PopupBase(
         ignoring: ignoring,
         gaussian: gaussian,

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/constant/area.dart';
-import 'package:flutter_waya/constant/way.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 class PickerSub {
@@ -12,16 +11,15 @@ class PickerSub {
       double height,
       Color backgroundColor,
       this.titleBottom,
-      TextStyle contentStyle,
+      this.contentStyle,
       this.cancelTap,
       this.sureTap,
       this.sureIndexTap})
-      : sure = sure ?? TextDefault('sure'),
-        title = title ?? TextDefault('title'),
-        cancel = cancel ?? TextDefault('cancel'),
+      : sure = sure ?? MergeText('sure'),
+        title = title ?? MergeText('title'),
+        cancel = cancel ?? MergeText('cancel'),
         height = height ?? ConstConstant.pickerHeight,
-        backgroundColor = backgroundColor ?? getColors(white),
-        contentStyle = contentStyle ?? BaseTextStyle(fontSize: 13),
+        backgroundColor = backgroundColor ?? ConstColors.white,
         titlePadding =
             titlePadding ?? const EdgeInsets.symmetric(horizontal: 10);
 
@@ -339,8 +337,8 @@ class _AreaPickerState extends State<AreaPicker> {
 
   Widget item(String value) => Container(
       alignment: Alignment.center,
-      child: TextSmall(value,
-          overflow: TextOverflow.ellipsis, style: contentStyle));
+      child: MergeText(value,
+          fontSize: 12, overflow: TextOverflow.ellipsis, style: contentStyle));
 
   void jumpToIndex(int index, FixedExtentScrollController controller,
       {Duration duration}) {
@@ -678,7 +676,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
                       margin: const EdgeInsets.only(left: 2),
                       alignment: Alignment.center,
                       height: double.infinity,
-                      child: Text(unit, style: unitStyle))
+                      child: MergeText(unit, style: unitStyle))
                 ],
           child: widget.showUnit
               ? null
@@ -700,8 +698,9 @@ class _DateTimePickerState extends State<DateTimePicker> {
           initialIndex: initialIndex,
           itemBuilder: (_, int index) => Container(
                 alignment: Alignment.center,
-                child: TextSmall(
+                child: MergeText(
                     padLeft(startZero ?? true ? list[index] : list[index] + 1),
+                    fontSize: 12,
                     style: contentStyle),
               ),
           itemCount: list.length,

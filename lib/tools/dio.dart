@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
@@ -82,7 +83,7 @@ class DioTools {
               queryParameters: params, cancelToken: _cancelToken);
           break;
       }
-      ResponseModel responseModel = constResponseModel;
+      ResponseModel responseModel = constResponseModel();
       if (response != null) {
         responseModel = response as ResponseModel;
         if (responseModel?.request?.responseType != ResponseType.bytes &&
@@ -94,15 +95,13 @@ class DioTools {
       return responseModel;
     } on DioError catch (e) {
       final DioError error = e;
-      final ResponseModel errorResponse = error.response as ResponseModel;
-      errorResponse.type = error.type.toString();
-      errorResponse.request = error.request;
-      // ResponseModel.fromJson(jsonDecode(e.message) as Map<String, dynamic>);
-      log('error:$url  errorData==  ${errorResponse.toMap().toString()}');
+      final ResponseModel errorResponse = constResponseModel(
+          httpStatus: ConstConstant.httpStatus[404], error: error);
+      log('error:$url  errorData==  ${errorResponse?.toMap()}');
       if (logTools) setHttpData(url, errorResponse);
       return errorResponse;
     } catch (e) {
-      final ResponseModel responseModel = constResponseModel;
+      final ResponseModel responseModel = constResponseModel();
       if (logTools) setHttpData(url, responseModel);
       return responseModel;
     }
@@ -113,11 +112,25 @@ class DioTools {
     eventBus.emit('httpData', res);
   }
 
-  ResponseModel get constResponseModel => ResponseModel(
-      statusCode: 404,
-      type: DioErrorType.DEFAULT.toString(),
-      statusMessage: ConstConstant.unknownException,
-      statusMessageT: ConstConstant.unknownException);
+  ResponseModel constResponseModel(
+      {HttpStatus httpStatus,
+      RequestOptions request,
+      Headers headers,
+      List<RedirectRecord> redirects,
+      Map<String, dynamic> extra,
+      DioError error}) {
+    final Map<int, HttpStatus> status = ConstConstant.httpStatus;
+    httpStatus ??= status[error?.response?.statusCode ?? 100] ?? status[100];
+    return ResponseModel(
+        request: error?.request ?? request,
+        headers: headers,
+        redirects: redirects,
+        extra: extra,
+        statusCode: error?.response?.statusCode ?? httpStatus.code,
+        statusMessage: error?.response?.statusMessage ?? httpStatus.message,
+        statusMessageT: httpStatus.messageT,
+        type: (error?.type ?? DioErrorType.DEFAULT).toString());
+  }
 
   /// 下载文件需要申请文件储存权限
   Future<Response<dynamic>> download(
@@ -132,8 +145,12 @@ class DioTools {
       _initOptions(dio, options: options);
       return await dio.download(url, savePath,
           cancelToken: _cancelToken, onReceiveProgress: onReceiveProgress);
+    } on DioError catch (e) {
+      final DioError error = e;
+      return constResponseModel(
+          httpStatus: ConstConstant.httpStatus[404], error: error);
     } catch (e) {
-      return constResponse;
+      return constResponseModel();
     }
   }
 
@@ -155,17 +172,16 @@ class DioTools {
           cancelToken: cancelToken ?? _cancelToken,
           onSendProgress: onSendProgress,
           onReceiveProgress: onReceiveProgress);
+    } on DioError catch (e) {
+      final DioError error = e;
+      return constResponseModel(
+          httpStatus: ConstConstant.httpStatus[404], error: error);
     } catch (e) {
-      return constResponse;
+      return constResponseModel();
     }
   }
 
-  Response<dynamic> get constResponse => Response<dynamic>(
-      statusCode: 404,
-      statusMessage: ConstConstant.unknownException,
-      data: null);
-
-  void cancel() => _cancelToken.cancelError;
+  void get cancel => _cancelToken.cancelError;
 }
 
 class InterceptorWrap extends InterceptorsWrapper {

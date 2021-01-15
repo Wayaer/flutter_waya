@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_waya/constant/way.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 class TabBarMerge extends StatelessWidget {
@@ -175,12 +174,14 @@ class TabBarBox extends StatelessWidget {
         tabs: tabs,
         isScrollable: isScrollable ?? true,
         indicator: indicator,
-        labelColor: selectedLabelColor ?? getColors(blue),
-        unselectedLabelColor: unselectedLabelColor ?? getColors(background),
-        indicatorColor: selectedLabelColor ?? getColors(blue),
+        labelColor: selectedLabelColor ?? ConstColors.blue,
+        unselectedLabelColor: unselectedLabelColor ?? ConstColors.background,
+        indicatorColor: selectedLabelColor ?? ConstColors.blue,
         indicatorWeight: indicatorWeight ?? getWidth(1),
         indicatorPadding: indicatorPadding,
-        labelStyle: selectedLabelStyle ?? TextStyleBlack70(fontSize: 13),
+        labelStyle:
+            const BasisTextStyle(fontSize: 13, color: ConstColors.black70)
+                .merge(selectedLabelStyle),
         unselectedLabelStyle: unselectedLabelStyle,
         indicatorSize: indicatorSize ?? TabBarIndicatorSize.label,
       );
@@ -221,9 +222,9 @@ class _TabNavigationPageState extends State<TabNavigationPage> {
   Widget build(BuildContext context) => OverlayScaffold(
         body: currentPage,
         bottomNavigationBar: BottomNavigationBar(
-          selectedItemColor: getColors(blue),
-          unselectedItemColor: getColors(background),
-          backgroundColor: getColors(white),
+          selectedItemColor: ConstColors.blue,
+          unselectedItemColor: ConstColors.background,
+          backgroundColor: ConstColors.white,
           items: widget.navigationBarItem ??
               <BottomNavigationBarItem>[
                 BottomNavigationBarItem(

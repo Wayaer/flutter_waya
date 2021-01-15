@@ -45,7 +45,7 @@ class _JsonParseState extends State<JsonParse> {
         row.add(const SizedBox(width: 14));
       }
       row.addAll(<Widget>[
-        TextSmall(widget.isList || isTap(content) ? '[$key]:' : '$key:',
+        MergeText(widget.isList || isTap(content) ? '[$key]:' : '$key:',
             fontWeight: FontWeight.w400,
             color: content == null ? Colors.grey : Colors.purple[800]),
         const SizedBox(width: 4),
@@ -100,8 +100,10 @@ class _JsonParseState extends State<JsonParse> {
       color = Colors.grey;
     }
     return Expanded(
-        child: TextSmall(text,
-            color: color, fontWeight: FontWeight.w400, maxLines: 1));
+        child: MergeText(text,
+            color: color,
+            fontWeight: FontWeight.w400,
+            textAlign: TextAlign.left));
   }
 
   bool isTap(dynamic content) => !(content == null ||
@@ -173,8 +175,8 @@ class _HttpDataPageState extends State<HttpDataPage> {
                         updatePositioned(details.globalPosition),
                     onPanUpdate: (DragUpdateDetails details) =>
                         updatePositioned(details.globalPosition, true),
-                    decoration: BoxDecoration(
-                        color: getColors(blue), shape: BoxShape.circle),
+                    decoration: const BoxDecoration(
+                        color: ConstColors.blue, shape: BoxShape.circle),
                     padding: const EdgeInsets.all(4),
                     child: const Icon(Icons.bug_report_rounded,
                         size: 16, color: Colors.white))),
@@ -210,7 +212,7 @@ class _HttpDataPageState extends State<HttpDataPage> {
               return Universal(
                 margin: const EdgeInsets.only(top: 10),
                 decoration: BoxDecoration(
-                    color: getColors(white), boxShadow: WayStyles.boxShadow()),
+                    color: ConstColors.white, boxShadow: WayStyles.boxShadow()),
                 addInkWell: true,
                 builder: (_, StateSetter state) {
                   return !showJson
@@ -234,6 +236,6 @@ class _HttpDataPageState extends State<HttpDataPage> {
       padding: const EdgeInsets.all(10),
       text: url ?? '',
       maxLines: 2,
-      child: TextSmall(url),
+      child: MergeText(url, textAlign: TextAlign.start),
       onTap: onTap);
 }

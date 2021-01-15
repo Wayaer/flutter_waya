@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_waya/constant/way.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 class InputField extends StatelessWidget {
-  InputField({
+  const InputField({
     Key key,
     int maxLines,
     TextAlign textAlign,
@@ -92,7 +91,7 @@ class InputField extends StatelessWidget {
 
         ///  自定义数字显示   指定maxLength后 右下角会出现字数，flutter有默认实现  可以通过这个自定义
         ///  光标颜色
-        cursorColor = cursorColor ?? getColors(black70),
+        cursorColor = cursorColor ?? ConstColors.black70,
 
         ///  光标圆角
         cursorRadius = cursorRadius ?? const Radius.circular(1),
@@ -359,7 +358,8 @@ class InputField extends StatelessWidget {
         cursorWidth: cursorWidth,
         obscureText: obscureText,
         keyboardType: keyboardType,
-        style: inputStyle ?? TextStyleBlack70(),
+        style:
+            const BasisTextStyle(color: ConstColors.black50).merge(inputStyle),
         controller: controller,
         decoration: inputDecoration ??
             InputDecoration(
@@ -418,7 +418,9 @@ class InputField extends StatelessWidget {
               hintText: hintText,
 
               /// 显示在输入框内的提示信息，当输入框为空时显示，一旦开始输入内容就消失
-              hintStyle: hintStyle ?? TextStyleBlack30(fontSize: 16),
+              hintStyle:
+                  const BasisTextStyle(fontSize: 16, color: ConstColors.black30)
+                      .merge(hintStyle),
               hintMaxLines: hintMaxLines ?? 1,
 
               /// 提示语的做多显示行数，超过行数显示...
@@ -607,13 +609,13 @@ class SearchBox extends StatelessWidget {
       fillColor: fillColor,
       filled: true,
       focusedBorder: inputBorder(
-          focusedBorderColor ?? enabledBorderColor ?? getColors(blue)),
-      enabledBorder: inputBorder(enabledBorderColor ?? getColors(white50)),
+          focusedBorderColor ?? enabledBorderColor ?? ConstColors.blue),
+      enabledBorder: inputBorder(enabledBorderColor ?? ConstColors.white50),
       inputStyle: inputStyle,
       contentPadding: contentPadding,
       hintStyle: hintStyle,
       hintText: hintText,
-      cursorColor: cursorColor ?? enabledBorderColor ?? getColors(blue),
+      cursorColor: cursorColor ?? enabledBorderColor ?? ConstColors.blue,
       prefixIcon: prefix,
       onChanged: onChanged,
       autoFocus: autoFocus,
@@ -629,7 +631,8 @@ class SearchBox extends StatelessWidget {
           text: searchText ?? 'search',
           onTap: searchTap,
           padding: const EdgeInsets.symmetric(horizontal: 4),
-          textStyle: searchStyle ?? TextStyle(color: getColors(white)));
+          textStyle: const BasisTextStyle(color: ConstColors.white)
+              .merge(searchStyle));
 
   InputBorder inputBorder(Color color) {
     if (lineType == LineType.outline) {
@@ -821,8 +824,7 @@ class _PinBoxState extends State<PinBox> {
         decoration:
             hasFocus ? widget.pinDecoration : widget.hasFocusPinDecoration,
         alignment: Alignment.center,
-        child: Text(texts[i],
-            style: widget.pinTextStyle ?? TextStyle(color: getColors(white))),
+        child: MergeText(texts[i], style: widget?.pinTextStyle),
       ));
     }
     return Row(
@@ -837,24 +839,24 @@ class _PinBoxState extends State<PinBox> {
         autoFocus: widget.autoFocus ?? true,
         counter: null,
         maxLines: 1,
-        fillColor: getColors(transparent),
+        fillColor: ConstColors.transparent,
         filled: true,
         controller: controller,
         cursorColor: Colors.transparent,
         cursorWidth: 0,
         counterText: '',
-        counterStyle: const TextStyle(color: Colors.transparent),
+        counterStyle: const BasisTextStyle(color: Colors.transparent),
         obscureText: false,
         maxLength: widget.maxLength,
-        inputStyle: const TextStyle(color: Colors.transparent),
-        labelStyle: const TextStyle(color: Colors.transparent),
-        hintStyle: const TextStyle(color: Colors.transparent),
+        inputStyle: const BasisTextStyle(color: Colors.transparent),
+        labelStyle: const BasisTextStyle(color: Colors.transparent),
+        hintStyle: const BasisTextStyle(color: Colors.transparent),
         focusedBorder: InputBorder.none,
         enabledBorder: InputBorder.none,
         disabledBorder: InputBorder.none,
         inputFormatter: widget.inputFormatter,
         textAlign: TextAlign.center,
-        helperStyle: const TextStyle(color: Colors.transparent),
+        helperStyle: const BasisTextStyle(color: Colors.transparent),
         onChanged: (String text) {
           texts = text.trim().split('');
           if (widget.onChanged != null) widget.onChanged(text);

@@ -6,11 +6,11 @@ const double _radiusLocal = ConstConstant.Radius;
 class WayStyles {
   /// 统一所有阴影效果
   static List<BoxShadow> boxShadow() => <BoxShadow>[
-        BoxShadow(
-            color: getColors(boxShadowColor),
+        const BoxShadow(
+            color: ConstColors.boxShadowColor,
             blurRadius: _radiusLocal,
             spreadRadius: 1,
-            offset: const Offset(0, 3))
+            offset: Offset(0, 3))
       ];
 
   /// left right  margin or padding 20
@@ -19,7 +19,7 @@ class WayStyles {
 
   static Decoration borderRadiusTop({Color color, double radius}) =>
       BoxDecoration(
-          color: color ?? getColors(white),
+          color: color ?? ConstColors.white,
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(radius ?? _radiusLocal),
               topRight: Radius.circular(radius ?? _radiusLocal)));
@@ -32,7 +32,7 @@ class WayStyles {
   static Decoration containerWhiteRadius(
           {Color color, double radius, bool shadow = false}) =>
       BoxDecoration(
-          color: color ?? getColors(white),
+          color: color ?? ConstColors.white,
           borderRadius: BorderRadius.circular(radius ?? _radiusLocal),
           boxShadow: shadow ? boxShadow() : null);
 
@@ -40,11 +40,11 @@ class WayStyles {
   static Decoration containerRadiusWidth(
           {Color color, double width, Color widthColor, double radius}) =>
       BoxDecoration(
-          color: color ?? getColors(white),
+          color: color ?? ConstColors.white,
           borderRadius: BorderRadius.circular(radius ?? _radiusLocal),
           border: Border.all(
               width: width ?? getWidth(1),
-              color: widthColor ?? getColors(background)));
+              color: widthColor ?? ConstColors.background));
 
   /// 统一下划线样式
   static Decoration containerUnderlineBackground(
@@ -56,20 +56,12 @@ class WayStyles {
               : Border(
                   bottom: BorderSide(
                       width: width ?? getHeight(1),
-                      color: underlineColor ?? getColors(background))));
+                      color: underlineColor ?? ConstColors.background)));
 
   /// 统一上划线样式
   static Decoration containerTopLineBackground({Color color}) => BoxDecoration(
       color: color,
-      border: Border(top: BorderSide(color: getColors(background))));
-
-  /// 以上是多种颜色字体 样式
-}
-
-/// start 合并到 end
-TextStyle mergeTextStyle(TextStyle startStyle, TextStyle endStyle) {
-  if (startStyle != null && endStyle != null) endStyle.merge(startStyle);
-  return endStyle;
+      border: const Border(top: BorderSide(color: ConstColors.background)));
 }
 
 ///  垂直线
@@ -85,7 +77,7 @@ class LineVertical extends Container {
             width: width ?? 1,
             margin: margin,
             padding: padding,
-            color: color ?? getColors(background));
+            color: color ?? ConstColors.background);
 }
 
 ///  暂无数据
@@ -97,128 +89,5 @@ class PlaceholderChild extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
       margin: margin ?? const EdgeInsets.all(100),
-      child: Center(child: TextDefault('暂无数据')));
-}
-
-class TextDefault extends _BaseText {
-  TextDefault(String text,
-      {Color color,
-      int maxLines,
-      double height,
-      TextStyle style,
-      double fontSize,
-      TextOverflow overflow,
-      FontWeight fontWeight,
-      TextAlign textAlign})
-      : super(text,
-            color: color,
-            maxLines: maxLines,
-            height: height,
-            fontWeight: fontWeight,
-            style: style,
-            fontSize: fontSize ?? 14,
-            overflow: overflow,
-            textAlign: textAlign);
-}
-
-class TextSmall extends _BaseText {
-  TextSmall(String text,
-      {Color color,
-      int maxLines,
-      double height,
-      double fontSize,
-      TextStyle style,
-      FontWeight fontWeight,
-      TextOverflow overflow,
-      TextAlign textAlign})
-      : super(text,
-            color: color,
-            maxLines: maxLines,
-            height: height,
-            fontWeight: fontWeight,
-            style: style,
-            fontSize: fontSize ?? 12,
-            overflow: overflow,
-            textAlign: textAlign);
-}
-
-///  BaseText
-class _BaseText extends Text {
-  _BaseText(
-    String text, {
-    Color color,
-    int maxLines,
-    double fontSize,
-    double height,
-    TextOverflow overflow,
-    TextAlign textAlign,
-    TextStyle style,
-    String fontFamily,
-    FontWeight fontWeight,
-  }) : super(text ?? '',
-            textAlign: textAlign,
-            maxLines: maxLines == null ? 1 : (maxLines == 0 ? null : maxLines),
-            overflow: overflow ??
-                (maxLines == 0 ? TextOverflow.clip : TextOverflow.ellipsis),
-            style: style ??
-                BaseTextStyle(
-                    fontWeight: fontWeight,
-                    fontSize: fontSize,
-                    color: color,
-                    fontFamily: fontFamily,
-                    height: height));
-}
-
-class TextStyleBlue extends BaseTextStyle {
-  TextStyleBlue({double fontSize, double height, FontWeight fontWeight})
-      : super(
-            color: getColors(blue),
-            fontSize: fontSize,
-            height: height,
-            fontWeight: fontWeight);
-}
-
-class TextStyleBlack30 extends BaseTextStyle {
-  TextStyleBlack30({double fontSize, double height, FontWeight fontWeight})
-      : super(
-            color: getColors(black30),
-            fontSize: fontSize,
-            height: height,
-            fontWeight: fontWeight);
-}
-
-class TextStyleBlack70 extends BaseTextStyle {
-  TextStyleBlack70({double fontSize, double height, FontWeight fontWeight})
-      : super(
-            color: getColors(black70),
-            fontSize: fontSize,
-            height: height,
-            fontWeight: fontWeight);
-}
-
-class TextStyleWhite extends BaseTextStyle {
-  TextStyleWhite({double fontSize, double height, FontWeight fontWeight})
-      : super(
-            color: getColors(white),
-            fontSize: fontSize,
-            height: height,
-            fontWeight: fontWeight);
-}
-
-///  BaseTextStyle
-class BaseTextStyle extends TextStyle {
-  BaseTextStyle(
-      {Color color,
-      double fontSize,
-      double height,
-      String fontFamily,
-      FontWeight fontWeight})
-      : super(
-            color: color ?? getColors(black90),
-            fontSize: fontSize ?? 14,
-            height: height,
-            decoration: TextDecoration.none,
-            decorationStyle: TextDecorationStyle.dashed,
-            fontFamily: fontFamily,
-            fontWeight: fontWeight);
+      child: Center(child: MergeText('暂无数据')));
 }

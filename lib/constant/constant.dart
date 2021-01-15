@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/constant/model.dart';
-
-import 'enums.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 
 class ConstConstant {
   /// 全局圆角大小
@@ -24,9 +23,10 @@ class ConstConstant {
 
   static const String success = 'success';
 
-  static const String unknownException = 'unknown exception';
+  // static const String unknownException = 'unknown exception';
 
   static const Map<int, HttpStatus> httpStatus = <int, HttpStatus>{
+    100: HttpStatus(100, '未知异常', 'unknown exception'),
     404: HttpStatus(404, '网络请求失败', 'Failed'),
     420: HttpStatus(420, '网络请求已取消', 'Cancel'),
     408: HttpStatus(408, '网络连接超时', 'Connect Timeout'),
@@ -80,42 +80,56 @@ class ConstConstant {
   };
 }
 
+class ConstColors {
+  static const Color transparent = Colors.transparent;
+  static const Color white50 = Color(0x50FFFFFF);
+  static const Color white = Colors.white;
+  static const Color background = Color(0xFFF5F5F5);
+  static const Color blue = Color(0xFF349DFF);
+  static const Color boxShadowColor = Color(0xFFE0E0E0);
+  static const Color greenAccent = Colors.greenAccent;
+  static const Color red = Colors.red;
+  static const Color gray = Colors.grey;
+  static const Color black = Colors.black;
+  static const Color black30 = Color(0x30000000);
+  static const Color black50 = Color(0x50000000);
+  static const Color black70 = Color(0x70000000);
+  static const Color black90 = Color(0x90000000);
+}
+
 ///  Colors
-const String transparent = 'transparent';
-const String white50 = 'white50';
-const String white = 'white';
-const String background = 'background';
-const String blue = 'blue';
-const String boxShadowColor = 'boxShadowColor';
-const String greenAccent = 'greenAccent';
-const String red = 'red';
-const String gray = 'gray';
-const String line = 'line';
-const String black = 'black';
-const String black30 = 'black30';
-const String black70 = 'black70';
-const String black50 = 'black50';
-const String black90 = 'black90';
+// const String transparent = 'transparent';
+// const String white50 = 'white50';
+// const String white = 'white';
+// const String background = 'background';
+// const String blue = 'blue';
+// const String boxShadowColor = 'boxShadowColor';
+// const String greenAccent = 'greenAccent';
+// const String red = 'red';
+// const String gray = 'gray';
+// const String black = 'black';
+// const String black30 = 'black30';
+// const String black70 = 'black70';
+// const String black50 = 'black50';
+// const String black90 = 'black90';
 
-Color getColors(String color) => constColors[color];
-
-const Map<String, Color> constColors = <String, Color>{
-  transparent: Colors.transparent,
-  white: Colors.white,
-  red: Colors.red,
-  white50: Color(0x50FFFFFF),
-  black: Color(0xFF000000),
-  black30: Color(0x30000000),
-  black50: Color(0x50000000),
-  black70: Color(0x70000000),
-  black90: Color(0x90000000),
-  greenAccent: Colors.greenAccent,
-  blue: Color(0xFF349DFF),
-  boxShadowColor: Color(0xFFE0E0E0),
-  gray: Colors.grey,
-  line: Color(0xFFF5F5F5),
-  background: Color(0xFFF5F5F5),
-};
+// Color getColors(String color) => constColors[color];
+// const Map<String, Color> constColors = <String, Color>{
+//   transparent: Colors.transparent,
+//   white: Colors.white,
+//   red: Colors.red,
+//   white50: Color(0x50FFFFFF),
+//   black: Color(0xFF000000),
+//   black30: Color(0x30000000),
+//   black50: Color(0x50000000),
+//   black70: Color(0x70000000),
+//   black90: Color(0x90000000),
+//   greenAccent: Colors.greenAccent,
+//   blue: Color(0xFF349DFF),
+//   boxShadowColor: Color(0xFFE0E0E0),
+//   gray: Colors.grey,
+//   background: Color(0xFFF5F5F5),
+// };
 
 ///  icons
 class ConstIcon {

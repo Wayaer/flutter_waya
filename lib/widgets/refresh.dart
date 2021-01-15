@@ -1,6 +1,5 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/constant/way.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -30,7 +29,7 @@ class Refreshed extends StatefulWidget {
         enableTwoLevel = enableTwoLevel ?? false,
         enablePullDown = enablePullDown ?? false,
         header =
-            header ?? BezierCircleHeader(bezierColor: getColors(transparent)),
+            header ?? BezierCircleHeader(bezierColor: ConstColors.transparent),
         super(key: key);
 
   ///  可不传controller，
@@ -143,8 +142,8 @@ class _RefreshedState extends State<Refreshed> {
         },
       );
 
-  Widget footerText(String text) =>
-      Text(text, style: BaseTextStyle(fontSize: 13, color: getColors(black70)));
+  Widget footerText(String text) => MergeText(text,
+      style: const BasisTextStyle(fontSize: 13, color: ConstColors.black70));
 
   void onTwoLevel() {
     log('onTwoLevel');

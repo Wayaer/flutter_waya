@@ -138,10 +138,10 @@ Future<void> showToast(String message,
         direction: direction ?? Axis.vertical,
         spacing: spacing ?? 10,
         size: size ?? 30,
-        color: getColors(white),
-        title: TextDefault(message, color: getColors(white), maxLines: 4));
+        color: ConstColors.white,
+        title: MergeText(message, color: ConstColors.white, maxLines: 4));
   } else {
-    toast = TextDefault(message, color: getColors(white), maxLines: 4);
+    toast = MergeText(message, color: ConstColors.white, maxLines: 4);
   }
 
   final OverlayEntryAuto entry = showOverlay(
@@ -153,7 +153,7 @@ Future<void> showToast(String message,
                   const EdgeInsets.symmetric(horizontal: 100, vertical: 100),
               decoration: boxDecoration ??
                   BoxDecoration(
-                      color: getColors(black90),
+                      color: ConstColors.black90,
                       borderRadius: BorderRadius.circular(5)),
               padding: const EdgeInsets.all(10),
               child: toast)),
@@ -228,7 +228,7 @@ Future<T> showDialogPopup<T>({
           (BuildContext context, Animation<double> animation, _) => widget,
       barrierDismissible: barrierDismissible ?? true,
       barrierLabel: barrierLabel ?? '',
-      barrierColor: backgroundColor ?? getColors(transparent),
+      barrierColor: backgroundColor ?? ConstColors.transparent,
       transitionDuration:
           transitionDuration ?? const Duration(milliseconds: 80),
       transitionBuilder: transitionBuilder,
@@ -254,7 +254,7 @@ Future<T> showBottomPopup<T>({
   return showModalBottomSheet(
       context: _globalNavigatorKey.currentContext,
       builder: builder ?? (BuildContext context) => widget,
-      backgroundColor: backgroundColor ?? getColors(transparent),
+      backgroundColor: backgroundColor ?? ConstColors.transparent,
       elevation: elevation,
       shape: shape,
       clipBehavior: clipBehavior,
@@ -284,7 +284,7 @@ Future<T> showBottomPagePopup<T>({
   return showModalBottomSheet(
       context: _globalNavigatorKey.currentContext,
       builder: builder ?? (BuildContext context) => widget,
-      backgroundColor: backgroundColor ?? getColors(transparent),
+      backgroundColor: backgroundColor ?? ConstColors.transparent,
       elevation: elevation,
       shape: shape,
       clipBehavior: clipBehavior,

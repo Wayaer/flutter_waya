@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_waya/constant/way.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 part 'root_part.dart';
@@ -57,7 +56,7 @@ class GlobalWidgetsApp extends StatelessWidget {
         debugShowCheckedModeBanner = debugShowCheckedModeBanner ?? false,
         themeMode = themeMode ?? ThemeMode.system,
         title = title ?? '',
-        color = color ?? getColors(white),
+        color = color ?? ConstColors.white,
         routes = routes ?? const <String, WidgetBuilder>{},
         navigatorObservers = navigatorObservers ?? <NavigatorObserver>[],
         locale = locale ?? const Locale('zh'),
@@ -426,7 +425,7 @@ class _OverlayScaffoldState extends State<OverlayScaffold> {
         floatingActionButtonLocation: widget.floatingActionButtonLocation,
         floatingActionButton: widget.floatingActionButton,
         floatingActionButtonAnimator: widget.floatingActionButtonAnimator,
-        backgroundColor: widget.backgroundColor ?? getColors(background),
+        backgroundColor: widget.backgroundColor ?? ConstColors.background,
         appBar: appBar,
         bottomNavigationBar: widget.bottomNavigationBar,
         body: widget.enablePullDown ||

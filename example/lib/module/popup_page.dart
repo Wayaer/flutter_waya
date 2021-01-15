@@ -71,6 +71,7 @@ class _ContentPage extends StatelessWidget {
     dialogSureCancel<dynamic>(
         isOverlay: isOverlay,
         sure: SimpleButton(
+          alignment: Alignment.center,
           child: Text('确定', style: _textStyle()),
           onTap: () {
             if (isOverlay) {
@@ -84,6 +85,7 @@ class _ContentPage extends StatelessWidget {
           },
         ),
         cancel: SimpleButton(
+          alignment: Alignment.center,
           child: Text('取消', style: _textStyle()),
           onTap: () {
             if (isOverlay) {
