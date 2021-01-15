@@ -126,7 +126,7 @@ class RichTextSpan extends RichText {
     }
     return TextSpan(
         text: text,
-        style: style,
+        style: const BasisTextStyle().merge(style),
         semanticsLabel: semanticsLabel,
         recognizer: recognizer,
         children: texts
@@ -137,7 +137,8 @@ class RichTextSpan extends RichText {
                 semanticsLabel:
                     semanticsLabels.isEmpty ? null : semanticsLabels[entry.key],
                 recognizer: recognizers.isEmpty ? null : recognizers[entry.key],
-                style: styles.isEmpty ? null : styles[entry.key]))
+                style: const BasisTextStyle()
+                    .merge(styles.isEmpty ? null : styles[entry.key])))
             ?.toList());
   }
 }
