@@ -15,8 +15,8 @@ class Universal extends StatelessWidget {
     bool enableFeedback,
     bool excludeFromSemantics,
     bool autoFocus,
-    bool sizedBoxExpand,
-    bool sizedBoxShrink,
+    bool expand,
+    bool shrink,
     bool visible,
     bool offstage,
     bool maintainState,
@@ -24,16 +24,12 @@ class Universal extends StatelessWidget {
     bool maintainSize,
     bool maintainSemantics,
     bool maintainInteractivity,
-    bool expanded,
-    bool isFlexible,
     bool isCircleAvatar,
-    bool isClip,
     bool addCard,
     bool transitionOnUserGestures,
-    bool semanticContainer,
     bool noScrollBehavior,
+    bool isOval,
     MaterialType type,
-    double elevation,
     Clip clipBehavior,
     DragStartBehavior dragStartBehavior,
     Duration animationDuration,
@@ -48,17 +44,17 @@ class Universal extends StatelessWidget {
     HitTestBehavior behavior,
     BorderRadius borderRadius,
     Color color,
-    int flex,
-    FlexFit flexFit,
     this.alignment,
     this.child,
     this.children,
+    this.builder,
     this.padding,
     this.physics,
     this.scrollController,
     this.primary,
     this.foregroundDecoration,
     this.transform,
+    this.origin,
     this.constraints,
     this.width,
     this.height,
@@ -123,9 +119,7 @@ class Universal extends StatelessWidget {
     this.foregroundColor,
     this.minRadius,
     this.maxRadius,
-    this.clipperRRect,
-    this.clipperRect,
-    this.clipperPath,
+    this.clipper,
     this.refreshController,
     this.onRefresh,
     this.onLoading,
@@ -136,23 +130,26 @@ class Universal extends StatelessWidget {
     this.header,
     this.footer,
     this.size,
-    this.builder,
     this.onSecondaryTap,
     this.onSecondaryLongPressMoveUpdate,
     this.onSecondaryLongPressUp,
     this.onSecondaryLongPress,
     this.onSecondaryLongPressEnd,
     this.onSecondaryLongPressStart,
+    this.left,
+    this.top,
+    this.right,
+    this.bottom,
+    this.expanded,
+    this.flex,
+    this.elevation,
+    this.opacity,
   })  : isScroll = isScroll ?? false,
         addCard = addCard ?? false,
-        semanticContainer = semanticContainer ?? true,
         maintainState = maintainState ?? false,
         transitionOnUserGestures = transitionOnUserGestures ?? false,
-        expanded = expanded ?? false,
-        isFlexible = isFlexible ?? false,
         isStack = isStack ?? false,
         isCircleAvatar = isCircleAvatar ?? false,
-        isClip = isClip ?? false,
         maintainAnimation = maintainAnimation ?? false,
         maintainSize = maintainSize ?? false,
         maintainSemantics = maintainSemantics ?? false,
@@ -161,19 +158,18 @@ class Universal extends StatelessWidget {
         addInkWell = addInkWell ?? false,
         reverse = reverse ?? false,
         autoFocus = autoFocus ?? false,
-        sizedBoxExpand = sizedBoxExpand ?? false,
-        sizedBoxShrink = sizedBoxShrink ?? false,
+        expand = expand ?? false,
+        shrink = shrink ?? false,
         excludeFromSemantics = excludeFromSemantics ?? false,
         borderOnForeground = borderOnForeground ?? true,
         enableFeedback = enableFeedback ?? true,
         canRequestFocus = canRequestFocus ?? true,
+        isOval = isOval ?? false,
         visible = visible ?? true,
         offstage = offstage ?? false,
         noScrollBehavior = noScrollBehavior ?? true,
         dragStartBehavior = dragStartBehavior ?? DragStartBehavior.start,
         type = type ?? MaterialType.canvas,
-        elevation = elevation ?? 0.0,
-        flex = flex ?? 1,
         clipBehavior = clipBehavior ?? Clip.none,
         shadowColor = shadowColor ?? Colors.transparent,
         animationDuration = animationDuration ?? kThemeChangeDuration,
@@ -187,48 +183,70 @@ class Universal extends StatelessWidget {
         behavior = behavior ?? HitTestBehavior.opaque,
         borderRadius = borderRadius ?? BorderRadius.zero,
         color = color ?? Colors.transparent,
-        flexFit = flexFit ?? FlexFit.loose,
         super(key: key);
 
   ///  public
-  final EdgeInsetsGeometry padding;
+
   final DragStartBehavior dragStartBehavior;
+
+  /// 控制剪辑方式
+  /// [Clip.none]没有剪辑        最快
+  /// [Clip.hardEdge]不抗锯齿    快
+  /// [Clip.antiAlias]抗锯齿     慢
+  /// [Clip.antiAliasWithSaveLayer]抗锯齿和saveLayer  很慢
+  /// 使用到的组件[Stack]、[ClipRRect]、[ClipPath]、[ClipRect]、[ClipOval]
+  /// 、[Container]、[Material]、[Card]、[Stack]、[SingleChildScrollView]
   final Clip clipBehavior;
-  final Duration animationDuration;
+
+  ///  ****** [Align] ******  ///
   final AlignmentGeometry alignment;
+
+  ///  [InkWell]飞溅半径
+  ///  [Material]圆角半径
+  ///  [ClipRRect]剪辑半径
   final BorderRadius borderRadius;
 
-  ///  ****** child  children ******  ///
+  ///  ****** [child]、[children]、[builder] ******  ///
   ///  child < children < builder
   ///  三个只有一个有效
   final Widget child;
   final List<Widget> children;
   final StatefulWidgetBuilder builder;
 
-  ///  ****** Flexible ******  ///
-  ///  添加[Expanded]组件
+  ///  ****** [Flexible] ******  ///
+  final int flex;
+
+  /// [expanded]=true [flex]=1 相当于添加[Expanded]组件
   final bool expanded;
 
-  ///  添加[Flexible]组件
-  final bool isFlexible;
-  final int flex;
-  final FlexFit flexFit;
-
-  ///  ****** Container ******  ///
-  final Decoration foregroundDecoration;
+  ///  ****** [Transform] ******  ///
   final Matrix4 transform;
+  final Offset origin;
+
+  ///  ****** [ConstrainedBox] ******  ///
   final BoxConstraints constraints;
+
+  ///  ****** [ColoredBox]||[DecoratedBox] ******  ///
   final Color color;
-  final double width;
-  final double height;
+
+  ///  ****** [Padding] ******  ///
   final EdgeInsetsGeometry margin;
+  final EdgeInsetsGeometry padding;
+
+  ///  ****** [DecoratedBox] ******  ///
   final Decoration decoration;
+  final Decoration foregroundDecoration;
 
-  ///  ****** Card ******  ///
+  ///  ****** [Positioned] ******  ///
+  final double left;
+  final double top;
+  final double right;
+  final double bottom;
+
+  ///  ****** [Card] ******  ///
   final bool addCard;
-  final bool semanticContainer;
 
-  ///  ****** Flex ******  ///
+  ///  ****** [Flex]=[Column]+[Row] ******  ///
   final MainAxisAlignment mainAxisAlignment;
   final CrossAxisAlignment crossAxisAlignment;
   final Axis direction;
@@ -237,13 +255,12 @@ class Universal extends StatelessWidget {
   final TextDirection textDirection;
   final MainAxisSize mainAxisSize;
 
-  ///  ****** Clip ******  ///
-  final bool isClip;
-  final CustomClipper<RRect> clipperRRect;
-  final CustomClipper<Rect> clipperRect;
-  final CustomClipper<Path> clipperPath;
+  ///  ****** [ClipRRect]、[ClipPath]、[ClipRect]、[ClipOval] ******  ///
+  /// [RRect]、[Path]、[Rect]
+  final CustomClipper<dynamic> clipper;
+  final bool isOval;
 
-  ///  ****** CircleAvatar ******  ///
+  ///  ****** [CircleAvatar] ******  ///
   final bool isCircleAvatar;
   final ImageProvider backgroundImage;
   final ImageErrorListener onBackgroundImageError;
@@ -251,7 +268,7 @@ class Universal extends StatelessWidget {
   final double minRadius;
   final double maxRadius;
 
-  ///  ****** SingleChildScrollView ******  ///
+  ///  ****** [SingleChildScrollView] ******  ///
   ///  移出头部和底部蓝色阴影
   final bool noScrollBehavior;
   final bool isScroll;
@@ -260,13 +277,14 @@ class Universal extends StatelessWidget {
   final bool reverse;
   final bool primary;
 
-  ///  ****** SizedBox ******  ///
-  ///  SizedBox 参数会导致 [Container]的[height]、[width]无效
-  final bool sizedBoxExpand;
-  final bool sizedBoxShrink;
+  ///  ****** [SizedBox] ******  ///
+  final bool expand;
+  final bool shrink;
   final Size size;
+  final double width;
+  final double height;
 
-  ///  ****** Visibility ******  ///
+  ///  ****** [Visibility] ******  ///
   final Widget replacement;
   final bool visible;
   final bool maintainState;
@@ -276,37 +294,62 @@ class Universal extends StatelessWidget {
   final bool maintainInteractivity;
   final bool offstage;
 
-  ///  ****** 点击事件相关 ******  ///
-  ///  ****** Material ******  ///
+  ///  ****** [Opacity] ******  ///
+  final double opacity;
+
+  ///  ****** [Material] ******  ///
   final MaterialType type;
   final double elevation;
   final Color shadowColor;
   final TextStyle textStyle;
   final ShapeBorder shape;
   final bool borderOnForeground;
+  final Duration animationDuration;
 
-  ///  ****** InkWell ******  ///
+  ///  ****** 点击事件相关 ******  ///
+  ///  ****** [InkWell] ******  ///
   ///  高亮变化回调
+  ///  当材料的这一部分突出显示或停止突出显示时调用
   final ValueChanged<bool> onHighlightChanged;
+
+  ///  当指针进入或退出墨水响应区域时调用
   final ValueChanged<bool> onHover;
+
+  ///  获取焦点颜色
   final Color focusColor;
+
+  ///  指针悬停时颜色
   final Color hoverColor;
 
-  ///  高亮颜色
+  ///  点击时的颜色
   final Color highlightColor;
 
   ///  水波纹颜色
   final Color splashColor;
+
+  ///  自定义水波纹
   final InteractiveInkFeatureFactory splashFactory;
 
-  ///  水波半径
+  ///  水波纹半径
   final double radius;
+
+  /// 覆盖borderRadius的自定义剪辑边框
   final ShapeBorder customBorder;
+
+  /// 检测到的手势是否应该提供声音和/或触觉反馈，默认true
   final bool enableFeedback;
+
+  /// 焦点管理
   final FocusNode focusNode;
   final bool canRequestFocus;
+
+  /// 焦点变化回调
   final ValueChanged<bool> onFocusChange;
+
+  /// 自动获取焦点
   final bool autoFocus;
+
+  /// [addInkWell]添加[InkWell] 有水波纹效果
   final bool addInkWell;
 
   /// [enabled]默认为false [addInkWell]默认为false
@@ -331,7 +374,7 @@ class Universal extends StatelessWidget {
 
   final bool excludeFromSemantics;
 
-  ///  ****** GestureDetector ******  ///
+  ///  ****** [GestureDetector] ******  ///
   ///  点击抬起
   final GestureTapUpCallback onTapUp;
 
@@ -420,18 +463,18 @@ class Universal extends StatelessWidget {
   ///  HitTestBehavior.translucent 自己和child都可以接收事件
   final HitTestBehavior behavior;
 
-  ///  ****** Hero ******  ///
+  ///  ****** [Hero] ******  ///
   final String heroTag;
   final CreateRectTween createRectTween;
   final HeroFlightShuttleBuilder flightShuttleBuilder;
   final bool transitionOnUserGestures;
   final HeroPlaceholderBuilder placeholderBuilder;
 
-  ///  ****** Stack ******  ///
+  ///  ****** [Stack] ******  ///
   final bool isStack;
   final StackFit stackFit;
 
-  ///  ****** Refreshed ******  ///
+  ///  ****** [Refreshed] ******  ///
   final RefreshController refreshController;
   final VoidCallback onRefresh;
   final VoidCallback onLoading;
@@ -441,6 +484,13 @@ class Universal extends StatelessWidget {
   final bool enableTwoLevel;
   final Widget header;
   final Widget footer;
+
+  EdgeInsetsGeometry get _paddingIncludingDecoration {
+    if (decoration == null || decoration.padding == null) return padding;
+    final EdgeInsetsGeometry decorationPadding = decoration.padding;
+    if (padding == null) return decorationPadding;
+    return padding.add(decorationPadding);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -456,28 +506,46 @@ class Universal extends StatelessWidget {
               behavior: NoScrollBehavior(),
               child: singleChildScrollViewWidget(widget))
           : singleChildScrollViewWidget(widget);
-    if (padding != null ||
-        margin != null ||
-        height != null ||
-        width != null ||
-        color != null ||
-        constraints != null ||
-        alignment != null ||
-        decoration != null) {
-      widget = containerWidget(widget);
-    }
 
-    if (enabled || onTap != null) {
+    if (_paddingIncludingDecoration != null)
+      widget = Padding(padding: _paddingIncludingDecoration, child: widget);
+    if (alignment != null) widget = Align(alignment: alignment, child: widget);
+
+    if (color != null && decoration == null && !addInkWell && !addCard)
+      widget = ColoredBox(color: color, child: widget);
+
+    if (decoration != null && clipBehavior != Clip.none) {
+      widget = clipWidget(widget,
+          clipper: _DecorationClipper(
+              textDirection: Directionality.of(context),
+              decoration: decoration));
+    }
+    if (decoration != null && !addInkWell)
+      widget = DecoratedBox(decoration: decoration, child: widget);
+    if (foregroundDecoration != null) {
+      widget = DecoratedBox(
+          decoration: foregroundDecoration,
+          position: DecorationPosition.foreground,
+          child: widget);
+    }
+    if (transform != null)
+      widget = Transform(transform: transform, origin: origin, child: widget);
+    if (enabled ||
+        onTap != null ||
+        onDoubleTap != null ||
+        onLongPress != null) {
       widget =
           addInkWell ? inkWellWidget(widget) : gestureDetectorWidget(widget);
     }
-    if (sizedBoxShrink) widget = SizedBox.shrink(child: widget);
-    if (sizedBoxExpand) widget = SizedBox.expand(child: widget);
+    if (shrink) widget = SizedBox.shrink(child: widget);
+    if (expand) widget = SizedBox.expand(child: widget);
+    if (width != null || height != null)
+      widget = SizedBox(width: width, height: height, child: widget);
     if (size != null) widget = SizedBox.fromSize(size: size, child: widget);
     if (heroTag != null) widget = heroWidget(widget);
-    if (addCard) widget = cardWidget(widget);
+    if (addCard) widget = cardWidget(widget, context);
     if (isCircleAvatar) widget = circleAvatarWidget(widget);
-    if (isClip) widget = clipWidget(widget);
+    if (clipper != null) widget = clipWidget(widget, clipper: clipper);
     if (refreshController != null ||
         onRefresh != null ||
         onLoading != null ||
@@ -489,7 +557,19 @@ class Universal extends StatelessWidget {
         header != null) {
       widget = refreshedWidget(widget);
     }
-    if (isFlexible || expanded) widget = flexibleWidget(widget);
+
+    if (constraints != null)
+      widget = ConstrainedBox(constraints: constraints, child: widget);
+
+    if (margin != null) widget = Padding(padding: margin, child: widget);
+    if (expanded != null || flex != null) widget = flexibleWidget(widget);
+    if (left != null || top != null || right != null || bottom != null)
+      widget = Positioned(
+          left: left, top: top, right: right, bottom: bottom, child: widget);
+
+    if (opacity != null && opacity > 0)
+      widget = Opacity(opacity: opacity, child: widget);
+
     if (offstage) widget = offstageWidget(widget);
     if (!visible) widget = visibilityWidget(widget);
     return widget;
@@ -512,39 +592,29 @@ class Universal extends StatelessWidget {
   Widget offstageWidget(Widget widget) =>
       Offstage(child: widget, offstage: offstage);
 
-  Widget cardWidget(Widget widget) => Card(
-      child: widget,
-      color: color,
-      clipBehavior: clipBehavior,
-      shadowColor: shadowColor,
-      elevation: elevation,
-      shape: shape,
-      borderOnForeground: borderOnForeground ?? true,
-      margin: margin,
-      semanticContainer: semanticContainer ?? true);
-
-  Widget clipWidget(Widget widget) {
-    Clip behavior = clipBehavior;
-    if (clipBehavior == Clip.none) behavior = null;
-    if (clipperRect != null) {
+  Widget clipWidget(Widget widget, {CustomClipper<dynamic> clipper}) {
+    if (clipper is Rect) {
       return ClipRect(
           child: widget,
-          clipper: clipperRect,
-          clipBehavior: behavior ?? Clip.hardEdge);
+          clipper: clipper as CustomClipper<Rect>,
+          clipBehavior: clipBehavior ?? Clip.hardEdge);
     }
-
-    if (clipperPath != null) {
+    if (clipper is Path) {
       return ClipPath(
           child: widget,
-          clipper: clipperPath,
-          clipBehavior: behavior ?? Clip.antiAlias);
+          clipper: clipper as CustomClipper<Path>,
+          clipBehavior: clipBehavior ?? Clip.antiAlias);
     }
-
-    return ClipRRect(
-        child: widget,
-        borderRadius: borderRadius,
-        clipper: clipperRRect,
-        clipBehavior: behavior ?? Clip.antiAlias);
+    if (clipper is RRect)
+      return ClipRRect(
+          child: widget,
+          borderRadius: borderRadius,
+          clipper: clipper as CustomClipper<RRect>,
+          clipBehavior: clipBehavior ?? Clip.antiAlias);
+    if (isOval)
+      return ClipOval(
+          child: widget, clipBehavior: clipBehavior ?? Clip.antiAlias);
+    return widget;
   }
 
   Widget circleAvatarWidget(Widget widget) => CircleAvatar(
@@ -561,6 +631,7 @@ class Universal extends StatelessWidget {
       alignment: alignment ?? AlignmentDirectional.topStart,
       textDirection: textDirection,
       fit: stackFit,
+      clipBehavior: clipBehavior ?? Clip.hardEdge,
       children: children);
 
   Widget heroWidget(Widget widget) => Hero(
@@ -582,47 +653,76 @@ class Universal extends StatelessWidget {
       maintainInteractivity: maintainInteractivity);
 
   Widget flexibleWidget(Widget widget) {
-    if (isFlexible) return Flexible(child: widget, flex: flex, fit: flexFit);
-    if (expanded) return Flexible(child: widget, flex: 1, fit: FlexFit.tight);
-    return widget;
+    return Flexible(
+        child: widget,
+        flex: flex ?? 1,
+        fit: (expanded ?? false) ? FlexFit.tight : FlexFit.loose);
   }
 
-  Widget inkWellWidget(Widget widget) => Material(
-      color: color,
-      type: type,
-      elevation: elevation,
-      shadowColor: shadowColor,
-      textStyle: textStyle,
-      borderRadius: borderRadius,
-      shape: shape,
-      borderOnForeground: borderOnForeground,
-      clipBehavior: clipBehavior,
-      animationDuration: animationDuration,
-      child: Ink(
-          decoration: decoration,
-          child: InkWell(
-              child: widget,
-              onTap: onTap,
-              onLongPress: onLongPress,
-              onDoubleTap: onDoubleTap,
-              onTapDown: onTapDown,
-              onTapCancel: onTapCancel,
-              onHighlightChanged: onHighlightChanged,
-              onHover: onHover,
-              focusColor: focusColor,
-              hoverColor: hoverColor,
-              highlightColor: highlightColor,
-              splashColor: splashColor,
-              splashFactory: splashFactory,
-              radius: radius,
-              borderRadius: borderRadius,
-              customBorder: customBorder,
-              enableFeedback: enableFeedback,
-              excludeFromSemantics: excludeFromSemantics,
-              focusNode: focusNode,
-              canRequestFocus: canRequestFocus,
-              onFocusChange: onFocusChange,
-              autofocus: autoFocus)));
+  Widget cardWidget(Widget widget, BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final CardTheme cardTheme = CardTheme.of(context);
+    return material(widget,
+        mType: MaterialType.card,
+        mShadowColor: shadowColor ?? cardTheme.shadowColor ?? theme.shadowColor,
+        mColor: color ?? cardTheme.color ?? theme.cardColor,
+        mElevation: elevation ?? cardTheme.elevation ?? 1,
+        mShape: shape ??
+            cardTheme.shape ??
+            RoundedRectangleBorder(
+                borderRadius: borderRadius ?? BorderRadius.circular(4)),
+        mClipBehavior: clipBehavior ?? cardTheme.clipBehavior ?? Clip.none,
+        mBorderOnForeground: borderOnForeground ?? true);
+  }
+
+  Material material(Widget widget,
+          {MaterialType mType,
+          Color mShadowColor,
+          Color mColor,
+          TextStyle mTextStyle,
+          double mElevation,
+          BorderRadiusGeometry mBorderRadius,
+          ShapeBorder mShape,
+          bool mBorderOnForeground,
+          Clip mClipBehavior}) =>
+      Material(
+          child: widget,
+          color: mColor,
+          type: mType ?? type,
+          elevation: mElevation ?? elevation,
+          shadowColor: mShadowColor ?? shadowColor,
+          textStyle: mTextStyle ?? textStyle,
+          borderRadius: (mShape != null || shape != null) ? null : borderRadius,
+          shape: mShape ?? shape,
+          borderOnForeground: mBorderOnForeground ?? borderOnForeground,
+          clipBehavior: mClipBehavior ?? clipBehavior,
+          animationDuration: animationDuration);
+
+  Widget inkWellWidget(Widget widget) => Ink(
+      decoration: decoration,
+      child: InkWell(
+          child: widget,
+          onTap: onTap,
+          onLongPress: onLongPress,
+          onDoubleTap: onDoubleTap,
+          onTapDown: onTapDown,
+          onTapCancel: onTapCancel,
+          onHighlightChanged: onHighlightChanged,
+          onHover: onHover,
+          focusColor: focusColor,
+          hoverColor: hoverColor,
+          highlightColor: highlightColor,
+          splashColor: splashColor,
+          splashFactory: splashFactory,
+          radius: radius,
+          borderRadius: borderRadius,
+          customBorder: customBorder,
+          enableFeedback: enableFeedback,
+          excludeFromSemantics: excludeFromSemantics,
+          focusNode: focusNode,
+          canRequestFocus: canRequestFocus,
+          onFocusChange: onFocusChange,
+          autofocus: autoFocus));
 
   Widget singleChildScrollViewWidget(Widget widget) => SingleChildScrollView(
       physics: physics,
@@ -631,6 +731,7 @@ class Universal extends StatelessWidget {
       dragStartBehavior: dragStartBehavior,
       controller: scrollController,
       scrollDirection: direction,
+      clipBehavior: clipBehavior ?? Clip.hardEdge,
       child: widget);
 
   Widget flexWidget(List<Widget> children) => Flex(
@@ -703,6 +804,25 @@ class Universal extends StatelessWidget {
       excludeFromSemantics: excludeFromSemantics,
       dragStartBehavior: dragStartBehavior,
       child: widget);
+}
+
+/// A clipper that uses [Decoration.getClipPath] to clip.
+class _DecorationClipper extends CustomClipper<Path> {
+  _DecorationClipper({TextDirection textDirection, @required this.decoration})
+      : assert(decoration != null),
+        textDirection = textDirection ?? TextDirection.ltr;
+
+  final TextDirection textDirection;
+  final Decoration decoration;
+
+  @override
+  Path getClip(Size size) =>
+      decoration.getClipPath(Offset.zero & size, textDirection);
+
+  @override
+  bool shouldReclip(_DecorationClipper oldClipper) =>
+      oldClipper.decoration != decoration ||
+      oldClipper.textDirection != textDirection;
 }
 
 class SimpleButton extends StatelessWidget {

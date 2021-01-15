@@ -9,6 +9,7 @@ import 'package:waya/module/picker_page.dart';
 import 'package:waya/module/popup_page.dart';
 import 'package:waya/module/progress_page.dart';
 import 'package:waya/module/scroll_view_page.dart';
+import 'package:waya/module/universal_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,6 +32,7 @@ class Home extends StatelessWidget {
           customElasticButton('Carousel', onTap: () => push(CarouselPage())),
           customElasticButton('SimpleList', onTap: () => push(ListPage())),
           customElasticButton('Progress', onTap: () => push(ProgressPage())),
+          customElasticButton('Universal', onTap: () => push(UniversalPage())),
           customElasticButton('ScrollView',
               onTap: () => push(ScrollViewPage())),
           customElasticButton('ElasticButton',

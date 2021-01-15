@@ -282,7 +282,7 @@ class BasisText extends RichTextSpan {
                 .merge(style),
             semanticsLabel: semanticsLabel,
             recognizer: recognizer,
-            textAlign: textAlign ?? TextAlign.center,
+            textAlign: textAlign ?? TextAlign.start,
             softWrap: softWrap ?? true,
             overflow: overflow ??
                 (maxLines == null ? TextOverflow.clip : TextOverflow.ellipsis),

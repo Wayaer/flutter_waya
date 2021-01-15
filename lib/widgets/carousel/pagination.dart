@@ -93,7 +93,7 @@ class ArrowPagination extends CarouselPlugin {
     }
     return Universal(
         key: key,
-        sizedBoxExpand: true,
+        expand: true,
         direction: config.scrollDirection,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[

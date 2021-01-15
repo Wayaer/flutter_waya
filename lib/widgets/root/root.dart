@@ -477,7 +477,7 @@ class _OverlayScaffoldState extends State<OverlayScaffold> {
   }
 
   Universal get universal => Universal(
-      sizedBoxExpand: true,
+      expand: true,
       padding: widget.paddingStatusBar
           ? EdgeInsets.only(top: getStatusBarHeight)
           : widget.padding,
