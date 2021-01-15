@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/constant/model.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
+/// Constant
 class ConstConstant {
   /// 全局圆角大小
   static const double Radius = 5;
@@ -80,6 +81,7 @@ class ConstConstant {
   };
 }
 
+/// Colors
 class ConstColors {
   static const Color transparent = Colors.transparent;
   static const Color white50 = Color(0x50FFFFFF);
@@ -97,75 +99,41 @@ class ConstColors {
   static const Color black90 = Color(0x90000000);
 }
 
-///  Colors
-// const String transparent = 'transparent';
-// const String white50 = 'white50';
-// const String white = 'white';
-// const String background = 'background';
-// const String blue = 'blue';
-// const String boxShadowColor = 'boxShadowColor';
-// const String greenAccent = 'greenAccent';
-// const String red = 'red';
-// const String gray = 'gray';
-// const String black = 'black';
-// const String black30 = 'black30';
-// const String black70 = 'black70';
-// const String black50 = 'black50';
-// const String black90 = 'black90';
-
-// Color getColors(String color) => constColors[color];
-// const Map<String, Color> constColors = <String, Color>{
-//   transparent: Colors.transparent,
-//   white: Colors.white,
-//   red: Colors.red,
-//   white50: Color(0x50FFFFFF),
-//   black: Color(0xFF000000),
-//   black30: Color(0x30000000),
-//   black50: Color(0x50000000),
-//   black70: Color(0x70000000),
-//   black90: Color(0x90000000),
-//   greenAccent: Colors.greenAccent,
-//   blue: Color(0xFF349DFF),
-//   boxShadowColor: Color(0xFFE0E0E0),
-//   gray: Colors.grey,
-//   background: Color(0xFFF5F5F5),
-// };
-
 ///  icons
 class ConstIcon {
   /// 箭头右
-  static const IconData arrowRight = IconCode(0xe65b);
+  static const IconData arrowRight = _IconCode(0xe65b);
 
   /// 箭头左
-  static const IconData arrowLeft = IconCode(0xe659);
+  static const IconData arrowLeft = _IconCode(0xe659);
 
   /// 箭头上
-  static const IconData arrowUp = IconCode(0xe658);
+  static const IconData arrowUp = _IconCode(0xe658);
 
   /// 箭头下
-  static const IconData arrowDown = IconCode(0xe65a);
+  static const IconData arrowDown = _IconCode(0xe65a);
 
   /// 搜索
-  static const IconData search = IconCode(0xe8ba);
+  static const IconData search = _IconCode(0xe8ba);
 
   /// 成功
-  static const IconData success = IconCode(0xe645);
+  static const IconData success = _IconCode(0xe645);
 
   /// 错误
-  static const IconData fail = IconCode(0xe669);
+  static const IconData fail = _IconCode(0xe669);
 
   /// 提示
-  static const IconData info = IconCode(0xe631);
+  static const IconData info = _IconCode(0xe631);
 
   /// 警告
-  static const IconData warning = IconCode(0xe610);
+  static const IconData warning = _IconCode(0xe610);
 
   /// 笑脸
-  static const IconData smile = IconCode(0xe62b);
+  static const IconData smile = _IconCode(0xe62b);
 }
 
-class IconCode extends IconData {
-  const IconCode(int codePoint)
+class _IconCode extends IconData {
+  const _IconCode(int codePoint)
       : super(codePoint,
             fontFamily: 'Icons',
             matchTextDirection: true,

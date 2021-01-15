@@ -119,7 +119,7 @@ class DioTools {
       List<RedirectRecord> redirects,
       Map<String, dynamic> extra,
       DioError error}) {
-    final Map<int, HttpStatus> status = ConstConstant.httpStatus;
+     const Map<int, HttpStatus> status = ConstConstant.httpStatus;
     httpStatus ??= status[error?.response?.statusCode ?? 100] ?? status[100];
     return ResponseModel(
         request: error?.request ?? request,

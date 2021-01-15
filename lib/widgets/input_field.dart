@@ -485,7 +485,7 @@ class InputField extends StatelessWidget {
     if (inputTextType == InputTextType.text) return <TextInputFormatter>[];
     if (inputTextType == InputTextType.number)
       return <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly];
-    final Map<InputTextType, String> regExpMap = ConstConstant.regExp;
+    const Map<InputTextType, String> regExpMap = ConstConstant.regExp;
     final RegExp regExp = RegExp(regExpMap[inputTextType]);
     if (regExp == null) return <TextInputFormatter>[];
     return <TextInputFormatter>[
