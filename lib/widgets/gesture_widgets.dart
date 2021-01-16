@@ -49,7 +49,7 @@ class _GestureLockState extends State<GestureLock> {
     points = <_Point>[];
     final double realRingSize = widget.ringRadius + widget.ringWidth / 2;
     final double gapWidth = widget.size / 6 - realRingSize;
-    points = List<_Point>.generate(9, (int i) {
+    points = 9.generate((int i) {
       final double x = gapWidth + realRingSize;
       final double y = gapWidth + realRingSize;
       return _Point(
@@ -103,7 +103,7 @@ class _GestureLockState extends State<GestureLock> {
       setState(() {});
       if (widget.onPanUp != null) {
         final List<int> items =
-            pathPoints.map((_Point item) => item.position).toList();
+            pathPoints.builder((_Point item) => item.position);
         widget.onPanUp(items);
       }
       if (widget.immediatelyClear) clearAllData();
@@ -171,7 +171,7 @@ class _CanvasPoint extends CustomPainter {
       ..color = unSelectColor
       ..style = PaintingStyle.fill;
 
-    points.map((_Point point) {
+    points.builder((_Point point) {
       final Offset offSet = Offset(point.x, point.y);
       final Color color = point.isSelect ? selectColor : unSelectColor;
       circlePaint.color = color;
@@ -181,7 +181,7 @@ class _CanvasPoint extends CustomPainter {
         canvas.drawArc(Rect.fromCircle(center: offSet, radius: ringRadius), 0,
             360, false, ringPaint);
       }
-    }).toList();
+    });
   }
 
   @override

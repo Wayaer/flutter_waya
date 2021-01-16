@@ -33,7 +33,8 @@ class _JsonParseState extends State<JsonParse> {
 
   List<Widget> get children {
     final List<Widget> list = <Widget>[];
-    widget?.json?.entries?.map((MapEntry<dynamic, dynamic> entry) {
+
+    widget?.json?.builderEntry((MapEntry<dynamic, dynamic> entry) {
       final dynamic key = entry.key;
       final dynamic content = entry.value;
       final List<Widget> row = <Widget>[];
@@ -64,7 +65,7 @@ class _JsonParseState extends State<JsonParse> {
       list.add(const SizedBox(height: 4));
       if ((mapFlag[key.toString()]) ?? false)
         list.add(getContentWidget(content));
-    })?.toList();
+    });
     return list;
   }
 
@@ -123,8 +124,6 @@ class HttpDataPage extends StatefulWidget {
   @override
   _HttpDataPageState createState() => _HttpDataPageState();
 }
-
-
 
 class _HttpDataPageState extends State<HttpDataPage> {
   List<ResponseModel> httpDataList = <ResponseModel>[];

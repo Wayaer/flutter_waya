@@ -249,7 +249,7 @@ class _CarouselPageViewState extends State<Carousel> {
     }
     if (widget.pagination.isEmpty) return child;
     final List<Widget> children = <Widget>[child];
-    widget?.pagination?.map((CarouselPlugin plugin) {
+    widget?.pagination?.builder((CarouselPlugin plugin) {
       children.add(plugin.build(
           context,
           CarouselPluginConfig(
@@ -258,7 +258,7 @@ class _CarouselPageViewState extends State<Carousel> {
               scrollDirection: widget.scrollDirection,
               controller: _controller,
               loop: widget.loop)));
-    })?.toList();
+    });
     return Stack(children: children);
   }
 
@@ -452,7 +452,7 @@ class _CarouselState extends _CarouselTimerMixin {
   Widget build(BuildContext context) {
     if (widget.pagination.isEmpty) return buildCarousel;
     final List<Widget> children = <Widget>[buildCarousel];
-    widget?.pagination?.map((CarouselPlugin plugin) {
+    widget?.pagination?.builder((CarouselPlugin plugin) {
       children.add(plugin.build(
           context,
           CarouselPluginConfig(
@@ -461,7 +461,7 @@ class _CarouselState extends _CarouselTimerMixin {
               scrollDirection: widget.scrollDirection,
               controller: _controller,
               loop: widget.loop)));
-    })?.toList();
+    });
     return Stack(children: children);
   }
 }

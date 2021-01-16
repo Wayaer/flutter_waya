@@ -219,8 +219,7 @@ class InterceptorWrap extends InterceptorsWrapper {
         cookieJar.saveFromResponse(
             response.request.uri,
             cookies
-                .map((String str) => Cookie.fromSetCookieValue(str))
-                .toList());
+                .builder((String str) => Cookie.fromSetCookieValue(str)));
     }
   }
 

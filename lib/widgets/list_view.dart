@@ -287,6 +287,7 @@ class SimpleList extends StatelessWidget {
       footer: footer);
 }
 
+/// 自定义List Grid  List
 class ScrollList extends BoxScrollView {
   ScrollList.custom({
     Key key,
@@ -332,7 +333,7 @@ class ScrollList extends BoxScrollView {
             reverse: reverse ?? false,
             controller: controller,
             primary: primary ?? false,
-            physics: physics,
+            physics: physics ?? const BouncingScrollPhysics(),
             shrinkWrap: shrinkWrap ?? true,
             padding: padding ?? EdgeInsets.zero,
             cacheExtent: cacheExtent,
@@ -393,7 +394,7 @@ class ScrollList extends BoxScrollView {
             reverse: reverse ?? false,
             controller: controller,
             primary: primary ?? false,
-            physics: physics,
+            physics: physics ?? const BouncingScrollPhysics(),
             shrinkWrap: shrinkWrap ?? true,
             padding: padding ?? EdgeInsets.zero,
             cacheExtent: cacheExtent,
@@ -465,7 +466,7 @@ class ScrollList extends BoxScrollView {
             reverse: reverse ?? false,
             controller: controller,
             primary: primary ?? false,
-            physics: physics,
+            physics: physics ?? const BouncingScrollPhysics(),
             shrinkWrap: shrinkWrap ?? true,
             padding: padding ?? EdgeInsets.zero,
             cacheExtent: cacheExtent,

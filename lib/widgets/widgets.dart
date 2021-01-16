@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -331,6 +332,210 @@ class HintDot extends StatelessWidget {
       height: pointChild == null ? (pointSize ?? 4) : null,
       decoration: BoxDecoration(
           color: pointColor ?? ConstColors.red, shape: BoxShape.circle));
+}
+
+/// 旋转组件
+class ToggleRotate extends StatefulWidget {
+  const ToggleRotate(
+      {Key key,
+      this.child,
+      @required this.onTap,
+      this.rad = pi / 2,
+      this.clockwise = true,
+      Duration duration = const Duration(milliseconds: 200),
+      this.curve = Curves.fastOutSlowIn})
+      : duration = duration ?? const Duration(milliseconds: 200),
+        super(key: key);
+
+  final Widget child;
+
+  /// 点击事件
+  final Function onTap;
+
+  /// 旋转角度 pi / 2
+  final double rad;
+
+  /// 动画时长
+  final Duration duration;
+
+  /// 是否顺时针旋转
+  final bool clockwise;
+
+  /// 动画曲线
+  final Curve curve;
+
+  @override
+  _ToggleRotateState createState() => _ToggleRotateState();
+}
+
+class _ToggleRotateState extends State<ToggleRotate>
+    with SingleTickerProviderStateMixin {
+  double _rad = 0;
+  bool _rotated = false;
+  AnimationController _controller;
+  Animation<double> _rotate;
+
+  @override
+  void initState() {
+    _controller = AnimationController(duration: widget.duration, vsync: this)
+      ..addListener(() => setState(() =>
+          _rad = (_rotated ? (1 - _rotate.value) : _rotate.value) * widget.rad))
+      ..addStatusListener((AnimationStatus status) {
+        if (status == AnimationStatus.completed) _rotated = !_rotated;
+      });
+    _rotate = CurvedAnimation(parent: _controller, curve: widget.curve);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => Transform(
+        transform: Matrix4.rotationZ(widget.clockwise ? _rad : -_rad),
+        alignment: Alignment.center,
+        child: widget.child,
+      ).onTap(() {
+        _controller.reset();
+        _controller.forward();
+        widget.onTap();
+      });
+}
+
+const Duration _kExpand = Duration(milliseconds: 200);
+
+class NoBorderExpansionTile extends StatefulWidget {
+  const NoBorderExpansionTile({
+    Key key,
+    this.leading,
+    @required this.title,
+    this.subtitle,
+    this.backgroundColor,
+    this.onExpansionChanged,
+    this.children = const <Widget>[],
+    this.trailing,
+    this.initiallyExpanded = false,
+  })  : assert(initiallyExpanded != null),
+        super(key: key);
+
+  /// 标题左侧图标，
+  final Widget leading;
+
+  /// title:闭合时显示的标题，
+  final Widget title;
+
+  /// 副标题
+  final Widget subtitle;
+
+  /// 展开或关闭监听
+  final ValueChanged<bool> onExpansionChanged;
+
+  /// 子元素，
+  final List<Widget> children;
+
+  ///  展开时的背景颜色，
+  final Color backgroundColor;
+
+  ///  右侧的箭头
+  final Widget trailing;
+
+  /// 初始状态是否展开，
+  final bool initiallyExpanded;
+
+  @override
+  _ExpansionTileState createState() => _ExpansionTileState();
+}
+
+class _ExpansionTileState extends State<ExpansionTile>
+    with SingleTickerProviderStateMixin {
+  static final Animatable<double> _easeOutTween =
+      CurveTween(curve: Curves.easeOut);
+  static final Animatable<double> _easeInTween =
+      CurveTween(curve: Curves.easeIn);
+  static final Animatable<double> _halfTween =
+      Tween<double>(begin: 0.0, end: 0.5);
+
+  final ColorTween _headerColorTween = ColorTween();
+  final ColorTween _iconColorTween = ColorTween();
+  final ColorTween _backgroundColorTween = ColorTween();
+
+  AnimationController _controller;
+  Animation<double> _iconTurns;
+  Animation<double> _heightFactor;
+  Animation<Color> _headerColor;
+  Animation<Color> _iconColor;
+  Animation<Color> _backgroundColor;
+
+  bool _isExpanded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(duration: _kExpand, vsync: this);
+    _heightFactor = _controller.drive(_easeInTween);
+    _iconTurns = _controller.drive(_halfTween.chain(_easeInTween));
+    _headerColor = _controller.drive(_headerColorTween.chain(_easeInTween));
+    _iconColor = _controller.drive(_iconColorTween.chain(_easeInTween));
+    _backgroundColor =
+        _controller.drive(_backgroundColorTween.chain(_easeOutTween));
+    _isExpanded = widget.initiallyExpanded;
+    if (_isExpanded) _controller.value = 1.0;
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _handleTap() {
+    setState(() {
+      _isExpanded = !_isExpanded;
+      if (_isExpanded) {
+        _controller.forward();
+      } else {
+        _controller.reverse().then<void>((void value) {
+          if (!mounted) return;
+          setState(() {});
+        });
+      }
+    });
+    if (widget.onExpansionChanged != null)
+      widget.onExpansionChanged(_isExpanded);
+  }
+
+  Widget _buildChildren(BuildContext context, Widget child) => Universal(
+          color: _backgroundColor.value ?? Colors.transparent,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            ListTileTheme.merge(
+                iconColor: _iconColor.value,
+                textColor: _headerColor.value,
+                child: ListEntry(
+                    onTap: _handleTap,
+                    leading: widget.leading,
+                    title: widget.title,
+                    subtitle: widget.subtitle,
+                    child: widget.trailing ??
+                        RotationTransition(
+                          turns: _iconTurns,
+                          child: const Icon(Icons.expand_more),
+                        ))),
+            ClipRect(
+                child: Align(heightFactor: _heightFactor.value, child: child)),
+          ]);
+
+  @override
+  Widget build(BuildContext context) {
+    final bool closed = !_isExpanded && _controller.isDismissed;
+    return AnimatedBuilder(
+        animation: _controller.view,
+        builder: _buildChildren,
+        child: closed ? null : Column(children: widget.children));
+  }
 }
 
 class CustomDrawer extends StatefulWidget {

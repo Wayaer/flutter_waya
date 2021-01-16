@@ -1,4 +1,3 @@
-import 'package:flutter_waya/extension/object_extension.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 class DES {

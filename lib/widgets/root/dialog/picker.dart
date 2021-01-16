@@ -330,7 +330,7 @@ class _AreaPickerState extends State<AreaPicker> {
           initialIndex: initialIndex,
           pickerWheel: widget?.pickerWheel,
           childDelegateType: childDelegateType,
-          children: list.map((String value) => item(value)).toList(),
+          children: list?.builder((String value) => item(value)),
           itemBuilder: (BuildContext context, int index) => item(list[index]),
           onChanged: onChanged,
           itemCount: list.length);
@@ -468,8 +468,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
     if (unit?.year != null) {
       ///  初始化每个Wheel数组
       final int year = (endDate.year - startDate.year) + 1;
-      yearData =
-          List<int>.generate(year, (int index) => startDate.year + index);
+      yearData = year.generate((int index) => startDate.year + index);
       yearIndex = defaultDate.year - startDate.year;
     }
     if (unit?.month != null) {
@@ -513,8 +512,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
       widget.dual ? value.toString().padLeft(2, '0') : value.toString();
 
   ///  wheel数组添加数据
-  List<int> addList(int maxNumber) =>
-      List<int>.generate(maxNumber, (int index) => index);
+  List<int> addList(int maxNumber) => maxNumber.generate((int index) => index);
 
   ///  计算每月day的数量
   List<int> calculateDayNumber({bool isFirst = false}) {

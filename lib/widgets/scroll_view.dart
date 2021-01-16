@@ -352,7 +352,7 @@ class _SliverModel {
 }
 
 List<Widget> _sliverBuilder(List<Widget> slivers, List<_SliverModel> _sliver) =>
-    slivers.asMap().entries.map<Widget>((MapEntry<int, Widget> entry) {
+    slivers.builderEntry<Widget>((MapEntry<int, Widget> entry) {
       final Widget element = entry.value;
       final int index = entry.key;
       final _SliverModel sliver = _sliver[index];
@@ -367,10 +367,10 @@ List<Widget> _sliverBuilder(List<Widget> slivers, List<_SliverModel> _sliver) =>
             header: element, maxHeight: sliver.size.height);
       }
       return element;
-    }).toList();
+    });
 
 void _calculate(List<Widget> slivers, List<_SliverModel> sliver) {
-  sliver.asMap().entries.map((MapEntry<int, _SliverModel> entry) {
+  sliver.builderEntry((MapEntry<int, _SliverModel> entry) {
     final _SliverModel value = entry.value;
     final int i = entry.key;
     if (value.key != null) {
@@ -383,7 +383,7 @@ void _calculate(List<Widget> slivers, List<_SliverModel> sliver) {
         }
       }
     }
-  }).toList();
+  });
 }
 
 class _Calculate extends StatelessWidget {

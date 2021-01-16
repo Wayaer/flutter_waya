@@ -2,6 +2,7 @@ import 'dart:ui' as ui show Shadow, FontFeature, TextHeightBehavior;
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 
 class RichTextSpan extends RichText {
   RichTextSpan({
@@ -108,38 +109,33 @@ class RichTextSpan extends RichText {
     List<String> semanticsLabels,
   }) {
     if (texts.length > styles.length && styles.isNotEmpty) {
-      styles.addAll(List<TextStyle>.generate(
-          texts.length - styles.length, (int index) => styles.last));
+      styles.addAll(
+          (texts.length - styles.length).generate((int index) => styles.last));
     }
     if (texts.length > semanticsLabels.length &&
         semanticsLabels.isNotEmpty &&
         semanticsLabel != null) {
-      semanticsLabels.addAll(List<String>.generate(
-          texts.length - semanticsLabels.length,
-          (int index) => semanticsLabel));
+      semanticsLabels.addAll((texts.length - semanticsLabels.length)
+          .generate((int index) => semanticsLabel));
     }
     if (texts.length > recognizers.length &&
         recognizers.isNotEmpty &&
         recognizers != null) {
-      recognizers.addAll(List<GestureRecognizer>.generate(
-          texts.length - recognizers.length, (int index) => recognizer));
+      recognizers.addAll((texts.length - recognizers.length)
+          .generate((int index) => recognizer));
     }
     return TextSpan(
         text: text,
         style: const BasisTextStyle().merge(style),
         semanticsLabel: semanticsLabel,
         recognizer: recognizer,
-        children: texts
-            ?.asMap()
-            ?.entries
-            ?.map((MapEntry<int, String> entry) => TextSpan(
-                text: entry.value,
-                semanticsLabel:
-                    semanticsLabels.isEmpty ? null : semanticsLabels[entry.key],
-                recognizer: recognizers.isEmpty ? null : recognizers[entry.key],
-                style: const BasisTextStyle()
-                    .merge(styles.isEmpty ? null : styles[entry.key])))
-            ?.toList());
+        children: texts?.builderEntry((MapEntry<int, String> entry) => TextSpan(
+            text: entry.value,
+            semanticsLabel:
+                semanticsLabels.isEmpty ? null : semanticsLabels[entry.key],
+            recognizer: recognizers.isEmpty ? null : recognizers[entry.key],
+            style: const BasisTextStyle()
+                .merge(styles.isEmpty ? null : styles[entry.key]))));
   }
 }
 

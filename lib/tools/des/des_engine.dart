@@ -67,8 +67,8 @@ abstract class BaseEngine implements Engine {
       dataWords.removeRange(0, nWordsReady);
     }
 
-    final List<int> result = List<int>.generate(nBytesReady,
-        (int i) => i < processedWords.length ? processedWords[i] : 0);
+    final List<int> result = nBytesReady
+        .generate((int i) => i < processedWords.length ? processedWords[i] : 0);
 
     if (!forEncryption) _pkc7UnPad(result, blockSize);
     return result;
@@ -99,8 +99,7 @@ class DESEngine extends BaseEngine {
     }
 
     ///  Assemble 16 subKeys
-    final List<List<int>> subKeys =
-        _subKeys = List<List<int>>.generate(16, (_) => <int>[]);
+    final List<List<int>> subKeys = _subKeys = 16.generate((_) => <int>[]);
     for (int nSubKey = 0; nSubKey < 16; nSubKey++) {
       ///  Create subKey
       final List<int> subKey =
@@ -256,8 +255,8 @@ void _pkc7Pad(List<int> data, int blockSize) {
   ///  Create padding
   final List<int> paddingWords = <int>[];
   for (int i = 0; i < nPaddingBytes; i += 4) paddingWords.add(paddingWord);
-  final List<int> padding = List<int>.generate(
-      nPaddingBytes, (int i) => i < paddingWords.length ? paddingWords[i] : 0);
+  final List<int> padding = nPaddingBytes
+      .generate((int i) => i < paddingWords.length ? paddingWords[i] : 0);
 
   ///  Add padding
   _concat(data, padding);

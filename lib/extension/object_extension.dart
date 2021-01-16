@@ -7,6 +7,11 @@ import 'package:flutter_waya/constant/enums.dart';
 
 /// num 扩展
 extension ExtensionNum on num {
+  /// 创建指定长度的List
+  List<T> generate<T>(T generator(int index), {bool growable = true}) =>
+      List<T>.generate(toInt(), (int index) => generator(index),
+          growable: growable);
+
   String padLeft(int width, [String padding = ' ']) =>
       toString().padLeft(width);
 
@@ -89,7 +94,7 @@ extension ExtensionString on String {
 
   ///  utf8ToList
   List<int> get utf8ToList {
-    final List<int> words = List<int>.generate(length, (_) => 0);
+    final List<int> words = length.generate((_) => 0);
     for (int i = 0; i < length; i++) {
       words[i >> 2] |= (codeUnitAt(i) & 0xff).toSigned(32) <<
           (24 - (i % 4) * 8).toSigned(32);
@@ -143,8 +148,7 @@ extension ExtensionString on String {
           nBytes++;
         }
       }
-      return List<int>.generate(
-          nBytes, (int i) => i < words.length ? words[i] : 0);
+      return nBytes.generate((int i) => i < words.length ? words[i] : 0);
     }
 
     return parseLoop(base64Str, base64StrLength, reverseMap);
@@ -156,7 +160,7 @@ extension ExtensionUint8List on Uint8List {
     final Uint8List bytes = this;
     final int additionalLength = bytes.length % 4 > 0 ? 4 : 0;
     final List<int> result =
-        List<int>.generate(bytes.length ~/ 4 + additionalLength, (_) => 0);
+        (bytes.length ~/ 4 + additionalLength).generate((_) => 0);
     for (int i = 0; i < bytes.length; i++) {
       final int resultIdx = i ~/ 4;
       final int bitShiftAmount = (3 - i % 4).toInt();
@@ -183,9 +187,7 @@ extension ExtensionList<T> on List<T> {
     final List<int> bit32 = this as List<int>;
     final Uint8List result = Uint8List(bit32.length * 4);
     for (int i = 0; i < bit32.length; i++) {
-      for (int j = 0; j < 4; j++) {
-        result[i * 4 + j] = bit32[i] >> (j * 8);
-      }
+      for (int j = 0; j < 4; j++) result[i * 4 + j] = bit32[i] >> (j * 8);
     }
     return result;
   }
@@ -195,7 +197,7 @@ extension ExtensionList<T> on List<T> {
     if (T != int) return null;
     final List<int> words = this as List<int>;
     final int sigBytes = words.length;
-    final List<int> chars = List<int>.generate(sigBytes, (int i) {
+    final List<int> chars = sigBytes.generate((int i) {
       if (words[i >> 2] == null) words[i >> 2] = 0;
       final int bite =
           ((words[i >> 2]).toSigned(32) >> (24 - (i % 4) * 8)) & 0xff;
@@ -203,6 +205,31 @@ extension ExtensionList<T> on List<T> {
     });
     return String.fromCharCodes(chars);
   }
+
+  /// list.map.toList()
+  List<E> builder<E>(E Function(T) builder) =>
+      this?.map<E>((T e) => builder(e))?.toList();
+
+  List<T> generate<T>(T generator(int index), {bool growable = true}) =>
+      length.generate<T>((int index) => generator(index), growable: growable);
+
+  /// list.asMap().entries.map.toList()
+  List<E> builderEntry<E>(E Function(MapEntry<int, T>) builder) => this
+      ?.asMap()
+      ?.entries
+      ?.map((MapEntry<int, T> entry) => builder(entry))
+      ?.toList();
+}
+
+extension ExtensionMapt<T> on Map<T, T> {
+  List<T> keysList({bool growable = true}) =>
+      this?.keys?.toList(growable: growable);
+
+  List<T> valuesList({bool growable = true}) =>
+      this?.values?.toList(growable: growable);
+
+  List<E> builderEntry<E>(E Function(MapEntry<T, T>) builder) =>
+      this?.entries?.map((MapEntry<T, T> entry) => builder(entry))?.toList();
 }
 
 /// DateTime 扩展

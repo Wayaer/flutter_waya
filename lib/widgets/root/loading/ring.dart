@@ -1,6 +1,4 @@
-import 'dart:math';
-
-import 'package:flutter/widgets.dart';
+part of 'tweens/delay_tween.dart';
 
 class SpinKitRing extends StatefulWidget {
   const SpinKitRing({

@@ -1,6 +1,4 @@
-import 'package:flutter/widgets.dart';
-
-import 'tweens/delay_tween.dart';
+part of 'tweens/delay_tween.dart';
 
 class SpinKitFadingFour extends StatefulWidget {
   const SpinKitFadingFour({
@@ -55,7 +53,7 @@ class _SpinKitFadingFourState extends State<SpinKitFadingFour>
       child: SizedBox.fromSize(
           size: Size.square(widget.size),
           child: Stack(
-              children: List<Widget>.generate(4, (int i) {
+              children: 4.generate((int i) {
             final double _position = widget.size * .5;
             return Positioned.fill(
                 left: _position,

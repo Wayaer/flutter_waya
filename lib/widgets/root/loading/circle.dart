@@ -1,8 +1,4 @@
-import 'dart:math';
-
-import 'package:flutter/widgets.dart';
-
-import 'tweens/delay_tween.dart';
+part of 'tweens/delay_tween.dart';
 
 class SpinKitCircle extends StatefulWidget {
   const SpinKitCircle({
@@ -62,30 +58,27 @@ class _SpinKitCircleState extends State<SpinKitCircle>
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Center(
-        child: SizedBox.fromSize(
-            size: Size.square(widget.size),
-            child: Stack(
-                children: List<Widget>.generate(delays.length, (int index) {
-              final double _position = widget.size * .5;
-              return Positioned.fill(
-                  left: _position,
-                  top: _position,
-                  child: Transform(
-                      transform: Matrix4.rotationZ(30.0 * index * 0.0174533),
-                      child: Align(
-                          alignment: Alignment.center,
-                          child: ScaleTransition(
-                            scale: DelayTween(
-                                    begin: 0.0, end: 1.0, delay: delays[index])
-                                .animate(_controller),
-                            child: SizedBox.fromSize(
-                                size: Size.square(widget.size * 0.15),
-                                child: _itemBuilder(index)),
-                          ))));
-            }))));
-  }
+  Widget build(BuildContext context) => Center(
+      child: SizedBox.fromSize(
+          size: Size.square(widget.size),
+          child: Stack(children: delays.length.generate((int index) {
+            final double _position = widget.size * .5;
+            return Positioned.fill(
+                left: _position,
+                top: _position,
+                child: Transform(
+                    transform: Matrix4.rotationZ(30.0 * index * 0.0174533),
+                    child: Align(
+                        alignment: Alignment.center,
+                        child: ScaleTransition(
+                          scale: DelayTween(
+                                  begin: 0.0, end: 1.0, delay: delays[index])
+                              .animate(_controller),
+                          child: SizedBox.fromSize(
+                              size: Size.square(widget.size * 0.15),
+                              child: _itemBuilder(index)),
+                        ))));
+          }))));
 
   Widget _itemBuilder(int index) => widget.itemBuilder != null
       ? widget.itemBuilder(context, index)
@@ -157,7 +150,7 @@ class _SpinKitFadingCircleState extends State<SpinKitFadingCircle>
         child: SizedBox.fromSize(
             size: Size.square(widget.size),
             child: Stack(
-                children: List<Widget>.generate(12, (int i) {
+                children: 12.generate((int i) {
               final double _position = widget.size * .5;
               return Positioned.fill(
                 left: _position,

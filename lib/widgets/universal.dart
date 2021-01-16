@@ -652,12 +652,10 @@ class Universal extends StatelessWidget {
       maintainSemantics: maintainSemantics,
       maintainInteractivity: maintainInteractivity);
 
-  Widget flexibleWidget(Widget widget) {
-    return Flexible(
-        child: widget,
-        flex: flex ?? 1,
-        fit: (expanded ?? false) ? FlexFit.tight : FlexFit.loose);
-  }
+  Widget flexibleWidget(Widget widget) => Flexible(
+      child: widget,
+      flex: flex ?? 1,
+      fit: (expanded ?? false) ? FlexFit.tight : FlexFit.loose);
 
   Widget cardWidget(Widget widget, BuildContext context) {
     final ThemeData theme = Theme.of(context);
@@ -687,7 +685,7 @@ class Universal extends StatelessWidget {
           Clip mClipBehavior}) =>
       Material(
           child: widget,
-          color: mColor,
+          color: mColor ?? color,
           type: mType ?? type,
           elevation: mElevation ?? elevation,
           shadowColor: mShadowColor ?? shadowColor,
@@ -743,20 +741,6 @@ class Universal extends StatelessWidget {
       verticalDirection: verticalDirection,
       textDirection: textDirection,
       mainAxisSize: mainAxisSize);
-
-  Widget containerWidget(Widget widget) => Container(
-      foregroundDecoration: foregroundDecoration,
-      clipBehavior: clipBehavior,
-      transform: transform,
-      constraints: constraints,
-      alignment: alignment,
-      color: decoration == null ? color : null,
-      width: width,
-      height: height,
-      padding: padding,
-      margin: margin,
-      decoration: decoration,
-      child: widget);
 
   Widget gestureDetectorWidget(Widget widget) => GestureDetector(
       onTapDown: onTapDown,

@@ -1,6 +1,4 @@
-import 'package:flutter/widgets.dart';
-
-import 'tweens/delay_tween.dart';
+part of 'tweens/delay_tween.dart';
 
 class SpinKitDoubleBounce extends StatefulWidget {
   const SpinKitDoubleBounce({
@@ -50,19 +48,14 @@ class _SpinKitDoubleBounceState extends State<SpinKitDoubleBounce>
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Stack(
-        children: List<Widget>.generate(
-            2,
-            (int i) => Transform.scale(
-                  scale: (1.0 - i - _animation.value.abs()).abs(),
-                  child: SizedBox.fromSize(
-                      size: Size.square(widget.size), child: _itemBuilder(i)),
-                )),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Center(
+          child: Stack(
+        children: 2.generate((int i) => Transform.scale(
+              scale: (1.0 - i - _animation.value.abs()).abs(),
+              child: SizedBox.fromSize(
+                  size: Size.square(widget.size), child: _itemBuilder(i)),
+            )),
+      ));
 
   Widget _itemBuilder(int index) => widget.itemBuilder != null
       ? widget.itemBuilder(context, index)
@@ -122,15 +115,13 @@ class _SpinKitThreeBounceState extends State<SpinKitThreeBounce>
         size: Size(widget.size * 2, widget.size),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: List<Widget>.generate(
-              3,
-              (int i) => ScaleTransition(
-                    scale: DelayTween(begin: 0.0, end: 1.0, delay: i * .2)
-                        .animate(_controller),
-                    child: SizedBox.fromSize(
-                        size: Size.square(widget.size * 0.5),
-                        child: _itemBuilder(i)),
-                  )),
+          children: 3.generate((int i) => ScaleTransition(
+                scale: DelayTween(begin: 0.0, end: 1.0, delay: i * .2)
+                    .animate(_controller),
+                child: SizedBox.fromSize(
+                    size: Size.square(widget.size * 0.5),
+                    child: _itemBuilder(i)),
+              )),
         ),
       ),
     );

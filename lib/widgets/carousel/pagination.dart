@@ -195,7 +195,7 @@ class DotCarouselPagination extends CarouselPlugin {
         key: key,
         direction: config.scrollDirection,
         mainAxisSize: MainAxisSize.min,
-        children: List<Widget>.generate(config.itemCount, (int i) {
+        children: config.itemCount.generate((int i) {
           final bool active = i == config.activeIndex;
           return Container(
               key: Key('pagination_$i'),
