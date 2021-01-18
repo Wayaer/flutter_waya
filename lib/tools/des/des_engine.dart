@@ -89,14 +89,13 @@ class DESEngine extends BaseEngine {
     super.init(forEncryption, key);
 
     ///  Select 56 bits according to pc1
-    final List<int> keyBits = List<int>(56);
-    for (int i = 0; i < 56; i++) {
-      final int keyBitPos = pc1[i] - 1;
-      keyBits[i] = (this
+    final List<int> keyBits = 56.generate((int index) {
+      final int keyBitPos = pc1[index] - 1;
+      return (this
               .key[keyBitPos.rightShift32(5)]
               .rightShift32((31 - keyBitPos % 32).toInt())) &
           1;
-    }
+    });
 
     ///  Assemble 16 subKeys
     final List<List<int>> subKeys = _subKeys = 16.generate((_) => <int>[]);

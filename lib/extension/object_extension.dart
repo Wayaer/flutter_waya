@@ -114,10 +114,7 @@ extension ExtensionString on String {
 
     ///  Shortcuts
     int base64StrLength = base64Str.length;
-    if (reverseMap == null) {
-      reverseMap = List<int>(123);
-      for (int j = 0; j < map.length; j++) reverseMap[map.codeUnits[j]] = j;
-    }
+    reverseMap ??= 123.generate((int j) => reverseMap[map.codeUnits[j]] = j);
 
     ///  Ignore padding
     final int paddingChar = map.codeUnits[64];
