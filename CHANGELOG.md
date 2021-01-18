@@ -9,7 +9,7 @@
   * change GlobalMaterial to GlobalWidgetsApp.
   * modify push and pop
   * add Universal tagging
-  * fix GlobalWidgetsApp did not return materialapp
+  * fix GlobalWidgetsApp did not return MaterialApp
   * modify styles.dart
   * Universal add Refreshed
   * add des encode and decode

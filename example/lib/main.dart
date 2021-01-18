@@ -13,6 +13,7 @@ import 'package:waya/module/universal_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  setGlobalPushMode(WidgetMode.ripple);
   runApp(GlobalWidgetsApp(title: 'Waya Demo', home: Home()));
 }
 

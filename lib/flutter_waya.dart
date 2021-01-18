@@ -23,6 +23,7 @@ export 'widgets/carousel/pagination.dart';
 export 'widgets/carousel/parallax.dart';
 export 'widgets/carousel/transformer.dart';
 export 'widgets/dotted_line.dart';
+export 'widgets/draggable_scrollbar.dart';
 export 'widgets/elastic_button.dart';
 export 'widgets/gesture_widgets.dart';
 export 'widgets/icon.dart';

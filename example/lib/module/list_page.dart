@@ -29,13 +29,22 @@ class _ListPageState extends State<ListPage> {
           padding: const EdgeInsets.symmetric(horizontal: 10),
           children: <Widget>[
             SimpleButton(
-                text: 'SimpleList Refreshed',
+                text: 'DraggableScrollbar',
                 textStyle: const TextStyle(color: Colors.white),
                 margin: const EdgeInsets.only(top: 10),
                 alignment: Alignment.center,
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 width: double.infinity,
                 color: colors[0],
+                onTap: () => push(_DraggableScrollbar(colors))),
+            SimpleButton(
+                text: 'SimpleList Refreshed',
+                textStyle: const TextStyle(color: Colors.white),
+                margin: const EdgeInsets.only(top: 10),
+                alignment: Alignment.center,
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                width: double.infinity,
+                color: colors[1],
                 onTap: () => push(_SimpleListRefreshed(colors))),
             const Text('SimpleList.custom 单列')
                 .padding(const EdgeInsets.only(top: 10)),
@@ -160,6 +169,41 @@ class _ListPageState extends State<ListPage> {
                             color: colors.last,
                             padding: const EdgeInsets.symmetric(vertical: 10))),
           ]);
+}
+
+class _DraggableScrollbar extends StatefulWidget {
+  const _DraggableScrollbar(this.colors, {Key key}) : super(key: key);
+
+  final List<Color> colors;
+
+  @override
+  _DraggableScrollbarState createState() => _DraggableScrollbarState();
+}
+
+class _DraggableScrollbarState extends State<_DraggableScrollbar> {
+  ScrollController scrollController = ScrollController();
+
+  @override
+  Widget build(BuildContext context) {
+    final ScrollList list = ScrollList.builder(
+        controller: scrollController,
+        padding: const EdgeInsets.all(10),
+        itemCount: widget.colors.length,
+        itemBuilder: (_, int index) => Container(
+            margin: const EdgeInsets.only(bottom: 10),
+            color: widget.colors[index],
+            width: double.infinity,
+            height: 40));
+
+    final DraggableScrollbar scrollbar = DraggableScrollbar.semicircle(
+        controller: scrollController, child: list);
+
+    return OverlayScaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+            title: const Text('DraggableScrollbar Demo'), centerTitle: true),
+        body: scrollbar);
+  }
 }
 
 class _SimpleListRefreshed extends StatelessWidget {

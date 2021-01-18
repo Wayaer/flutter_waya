@@ -5,6 +5,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_waya/flutter_waya.dart';
+import 'package:flutter_waya/widgets/root/route/ripple_router.dart';
 
 part 'root_part.dart';
 
@@ -514,13 +515,12 @@ Future<dynamic> push(Widget widget,
     bool maintainState,
     bool fullscreenDialog,
     WidgetMode widgetMode}) {
-  return _globalNavigatorKey.currentState.push(_pageRoute(
+  return _globalNavigatorKey.currentState.push(_pageRoute(widget,
       title: title,
       maintainState: maintainState,
       fullscreenDialog: fullscreenDialog,
       settings: settings,
-      pushMode: widgetMode,
-      widget: widget));
+      pushMode: widgetMode));
 }
 
 /// 打开新页面替换当前页面
@@ -531,32 +531,28 @@ Future<dynamic> pushReplacement(Widget widget,
     bool maintainState,
     bool fullscreenDialog,
     WidgetMode widgetMode}) {
-  return _globalNavigatorKey.currentState.pushReplacement(_pageRoute(
+  return _globalNavigatorKey.currentState.pushReplacement(_pageRoute(widget,
       title: title,
       maintainState: maintainState,
       fullscreenDialog: fullscreenDialog,
       settings: settings,
-      pushMode: widgetMode,
-      widget: widget));
+      pushMode: widgetMode));
 }
 
 /// 打开新页面 并移出堆栈所有页面
 Future<dynamic> pushAndRemoveUntil(Widget widget,
-    {WidgetBuilder builder,
-    String title,
+    {String title,
     RouteSettings settings,
     bool maintainState,
     bool fullscreenDialog,
     WidgetMode widgetMode}) {
   return _globalNavigatorKey.currentState.pushAndRemoveUntil(
-      _pageRoute(
+      _pageRoute(widget,
           title: title,
           maintainState: maintainState,
           fullscreenDialog: fullscreenDialog,
           settings: settings,
-          builder: builder,
-          pushMode: widgetMode,
-          widget: widget),
+          pushMode: widgetMode),
       (_) => false);
 }
 
@@ -576,27 +572,38 @@ WidgetMode _widgetMode;
 
 void setGlobalPushMode(WidgetMode widgetMode) => _widgetMode = widgetMode;
 
-Route<T> _pageRoute<T>(
-    {WidgetBuilder builder,
-    Widget widget,
-    String title,
+PageRoute<T> _pageRoute<T>(Widget widget,
+    {String title,
     RouteSettings settings,
     bool maintainState,
     bool fullscreenDialog,
     WidgetMode pushMode}) {
-  assert(builder != null || widget != null);
-  _widgetMode = pushMode ?? _widgetMode ?? WidgetMode.cupertino;
-  if (_widgetMode == WidgetMode.cupertino) {
-    return CupertinoPageRoute<T>(
-        title: title,
-        maintainState: maintainState ?? true,
-        fullscreenDialog: fullscreenDialog ?? false,
-        settings: settings,
-        builder: builder ?? (_) => widget);
+  assert(widget != null);
+  switch (pushMode ?? _widgetMode) {
+    case WidgetMode.cupertino:
+      return CupertinoPageRoute<T>(
+          title: title,
+          maintainState: maintainState ?? true,
+          fullscreenDialog: fullscreenDialog ?? false,
+          settings: settings,
+          builder: (_) => widget);
+    case WidgetMode.material:
+      return MaterialPageRoute<T>(
+          maintainState: maintainState ?? true,
+          fullscreenDialog: fullscreenDialog ?? false,
+          settings: settings,
+          builder: (_) => widget);
+    case WidgetMode.ripple:
+      return RipplePageRoute<T>(
+          widget: widget,
+          routeConfig:
+              RouteConfig.fromContext(_globalNavigatorKey.currentContext));
+    default:
+      return CupertinoPageRoute<T>(
+          title: title,
+          maintainState: maintainState ?? true,
+          fullscreenDialog: fullscreenDialog ?? false,
+          settings: settings,
+          builder: (_) => widget);
   }
-  return MaterialPageRoute<T>(
-      maintainState: maintainState ?? true,
-      fullscreenDialog: fullscreenDialog ?? false,
-      settings: settings,
-      builder: builder ?? (_) => widget);
 }

@@ -82,7 +82,7 @@ class RichTextSpan extends RichText {
             textWidthBasis: textWidthBasis ?? TextWidthBasis.parent,
             textScaleFactor: textScaleFactor ?? 1.0,
             textDirection: textDirection,
-            maxLines: maxLines == null || maxLines < 1 ? 1 : maxLines,
+            maxLines: maxLines,
             locale: locale,
             strutStyle: strutStyle,
             textHeightBehavior: textHeightBehavior);

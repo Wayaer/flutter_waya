@@ -80,6 +80,9 @@ enum WidgetMode {
 
   ///  Material风格
   material,
+
+  ///
+  ripple,
 }
 enum InputTextType {
   ///  字母和数字

@@ -29,8 +29,8 @@ class Universal extends StatelessWidget {
     bool transitionOnUserGestures,
     bool noScrollBehavior,
     bool isOval,
+    bool expanded,
     MaterialType type,
-    Clip clipBehavior,
     DragStartBehavior dragStartBehavior,
     Duration animationDuration,
     Color shadowColor,
@@ -140,12 +140,13 @@ class Universal extends StatelessWidget {
     this.top,
     this.right,
     this.bottom,
-    this.expanded,
     this.flex,
     this.elevation,
     this.opacity,
+    this.clipBehavior,
   })  : isScroll = isScroll ?? false,
         addCard = addCard ?? false,
+        expanded = expanded ?? false,
         maintainState = maintainState ?? false,
         transitionOnUserGestures = transitionOnUserGestures ?? false,
         isStack = isStack ?? false,
@@ -170,7 +171,6 @@ class Universal extends StatelessWidget {
         noScrollBehavior = noScrollBehavior ?? true,
         dragStartBehavior = dragStartBehavior ?? DragStartBehavior.start,
         type = type ?? MaterialType.canvas,
-        clipBehavior = clipBehavior ?? Clip.none,
         shadowColor = shadowColor ?? Colors.transparent,
         animationDuration = animationDuration ?? kThemeChangeDuration,
         replacement = replacement ?? const SizedBox.shrink(),
@@ -514,7 +514,9 @@ class Universal extends StatelessWidget {
     if (color != null && decoration == null && !addInkWell && !addCard)
       widget = ColoredBox(color: color, child: widget);
 
-    if (decoration != null && clipBehavior != Clip.none) {
+    if (decoration != null &&
+        clipBehavior != null &&
+        clipBehavior != Clip.none) {
       widget = clipWidget(widget,
           clipper: _DecorationClipper(
               textDirection: Directionality.of(context),
@@ -545,7 +547,8 @@ class Universal extends StatelessWidget {
     if (heroTag != null) widget = heroWidget(widget);
     if (addCard) widget = cardWidget(widget, context);
     if (isCircleAvatar) widget = circleAvatarWidget(widget);
-    if (clipper != null) widget = clipWidget(widget, clipper: clipper);
+    if (clipper != null || isOval)
+      widget = clipWidget(widget, clipper: clipper);
     if (refreshController != null ||
         onRefresh != null ||
         onLoading != null ||
@@ -562,7 +565,7 @@ class Universal extends StatelessWidget {
       widget = ConstrainedBox(constraints: constraints, child: widget);
 
     if (margin != null) widget = Padding(padding: margin, child: widget);
-    if (expanded != null || flex != null) widget = flexibleWidget(widget);
+    if (expanded || flex != null) widget = flexibleWidget(widget);
     if (left != null || top != null || right != null || bottom != null)
       widget = Positioned(
           left: left, top: top, right: right, bottom: bottom, child: widget);
@@ -655,7 +658,7 @@ class Universal extends StatelessWidget {
   Widget flexibleWidget(Widget widget) => Flexible(
       child: widget,
       flex: flex ?? 1,
-      fit: (expanded ?? false) ? FlexFit.tight : FlexFit.loose);
+      fit: expanded ? FlexFit.tight : FlexFit.loose);
 
   Widget cardWidget(Widget widget, BuildContext context) {
     final ThemeData theme = Theme.of(context);

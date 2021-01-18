@@ -9,6 +9,9 @@ extension ExtensionWidget on Widget {
   Padding margin(EdgeInsetsGeometry margin, {Key key}) =>
       Padding(key: key, padding: margin, child: this);
 
+  ColoredBox color(Color color, {Key key}) =>
+      ColoredBox(key: key, color: color);
+
   Positioned positioned(
           {Key key,
           double left,
