@@ -115,18 +115,34 @@ class _JsonParseState extends State<JsonParse> {
       (content is List && content.isEmpty));
 }
 
-OverlayEntryAuto httpDataOverlay;
+void setHttpData(ResponseModel res) {
+  final _HttpDataModel data = _HttpDataModel(res?.request?.path, res?.data);
+  if (_httpDataOverlay == null) {
+    _httpDataOverlay = showOverlay(_HttpDataPage(data));
+  } else {
+    eventBus.emit('httpData', data);
+  }
+}
 
-class HttpDataPage extends StatefulWidget {
-  const HttpDataPage(this.initData, {Key key}) : super(key: key);
-  final ResponseModel initData;
+OverlayEntryAuto _httpDataOverlay;
+
+class _HttpDataModel {
+  _HttpDataModel(this.url, this.data);
+
+  final String url;
+  final dynamic data;
+}
+
+class _HttpDataPage extends StatefulWidget {
+  const _HttpDataPage(this.initData, {Key key}) : super(key: key);
+  final _HttpDataModel initData;
 
   @override
   _HttpDataPageState createState() => _HttpDataPageState();
 }
 
-class _HttpDataPageState extends State<HttpDataPage> {
-  List<ResponseModel> httpDataList = <ResponseModel>[];
+class _HttpDataPageState extends State<_HttpDataPage> {
+  final List<_HttpDataModel> httpDataList = <_HttpDataModel>[];
   final String eventName = 'httpData';
   bool showData = false;
   ValueNotifier<Offset> iconOffSet =
@@ -135,14 +151,10 @@ class _HttpDataPageState extends State<HttpDataPage> {
   @override
   void initState() {
     super.initState();
-    if (widget.initData != null) httpDataList.insert(0, widget.initData);
-    Ts.addPostFrameCallback((Duration duration) {
-      eventBus.add(eventName, (dynamic data) {
-        if (data is ResponseModel) {
-          httpDataList.insert(0, data);
-          if (httpDataList.length > 20) httpDataList.removeLast();
-        }
-      });
+    httpDataList.add(widget.initData);
+    eventBus.add(eventName, (dynamic data) {
+      if (data is _HttpDataModel && httpDataList.length < 20)
+        httpDataList.insert(0, data);
     });
   }
 
@@ -167,8 +179,8 @@ class _HttpDataPageState extends State<HttpDataPage> {
                           showData = !showData;
                         }),
                     onDoubleTap: () {
-                      httpDataOverlay?.remove();
-                      httpDataOverlay = null;
+                      _httpDataOverlay?.remove();
+                      _httpDataOverlay = null;
                     },
                     onPanStart: (DragStartDetails details) =>
                         updatePositioned(details.globalPosition),
@@ -207,27 +219,25 @@ class _HttpDataPageState extends State<HttpDataPage> {
             itemCount: httpDataList.length,
             padding: const EdgeInsets.all(10),
             itemBuilder: (_, int index) {
-              final ResponseModel res = httpDataList[index];
+              final _HttpDataModel res = httpDataList[index];
               bool showJson = false;
               return Universal(
                 margin: const EdgeInsets.only(top: 10),
                 decoration: BoxDecoration(
                     color: ConstColors.white, boxShadow: WayStyles.boxShadow()),
                 addCard: true,
-                builder: (_, StateSetter state) {
-                  return !showJson
-                      ? title(res.request.path, onTap: () {
+                builder: (_, StateSetter state) => !showJson
+                    ? title(res.url, onTap: () {
+                        showJson = !showJson;
+                        state(() {});
+                      })
+                    : Column(children: <Widget>[
+                        title(res.url, onTap: () {
                           showJson = !showJson;
                           state(() {});
-                        })
-                      : Column(children: <Widget>[
-                          title(res.request.path, onTap: () {
-                            showJson = !showJson;
-                            state(() {});
-                          }),
-                          JsonParse(res.data as Map<dynamic, dynamic>),
-                        ]);
-                },
+                        }),
+                        JsonParse(res.data as Map<dynamic, dynamic>),
+                      ]),
               );
             }),
       );

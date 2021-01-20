@@ -91,25 +91,20 @@ class DioTools {
           log('$httpType url:$url  responseData==  ${responseModel.toMap().toString()}');
         }
       }
-      if (logTools) setHttpData(url, responseModel);
+      if (logTools) setHttpData(responseModel);
       return responseModel;
     } on DioError catch (e) {
       final DioError error = e;
       final ResponseModel errorResponse = constResponseModel(
           httpStatus: ConstConstant.httpStatus[404], error: error);
       log('error:$url  errorData==  ${errorResponse?.toMap()}');
-      if (logTools) setHttpData(url, errorResponse);
+      if (logTools) setHttpData(errorResponse);
       return errorResponse;
     } catch (e) {
       final ResponseModel responseModel = constResponseModel();
-      if (logTools) setHttpData(url, responseModel);
+      if (logTools) setHttpData(responseModel);
       return responseModel;
     }
-  }
-
-  void setHttpData(String url, ResponseModel res) {
-    httpDataOverlay ??= showOverlay(HttpDataPage(res));
-    eventBus.emit('httpData', res);
   }
 
   ResponseModel constResponseModel(
@@ -119,7 +114,7 @@ class DioTools {
       List<RedirectRecord> redirects,
       Map<String, dynamic> extra,
       DioError error}) {
-     const Map<int, HttpStatus> status = ConstConstant.httpStatus;
+    const Map<int, HttpStatus> status = ConstConstant.httpStatus;
     httpStatus ??= status[error?.response?.statusCode ?? 100] ?? status[100];
     return ResponseModel(
         request: error?.request ?? request,
@@ -216,10 +211,8 @@ class InterceptorWrap extends InterceptorsWrapper {
           response.headers[HttpHeaders.setCookieHeader];
       responseModel.cookie = cookies;
       if (cookies != null)
-        cookieJar.saveFromResponse(
-            response.request.uri,
-            cookies
-                .builder((String str) => Cookie.fromSetCookieValue(str)));
+        cookieJar.saveFromResponse(response.request.uri,
+            cookies.builder((String str) => Cookie.fromSetCookieValue(str)));
     }
   }
 
