@@ -167,12 +167,8 @@ class IconBox extends StatelessWidget {
           excludeFromSemantics: true,
           semanticLabel: semanticLabel));
 
-    if (widget != null) {
-      if (size != null)
-        listWidget
-            .add(SizedBox.fromSize(size: Size(size, size), child: widget));
-      listWidget.add(widget);
-    }
+    if (widget != null) listWidget.add(widget);
+
     return listWidget;
   }
 }
