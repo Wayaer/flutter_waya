@@ -73,7 +73,6 @@ class _RefreshedState extends State<Refreshed> {
   @override
   void initState() {
     super.initState();
-
     controller = widget.controller ?? RefreshController(initialRefresh: false);
     Ts.addPostFrameCallback(
         (Duration callback) => eventBus.add(refreshEvent, (dynamic data) {

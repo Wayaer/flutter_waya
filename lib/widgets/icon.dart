@@ -9,6 +9,7 @@ class IconBox extends StatelessWidget {
     CrossAxisAlignment crossAxisAlignment,
     int maxLines,
     bool reversal,
+    bool unified,
     TextOverflow overflow,
     double spacing,
     double size,
@@ -39,6 +40,7 @@ class IconBox extends StatelessWidget {
         textAlign = textAlign ?? TextAlign.start,
         size = size ?? 16,
         reversal = reversal ?? false,
+        unified = unified ?? true,
         direction = direction ?? Axis.horizontal,
         spacing = spacing ?? 4,
         crossAxisAlignment = crossAxisAlignment ?? CrossAxisAlignment.center,
@@ -48,8 +50,9 @@ class IconBox extends StatelessWidget {
   ///  icon > image > imageProvider > widget
   final Widget widget;
   final IconData icon;
-  final Widget image;
+  final Image image;
   final ImageProvider imageProvider;
+  final bool unified;
 
   ///  显示图片
   final TextDirection textDirection;
@@ -80,7 +83,6 @@ class IconBox extends StatelessWidget {
   final double size;
   final AlignmentGeometry alignment;
   final TextAlign textAlign;
-
   final String heroTag;
 
   @override
@@ -120,15 +122,16 @@ class IconBox extends StatelessWidget {
       padding: padding,
       alignment: alignment);
 
-  Widget get spacingWidget => Container(
+  Widget get spacingWidget => SizedBox(
       width: direction == Axis.horizontal ? spacing : 0,
       height: direction == Axis.vertical ? spacing : 0);
 
   Widget get titleWidget {
     if (title != null) return title;
+    final TextStyle style =
+        BasisTextStyle(color: color ?? ConstColors.black70).merge(titleStyle);
     return BasisText(titleText ?? '',
-        style:
-            const BasisTextStyle(color: ConstColors.black70).merge(titleStyle),
+        style: style,
         textAlign: textAlign,
         maxLines: maxLines,
         textDirection: textDirection,
@@ -154,10 +157,22 @@ class IconBox extends StatelessWidget {
     if (image != null) listWidget.add(image);
 
     if (imageProvider != null)
-      listWidget.add(ImageIcon(imageProvider,
-          color: color, size: size, semanticLabel: semanticLabel));
+      listWidget.add(Image(
+          image: imageProvider,
+          width: size,
+          height: size,
+          color: color,
+          fit: BoxFit.scaleDown,
+          alignment: Alignment.center,
+          excludeFromSemantics: true,
+          semanticLabel: semanticLabel));
 
-    if (widget != null) listWidget.add(widget);
+    if (widget != null) {
+      if (size != null)
+        listWidget
+            .add(SizedBox.fromSize(size: Size(size, size), child: widget));
+      listWidget.add(widget);
+    }
     return listWidget;
   }
 }
