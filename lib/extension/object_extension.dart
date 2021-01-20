@@ -216,6 +216,37 @@ extension ExtensionList<T> on List<T> {
       ?.entries
       ?.map((MapEntry<int, T> entry) => builder(entry))
       ?.toList();
+
+  /// 添加子元素 并返回 新数组
+  List<T> addT(T value, {bool isAdd = true}) {
+    if (isAdd) add(value);
+    return this;
+  }
+
+  /// 添加数组 并返回 新数组
+  List<T> addAllT(List<T> iterable, {bool isAdd = true}) {
+    if (isAdd) addAll(iterable);
+    return this;
+  }
+
+  /// 插入子元素 并返回 新数组
+  List<T> insertT(int index, T value, {bool isInsert = true}) {
+    if (isInsert) insert(index, value);
+    return this;
+  }
+
+  /// 插入数组 并返回 新数组
+  List<T> insertAllT(int index, List<T> iterable, {bool isInsert = true}) {
+    if (isInsert) insertAll(index, iterable);
+    return this;
+  }
+
+  /// 替换指定区域 返回 新数组
+  List<T> replaceRangeT(int start, int end, Iterable<T> replacement,
+      {bool isReplace = true}) {
+    if (isReplace) replaceRange(start, end, replacement);
+    return this;
+  }
 }
 
 extension ExtensionMapt<T> on Map<T, T> {
