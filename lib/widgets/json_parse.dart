@@ -153,8 +153,10 @@ class _HttpDataPageState extends State<_HttpDataPage> {
     super.initState();
     httpDataList.add(widget.initData);
     eventBus.add(eventName, (dynamic data) {
-      if (data is _HttpDataModel && httpDataList.length < 20)
+      if (data is _HttpDataModel) {
         httpDataList.insert(0, data);
+        if (httpDataList.length > 20) httpDataList.removeLast();
+      }
     });
   }
 
