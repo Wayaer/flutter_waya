@@ -33,15 +33,14 @@ class _JsonParseState extends State<JsonParse> {
 
   List<Widget> get children {
     final List<Widget> list = <Widget>[];
-
     widget?.json?.builderEntry((MapEntry<dynamic, dynamic> entry) {
       final dynamic key = entry.key;
       final dynamic content = entry.value;
       final List<Widget> row = <Widget>[];
       if (isTap(content)) {
         row.add(((mapFlag[key.toString()]) ?? false)
-            ? Icon(Icons.arrow_drop_down, size: 14, color: Colors.grey[700])
-            : Icon(Icons.arrow_right, size: 14, color: Colors.grey[700]));
+            ? Icon(Icons.arrow_drop_down, size: 18, color: Colors.grey[700])
+            : Icon(Icons.arrow_right, size: 18, color: Colors.grey[700]));
       } else {
         row.add(const SizedBox(width: 14));
       }
@@ -56,6 +55,7 @@ class _JsonParseState extends State<JsonParse> {
           direction: Axis.horizontal,
           children: row,
           addInkWell: true,
+          crossAxisAlignment: CrossAxisAlignment.start,
           onTap: !isTap(content)
               ? null
               : () {
