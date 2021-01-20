@@ -197,11 +197,12 @@ class _HttpDataPageState extends State<HttpDataPage> {
   }
 
   Widget get showUrl => Universal(
+        addCard: true,
         margin: EdgeInsets.fromLTRB(10, getStatusBarHeight + 30, 10, 10),
         decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: Colors.grey.withOpacity(0.8))),
+            border: Border.all(color: Colors.grey.withOpacity(0.5))),
         child: SimpleList.builder(
             itemCount: httpDataList.length,
             padding: const EdgeInsets.all(10),
@@ -212,7 +213,7 @@ class _HttpDataPageState extends State<HttpDataPage> {
                 margin: const EdgeInsets.only(top: 10),
                 decoration: BoxDecoration(
                     color: ConstColors.white, boxShadow: WayStyles.boxShadow()),
-                addInkWell: true,
+                addCard: true,
                 builder: (_, StateSetter state) {
                   return !showJson
                       ? title(res.request.path, onTap: () {

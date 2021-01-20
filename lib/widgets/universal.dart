@@ -5,34 +5,31 @@ import 'package:flutter_waya/flutter_waya.dart';
 class Universal extends StatelessWidget {
   const Universal({
     Key key,
-    bool isScroll,
-    bool isStack,
-    bool enabled,
-    bool addInkWell,
-    bool reverse,
+    bool isScroll = false,
+    bool isStack = false,
+    bool enabled = false,
+    bool addInkWell = false,
+    bool addCard = false,
+    bool expanded = false,
+    bool expand = false,
+    bool shrink = false,
+    bool visible = true,
+    bool offstage = false,
+    bool reverse = false,
+    bool isOval = false,
+    bool isCircleAvatar = false,
     bool canRequestFocus,
-    bool borderOnForeground,
     bool enableFeedback,
     bool excludeFromSemantics,
     bool autoFocus,
-    bool expand,
-    bool shrink,
-    bool visible,
-    bool offstage,
     bool maintainState,
     bool maintainAnimation,
     bool maintainSize,
     bool maintainSemantics,
     bool maintainInteractivity,
-    bool isCircleAvatar,
-    bool addCard,
     bool transitionOnUserGestures,
     bool noScrollBehavior,
-    bool isOval,
-    bool expanded,
-    MaterialType type,
     DragStartBehavior dragStartBehavior,
-    Duration animationDuration,
     Color shadowColor,
     Widget replacement,
     StackFit stackFit,
@@ -97,7 +94,6 @@ class Universal extends StatelessWidget {
     this.onForcePressPeak,
     this.onForcePressUpdate,
     this.onForcePressEnd,
-    this.textStyle,
     this.shape,
     this.onHighlightChanged,
     this.onHover,
@@ -144,35 +140,32 @@ class Universal extends StatelessWidget {
     this.elevation,
     this.opacity,
     this.clipBehavior,
-  })  : isScroll = isScroll ?? false,
-        addCard = addCard ?? false,
+  })  : addCard = addCard ?? false,
+        addInkWell = addInkWell ?? false,
+        isScroll = isScroll ?? false,
+        isStack = isStack ?? false,
         expanded = expanded ?? false,
+        expand = expand ?? false,
+        shrink = shrink ?? false,
+        isOval = isOval ?? false,
+        visible = visible ?? true,
+        offstage = offstage ?? false,
+        enabled = enabled ?? false,
+        reverse = reverse ?? false,
+        autoFocus = autoFocus ?? false,
         maintainState = maintainState ?? false,
         transitionOnUserGestures = transitionOnUserGestures ?? false,
-        isStack = isStack ?? false,
         isCircleAvatar = isCircleAvatar ?? false,
         maintainAnimation = maintainAnimation ?? false,
         maintainSize = maintainSize ?? false,
         maintainSemantics = maintainSemantics ?? false,
         maintainInteractivity = maintainInteractivity ?? false,
-        enabled = enabled ?? false,
-        addInkWell = addInkWell ?? false,
-        reverse = reverse ?? false,
-        autoFocus = autoFocus ?? false,
-        expand = expand ?? false,
-        shrink = shrink ?? false,
         excludeFromSemantics = excludeFromSemantics ?? false,
-        borderOnForeground = borderOnForeground ?? true,
         enableFeedback = enableFeedback ?? true,
         canRequestFocus = canRequestFocus ?? true,
-        isOval = isOval ?? false,
-        visible = visible ?? true,
-        offstage = offstage ?? false,
         noScrollBehavior = noScrollBehavior ?? true,
         dragStartBehavior = dragStartBehavior ?? DragStartBehavior.start,
-        type = type ?? MaterialType.canvas,
         shadowColor = shadowColor ?? Colors.transparent,
-        animationDuration = animationDuration ?? kThemeChangeDuration,
         replacement = replacement ?? const SizedBox.shrink(),
         stackFit = stackFit ?? StackFit.loose,
         mainAxisSize = mainAxisSize ?? MainAxisSize.max,
@@ -183,6 +176,7 @@ class Universal extends StatelessWidget {
         behavior = behavior ?? HitTestBehavior.opaque,
         borderRadius = borderRadius ?? BorderRadius.zero,
         color = color ?? Colors.transparent,
+        assert(!(addCard && addInkWell)),
         super(key: key);
 
   ///  public
@@ -245,6 +239,9 @@ class Universal extends StatelessWidget {
 
   ///  ****** [Card] ******  ///
   final bool addCard;
+  final double elevation;
+  final Color shadowColor;
+  final ShapeBorder shape;
 
   ///  ****** [Flex]=[Column]+[Row] ******  ///
   final MainAxisAlignment mainAxisAlignment;
@@ -296,15 +293,6 @@ class Universal extends StatelessWidget {
 
   ///  ****** [Opacity] ******  ///
   final double opacity;
-
-  ///  ****** [Material] ******  ///
-  final MaterialType type;
-  final double elevation;
-  final Color shadowColor;
-  final TextStyle textStyle;
-  final ShapeBorder shape;
-  final bool borderOnForeground;
-  final Duration animationDuration;
 
   ///  ****** 点击事件相关 ******  ///
   ///  ****** [InkWell] ******  ///
@@ -666,14 +654,18 @@ class Universal extends StatelessWidget {
     return material(widget,
         mType: MaterialType.card,
         mShadowColor: shadowColor ?? cardTheme.shadowColor ?? theme.shadowColor,
-        mColor: color ?? cardTheme.color ?? theme.cardColor,
-        mElevation: elevation ?? cardTheme.elevation ?? 1,
+        mColor: color == ConstColors.transparent
+            ? cardTheme.color ?? theme.cardColor
+            : color,
+        mElevation: elevation ?? cardTheme.elevation ?? 10,
         mShape: shape ??
             cardTheme.shape ??
             RoundedRectangleBorder(
-                borderRadius: borderRadius ?? BorderRadius.circular(4)),
+                borderRadius: borderRadius == BorderRadius.zero
+                    ? BorderRadius.circular(4)
+                    : borderRadius),
         mClipBehavior: clipBehavior ?? cardTheme.clipBehavior ?? Clip.none,
-        mBorderOnForeground: borderOnForeground ?? true);
+        mBorderOnForeground: true);
   }
 
   Material material(Widget widget,
@@ -688,16 +680,15 @@ class Universal extends StatelessWidget {
           Clip mClipBehavior}) =>
       Material(
           child: widget,
-          color: mColor ?? color,
-          type: mType ?? type,
-          elevation: mElevation ?? elevation,
-          shadowColor: mShadowColor ?? shadowColor,
-          textStyle: mTextStyle ?? textStyle,
+          color: mColor,
+          type: mType,
+          elevation: mElevation,
+          shadowColor: mShadowColor,
+          textStyle: mTextStyle,
           borderRadius: (mShape != null || shape != null) ? null : borderRadius,
           shape: mShape ?? shape,
-          borderOnForeground: mBorderOnForeground ?? borderOnForeground,
-          clipBehavior: mClipBehavior ?? clipBehavior,
-          animationDuration: animationDuration);
+          borderOnForeground: mBorderOnForeground,
+          clipBehavior: mClipBehavior);
 
   Widget inkWellWidget(Widget widget) => Ink(
       decoration: decoration,
