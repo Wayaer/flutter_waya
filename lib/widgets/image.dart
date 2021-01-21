@@ -381,6 +381,7 @@ class _GifImageState extends State<GifImage> {
     super.didUpdateWidget(oldWidget);
     if (widget.image != oldWidget.image) {
       _fetchGif(widget.image).then((List<ImageInfo> imageInfo) {
+        if (imageInfo == null) return;
         if (mounted) {
           _images = imageInfo;
           _fetchComplete = true;
@@ -408,6 +409,7 @@ class _GifImageState extends State<GifImage> {
     super.didChangeDependencies();
     if (_images == null) {
       _fetchGif(widget.image).then((List<ImageInfo> imageInfo) {
+        if (imageInfo == null) return;
         if (mounted) {
           _images = imageInfo;
           _fetchComplete = true;
@@ -460,6 +462,10 @@ class _GifImageState extends State<GifImage> {
           options.headers.addAll(<String, String>{name: value}));
       final ResponseModel result =
           await DioTools.getInstance(options: options).getHttp(provider.url);
+      if (result?.statusCode != 200) {
+        showToast(result?.statusMessage);
+        return null;
+      }
       data = result.data as Uint8List;
     } else if (provider is AssetImage) {
       final AssetBundleImageKey key =

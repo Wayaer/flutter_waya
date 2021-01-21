@@ -12,9 +12,13 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  flutter_curiosity: ^1.3.6
+  flutter_web_plugins:
+    sdk: flutter
+  flutter_curiosity:
+    path: ../../flutter_curiosity
   flutter_waya:
     path: ../
+
 
 dev_dependencies:
   flutter_test:
