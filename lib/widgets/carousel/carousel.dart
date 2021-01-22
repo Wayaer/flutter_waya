@@ -329,7 +329,7 @@ class _CarouselPageViewState extends State<Carousel> {
 
   @override
   void didChangeDependencies() {
-    if (_transformer != null) Ts.addPostFrameCallback(_onGetSize);
+    if (_transformer != null) addPostFrameCallback(_onGetSize);
     super.didChangeDependencies();
   }
 
@@ -390,8 +390,8 @@ abstract class _CarouselTimerMixin extends State<Carousel> {
   bool _autoPlayEnabled() => _controller.autoPlay ?? widget.autoPlay;
 
   void _startAutoPlay() {
-    _timer = Ts.timerPeriodic(
-        widget.duration, (Timer timer) => _controller.next(animation: true));
+    _timer = widget.duration
+        .timerPeriodic((Timer timer) => _controller.next(animation: true));
   }
 
   void _stopAutoPlay() {
@@ -688,7 +688,7 @@ abstract class _LayoutState<T extends _SubCarousel> extends State<T>
 
   @override
   void didChangeDependencies() {
-    Ts.addPostFrameCallback((Duration duration) => afterRender());
+    addPostFrameCallback((Duration duration) => afterRender());
     super.didChangeDependencies();
   }
 

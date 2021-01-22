@@ -1,7 +1,5 @@
-import 'dart:async';
 import 'dart:math';
 import 'dart:ui';
-import 'dart:ui' as ui show Image;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -57,79 +55,26 @@ String getFileSize(int size) {
   return size.toString();
 }
 
-/// Tools
-class Ts {
-  static Future<void> exitApp() async => await SystemNavigator.pop();
+void addPostFrameCallback(FrameCallback callback) =>
+    WidgetsBinding.instance.addPostFrameCallback(callback);
 
-  ///  截屏
-  static Future<ByteData> screenshots(GlobalKey globalKey,
-      {ImageByteFormat format}) async {
-    final RenderRepaintBoundary boundary =
-        globalKey.currentContext.findRenderObject() as RenderRepaintBoundary;
-    final ui.Image image =
-        await boundary.toImage(pixelRatio: window.devicePixelRatio);
-    final ByteData byteData =
-        await image.toByteData(format: format ?? ImageByteFormat.rawRgba);
-
-    ///  Uint8List uint8list = byteData.buffer.asUint8List();
-    return byteData;
-  }
-
-  ///  移出焦点 focusNode==null  移出焦点 （可用于关闭键盘） focusNode！!= null 获取焦点
-  static void focusNode(BuildContext context, {FocusNode focusNode}) =>
-      FocusScope.of(context).requestFocus(focusNode ?? FocusNode());
-
-  ///  自动获取焦点
-  static void autoFocus(BuildContext context) =>
-      FocusScope.of(context).autofocus(FocusNode());
-
-  static void addPostFrameCallback(FrameCallback callback) =>
-      WidgetsBinding.instance.addPostFrameCallback(callback);
-
-  /// 时间工具
-  static Timer timerTs(Duration duration, [Function function]) {
-    Timer timer;
-    timer = Timer(duration, () {
-      if (function != null) function();
-      timer?.cancel();
-    });
-    return timer;
-  }
-
-  ///  需要手动释放timer
-  static Timer timerPeriodic(Duration duration, [void callback(Timer timer)]) =>
-      Timer.periodic(duration, (Timer time) => callback(time));
-
-  static void setStatusBarLight(bool isLight) {
-    const Color color = ConstColors.transparent;
-    if (isLight is bool) {
-      SystemChrome.setSystemUIOverlayStyle(isLight
-          ? const SystemUiOverlayStyle(
-              systemNavigationBarColor: ConstColors.black70,
-              systemNavigationBarDividerColor: ConstColors.transparent,
-              statusBarColor: color,
-              systemNavigationBarIconBrightness: Brightness.light,
-              statusBarIconBrightness: Brightness.light,
-              statusBarBrightness: Brightness.dark)
-          : const SystemUiOverlayStyle(
-              systemNavigationBarColor: ConstColors.black70,
-              systemNavigationBarDividerColor: color,
-              statusBarColor: color,
-              systemNavigationBarIconBrightness: Brightness.light,
-              statusBarIconBrightness: Brightness.dark,
-              statusBarBrightness: Brightness.light));
-    }
-  }
-
-  /// pop 返回简写 带参数  nullBack  navigator 返回为空 就继续返回上一页面
-  static void popBack(Future<dynamic> navigator, {bool nullBack = true}) {
-    final Future<dynamic> future = navigator;
-    future.then((dynamic value) {
-      if (value == null) {
-        if (nullBack) pop();
-      } else {
-        pop(value);
-      }
-    });
+void setStatusBarLight(bool isLight) {
+  const Color color = ConstColors.transparent;
+  if (isLight is bool) {
+    SystemChrome.setSystemUIOverlayStyle(isLight
+        ? const SystemUiOverlayStyle(
+            systemNavigationBarColor: ConstColors.black70,
+            systemNavigationBarDividerColor: ConstColors.transparent,
+            statusBarColor: color,
+            systemNavigationBarIconBrightness: Brightness.light,
+            statusBarIconBrightness: Brightness.light,
+            statusBarBrightness: Brightness.dark)
+        : const SystemUiOverlayStyle(
+            systemNavigationBarColor: ConstColors.black70,
+            systemNavigationBarDividerColor: color,
+            statusBarColor: color,
+            systemNavigationBarIconBrightness: Brightness.light,
+            statusBarIconBrightness: Brightness.dark,
+            statusBarBrightness: Brightness.light));
   }
 }

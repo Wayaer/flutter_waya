@@ -15,8 +15,8 @@ class _ProgressPageState extends State<ProgressPage> {
   @override
   void initState() {
     super.initState();
-    Ts.addPostFrameCallback((Duration duration) {
-      timer = Ts.timerPeriodic(const Duration(seconds: 1), (Timer timer) {
+    addPostFrameCallback((Duration duration) {
+      timer = const Duration(seconds: 1).timerPeriodic((Timer timer) {
         percent += 0.1;
         setState(() {});
         if (percent >= 1) {

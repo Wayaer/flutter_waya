@@ -74,7 +74,7 @@ class _RefreshedState extends State<Refreshed> {
   void initState() {
     super.initState();
     controller = widget.controller ?? RefreshController(initialRefresh: false);
-    Ts.addPostFrameCallback(
+    addPostFrameCallback(
         (Duration callback) => eventBus.add(refreshEvent, (dynamic data) {
               if (data == null) return;
               if (data != null && data is RefreshCompletedType) {
@@ -151,16 +151,16 @@ class _RefreshedState extends State<Refreshed> {
 
   void onTwoLevel() {
     log('onTwoLevel');
-    Ts.timerTs(const Duration(seconds: 2), () => controller.twoLevelComplete());
+    const Duration(seconds: 2).timer(() => controller.twoLevelComplete());
   }
 
   void onRefresh() {
     log('onRefresh');
-    Ts.timerTs(const Duration(seconds: 2), () => controller.refreshCompleted());
+    const Duration(seconds: 2).timer(() => controller.refreshCompleted());
   }
 
   void onLoading() {
     log('onLoading');
-    Ts.timerTs(const Duration(seconds: 2), () => controller.loadNoData());
+    const Duration(seconds: 2).timer(() => controller.loadNoData());
   }
 }

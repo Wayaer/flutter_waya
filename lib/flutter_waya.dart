@@ -8,6 +8,7 @@ export 'constant/enums.dart';
 export 'constant/model.dart';
 export 'extension/object_extension.dart';
 export 'extension/widget_extension.dart';
+export 'extension/context_extension.dart';
 export 'tools/ali_oss.dart';
 export 'tools/des/des.dart';
 export 'tools/des/des_engine.dart';

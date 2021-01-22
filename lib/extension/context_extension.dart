@@ -1,7 +1,17 @@
+import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
 extension ExtensionContext on BuildContext {
+  ///  移出焦点 focusNode==null  移出焦点 （可用于关闭键盘） focusNode！!= null 获取焦点
+  void focusNode({FocusNode focusNode}) =>
+      FocusScope.of(this).requestFocus(focusNode ?? FocusNode());
+
+  ///  自动获取焦点
+  void autoFocus() => FocusScope.of(this).autofocus(FocusNode());
+
   /// The same of [MediaQuery.of(context).size]
   Size get mediaQuerySize => MediaQuery.of(this).size;
 
@@ -106,4 +116,19 @@ extension ExtensionContext on BuildContext {
 
   /// True if the current device is Tablet
   bool get isTablet => isSmallTablet || isLargeTablet;
+}
+
+extension ExtensionGlobalKey on GlobalKey {
+  ///  截屏
+  Future<ByteData> screenshots({ui.ImageByteFormat format}) async {
+    final RenderRepaintBoundary boundary =
+        currentContext.findRenderObject() as RenderRepaintBoundary;
+    final ui.Image image =
+        await boundary.toImage(pixelRatio: ui.window.devicePixelRatio);
+    final ByteData byteData =
+        await image.toByteData(format: format ?? ui.ImageByteFormat.rawRgba);
+
+    ///  Uint8List uint8list = byteData.buffer.asUint8List();
+    return byteData;
+  }
 }

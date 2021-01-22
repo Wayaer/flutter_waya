@@ -359,7 +359,7 @@ class _LinearState extends _ProgressSubState {
 
   @override
   void initState() {
-    Ts.addPostFrameCallback((_) {
+    addPostFrameCallback((_) {
       if (mounted) {
         _containerWidth = _containerKey.currentContext.size.width;
         if (_keyIndicator.currentContext != null) {

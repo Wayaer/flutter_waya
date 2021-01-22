@@ -101,7 +101,7 @@ class _ScrollViewAutoState extends State<ScrollViewAuto> {
   void initState() {
     slivers = widget.slivers ?? <Widget>[];
     super.initState();
-    Ts.addPostFrameCallback((Duration duration) {
+    addPostFrameCallback((Duration duration) {
       _calculate(slivers, sliverModel);
       showNestedScroll = true;
       setState(() {});

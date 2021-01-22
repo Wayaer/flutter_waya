@@ -258,7 +258,7 @@ class _DropdownMenuState extends State<DropdownMenu> {
     if (widget.titleTap != null) widget.titleTap(index);
     final double keyboardHeight = getViewInsets.bottom;
     if (keyboardHeight > 0) {
-      Ts.focusNode(context);
+      context.focusNode();
       Timer timer;
       timer = Timer(const Duration(milliseconds: 300), () {
         changeState(index);

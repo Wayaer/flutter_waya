@@ -17,7 +17,7 @@ class _ImagePageState extends State<ImagePage> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     controller = GifController(vsync: this);
-    Ts.addPostFrameCallback((Duration duration) {
+    addPostFrameCallback((Duration duration) {
       controller.repeat(
           min: 0, max: 74, period: const Duration(milliseconds: 1000));
     });

@@ -273,9 +273,9 @@ class _AutoScrollEntryState extends State<AutoScrollEntry> {
     } else {
       maxItemCount = widget.maxItemCount;
     }
-    Ts.addPostFrameCallback((Duration duration) {
-      timer = Ts.timerPeriodic(widget.duration ?? const Duration(seconds: 3),
-          (Timer callback) {
+    addPostFrameCallback((Duration duration) {
+      timer = (widget.duration ?? const Duration(seconds: 3))
+          .timerPeriodic((Timer callback) {
         index += 1;
         if (index >= maxItemCount) {
           index = 0;

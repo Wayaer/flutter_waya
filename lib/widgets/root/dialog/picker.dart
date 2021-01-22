@@ -607,7 +607,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
           controller: controllerMonth,
           unit: unit?.month, onChanged: (int newIndex) {
         monthIndex = newIndex;
-        Ts.timerTs(const Duration(milliseconds: 100), () => checkMonthAndDay());
+        const Duration(milliseconds: 100).timer(() => checkMonthAndDay());
         if (unit.day != null) refreshDay();
       }));
 
@@ -620,8 +620,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
             controller: controllerDay,
             unit: unit?.day, onChanged: (int newIndex) {
           dayIndex = newIndex;
-          Ts.timerTs(
-              const Duration(milliseconds: 200), () => checkMonthAndDay());
+          const Duration(milliseconds: 200).timer(() => checkMonthAndDay());
         });
       }));
 

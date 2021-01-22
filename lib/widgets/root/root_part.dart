@@ -159,7 +159,7 @@ Future<void> showToast(String message,
               child: toast)),
       autoOff: true);
   haveToast = true;
-  Ts.timerTs(closeDuration ?? _duration, () {
+  (closeDuration ?? _duration).timer(() {
     closeOverlay(entry: entry);
     haveToast = false;
   });
@@ -399,7 +399,7 @@ Future<T> showDateTimePicker<T>({
   /// Wheel配置信息
   PickerWheel pickerWheel,
 }) {
-  Ts.focusNode(_globalNavigatorKey.currentContext);
+  _globalNavigatorKey.currentContext.focusNode();
   pickerSub ??= PickerSub();
   pickerSub?.cancelTap ??= () => closePopup();
   pickerSub?.sureTap ??= (String text) => closePopup(text);
@@ -433,7 +433,7 @@ Future<T> showAreaPicker<T>({
   /// Wheel配置信息
   PickerWheel pickerWheel,
 }) {
-  Ts.focusNode(_globalNavigatorKey.currentContext);
+  _globalNavigatorKey.currentContext.focusNode();
   pickerSub ??= PickerSub();
   pickerSub?.cancelTap ??= () => closePopup();
   pickerSub?.sureTap ??= (String text) => closePopup(text);
@@ -461,7 +461,7 @@ Future<T> showMultipleChoicePicker<T>({
   /// Wheel配置信息
   PickerWheel pickerWheel,
 }) {
-  Ts.focusNode(_globalNavigatorKey.currentContext);
+  _globalNavigatorKey.currentContext.focusNode();
   pickerSub ??= PickerSub();
   pickerSub?.cancelTap ??= () => closePopup();
   pickerSub?.sureIndexTap ??= (int index) => closePopup(index);

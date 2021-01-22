@@ -564,6 +564,18 @@ Future<bool> maybePop<T extends Object>([dynamic result]) =>
 void pop<T extends Object>([dynamic result]) =>
     _globalNavigatorKey.currentState.pop<dynamic>(result);
 
+/// pop 返回简写 带参数  nullBack  navigator 返回为空 就继续返回上一页面
+void popBack(Future<dynamic> navigator, {bool nullBack = true}) {
+  final Future<dynamic> future = navigator;
+  future.then((dynamic value) {
+    if (value == null) {
+      if (nullBack) pop();
+    } else {
+      pop(value);
+    }
+  });
+}
+
 /// 循环pop 直到pop至指定页面
 void popUntil(RoutePredicate predicate) =>
     _globalNavigatorKey.currentState.popUntil(predicate);

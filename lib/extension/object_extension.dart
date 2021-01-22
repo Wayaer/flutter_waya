@@ -321,19 +321,25 @@ extension ExtensionDateTime on DateTime {
 }
 
 extension GetDurationUtils on Duration {
-  /// Utility to delay some callback (or code execution).
-  ///
-  /// Sample:
-  /// ```
-  /// void main() async {
   ///   final _delay = 3.seconds;
   ///   print('+ wait $_delay');
   ///   await _delay.delay();
   ///   print('- finish wait $_delay');
   ///   print('+ callback in 700ms');
-  ///   await 0.7.seconds.delay(() {
-  /// }
-  ///```
   Future<T> delay<T>([FutureOr<T> callback()]) async =>
       Future<T>.delayed(this, callback);
+
+  /// 时间工具
+  Timer timer([Function function]) {
+    Timer timer;
+    timer = Timer(this, () {
+      if (function != null) function();
+      timer?.cancel();
+    });
+    return timer;
+  }
+
+  /// 需要手动释放timer
+  Timer timerPeriodic([void callback(Timer timer)]) =>
+      Timer.periodic(this, (Timer time) => callback(time));
 }
