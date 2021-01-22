@@ -320,7 +320,7 @@ extension ExtensionDateTime on DateTime {
   }
 }
 
-extension GetDurationUtils on Duration {
+extension DurationExtension on Duration {
   ///   final _delay = 3.seconds;
   ///   print('+ wait $_delay');
   ///   await _delay.delay();
