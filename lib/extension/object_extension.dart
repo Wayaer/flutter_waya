@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 
@@ -52,6 +53,18 @@ extension ExtensionNum on num {
   /// 是否包含 [other]
   bool contains(Pattern other, [int startIndex = 0]) =>
       toString().contains(other);
+
+  Duration get milliseconds => Duration(microseconds: (this * 1000).round());
+
+  Duration get seconds => Duration(milliseconds: (this * 1000).round());
+
+  Duration get minutes =>
+      Duration(seconds: (this * Duration.secondsPerMinute).round());
+
+  Duration get hours =>
+      Duration(minutes: (this * Duration.minutesPerHour).round());
+
+  Duration get days => Duration(hours: (this * Duration.hoursPerDay).round());
 }
 
 /// int 扩展
@@ -305,4 +318,22 @@ extension ExtensionDateTime on DateTime {
     }
     return date.toString();
   }
+}
+
+extension GetDurationUtils on Duration {
+  /// Utility to delay some callback (or code execution).
+  ///
+  /// Sample:
+  /// ```
+  /// void main() async {
+  ///   final _delay = 3.seconds;
+  ///   print('+ wait $_delay');
+  ///   await _delay.delay();
+  ///   print('- finish wait $_delay');
+  ///   print('+ callback in 700ms');
+  ///   await 0.7.seconds.delay(() {
+  /// }
+  ///```
+  Future<T> delay<T>([FutureOr<T> callback()]) async =>
+      Future<T>.delayed(this, callback);
 }

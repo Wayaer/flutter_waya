@@ -9,6 +9,46 @@ extension ExtensionWidget on Widget {
   Padding margin(EdgeInsetsGeometry margin, {Key key}) =>
       Padding(key: key, padding: margin, child: this);
 
+  Widget paddingAll(double padding) =>
+      Padding(padding: EdgeInsets.all(padding), child: this);
+
+  Widget paddingSymmetric({double horizontal = 0.0, double vertical = 0.0}) =>
+      Padding(
+          padding:
+              EdgeInsets.symmetric(horizontal: horizontal, vertical: vertical),
+          child: this);
+
+  Widget paddingOnly(
+          {double left = 0.0,
+          double top = 0.0,
+          double right = 0.0,
+          double bottom = 0.0}) =>
+      Padding(
+          padding: EdgeInsets.only(
+              top: top, left: left, right: right, bottom: bottom),
+          child: this);
+
+  Widget marginAll(double margin) =>
+      Padding(padding: EdgeInsets.all(margin), child: this);
+
+  Widget marginSymmetric({double horizontal = 0.0, double vertical = 0.0}) =>
+      Padding(
+          padding:
+              EdgeInsets.symmetric(horizontal: horizontal, vertical: vertical),
+          child: this);
+
+  Widget marginOnly(
+          {double left = 0.0,
+          double top = 0.0,
+          double right = 0.0,
+          double bottom = 0.0}) =>
+      Padding(
+          padding: EdgeInsets.only(
+              top: top, left: left, right: right, bottom: bottom),
+          child: this);
+
+  Widget get sliverBox => SliverToBoxAdapter(child: this);
+
   ColoredBox color(Color color, {Key key}) =>
       ColoredBox(key: key, color: color);
 
