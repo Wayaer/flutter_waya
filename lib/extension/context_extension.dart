@@ -6,11 +6,12 @@ import 'package:flutter/widgets.dart';
 
 extension ExtensionContext on BuildContext {
   ///  移出焦点 focusNode==null  移出焦点 （可用于关闭键盘） focusNode！!= null 获取焦点
-  void focusNode({FocusNode focusNode}) =>
+  void focusNode([FocusNode focusNode]) =>
       FocusScope.of(this).requestFocus(focusNode ?? FocusNode());
 
   ///  自动获取焦点
-  void autoFocus() => FocusScope.of(this).autofocus(FocusNode());
+  void autoFocus([FocusNode focusNode]) =>
+      FocusScope.of(this).autofocus(focusNode ?? FocusNode());
 
   /// The same of [MediaQuery.of(context).size]
   Size get mediaQuerySize => MediaQuery.of(this).size;
