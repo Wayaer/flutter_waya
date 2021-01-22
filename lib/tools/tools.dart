@@ -7,32 +7,34 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-bool get isDebug => !kReleaseMode;
-const int _limitLength = 800;
+bool get isDebug => kDebugMode;
+
+bool get isRelease => kReleaseMode;
+
+bool get isProfileMode => kProfileMode;
+
+bool get isWeb => kIsWeb;
 
 void log(dynamic msg) {
   final String message = msg.toString();
-  if (isDebug) {
-    if (message.length < _limitLength) {
-      print(msg);
-    } else {
-      _segmentationLog(message);
-    }
-  }
-}
-
-void _segmentationLog(String msg) {
-  final StringBuffer outStr = StringBuffer();
-  for (int index = 0; index < msg.length; index++) {
-    outStr.write(msg[index]);
-    if (index % _limitLength == 0 && index != 0) {
-      print(outStr);
-      outStr.clear();
-      final int lastIndex = index + 1;
-      if (msg.length - lastIndex < _limitLength) {
-        final String remainderStr = msg.substring(lastIndex, msg.length);
-        print(remainderStr);
-        break;
+  if (!isDebug) return;
+  const int _limitLength = 800;
+  if (message.length < _limitLength) {
+    print(msg);
+  } else {
+    final StringBuffer outStr = StringBuffer();
+    for (int index = 0; index < message.length; index++) {
+      outStr.write(message[index]);
+      if (index % _limitLength == 0 && index != 0) {
+        print(outStr);
+        outStr.clear();
+        final int lastIndex = index + 1;
+        if (message.length - lastIndex < _limitLength) {
+          final String remainderStr =
+              message.substring(lastIndex, message.length);
+          print(remainderStr);
+          break;
+        }
       }
     }
   }
@@ -55,8 +57,19 @@ String getFileSize(int size) {
   return size.toString();
 }
 
+WidgetsBinding widgetsBinding = WidgetsBinding.instance;
+
 void addPostFrameCallback(FrameCallback callback) =>
-    WidgetsBinding.instance.addPostFrameCallback(callback);
+    widgetsBinding.addPostFrameCallback(callback);
+
+void addObserver(WidgetsBindingObserver observer) =>
+    widgetsBinding.addObserver(observer);
+
+void addPersistentFrameCallback(FrameCallback callback) =>
+    widgetsBinding.addPersistentFrameCallback(callback);
+
+void addTimingsCallback(TimingsCallback callback) =>
+    widgetsBinding.addTimingsCallback(callback);
 
 void setStatusBarLight(bool isLight) {
   const Color color = ConstColors.transparent;

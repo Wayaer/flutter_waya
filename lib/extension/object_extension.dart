@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:math' as math;
 import 'dart:typed_data';
 
 import 'package:crypto/crypto.dart';
@@ -8,6 +9,26 @@ import 'package:flutter_waya/constant/enums.dart';
 
 /// num 扩展
 extension ExtensionNum on num {
+  T max<T extends num>(T value) => math.max(this as T, value);
+
+  T min<T extends num>(T value) => math.min(this as T, value);
+
+  double get cos => math.cos(this);
+
+  double get tan => math.tan(this);
+
+  double get acos => math.acos(this);
+
+  double get asin => math.asin(this);
+
+  double get sqrt => math.sqrt(this);
+
+  double get exp => math.exp(this);
+
+  double get log => math.log(this);
+
+  double atan2(num value) => math.atan2(this, value);
+
   /// 创建指定长度的List
   List<T> generate<T>(T generator(int index), {bool growable = true}) =>
       List<T>.generate(toInt(), (int index) => generator(index),
