@@ -7,17 +7,9 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-bool get isDebug => kDebugMode;
-
-bool get isRelease => kReleaseMode;
-
-bool get isProfileMode => kProfileMode;
-
-bool get isWeb => kIsWeb;
-
 void log(dynamic msg) {
   final String message = msg.toString();
-  if (!isDebug) return;
+  if (!kDebugMode) return;
   const int _limitLength = 800;
   if (message.length < _limitLength) {
     print(msg);
