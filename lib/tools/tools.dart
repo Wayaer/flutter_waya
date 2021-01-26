@@ -57,6 +57,9 @@ void addPostFrameCallback(FrameCallback callback) =>
 void addObserver(WidgetsBindingObserver observer) =>
     widgetsBinding.addObserver(observer);
 
+void removeObserver(WidgetsBindingObserver observer) =>
+    widgetsBinding.removeObserver(observer);
+
 void addPersistentFrameCallback(FrameCallback callback) =>
     widgetsBinding.addPersistentFrameCallback(callback);
 
