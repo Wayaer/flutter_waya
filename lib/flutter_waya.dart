@@ -40,6 +40,7 @@ export 'widgets/root/dialog/popup_widgets.dart';
 export 'widgets/root/loading/tweens/delay_tween.dart';
 export 'widgets/root/root.dart';
 export 'widgets/scroll_view.dart';
+export 'widgets/simple_builder.dart';
 export 'widgets/stretchy_header.dart';
 export 'widgets/tab_bar.dart';
 export 'widgets/text.dart';
