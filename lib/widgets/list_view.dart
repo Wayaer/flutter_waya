@@ -33,8 +33,8 @@ class SimpleList extends StatelessWidget {
     this.refreshController,
     this.onLoading,
     this.onRefresh,
-    this.header,
-    this.footer,
+    this.refreshHeader,
+    this.refreshFooter,
     this.maxCrossAxisExtent,
   })  : enablePullDown = enablePullDown ?? false,
         enablePullUp = enablePullUp ?? false,
@@ -78,8 +78,8 @@ class SimpleList extends StatelessWidget {
     this.refreshController,
     this.onLoading,
     this.onRefresh,
-    this.header,
-    this.footer,
+    this.refreshHeader,
+    this.refreshFooter,
   })  : assert(itemCount == null || itemCount >= 0),
         enablePullDown = enablePullDown ?? false,
         enablePullUp = enablePullUp ?? false,
@@ -116,8 +116,8 @@ class SimpleList extends StatelessWidget {
     this.refreshController,
     this.onLoading,
     this.onRefresh,
-    this.header,
-    this.footer,
+    this.refreshHeader,
+    this.refreshFooter,
   })  : assert(itemBuilder != null),
         assert(separatorBuilder != null),
         assert(itemCount != null && itemCount >= 0),
@@ -152,8 +152,8 @@ class SimpleList extends StatelessWidget {
   final RefreshController refreshController;
   final VoidCallback onLoading;
   final VoidCallback onRefresh;
-  final Widget header;
-  final Widget footer;
+  final Widget refreshHeader;
+  final Widget refreshFooter;
 
   /// 是否倒置列表
   final bool reverse;
@@ -283,8 +283,8 @@ class SimpleList extends StatelessWidget {
       onLoading: onLoading,
       onRefresh: onRefresh,
       child: Container(child: child),
-      header: header,
-      footer: footer);
+      header: refreshHeader,
+      footer: refreshFooter);
 }
 
 /// 自定义List Grid  List

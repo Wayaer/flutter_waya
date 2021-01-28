@@ -123,8 +123,8 @@ class Universal extends StatelessWidget {
     this.enablePullDown,
     this.enablePullUp,
     this.enableTwoLevel,
-    this.header,
-    this.footer,
+    this.refreshHeader,
+    this.refreshFooter,
     this.size,
     this.onSecondaryTap,
     this.onSecondaryLongPressMoveUpdate,
@@ -470,8 +470,8 @@ class Universal extends StatelessWidget {
   final bool enablePullDown;
   final bool enablePullUp;
   final bool enableTwoLevel;
-  final Widget header;
-  final Widget footer;
+  final Widget refreshHeader;
+  final Widget refreshFooter;
 
   EdgeInsetsGeometry get _paddingIncludingDecoration {
     if (decoration == null || decoration.padding == null) return padding;
@@ -544,8 +544,8 @@ class Universal extends StatelessWidget {
         enablePullDown != null ||
         enablePullUp != null ||
         enableTwoLevel != null ||
-        footer != null ||
-        header != null) {
+        refreshFooter != null ||
+        refreshHeader != null) {
       widget = refreshedWidget(widget);
     }
 
@@ -577,8 +577,8 @@ class Universal extends StatelessWidget {
       enablePullDown: enablePullDown,
       enablePullUp: enablePullUp,
       enableTwoLevel: enableTwoLevel,
-      header: header,
-      footer: footer);
+      header: refreshHeader,
+      footer: refreshFooter);
 
   Widget offstageWidget(Widget widget) =>
       Offstage(child: widget, offstage: offstage);

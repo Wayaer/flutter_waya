@@ -98,6 +98,7 @@ class TabBarBox extends StatelessWidget {
     this.height,
     this.decoration,
     this.width,
+    this.onTap,
   })  : levelPosition = levelPosition ?? TabBarLevelPosition.right,
         indicatorPadding = indicatorPadding ?? EdgeInsets.zero,
         super(key: key);
@@ -140,6 +141,7 @@ class TabBarBox extends StatelessWidget {
   final double height;
   final double width;
   final Decoration decoration;
+  final ValueChanged<int> onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -172,6 +174,7 @@ class TabBarBox extends StatelessWidget {
         controller: controller,
         labelPadding: labelPadding,
         tabs: tabs,
+        onTap: onTap,
         isScrollable: isScrollable ?? true,
         indicator: indicator,
         labelColor: selectedLabelColor ?? ConstColors.blue,

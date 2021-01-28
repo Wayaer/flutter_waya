@@ -220,7 +220,7 @@ class _SimpleListRefreshed extends StatelessWidget {
             enablePullDown: true,
             enablePullUp: true,
             padding: const EdgeInsets.all(10),
-            header: BezierCircleHeader(bezierColor: colors[0]),
+            refreshHeader: BezierCircleHeader(bezierColor: colors[0]),
             maxCrossAxisExtent: 60,
             mainAxisSpacing: 10,
             crossAxisSpacing: 10,
