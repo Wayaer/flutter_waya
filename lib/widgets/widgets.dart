@@ -75,34 +75,33 @@ class _SendSMSState extends State<SendSMS> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Universal(
-      margin: widget.margin,
-      padding: widget.padding,
-      onTap: (seconds == 0 && widget.onTap != null) ? onTap : null,
-      alignment: Alignment.center,
-      width: widget.width ?? getWidth(86),
-      height: widget.height ?? getHeight(25),
-      decoration: widget.decoration ??
-          BoxDecoration(
-              color: widget.background,
-              border: !(widget.defaultBorderColor != null ||
-                      widget.notTapBorderColor != null)
-                  ? null
-                  : Border.all(
-                      width: widget.borderWidth ?? 0,
-                      color: seconds == 0
-                          ? (widget.defaultBorderColor ?? ConstColors.blue)
-                          : (widget.notTapBorderColor ?? ConstColors.black70)),
-              borderRadius: widget.borderRadius ?? BorderRadius.circular(20)),
-      child: Text(verifyStr,
-          style: seconds == 0
-              ? const BasisTextStyle(fontSize: 13, color: ConstColors.blue)
-                  .merge(widget?.defaultTextStyle)
-              : const BasisTextStyle(fontSize: 13, color: ConstColors.black70)
-                  .merge(widget?.notTapTextStyle)),
-    );
-  }
+  Widget build(BuildContext context) => Universal(
+        margin: widget.margin,
+        padding: widget.padding,
+        onTap: (seconds == 0 && widget.onTap != null) ? onTap : null,
+        alignment: Alignment.center,
+        width: widget.width ?? getWidth(86),
+        height: widget.height ?? getHeight(25),
+        decoration: widget.decoration ??
+            BoxDecoration(
+                color: widget.background,
+                border: !(widget.defaultBorderColor != null ||
+                        widget.notTapBorderColor != null)
+                    ? null
+                    : Border.all(
+                        width: widget.borderWidth ?? 0,
+                        color: seconds == 0
+                            ? (widget.defaultBorderColor ?? ConstColors.blue)
+                            : (widget.notTapBorderColor ??
+                                ConstColors.black70)),
+                borderRadius: widget.borderRadius ?? BorderRadius.circular(20)),
+        child: Text(verifyStr,
+            style: seconds == 0
+                ? const BasisTextStyle(fontSize: 13, color: ConstColors.blue)
+                    .merge(widget?.defaultTextStyle)
+                : const BasisTextStyle(fontSize: 13, color: ConstColors.black70)
+                    .merge(widget?.notTapTextStyle)),
+      );
 
   void onTap() {
     verifyStr = widget.sendingText;

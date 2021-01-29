@@ -482,61 +482,62 @@ class Universal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget widget = const SizedBox();
-    if (child != null) widget = child;
+    Widget current = const SizedBox();
+    if (child != null) current = child;
     if (children != null && children.isNotEmpty) {
-      widget = isStack ? stackWidget(children) : flexWidget(children);
+      current = isStack ? stackWidget(children) : flexWidget(children);
     }
-    if (builder != null) widget = statefulBuilder;
+    if (builder != null) current = statefulBuilder;
     if (isScroll)
-      widget = noScrollBehavior
+      current = noScrollBehavior
           ? ScrollConfiguration(
               behavior: NoScrollBehavior(),
-              child: singleChildScrollViewWidget(widget))
-          : singleChildScrollViewWidget(widget);
+              child: singleChildScrollViewWidget(current))
+          : singleChildScrollViewWidget(current);
 
     if (_paddingIncludingDecoration != null)
-      widget = Padding(padding: _paddingIncludingDecoration, child: widget);
-    if (alignment != null) widget = Align(alignment: alignment, child: widget);
+      current = Padding(padding: _paddingIncludingDecoration, child: current);
+    if (alignment != null)
+      current = Align(alignment: alignment, child: current);
 
     if (color != null && decoration == null && !addInkWell && !addCard)
-      widget = ColoredBox(color: color, child: widget);
+      current = ColoredBox(color: color, child: current);
 
     if (decoration != null &&
         clipBehavior != null &&
         clipBehavior != Clip.none) {
-      widget = clipWidget(widget,
+      current = clipWidget(current,
           clipper: _DecorationClipper(
               textDirection: Directionality.of(context),
               decoration: decoration));
     }
     if (decoration != null && !addInkWell)
-      widget = DecoratedBox(decoration: decoration, child: widget);
+      current = DecoratedBox(decoration: decoration, child: current);
     if (foregroundDecoration != null) {
-      widget = DecoratedBox(
+      current = DecoratedBox(
           decoration: foregroundDecoration,
           position: DecorationPosition.foreground,
-          child: widget);
+          child: current);
     }
     if (transform != null)
-      widget = Transform(transform: transform, origin: origin, child: widget);
+      current = Transform(transform: transform, origin: origin, child: current);
     if (enabled ||
         onTap != null ||
         onDoubleTap != null ||
         onLongPress != null) {
-      widget =
-          addInkWell ? inkWellWidget(widget) : gestureDetectorWidget(widget);
+      current =
+          addInkWell ? inkWellWidget(current) : gestureDetectorWidget(current);
     }
-    if (shrink) widget = SizedBox.shrink(child: widget);
-    if (expand) widget = SizedBox.expand(child: widget);
+    if (shrink) current = SizedBox.shrink(child: current);
+    if (expand) current = SizedBox.expand(child: current);
     if (width != null || height != null)
-      widget = SizedBox(width: width, height: height, child: widget);
-    if (size != null) widget = SizedBox.fromSize(size: size, child: widget);
-    if (heroTag != null) widget = heroWidget(widget);
-    if (addCard) widget = cardWidget(widget, context);
-    if (isCircleAvatar) widget = circleAvatarWidget(widget);
+      current = SizedBox(width: width, height: height, child: current);
+    if (size != null) current = SizedBox.fromSize(size: size, child: current);
+    if (heroTag != null) current = heroWidget(current);
+    if (addCard) current = cardWidget(current, context);
+    if (isCircleAvatar) current = circleAvatarWidget(current);
     if (clipper != null || isOval)
-      widget = clipWidget(widget, clipper: clipper);
+      current = clipWidget(current, clipper: clipper);
     if (refreshController != null ||
         onRefresh != null ||
         onLoading != null ||
@@ -546,31 +547,31 @@ class Universal extends StatelessWidget {
         enableTwoLevel != null ||
         refreshFooter != null ||
         refreshHeader != null) {
-      widget = refreshedWidget(widget);
+      current = refreshedWidget(current);
     }
 
     if (constraints != null)
-      widget = ConstrainedBox(constraints: constraints, child: widget);
+      current = ConstrainedBox(constraints: constraints, child: current);
 
-    if (margin != null) widget = Padding(padding: margin, child: widget);
-    if (expanded || flex != null) widget = flexibleWidget(widget);
+    if (margin != null) current = Padding(padding: margin, child: current);
+    if (expanded || flex != null) current = flexibleWidget(current);
     if (left != null || top != null || right != null || bottom != null)
-      widget = Positioned(
-          left: left, top: top, right: right, bottom: bottom, child: widget);
+      current = Positioned(
+          left: left, top: top, right: right, bottom: bottom, child: current);
 
     if (opacity != null && opacity > 0)
-      widget = Opacity(opacity: opacity, child: widget);
+      current = Opacity(opacity: opacity, child: current);
 
-    if (offstage) widget = offstageWidget(widget);
-    if (!visible) widget = visibilityWidget(widget);
-    return widget;
+    if (offstage) current = offstageWidget(current);
+    if (!visible) current = visibilityWidget(current);
+    return current;
   }
 
   Widget get statefulBuilder => StatefulBuilder(builder: builder);
 
-  Widget refreshedWidget(Widget widget) => Refreshed(
+  Widget refreshedWidget(Widget current) => Refreshed(
       controller: refreshController,
-      child: widget,
+      child: current,
       onRefresh: onRefresh,
       onLoading: onLoading,
       onTwoLevel: onTwoLevel,
@@ -580,36 +581,36 @@ class Universal extends StatelessWidget {
       header: refreshHeader,
       footer: refreshFooter);
 
-  Widget offstageWidget(Widget widget) =>
-      Offstage(child: widget, offstage: offstage);
+  Widget offstageWidget(Widget current) =>
+      Offstage(child: current, offstage: offstage);
 
-  Widget clipWidget(Widget widget, {CustomClipper<dynamic> clipper}) {
+  Widget clipWidget(Widget current, {CustomClipper<dynamic> clipper}) {
     if (clipper is Rect) {
       return ClipRect(
-          child: widget,
+          child: current,
           clipper: clipper as CustomClipper<Rect>,
           clipBehavior: clipBehavior ?? Clip.hardEdge);
     }
     if (clipper is Path) {
       return ClipPath(
-          child: widget,
+          child: current,
           clipper: clipper as CustomClipper<Path>,
           clipBehavior: clipBehavior ?? Clip.antiAlias);
     }
     if (clipper is RRect)
       return ClipRRect(
-          child: widget,
+          child: current,
           borderRadius: borderRadius,
           clipper: clipper as CustomClipper<RRect>,
           clipBehavior: clipBehavior ?? Clip.antiAlias);
     if (isOval)
       return ClipOval(
-          child: widget, clipBehavior: clipBehavior ?? Clip.antiAlias);
-    return widget;
+          child: current, clipBehavior: clipBehavior ?? Clip.antiAlias);
+    return current;
   }
 
-  Widget circleAvatarWidget(Widget widget) => CircleAvatar(
-      child: widget,
+  Widget circleAvatarWidget(Widget current) => CircleAvatar(
+      child: current,
       backgroundColor: color,
       backgroundImage: backgroundImage,
       onBackgroundImageError: onBackgroundImageError,
@@ -625,16 +626,16 @@ class Universal extends StatelessWidget {
       clipBehavior: clipBehavior ?? Clip.hardEdge,
       children: children);
 
-  Widget heroWidget(Widget widget) => Hero(
+  Widget heroWidget(Widget current) => Hero(
       tag: heroTag,
       createRectTween: createRectTween,
       flightShuttleBuilder: flightShuttleBuilder,
       placeholderBuilder: placeholderBuilder,
       transitionOnUserGestures: transitionOnUserGestures,
-      child: widget);
+      child: current);
 
-  Widget visibilityWidget(Widget widget) => Visibility(
-      child: widget,
+  Widget visibilityWidget(Widget current) => Visibility(
+      child: current,
       replacement: replacement,
       visible: visible,
       maintainState: maintainState,
@@ -643,15 +644,15 @@ class Universal extends StatelessWidget {
       maintainSemantics: maintainSemantics,
       maintainInteractivity: maintainInteractivity);
 
-  Widget flexibleWidget(Widget widget) => Flexible(
-      child: widget,
+  Widget flexibleWidget(Widget current) => Flexible(
+      child: current,
       flex: flex ?? 1,
       fit: expanded ? FlexFit.tight : FlexFit.loose);
 
-  Widget cardWidget(Widget widget, BuildContext context) {
+  Widget cardWidget(Widget current, BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final CardTheme cardTheme = CardTheme.of(context);
-    return material(widget,
+    return material(current,
         mType: MaterialType.card,
         mShadowColor: shadowColor ?? cardTheme.shadowColor ?? theme.shadowColor,
         mColor: color == ConstColors.transparent
@@ -668,7 +669,7 @@ class Universal extends StatelessWidget {
         mBorderOnForeground: true);
   }
 
-  Material material(Widget widget,
+  Material material(Widget current,
           {MaterialType mType,
           Color mShadowColor,
           Color mColor,
@@ -679,7 +680,7 @@ class Universal extends StatelessWidget {
           bool mBorderOnForeground,
           Clip mClipBehavior}) =>
       Material(
-          child: widget,
+          child: current,
           color: mColor,
           type: mType,
           elevation: mElevation,
@@ -690,10 +691,10 @@ class Universal extends StatelessWidget {
           borderOnForeground: mBorderOnForeground,
           clipBehavior: mClipBehavior);
 
-  Widget inkWellWidget(Widget widget) => Ink(
+  Widget inkWellWidget(Widget current) => Ink(
       decoration: decoration,
       child: InkWell(
-          child: widget,
+          child: current,
           onTap: onTap,
           onLongPress: onLongPress,
           onDoubleTap: onDoubleTap,
@@ -716,7 +717,7 @@ class Universal extends StatelessWidget {
           onFocusChange: onFocusChange,
           autofocus: autoFocus));
 
-  Widget singleChildScrollViewWidget(Widget widget) => SingleChildScrollView(
+  Widget singleChildScrollViewWidget(Widget current) => SingleChildScrollView(
       physics: physics,
       reverse: reverse,
       primary: primary,
@@ -724,7 +725,7 @@ class Universal extends StatelessWidget {
       controller: scrollController,
       scrollDirection: direction,
       clipBehavior: clipBehavior ?? Clip.hardEdge,
-      child: widget);
+      child: current);
 
   Widget flexWidget(List<Widget> children) => Flex(
       children: children,
@@ -736,7 +737,7 @@ class Universal extends StatelessWidget {
       textDirection: textDirection,
       mainAxisSize: mainAxisSize);
 
-  Widget gestureDetectorWidget(Widget widget) => GestureDetector(
+  Widget gestureDetectorWidget(Widget current) => GestureDetector(
       onTapDown: onTapDown,
       onTapUp: onTapUp,
       onTap: onTap,
@@ -781,7 +782,7 @@ class Universal extends StatelessWidget {
       behavior: behavior,
       excludeFromSemantics: excludeFromSemantics,
       dragStartBehavior: dragStartBehavior,
-      child: widget);
+      child: current);
 }
 
 /// A clipper that uses [Decoration.getClipPath] to clip.
@@ -856,7 +857,7 @@ class SimpleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Widget widget = child ??
+    final Widget current = child ??
         BasisText(text,
             textAlign: TextAlign.start,
             style: textStyle,
@@ -864,21 +865,21 @@ class SimpleButton extends StatelessWidget {
             overflow: overflow);
     if (isElastic && onTap != null)
       return ElasticButton(
-          child: universal(widget),
+          child: universal(current),
           onTap: onTap,
           withOpacity: withOpacity,
           scaleCoefficient: scaleCoefficient,
           useCache: useCache);
-    return universal(widget, onTap: onTap);
+    return universal(current, onTap: onTap);
   }
 
-  Widget universal(Widget widget, {GestureTapCallback onTap}) => Universal(
+  Widget universal(Widget current, {GestureTapCallback onTap}) => Universal(
       heroTag: heroTag,
       visible: visible,
       constraints: constraints,
       addInkWell: addInkWell,
       mainAxisSize: MainAxisSize.min,
-      child: widget,
+      child: current,
       onTap: onTap,
       width: width,
       height: height,
