@@ -46,8 +46,12 @@ class _JsonParseState extends State<JsonParse> {
       }
       row.addAll(<Widget>[
         BasisText(widget.isList || isTap(content) ? '[$key]:' : '$key:',
-            fontWeight: FontWeight.w400,
-            color: content == null ? Colors.grey : Colors.purple[800]),
+                fontWeight: FontWeight.w400,
+                color: content == null ? Colors.grey : Colors.purple[800])
+            .onDoubleTap(() {
+          key.toString().toClipboard;
+          showToast('已经复制$key');
+        }),
         const SizedBox(width: 4),
         getValueWidget(content)
       ]);
