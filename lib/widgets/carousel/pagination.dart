@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-enum CarouselEvent { move, next, previous, start, stop }
+enum CarouselEvent {  next, previous, start, stop }
 
 class CarouselController extends ChangeNotifier {
   Completer<dynamic> _completer;

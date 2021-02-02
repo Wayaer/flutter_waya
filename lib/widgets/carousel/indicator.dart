@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 /// 指示器
-class Indicator extends StatefulWidget {
+class Indicator extends StatelessWidget {
   const Indicator(
       {Key key,
       @required this.count,
-      @required this.controller,
       this.size = 20.0,
       this.space = 5.0,
       this.activeSize = 20.0,
@@ -14,10 +13,14 @@ class Indicator extends StatefulWidget {
       this.layout = IndicatorType.slide,
       this.activeColor = Colors.white,
       this.scale = 0.6,
-      this.dropHeight = 20.0})
+      this.dropHeight = 20.0,
+      @required this.index,
+      @required this.position})
       : assert(count != null),
-        assert(controller != null),
         super(key: key);
+
+  final int index;
+  final double position;
 
   ///  size of the dots
   final double size;
@@ -43,44 +46,23 @@ class Indicator extends StatefulWidget {
   ///  Only valid when layout==IndicatorType.drop
   final double dropHeight;
 
-  final PageController controller;
-
   final double activeSize;
-
-  @override
-  _IndicatorState createState() => _IndicatorState();
-}
-
-class _IndicatorState extends State<Indicator> {
-  int index = 0;
-
-  @override
-  void initState() {
-    widget.controller?.addListener(_onController);
-    super.initState();
-  }
 
   _IndicatorPainter createPainter() {
     final Paint _paint = Paint();
-    switch (widget.layout) {
+    switch (layout) {
       case IndicatorType.none:
-        return _NonePainter(
-            widget, widget.controller.page ?? 0.0, index, _paint);
+        return _NonePainter(this, position ?? 0.0, index, _paint);
       case IndicatorType.slide:
-        return _SlidePainter(
-            widget, widget.controller.page ?? 0.0, index, _paint);
+        return _SlidePainter(this, position ?? 0.0, index, _paint);
       case IndicatorType.warm:
-        return _WarmPainter(
-            widget, widget.controller.page ?? 0.0, index, _paint);
+        return _WarmPainter(this, position ?? 0.0, index, _paint);
       case IndicatorType.color:
-        return _ColorPainter(
-            widget, widget.controller.page ?? 0.0, index, _paint);
+        return _ColorPainter(this, position ?? 0.0, index, _paint);
       case IndicatorType.scale:
-        return _ScalePainter(
-            widget, widget.controller.page ?? 0.0, index, _paint);
+        return _ScalePainter(this, position ?? 0.0, index, _paint);
       case IndicatorType.drop:
-        return _DropPainter(
-            widget, widget.controller.page ?? 0.0, index, _paint);
+        return _DropPainter(this, position ?? 0.0, index, _paint);
       default:
         throw Exception('Not a valid layout');
     }
@@ -89,24 +71,12 @@ class _IndicatorState extends State<Indicator> {
   @override
   Widget build(BuildContext context) {
     Widget child = SizedBox(
-        width: widget.count * widget.size + (widget.count - 1) * widget.space,
-        height: widget.size,
+        width: count * size + (count - 1) * space,
+        height: size,
         child: CustomPaint(painter: createPainter()));
-    if (widget.layout == IndicatorType.scale ||
-        widget.layout == IndicatorType.color) child = ClipRect(child: child);
+    if (layout == IndicatorType.scale || layout == IndicatorType.color)
+      child = ClipRect(child: child);
     return IgnorePointer(child: child);
-  }
-
-  void _onController() {
-    final double page = widget.controller.page ?? 0.0;
-    index = page.floor();
-    setState(() {});
-  }
-
-  @override
-  void dispose() {
-    widget.controller?.removeListener(_onController);
-    super.dispose();
   }
 }
 

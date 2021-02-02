@@ -29,8 +29,8 @@ class Carousel extends StatefulWidget {
     this.curve = Curves.ease,
     this.scrollDirection = Axis.horizontal,
     this.controller,
-    this.itemHeight,
-    this.itemWidth,
+    @required this.itemHeight,
+    @required this.itemWidth,
   })  : assert(itemCount != null),
         assert(itemBuilder != null),
         assert(loop != null),
@@ -120,7 +120,6 @@ abstract class _CarouselTimerMixin extends State<Carousel> {
       case CarouselEvent.stop:
         if (_timer != null) _stopAutoPlay();
         break;
-      case CarouselEvent.move:
         break;
       case CarouselEvent.next:
         break;
@@ -564,7 +563,6 @@ abstract class _LayoutState<T extends _SubCarousel> extends State<T>
         if (nextIndex == _currentIndex) return;
         _move(0.0, nextIndex: nextIndex);
         break;
-      case CarouselEvent.move:
       case CarouselEvent.start:
       case CarouselEvent.stop:
         break;
