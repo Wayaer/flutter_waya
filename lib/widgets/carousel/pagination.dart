@@ -1,6 +1,56 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_waya/flutter_waya.dart';
+
+enum CarouselEvent { move, next, previous, start, stop }
+
+class CarouselController extends ChangeNotifier {
+  Completer<dynamic> _completer;
+
+  int index;
+  bool animation;
+  CarouselEvent event;
+
+  bool autoPlay;
+
+  ///  开始自动播放
+  void startAutoPlay() {
+    event = CarouselEvent.start;
+    autoPlay = true;
+    notifyListeners();
+  }
+
+  ///  停止自动播放
+  void stopAutoPlay() {
+    event = CarouselEvent.stop;
+    autoPlay = false;
+    notifyListeners();
+  }
+
+  ///  下一页
+  Future<void> next({bool animation = true}) {
+    event = CarouselEvent.next;
+    this.animation = animation ?? true;
+    _completer = Completer<dynamic>();
+    notifyListeners();
+    return _completer.future;
+  }
+
+  ///  	上一页
+  Future<void> previous({bool animation = true}) {
+    event = CarouselEvent.previous;
+    this.animation = animation ?? true;
+    _completer = Completer<dynamic>();
+    notifyListeners();
+    return _completer.future;
+  }
+
+  void complete() {
+    if (!_completer.isCompleted) _completer.complete();
+  }
+}
 
 class CarouselPluginConfig {
   const CarouselPluginConfig({

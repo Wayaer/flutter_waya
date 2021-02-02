@@ -5,6 +5,7 @@
   * modify [RichSpan] to [RichTextSpan]
   * modify [sendMessage(RefreshCompletedType.refresh)] to [sendRefreshType(RefreshCompletedType.refresh)]
   * remove Ts 
+  * remove [Carousel.pageView]
 ## [1.5.0]
   * change Tools to Ts.
   * change GlobalMaterial to GlobalWidgetsApp.

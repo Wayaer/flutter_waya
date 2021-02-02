@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:flutter_waya/widgets/carousel/controller.dart';
 
 typedef CarouselOnTap = void Function(int index);
 
@@ -14,7 +13,7 @@ const Duration kDefaultAutoPlayTransitionDuration = Duration(milliseconds: 400);
 const Duration kDefaultAutoPlayDelay = Duration(seconds: 3);
 
 class Carousel extends StatefulWidget {
-  Carousel.builder({
+  const Carousel.builder({
     Key key,
     @required this.itemBuilder,
     @required this.itemCount,
@@ -40,44 +39,6 @@ class Carousel extends StatefulWidget {
         assert(pagination != null),
         assert(duration != null),
         assert(transitionDuration != null),
-        transformer = ScaleAndFadeTransformer(),
-        physics = null,
-        pageSnapping = true,
-        pageController = null,
-        viewportFraction = 1.0,
-        super(key: key);
-
-  Carousel.pageView({
-    Key key,
-    @required this.itemCount,
-    this.itemBuilder,
-    this.transformer,
-    this.duration = kDefaultAutoPlayTransitionDuration,
-    this.pageSnapping = true,
-    this.autoPlay = true,
-    this.curve = Curves.ease,
-    this.viewportFraction = 1.0,
-    this.scrollDirection = Axis.horizontal,
-    this.physics,
-    this.onChanged,
-    this.pageController,
-    this.controller,
-    this.loop = true,
-  })  : assert(itemCount != null),
-        assert(itemBuilder != null || transformer != null),
-        assert(loop != null),
-        assert(autoPlay != null),
-        assert(pageSnapping != null),
-        assert(viewportFraction != null),
-        assert(scrollDirection != null),
-        assert(duration != null),
-        pagination = <CarouselPlugin>[],
-        itemHeight = 0,
-        itemWidth = 0,
-        onTap = null,
-        transitionDuration = null,
-        index = 0,
-        layout = null,
         super(key: key);
 
   ///  Inner item height, this property is valid if layout=stack or layout=tinder,
@@ -133,215 +94,9 @@ class Carousel extends StatefulWidget {
 
   ///  Build in layouts
   final CarouselLayout layout;
-  final PageTransformer transformer;
-
-  ///  Same as [PageView.scrollDirection]
-
-  ///  Same as [PageView.physics]
-  final ScrollPhysics physics;
-
-  ///  Set to false to disable page snapping, useful for custom scroll behavior.
-  ///  Same as [PageView.pageSnapping]
-  final bool pageSnapping;
-
-  final TransformerController pageController;
-
-  ///  This value is only valid when `pageController` is not set,
-  final double viewportFraction;
 
   @override
-  State<StatefulWidget> createState() =>
-      layout == null ? _CarouselPageViewState() : _CarouselState();
-}
-
-class _CarouselPageViewState extends State<Carousel> {
-  Size _size;
-  int _activeIndex;
-  double _currentPixels;
-  bool _done = false;
-  int _fromIndex;
-
-  PageTransformer _transformer;
-  TransformerController _pageController;
-  CarouselController _controller;
-
-  @override
-  void initState() {
-    _transformer = widget.transformer;
-    _pageController = TransformerController(
-        itemCount: widget.itemCount ?? widget?.pageController?.itemCount,
-        reverse: widget?.pageController?.reverse ?? false,
-        loop: widget?.loop ?? widget?.pageController?.loop ?? true);
-    _fromIndex = _activeIndex = _pageController.initialPage;
-    _controller = widget.controller ?? CarouselController();
-    _controller.autoPlay = widget.autoPlay;
-    _controller?.addListener(onChangeNotifier);
-    super.initState();
-  }
-
-  Widget buildItemNormal(BuildContext context, int index) {
-    final int renderIndex = _pageController.getRenderIndexFromRealIndex(index);
-    final Widget child = widget.itemBuilder(context, renderIndex);
-    return child;
-  }
-
-  Widget buildItem(BuildContext context, int index) => AnimatedBuilder(
-      animation: _pageController,
-      builder: (BuildContext c, Widget w) {
-        final int renderIndex =
-            _pageController.getRenderIndexFromRealIndex(index);
-        final Widget child = widget.itemBuilder != null
-            ? widget.itemBuilder(context, renderIndex)
-            : Container();
-        if (_size == null) return Container();
-        final double page = _pageController.realPage;
-        double position = _transformer.reverse ? page - index : index - page;
-        position *= widget.viewportFraction;
-        final TransformInfo info = TransformInfo(
-            index: renderIndex,
-            width: _size.width,
-            height: _size.height,
-            position: position.clamp(-1.0, 1.0).toDouble(),
-            activeIndex:
-                _pageController.getRenderIndexFromRealIndex(_activeIndex),
-            fromIndex: _fromIndex,
-            forward: _pageController.position.pixels - _currentPixels >= 0,
-            done: _done,
-            scrollDirection: widget.scrollDirection,
-            viewportFraction: widget.viewportFraction);
-        return _transformer.transform(child, info);
-      });
-
-  void calcCurrentPixels() => _currentPixels =
-      _pageController.getRenderIndexFromRealIndex(_activeIndex) *
-          _pageController.position.viewportDimension *
-          widget.viewportFraction;
-
-  @override
-  Widget build(BuildContext context) {
-    final IndexedWidgetBuilder builder =
-        _transformer == null ? buildItemNormal : buildItem;
-    Widget child = PageView.builder(
-        itemBuilder: builder,
-        itemCount: _pageController.getRealItemCount(),
-        onPageChanged: (int index) {
-          _activeIndex = index;
-          if (widget.onChanged != null)
-            widget
-                .onChanged(_pageController.getRenderIndexFromRealIndex(index));
-        },
-        controller: _pageController,
-        scrollDirection: widget.scrollDirection,
-        physics: widget.physics,
-        pageSnapping: widget.pageSnapping,
-        reverse: _pageController.reverse);
-    if (_transformer != null) {
-      child = NotificationListener<ScrollNotification>(
-          child: child,
-          onNotification: (ScrollNotification notification) {
-            if (notification is ScrollStartNotification) {
-              calcCurrentPixels();
-              _done = false;
-              _fromIndex = _activeIndex;
-            } else if (notification is ScrollEndNotification) {
-              calcCurrentPixels();
-              _fromIndex = _activeIndex;
-              _done = true;
-            }
-            return false;
-          });
-    }
-    if (widget.pagination.isEmpty) return child;
-    final List<Widget> children = <Widget>[child];
-    widget?.pagination?.builder((CarouselPlugin plugin) {
-      children.add(plugin.build(
-          context,
-          CarouselPluginConfig(
-              itemCount: widget.itemCount,
-              activeIndex: _activeIndex,
-              scrollDirection: widget.scrollDirection,
-              controller: _controller,
-              loop: widget.loop)));
-    });
-    return Stack(children: children);
-  }
-
-  void _onGetSize(Duration timeStamp) {
-    Size size;
-    if (context == null) {
-      onGetSize(size);
-      return;
-    }
-    final RenderObject renderObject = context.findRenderObject();
-    if (renderObject != null) {
-      final Rect bounds = renderObject.paintBounds;
-      if (bounds != null) size = bounds.size;
-    }
-    calcCurrentPixels();
-    onGetSize(size);
-  }
-
-  void onGetSize(Size size) {
-    if (mounted) {
-      _size = size;
-      setState(() {});
-    }
-  }
-
-  int calcNextIndex(bool next) {
-    int currentIndex = _activeIndex;
-    if (_pageController.reverse) {
-      next ? currentIndex-- : currentIndex++;
-    } else {
-      next ? currentIndex++ : currentIndex--;
-    }
-    if (!_pageController.loop) {
-      if (currentIndex >= _pageController.itemCount) {
-        currentIndex = 0;
-      } else if (currentIndex < 0) {
-        currentIndex = _pageController.itemCount - 1;
-      }
-    }
-    return currentIndex;
-  }
-
-  void onChangeNotifier() {
-    final CarouselEvent event = _controller.event;
-    int index;
-    switch (event) {
-      case CarouselEvent.move:
-        index = _pageController
-            .getRealIndexFromRenderIndex(widget.controller.index);
-        break;
-      case CarouselEvent.previous:
-      case CarouselEvent.next:
-        index = calcNextIndex(event == CarouselEvent.next);
-        break;
-      default:
-        return;
-    }
-    if (_controller.animation) {
-      _pageController
-          .animateToPage(index,
-              duration: widget.duration, curve: widget.curve ?? Curves.ease)
-          .whenComplete(_controller.complete);
-    } else {
-      _pageController.jumpToPage(index);
-      _controller.complete();
-    }
-  }
-
-  @override
-  void didChangeDependencies() {
-    if (_transformer != null) addPostFrameCallback(_onGetSize);
-    super.didChangeDependencies();
-  }
-
-  @override
-  void dispose() {
-    _controller?.removeListener(onChangeNotifier);
-    super.dispose();
-  }
+  State<StatefulWidget> createState() => _CarouselState();
 }
 
 abstract class _CarouselTimerMixin extends State<Carousel> {
