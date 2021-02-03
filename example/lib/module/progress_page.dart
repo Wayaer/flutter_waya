@@ -8,13 +8,21 @@ class ProgressPage extends StatefulWidget {
   _ProgressPageState createState() => _ProgressPageState();
 }
 
-class _ProgressPageState extends State<ProgressPage> {
+class _ProgressPageState extends State<ProgressPage>
+    with SingleTickerProviderStateMixin {
   double percent = 0;
   Timer timer;
+
+  AnimationController _animationController;
 
   @override
   void initState() {
     super.initState();
+    _animationController =
+        AnimationController(vsync: this, duration: const Duration(seconds: 10));
+    _animationController.addListener(() => setState(() {}));
+    _animationController.repeat();
+
     addPostFrameCallback((Duration duration) {
       timer = const Duration(seconds: 1).timerPeriodic((Timer timer) {
         percent += 0.1;
@@ -50,26 +58,36 @@ class _ProgressPageState extends State<ProgressPage> {
                 widgetIndicator:
                     Container(width: 20, height: 20, color: Colors.amber)),
             const SizedBox(height: 20),
-            const Progress.circular(
+            Progress.circular(
                 radius: 120,
                 lineWidth: 15,
                 animation: true,
                 percent: 0.7,
                 arcType: ArcType.full,
                 arcBackgroundColor: Colors.cyan,
-                center: Text('70.0%',
+                center: const Text('70.0%',
                     style:
                         TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0)),
-                footer: Text('CircularProgress',
+                footer: const Text('CircularProgress',
                     style:
                         TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0)),
                 circularStrokeCap: CircularStrokeCap.round,
-                linearGradient:
-                    LinearGradient(colors: <Color>[Colors.red, Colors.blue]))
+                linearGradient: const LinearGradient(
+                    colors: <Color>[Colors.red, Colors.blue])),
+            const SizedBox(height: 20),
+            SizedBox(
+              width: 100,
+              height: 100,
+              child: LiquidProgress.circular(
+                value: _animationController.value,
+                valueColor: AlwaysStoppedAnimation(Colors.lightGreenAccent),
+              ),
+            )
           ]);
 
   @override
   void dispose() {
+    _animationController?.dispose();
     timer?.cancel();
     super.dispose();
   }

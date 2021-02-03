@@ -7,7 +7,7 @@ import 'package:vector_math/vector_math.dart';
 part 'progress_painter.dart';
 
 class Progress extends StatefulWidget {
-  const Progress.circular({
+  Progress.circular({
     Key key,
     this.percent = 0.0,
     this.lineWidth = 5.0,
@@ -44,7 +44,7 @@ class Progress extends StatefulWidget {
             'arcType is required when you arcBackgroundColor'),
         backgroundColor = backgroundColor ?? ConstColors.black30,
         progressColor = progressColor ?? ConstColors.red,
-        type = 0,
+        state = _CircularState(),
         width = null,
         lineHeight = null,
         leading = null,
@@ -56,7 +56,7 @@ class Progress extends StatefulWidget {
         clipLinearGradient = null,
         super(key: key);
 
-  const Progress.linear({
+  Progress.linear({
     Key key,
     this.percent = 0.0,
     this.lineHeight = 5.0,
@@ -88,7 +88,7 @@ class Progress extends StatefulWidget {
             'Cannot provide both linearGradient and progressColor'),
         assert(percent > 0.0 || percent < 1.0,
             'Percent value must be a double between 0.0 and 1.0'),
-        type = 1,
+        state = _LinearState(),
         radius = null,
         lineWidth = null,
         backgroundWidth = null,
@@ -147,9 +147,6 @@ class Progress extends StatefulWidget {
 
   /// Display a widget indicator at the end of the progress. It only works when `animation` is true
   final Widget widgetIndicator;
-
-  /// ProgressType
-  final int type;
 
   //// circular
 
@@ -219,17 +216,10 @@ class Progress extends StatefulWidget {
   /// (ie. create 'VU effect'). If no [linearGradient] is specified this option is ignored.
   final bool clipLinearGradient;
 
+  final State<StatefulWidget> state;
+
   @override
-  State<StatefulWidget> createState() {
-    switch (type) {
-      case 0:
-        return _CircularState();
-      case 1:
-        return _LinearState();
-      default:
-        return null;
-    }
-  }
+  State<StatefulWidget> createState() => state;
 }
 
 abstract class _ProgressSubState extends State<Progress>
