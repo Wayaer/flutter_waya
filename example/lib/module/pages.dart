@@ -90,3 +90,23 @@ class PinBoxPage extends StatelessWidget {
                 pinTextStyle: const TextStyle(color: Colors.white)),
           ]);
 }
+
+class ButtonPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) => OverlayScaffold(
+          backgroundColor: Colors.white,
+          appBar: AppBar(title: const Text('Button Demo'), centerTitle: true),
+          children: <Widget>[
+            customElasticButton('ElasticButton',
+                onTap: () => showToast('ElasticButton')),
+            const SizedBox(height: 20),
+            const ClothButton.rectangle(
+                size: Size(200, 60), backgroundColor: Colors.blue),
+            const SizedBox(height: 20),
+            const ClothButton.round(
+                size: Size(200, 60), backgroundColor: Colors.blue),
+            const SizedBox(height: 40),
+            const LiquidButton(
+                width: 200, height: 60, backgroundColor: Colors.blue),
+          ]);
+}

@@ -40,7 +40,7 @@ class _WaveState extends State<Wave> with SingleTickerProviderStateMixin {
       animation: CurvedAnimation(
           parent: _animationController, curve: Curves.easeInOut),
       builder: (BuildContext context, Widget child) => ClipPath(
-          child: Material(color: widget.color),
+          child: Container(color: widget.color),
           clipper: _WaveClipper(
               animationValue: _animationController.value,
               value: widget.value,

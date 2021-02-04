@@ -15,7 +15,9 @@ dependencies:
   flutter_web_plugins:
     sdk: flutter
   flutter_curiosity:
-    path: ../../flutter_curiosity
+    git:
+      url: git://github.com/Wayaer/flutter_curiosity.git
+      ref: master
   flutter_waya:
     path: ../
 

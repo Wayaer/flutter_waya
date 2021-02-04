@@ -16,17 +16,13 @@ class LiquidProgress extends ProgressIndicator {
     double value = 0.5,
     Color backgroundColor,
     Animation<Color> valueColor,
-    this.borderWidth,
-    this.borderColor,
+    this.borderWidth = 0,
+    this.borderColor = Colors.transparent,
     this.borderRadius,
     this.center,
     this.direction = Axis.horizontal,
   })  : shapePath = null,
         type = _LiquidProgressType.linear,
-        assert(
-            borderWidth != null && borderColor == null ||
-                borderColor != null && borderWidth == null,
-            'borderWidth and borderColor should both be set.'),
         super(
             key: key,
             value: value,
@@ -39,7 +35,7 @@ class LiquidProgress extends ProgressIndicator {
       Color backgroundColor,
       Animation<Color> valueColor,
       this.borderWidth = 0,
-      this.borderColor = Colors.blueAccent,
+      this.borderColor = Colors.transparent,
       this.center,
       this.direction = Axis.vertical})
       : borderRadius = null,
