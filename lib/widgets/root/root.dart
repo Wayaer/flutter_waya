@@ -509,52 +509,33 @@ class _OverlayScaffoldState extends State<OverlayScaffold> {
 ///
 ///  打开新页面
 Future<dynamic> push(Widget widget,
-    {WidgetBuilder builder,
-    String title,
-    RouteSettings settings,
-    bool maintainState,
-    bool fullscreenDialog,
-    WidgetMode widgetMode}) {
-  return _globalNavigatorKey.currentState.push(_pageRoute(widget,
-      title: title,
-      maintainState: maintainState,
-      fullscreenDialog: fullscreenDialog,
-      settings: settings,
-      pushMode: widgetMode));
-}
+        {bool maintainState,
+        bool fullscreenDialog,
+        WidgetMode widgetMode,
+        BuildContext context}) =>
+    _globalNavigatorKey.currentState.push(_pageRoute(widget,
+        maintainState: maintainState,
+        fullscreenDialog: fullscreenDialog,
+        context: context,
+        widgetMode: widgetMode));
 
 /// 打开新页面替换当前页面
 Future<dynamic> pushReplacement(Widget widget,
-    {WidgetBuilder builder,
-    String title,
-    RouteSettings settings,
-    bool maintainState,
-    bool fullscreenDialog,
-    WidgetMode widgetMode}) {
-  return _globalNavigatorKey.currentState.pushReplacement(_pageRoute(widget,
-      title: title,
-      maintainState: maintainState,
-      fullscreenDialog: fullscreenDialog,
-      settings: settings,
-      pushMode: widgetMode));
-}
+        {bool maintainState, bool fullscreenDialog, WidgetMode widgetMode}) =>
+    _globalNavigatorKey.currentState.pushReplacement(_pageRoute(widget,
+        maintainState: maintainState,
+        fullscreenDialog: fullscreenDialog,
+        widgetMode: widgetMode));
 
 /// 打开新页面 并移出堆栈所有页面
 Future<dynamic> pushAndRemoveUntil(Widget widget,
-    {String title,
-    RouteSettings settings,
-    bool maintainState,
-    bool fullscreenDialog,
-    WidgetMode widgetMode}) {
-  return _globalNavigatorKey.currentState.pushAndRemoveUntil(
-      _pageRoute(widget,
-          title: title,
-          maintainState: maintainState,
-          fullscreenDialog: fullscreenDialog,
-          settings: settings,
-          pushMode: widgetMode),
-      (_) => false);
-}
+        {bool maintainState, bool fullscreenDialog, WidgetMode widgetMode}) =>
+    _globalNavigatorKey.currentState.pushAndRemoveUntil(
+        _pageRoute(widget,
+            maintainState: maintainState,
+            fullscreenDialog: fullscreenDialog,
+            widgetMode: widgetMode),
+        (_) => false);
 
 /// 可能返回到上一个页面
 Future<bool> maybePop<T extends Object>([dynamic result]) =>
@@ -567,13 +548,7 @@ void pop<T extends Object>([dynamic result]) =>
 /// pop 返回简写 带参数  nullBack  navigator 返回为空 就继续返回上一页面
 void popBack(Future<dynamic> navigator, {bool nullBack = true}) {
   final Future<dynamic> future = navigator;
-  future.then((dynamic value) {
-    if (value == null) {
-      if (nullBack) pop();
-    } else {
-      pop(value);
-    }
-  });
+  future.then((dynamic value) => pop(value == null && nullBack ? null : value));
 }
 
 /// 循环pop 直到pop至指定页面
@@ -585,37 +560,31 @@ WidgetMode _widgetMode;
 void setGlobalPushMode(WidgetMode widgetMode) => _widgetMode = widgetMode;
 
 PageRoute<T> _pageRoute<T>(Widget widget,
-    {String title,
-    RouteSettings settings,
-    bool maintainState,
+    {bool maintainState,
     bool fullscreenDialog,
-    WidgetMode pushMode}) {
+    WidgetMode widgetMode,
+    BuildContext context}) {
   assert(widget != null);
-  switch (pushMode ?? _widgetMode) {
+  switch (widgetMode ?? _widgetMode) {
     case WidgetMode.cupertino:
       return CupertinoPageRoute<T>(
-          title: title,
           maintainState: maintainState ?? true,
           fullscreenDialog: fullscreenDialog ?? false,
-          settings: settings,
           builder: (_) => widget);
     case WidgetMode.material:
       return MaterialPageRoute<T>(
           maintainState: maintainState ?? true,
           fullscreenDialog: fullscreenDialog ?? false,
-          settings: settings,
           builder: (_) => widget);
     case WidgetMode.ripple:
       return RipplePageRoute<T>(
           widget: widget,
-          routeConfig:
-              RouteConfig.fromContext(_globalNavigatorKey.currentContext));
+          routeConfig: RouteConfig.fromContext(
+              context ?? _globalNavigatorKey.currentContext));
     default:
       return CupertinoPageRoute<T>(
-          title: title,
           maintainState: maintainState ?? true,
           fullscreenDialog: fullscreenDialog ?? false,
-          settings: settings,
           builder: (_) => widget);
   }
 }

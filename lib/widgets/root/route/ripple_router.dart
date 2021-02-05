@@ -38,41 +38,34 @@ class RouteConfig {
 class RipplePageRoute<T> extends PageRouteBuilder<T> {
   RipplePageRoute({this.widget, this.routeConfig})
       : super(
-            transitionDuration: const Duration(milliseconds: 200),
-            pageBuilder:
-                (BuildContext context, Animation<double> animation, _) =>
-                    widget,
+            transitionDuration: const Duration(milliseconds: 300),
+            pageBuilder: (_, __, ___) => widget,
             opaque: false,
-            transitionsBuilder: (BuildContext context,
-                Animation<double> animation,
-                Animation<double> _,
-                Widget child) {
+            transitionsBuilder: (_, Animation<double> animation,
+                Animation<double> __, Widget child) {
               final Widget widget = Positioned(
-                top: routeConfig.circleRadius * animation.value -
-                    routeConfig.offset.dy,
-                left: routeConfig.circleRadius * animation.value -
-                    routeConfig.offset.dx,
-                child: Align(
-                    alignment: Alignment.center,
-                    child: Container(
-                        width: deviceWidth,
-                        height: deviceHeight,
-                        color: Colors.red,
-                        child: child)),
-              );
+                  top: routeConfig.circleRadius * animation.value -
+                      routeConfig.offset.dy,
+                  left: routeConfig.circleRadius * animation.value -
+                      routeConfig.offset.dx,
+                  child: Align(
+                      alignment: Alignment.center,
+                      child: Container(
+                          width: deviceWidth,
+                          height: deviceHeight,
+                          child: child)));
               return Stack(alignment: Alignment.center, children: <Widget>[
                 Positioned(
                     top: routeConfig.offset.dy -
                         routeConfig.circleRadius * animation.value,
                     left: routeConfig.offset.dx -
                         routeConfig.circleRadius * animation.value,
-                    child: SizedBox(
+                    child: Universal(
                         height: routeConfig.circleRadius * 2 * animation.value,
                         width: routeConfig.circleRadius * 2 * animation.value,
-                        child: Universal(
-                            isOval: true,
-                            isStack: true,
-                            children: widget.asList()))),
+                        isOval: true,
+                        isStack: true,
+                        children: widget.asList())),
               ]);
             });
   final Widget widget;
