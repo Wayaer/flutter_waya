@@ -6,6 +6,7 @@
   * modify [sendMessage(RefreshCompletedType.refresh)] to [sendRefreshType(RefreshCompletedType.refresh)]
   * remove Ts 
   * remove [Carousel.pageView]
+  * showToast add async callback
 ## [1.5.0]
   * change Tools to Ts.
   * change GlobalMaterial to GlobalWidgetsApp.

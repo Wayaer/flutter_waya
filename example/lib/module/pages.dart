@@ -64,10 +64,12 @@ class ToastPage extends StatelessWidget {
         backgroundColor: Colors.white,
         appBar: AppBar(title: const Text('Toast Demo'), centerTitle: true),
         mainAxisAlignment: MainAxisAlignment.center,
-        children: toastList
-            .map((ToastType e) => customElasticButton(e.toString(),
-                onTap: () => showToast(e.toString(), toastType: e)))
-            .toList());
+        children: toastList.builder(
+            (ToastType e) => customElasticButton(e.toString(), onTap: () async {
+                  await showToast(e.toString(), toastType: e);
+                  log('开始弹第二个');
+                  showToast('添加await第一个Toast完了之后弹出第二个Toast');
+                })));
   }
 }
 

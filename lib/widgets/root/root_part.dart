@@ -19,7 +19,7 @@ class OverlayEntryAuto extends OverlayEntry {
 }
 
 ///  自定义Overlay
-OverlayEntryAuto showOverlay(Widget widget, {bool autoOff}) {
+OverlayEntryAuto showOverlay(Widget widget, {bool autoOff = false}) {
   if (_scaffoldKeyList.isEmpty) return null;
   _overlay ??=
       Overlay.of(_scaffoldKeyList?.last?.currentContext, rootOverlay: false);
@@ -94,6 +94,7 @@ bool haveToast = false;
 
 ///  Toast
 ///  关闭 closeOverlay();
+///  添加 await Toast 关闭后继续执行之后的方法
 Future<void> showToast(String message,
     {Color backgroundColor,
     BoxDecoration boxDecoration,
@@ -159,10 +160,9 @@ Future<void> showToast(String message,
               child: toast)),
       autoOff: true);
   haveToast = true;
-  (closeDuration ?? _duration).timer(() {
-    closeOverlay(entry: entry);
-    haveToast = false;
-  });
+  await (closeDuration ?? _duration).delayed<dynamic>();
+  closeOverlay(entry: entry);
+  haveToast = false;
 }
 
 ///  ************ 以下为push Popup *****************///

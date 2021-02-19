@@ -348,10 +348,10 @@ extension ExtensionDateTime on DateTime {
 extension DurationExtension on Duration {
   ///   final _delay = 3.seconds;
   ///   print('+ wait $_delay');
-  ///   await _delay.delay();
+  ///   await _delay.delayed();
   ///   print('- finish wait $_delay');
   ///   print('+ callback in 700ms');
-  Future<T> delay<T>([FutureOr<T> callback()]) async =>
+  Future<T> delayed<T>([FutureOr<T> callback()]) =>
       Future<T>.delayed(this, callback);
 
   /// 时间工具
