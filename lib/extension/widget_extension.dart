@@ -1,4 +1,5 @@
 import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
@@ -51,6 +52,27 @@ extension ExtensionWidget on Widget {
 
   ColoredBox color(Color color, {Key key}) =>
       ColoredBox(key: key, color: color);
+
+  Card card({
+    Color color,
+    Color shadowColor,
+    double elevation,
+    ShapeBorder shape,
+    bool borderOnForeground,
+    EdgeInsetsGeometry margin,
+    Clip clipBehavior,
+    bool semanticContainer,
+  }) =>
+      Card(
+          child: this,
+          color: color,
+          shadowColor: shadowColor,
+          elevation: elevation,
+          shape: shape,
+          borderOnForeground: borderOnForeground ?? true,
+          margin: margin,
+          clipBehavior: clipBehavior,
+          semanticContainer: semanticContainer ?? true);
 
   Positioned positioned(
           {Key key,
