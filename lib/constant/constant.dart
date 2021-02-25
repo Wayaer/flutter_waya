@@ -139,3 +139,5 @@ class _IconCode extends IconData {
             matchTextDirection: true,
             fontPackage: 'flutter_waya');
 }
+
+typedef ValueCallBack<T> = void Function(T value);
