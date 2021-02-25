@@ -4,7 +4,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-typedef ValueCallback<int> = void Function(int titleIndex, int valueIndex);
+typedef DropdownIndexCallback<int> = void Function(
+    int titleIndex, int valueIndex);
+typedef DropdownTitleIndexCallBack<int> = void Function(int value);
 
 class PopupBase extends StatelessWidget {
   const PopupBase(
@@ -148,10 +150,10 @@ class DropdownMenu extends StatefulWidget {
   final List<List<String>> value;
 
   /// 点击头部item回调
-  final ValueChanged<int> titleTap;
+  final DropdownTitleIndexCallBack<int> titleTap;
 
   /// 点击菜单的回调
-  final ValueCallback<int> valueTap;
+  final DropdownIndexCallback<int> valueTap;
   final Color iconColor;
   final Color itemBackground;
   final Color background;
