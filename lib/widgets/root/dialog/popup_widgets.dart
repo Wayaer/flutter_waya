@@ -6,6 +6,7 @@ import 'package:flutter_waya/flutter_waya.dart';
 
 typedef DropdownIndexCallback<int> = void Function(
     int titleIndex, int valueIndex);
+
 typedef DropdownTitleIndexCallBack<int> = void Function(int value);
 
 class PopupBase extends StatelessWidget {
