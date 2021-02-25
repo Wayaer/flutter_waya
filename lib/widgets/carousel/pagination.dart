@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-enum CarouselEvent {  next, previous, start, stop }
+enum CarouselEvent { next, previous, start, stop }
 
 class CarouselController extends ChangeNotifier {
   Completer<dynamic> _completer;
@@ -170,7 +170,7 @@ class FractionPagination extends CarouselPlugin {
   ///  color when active,if set null , will be Theme.of(context).primaryColor
   final Color activeColor;
 
-  ///  /font size
+  ///  font size
   final double fontSize;
 
   ///  font size when active
@@ -212,7 +212,7 @@ class DotCarouselPagination extends CarouselPlugin {
   ///  color when current index,if set null , will be Theme.of(context).primaryColor
   final Color activeColor;
 
-  ///  ,if set null , will be Theme.of(context).scaffoldBackgroundColor
+  ///  if set null , will be Theme.of(context).scaffoldBackgroundColor
   final Color color;
 
   ///  Size of the dot when activate
