@@ -142,9 +142,10 @@ class _IconCode extends IconData {
 
 typedef ValueCallback<T> = void Function(T value);
 
-typedef ValueTwoCallback<T> = void Function(T value1, T value2);
+typedef ValueTwoCallback<T, E> = void Function(T value1, E value2);
 
-typedef ValueThreeCallback<T> = void Function(T value1, T value2, T value3);
+typedef ValueThreeCallback<T, E, F> = void Function(
+    T value1, E value2, F value3);
 
-typedef ValueFourCallback<T> = void Function(
-    T value1, T value2, T value3, T value4);
+typedef ValueFourCallback<T, E, F, G> = void Function(
+    T value1, E value2, F value3, G value4);
