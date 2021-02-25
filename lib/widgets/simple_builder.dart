@@ -3,21 +3,19 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 
 typedef ValueBuilderUpdateCallback<T> = void Function(T snapshot);
+
 typedef ValueBuilderBuilder<T> = Widget Function(
     T snapshot, ValueBuilderUpdateCallback<T> updater);
 
-/// Manages a local state like ObxValue, but uses a callback instead of
-/// a Rx value.
-///
 /// Example:
 /// ```
 ///  ValueBuilder<bool>(
 ///    initialValue: false,
-///    builder: (value, update) => Switch(
-///    value: value,
-///    onChanged: (flag) {
-///       update( flag );
-///    },),
+///    builder: (value, update) {
+///
+///    return (你需要局部刷新的组件)
+///
+///    }),
 ///    onUpdate: (value) => print("Value updated: $value"),
 ///  ),
 ///  ```
