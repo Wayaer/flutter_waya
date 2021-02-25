@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_curiosity/constant/styles.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 class ProgressPage extends StatefulWidget {
@@ -80,7 +79,7 @@ class _ProgressPageState extends State<ProgressPage>
                   borderColor: Colors.blue,
                   valueColor: const AlwaysStoppedAnimation<Color>(Colors.blue),
                   center: BasisText('${percentage.toStringAsFixed(0)}%',
-                      style: const BaseTextStyle(
+                      style: const BasisTextStyle(
                           color: Colors.lightBlueAccent,
                           fontSize: 20.0,
                           fontWeight: FontWeight.bold)))),
@@ -93,7 +92,7 @@ class _ProgressPageState extends State<ProgressPage>
                 borderColor: Colors.blue,
                 valueColor: const AlwaysStoppedAnimation<Color>(Colors.blue),
                 center: BasisText('${percentage.toStringAsFixed(0)}%',
-                    style: const BaseTextStyle(
+                    style: const BasisTextStyle(
                         color: Colors.lightBlueAccent,
                         fontSize: 20.0,
                         fontWeight: FontWeight.bold))),
@@ -107,7 +106,7 @@ class _ProgressPageState extends State<ProgressPage>
                   borderColor: Colors.blue,
                   valueColor: const AlwaysStoppedAnimation<Color>(Colors.blue),
                   center: BasisText('${percentage.toStringAsFixed(0)}%',
-                      style: const BaseTextStyle(
+                      style: const BasisTextStyle(
                           color: Colors.lightBlueAccent,
                           fontSize: 20.0,
                           fontWeight: FontWeight.bold)))),
@@ -130,7 +129,7 @@ class _ProgressPageState extends State<ProgressPage>
               valueColor: const AlwaysStoppedAnimation<Color>(Colors.blue),
               shapePath: _buildHeartPath(),
               center: BasisText('${percentage.toStringAsFixed(0)}%',
-                  style: const BaseTextStyle(
+                  style: const BasisTextStyle(
                       color: Colors.lightBlueAccent,
                       fontSize: 20.0,
                       fontWeight: FontWeight.bold))),
