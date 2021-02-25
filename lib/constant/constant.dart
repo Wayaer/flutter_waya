@@ -140,11 +140,11 @@ class _IconCode extends IconData {
             fontPackage: 'flutter_waya');
 }
 
-typedef ValueCallBack<T> = void Function(T value);
+typedef ValueCallback<T> = void Function(T value);
 
-typedef ValueTwoCallBack<T> = void Function(T value1, T value2);
+typedef ValueTwoCallback<T> = void Function(T value1, T value2);
 
-typedef ValueThreeCallBack<T> = void Function(T value1, T value2, T value3);
+typedef ValueThreeCallback<T> = void Function(T value1, T value2, T value3);
 
-typedef ValueFourCallBack<T> = void Function(
+typedef ValueFourCallback<T> = void Function(
     T value1, T value2, T value3, T value4);
