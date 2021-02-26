@@ -15,6 +15,8 @@ dependencies:
   dio: ^3.0.10
   pull_to_refresh: ^1.6.3
   cookie_jar: ^1.0.1
+  http_parser: ^3.1.4
+  vector_math: ^2.1.0-nullsafety.3
 
 dev_dependencies:
   pedantic: ^1.9.0
