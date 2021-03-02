@@ -227,22 +227,26 @@ class AutoScrollEntry extends StatefulWidget {
       this.onChanged,
       this.margin,
       this.padding,
-      this.duration,
-      this.animateDuration,
-      this.onTap})
-      : initialIndex = initialIndex ?? 0,
+      Duration duration,
+      Duration animateDuration})
+      : duration = duration ?? const Duration(seconds: 3),
+        animateDuration = animateDuration ?? const Duration(milliseconds: 500),
+        initialIndex = initialIndex ?? 0,
         super(key: key);
 
   final int initialIndex;
   final List<Widget> children;
   final EdgeInsetsGeometry margin;
   final EdgeInsetsGeometry padding;
-  final Duration duration;
-  final Duration animateDuration;
-  final int maxItemCount;
 
-  /// 点击回调
-  final ValueCallback<int> onTap;
+  /// 滚动停留时间
+  final Duration duration;
+
+  /// 滚动动画时间
+  final Duration animateDuration;
+
+  /// 滚动最大数量
+  final int maxItemCount;
 
   ///  回调监听
   final ValueChanged<int> onChanged;
@@ -278,17 +282,14 @@ class _AutoScrollEntryState extends State<AutoScrollEntry> {
       maxItemCount = widget.maxItemCount;
     }
     addPostFrameCallback((Duration duration) {
-      timer = (widget.duration ?? const Duration(seconds: 3))
-          .timerPeriodic((Timer callback) {
+      timer = widget.duration.timerPeriodic((Timer callback) {
         index += 1;
         if (index >= maxItemCount) {
           index = 0;
           controller.jumpToItem(index);
         }
         controller?.animateToItem(index,
-            duration:
-                widget.animateDuration ?? const Duration(milliseconds: 500),
-            curve: Curves.linear);
+            duration: widget.animateDuration, curve: Curves.linear);
       });
     });
   }
@@ -301,9 +302,6 @@ class _AutoScrollEntryState extends State<AutoScrollEntry> {
         padding: widget.padding,
         width: widget.itemWidth,
         height: itemHeight,
-        onTap: () {
-          if (widget.onTap != null) widget.onTap(index);
-        },
         child: ListWheel(
             controller: controller,
             initialIndex: widget.initialIndex,
