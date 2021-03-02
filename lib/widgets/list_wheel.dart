@@ -228,7 +228,8 @@ class AutoScrollEntry extends StatefulWidget {
       this.margin,
       this.padding,
       this.duration,
-      this.animateDuration})
+      this.animateDuration,
+      this.onTap})
       : initialIndex = initialIndex ?? 0,
         super(key: key);
 
@@ -239,6 +240,9 @@ class AutoScrollEntry extends StatefulWidget {
   final Duration duration;
   final Duration animateDuration;
   final int maxItemCount;
+
+  /// 点击回调
+  final ValueCallback<int> onTap;
 
   ///  回调监听
   final ValueChanged<int> onChanged;
@@ -257,7 +261,7 @@ class _AutoScrollEntryState extends State<AutoScrollEntry> {
   Timer timer;
   int index = 0;
   int maxItemCount = 10;
-  double itemHeight = getHeight(30);
+  double itemHeight = 30;
 
   @override
   void initState() {
@@ -297,6 +301,9 @@ class _AutoScrollEntryState extends State<AutoScrollEntry> {
         padding: widget.padding,
         width: widget.itemWidth,
         height: itemHeight,
+        onTap: () {
+          if (widget.onTap != null) widget.onTap(index);
+        },
         child: ListWheel(
             controller: controller,
             initialIndex: widget.initialIndex,
