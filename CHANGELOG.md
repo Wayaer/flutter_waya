@@ -1,4 +1,5 @@
-## [1.6.2]
+## [1.6.3]
+  * update flutter 2.0
 ## [1.6.0]
   * add [Progress.circular] [Progress.linear]
   * ExtensionString add insert void
