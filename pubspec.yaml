@@ -9,12 +9,12 @@ environment:
 dependencies:
   cookie_jar: ^1.0.1
   crypto: ^3.0.0
-  dio: ^3.0.10
+  dio: ^4.0.0-beta4
   flutter:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  http_parser: ^3.1.4
+  http_parser: ^4.0.0
   pull_to_refresh: ^1.6.4
   vector_math: ^2.1.0-nullsafety.3
 
