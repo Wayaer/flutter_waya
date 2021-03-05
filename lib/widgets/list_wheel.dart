@@ -98,7 +98,7 @@ class ListWheel extends StatefulWidget {
   final FixedExtentScrollController controller;
 
   ///  滚动监听 添加此方法  [onScrollStart],[onScrollUpdate],[onScrollEnd] 无效
-  final NotificationListenerCallback<dynamic> onNotification;
+  final NotificationListenerCallback<ScrollNotification> onNotification;
 
   ///  动开始回调
   final ValueChanged<int> onScrollStart;
