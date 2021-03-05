@@ -44,10 +44,10 @@ class ConstConstant {
     InputTextType.password: '[a-zA-Z0-9.]',
 
     ///  整数
-    InputTextType.number: null,
+    InputTextType.number: '',
 
     ///  文本
-    InputTextType.text: null,
+    InputTextType.text: '',
 
     ///  小数
     InputTextType.decimal: '[0-9.]',

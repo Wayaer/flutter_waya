@@ -4,19 +4,19 @@ version: 1.6.3
 repository: https://github.com/Wayaer/flutter_waya
 
 environment:
-  sdk: ">=2.6.0 <3.0.0"
+  sdk: '>=2.12.0-0 <3.0.0'
 
 dependencies:
-  cookie_jar: ^1.0.1
-  crypto: ^2.1.5
-  dio: ^3.0.10
+  cookie_jar: ^3.0.0-beta2
+  crypto: ^3.0.0
+  dio: ^4.0.0-beta4
   flutter:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  http_parser: ^3.1.4
-  pull_to_refresh: ^1.6.3
-  vector_math: ^2.1.0-nullsafety.3
+  http_parser: ^4.0.0
+  pull_to_refresh: ^1.6.4
+  vector_math: ^2.1.0
 
 dev_dependencies:
   pedantic: ^1.9.0
