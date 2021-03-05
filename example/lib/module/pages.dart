@@ -89,7 +89,7 @@ class PinBoxPage extends StatelessWidget {
                     border: Border.all(color: Colors.blue)),
                 pinDecoration:
                     BoxDecoration(border: Border.all(color: Colors.red)),
-                pinTextStyle: const TextStyle(color: Colors.white)),
+                pinTextStyle: const TextStyle(color: Colors.black)),
           ]);
 }
 

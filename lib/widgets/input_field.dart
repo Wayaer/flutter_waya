@@ -11,7 +11,6 @@ class InputField extends StatelessWidget {
     bool autoFocus,
     bool enabled,
     bool enableInteractiveSelection,
-    bool maxLengthEnforced,
     TextInputAction textInputAction,
     TextDirection textDirection,
     Color cursorColor,
@@ -102,10 +101,6 @@ class InputField extends StatelessWidget {
         ///  键盘外观  仅ios有效
         keyboardAppearance = keyboardAppearance ?? Brightness.dark,
 
-        ///      默认true  超过长度后输入无效  右下角数字 显示10/10   此时onchange方法依然会调用，返回值就是限制了长度的值 超过后的输入不显示
-        ///      false 超过后可继续输入  右下角数字显示，比如 23/10
-        maxLengthEnforced = maxLengthEnforced ?? true,
-
         ///       设置键盘上enter键的显示内容
         ///       textInputAction: TextInputAction.search, ///  搜索
         ///       textInputAction: TextInputAction.none,///  默认回车符号
@@ -165,8 +160,6 @@ class InputField extends StatelessWidget {
   final String counterText;
   final TextStyle counterStyle;
   final Widget counter;
-
-  final bool maxLengthEnforced;
 
   /// 是否自动获取焦点  跳转到该页面后 光标自动显示到该输入框  键盘弹起
   final bool autoFocus;
@@ -344,7 +337,6 @@ class InputField extends StatelessWidget {
         maxLines: maxLines,
         minLines: minLines,
         maxLength: maxLength,
-        maxLengthEnforced: maxLengthEnforced,
         keyboardAppearance: keyboardAppearance,
         textDirection: textDirection,
         textCapitalization: textCapitalization,

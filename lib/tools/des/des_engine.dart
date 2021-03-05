@@ -132,7 +132,7 @@ class DESEngine extends BaseEngine {
 
   @override
   int processBlock(List<int> M, int offset) {
-    final List<List<int>> invSubKeys = List<List<int>>(16);
+    final List<List<int>> invSubKeys = <List<int>>[];
     if (!forEncryption) {
       for (int i = 0; i < 16; i++) invSubKeys[i] = _subKeys[15 - i];
     }

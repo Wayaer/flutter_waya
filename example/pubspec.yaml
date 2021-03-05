@@ -1,7 +1,6 @@
 name: waya
 description: Demonstrates how to use the waya plugin.
 publish_to: 'none'
-
 version: 1.0.0+1
 
 environment:
@@ -10,16 +9,17 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_localizations:
-    sdk: flutter
-  flutter_web_plugins:
-    sdk: flutter
   flutter_curiosity:
     git:
       url: git://github.com/Wayaer/flutter_curiosity.git
       ref: dev
+  flutter_localizations:
+    sdk: flutter
   flutter_waya:
     path: ../
+  flutter_web_plugins:
+    sdk: flutter
+
 
 
 dev_dependencies:

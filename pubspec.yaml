@@ -7,15 +7,15 @@ environment:
   sdk: ">=2.6.0 <3.0.0"
 
 dependencies:
-  crypto: ^3.0.0
   cookie_jar: ^1.0.1
+  crypto: ^3.0.0
   dio: ^3.0.10
   flutter:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
   http_parser: ^3.1.4
-  pull_to_refresh: ^1.6.3
+  pull_to_refresh: ^1.6.4
   vector_math: ^2.1.0-nullsafety.3
 
 dev_dependencies:
