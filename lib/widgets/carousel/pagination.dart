@@ -298,7 +298,7 @@ typedef CarouselPaginationBuilder = Widget Function(
     BuildContext context, CarouselPluginConfig config);
 
 class CarouselCustomPagination extends CarouselPlugin {
-  CarouselCustomPagination({required this.builder}) : assert(builder != null);
+  CarouselCustomPagination({required this.builder});
 
   final CarouselPaginationBuilder builder;
 

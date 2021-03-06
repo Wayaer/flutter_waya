@@ -54,9 +54,8 @@ class WayStyles {
           border: underlineColor == null
               ? null
               : Border(
-                  bottom: BorderSide(
-                      width: width ?? 1,
-                      color: underlineColor ?? ConstColors.background)));
+                  bottom:
+                      BorderSide(width: width ?? 1, color: underlineColor)));
 
   /// 统一上划线样式
   static Decoration containerTopLineBackground({Color? color}) => BoxDecoration(

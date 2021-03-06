@@ -76,9 +76,10 @@ class _ContentPage extends StatelessWidget {
           onTap: () {
             if (isOverlay) {
               closeOverlay();
-            } else {
-              closePopup();
             }
+            // else {
+            //   closePopup();
+            // }
 
             ///如果isOverlay=true; 必须先closeOverlay() 再toast或者loading
             showToast('确定');
@@ -90,9 +91,10 @@ class _ContentPage extends StatelessWidget {
           onTap: () {
             if (isOverlay) {
               closeOverlay();
-            } else {
-              closePopup();
             }
+            // else {
+            //   closePopup();
+            // }
 
             ///如果isOverlay=true; 必须先closeOverlay() 再toast或者loading
             showToast('取消');

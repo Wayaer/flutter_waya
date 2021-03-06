@@ -156,8 +156,8 @@ class SliverAutoPersistentHeader extends StatelessWidget {
       {Key? key,
       this.pinned = true,
       this.floating = true,
-      this.minHeight = kToolbarHeight,
-      this.maxHeight = kToolbarHeight,
+      this.minHeight,
+      this.maxHeight,
       required this.child})
       : super(key: key);
 
@@ -166,10 +166,10 @@ class SliverAutoPersistentHeader extends StatelessWidget {
   final bool floating;
 
   /// 默认为 [kToolbarHeight]
-  final double minHeight;
+  final double? minHeight;
 
   /// 默认为 [kToolbarHeight]
-  final double maxHeight;
+  final double? maxHeight;
 
   /// header 内容
   final Widget child;
@@ -179,9 +179,9 @@ class SliverAutoPersistentHeader extends StatelessWidget {
       pinned: pinned,
       floating: floating,
       delegate: pinned
-          ? _PinnedPersistentHeaderDelegate(height: maxHeight, child: child)
+          ? _PinnedPersistentHeaderDelegate(height: maxHeight!, child: child)
           : _NoPinnedPersistentHeaderDelegate(
-              minHeight: minHeight, maxHeight: maxHeight, child: child));
+              minHeight: minHeight!, maxHeight: maxHeight!, child: child));
 }
 
 /// 组合使用 [FlexibleSpaceBar]、[SliverAppBar]

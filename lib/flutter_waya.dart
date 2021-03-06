@@ -38,7 +38,6 @@ export 'widgets/progress/wave.dart';
 export 'widgets/refresh.dart';
 export 'widgets/root/dialog/picker.dart';
 export 'widgets/root/dialog/popup_widgets.dart';
-export 'widgets/root/loading/tweens/delay_tween.dart';
 export 'widgets/root/root.dart';
 export 'widgets/scroll_view.dart';
 export 'widgets/simple_builder.dart';
