@@ -25,7 +25,7 @@ class _ListPageState extends State<ListPage> {
               AppBar(title: const Text('SimpleList Demo'), centerTitle: true),
           isScroll: true,
           enablePullDown: true,
-          header: BezierCircleHeader(bezierColor: colors[0]),
+          // header: BezierCircleHeader(bezierColor: colors[0]),
           padding: const EdgeInsets.symmetric(horizontal: 10),
           children: <Widget>[
             SimpleButton(
@@ -220,7 +220,7 @@ class _SimpleListRefreshed extends StatelessWidget {
             enablePullDown: true,
             enablePullUp: true,
             padding: const EdgeInsets.all(10),
-            refreshHeader: BezierCircleHeader(bezierColor: colors[0]),
+            // refreshHeader: BezierCircleHeader(bezierColor: colors[0]),
             maxCrossAxisExtent: 60,
             mainAxisSpacing: 10,
             crossAxisSpacing: 10,

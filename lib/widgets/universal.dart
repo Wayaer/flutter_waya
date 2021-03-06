@@ -540,7 +540,7 @@ class Universal extends StatelessWidget {
     if (addCard) current = cardWidget(current, context);
     if (isCircleAvatar) current = circleAvatarWidget(current);
     if (clipper != null || isOval)
-      current = clipWidget(current, clipper: clipper!);
+      current = clipWidget(current, clipper: clipper);
     if (refreshController != null ||
         onRefresh != null ||
         onLoading != null ||
@@ -584,7 +584,7 @@ class Universal extends StatelessWidget {
   Widget offstageWidget(Widget current) =>
       Offstage(child: current, offstage: offstage);
 
-  Widget clipWidget(Widget current, {required CustomClipper<dynamic> clipper}) {
+  Widget clipWidget(Widget current, {CustomClipper<dynamic>? clipper}) {
     if (clipper is Rect) {
       return ClipRect(
           child: current,

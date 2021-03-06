@@ -67,8 +67,9 @@ class _ClothButtonState extends State<ClothButton>
 
   @override
   Widget build(BuildContext context) {
-    renderBox = context.findRenderObject() as RenderBox;
-
+    final RenderObject? renderObject = context.findRenderObject();
+    if (renderObject == null) return Container();
+    renderBox = renderObject as RenderBox;
     final CustomPainter painter = widget.gap == null
         ? _ClothCustomPainter(
             relativePosition: position,

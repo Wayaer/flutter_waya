@@ -400,6 +400,7 @@ Future<T?> showDateTimePicker<T>({
   PickerWheel? pickerWheel,
 }) {
   _globalNavigatorKey.currentContext!.focusNode();
+  pickerWheel ??= PickerWheel();
   pickerSub ??= PickerSub();
   pickerSub.cancelTap ??= () => closePopup();
   pickerSub.sureTap ??= (String text) => closePopup(text);
@@ -434,6 +435,7 @@ Future<T?> showAreaPicker<T>({
   PickerWheel? pickerWheel,
 }) {
   _globalNavigatorKey.currentContext!.focusNode();
+  pickerWheel ??= PickerWheel();
   pickerSub ??= PickerSub();
   pickerSub.cancelTap ??= () => closePopup();
   pickerSub.sureTap ??= (String text) => closePopup(text);

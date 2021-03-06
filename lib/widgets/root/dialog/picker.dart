@@ -10,8 +10,8 @@ class PickerSub {
       Widget? cancel,
       double? height,
       Color? backgroundColor,
+      TextStyle? contentStyle,
       this.titleBottom,
-      this.contentStyle,
       this.cancelTap,
       this.sureTap,
       this.sureIndexTap})
@@ -20,6 +20,8 @@ class PickerSub {
         cancel = cancel ?? BasisText('cancel'),
         height = height ?? ConstConstant.pickerHeight,
         backgroundColor = backgroundColor ?? ConstColors.white,
+        contentStyle = contentStyle ??
+            const BasisTextStyle(backgroundColor: Colors.transparent),
         titlePadding =
             titlePadding ?? const EdgeInsets.symmetric(horizontal: 10);
 
@@ -38,7 +40,7 @@ class PickerSub {
   final EdgeInsetsGeometry titlePadding;
 
   ///  字体样式
-  final TextStyle? contentStyle;
+  final TextStyle contentStyle;
 
   ///  点击事件
   GestureTapCallback? cancelTap;
@@ -88,11 +90,12 @@ class PickerWheel {
 }
 
 abstract class _PickerConfig extends StatefulWidget {
-  const _PickerConfig({Key? key, this.pickerSub, this.pickerWheel})
+  const _PickerConfig(
+      {Key? key, required this.pickerSub, required this.pickerWheel})
       : super(key: key);
 
-  final PickerSub? pickerSub;
-  final PickerWheel? pickerWheel;
+  final PickerSub pickerSub;
+  final PickerWheel pickerWheel;
 }
 
 class _PickerSub extends StatelessWidget {
@@ -180,8 +183,8 @@ class AreaPicker extends _PickerConfig {
     this.defaultProvince,
     this.defaultCity,
     this.defaultDistrict,
-    PickerSub? pickerSub,
-    PickerWheel? pickerWheel,
+    required PickerSub pickerSub,
+    required PickerWheel pickerWheel,
   }) : super(key: key, pickerSub: pickerSub, pickerWheel: pickerWheel);
 
   /// 默认选择的省
@@ -222,7 +225,7 @@ class _AreaPickerState extends State<AreaPicker> {
     super.initState();
 
     ///  样式设置
-    contentStyle = widget.pickerSub!.contentStyle!;
+    contentStyle = widget.pickerSub.contentStyle;
 
     ///  省
     province = areaData.keys.toList();
@@ -255,10 +258,10 @@ class _AreaPickerState extends State<AreaPicker> {
 
   ///  点击确定返回选择的地区
   void sureTapVoid() {
-    if (widget.pickerSub?.sureTap == null) return;
+    if (widget.pickerSub.sureTap == null) return;
     final String areaString =
         '${province[provinceIndex]} ${city[cityIndex]} ${district[districtIndex]}';
-    widget.pickerSub?.sureTap!(areaString);
+    widget.pickerSub.sureTap!(areaString);
   }
 
   void refreshCity() {
@@ -314,7 +317,7 @@ class _AreaPickerState extends State<AreaPicker> {
           }),
     ]);
     return _PickerSub(
-        pickerSub: widget.pickerSub!, child: row, onTap: sureTapVoid);
+        pickerSub: widget.pickerSub, child: row, onTap: sureTapVoid);
   }
 
   Widget wheelItem(List<String> list,
@@ -326,7 +329,7 @@ class _AreaPickerState extends State<AreaPicker> {
       _PickerListWheel(
           controller: controller,
           initialIndex: initialIndex,
-          pickerWheel: widget.pickerWheel!,
+          pickerWheel: widget.pickerWheel,
           childDelegateType: childDelegateType,
           children: list.builder((String value) => item(value)),
           itemBuilder: (BuildContext context, int index) => item(list[index]),
@@ -390,9 +393,9 @@ class DateTimePicker extends _PickerConfig {
     this.startDate,
     this.defaultDate,
     this.endDate,
-    PickerSub? pickerSub,
-    PickerWheel? pickerWheel,
-  })  : unit = unit ?? DateTimePickerUnit().getDefaultUnit,
+    required PickerSub pickerSub,
+    required PickerWheel pickerWheel,
+  })   : unit = unit ?? DateTimePickerUnit().getDefaultUnit,
         showUnit = showUnit ?? true,
         dual = dual ?? true,
         super(key: key, pickerSub: pickerSub, pickerWheel: pickerWheel);
@@ -454,10 +457,10 @@ class _DateTimePickerState extends State<DateTimePicker> {
     super.initState();
     unit = widget.unit;
     itemWidth =
-        widget.pickerWheel?.itemWidth ?? (deviceWidth - 20) / unit.getLength();
+        widget.pickerWheel.itemWidth ?? (deviceWidth - 20) / unit.getLength();
 
     ///  样式设置
-    contentStyle = widget.pickerSub!.contentStyle!;
+    contentStyle = widget.pickerSub.contentStyle;
     unitStyle = widget.unitStyle ?? contentStyle;
     startDate = widget.startDate ?? DateTime.now();
     endDate = initEndDate;
@@ -533,7 +536,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
   }
 
   void sureTapVoid() {
-    if (widget.pickerSub?.sureTap == null) return;
+    if (widget.pickerSub.sureTap == null) return;
     String dateTime = '';
     if (unit.year != null) dateTime = yearData[yearIndex].toString() + '-';
     if (unit.month != null)
@@ -544,7 +547,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
       dateTime += ':' + valuePadLeft(minuteData[minuteIndex]);
     if (unit.second != null)
       dateTime += ':' + valuePadLeft(secondData[secondIndex]);
-    widget.pickerSub?.sureTap!(dateTime.trim());
+    widget.pickerSub.sureTap!(dateTime.trim());
   }
 
   void refreshDay() {

@@ -18,7 +18,7 @@ class LiquidProgress extends ProgressIndicator {
     Animation<Color>? valueColor,
     this.borderWidth = 0,
     this.borderColor = Colors.transparent,
-    this.borderRadius,
+    this.borderRadius = 0,
     this.center,
     this.direction = Axis.horizontal,
   })  : shapePath = null,
@@ -38,7 +38,7 @@ class LiquidProgress extends ProgressIndicator {
       this.borderColor = Colors.transparent,
       this.center,
       this.direction = Axis.vertical})
-      : borderRadius = null,
+      : borderRadius = 0,
         shapePath = null,
         type = _LiquidProgressType.circular,
         super(
@@ -57,7 +57,7 @@ class LiquidProgress extends ProgressIndicator {
       required this.shapePath})
       : borderWidth = null,
         borderColor = null,
-        borderRadius = null,
+        borderRadius = 0,
         type = _LiquidProgressType.custom,
         super(
             key: key,
@@ -72,7 +72,7 @@ class LiquidProgress extends ProgressIndicator {
   final Color? borderColor;
 
   /// The radius of the border.
-  final double? borderRadius;
+  final double borderRadius;
 
   /// The widget to show in the center of the progress indicator.
   final Widget? center;
@@ -149,15 +149,15 @@ class _ProgressState extends State<LiquidProgress> {
       );
 
   Widget get linear => ClipPath(
-        clipper: _LinearClipper(radius: widget.borderRadius!),
+        clipper: _LinearClipper(radius: widget.borderRadius),
         child: CustomPaint(
             painter: _LinearPainter(
                 color: widget._getBackgroundColor(context),
-                radius: widget.borderRadius!),
+                radius: widget.borderRadius),
             foregroundPainter: _LinearBorderPainter(
                 color: widget.borderColor!,
                 width: widget.borderWidth!,
-                radius: widget.borderRadius!),
+                radius: widget.borderRadius),
             child: Stack(children: <Widget>[
               Wave(
                   value: widget.value!,
@@ -218,7 +218,7 @@ class _LinearBorderPainter extends CustomPainter {
 }
 
 class _LinearClipper extends CustomClipper<Path> {
-  _LinearClipper({required this.radius});
+  _LinearClipper({this.radius = 0});
 
   final double radius;
 

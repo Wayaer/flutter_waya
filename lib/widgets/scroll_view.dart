@@ -266,8 +266,7 @@ class SliverAutoAppBar extends SliverAppBar {
     ShapeBorder? shape,
     double toolbarHeight = kToolbarHeight,
     double? collapsedHeight,
-  })  : assert(bottom != null && bottomSize != null),
-        super(
+  }) : super(
             key: key,
             title: title,
             actions: actions,
@@ -514,8 +513,7 @@ class _SliverAppBar extends SliverAppBar {
     required this.sliverAppBar,
     double? expandedHeight,
     Size? bottomSize,
-  })  : assert(sliverAppBar.bottom != null && bottomSize != null),
-        super(
+  }) : super(
             key: key,
             automaticallyImplyLeading: sliverAppBar.automaticallyImplyLeading,
             title: sliverAppBar.title,

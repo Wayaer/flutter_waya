@@ -59,7 +59,10 @@ class _LiquidButtonState extends State<LiquidButton>
 
   @override
   Widget build(BuildContext context) {
-    renderBox = context.findRenderObject() as RenderBox;
+    final RenderObject? renderObject = context.findRenderObject();
+    if (renderObject == null) return Container();
+    renderBox = renderObject as RenderBox;
+
     if (kIsWeb)
       return MouseRegion(
           onHover: onHover,

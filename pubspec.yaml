@@ -14,7 +14,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   http_parser: ^4.0.0
-  pull_to_refresh: ^1.6.4
+  #  pull_to_refresh: ^1.6.4
   vector_math: ^2.1.0
 
 flutter:

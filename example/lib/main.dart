@@ -4,7 +4,6 @@ import 'package:flutter_waya/flutter_waya.dart';
 import 'package:waya/module/carousel_page.dart';
 import 'package:waya/module/json_parse_page.dart';
 import 'package:waya/module/list_page.dart';
-import 'package:waya/module/local_hero.dart';
 import 'package:waya/module/pages.dart';
 import 'package:waya/module/picker_page.dart';
 import 'package:waya/module/popup_page.dart';
@@ -36,11 +35,11 @@ class Home extends StatelessWidget {
           customElasticButton('Progress', onTap: () => push(ProgressPage())),
           customElasticButton('Universal', onTap: () => push(UniversalPage())),
           customElasticButton('JsonParse', onTap: () => push(JsonParsePage())),
-          customElasticButton('LocalHero', onTap: () => push(LocalHeroPage())),
           customElasticButton('ScrollView',
               onTap: () => push(ScrollViewPage())),
           customElasticButton('DropdownMenu',
               onTap: () => push(DropdownMenuPage())),
+          ElevatedButton(onPressed: () {}, child: const Text('ElevatedButton')),
         ]),
       );
 
@@ -48,7 +47,8 @@ class Home extends StatelessWidget {
 }
 
 Widget customElasticButton(String text, {GestureTapCallback? onTap}) =>
-    Container(
+    Universal(
+      addInkWell: true,
       margin: const EdgeInsets.symmetric(vertical: 10),
       child: ElasticButton(
           withOpacity: true,
@@ -57,5 +57,5 @@ Widget customElasticButton(String text, {GestureTapCallback? onTap}) =>
             color: Colors.blue,
             padding: const EdgeInsets.all(10),
             child: Text(text, style: const TextStyle(color: Colors.white)),
-          )),
+          ).clipRRect(borderRadius: BorderRadius.circular(6))),
     );

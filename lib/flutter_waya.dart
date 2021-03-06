@@ -1,6 +1,6 @@
 library flutter_waya;
 
-export 'package:pull_to_refresh/pull_to_refresh.dart';
+// export 'package:pull_to_refresh/pull_to_refresh.dart';
 
 export 'constant/area.dart';
 export 'constant/constant.dart';
@@ -26,7 +26,6 @@ export 'widgets/dotted_line.dart';
 export 'widgets/draggable_scrollbar.dart';
 export 'widgets/elastic_button.dart';
 export 'widgets/gesture_widgets.dart';
-export 'widgets/hero/local_hero.dart';
 export 'widgets/icon.dart';
 export 'widgets/image.dart';
 export 'widgets/input_field.dart';
