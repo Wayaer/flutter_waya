@@ -26,6 +26,7 @@ export 'widgets/dotted_line.dart';
 export 'widgets/draggable_scrollbar.dart';
 export 'widgets/elastic_button.dart';
 export 'widgets/gesture_widgets.dart';
+export 'widgets/hero/local_hero.dart';
 export 'widgets/icon.dart';
 export 'widgets/image.dart';
 export 'widgets/input_field.dart';
