@@ -3,12 +3,12 @@ import 'package:flutter_waya/constant/way.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 class JsonParse extends StatefulWidget {
-  JsonParse(this.json, {Key key})
+  JsonParse(this.json, {Key? key})
       : list = <dynamic>[],
         isList = false,
         super(key: key);
 
-  JsonParse.list(this.list, {Key key})
+  JsonParse.list(this.list, {Key? key})
       : json = list.asMap(),
         isList = true,
         super(key: key);
@@ -33,7 +33,7 @@ class _JsonParseState extends State<JsonParse> {
 
   List<Widget> get children {
     final List<Widget> list = <Widget>[];
-    widget?.json?.builderEntry((MapEntry<dynamic, dynamic> entry) {
+    widget.json.builderEntry((MapEntry<dynamic, dynamic> entry) {
       final dynamic key = entry.key;
       final dynamic content = entry.value;
       final List<Widget> row = <Widget>[];
@@ -120,15 +120,15 @@ class _JsonParseState extends State<JsonParse> {
 }
 
 void setHttpData(ResponseModel res) {
-  final _HttpDataModel data = _HttpDataModel(res?.request?.path, res?.data);
+  final _HttpDataModel data = _HttpDataModel(res.request.path, res.data);
   if (_httpDataOverlay == null) {
-    _httpDataOverlay = showOverlay(_HttpDataPage(data));
+    _httpDataOverlay = showOverlay(_HttpDataPage(data))!;
   } else {
     eventBus.emit('httpData', data);
   }
 }
 
-OverlayEntryAuto _httpDataOverlay;
+OverlayEntryAuto? _httpDataOverlay;
 
 class _HttpDataModel {
   _HttpDataModel(this.url, this.data);
@@ -138,7 +138,7 @@ class _HttpDataModel {
 }
 
 class _HttpDataPage extends StatefulWidget {
-  const _HttpDataPage(this.initData, {Key key}) : super(key: key);
+  const _HttpDataPage(this.initData, {Key? key}) : super(key: key);
   final _HttpDataModel initData;
 
   @override
@@ -175,7 +175,7 @@ class _HttpDataPageState extends State<_HttpDataPage> {
     final List<Widget> children = <Widget>[
       ValueListenableBuilder<Offset>(
         valueListenable: iconOffSet,
-        builder: (BuildContext context, Offset value, Widget child) =>
+        builder: (BuildContext context, Offset value, Widget? child) =>
             Positioned(
                 left: value.dx,
                 top: value.dy,
@@ -191,7 +191,7 @@ class _HttpDataPageState extends State<_HttpDataPage> {
                     onPanStart: (DragStartDetails details) =>
                         updatePositioned(details.globalPosition),
                     onPanUpdate: (DragUpdateDetails details) =>
-                        updatePositioned(details.globalPosition, true),
+                        updatePositioned(details.globalPosition),
                     decoration: const BoxDecoration(
                         color: ConstColors.blue, shape: BoxShape.circle),
                     padding: const EdgeInsets.all(4),
@@ -203,7 +203,7 @@ class _HttpDataPageState extends State<_HttpDataPage> {
     return Stack(children: children);
   }
 
-  void updatePositioned(Offset offset, [bool isUpdate]) {
+  void updatePositioned(Offset offset) {
     if (offset.dx > 1 &&
         offset.dx < deviceWidth - 24 &&
         offset.dy > getStatusBarHeight &&
@@ -248,9 +248,9 @@ class _HttpDataPageState extends State<_HttpDataPage> {
             }),
       );
 
-  Widget title(String url, {GestureTapCallback onTap}) => SimpleButton(
+  Widget title(String url, {GestureTapCallback? onTap}) => SimpleButton(
       padding: const EdgeInsets.all(10),
-      text: url ?? '',
+      text: url,
       maxLines: 2,
       child: BasisText(url, textAlign: TextAlign.start),
       onTap: onTap);

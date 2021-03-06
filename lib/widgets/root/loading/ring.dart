@@ -1,23 +1,20 @@
-part of 'tweens/delay_tween.dart';
+part of 'tween/delay_tween.dart';
 
 class SpinKitRing extends StatefulWidget {
   const SpinKitRing({
-    Key key,
-    @required this.color,
+    Key? key,
+    required this.color,
     this.lineWidth = 7.0,
     this.size = 50.0,
     this.duration = const Duration(milliseconds: 1200),
     this.controller,
-  })  : assert(color != null),
-        assert(lineWidth != null),
-        assert(size != null),
-        super(key: key);
+  }) : super(key: key);
 
   final Color color;
   final double size;
   final double lineWidth;
   final Duration duration;
-  final AnimationController controller;
+  final AnimationController? controller;
 
   @override
   _SpinKitRingState createState() => _SpinKitRingState();
@@ -25,8 +22,8 @@ class SpinKitRing extends StatefulWidget {
 
 class _SpinKitRingState extends State<SpinKitRing>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  Animation<double> _animation1, _animation2, _animation3;
+  late AnimationController _controller;
+  late Animation<double> _animation1, _animation2, _animation3;
 
   @override
   void initState() {
@@ -75,10 +72,10 @@ class _SpinKitRingState extends State<SpinKitRing>
 
 class _RingPainter extends CustomPainter {
   _RingPainter({
-    this.paintWidth,
-    this.progressPercent,
-    this.startAngle,
-    this.trackColor,
+    required this.paintWidth,
+    required this.progressPercent,
+    required this.startAngle,
+    required this.trackColor,
   }) : trackPaint = Paint()
           ..color = trackColor
           ..style = PaintingStyle.stroke
@@ -112,21 +109,19 @@ class _SpinKitRingCurve extends Curve {
 
 class SpinKitDualRing extends StatefulWidget {
   const SpinKitDualRing({
-    Key key,
-    @required this.color,
+    Key? key,
+    required this.color,
     this.lineWidth = 7.0,
     this.size = 50.0,
     this.duration = const Duration(milliseconds: 1200),
     this.controller,
-  })  : assert(color != null),
-        assert(size != null),
-        super(key: key);
+  }) : super(key: key);
 
   final Color color;
   final double lineWidth;
   final double size;
   final Duration duration;
-  final AnimationController controller;
+  final AnimationController? controller;
 
   @override
   _SpinKitDualRingState createState() => _SpinKitDualRingState();
@@ -134,13 +129,12 @@ class SpinKitDualRing extends StatefulWidget {
 
 class _SpinKitDualRingState extends State<SpinKitDualRing>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  Animation<double> _animation;
+  late AnimationController _controller;
+  late Animation<double> _animation;
 
   @override
   void initState() {
     super.initState();
-
     _controller = (widget.controller ??
         AnimationController(vsync: this, duration: widget.duration))
       ..addListener(() => setState(() {}))
@@ -173,7 +167,8 @@ class _SpinKitDualRingState extends State<SpinKitDualRing>
 }
 
 class _DualRingPainter extends CustomPainter {
-  _DualRingPainter({this.angle = 90.0, double paintWidth, Color color})
+  _DualRingPainter(
+      {this.angle = 90.0, required double paintWidth, required Color color})
       : ringPaint = Paint()
           ..color = color
           ..strokeWidth = paintWidth

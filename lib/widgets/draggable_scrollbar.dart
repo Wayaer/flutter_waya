@@ -10,8 +10,8 @@ typedef ScrollThumbBuilder = Widget Function(
   Animation<double> thumbAnimation,
   Animation<double> labelAnimation,
   double height, {
-  Text labelText,
-  BoxConstraints labelConstraints,
+  Text? labelText,
+  BoxConstraints? labelConstraints,
 });
 
 /// Build a Text widget using the current scroll offset
@@ -21,29 +21,27 @@ typedef LabelTextBuilder = Text Function(double offsetY);
 /// for quick navigation of the BoxScrollView.
 class DraggableScrollbar extends StatefulWidget {
   DraggableScrollbar({
-    Key key,
+    Key? key,
     this.alwaysVisibleScrollThumb = false,
-    @required this.heightScrollThumb,
-    @required this.backgroundColor,
-    @required this.scrollThumbBuilder,
-    @required this.child,
-    @required this.controller,
+    required this.heightScrollThumb,
+    required this.backgroundColor,
+    required this.scrollThumbBuilder,
+    required this.child,
+    required this.controller,
     this.padding,
     this.scrollbarAnimationDuration = const Duration(milliseconds: 300),
     this.scrollbarTimeToFade = const Duration(milliseconds: 600),
     this.labelTextBuilder,
     this.labelConstraints,
-  })  : assert(controller != null),
-        assert(scrollThumbBuilder != null),
-        assert(child.scrollDirection == Axis.vertical),
+  })  : assert(child.scrollDirection == Axis.vertical),
         super(key: key);
 
   DraggableScrollbar.rrect({
-    Key key,
-    Key scrollThumbKey,
+    Key? key,
+    Key? scrollThumbKey,
     this.alwaysVisibleScrollThumb = false,
-    @required this.child,
-    @required this.controller,
+    required this.child,
+    required this.controller,
     this.heightScrollThumb = 48.0,
     this.backgroundColor = Colors.white,
     this.padding,
@@ -57,11 +55,11 @@ class DraggableScrollbar extends StatefulWidget {
         super(key: key);
 
   DraggableScrollbar.arrows({
-    Key key,
-    Key scrollThumbKey,
+    Key? key,
+    Key? scrollThumbKey,
     this.alwaysVisibleScrollThumb = false,
-    @required this.child,
-    @required this.controller,
+    required this.child,
+    required this.controller,
     this.heightScrollThumb = 48.0,
     this.backgroundColor = Colors.white,
     this.padding,
@@ -75,11 +73,11 @@ class DraggableScrollbar extends StatefulWidget {
         super(key: key);
 
   DraggableScrollbar.semicircle({
-    Key key,
-    Key scrollThumbKey,
+    Key? key,
+    Key? scrollThumbKey,
     this.alwaysVisibleScrollThumb = false,
-    @required this.child,
-    @required this.controller,
+    required this.child,
+    required this.controller,
     this.heightScrollThumb = 48.0,
     this.backgroundColor = Colors.white,
     this.padding,
@@ -105,7 +103,7 @@ class DraggableScrollbar extends StatefulWidget {
   final Color backgroundColor;
 
   /// The amount of padding that should surround the thumb
-  final EdgeInsetsGeometry padding;
+  final EdgeInsetsGeometry? padding;
 
   /// Determines how quickly the scrollbar will animate in and out
   final Duration scrollbarAnimationDuration;
@@ -114,10 +112,10 @@ class DraggableScrollbar extends StatefulWidget {
   final Duration scrollbarTimeToFade;
 
   /// Build a Text widget from the current offset in the BoxScrollView
-  final LabelTextBuilder labelTextBuilder;
+  final LabelTextBuilder? labelTextBuilder;
 
   /// Determines box constraints for Container displaying label
-  final BoxConstraints labelConstraints;
+  final BoxConstraints? labelConstraints;
 
   /// The ScrollController for the BoxScrollView
   final ScrollController controller;
@@ -129,13 +127,13 @@ class DraggableScrollbar extends StatefulWidget {
   _DraggableScrollbarState createState() => _DraggableScrollbarState();
 
   static Widget buildScrollThumbAndLabel(
-      {@required Widget scrollThumb,
-      @required Color backgroundColor,
-      @required Animation<double> thumbAnimation,
-      @required Animation<double> labelAnimation,
-      @required Text labelText,
-      @required BoxConstraints labelConstraints,
-      @required bool alwaysVisibleScrollThumb}) {
+      {required Widget scrollThumb,
+      required Color backgroundColor,
+      required Animation<double> thumbAnimation,
+      required Animation<double> labelAnimation,
+      Text? labelText,
+      BoxConstraints? labelConstraints,
+      required bool alwaysVisibleScrollThumb}) {
     final Widget scrollThumbAndLabel = labelText == null
         ? scrollThumb
         : Row(
@@ -156,14 +154,14 @@ class DraggableScrollbar extends StatefulWidget {
   }
 
   static ScrollThumbBuilder _thumbSemicircleBuilder(
-      double width, Key scrollThumbKey, bool alwaysVisibleScrollThumb) {
+      double width, Key? scrollThumbKey, bool alwaysVisibleScrollThumb) {
     return (
       Color backgroundColor,
       Animation<double> thumbAnimation,
       Animation<double> labelAnimation,
       double height, {
-      Text labelText,
-      BoxConstraints labelConstraints,
+      Text? labelText,
+      BoxConstraints? labelConstraints,
     }) {
       final CustomPaint scrollThumb = CustomPaint(
           key: scrollThumbKey,
@@ -192,14 +190,14 @@ class DraggableScrollbar extends StatefulWidget {
   }
 
   static ScrollThumbBuilder _thumbArrowBuilder(
-      Key scrollThumbKey, bool alwaysVisibleScrollThumb) {
+      Key? scrollThumbKey, bool alwaysVisibleScrollThumb) {
     return (
       Color backgroundColor,
       Animation<double> thumbAnimation,
       Animation<double> labelAnimation,
       double height, {
-      Text labelText,
-      BoxConstraints labelConstraints,
+      Text? labelText,
+      BoxConstraints? labelConstraints,
     }) {
       final Universal scrollThumb = Universal(
           height: height,
@@ -221,14 +219,14 @@ class DraggableScrollbar extends StatefulWidget {
   }
 
   static ScrollThumbBuilder _thumbRRectBuilder(
-      Key scrollThumbKey, bool alwaysVisibleScrollThumb) {
+      Key? scrollThumbKey, bool alwaysVisibleScrollThumb) {
     return (
       Color backgroundColor,
       Animation<double> thumbAnimation,
       Animation<double> labelAnimation,
       double height, {
-      Text labelText,
-      BoxConstraints labelConstraints,
+      Text? labelText,
+      BoxConstraints? labelConstraints,
     }) {
       final Material scrollThumb = Material(
           elevation: 4.0,
@@ -251,10 +249,10 @@ class DraggableScrollbar extends StatefulWidget {
 
 class _ScrollLabel extends StatelessWidget {
   const _ScrollLabel({
-    Key key,
-    @required this.child,
-    @required this.animation,
-    @required this.backgroundColor,
+    Key? key,
+    required this.child,
+    required this.animation,
+    required this.backgroundColor,
     this.constraints = _defaultConstraints,
   }) : super(key: key);
 
@@ -262,7 +260,7 @@ class _ScrollLabel extends StatelessWidget {
   final Color backgroundColor;
   final Text child;
 
-  final BoxConstraints constraints;
+  final BoxConstraints? constraints;
   static const BoxConstraints _defaultConstraints =
       BoxConstraints.tightFor(width: 72.0, height: 28.0);
 
@@ -286,15 +284,15 @@ class _ScrollLabel extends StatelessWidget {
 
 class _DraggableScrollbarState extends State<DraggableScrollbar>
     with TickerProviderStateMixin {
-  double _barOffset;
-  double _viewOffset;
-  bool _isDragInProcess;
+  late double _barOffset;
+  late double _viewOffset;
+  late bool _isDragInProcess;
 
-  AnimationController _thumbAnimationController;
-  Animation<double> _thumbAnimation;
-  AnimationController _labelAnimationController;
-  Animation<double> _labelAnimation;
-  Timer _fadeoutTimer;
+  late AnimationController _thumbAnimationController;
+  late Animation<double> _thumbAnimation;
+  late AnimationController _labelAnimationController;
+  late Animation<double> _labelAnimation;
+  Timer? _fadeoutTimer;
 
   @override
   void initState() {
@@ -324,7 +322,7 @@ class _DraggableScrollbarState extends State<DraggableScrollbar>
   }
 
   double get barMaxScrollExtent =>
-      context.size.height - widget.heightScrollThumb;
+      context.size!.height - widget.heightScrollThumb;
 
   double get barMinScrollExtent => 0.0;
 
@@ -334,9 +332,9 @@ class _DraggableScrollbarState extends State<DraggableScrollbar>
 
   @override
   Widget build(BuildContext context) {
-    Text labelText;
+    Text? labelText;
     if (widget.labelTextBuilder != null && _isDragInProcess) {
-      labelText = widget.labelTextBuilder(
+      labelText = widget.labelTextBuilder!(
           _viewOffset + _barOffset + widget.heightScrollThumb / 2);
     }
 
@@ -381,7 +379,7 @@ class _DraggableScrollbarState extends State<DraggableScrollbar>
 
     if (notification is ScrollUpdateNotification) {
       _barOffset += getBarDelta(
-        notification.scrollDelta,
+        notification.scrollDelta!,
         barMaxScrollExtent,
         viewMaxScrollExtent,
       );
@@ -393,7 +391,7 @@ class _DraggableScrollbarState extends State<DraggableScrollbar>
         _barOffset = barMaxScrollExtent;
       }
 
-      _viewOffset += notification.scrollDelta;
+      _viewOffset += notification.scrollDelta!;
       if (_viewOffset < widget.controller.position.minScrollExtent) {
         _viewOffset = widget.controller.position.minScrollExtent;
       }
@@ -555,9 +553,9 @@ class _ArrowClipper extends CustomClipper<Path> {
 
 class _SlideFadeTransition extends StatelessWidget {
   const _SlideFadeTransition({
-    Key key,
-    @required this.animation,
-    @required this.child,
+    Key? key,
+    required this.animation,
+    required this.child,
   }) : super(key: key);
 
   final Animation<double> animation;
@@ -567,8 +565,8 @@ class _SlideFadeTransition extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: animation,
-      builder: (BuildContext context, Widget child) =>
-          animation.value == 0.0 ? Container() : child,
+      builder: (BuildContext context, Widget? child) =>
+          animation.value == 0.0 ? Container() : (child ?? Container()),
       child: SlideTransition(
           position: Tween<Offset>(
                   begin: const Offset(0.3, 0.0), end: const Offset(0.0, 0.0))

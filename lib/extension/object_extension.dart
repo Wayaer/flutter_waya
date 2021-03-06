@@ -45,19 +45,19 @@ extension ExtensionNum on num {
   int get length => toString().length;
 
   /// 微秒时间戳转换 DateTime
-  DateTime fromMicrosecondsSinceEpoch({bool isUtc = false}) {
+  DateTime? fromMicrosecondsSinceEpoch({bool isUtc = false}) {
     num n = this;
     if (n is! int) n = n.toInt();
     if (n.toString().length != 16) return null;
-    return DateTime.fromMicrosecondsSinceEpoch(n as int, isUtc: isUtc);
+    return DateTime.fromMicrosecondsSinceEpoch(n, isUtc: isUtc);
   }
 
   /// 毫秒时间戳转换 DateTime
-  DateTime fromMillisecondsSinceEpoch({bool isUtc = false}) {
+  DateTime? fromMillisecondsSinceEpoch({bool isUtc = false}) {
     num n = this;
     if (n is! int) n = n.toInt();
     if (n.toString().length != 13) return null;
-    return DateTime.fromMillisecondsSinceEpoch(n as int, isUtc: isUtc);
+    return DateTime.fromMillisecondsSinceEpoch(n, isUtc: isUtc);
   }
 
   /// [element] 无论是 int 还是 double  返回 num 自己的类型
@@ -148,14 +148,14 @@ extension ExtensionString on String {
     final String base64Str = this;
     const String map =
         'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
-    List<int> reverseMap;
+    List<int>? reverseMap;
 
     ///  Shortcuts
     int base64StrLength = base64Str.length;
-    reverseMap ??= 123.generate((int j) => reverseMap[map.codeUnits[j]] = j);
+    reverseMap ??= 123.generate((int j) => reverseMap![map.codeUnits[j]] = j);
 
     ///  Ignore padding
-    final int paddingChar = map.codeUnits[64];
+    final int? paddingChar = map.codeUnits[64];
     if (paddingChar != null) {
       final int paddingIndex = base64Str.codeUnits.indexOf(paddingChar);
       if (paddingIndex != -1) base64StrLength = paddingIndex;
@@ -163,7 +163,7 @@ extension ExtensionString on String {
 
     List<int> parseLoop(
         String base64Str, int base64StrLength, List<int> reverseMap) {
-      final List<int> words = <int>[];
+      final List<int?> words = <int>[];
       int nBytes = 0;
       for (int i = 0; i < base64StrLength; i++) {
         if (i % 4 != 0) {
@@ -175,15 +175,17 @@ extension ExtensionString on String {
           final int idx = nBytes.rightShift32(2);
           if (words.length <= idx) words.length = idx + 1;
 
-          for (int i = 0; i < words.length; i++)
+          for (int i = 0; i < words.length; i++) {
             if (words[i] == null) words[i] = 0;
+          }
 
-          words[idx] |=
-              ((bits1 | bits2) << (24 - (nBytes % 4) * 8)).toSigned(32);
+          int wordsIdx = words[idx]!;
+          wordsIdx |= ((bits1 | bits2) << (24 - (nBytes % 4) * 8)).toSigned(32);
+          print(wordsIdx);
           nBytes++;
         }
       }
-      return nBytes.generate((int i) => i < words.length ? words[i] : 0);
+      return nBytes.generate((int i) => i < words.length ? words[i]! : 0);
     }
 
     return parseLoop(base64Str, base64StrLength, reverseMap);
@@ -207,17 +209,17 @@ extension ExtensionUint8List on Uint8List {
 }
 
 extension ExtensionList<T> on List<T> {
-  String get base64Encode {
+  String? get base64Encode {
     if (T != int) return null;
     return base64.encode(this as List<int>);
   }
 
-  String get utf8Decode {
+  String? get utf8Decode {
     if (T != int) return null;
     return utf8.decode(this as List<int>);
   }
 
-  Uint8List get uInt8ListFrom32BitList {
+  Uint8List? get uInt8ListFrom32BitList {
     if (T != int) return null;
     final List<int> bit32 = this as List<int>;
     final Uint8List result = Uint8List(bit32.length * 4);
@@ -228,14 +230,14 @@ extension ExtensionList<T> on List<T> {
   }
 
   /// List<int> toUtf8
-  String get toUtf8 {
+  String? get toUtf8 {
     if (T != int) return null;
-    final List<int> words = this as List<int>;
+    final List<int?> words = this as List<int>;
     final int sigBytes = words.length;
     final List<int> chars = sigBytes.generate((int i) {
       if (words[i >> 2] == null) words[i >> 2] = 0;
       final int bite =
-          ((words[i >> 2]).toSigned(32) >> (24 - (i % 4) * 8)) & 0xff;
+          ((words[i >> 2]!).toSigned(32) >> (24 - (i % 4) * 8)) & 0xff;
       return bite;
     });
     return String.fromCharCodes(chars);
@@ -243,17 +245,14 @@ extension ExtensionList<T> on List<T> {
 
   /// list.map.toList()
   List<E> builder<E>(E Function(T) builder) =>
-      this?.map<E>((T e) => builder(e))?.toList();
+      map<E>((T e) => builder(e)).toList();
 
   List<T> generate<T>(T generator(int index), {bool growable = true}) =>
       length.generate<T>((int index) => generator(index), growable: growable);
 
   /// list.asMap().entries.map.toList()
-  List<E> builderEntry<E>(E Function(MapEntry<int, T>) builder) => this
-      ?.asMap()
-      ?.entries
-      ?.map((MapEntry<int, T> entry) => builder(entry))
-      ?.toList();
+  List<E> builderEntry<E>(E Function(MapEntry<int, T>) builder) =>
+      asMap().entries.map((MapEntry<int, T> entry) => builder(entry)).toList();
 
   /// 添加子元素 并返回 新数组
   List<T> addT(T value, {bool isAdd = true}) {
@@ -288,19 +287,18 @@ extension ExtensionList<T> on List<T> {
 }
 
 extension ExtensionMapt<T> on Map<T, T> {
-  List<T> keysList({bool growable = true}) =>
-      this?.keys?.toList(growable: growable);
+  List<T> keysList({bool growable = true}) => keys.toList(growable: growable);
 
   List<T> valuesList({bool growable = true}) =>
-      this?.values?.toList(growable: growable);
+      values.toList(growable: growable);
 
   List<E> builderEntry<E>(E Function(MapEntry<T, T>) builder) =>
-      this?.entries?.map((MapEntry<T, T> entry) => builder(entry))?.toList();
+      entries.map((MapEntry<T, T> entry) => builder(entry)).toList();
 }
 
 /// DateTime 扩展
 extension ExtensionDateTime on DateTime {
-  String format([DateTimeDist dateType, bool padLeft = true]) {
+  String format([DateTimeDist? dateType, bool padLeft = true]) {
     final DateTime date = this;
     dateType ??= DateTimeDist.yearSecond;
     final String year = date.year.toString();
@@ -341,7 +339,6 @@ extension ExtensionDateTime on DateTime {
       case DateTimeDist.hourMinute:
         return '$hour:$minute';
     }
-    return date.toString();
   }
 }
 
@@ -351,20 +348,20 @@ extension DurationExtension on Duration {
   ///   await _delay.delayed();
   ///   print('- finish wait $_delay');
   ///   print('+ callback in 700ms');
-  Future<T> delayed<T>([FutureOr<T> callback()]) =>
+  Future<T> delayed<T>([FutureOr<T> callback()?]) =>
       Future<T>.delayed(this, callback);
 
   /// 时间工具
-  Timer timer([Function function]) {
-    Timer timer;
+  Timer timer([Function? function]) {
+    late Timer timer;
     timer = Timer(this, () {
       if (function != null) function();
-      timer?.cancel();
+      timer.cancel();
     });
     return timer;
   }
 
   /// 需要手动释放timer
-  Timer timerPeriodic([void callback(Timer timer)]) =>
+  Timer timerPeriodic(void callback(Timer timer)) =>
       Timer.periodic(this, (Timer time) => callback(time));
 }

@@ -1,7 +1,5 @@
-import 'dart:io';
 import 'dart:math';
 
-import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
@@ -22,15 +20,19 @@ const List<String> HTTP_CONTENT_TYPE = <String>[
 class DioTools {
   factory DioTools() => getInstance();
 
-  DioTools._internal({BaseOptions options, bool logTs}) {
+  DioTools._internal(
+      {BaseOptions? options,
+      bool logTs = false,
+      RequestCookie? requestCookie,
+      ResponseSaveCookies? saveCookies}) {
     _dio = Dio();
-    logTools = logTs ?? false;
+    logTools = logTs;
     _initOptions(_dio, options: options);
-    _dio.interceptors.add(InterceptorWrap());
+    _dio.interceptors.add(InterceptorWrap<dynamic>(
+        requestCookie: requestCookie, saveCookies: saveCookies));
   }
 
-  void _initOptions(Dio dio, {BaseOptions options}) {
-    if (options == null) return;
+  void _initOptions(Dio dio, {BaseOptions? options}) {
     final BaseOptions _options = dio.options;
     _options.connectTimeout = options?.connectTimeout ?? HTTP_TIMEOUT_CONNECT;
     _options.receiveTimeout = options?.receiveTimeout ?? HTTP_TIMEOUT_RECEIVE;
@@ -40,23 +42,22 @@ class DioTools {
     _options.headers = options?.headers ?? <String, dynamic>{};
   }
 
-  Dio _dio;
-  bool logTools;
+  late Dio _dio;
+  late bool logTools;
   final CancelToken _cancelToken = CancelToken();
 
-  static DioTools _instance;
+  static DioTools? _instance;
 
   static DioTools get instance => getInstance();
 
-  static DioTools getInstance({BaseOptions options, bool logTs}) =>
+  static DioTools getInstance({BaseOptions? options, bool logTs = false}) =>
       _instance ??= DioTools._internal(options: options, logTs: logTs);
 
   Future<ResponseModel> getHttp(String url,
-      {Map<String, dynamic> params,
-      dynamic data,
-      CookieJar cookieJar,
+      {Map<String, dynamic>? params,
+      dynamic? data,
       HttpType httpType = HttpType.get,
-      BaseOptions options}) async {
+      BaseOptions? options}) async {
     try {
       _initOptions(_dio, options: options);
       log('${httpType.toString()} url:$url  params:${params.toString()}  data:${data.toString()}');
@@ -83,13 +84,12 @@ class DioTools {
               queryParameters: params, cancelToken: _cancelToken);
           break;
       }
-      ResponseModel responseModel = constResponseModel();
-      if (response != null) {
-        responseModel = response as ResponseModel;
-        if (responseModel?.request?.responseType != ResponseType.bytes &&
-            responseModel?.request?.responseType != ResponseType.stream) {
-          log('$httpType url:$url  responseData==  ${responseModel.toMap().toString()}');
-        }
+      ResponseModel responseModel =
+          constResponseModel(request: response.request);
+      responseModel = response as ResponseModel;
+      if (responseModel.request.responseType != ResponseType.bytes &&
+          responseModel.request.responseType != ResponseType.stream) {
+        log('$httpType url:$url  responseData==  ${responseModel.toMap().toString()}');
       }
       if (logTools) setHttpData(responseModel);
       return responseModel;
@@ -97,7 +97,7 @@ class DioTools {
       final DioError error = e;
       final ResponseModel errorResponse = constResponseModel(
           httpStatus: ConstConstant.httpStatus[404], error: error);
-      log('error:$url  errorData==  ${errorResponse?.toMap()}');
+      log('error:$url  errorData==  ${errorResponse.toMap()}');
       if (logTools) setHttpData(errorResponse);
       return errorResponse;
     } catch (e) {
@@ -108,31 +108,31 @@ class DioTools {
   }
 
   ResponseModel constResponseModel(
-      {HttpStatus httpStatus,
-      RequestOptions request,
-      Headers headers,
-      List<RedirectRecord> redirects,
-      Map<String, dynamic> extra,
-      DioError error}) {
+      {HttpStatus? httpStatus,
+      RequestOptions? request,
+      Headers? headers,
+      List<RedirectRecord>? redirects,
+      Map<String, dynamic>? extra,
+      DioError? error}) {
     const Map<int, HttpStatus> status = ConstConstant.httpStatus;
     httpStatus ??= status[error?.response?.statusCode ?? 100] ?? status[100];
     return ResponseModel(
-        request: error?.request ?? request,
+        request: error?.request ?? request ?? RequestOptions(path: ''),
         headers: headers,
         redirects: redirects,
         extra: extra,
-        statusCode: error?.response?.statusCode ?? httpStatus.code,
-        statusMessage: error?.response?.statusMessage ?? httpStatus.message,
-        statusMessageT: httpStatus.messageT,
-        type: (error?.type ?? DioErrorType.DEFAULT).toString());
+        statusCode: error?.response?.statusCode ?? httpStatus!.code,
+        statusMessage: error?.response?.statusMessage ?? httpStatus!.message,
+        statusMessageT: httpStatus!.messageT,
+        type: (error?.type ?? DioErrorType.other).toString());
   }
 
   /// 下载文件需要申请文件储存权限
   Future<Response<dynamic>> download(
     String url,
     String savePath, {
-    ProgressCallback onReceiveProgress,
-    BaseOptions options,
+    ProgressCallback? onReceiveProgress,
+    BaseOptions? options,
   }) async {
     try {
       log('Download url:$url  savePath:${savePath.toString()}');
@@ -151,12 +151,12 @@ class DioTools {
 
   ///  文件上传
   Future<Response<dynamic>> upload<T>(String url,
-      {Map<String, dynamic> params,
-      dynamic data,
-      BaseOptions options,
-      CancelToken cancelToken,
-      ProgressCallback onSendProgress,
-      ProgressCallback onReceiveProgress}) async {
+      {Map<String, dynamic>? params,
+      dynamic? data,
+      BaseOptions? options,
+      CancelToken? cancelToken,
+      ProgressCallback? onSendProgress,
+      ProgressCallback? onReceiveProgress}) async {
     try {
       log('Upload url:$url  params:${params.toString()}  data:${data.toString()}');
       final Dio dio = Dio();
@@ -170,7 +170,7 @@ class DioTools {
     } on DioError catch (e) {
       final DioError error = e;
       return constResponseModel(
-          httpStatus: ConstConstant.httpStatus[404], error: error);
+          httpStatus: ConstConstant.httpStatus[404]!, error: error);
     } catch (e) {
       return constResponseModel();
     }
@@ -179,46 +179,38 @@ class DioTools {
   void get cancel => _cancelToken.cancelError;
 }
 
-class InterceptorWrap extends InterceptorsWrapper {
-  InterceptorWrap();
+/// 添加cookie
+typedef RequestCookie = Future<void> Function(RequestOptions options);
 
-  CookieJar cookieJar = CookieJar();
+/// 从http请求中获取cookie
+typedef ResponseSaveCookies = List<String> Function(Response<dynamic> response);
 
-  ResponseModel responseModel = ResponseModel();
+class InterceptorWrap<T> extends InterceptorsWrapper {
+  InterceptorWrap({
+    this.requestCookie,
+    this.saveCookies,
+  });
+
+  final RequestCookie? requestCookie;
+  final ResponseSaveCookies? saveCookies;
+  late ResponseModel responseModel;
 
   @override
   Future<void> onRequest(RequestOptions options) async {
+    responseModel = ResponseModel(request: options);
+
     ///  在请求被发送之前做一些事情
     ///  如果你想完成请求并返回一些自定义数据，可以返回一个`Response`对象或返回`dio.resolve(data)`。
     ///  这样请求将会被终止，上层then会被调用，then中返回的数据将是你的自定义数据data.
     ///  如果你想终止请求并触发一个错误,你可以返回一个`DioError`对象，或返回`dio.reject(errMsg)`，
     ///  这样请求将被中止并触发异常，上层catchError会被调用。 return options;
-    if (cookieJar != null) {
-      final List<Cookie> cookies = cookieJar?.loadForRequest(options.uri);
-      cookies.removeWhere((Cookie cookie) {
-        if (cookie.expires != null)
-          return cookie.expires.isBefore(DateTime.now());
-        return false;
-      });
-      final String cookie = getCookies(cookies);
-      if (cookie.isNotEmpty) options.headers[HttpHeaders.cookieHeader] = cookie;
-    }
-  }
-
-  void saveCookies(Response<dynamic> response) {
-    if (response != null && response.headers != null) {
-      final List<String> cookies =
-          response.headers[HttpHeaders.setCookieHeader];
-      responseModel.cookie = cookies;
-      if (cookies != null)
-        cookieJar.saveFromResponse(response.request.uri,
-            cookies.builder((String str) => Cookie.fromSetCookieValue(str)));
-    }
+    if (requestCookie != null) requestCookie!(options);
   }
 
   @override
   Future<ResponseModel> onResponse(Response<dynamic> response) async {
-    if (cookieJar != null) saveCookies(response);
+    responseModel.response = response;
+    if (saveCookies != null) responseModel.cookie = saveCookies!(response);
     if (response.statusCode == 200) {
       responseModel.statusMessage = ConstConstant.success;
       responseModel.statusMessageT = ConstConstant.success;
@@ -227,59 +219,57 @@ class InterceptorWrap extends InterceptorsWrapper {
       responseModel.statusMessage = response.statusMessage;
       responseModel.statusMessageT = response.statusMessage;
     }
-    responseModel.statusCode = response?.statusCode;
-    responseModel.request = response?.request;
-    responseModel.headers = response?.headers;
-    responseModel.redirects = response?.redirects;
-    responseModel.extra = response?.extra;
+    responseModel.statusCode = response.statusCode;
+    responseModel.request = response.request;
+    responseModel.headers = response.headers;
+    responseModel.redirects = response.redirects;
+    responseModel.extra = response.extra;
     return responseModel;
   }
 
   @override
   Future<String> onError(DioError err) async {
     responseModel.type = err.type.toString();
-    if (err.type == DioErrorType.DEFAULT) {
-      final HttpStatus status = ConstConstant.httpStatus[404];
+    if (err.type == DioErrorType.other) {
+      final HttpStatus status = ConstConstant.httpStatus[404]!;
       responseModel.statusCode = status.code;
       responseModel.statusMessage = status.message;
       responseModel.statusMessageT = status.messageT;
-    } else if (err.type == DioErrorType.CANCEL) {
-      final HttpStatus status = ConstConstant.httpStatus[420];
+    } else if (err.type == DioErrorType.cancel) {
+      final HttpStatus status = ConstConstant.httpStatus[420]!;
       responseModel.statusCode = status.code;
       responseModel.statusMessage = status.message;
       responseModel.statusMessageT = status.messageT;
-    } else if (err.type == DioErrorType.CONNECT_TIMEOUT) {
-      final HttpStatus status = ConstConstant.httpStatus[408];
+    } else if (err.type == DioErrorType.connectTimeout) {
+      final HttpStatus status = ConstConstant.httpStatus[408]!;
       responseModel.statusCode = status.code;
       responseModel.statusMessage = status.message;
       responseModel.statusMessageT = status.messageT;
-    } else if (err.type == DioErrorType.RECEIVE_TIMEOUT) {
-      final HttpStatus status = ConstConstant.httpStatus[502];
+    } else if (err.type == DioErrorType.receiveTimeout) {
+      final HttpStatus status = ConstConstant.httpStatus[502]!;
       responseModel.statusCode = status.code;
       responseModel.statusMessage = status.message;
       responseModel.statusMessageT = status.messageT;
-    } else if (err.type == DioErrorType.SEND_TIMEOUT) {
-      final HttpStatus status = ConstConstant.httpStatus[450];
+    } else if (err.type == DioErrorType.sendTimeout) {
+      final HttpStatus status = ConstConstant.httpStatus[450]!;
       responseModel.statusCode = status.code;
       responseModel.statusMessage = status.message;
       responseModel.statusMessageT = status.messageT;
-    } else if (err.type == DioErrorType.RESPONSE) {
-      final HttpStatus status = ConstConstant.httpStatus[500];
-      responseModel.statusCode = err.response.statusCode;
+    } else if (err.type == DioErrorType.response) {
+      final HttpStatus status = ConstConstant.httpStatus[500]!;
+      responseModel.statusCode = err.response?.statusCode;
       responseModel.statusMessage =
-          err.response.statusCode.toString() + ':' + status.message;
+          err.response!.statusCode.toString() + ':' + status.message;
       responseModel.statusMessageT = status.messageT;
     }
-    responseModel.request = err?.request;
-    responseModel.headers = err?.response?.headers;
-    responseModel.redirects = err?.response?.redirects;
-    responseModel.extra = err?.response?.extra;
+    if (err.response != null) {
+      responseModel.headers = err.response!.headers;
+      responseModel.redirects = err.response!.redirects;
+      responseModel.extra = err.response!.extra;
+    }
+    if (err.request != null) responseModel.request = err.request!;
     responseModel.data = null;
-    responseModel.cookie = null;
+    responseModel.cookie = <String>[];
     return responseModel.toJson();
   }
-
-  static String getCookies(List<Cookie> cookies) => cookies
-      .map((Cookie cookie) => '${cookie.name}=${cookie.value}')
-      .join('; ');
 }

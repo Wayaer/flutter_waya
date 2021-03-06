@@ -12,10 +12,10 @@ enum _LiquidProgressType {
 
 class LiquidProgress extends ProgressIndicator {
   const LiquidProgress.linear({
-    Key key,
+    Key? key,
     double value = 0.5,
-    Color backgroundColor,
-    Animation<Color> valueColor,
+    Color? backgroundColor,
+    Animation<Color>? valueColor,
     this.borderWidth = 0,
     this.borderColor = Colors.transparent,
     this.borderRadius,
@@ -30,10 +30,10 @@ class LiquidProgress extends ProgressIndicator {
             valueColor: valueColor);
 
   const LiquidProgress.circular(
-      {Key key,
+      {Key? key,
       double value = 0.5,
-      Color backgroundColor,
-      Animation<Color> valueColor,
+      Color? backgroundColor,
+      Animation<Color>? valueColor,
       this.borderWidth = 0,
       this.borderColor = Colors.transparent,
       this.center,
@@ -48,13 +48,13 @@ class LiquidProgress extends ProgressIndicator {
             valueColor: valueColor);
 
   const LiquidProgress.custom(
-      {Key key,
+      {Key? key,
       double value = 0.5,
-      Color backgroundColor,
-      Animation<Color> valueColor,
+      Color? backgroundColor,
+      Animation<Color>? valueColor,
       this.center,
-      @required this.direction,
-      @required this.shapePath})
+      required this.direction,
+      required this.shapePath})
       : borderWidth = null,
         borderColor = null,
         borderRadius = null,
@@ -66,23 +66,23 @@ class LiquidProgress extends ProgressIndicator {
             valueColor: valueColor);
 
   /// The width of the border, if this is set [borderColor] must also be set.
-  final double borderWidth;
+  final double? borderWidth;
 
   /// The color of the border, if this is set [borderWidth] must also be set.
-  final Color borderColor;
+  final Color? borderColor;
 
   /// The radius of the border.
-  final double borderRadius;
+  final double? borderRadius;
 
   /// The widget to show in the center of the progress indicator.
-  final Widget center;
+  final Widget? center;
 
   /// The direction the liquid travels.
   final Axis direction;
 
   /// The path used to draw the shape of the progress indicator. The size of
   /// the progress indicator is controlled by the bounds of this path.
-  final Path shapePath;
+  final Path? shapePath;
 
   final _LiquidProgressType type;
 
@@ -107,26 +107,25 @@ class _ProgressState extends State<LiquidProgress> {
       case _LiquidProgressType.custom:
         return custom;
     }
-    return const SizedBox();
   }
 
   Widget get custom {
-    final Rect pathBounds = widget.shapePath.getBounds();
+    final Rect pathBounds = widget.shapePath!.getBounds();
     return SizedBox(
         width: pathBounds.width + pathBounds.left,
         height: pathBounds.height + pathBounds.top,
         child: ClipPath(
-            clipper: _CustomPathClipper(path: widget.shapePath),
+            clipper: _CustomPathClipper(path: widget.shapePath!),
             child: CustomPaint(
               painter: _CustomPathPainter(
                   color: widget._getBackgroundColor(context),
-                  path: widget.shapePath),
+                  path: widget.shapePath!),
               child: Stack(children: <Widget>[
                 Positioned.fill(
                     left: pathBounds.left,
                     top: pathBounds.top,
                     child: Wave(
-                        value: widget.value,
+                        value: widget.value!,
                         color: widget._getValueColor(context),
                         direction: widget.direction)),
                 if (widget.center != null) Center(child: widget.center),
@@ -139,10 +138,10 @@ class _ProgressState extends State<LiquidProgress> {
         child: CustomPaint(
             painter: _CirclePainter(color: widget._getBackgroundColor(context)),
             foregroundPainter: _CircleBorderPainter(
-                color: widget.borderColor, width: widget.borderWidth),
+                color: widget.borderColor!, width: widget.borderWidth!),
             child: Stack(children: <Widget>[
               Wave(
-                  value: widget.value,
+                  value: widget.value!,
                   color: widget._getValueColor(context),
                   direction: widget.direction),
               if (widget.center != null) Center(child: widget.center),
@@ -150,18 +149,18 @@ class _ProgressState extends State<LiquidProgress> {
       );
 
   Widget get linear => ClipPath(
-        clipper: _LinearClipper(radius: widget.borderRadius),
+        clipper: _LinearClipper(radius: widget.borderRadius!),
         child: CustomPaint(
             painter: _LinearPainter(
                 color: widget._getBackgroundColor(context),
-                radius: widget.borderRadius),
+                radius: widget.borderRadius!),
             foregroundPainter: _LinearBorderPainter(
-                color: widget.borderColor,
-                width: widget.borderWidth,
-                radius: widget.borderRadius),
+                color: widget.borderColor!,
+                width: widget.borderWidth!,
+                radius: widget.borderRadius!),
             child: Stack(children: <Widget>[
               Wave(
-                  value: widget.value,
+                  value: widget.value!,
                   color: widget._getValueColor(context),
                   direction: widget.direction),
               if (widget.center != null) Center(child: widget.center),
@@ -170,7 +169,7 @@ class _ProgressState extends State<LiquidProgress> {
 }
 
 class _LinearPainter extends CustomPainter {
-  _LinearPainter({@required this.color, @required this.radius});
+  _LinearPainter({required this.color, required this.radius});
 
   final Color color;
   final double radius;
@@ -178,7 +177,7 @@ class _LinearPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) => canvas.drawRRect(
       RRect.fromRectAndRadius(Rect.fromLTWH(0, 0, size.width, size.height),
-          Radius.circular(radius ?? 0)),
+          Radius.circular(radius)),
       Paint()..color = color);
 
   @override
@@ -187,9 +186,9 @@ class _LinearPainter extends CustomPainter {
 
 class _LinearBorderPainter extends CustomPainter {
   _LinearBorderPainter({
-    @required this.color,
-    @required this.width,
-    @required this.radius,
+    required this.color,
+    required this.width,
+    required this.radius,
   });
 
   final Color color;
@@ -198,18 +197,16 @@ class _LinearBorderPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    if (color == null || width == null) return;
-
     final Paint paint = Paint()
       ..color = color
       ..style = PaintingStyle.stroke
       ..strokeWidth = width;
-    final double alteredRadius = radius ?? 0;
+    final double alteredRadius = radius;
     canvas.drawRRect(
         RRect.fromRectAndRadius(
             Rect.fromLTWH(
                 width / 2, width / 2, size.width - width, size.height - width),
-            Radius.circular(alteredRadius - width ?? 0)),
+            Radius.circular(alteredRadius - width)),
         paint);
   }
 
@@ -221,22 +218,21 @@ class _LinearBorderPainter extends CustomPainter {
 }
 
 class _LinearClipper extends CustomClipper<Path> {
-  _LinearClipper({@required this.radius});
+  _LinearClipper({required this.radius});
 
   final double radius;
 
   @override
   Path getClip(Size size) => Path()
     ..addRRect(RRect.fromRectAndRadius(
-        Rect.fromLTWH(0, 0, size.width, size.height),
-        Radius.circular(radius ?? 0)));
+        Rect.fromLTWH(0, 0, size.width, size.height), Radius.circular(radius)));
 
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
 
 class _CirclePainter extends CustomPainter {
-  _CirclePainter({@required this.color});
+  _CirclePainter({required this.color});
 
   final Color color;
 
@@ -251,14 +247,13 @@ class _CirclePainter extends CustomPainter {
 }
 
 class _CircleBorderPainter extends CustomPainter {
-  _CircleBorderPainter({this.color, this.width});
+  _CircleBorderPainter({required this.color, required this.width});
 
   final Color color;
   final double width;
 
   @override
   void paint(Canvas canvas, Size size) {
-    if (color == null || width == null) return;
     final Paint borderPaint = Paint()
       ..color = color
       ..style = PaintingStyle.stroke
@@ -282,7 +277,7 @@ class _CircleClipper extends CustomClipper<Path> {
 }
 
 class _CustomPathPainter extends CustomPainter {
-  _CustomPathPainter({@required this.color, @required this.path});
+  _CustomPathPainter({required this.color, required this.path});
 
   final Color color;
   final Path path;
@@ -297,7 +292,7 @@ class _CustomPathPainter extends CustomPainter {
 }
 
 class _CustomPathClipper extends CustomClipper<Path> {
-  _CustomPathClipper({@required this.path});
+  _CustomPathClipper({required this.path});
 
   final Path path;
 

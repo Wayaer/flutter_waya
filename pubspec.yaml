@@ -1,13 +1,12 @@
 name: flutter_waya
 description: The Flutter UI library contains multiple custom components,compatible with android,web,ios and MAC.
-version: 1.6.3
+version: 2.0.0
 repository: https://github.com/Wayaer/flutter_waya
 
 environment:
   sdk: '>=2.12.0-0 <3.0.0'
 
 dependencies:
-  cookie_jar: ^3.0.0-beta2
   crypto: ^3.0.0
   dio: ^4.0.0-beta4
   flutter:
@@ -18,13 +17,8 @@ dependencies:
   pull_to_refresh: ^1.6.4
   vector_math: ^2.1.0
 
-dev_dependencies:
-  pedantic: ^1.9.0
-
 flutter:
   fonts:
     - family: Icons
       fonts:
         - asset: lib/res/icons.ttf
-
-

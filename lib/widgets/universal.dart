@@ -4,43 +4,46 @@ import 'package:flutter_waya/flutter_waya.dart';
 
 class Universal extends StatelessWidget {
   const Universal({
-    Key key,
-    bool isScroll = false,
-    bool isStack = false,
-    bool enabled = false,
-    bool addInkWell = false,
-    bool addCard = false,
-    bool expanded = false,
-    bool expand = false,
-    bool shrink = false,
-    bool visible = true,
-    bool offstage = false,
-    bool reverse = false,
-    bool isOval = false,
-    bool isCircleAvatar = false,
-    bool canRequestFocus,
-    bool enableFeedback,
-    bool excludeFromSemantics,
-    bool autoFocus,
-    bool maintainState,
-    bool maintainAnimation,
-    bool maintainSize,
-    bool maintainSemantics,
-    bool maintainInteractivity,
-    bool transitionOnUserGestures,
-    bool noScrollBehavior,
-    DragStartBehavior dragStartBehavior,
-    Color shadowColor,
-    Widget replacement,
-    StackFit stackFit,
-    MainAxisAlignment mainAxisAlignment,
-    CrossAxisAlignment crossAxisAlignment,
-    Axis direction,
-    VerticalDirection verticalDirection,
-    MainAxisSize mainAxisSize,
-    HitTestBehavior behavior,
-    BorderRadius borderRadius,
-    Color color,
+    Key? key,
+    bool? isScroll = false,
+    bool? isStack = false,
+    bool? enabled = false,
+    bool? addInkWell = false,
+    bool? addCard = false,
+    bool? expanded = false,
+    bool? expand = false,
+    bool? shrink = false,
+    bool? visible = true,
+    bool? offstage = false,
+    bool? reverse = false,
+    bool? isOval = false,
+    bool? isCircleAvatar = false,
+    bool? enablePullDown = false,
+    bool? enablePullUp = false,
+    bool? enableTwoLevel = false,
+    bool? canRequestFocus,
+    bool? enableFeedback,
+    bool? excludeFromSemantics,
+    bool? autoFocus,
+    bool? maintainState,
+    bool? maintainAnimation,
+    bool? maintainSize,
+    bool? maintainSemantics,
+    bool? maintainInteractivity,
+    bool? transitionOnUserGestures,
+    bool? noScrollBehavior,
+    DragStartBehavior? dragStartBehavior,
+    Color? shadowColor,
+    Widget? replacement,
+    StackFit? stackFit,
+    MainAxisAlignment? mainAxisAlignment,
+    CrossAxisAlignment? crossAxisAlignment,
+    Axis? direction,
+    VerticalDirection? verticalDirection,
+    MainAxisSize? mainAxisSize,
+    HitTestBehavior? behavior,
+    BorderRadius? borderRadius,
+    this.color,
     this.alignment,
     this.child,
     this.children,
@@ -120,9 +123,6 @@ class Universal extends StatelessWidget {
     this.onRefresh,
     this.onLoading,
     this.onTwoLevel,
-    this.enablePullDown,
-    this.enablePullUp,
-    this.enableTwoLevel,
     this.refreshHeader,
     this.refreshFooter,
     this.size,
@@ -153,6 +153,9 @@ class Universal extends StatelessWidget {
         enabled = enabled ?? false,
         reverse = reverse ?? false,
         autoFocus = autoFocus ?? false,
+        enablePullDown = enablePullDown ?? false,
+        enablePullUp = enablePullUp ?? false,
+        enableTwoLevel = enableTwoLevel ?? false,
         maintainState = maintainState ?? false,
         transitionOnUserGestures = transitionOnUserGestures ?? false,
         isCircleAvatar = isCircleAvatar ?? false,
@@ -175,8 +178,7 @@ class Universal extends StatelessWidget {
         direction = direction ?? Axis.vertical,
         behavior = behavior ?? HitTestBehavior.opaque,
         borderRadius = borderRadius ?? BorderRadius.zero,
-        color = color ?? Colors.transparent,
-        assert(!(addCard && addInkWell)),
+        assert(!((addCard ?? false) && (addInkWell ?? false))),
         super(key: key);
 
   ///  public
@@ -190,10 +192,10 @@ class Universal extends StatelessWidget {
   /// [Clip.antiAliasWithSaveLayer]抗锯齿和saveLayer  很慢
   /// 使用到的组件[Stack]、[ClipRRect]、[ClipPath]、[ClipRect]、[ClipOval]
   /// 、[Container]、[Material]、[Card]、[Stack]、[SingleChildScrollView]
-  final Clip clipBehavior;
+  final Clip? clipBehavior;
 
   ///  ****** [Align] ******  ///
-  final AlignmentGeometry alignment;
+  final AlignmentGeometry? alignment;
 
   ///  [InkWell]飞溅半径
   ///  [Material]圆角半径
@@ -203,83 +205,83 @@ class Universal extends StatelessWidget {
   ///  ****** [child]、[children]、[builder] ******  ///
   ///  child < children < builder
   ///  三个只有一个有效
-  final Widget child;
-  final List<Widget> children;
-  final StatefulWidgetBuilder builder;
+  final Widget? child;
+  final List<Widget>? children;
+  final StatefulWidgetBuilder? builder;
 
   ///  ****** [Flexible] ******  ///
-  final int flex;
+  final int? flex;
 
   /// [expanded]=true [flex]=1 相当于添加[Expanded]组件
   final bool expanded;
 
   ///  ****** [Transform] ******  ///
-  final Matrix4 transform;
-  final Offset origin;
+  final Matrix4? transform;
+  final Offset? origin;
 
   ///  ****** [ConstrainedBox] ******  ///
-  final BoxConstraints constraints;
+  final BoxConstraints? constraints;
 
   ///  ****** [ColoredBox]||[DecoratedBox] ******  ///
-  final Color color;
+  final Color? color;
 
   ///  ****** [Padding] ******  ///
-  final EdgeInsetsGeometry margin;
-  final EdgeInsetsGeometry padding;
+  final EdgeInsetsGeometry? margin;
+  final EdgeInsetsGeometry? padding;
 
   ///  ****** [DecoratedBox] ******  ///
-  final Decoration decoration;
-  final Decoration foregroundDecoration;
+  final Decoration? decoration;
+  final Decoration? foregroundDecoration;
 
   ///  ****** [Positioned] ******  ///
-  final double left;
-  final double top;
-  final double right;
-  final double bottom;
+  final double? left;
+  final double? top;
+  final double? right;
+  final double? bottom;
 
   ///  ****** [Card] ******  ///
   final bool addCard;
-  final double elevation;
-  final Color shadowColor;
-  final ShapeBorder shape;
+  final double? elevation;
+  final Color? shadowColor;
+  final ShapeBorder? shape;
 
   ///  ****** [Flex]=[Column]+[Row] ******  ///
   final MainAxisAlignment mainAxisAlignment;
   final CrossAxisAlignment crossAxisAlignment;
   final Axis direction;
-  final TextBaseline textBaseline;
+  final TextBaseline? textBaseline;
   final VerticalDirection verticalDirection;
-  final TextDirection textDirection;
+  final TextDirection? textDirection;
   final MainAxisSize mainAxisSize;
 
   ///  ****** [ClipRRect]、[ClipPath]、[ClipRect]、[ClipOval] ******  ///
   /// [RRect]、[Path]、[Rect]
-  final CustomClipper<dynamic> clipper;
+  final CustomClipper<dynamic>? clipper;
   final bool isOval;
 
   ///  ****** [CircleAvatar] ******  ///
   final bool isCircleAvatar;
-  final ImageProvider backgroundImage;
-  final ImageErrorListener onBackgroundImageError;
-  final Color foregroundColor;
-  final double minRadius;
-  final double maxRadius;
+  final ImageProvider? backgroundImage;
+  final ImageErrorListener? onBackgroundImageError;
+  final Color? foregroundColor;
+  final double? minRadius;
+  final double? maxRadius;
 
   ///  ****** [SingleChildScrollView] ******  ///
   ///  移出头部和底部蓝色阴影
   final bool noScrollBehavior;
   final bool isScroll;
-  final ScrollPhysics physics;
-  final ScrollController scrollController;
+  final ScrollPhysics? physics;
+  final ScrollController? scrollController;
   final bool reverse;
-  final bool primary;
+  final bool? primary;
 
   ///  ****** [SizedBox] ******  ///
   final bool expand;
   final bool shrink;
-  final Size size;
-  final double width;
-  final double height;
+  final Size? size;
+  final double? width;
+  final double? height;
 
   ///  ****** [Visibility] ******  ///
   final Widget replacement;
@@ -292,47 +294,47 @@ class Universal extends StatelessWidget {
   final bool offstage;
 
   ///  ****** [Opacity] ******  ///
-  final double opacity;
+  final double? opacity;
 
   ///  ****** 点击事件相关 ******  ///
   ///  ****** [InkWell] ******  ///
   ///  高亮变化回调
   ///  当材料的这一部分突出显示或停止突出显示时调用
-  final ValueChanged<bool> onHighlightChanged;
+  final ValueChanged<bool>? onHighlightChanged;
 
   ///  当指针进入或退出墨水响应区域时调用
-  final ValueChanged<bool> onHover;
+  final ValueChanged<bool>? onHover;
 
   ///  获取焦点颜色
-  final Color focusColor;
+  final Color? focusColor;
 
   ///  指针悬停时颜色
-  final Color hoverColor;
+  final Color? hoverColor;
 
   ///  点击时的颜色
-  final Color highlightColor;
+  final Color? highlightColor;
 
   ///  水波纹颜色
-  final Color splashColor;
+  final Color? splashColor;
 
   ///  自定义水波纹
-  final InteractiveInkFeatureFactory splashFactory;
+  final InteractiveInkFeatureFactory? splashFactory;
 
   ///  水波纹半径
-  final double radius;
+  final double? radius;
 
   /// 覆盖borderRadius的自定义剪辑边框
-  final ShapeBorder customBorder;
+  final ShapeBorder? customBorder;
 
   /// 检测到的手势是否应该提供声音和/或触觉反馈，默认true
-  final bool enableFeedback;
+  final bool? enableFeedback;
 
   /// 焦点管理
-  final FocusNode focusNode;
+  final FocusNode? focusNode;
   final bool canRequestFocus;
 
   /// 焦点变化回调
-  final ValueChanged<bool> onFocusChange;
+  final ValueChanged<bool>? onFocusChange;
 
   /// 自动获取焦点
   final bool autoFocus;
@@ -346,105 +348,105 @@ class Universal extends StatelessWidget {
   final bool enabled;
 
   ///  短暂触摸屏幕时触发
-  final GestureTapCallback onTap;
+  final GestureTapCallback? onTap;
 
   ///  用户在短时间内触摸了屏幕两次
-  final GestureTapCallback onDoubleTap;
+  final GestureTapCallback? onDoubleTap;
 
   ///  用户触摸屏幕时间超过500ms时触发
-  final GestureLongPressCallback onLongPress;
+  final GestureLongPressCallback? onLongPress;
 
   ///  用户每次和屏幕交互时都会被调用
-  final GestureTapDownCallback onTapDown;
+  final GestureTapDownCallback? onTapDown;
 
   ///  短暂触摸屏幕时触发取消
-  final GestureTapCancelCallback onTapCancel;
+  final GestureTapCancelCallback? onTapCancel;
 
   final bool excludeFromSemantics;
 
   ///  ****** [GestureDetector] ******  ///
   ///  点击抬起
-  final GestureTapUpCallback onTapUp;
+  final GestureTapUpCallback? onTapUp;
 
-  final GestureTapDownCallback onSecondaryTapDown;
-  final GestureTapUpCallback onSecondaryTapUp;
-  final GestureTapCancelCallback onSecondaryTapCancel;
+  final GestureTapDownCallback? onSecondaryTapDown;
+  final GestureTapUpCallback? onSecondaryTapUp;
+  final GestureTapCancelCallback? onSecondaryTapCancel;
 
   ///  用户触摸屏幕时间超过500ms时触发开始
-  final GestureLongPressStartCallback onLongPressStart;
+  final GestureLongPressStartCallback? onLongPressStart;
 
   ///  用户触摸屏幕时间超过500ms时移动触摸
-  final GestureLongPressMoveUpdateCallback onLongPressMoveUpdate;
+  final GestureLongPressMoveUpdateCallback? onLongPressMoveUpdate;
 
   ///  用户触摸屏幕时间超过500ms时抬起触发
-  final GestureLongPressUpCallback onLongPressUp;
+  final GestureLongPressUpCallback? onLongPressUp;
 
   ///  用户触摸屏幕时间超过500ms时触发结束
-  final GestureLongPressEndCallback onLongPressEnd;
+  final GestureLongPressEndCallback? onLongPressEnd;
 
   ///  当一个触摸点开始跟屏幕交互，同时在垂直方向上移动时触发
-  final GestureDragDownCallback onVerticalDragDown;
+  final GestureDragDownCallback? onVerticalDragDown;
 
   ///  当触摸点开始在垂直方向上移动时触发
-  final GestureDragStartCallback onVerticalDragStart;
+  final GestureDragStartCallback? onVerticalDragStart;
 
   ///  屏幕上的触摸点位置每次改变时，都会触发这个回调
-  final GestureDragUpdateCallback onVerticalDragUpdate;
+  final GestureDragUpdateCallback? onVerticalDragUpdate;
 
   /// 当用户停止移动，这个拖拽操作就被认为是完成了，就会触发这个回调
-  final GestureDragEndCallback onVerticalDragEnd;
+  final GestureDragEndCallback? onVerticalDragEnd;
 
   ///  用户突然停止拖拽时触发
-  final GestureDragCancelCallback onVerticalDragCancel;
+  final GestureDragCancelCallback? onVerticalDragCancel;
 
   ///  当一个触摸点开始跟屏幕交互，同时在水平方向上移动时触发
-  final GestureDragDownCallback onHorizontalDragDown;
+  final GestureDragDownCallback? onHorizontalDragDown;
 
   ///  当触摸点开始在水平方向上移动时触发
-  final GestureDragStartCallback onHorizontalDragStart;
+  final GestureDragStartCallback? onHorizontalDragStart;
 
   ///  屏幕上的触摸点位置每次改变时，都会触发这个回调
-  final GestureDragUpdateCallback onHorizontalDragUpdate;
+  final GestureDragUpdateCallback? onHorizontalDragUpdate;
 
   ///  水平拖拽结束时触发
-  final GestureDragEndCallback onHorizontalDragEnd;
+  final GestureDragEndCallback? onHorizontalDragEnd;
 
   ///  onHorizontalDragDown没有成功完成时触发
-  final GestureDragCancelCallback onHorizontalDragCancel;
+  final GestureDragCancelCallback? onHorizontalDragCancel;
 
   ///  当触摸点开始跟屏幕交互时触发
-  final GestureDragDownCallback onPanDown;
+  final GestureDragDownCallback? onPanDown;
 
   ///  当触摸点开始移动时触发
-  final GestureDragStartCallback onPanStart;
+  final GestureDragStartCallback? onPanStart;
 
   ///  屏幕上的触摸点位置每次改变时，都会触发这个回调
-  final GestureDragUpdateCallback onPanUpdate;
+  final GestureDragUpdateCallback? onPanUpdate;
 
   ///  pan操作完成时触发
-  final GestureDragEndCallback onPanEnd;
+  final GestureDragEndCallback? onPanEnd;
 
   ///  用户触摸了屏幕，但是没有完成Tap的动作时触发
-  final GestureDragCancelCallback onPanCancel;
+  final GestureDragCancelCallback? onPanCancel;
 
   ///  触摸点开始跟屏幕交互时触发，同时会建立一个焦点为1.0
-  final GestureScaleStartCallback onScaleStart;
+  final GestureScaleStartCallback? onScaleStart;
 
   ///  跟屏幕交互时触发，同时会标示一个新的焦点
-  final GestureScaleUpdateCallback onScaleUpdate;
+  final GestureScaleUpdateCallback? onScaleUpdate;
 
   ///  	触摸点不再跟屏幕有任何交互，同时也表示这个scale手势完成
-  final GestureScaleEndCallback onScaleEnd;
-  final GestureForcePressStartCallback onForcePressStart;
-  final GestureForcePressPeakCallback onForcePressPeak;
-  final GestureForcePressUpdateCallback onForcePressUpdate;
-  final GestureForcePressEndCallback onForcePressEnd;
-  final GestureTapCallback onSecondaryTap;
-  final GestureLongPressMoveUpdateCallback onSecondaryLongPressMoveUpdate;
-  final GestureLongPressCallback onSecondaryLongPressUp;
-  final GestureLongPressCallback onSecondaryLongPress;
-  final GestureLongPressEndCallback onSecondaryLongPressEnd;
-  final GestureLongPressStartCallback onSecondaryLongPressStart;
+  final GestureScaleEndCallback? onScaleEnd;
+  final GestureForcePressStartCallback? onForcePressStart;
+  final GestureForcePressPeakCallback? onForcePressPeak;
+  final GestureForcePressUpdateCallback? onForcePressUpdate;
+  final GestureForcePressEndCallback? onForcePressEnd;
+  final GestureTapCallback? onSecondaryTap;
+  final GestureLongPressMoveUpdateCallback? onSecondaryLongPressMoveUpdate;
+  final GestureLongPressCallback? onSecondaryLongPressUp;
+  final GestureLongPressCallback? onSecondaryLongPress;
+  final GestureLongPressEndCallback? onSecondaryLongPressEnd;
+  final GestureLongPressStartCallback? onSecondaryLongPressStart;
 
   ///  HitTestBehavior.opaque 自己处理事件
   ///  HitTestBehavior.deferToChild child处理事件
@@ -452,40 +454,40 @@ class Universal extends StatelessWidget {
   final HitTestBehavior behavior;
 
   ///  ****** [Hero] ******  ///
-  final String heroTag;
-  final CreateRectTween createRectTween;
-  final HeroFlightShuttleBuilder flightShuttleBuilder;
+  final String? heroTag;
+  final CreateRectTween? createRectTween;
+  final HeroFlightShuttleBuilder? flightShuttleBuilder;
   final bool transitionOnUserGestures;
-  final HeroPlaceholderBuilder placeholderBuilder;
+  final HeroPlaceholderBuilder? placeholderBuilder;
 
   ///  ****** [Stack] ******  ///
   final bool isStack;
   final StackFit stackFit;
 
   ///  ****** [Refreshed] ******  ///
-  final RefreshController refreshController;
-  final VoidCallback onRefresh;
-  final VoidCallback onLoading;
-  final VoidCallback onTwoLevel;
+  final RefreshController? refreshController;
+  final VoidCallback? onRefresh;
+  final VoidCallback? onLoading;
+  final VoidCallback? onTwoLevel;
   final bool enablePullDown;
   final bool enablePullUp;
   final bool enableTwoLevel;
-  final Widget refreshHeader;
-  final Widget refreshFooter;
+  final Widget? refreshHeader;
+  final Widget? refreshFooter;
 
-  EdgeInsetsGeometry get _paddingIncludingDecoration {
-    if (decoration == null || decoration.padding == null) return padding;
-    final EdgeInsetsGeometry decorationPadding = decoration.padding;
+  EdgeInsetsGeometry? get _paddingIncludingDecoration {
+    if (decoration == null || decoration!.padding == null) return padding;
+    final EdgeInsetsGeometry decorationPadding = decoration!.padding!;
     if (padding == null) return decorationPadding;
-    return padding.add(decorationPadding);
+    return padding!.add(decorationPadding);
   }
 
   @override
   Widget build(BuildContext context) {
     Widget current = const SizedBox();
-    if (child != null) current = child;
-    if (children != null && children.isNotEmpty) {
-      current = isStack ? stackWidget(children) : flexWidget(children);
+    if (child != null) current = child!;
+    if (children != null && children!.isNotEmpty) {
+      current = isStack ? stackWidget(children!) : flexWidget(children!);
     }
     if (builder != null) current = statefulBuilder;
     if (isScroll)
@@ -496,12 +498,12 @@ class Universal extends StatelessWidget {
           : singleChildScrollViewWidget(current);
 
     if (_paddingIncludingDecoration != null)
-      current = Padding(padding: _paddingIncludingDecoration, child: current);
+      current = Padding(padding: _paddingIncludingDecoration!, child: current);
     if (alignment != null)
-      current = Align(alignment: alignment, child: current);
+      current = Align(alignment: alignment!, child: current);
 
     if (color != null && decoration == null && !addInkWell && !addCard)
-      current = ColoredBox(color: color, child: current);
+      current = ColoredBox(color: color!, child: current);
 
     if (decoration != null &&
         clipBehavior != null &&
@@ -509,18 +511,19 @@ class Universal extends StatelessWidget {
       current = clipWidget(current,
           clipper: _DecorationClipper(
               textDirection: Directionality.of(context),
-              decoration: decoration));
+              decoration: decoration!));
     }
     if (decoration != null && !addInkWell)
-      current = DecoratedBox(decoration: decoration, child: current);
+      current = DecoratedBox(decoration: decoration!, child: current);
     if (foregroundDecoration != null) {
       current = DecoratedBox(
-          decoration: foregroundDecoration,
+          decoration: foregroundDecoration!,
           position: DecorationPosition.foreground,
           child: current);
     }
     if (transform != null)
-      current = Transform(transform: transform, origin: origin, child: current);
+      current =
+          Transform(transform: transform!, origin: origin, child: current);
     if (enabled ||
         onTap != null ||
         onDoubleTap != null ||
@@ -537,37 +540,34 @@ class Universal extends StatelessWidget {
     if (addCard) current = cardWidget(current, context);
     if (isCircleAvatar) current = circleAvatarWidget(current);
     if (clipper != null || isOval)
-      current = clipWidget(current, clipper: clipper);
+      current = clipWidget(current, clipper: clipper!);
     if (refreshController != null ||
         onRefresh != null ||
         onLoading != null ||
         onTwoLevel != null ||
-        enablePullDown != null ||
-        enablePullUp != null ||
-        enableTwoLevel != null ||
         refreshFooter != null ||
         refreshHeader != null) {
       current = refreshedWidget(current);
     }
 
     if (constraints != null)
-      current = ConstrainedBox(constraints: constraints, child: current);
+      current = ConstrainedBox(constraints: constraints!, child: current);
 
-    if (margin != null) current = Padding(padding: margin, child: current);
+    if (margin != null) current = Padding(padding: margin!, child: current);
     if (expanded || flex != null) current = flexibleWidget(current);
     if (left != null || top != null || right != null || bottom != null)
       current = Positioned(
           left: left, top: top, right: right, bottom: bottom, child: current);
 
-    if (opacity != null && opacity > 0)
-      current = Opacity(opacity: opacity, child: current);
+    if (opacity != null && opacity! > 0)
+      current = Opacity(opacity: opacity!, child: current);
 
     if (offstage) current = offstageWidget(current);
     if (!visible) current = visibilityWidget(current);
     return current;
   }
 
-  Widget get statefulBuilder => StatefulBuilder(builder: builder);
+  Widget get statefulBuilder => StatefulBuilder(builder: builder!);
 
   Widget refreshedWidget(Widget current) => Refreshed(
       controller: refreshController,
@@ -584,7 +584,7 @@ class Universal extends StatelessWidget {
   Widget offstageWidget(Widget current) =>
       Offstage(child: current, offstage: offstage);
 
-  Widget clipWidget(Widget current, {CustomClipper<dynamic> clipper}) {
+  Widget clipWidget(Widget current, {required CustomClipper<dynamic> clipper}) {
     if (clipper is Rect) {
       return ClipRect(
           child: current,
@@ -627,7 +627,7 @@ class Universal extends StatelessWidget {
       children: children);
 
   Widget heroWidget(Widget current) => Hero(
-      tag: heroTag,
+      tag: heroTag!,
       createRectTween: createRectTween,
       flightShuttleBuilder: flightShuttleBuilder,
       placeholderBuilder: placeholderBuilder,
@@ -655,9 +655,7 @@ class Universal extends StatelessWidget {
     return material(current,
         mType: MaterialType.card,
         mShadowColor: shadowColor ?? cardTheme.shadowColor ?? theme.shadowColor,
-        mColor: color == ConstColors.transparent
-            ? cardTheme.color ?? theme.cardColor
-            : color,
+        mColor: color ?? cardTheme.color ?? theme.cardColor,
         mElevation: elevation ?? cardTheme.elevation ?? 10,
         mShape: shape ??
             cardTheme.shape ??
@@ -670,15 +668,15 @@ class Universal extends StatelessWidget {
   }
 
   Material material(Widget current,
-          {MaterialType mType,
-          Color mShadowColor,
-          Color mColor,
-          TextStyle mTextStyle,
-          double mElevation,
-          BorderRadiusGeometry mBorderRadius,
-          ShapeBorder mShape,
-          bool mBorderOnForeground,
-          Clip mClipBehavior}) =>
+          {required MaterialType mType,
+          Color? mShadowColor,
+          Color? mColor,
+          TextStyle? mTextStyle,
+          required double mElevation,
+          BorderRadiusGeometry? mBorderRadius,
+          ShapeBorder? mShape,
+          required bool mBorderOnForeground,
+          required Clip mClipBehavior}) =>
       Material(
           child: current,
           color: mColor,
@@ -787,9 +785,8 @@ class Universal extends StatelessWidget {
 
 /// A clipper that uses [Decoration.getClipPath] to clip.
 class _DecorationClipper extends CustomClipper<Path> {
-  _DecorationClipper({TextDirection textDirection, @required this.decoration})
-      : assert(decoration != null),
-        textDirection = textDirection ?? TextDirection.ltr;
+  _DecorationClipper({TextDirection? textDirection, required this.decoration})
+      : textDirection = textDirection ?? TextDirection.ltr;
 
   final TextDirection textDirection;
   final Decoration decoration;
@@ -806,10 +803,10 @@ class _DecorationClipper extends CustomClipper<Path> {
 
 class SimpleButton extends StatelessWidget {
   const SimpleButton({
-    Key key,
-    String text,
-    bool isElastic,
-    TextOverflow overflow,
+    Key? key,
+    String? text,
+    bool? isElastic,
+    TextOverflow? overflow,
     this.textStyle,
     this.visible,
     this.constraints,
@@ -833,27 +830,27 @@ class SimpleButton extends StatelessWidget {
         overflow = overflow ?? TextOverflow.ellipsis,
         super(key: key);
 
-  final Widget child;
-  final TextStyle textStyle;
-  final EdgeInsetsGeometry padding;
-  final EdgeInsetsGeometry margin;
-  final Color color;
-  final double height;
-  final double width;
-  final Decoration decoration;
-  final GestureTapCallback onTap;
-  final AlignmentGeometry alignment;
-  final int maxLines;
+  final Widget? child;
+  final TextStyle? textStyle;
+  final EdgeInsetsGeometry? padding;
+  final EdgeInsetsGeometry? margin;
+  final Color? color;
+  final double? height;
+  final double? width;
+  final Decoration? decoration;
+  final GestureTapCallback? onTap;
+  final AlignmentGeometry? alignment;
+  final int? maxLines;
   final TextOverflow overflow;
   final String text;
-  final bool addInkWell;
-  final bool visible;
-  final String heroTag;
-  final BoxConstraints constraints;
-  final bool withOpacity;
+  final bool? addInkWell;
+  final bool? visible;
+  final String? heroTag;
+  final BoxConstraints? constraints;
+  final bool? withOpacity;
   final bool isElastic;
-  final bool useCache;
-  final double scaleCoefficient;
+  final bool? useCache;
+  final double? scaleCoefficient;
 
   @override
   Widget build(BuildContext context) {
@@ -873,7 +870,7 @@ class SimpleButton extends StatelessWidget {
     return universal(current, onTap: onTap);
   }
 
-  Widget universal(Widget current, {GestureTapCallback onTap}) => Universal(
+  Widget universal(Widget current, {GestureTapCallback? onTap}) => Universal(
       heroTag: heroTag,
       visible: visible,
       constraints: constraints,

@@ -4,23 +4,24 @@ import 'package:flutter_waya/flutter_waya.dart';
 
 class InputField extends StatelessWidget {
   const InputField({
-    Key key,
-    int maxLines,
-    TextAlign textAlign,
-    bool obscureText,
-    bool autoFocus,
-    bool enabled,
-    bool enableInteractiveSelection,
-    TextInputAction textInputAction,
-    TextDirection textDirection,
-    Color cursorColor,
-    Radius cursorRadius,
-    double cursorWidth,
-    Brightness keyboardAppearance,
-    TextCapitalization textCapitalization,
-    FloatingLabelBehavior floatingLabelBehavior,
-    bool readOnly,
-    CrossAxisAlignment crossAxisAlignment,
+    Key? key,
+    int? maxLines,
+    TextAlign? textAlign,
+    bool? obscureText,
+    bool? autoFocus,
+    bool? enabled,
+    bool? filled,
+    bool? enableInteractiveSelection,
+    TextInputAction? textInputAction,
+    TextDirection? textDirection,
+    Color? cursorColor,
+    Radius? cursorRadius,
+    double? cursorWidth,
+    Brightness? keyboardAppearance,
+    TextCapitalization? textCapitalization,
+    FloatingLabelBehavior? floatingLabelBehavior,
+    bool? readOnly,
+    CrossAxisAlignment? crossAxisAlignment,
     this.icon,
     this.toolbarOptions,
     this.controller,
@@ -55,7 +56,6 @@ class InputField extends StatelessWidget {
     this.errorBorder,
     this.focusedErrorBorder,
     this.onTap,
-    this.filled,
     this.errorStyle,
     this.errorText,
     this.errorMaxLines,
@@ -74,6 +74,7 @@ class InputField extends StatelessWidget {
     this.extraPrefix,
   })  : obscureText = obscureText ?? false,
         readOnly = readOnly ?? false,
+        filled = filled ?? false,
         crossAxisAlignment = crossAxisAlignment ?? CrossAxisAlignment.center,
         floatingLabelBehavior =
             floatingLabelBehavior ?? FloatingLabelBehavior.always,
@@ -126,15 +127,15 @@ class InputField extends StatelessWidget {
         enabled = enabled ?? true,
         textAlign = textAlign ?? TextAlign.left,
         super(key: key);
-  final TextEditingController controller;
-  final ValueChanged<String> onChanged;
-  final List<TextInputFormatter> inputFormatter;
+  final TextEditingController? controller;
+
+  final List<TextInputFormatter>? inputFormatter;
 
   ///  工具栏 cut, copy, paste,
-  final ToolbarOptions toolbarOptions;
+  final ToolbarOptions? toolbarOptions;
 
   ///  最大长度
-  final int maxLength;
+  final int? maxLength;
   final TextDirection textDirection;
   final int maxLines;
 
@@ -143,23 +144,24 @@ class InputField extends StatelessWidget {
 
   ///  对齐方式
   final TextAlign textAlign;
-  final int minLines;
-  final TextInputType keyboardType;
-  final InputDecoration inputDecoration;
+  final int? minLines;
+  final TextInputType? keyboardType;
+  final InputDecoration? inputDecoration;
 
   ///  光标颜色
   final Color cursorColor;
-  final InputTextType inputTextType;
+  final InputTextType? inputTextType;
 
   ///  点击事件
-  final GestureTapCallback onTap;
-  final VoidCallback onEditingComplete;
-  final ValueChanged<String> onSubmitted;
+  final GestureTapCallback? onTap;
+  final VoidCallback? onEditingComplete;
+  final ValueCallback<String>? onChanged;
+  final ValueCallback<String>? onSubmitted;
 
   ///  显示在输入框右下方
-  final String counterText;
-  final TextStyle counterStyle;
-  final Widget counter;
+  final String? counterText;
+  final TextStyle? counterStyle;
+  final Widget? counter;
 
   /// 是否自动获取焦点  跳转到该页面后 光标自动显示到该输入框  键盘弹起
   final bool autoFocus;
@@ -170,48 +172,51 @@ class InputField extends StatelessWidget {
   /// label自动上浮
   final FloatingLabelBehavior floatingLabelBehavior;
 
-  ///  隐藏文字
-  final Widget header;
-  final Widget footer;
-  final FocusNode focusNode;
-  final TextStyle inputStyle;
+  final FocusNode? focusNode;
+  final TextStyle? inputStyle;
 
   ///  输入框左边下划线外面
-  final Widget icon;
+  final Widget? icon;
 
   ///  输入框左边
-  final Widget prefixIcon;
+  final Widget? prefixIcon;
+
+  ///  头部
+  final Widget? header;
+
+  /// 底部
+  final Widget? footer;
 
   ///  前缀
-  final String prefixText;
-  final Widget prefix;
-  final TextStyle prefixStyle;
+  final String? prefixText;
+  final Widget? prefix;
+  final TextStyle? prefixStyle;
 
   ///  输入框右边
-  final Widget suffixIcon;
+  final Widget? suffixIcon;
 
   ///  后缀
-  final String suffixText;
-  final Widget suffix;
-  final TextStyle suffixStyle;
+  final String? suffixText;
+  final Widget? suffix;
+  final TextStyle? suffixStyle;
 
   ///  显示在输入框左下角的文字提示
-  final TextStyle errorStyle;
-  final String errorText;
-  final int errorMaxLines;
+  final TextStyle? errorStyle;
+  final String? errorText;
+  final int? errorMaxLines;
 
   ///  显示在输入框下划线下面的提示语，提示使用
-  final String helperText;
-  final TextStyle helperStyle;
-  final String labelText;
+  final String? helperText;
+  final TextStyle? helperStyle;
+  final String? labelText;
 
   ///  显示在输入框内的提示语，一旦输入框获取焦点就字体缩小并上移到输入上方，作为提示使用
-  final TextStyle labelStyle;
+  final TextStyle? labelStyle;
 
   /// final bool labelFloating;
 
   ///  默认为true，表示labelText是否上浮，true上浮，false表示获取焦点后labelText消失
-  final bool isDense;
+  final bool? isDense;
 
   ///  是否开启紧密
   final bool filled;
@@ -220,36 +225,36 @@ class InputField extends StatelessWidget {
   final bool enabled;
 
   ///  开始输入
-  final InputBorder disabledBorder;
+  final InputBorder? disabledBorder;
 
   ///  不能输入状态框
-  final InputBorder enabledBorder;
+  final InputBorder? enabledBorder;
 
   ///  开启输入状态框
-  final InputBorder errorBorder;
+  final InputBorder? errorBorder;
 
   ///  失去焦点时，error时下划线显示的边框样式，不设置则使用默认的的下划线
-  final InputBorder focusedErrorBorder;
+  final InputBorder? focusedErrorBorder;
 
   ///  获取焦点时，error时下划线显示的边框样式，不设置则使用默认的的下划线
-  final InputBorder focusedBorder;
+  final InputBorder? focusedBorder;
 
   ///  获取焦点输入框
-  final InputBorder defaultBorder;
+  final InputBorder? defaultBorder;
 
   ///  跟输入框同水平
-  final Widget extraSuffix;
+  final Widget? extraSuffix;
 
   ///  跟输入框同水平
-  final Widget extraPrefix;
+  final Widget? extraPrefix;
 
   ///  以上都未设置时 默认输入框
 
-  final Color fillColor;
-  final TextStyle hintStyle;
-  final String hintText;
-  final int hintMaxLines;
-  final EdgeInsetsGeometry contentPadding;
+  final Color? fillColor;
+  final TextStyle? hintStyle;
+  final String? hintText;
+  final int? hintMaxLines;
+  final EdgeInsetsGeometry? contentPadding;
   final TextInputAction textInputAction;
   final double cursorWidth;
   final Radius cursorRadius;
@@ -266,7 +271,7 @@ class InputField extends StatelessWidget {
   final TextCapitalization textCapitalization;
 
   ///  自定义数字显示   指定maxLength后 右下角会出现字数，flutter有默认实现  可以通过这个自定义
-  final InputCounterWidgetBuilder buildCounter;
+  final InputCounterWidgetBuilder? buildCounter;
   final CrossAxisAlignment crossAxisAlignment;
 
   ///  解决切换后台 再切换前台输入框为null
@@ -313,16 +318,16 @@ class InputField extends StatelessWidget {
     Widget child = textField;
     if (extraPrefix != null || extraSuffix != null) {
       final List<Widget> row = <Widget>[];
-      if (extraPrefix != null) row.add(extraPrefix);
+      if (extraPrefix != null) row.add(extraPrefix!);
       row.add(Expanded(child: child));
-      if (extraSuffix != null) row.add(extraSuffix);
+      if (extraSuffix != null) row.add(extraSuffix!);
       child = Row(crossAxisAlignment: crossAxisAlignment, children: row);
     }
     if (header != null || footer != null) {
       final List<Widget> children = <Widget>[];
-      if (header != null) children.add(header);
+      if (header != null) children.add(header!);
       children.add(child);
-      if (footer != null) children.add(footer);
+      if (footer != null) children.add(footer!);
       child = Column(mainAxisSize: MainAxisSize.min, children: children);
     }
     return child;
@@ -479,8 +484,7 @@ class InputField extends StatelessWidget {
     if (inputTextType == InputTextType.number)
       return <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly];
     const Map<InputTextType, String> regExpMap = ConstConstant.regExp;
-    final RegExp regExp = RegExp(regExpMap[inputTextType]);
-    if (regExp == null) return <TextInputFormatter>[];
+    final RegExp regExp = RegExp(regExpMap[inputTextType]!);
     return <TextInputFormatter>[
       FilteringTextInputFormatter(regExp, allow: true)
     ];
@@ -489,53 +493,53 @@ class InputField extends StatelessWidget {
 
 class SearchBox extends Universal {
   SearchBox({
-    Key key,
+    Key? key,
 
     /// icon 样式
-    Color color,
+    Color? color,
     IconData icon = ConstIcon.search,
     double size = 15,
 
     /// [Universal]
-    EdgeInsetsGeometry margin,
-    EdgeInsetsGeometry padding,
-    AlignmentGeometry alignment,
-    Decoration decoration,
-    double height,
-    double width,
-    String heroTag,
+    EdgeInsetsGeometry? margin,
+    EdgeInsetsGeometry? padding,
+    AlignmentGeometry? alignment,
+    Decoration? decoration,
+    double? height,
+    double? width,
+    String? heroTag,
 
     /// [InputField]
     EdgeInsetsGeometry contentPadding = const EdgeInsets.all(6),
-    TextEditingController controller,
-    ValueChanged<String> onChanged,
-    Color cursorColor,
-    Color fillColor,
-    bool autoFocus,
-    FocusNode focusNode,
+    TextEditingController? controller,
+    ValueChanged<String>? onChanged,
+    Color? cursorColor,
+    Color? fillColor,
+    bool? autoFocus,
+    FocusNode? focusNode,
 
     /// Border
-    LineType lineType,
-    BorderSide borderSide,
-    BorderRadius borderRadius,
-    Color focusedBorderColor,
-    Color enabledBorderColor,
+    LineType? lineType,
+    BorderSide? borderSide,
+    BorderRadius? borderRadius,
+    Color? focusedBorderColor,
+    Color? enabledBorderColor,
 
     /// 文本
-    String searchText,
-    String hintText,
-    TextStyle searchStyle,
-    TextStyle hintStyle,
-    TextStyle inputStyle,
+    String? searchText,
+    String? hintText,
+    TextStyle? searchStyle,
+    TextStyle? hintStyle,
+    TextStyle? inputStyle,
 
     /// 前缀和后缀
-    GestureTapCallback searchTap,
-    Widget search,
-    Widget suffixIcon,
-    Widget extraSuffix,
-    Widget prefix,
-    Widget prefixIcon,
-    Widget extraPrefix,
+    GestureTapCallback? searchTap,
+    Widget? search,
+    Widget? suffixIcon,
+    Widget? extraSuffix,
+    Widget? prefix,
+    Widget? prefixIcon,
+    Widget? extraPrefix,
   }) : super(
             key: key,
             decoration: decoration,
@@ -587,10 +591,10 @@ class SearchBox extends Universal {
                 enableInteractiveSelection: true));
 
   static InputBorder inputBorder(
-      {@required Color color,
-      @required LineType lineType,
-      @required BorderRadius borderRadius,
-      @required BorderSide borderSide}) {
+      {required Color color,
+      LineType? lineType,
+      BorderRadius? borderRadius,
+      BorderSide? borderSide}) {
     if (lineType == LineType.outline) {
       return OutlineInputBorder(
           borderRadius: borderRadius ?? BorderRadius.circular(0),
@@ -612,7 +616,7 @@ class NumberLimitFormatter extends TextInputFormatter {
   final int decimalLength;
   final int numberLength;
 
-  RegExp exp = RegExp(ConstConstant.regExp[InputTextType.decimal]);
+  RegExp exp = RegExp(ConstConstant.regExp[InputTextType.decimal]!);
 
   @override
   TextEditingValue formatEditUpdate(
@@ -667,7 +671,7 @@ class NumberLimitFormatter extends TextInputFormatter {
 
 class PinBox extends StatefulWidget {
   const PinBox({
-    Key key,
+    Key? key,
     this.inputTextType,
     this.autoFocus = true,
     this.controller,
@@ -686,59 +690,59 @@ class PinBox extends StatefulWidget {
   }) : super(key: key);
 
   ///  输入内容监听
-  final ValueChanged<String> onChanged;
+  final ValueCallback<String>? onChanged;
 
   ///  输入完成后回调
-  final ValueChanged<String> onDone;
+  final ValueCallback<String>? onDone;
 
   ///  输入文字类型限制
-  final InputTextType inputTextType;
+  final InputTextType? inputTextType;
 
   ///  是否自动获取焦点
-  final bool autoFocus;
+  final bool? autoFocus;
 
   ///  输入框控制器
-  final TextEditingController controller;
+  final TextEditingController? controller;
 
   ///  输入框数量
   final int maxLength;
 
   ///  输入框内容限制
-  final List<TextInputFormatter> inputFormatter;
+  final List<TextInputFormatter>? inputFormatter;
 
   ///  box 左右间距 设置 [width]后此参数失效
   final double boxSpacing;
 
   ///  输入框焦点管理
-  final FocusNode focusNode;
+  final FocusNode? focusNode;
 
   ///  默认输入框装饰器
-  final Decoration pinDecoration;
+  final Decoration? pinDecoration;
 
   ///  整个组件装饰器
-  final Decoration decoration;
+  final Decoration? decoration;
 
   ///  有文字后的输入框装饰器
-  final Decoration hasFocusPinDecoration;
+  final Decoration? hasFocusPinDecoration;
 
   ///  box 内文字样式
-  final TextStyle pinTextStyle;
+  final TextStyle? pinTextStyle;
 
   ///  box 方框的大小
   final Size boxSize;
 
   ///  设置此参数后 [boxSize] 的宽度将失效
-  final double width;
+  final double? width;
 
   @override
   _PinBoxState createState() => _PinBoxState();
 }
 
 class _PinBoxState extends State<PinBox> {
-  FocusNode focusNode;
-  TextEditingController controller;
-  List<String> texts = <String>[];
-  Size size;
+  late FocusNode focusNode;
+  late TextEditingController controller;
+  late List<String> texts = <String>[];
+  late Size size;
 
   @override
   void initState() {
@@ -780,7 +784,7 @@ class _PinBoxState extends State<PinBox> {
         decoration:
             hasFocus ? widget.pinDecoration : widget.hasFocusPinDecoration,
         alignment: Alignment.center,
-        child: BasisText(texts[i], style: widget?.pinTextStyle),
+        child: BasisText(texts[i], style: widget.pinTextStyle),
       ));
     }
     return Row(
@@ -815,17 +819,17 @@ class _PinBoxState extends State<PinBox> {
         helperStyle: const BasisTextStyle(color: Colors.transparent),
         onChanged: (String text) {
           texts = text.trim().split('');
-          if (widget.onChanged != null) widget.onChanged(text);
+          if (widget.onChanged != null) widget.onChanged!(text);
           if (widget.onDone != null && text.length == widget.maxLength)
-            widget.onDone(text);
+            widget.onDone!(text);
           setState(() {});
         },
       );
 
   @override
   void dispose() {
-    focusNode?.dispose();
-    controller?.dispose();
+    focusNode.dispose();
+    controller.dispose();
     super.dispose();
   }
 }

@@ -6,22 +6,22 @@ import 'package:flutter_waya/flutter_waya.dart';
 
 class ListWheel extends StatefulWidget {
   ListWheel({
-    Key key,
-    bool looping,
-    double itemExtent,
-    double diameterRatio,
-    double offAxisFraction,
-    double perspective,
-    int initialIndex,
-    double magnification,
-    bool useMagnifier,
-    double squeeze,
-    bool isCupertino,
-    ScrollPhysics physics,
+    Key? key,
+    bool? looping,
+    double? itemExtent,
+    double? diameterRatio,
+    double? offAxisFraction,
+    double? perspective,
+    int? initialIndex,
+    double? magnification,
+    bool? useMagnifier,
+    double? squeeze,
+    bool? isCupertino,
+    ScrollPhysics? physics,
     this.controller,
     this.itemBuilder,
     this.itemCount,
-    this.childDelegateType,
+    this.childDelegateType = ListWheelChildDelegateType.looping,
     this.onChanged,
     this.onScrollEnd,
     this.children,
@@ -45,8 +45,7 @@ class ListWheel extends StatefulWidget {
         childDelegateType == ListWheelChildDelegateType.looping) {
       assert(children != null);
     }
-    if (childDelegateType == null ||
-        childDelegateType == ListWheelChildDelegateType.builder) {
+    if (childDelegateType == ListWheelChildDelegateType.builder) {
       assert(itemCount != null && itemBuilder != null,
           'childDelegateType default is "ListWheelChildDelegateType.builder", The necessary conditions must be passed');
     }
@@ -56,13 +55,13 @@ class ListWheel extends StatefulWidget {
   final double itemExtent;
 
   ///  子组件
-  final List<Widget> children;
+  final List<Widget>? children;
 
   ///  条目构造器
-  final IndexedWidgetBuilder itemBuilder;
+  final IndexedWidgetBuilder? itemBuilder;
 
   ///  条目数量
-  final int itemCount;
+  final int? itemCount;
 
   ///  半径大小,越大则越平面,越小则间距越大
   final double diameterRatio;
@@ -77,7 +76,7 @@ class ListWheel extends StatefulWidget {
   final int initialIndex;
 
   ///  回调监听
-  final ValueChanged<int> onChanged;
+  final ValueChanged<int>? onChanged;
 
   ///  放大倍率
   final double magnification;
@@ -95,19 +94,19 @@ class ListWheel extends StatefulWidget {
   final ListWheelChildDelegateType childDelegateType;
 
   ///  控制器
-  final FixedExtentScrollController controller;
+  final FixedExtentScrollController? controller;
 
   ///  滚动监听 添加此方法  [onScrollStart],[onScrollUpdate],[onScrollEnd] 无效
-  final NotificationListenerCallback<ScrollNotification> onNotification;
+  final NotificationListenerCallback<ScrollNotification>? onNotification;
 
   ///  动开始回调
-  final ValueChanged<int> onScrollStart;
+  final ValueChanged<int>? onScrollStart;
 
   ///  滚动中回调
-  final ValueChanged<int> onScrollUpdate;
+  final ValueChanged<int>? onScrollUpdate;
 
   ///  动结束回调
-  final ValueChanged<int> onScrollEnd;
+  final ValueChanged<int>? onScrollEnd;
 
   final bool looping;
 
@@ -115,14 +114,14 @@ class ListWheel extends StatefulWidget {
   final bool isCupertino;
 
   ///  [isCupertino]=true生效
-  final Color backgroundColor;
+  final Color? backgroundColor;
 
   @override
   _ListWheelState createState() => _ListWheelState();
 }
 
 class _ListWheelState extends State<ListWheel> {
-  FixedExtentScrollController controller;
+  late FixedExtentScrollController controller;
 
   @override
   void initState() {
@@ -133,26 +132,24 @@ class _ListWheelState extends State<ListWheel> {
 
   ListWheelChildDelegate getDelegate(ListWheelChildDelegateType type) {
     if (type == ListWheelChildDelegateType.list)
-      return ListWheelChildListDelegate(children: widget.children);
+      return ListWheelChildListDelegate(children: widget.children!);
     if (type == ListWheelChildDelegateType.looping)
-      return ListWheelChildLoopingListDelegate(children: widget.children);
+      return ListWheelChildLoopingListDelegate(children: widget.children!);
     return ListWheelChildBuilderDelegate(
-        builder: widget.itemBuilder, childCount: widget.itemCount);
+        builder: widget.itemBuilder!, childCount: widget.itemCount);
   }
 
   @override
   Widget build(BuildContext context) {
-    final ListWheelChildDelegateType type =
-        widget.childDelegateType ?? ListWheelChildDelegateType.builder;
     Widget child;
     final Function(int index) onSelectedItemChanged = (int index) =>
-        widget.onChanged != null ? widget.onChanged(index) : null;
+        widget.onChanged != null ? widget.onChanged!(index) : null;
     if (widget.isCupertino) {
-      child = type == ListWheelChildDelegateType.builder
+      child = widget.childDelegateType == ListWheelChildDelegateType.builder
           ? CupertinoPicker.builder(
               scrollController: controller,
               childCount: widget.itemCount,
-              itemBuilder: widget.itemBuilder,
+              itemBuilder: widget.itemBuilder!,
               backgroundColor: widget.backgroundColor,
               itemExtent: widget.itemExtent,
               diameterRatio: widget.diameterRatio,
@@ -163,9 +160,10 @@ class _ListWheelState extends State<ListWheel> {
               magnification: widget.magnification)
           : CupertinoPicker(
               scrollController: controller,
-              children: widget.children,
+              children: widget.children!,
               backgroundColor: widget.backgroundColor,
-              looping: type == ListWheelChildDelegateType.looping,
+              looping: widget.childDelegateType ==
+                  ListWheelChildDelegateType.looping,
               itemExtent: widget.itemExtent,
               diameterRatio: widget.diameterRatio,
               onSelectedItemChanged: onSelectedItemChanged,
@@ -185,7 +183,7 @@ class _ListWheelState extends State<ListWheel> {
           useMagnifier: widget.useMagnifier,
           squeeze: widget.squeeze,
           magnification: widget.magnification,
-          childDelegate: getDelegate(type));
+          childDelegate: getDelegate(widget.childDelegateType));
     }
     if (widget.onScrollStart == null &&
         widget.onScrollUpdate == null &&
@@ -196,39 +194,39 @@ class _ListWheelState extends State<ListWheel> {
             (ScrollNotification notification) {
               if (notification is ScrollStartNotification &&
                   widget.onScrollStart != null)
-                widget.onScrollStart(controller.selectedItem);
+                widget.onScrollStart!(controller.selectedItem);
 
               if (notification is ScrollUpdateNotification &&
                   widget.onScrollUpdate != null)
-                widget.onScrollUpdate(controller.selectedItem);
+                widget.onScrollUpdate!(controller.selectedItem);
 
               if (notification is ScrollEndNotification &&
                   widget.onScrollEnd != null)
-                widget.onScrollEnd(controller.selectedItem);
+                widget.onScrollEnd!(controller.selectedItem);
               return true;
             });
   }
 
   @override
   void dispose() {
-    controller?.dispose();
+    controller.dispose();
     super.dispose();
   }
 }
 
 class AutoScrollEntry extends StatefulWidget {
   const AutoScrollEntry(
-      {Key key,
-      int initialIndex,
+      {Key? key,
+      int? initialIndex,
       this.itemHeight,
       this.maxItemCount,
       this.itemWidth,
-      @required this.children,
+      required this.children,
       this.onChanged,
       this.margin,
       this.padding,
-      Duration duration,
-      Duration animateDuration})
+      Duration? duration,
+      Duration? animateDuration})
       : duration = duration ?? const Duration(seconds: 3),
         animateDuration = animateDuration ?? const Duration(milliseconds: 500),
         initialIndex = initialIndex ?? 0,
@@ -236,8 +234,8 @@ class AutoScrollEntry extends StatefulWidget {
 
   final int initialIndex;
   final List<Widget> children;
-  final EdgeInsetsGeometry margin;
-  final EdgeInsetsGeometry padding;
+  final EdgeInsetsGeometry? margin;
+  final EdgeInsetsGeometry? padding;
 
   /// 滚动停留时间
   final Duration duration;
@@ -246,23 +244,23 @@ class AutoScrollEntry extends StatefulWidget {
   final Duration animateDuration;
 
   /// 滚动最大数量
-  final int maxItemCount;
+  final int? maxItemCount;
 
   ///  回调监听
-  final ValueChanged<int> onChanged;
+  final ValueChanged<int>? onChanged;
 
   ///  以下为滚轮属性
   ///  高度
-  final double itemHeight;
-  final double itemWidth;
+  final double? itemHeight;
+  final double? itemWidth;
 
   @override
   _AutoScrollEntryState createState() => _AutoScrollEntryState();
 }
 
 class _AutoScrollEntryState extends State<AutoScrollEntry> {
-  FixedExtentScrollController controller;
-  Timer timer;
+  late FixedExtentScrollController controller;
+  Timer? timer;
   int index = 0;
   int maxItemCount = 10;
   double itemHeight = 30;
@@ -270,16 +268,15 @@ class _AutoScrollEntryState extends State<AutoScrollEntry> {
   @override
   void initState() {
     super.initState();
-    if (widget.initialIndex != null &&
-        widget.initialIndex < widget.children.length)
+    if (widget.initialIndex < widget.children.length)
       index = widget.initialIndex;
-    if (widget.itemHeight != null) itemHeight = widget.itemHeight;
+    if (widget.itemHeight != null) itemHeight = widget.itemHeight!;
     controller = FixedExtentScrollController(initialItem: widget.initialIndex);
     if (widget.maxItemCount == null) {
       if (widget.children.length > maxItemCount)
         maxItemCount = widget.children.length;
     } else {
-      maxItemCount = widget.maxItemCount;
+      maxItemCount = widget.maxItemCount!;
     }
     addPostFrameCallback((Duration duration) {
       timer = widget.duration.timerPeriodic((Timer callback) {
@@ -288,7 +285,7 @@ class _AutoScrollEntryState extends State<AutoScrollEntry> {
           index = 0;
           controller.jumpToItem(index);
         }
-        controller?.animateToItem(index,
+        controller.animateToItem(index,
             duration: widget.animateDuration, curve: Curves.linear);
       });
     });
@@ -296,7 +293,7 @@ class _AutoScrollEntryState extends State<AutoScrollEntry> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.children == null || widget.children.isEmpty) return Container();
+    if (widget.children.isEmpty) return Container();
     return Universal(
         margin: widget.margin,
         padding: widget.padding,
@@ -321,5 +318,6 @@ class _AutoScrollEntryState extends State<AutoScrollEntry> {
   void dispose() {
     super.dispose();
     timer?.cancel();
+    timer = null;
   }
 }

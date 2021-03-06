@@ -1,8 +1,8 @@
-part of 'tweens/delay_tween.dart';
+part of 'tween/delay_tween.dart';
 
 class SpinKitCubeGrid extends StatefulWidget {
   const SpinKitCubeGrid({
-    Key key,
+    Key? key,
     this.color,
     this.size = 50.0,
     this.itemBuilder,
@@ -12,14 +12,13 @@ class SpinKitCubeGrid extends StatefulWidget {
             !(itemBuilder is IndexedWidgetBuilder && color is Color) &&
                 !(itemBuilder == null && color == null),
             'You should specify either a itemBuilder or a color'),
-        assert(size != null),
         super(key: key);
 
-  final Color color;
+  final Color? color;
   final double size;
-  final IndexedWidgetBuilder itemBuilder;
+  final IndexedWidgetBuilder? itemBuilder;
   final Duration duration;
-  final AnimationController controller;
+  final AnimationController? controller;
 
   @override
   _SpinKitCubeGridState createState() => _SpinKitCubeGridState();
@@ -27,8 +26,8 @@ class SpinKitCubeGrid extends StatefulWidget {
 
 class _SpinKitCubeGridState extends State<SpinKitCubeGrid>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  Animation<double> _anim1, _anim2, _anim3, _anim4, _anim5;
+  late AnimationController _controller;
+  late Animation<double> _anim1, _anim2, _anim3, _anim4, _anim5;
 
   @override
   void initState() {
@@ -102,13 +101,13 @@ class _SpinKitCubeGridState extends State<SpinKitCubeGrid>
       );
 
   Widget _itemBuilder(int index) => widget.itemBuilder != null
-      ? widget.itemBuilder(context, index)
+      ? widget.itemBuilder!(context, index)
       : DecoratedBox(decoration: BoxDecoration(color: widget.color));
 }
 
 class SpinKitFoldingCube extends StatefulWidget {
   const SpinKitFoldingCube({
-    Key key,
+    Key? key,
     this.color,
     this.size = 50.0,
     this.itemBuilder,
@@ -121,11 +120,11 @@ class SpinKitFoldingCube extends StatefulWidget {
         assert(size != null),
         super(key: key);
 
-  final Color color;
+  final Color? color;
   final double size;
-  final IndexedWidgetBuilder itemBuilder;
+  final IndexedWidgetBuilder? itemBuilder;
   final Duration duration;
-  final AnimationController controller;
+  final AnimationController? controller;
 
   @override
   _SpinKitFoldingCubeState createState() => _SpinKitFoldingCubeState();
@@ -133,8 +132,8 @@ class SpinKitFoldingCube extends StatefulWidget {
 
 class _SpinKitFoldingCubeState extends State<SpinKitFoldingCube>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  Animation<double> _rotate1, _rotate2, _rotate3, _rotate4;
+  late AnimationController _controller;
+  late Animation<double> _rotate1, _rotate2, _rotate3, _rotate4;
 
   @override
   void initState() {
@@ -182,7 +181,7 @@ class _SpinKitFoldingCubeState extends State<SpinKitFoldingCube>
                     )))));
   }
 
-  Widget _cube(int i, {Animation<double> animation}) {
+  Widget _cube(int i, {required Animation<double> animation}) {
     final double _size = widget.size * 0.5, _position = widget.size * .5;
     final Matrix4 _tRotate = Matrix4.identity()
       ..rotateY(animation.value * 0.0174533);
@@ -206,6 +205,6 @@ class _SpinKitFoldingCubeState extends State<SpinKitFoldingCube>
   }
 
   Widget _itemBuilder(int index) => widget.itemBuilder != null
-      ? widget.itemBuilder(context, index)
+      ? widget.itemBuilder!(context, index)
       : DecoratedBox(decoration: BoxDecoration(color: widget.color));
 }

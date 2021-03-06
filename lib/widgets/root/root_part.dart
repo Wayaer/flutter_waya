@@ -3,45 +3,45 @@ part of 'root.dart';
 ///  ************ 以下为Scaffold Overlay *****************   ///
 class OverlayEntryAuto extends OverlayEntry {
   OverlayEntryAuto({
-    WidgetBuilder builder,
-    bool autoOff = false,
-    Widget widget,
+    this.autoOff = false,
+    WidgetBuilder? builder,
+    Widget? widget,
     bool opaque = false,
     bool maintainState = false,
-  })  : autoOff = autoOff ?? false,
+  })  : assert(builder != null || widget != null),
         super(
-            builder: builder ?? (_) => widget,
-            opaque: opaque ?? false,
-            maintainState: maintainState ?? false);
+            builder: builder ?? (_) => widget!,
+            opaque: opaque,
+            maintainState: maintainState);
 
   ///  是否自动关闭
   final bool autoOff;
 }
 
 ///  自定义Overlay
-OverlayEntryAuto showOverlay(Widget widget, {bool autoOff = false}) {
+OverlayEntryAuto? showOverlay(Widget widget, {bool autoOff = false}) {
   if (_scaffoldKeyList.isEmpty) return null;
   _overlay ??=
-      Overlay.of(_scaffoldKeyList?.last?.currentContext, rootOverlay: false);
+      Overlay.of(_scaffoldKeyList.last.currentContext!, rootOverlay: false);
   if (_overlay == null) return null;
   final OverlayEntryAuto entryAuto =
-      OverlayEntryAuto(autoOff: autoOff ?? false, widget: widget);
-  _overlay.insert(entryAuto);
+      OverlayEntryAuto(autoOff: autoOff, widget: widget);
+  _overlay!.insert(entryAuto);
   _overlayEntryList.add(entryAuto);
   return entryAuto;
 }
 
 ///  关闭最顶层的Overlay
-bool closeOverlay({OverlayEntryAuto entry}) {
+bool closeOverlay({OverlayEntryAuto? entry}) {
   try {
     if (entry != null) {
-      entry?.remove();
+      entry.remove();
       if (_overlayEntryList.contains(entry))
-        return _overlayEntryList?.remove(entry);
+        return _overlayEntryList.remove(entry);
     } else {
       if (_overlayEntryList.isNotEmpty) {
-        _overlayEntryList?.last?.remove();
-        return _overlayEntryList?.remove(_overlayEntryList?.last);
+        _overlayEntryList.last.remove();
+        return _overlayEntryList.remove(_overlayEntryList.last);
       }
     }
   } catch (e) {
@@ -52,24 +52,24 @@ bool closeOverlay({OverlayEntryAuto entry}) {
 
 ///  关闭所有Overlay
 void closeAllOverlay() {
-  for (final OverlayEntryAuto element in _overlayEntryList) element?.remove();
+  for (final OverlayEntryAuto element in _overlayEntryList) element.remove();
   _overlayEntryList = <OverlayEntryAuto>[];
 }
 
 ///  loading 加载框
 ///  关闭 closeOverlay();
-OverlayEntryAuto showLoading({
-  Widget custom,
-  String text,
-  double value,
-  bool gaussian,
-  Color backgroundColor,
-  Animation<Color> valueColor,
-  double strokeWidth,
-  String semanticsLabel,
-  String semanticsValue,
-  LoadingType loadingType,
-  TextStyle textStyle,
+OverlayEntryAuto? showLoading({
+  Widget? custom,
+  String? text,
+  double? value,
+  bool? gaussian,
+  Color? backgroundColor,
+  Animation<Color>? valueColor,
+  double? strokeWidth,
+  String? semanticsLabel,
+  String? semanticsValue,
+  LoadingType? loadingType,
+  TextStyle? textStyle,
 }) =>
     showOverlay(Loading(
         custom: custom,
@@ -96,19 +96,19 @@ bool haveToast = false;
 ///  关闭 closeOverlay();
 ///  添加 await Toast 关闭后继续执行之后的方法
 Future<void> showToast(String message,
-    {Color backgroundColor,
-    BoxDecoration boxDecoration,
-    GestureTapCallback onTap,
-    TextStyle textStyle,
-    Duration closeDuration,
+    {Color? backgroundColor,
+    BoxDecoration? boxDecoration,
+    GestureTapCallback? onTap,
+    TextStyle? textStyle,
+    Duration? closeDuration,
 
     ///  icon style
     ///  如果使用ToastType.custom  请设置 customIcon
-    ToastType toastType,
-    IconData customIcon,
-    double size,
-    double spacing,
-    Axis direction}) async {
+    ToastType? toastType,
+    IconData? customIcon,
+    double? size,
+    double? spacing,
+    Axis? direction}) async {
   if (haveToast) return;
   Widget toast;
   if (toastType != null) {
@@ -145,7 +145,7 @@ Future<void> showToast(String message,
     toast = BasisText(message, color: ConstColors.white, maxLines: 4);
   }
 
-  final OverlayEntryAuto entry = showOverlay(
+  final OverlayEntryAuto? entry = showOverlay(
       PopupBase(
           ignoring: true,
           alignment: Alignment.center,
@@ -171,34 +171,34 @@ Future<void> showToast(String message,
 ///  添加popup进入方向属性
 ///  关闭 closePopup()
 ///  Dialog
-Future<T> showDialogPopup<T>({
+Future<T?> showDialogPopup<T>({
   ///  进入方向的距离
-  double startOffset,
+  double? startOffset,
 
   ///  popup 进入的方向
-  PopupFromType popupFromType,
+  PopupFromType? popupFromType,
 
   ///  这个参数是一个方法,入参是 context,animation,secondaryAnimation,返回一个 Widget
   ///  这个 Widget 就是显示在页面上的 dialog
-  RoutePageBuilder pageBuilder,
-  Widget widget,
+  RoutePageBuilder? pageBuilder,
+  Widget? widget,
 
   ///  是否可以点击背景关闭
-  bool barrierDismissible,
+  bool? barrierDismissible,
 
   ///  语义化
-  String barrierLabel,
+  String? barrierLabel,
 
   ///  背景颜色
-  Color backgroundColor,
+  Color? backgroundColor,
 
   ///  这个是从开始到完全显示的时间
-  Duration transitionDuration,
+  Duration? transitionDuration,
 
   ///  路由显示和隐藏的过程,这里入参是 animation,secondaryAnimation 和 child, 其中 child 是 是 pageBuilder 构建的 widget
-  RouteTransitionsBuilder transitionBuilder,
-  bool useRootNavigator,
-  RouteSettings routeSettings,
+  RouteTransitionsBuilder? transitionBuilder,
+  bool? useRootNavigator,
+  RouteSettings? routeSettings,
 }) {
   assert(pageBuilder != null || widget != null);
   if (transitionBuilder == null && popupFromType != null) {
@@ -223,9 +223,9 @@ Future<T> showDialogPopup<T>({
     };
   }
   return showGeneralDialog(
-      context: _globalNavigatorKey.currentContext,
+      context: _globalNavigatorKey.currentContext!,
       pageBuilder: pageBuilder ??
-          (BuildContext context, Animation<double> animation, _) => widget,
+          (BuildContext context, Animation<double> animation, _) => widget!,
       barrierDismissible: barrierDismissible ?? true,
       barrierLabel: barrierLabel ?? '',
       barrierColor: backgroundColor ?? ConstColors.transparent,
@@ -238,22 +238,22 @@ Future<T> showDialogPopup<T>({
 
 ///  showModalBottomSheet 去除context
 ///  关闭 closePopup()
-Future<T> showBottomPopup<T>({
-  WidgetBuilder builder,
-  Widget widget,
-  Color backgroundColor,
-  double elevation,
-  ShapeBorder shape,
-  Clip clipBehavior,
-  Color barrierColor,
+Future<T?> showBottomPopup<T>({
+  WidgetBuilder? builder,
+  Widget? widget,
+  Color? backgroundColor,
+  double? elevation,
+  ShapeBorder? shape,
+  Clip? clipBehavior,
+  Color? barrierColor,
   bool useRootNavigator = false,
   bool isDismissible = true,
   bool enableDrag = true,
 }) {
   assert(builder != null || widget != null);
   return showModalBottomSheet(
-      context: _globalNavigatorKey.currentContext,
-      builder: builder ?? (BuildContext context) => widget,
+      context: _globalNavigatorKey.currentContext!,
+      builder: builder ?? (BuildContext context) => widget!,
       backgroundColor: backgroundColor ?? ConstColors.transparent,
       elevation: elevation,
       shape: shape,
@@ -268,22 +268,22 @@ Future<T> showBottomPopup<T>({
 ///  showModalBottomSheet
 ///  关闭 closePopup()
 ///  全屏显示
-Future<T> showBottomPagePopup<T>({
-  WidgetBuilder builder,
-  Widget widget,
-  Color backgroundColor,
-  double elevation,
-  ShapeBorder shape,
-  Clip clipBehavior,
-  Color barrierColor,
+Future<T?> showBottomPagePopup<T>({
+  WidgetBuilder? builder,
+  Widget? widget,
+  Color? backgroundColor,
+  double? elevation,
+  ShapeBorder? shape,
+  Clip? clipBehavior,
+  Color? barrierColor,
   bool useRootNavigator = false,
   bool isDismissible = true,
   bool enableDrag = true,
 }) {
   assert(builder != null || widget != null);
   return showModalBottomSheet(
-      context: _globalNavigatorKey.currentContext,
-      builder: builder ?? (BuildContext context) => widget,
+      context: _globalNavigatorKey.currentContext!,
+      builder: builder ?? (BuildContext context) => widget!,
       backgroundColor: backgroundColor ?? ConstColors.transparent,
       elevation: elevation,
       shape: shape,
@@ -298,15 +298,15 @@ Future<T> showBottomPagePopup<T>({
 ///  showCupertinoModalPopup
 ///  关闭 closePopup()
 ///  全屏显示
-Future<T> showCupertinoBottomPagePopup<T>(
-    {WidgetBuilder builder,
-    Widget widget,
+Future<T?> showCupertinoBottomPagePopup<T>(
+    {WidgetBuilder? builder,
+    Widget? widget,
     bool useRootNavigator = false,
-    ImageFilter filter}) {
+    ImageFilter? filter}) {
   assert(builder != null || widget != null);
   return showCupertinoModalPopup(
-      context: _globalNavigatorKey.currentContext,
-      builder: builder ?? (BuildContext context) => widget,
+      context: _globalNavigatorKey.currentContext!,
+      builder: builder ?? (BuildContext context) => widget!,
       filter: filter,
       useRootNavigator: useRootNavigator);
 }
@@ -314,34 +314,34 @@ Future<T> showCupertinoBottomPagePopup<T>(
 ///  关闭 closePopup()
 ///  popup 确定和取消
 ///  Dialog
-Future<T> dialogSureCancel<T>({
-  @required Widget content,
-  Widget sure,
-  Widget cancel,
+Future<T?>? dialogSureCancel<T>({
+  required Widget content,
+  Widget? sure,
+  Widget? cancel,
 
   ///  弹窗背景色
-  Color backgroundColor,
+  Color? backgroundColor,
 
   ///  高度不建议设置
-  double height,
-  double width,
+  double? height,
+  double? width,
   bool isDismissible = true,
-  EdgeInsetsGeometry padding,
+  EdgeInsetsGeometry? padding,
 
   ///  弹窗位置 默认居中
-  AlignmentGeometry alignment,
+  AlignmentGeometry? alignment,
 
   ///  弹窗 decoration
-  Decoration decoration,
+  Decoration? decoration,
 
   ///  背景是否模糊
-  bool gaussian,
+  bool? gaussian,
 
   ///  是否使用Overlay
   bool isOverlay = false,
 
   ///  是否添加Material Widget 部分组件需要基于Material
-  bool addMaterial,
+  bool? addMaterial,
 }) {
   final PopupSureCancel widget = PopupSureCancel(
       backsideTap: () {
@@ -358,7 +358,7 @@ Future<T> dialogSureCancel<T>({
       cancel: cancel,
       backgroundColor: backgroundColor,
       padding: padding);
-  if (isOverlay ?? false) {
+  if (isOverlay) {
     showOverlay(widget);
     return null;
   }
@@ -371,38 +371,38 @@ void closePopup([dynamic value]) => pop(value);
 
 ///  日期选择器
 ///  关闭 closePopup()
-Future<T> showDateTimePicker<T>({
+Future<T?> showDateTimePicker<T>({
   ///  选择框内单位文字样式
-  TextStyle unitStyle,
+  TextStyle? unitStyle,
 
   ///  开始时间
-  DateTime startDate,
+  DateTime? startDate,
 
   ///  默认选中时间
-  DateTime defaultDate,
+  DateTime? defaultDate,
 
   ///  结束时间
-  DateTime endDate,
+  DateTime? endDate,
 
   ///  补全双位数
-  bool dual,
+  bool? dual,
 
   ///  是否显示单位
-  bool showUnit,
+  bool? showUnit,
 
   ///  单位设置
-  DateTimePickerUnit unit,
+  DateTimePickerUnit? unit,
 
   /// 头部和背景色配置
-  PickerSub pickerSub,
+  PickerSub? pickerSub,
 
   /// Wheel配置信息
-  PickerWheel pickerWheel,
+  PickerWheel? pickerWheel,
 }) {
-  _globalNavigatorKey.currentContext.focusNode();
+  _globalNavigatorKey.currentContext!.focusNode();
   pickerSub ??= PickerSub();
-  pickerSub?.cancelTap ??= () => closePopup();
-  pickerSub?.sureTap ??= (String text) => closePopup(text);
+  pickerSub.cancelTap ??= () => closePopup();
+  pickerSub.sureTap ??= (String text) => closePopup(text);
   final Widget widget = DateTimePicker(
       pickerSub: pickerSub,
       pickerWheel: pickerWheel,
@@ -417,26 +417,26 @@ Future<T> showDateTimePicker<T>({
 
 ///  地区选择器
 ///  关闭 closePopup()
-Future<T> showAreaPicker<T>({
+Future<T?> showAreaPicker<T>({
   /// 默认选择的省
-  String defaultProvince,
+  String? defaultProvince,
 
   /// 默认选择的市
-  String defaultCity,
+  String? defaultCity,
 
   /// 默认选择的区
-  String defaultDistrict,
+  String? defaultDistrict,
 
   /// 头部和背景色配置
-  PickerSub pickerSub,
+  PickerSub? pickerSub,
 
   /// Wheel配置信息
-  PickerWheel pickerWheel,
+  PickerWheel? pickerWheel,
 }) {
-  _globalNavigatorKey.currentContext.focusNode();
+  _globalNavigatorKey.currentContext!.focusNode();
   pickerSub ??= PickerSub();
-  pickerSub?.cancelTap ??= () => closePopup();
-  pickerSub?.sureTap ??= (String text) => closePopup(text);
+  pickerSub.cancelTap ??= () => closePopup();
+  pickerSub.sureTap ??= (String text) => closePopup(text);
   final Widget widget = AreaPicker(
       defaultProvince: defaultProvince,
       defaultCity: defaultCity,
@@ -448,23 +448,23 @@ Future<T> showAreaPicker<T>({
 
 ///  wheel 单列 取消确认 选择
 ///  关闭 closePopup()
-Future<T> showMultipleChoicePicker<T>({
+Future<T?> showMultipleChoicePicker<T>({
   ///  默认选中
-  int initialIndex,
-  ScrollPhysics physics,
-  @required int itemCount,
-  @required IndexedWidgetBuilder itemBuilder,
+  int? initialIndex,
+  ScrollPhysics? physics,
+  required int itemCount,
+  required IndexedWidgetBuilder itemBuilder,
 
   /// 头部和背景色配置
-  PickerSub pickerSub,
+  PickerSub? pickerSub,
 
   /// Wheel配置信息
-  PickerWheel pickerWheel,
+  PickerWheel? pickerWheel,
 }) {
-  _globalNavigatorKey.currentContext.focusNode();
+  _globalNavigatorKey.currentContext!.focusNode();
   pickerSub ??= PickerSub();
-  pickerSub?.cancelTap ??= () => closePopup();
-  pickerSub?.sureIndexTap ??= (int index) => closePopup(index);
+  pickerSub.cancelTap ??= () => closePopup();
+  pickerSub.sureIndexTap ??= (int index) => closePopup(index);
   final Widget widget = MultipleChoicePicker(
       itemCount: itemCount,
       itemBuilder: itemBuilder,
@@ -477,17 +477,17 @@ Future<T> showMultipleChoicePicker<T>({
 ///  showCupertinoDialog
 ///  去除context 简化参数
 ///  关闭 closePopup()
-Future<T> showSimpleCupertinoDialog<T>({
-  WidgetBuilder builder,
-  Widget widget,
+Future<T?> showSimpleCupertinoDialog<T>({
+  WidgetBuilder? builder,
+  Widget? widget,
   bool useRootNavigator = true,
   bool barrierDismissible = false,
-  RouteSettings routeSettings,
+  RouteSettings? routeSettings,
 }) {
   assert(builder != null || widget != null);
   return showCupertinoDialog(
-      context: _globalNavigatorKey.currentContext,
-      builder: builder ?? (BuildContext context) => widget,
+      context: _globalNavigatorKey.currentContext!,
+      builder: builder ?? (BuildContext context) => widget!,
       useRootNavigator: useRootNavigator,
       barrierDismissible: barrierDismissible,
       routeSettings: routeSettings);
@@ -496,19 +496,19 @@ Future<T> showSimpleCupertinoDialog<T>({
 ///  showDialog 去除context
 ///  关闭 closePopup()
 ///  Dialog
-Future<T> showSimpleDialog<T>({
-  WidgetBuilder builder,
-  Widget widget,
+Future<T?> showSimpleDialog<T>({
+  WidgetBuilder? builder,
+  Widget? widget,
   bool barrierDismissible = true,
-  Color barrierColor,
+  Color? barrierColor,
   bool useSafeArea = true,
   bool useRootNavigator = true,
-  RouteSettings routeSettings,
+  RouteSettings? routeSettings,
 }) {
   assert(builder != null || widget != null);
   return showDialog(
-      context: _globalNavigatorKey.currentContext,
-      builder: builder ?? (BuildContext context) => widget,
+      context: _globalNavigatorKey.currentContext!,
+      builder: builder ?? (BuildContext context) => widget!,
       barrierDismissible: barrierDismissible,
       barrierColor: barrierColor,
       useSafeArea: useSafeArea,
@@ -518,18 +518,18 @@ Future<T> showSimpleDialog<T>({
 
 ///  showMenu 去除context
 ///  关闭 closePopup()
-Future<T> showMenuPopup<T>({
-  @required RelativeRect position,
-  @required List<PopupMenuEntry<T>> items,
-  T initialValue,
-  double elevation,
-  String semanticLabel,
-  ShapeBorder shape,
-  Color color,
+Future<T?> showMenuPopup<T>({
+  required RelativeRect position,
+  required List<PopupMenuEntry<T>> items,
+  T? initialValue,
+  double? elevation,
+  String? semanticLabel,
+  ShapeBorder? shape,
+  Color? color,
   bool useRootNavigator = false,
 }) {
   return showMenu(
-      context: _globalNavigatorKey.currentContext,
+      context: _globalNavigatorKey.currentContext!,
       items: items,
       initialValue: initialValue,
       elevation: elevation,

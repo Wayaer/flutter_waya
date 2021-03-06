@@ -5,23 +5,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_waya/constant/way.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class SimpleList extends StatelessWidget {
   const SimpleList.custom({
-    Key key,
-    bool enablePullDown,
-    bool enablePullUp,
-    double childAspectRatio,
-    bool noScrollBehavior,
-    bool crossAxisFlex,
-    int crossAxisCount,
-    double mainAxisSpacing,
-    double crossAxisSpacing,
+    Key? key,
+    this.enablePullDown = false,
+    this.enablePullUp = false,
+    this.noScrollBehavior = false,
+    this.crossAxisFlex = false,
+    this.crossAxisCount = 1,
+    this.childAspectRatio = 1,
+    this.mainAxisSpacing = 0,
+    this.crossAxisSpacing = 0,
     this.scrollDirection = Axis.vertical,
     this.reverse = false,
     this.controller,
-    this.primary,
+    this.primary = false,
     this.physics,
     this.shrinkWrap = true,
     this.padding,
@@ -36,37 +35,29 @@ class SimpleList extends StatelessWidget {
     this.refreshHeader,
     this.refreshFooter,
     this.maxCrossAxisExtent,
-  })  : enablePullDown = enablePullDown ?? false,
-        enablePullUp = enablePullUp ?? false,
-        noScrollBehavior = noScrollBehavior ?? true,
-        crossAxisCount = crossAxisCount ?? 1,
-        crossAxisFlex = crossAxisFlex ?? false,
-        assert(!(crossAxisFlex ?? false) ||
+  })  : assert(!crossAxisFlex ||
             (maxCrossAxisExtent != null && maxCrossAxisExtent > 0)),
-        mainAxisSpacing = mainAxisSpacing ?? 0,
-        crossAxisSpacing = crossAxisSpacing ?? 0,
-        childAspectRatio = childAspectRatio ?? 1,
         itemBuilder = null,
         separatorBuilder = null,
-        itemCount = null,
+        itemCount = 0,
         super(key: key);
 
   const SimpleList.builder({
-    Key key,
-    int crossAxisCount,
-    bool noScrollBehavior,
-    bool crossAxisFlex,
-    double mainAxisSpacing,
-    double crossAxisSpacing,
-    double childAspectRatio,
-    bool enablePullDown,
-    bool enablePullUp,
-    @required this.itemBuilder,
-    @required this.itemCount,
+    Key? key,
+    this.enablePullDown = false,
+    this.enablePullUp = false,
+    this.noScrollBehavior = false,
+    this.crossAxisFlex = false,
+    this.crossAxisCount = 1,
+    this.childAspectRatio = 1,
+    this.mainAxisSpacing = 0,
+    this.crossAxisSpacing = 0,
+    required this.itemBuilder,
+    required this.itemCount,
     this.scrollDirection = Axis.vertical,
     this.reverse = false,
     this.controller,
-    this.primary,
+    this.primary = false,
     this.physics,
     this.shrinkWrap = true,
     this.padding,
@@ -80,39 +71,32 @@ class SimpleList extends StatelessWidget {
     this.onRefresh,
     this.refreshHeader,
     this.refreshFooter,
-  })  : assert(itemCount == null || itemCount >= 0),
-        enablePullDown = enablePullDown ?? false,
-        enablePullUp = enablePullUp ?? false,
+  })  : assert(itemCount >= 0),
         separatorBuilder = null,
         children = null,
-        noScrollBehavior = noScrollBehavior ?? true,
-        crossAxisCount = crossAxisCount ?? 1,
-        crossAxisFlex = crossAxisFlex ?? false,
-        assert(!(crossAxisFlex ?? false) ||
+        assert(!crossAxisFlex ||
             (maxCrossAxisExtent != null && maxCrossAxisExtent > 0)),
-        mainAxisSpacing = mainAxisSpacing ?? 0,
-        crossAxisSpacing = crossAxisSpacing ?? 0,
-        childAspectRatio = childAspectRatio ?? 1,
         super(key: key);
 
   const SimpleList.separated({
-    Key key,
+    Key? key,
+    this.enablePullDown = false,
+    this.enablePullUp = false,
+    this.noScrollBehavior = false,
+    this.crossAxisFlex = false,
     this.scrollDirection = Axis.vertical,
     this.reverse = false,
     this.controller,
-    this.primary,
+    this.primary = false,
     this.physics,
     this.shrinkWrap = true,
     this.padding,
-    @required this.itemBuilder,
-    @required this.itemCount,
-    @required this.separatorBuilder,
+    required this.itemBuilder,
+    required this.itemCount,
+    required this.separatorBuilder,
     this.cacheExtent,
     this.clipBehavior = Clip.hardEdge,
-    bool noScrollBehavior,
-    Widget placeholder,
-    bool enablePullDown,
-    bool enablePullUp,
+    this.placeholder,
     this.refreshController,
     this.onLoading,
     this.onRefresh,
@@ -120,15 +104,9 @@ class SimpleList extends StatelessWidget {
     this.refreshFooter,
   })  : assert(itemBuilder != null),
         assert(separatorBuilder != null),
-        assert(itemCount != null && itemCount >= 0),
-        enablePullDown = enablePullDown ?? false,
-        enablePullUp = enablePullUp ?? false,
+        assert(itemCount >= 0),
         children = null,
-        noScrollBehavior = noScrollBehavior ?? true,
-        placeholder =
-            placeholder ?? const PlaceholderChild(margin: EdgeInsets.all(10)),
         itemExtent = null,
-        crossAxisFlex = false,
         crossAxisCount = 1,
         mainAxisSpacing = 0,
         crossAxisSpacing = 0,
@@ -137,11 +115,11 @@ class SimpleList extends StatelessWidget {
         super(key: key);
 
   /// [itemCount]==0 || [children].length==0 显示此组件
-  final Widget placeholder;
-  final IndexedWidgetBuilder itemBuilder;
-  final IndexedWidgetBuilder separatorBuilder;
+  final Widget? placeholder;
+  final IndexedWidgetBuilder? itemBuilder;
+  final IndexedWidgetBuilder? separatorBuilder;
   final int itemCount;
-  final List<Widget> children;
+  final List<Widget>? children;
 
   final Clip clipBehavior;
   final Axis scrollDirection;
@@ -149,11 +127,11 @@ class SimpleList extends StatelessWidget {
   ///  刷新组件相关
   final bool enablePullDown;
   final bool enablePullUp;
-  final RefreshController refreshController;
-  final VoidCallback onLoading;
-  final VoidCallback onRefresh;
-  final Widget refreshHeader;
-  final Widget refreshFooter;
+  final RefreshController? refreshController;
+  final VoidCallback? onLoading;
+  final VoidCallback? onRefresh;
+  final Widget? refreshHeader;
+  final Widget? refreshFooter;
 
   /// 是否倒置列表
   final bool reverse;
@@ -166,13 +144,13 @@ class SimpleList extends StatelessWidget {
   /// NeverScrollableScrollPhysics() 禁止滚动
   /// BouncingScrollPhysics()  内容超过一屏 上拉有回弹效果
   /// ClampingScrollPhysics()  包裹内容 不会有回弹
-  final ScrollPhysics physics;
+  final ScrollPhysics? physics;
 
   /// 是否显示头部和底部蓝色阴影
   final bool noScrollBehavior;
 
-  final ScrollController controller;
-  final EdgeInsetsGeometry padding;
+  final ScrollController? controller;
+  final EdgeInsetsGeometry? padding;
 
   /// 是否开启列数自适应
   /// [crossAxisFlex]=true 为多列 且宽度自适应
@@ -189,16 +167,16 @@ class SimpleList extends StatelessWidget {
   final double crossAxisSpacing;
 
   ///  单个子Widget的水平最大宽度
-  final double maxCrossAxisExtent;
+  final double? maxCrossAxisExtent;
 
   ///  子 Widget 宽高比例 [crossAxisCount]>1是 有效
   final double childAspectRatio;
 
   /// 确定每一个item的高度 会让item加载更加高效
-  final double itemExtent;
+  final double? itemExtent;
 
   /// 设置预加载的区域
-  final double cacheExtent;
+  final double? cacheExtent;
 
   /// 如果内容不足，则用户无法滚动 而如果[primary]为true，它们总是可以尝试滚动。
   final bool primary;
@@ -207,10 +185,10 @@ class SimpleList extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget widget = Container();
     if (children != null)
-      widget = children.isNotEmpty
+      widget = children!.isNotEmpty
           ? custom
           : (placeholder ?? const PlaceholderChild());
-    if (itemBuilder != null && itemCount != null) {
+    if (itemBuilder != null) {
       if (itemCount < 1) {
         widget = placeholder ?? const PlaceholderChild();
       } else {
@@ -222,7 +200,7 @@ class SimpleList extends StatelessWidget {
   }
 
   ScrollList get custom => ScrollList.custom(
-      children: children,
+      children: children!,
       scrollDirection: scrollDirection,
       reverse: reverse,
       controller: controller,
@@ -241,9 +219,9 @@ class SimpleList extends StatelessWidget {
       noScrollBehavior: noScrollBehavior);
 
   ScrollList get separated => ScrollList.separated(
-      itemBuilder: itemBuilder,
+      itemBuilder: itemBuilder!,
       itemCount: itemCount,
-      separatorBuilder: separatorBuilder,
+      separatorBuilder: separatorBuilder!,
       scrollDirection: scrollDirection,
       reverse: reverse,
       controller: controller,
@@ -256,7 +234,7 @@ class SimpleList extends StatelessWidget {
       noScrollBehavior: noScrollBehavior);
 
   ScrollList get builder => ScrollList.builder(
-      itemBuilder: itemBuilder,
+      itemBuilder: itemBuilder!,
       itemCount: itemCount,
       scrollDirection: scrollDirection,
       reverse: reverse,
@@ -290,99 +268,87 @@ class SimpleList extends StatelessWidget {
 /// 自定义List Grid  List
 class ScrollList extends BoxScrollView {
   ScrollList.custom({
-    Key key,
-    Axis scrollDirection = Axis.vertical,
-    bool reverse = false,
-    ScrollController controller,
-    bool primary,
-    ScrollPhysics physics,
-    bool shrinkWrap = true,
-    EdgeInsetsGeometry padding,
+    Key? key,
     bool addAutomaticKeepALives = true,
     bool addRepaintBoundaries = true,
     bool addSemanticIndexes = true,
-    double cacheExtent,
-    @required List<Widget> children,
+    bool reverse = false,
+    bool primary = false,
+    bool shrinkWrap = true,
+    Axis scrollDirection = Axis.vertical,
+    ScrollController? controller,
+    ScrollPhysics? physics = const BouncingScrollPhysics(),
+    EdgeInsetsGeometry? padding = EdgeInsets.zero,
+    double? cacheExtent,
     DragStartBehavior dragStartBehavior = DragStartBehavior.start,
-    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior,
-    String restorationId,
+    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
+        ScrollViewKeyboardDismissBehavior.manual,
+    String? restorationId,
     Clip clipBehavior = Clip.hardEdge,
     this.itemExtent,
-    bool noScrollBehavior,
-    bool crossAxisFlex,
-    int crossAxisCount,
-    double mainAxisSpacing,
-    double crossAxisSpacing,
+    this.noScrollBehavior = false,
+    this.crossAxisCount = 1,
+    this.crossAxisFlex = false,
+    this.mainAxisSpacing = 0,
+    this.crossAxisSpacing = 0,
+    this.childAspectRatio = 1,
     this.maxCrossAxisExtent,
-    double childAspectRatio,
-  })  : childrenDelegate = SliverChildListDelegate(children ?? const <Widget>[],
-            addAutomaticKeepAlives: addAutomaticKeepALives ?? true,
-            addRepaintBoundaries: addRepaintBoundaries ?? true,
-            addSemanticIndexes: addSemanticIndexes ?? true),
-        noScrollBehavior = noScrollBehavior ?? true,
-        crossAxisCount = crossAxisCount ?? 1,
-        crossAxisFlex = crossAxisFlex ?? false,
-        assert(!(crossAxisFlex ?? false) ||
+    required List<Widget> children,
+  })   : childrenDelegate = SliverChildListDelegate(children,
+            addAutomaticKeepAlives: addAutomaticKeepALives,
+            addRepaintBoundaries: addRepaintBoundaries,
+            addSemanticIndexes: addSemanticIndexes),
+        assert(!crossAxisFlex ||
             (maxCrossAxisExtent != null && maxCrossAxisExtent > 0)),
-        mainAxisSpacing = mainAxisSpacing ?? 0,
-        crossAxisSpacing = crossAxisSpacing ?? 0,
-        childAspectRatio = childAspectRatio ?? 1,
         super(
             key: key,
-            scrollDirection: scrollDirection ?? Axis.vertical,
-            reverse: reverse ?? false,
+            scrollDirection: scrollDirection,
+            reverse: reverse,
             controller: controller,
-            primary: primary ?? false,
-            physics: physics ?? const BouncingScrollPhysics(),
-            shrinkWrap: shrinkWrap ?? true,
-            padding: padding ?? EdgeInsets.zero,
+            primary: primary,
+            physics: physics,
+            shrinkWrap: shrinkWrap,
+            padding: padding,
             cacheExtent: cacheExtent,
-            semanticChildCount: children?.length ?? 0,
-            dragStartBehavior: dragStartBehavior ?? DragStartBehavior.start,
-            keyboardDismissBehavior: keyboardDismissBehavior ??
-                ScrollViewKeyboardDismissBehavior.manual,
+            semanticChildCount: children.length,
+            dragStartBehavior: dragStartBehavior,
+            keyboardDismissBehavior: keyboardDismissBehavior,
             restorationId: restorationId,
             clipBehavior: clipBehavior);
 
   ScrollList.builder({
-    Key key,
-    Axis scrollDirection = Axis.vertical,
-    bool reverse = false,
-    ScrollController controller,
-    bool primary,
-    ScrollPhysics physics,
-    bool shrinkWrap = true,
-    EdgeInsetsGeometry padding,
-    this.itemExtent,
-    @required IndexedWidgetBuilder itemBuilder,
-    @required int itemCount,
+    Key? key,
     bool addAutomaticKeepALives = true,
     bool addRepaintBoundaries = true,
     bool addSemanticIndexes = true,
-    double cacheExtent,
-    int semanticChildCount,
+    bool reverse = false,
+    bool primary = false,
+    bool shrinkWrap = true,
+    Axis scrollDirection = Axis.vertical,
+    ScrollController? controller,
+    ScrollPhysics? physics = const BouncingScrollPhysics(),
+    EdgeInsetsGeometry? padding = EdgeInsets.zero,
+    double? cacheExtent,
+    int? semanticChildCount,
     DragStartBehavior dragStartBehavior = DragStartBehavior.start,
     ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
         ScrollViewKeyboardDismissBehavior.manual,
-    String restorationId,
+    String? restorationId,
     Clip clipBehavior = Clip.hardEdge,
-    bool noScrollBehavior,
-    int crossAxisCount,
-    bool crossAxisFlex,
-    double mainAxisSpacing,
-    double crossAxisSpacing,
-    double childAspectRatio,
+    this.itemExtent,
+    this.noScrollBehavior = false,
+    this.crossAxisCount = 1,
+    this.crossAxisFlex = false,
+    this.mainAxisSpacing = 0,
+    this.crossAxisSpacing = 0,
+    this.childAspectRatio = 1,
     this.maxCrossAxisExtent,
-  })  : assert(itemCount == null || itemCount >= 0),
+    required IndexedWidgetBuilder itemBuilder,
+    required int itemCount,
+  })   : assert(itemCount >= 0),
         assert(semanticChildCount == null || semanticChildCount <= itemCount),
-        noScrollBehavior = noScrollBehavior ?? true,
-        crossAxisCount = crossAxisCount ?? 1,
-        crossAxisFlex = crossAxisFlex ?? false,
-        assert(!(crossAxisFlex ?? false) ||
+        assert(!crossAxisFlex ||
             (maxCrossAxisExtent != null && maxCrossAxisExtent > 0)),
-        mainAxisSpacing = mainAxisSpacing ?? 0,
-        crossAxisSpacing = crossAxisSpacing ?? 0,
-        childAspectRatio = childAspectRatio ?? 1,
         childrenDelegate = SliverChildBuilderDelegate(itemBuilder,
             childCount: itemCount,
             addAutomaticKeepAlives: addAutomaticKeepALives,
@@ -390,47 +356,43 @@ class ScrollList extends BoxScrollView {
             addSemanticIndexes: addSemanticIndexes),
         super(
             key: key,
-            scrollDirection: scrollDirection ?? Axis.vertical,
-            reverse: reverse ?? false,
+            scrollDirection: scrollDirection,
+            reverse: reverse,
             controller: controller,
-            primary: primary ?? false,
-            physics: physics ?? const BouncingScrollPhysics(),
-            shrinkWrap: shrinkWrap ?? true,
-            padding: padding ?? EdgeInsets.zero,
+            primary: primary,
+            physics: physics,
+            shrinkWrap: shrinkWrap,
+            padding: padding,
             cacheExtent: cacheExtent,
-            semanticChildCount: semanticChildCount ?? itemCount,
-            dragStartBehavior: dragStartBehavior ?? DragStartBehavior.start,
-            keyboardDismissBehavior: keyboardDismissBehavior ??
-                ScrollViewKeyboardDismissBehavior.manual,
+            semanticChildCount: semanticChildCount,
+            dragStartBehavior: dragStartBehavior,
+            keyboardDismissBehavior: keyboardDismissBehavior,
             restorationId: restorationId,
             clipBehavior: clipBehavior);
 
   ScrollList.separated({
-    Key key,
+    Key? key,
     Axis scrollDirection = Axis.vertical,
     bool reverse = false,
-    ScrollController controller,
-    bool primary,
-    ScrollPhysics physics,
+    ScrollController? controller,
+    bool primary = false,
+    ScrollPhysics? physics = const BouncingScrollPhysics(),
     bool shrinkWrap = true,
-    EdgeInsetsGeometry padding,
-    @required IndexedWidgetBuilder itemBuilder,
-    @required int itemCount,
-    @required IndexedWidgetBuilder separatorBuilder,
+    EdgeInsetsGeometry? padding = EdgeInsets.zero,
     bool addAutomaticKeepALives = true,
     bool addRepaintBoundaries = true,
     bool addSemanticIndexes = true,
-    double cacheExtent,
+    double? cacheExtent,
     DragStartBehavior dragStartBehavior = DragStartBehavior.start,
     ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
         ScrollViewKeyboardDismissBehavior.manual,
-    String restorationId,
+    String? restorationId,
     Clip clipBehavior = Clip.hardEdge,
-    bool noScrollBehavior,
-  })  : assert(itemBuilder != null),
-        assert(separatorBuilder != null),
-        assert(itemCount != null && itemCount >= 0),
-        noScrollBehavior = noScrollBehavior ?? true,
+    this.noScrollBehavior = false,
+    required IndexedWidgetBuilder itemBuilder,
+    required int itemCount,
+    required IndexedWidgetBuilder separatorBuilder,
+  })   : assert(itemCount >= 0),
         itemExtent = null,
         crossAxisFlex = false,
         crossAxisCount = 1,
@@ -441,7 +403,7 @@ class ScrollList extends BoxScrollView {
         childrenDelegate = SliverChildBuilderDelegate(
             (BuildContext context, int index) {
           final int itemIndex = index ~/ 2;
-          Widget widget;
+          Widget? widget;
           if (index.isEven) {
             widget = itemBuilder(context, itemIndex);
           } else {
@@ -462,18 +424,17 @@ class ScrollList extends BoxScrollView {
                 index.isEven ? index ~/ 2 : null),
         super(
             key: key,
-            scrollDirection: scrollDirection ?? Axis.vertical,
-            reverse: reverse ?? false,
+            scrollDirection: scrollDirection,
+            reverse: reverse,
             controller: controller,
-            primary: primary ?? false,
-            physics: physics ?? const BouncingScrollPhysics(),
-            shrinkWrap: shrinkWrap ?? true,
-            padding: padding ?? EdgeInsets.zero,
+            primary: primary,
+            physics: physics,
+            shrinkWrap: shrinkWrap,
+            padding: padding,
             cacheExtent: cacheExtent,
             semanticChildCount: itemCount,
-            dragStartBehavior: dragStartBehavior ?? DragStartBehavior.start,
-            keyboardDismissBehavior: keyboardDismissBehavior ??
-                ScrollViewKeyboardDismissBehavior.manual,
+            dragStartBehavior: dragStartBehavior,
+            keyboardDismissBehavior: keyboardDismissBehavior,
             restorationId: restorationId,
             clipBehavior: clipBehavior);
 
@@ -499,18 +460,18 @@ class ScrollList extends BoxScrollView {
   final double crossAxisSpacing;
 
   ///  单个子Widget的水平最大宽度
-  final double maxCrossAxisExtent;
+  final double? maxCrossAxisExtent;
 
   ///  子 Widget 宽高比例 [crossAxisCount]>1是 有效
   final double childAspectRatio;
 
   /// 确定每一个item的高度 会让item加载更加高效
-  final double itemExtent;
+  final double? itemExtent;
 
   /// ***** 自定义Delegate ***** ///
   ///  SliverChildBuilderDelegate
   ///  SliverChildListDelegate
-  final SliverChildDelegate childrenDelegate;
+  final SliverChildDelegate? childrenDelegate;
 
   /// SliverGridDelegateWithMaxCrossAxisExtent
   /// SliverGridDelegateWithFixedCrossAxisCount
@@ -522,10 +483,10 @@ class ScrollList extends BoxScrollView {
 
     if (crossAxisCount > 1 || crossAxisFlex) {
       widget = SliverGrid(
-          delegate: childrenDelegate,
+          delegate: childrenDelegate!,
           gridDelegate: crossAxisFlex
               ? SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: maxCrossAxisExtent,
+                  maxCrossAxisExtent: maxCrossAxisExtent!,
                   mainAxisSpacing: mainAxisSpacing,
                   crossAxisSpacing: crossAxisSpacing)
               : SliverGridDelegateWithFixedCrossAxisCount(
@@ -535,9 +496,9 @@ class ScrollList extends BoxScrollView {
                   crossAxisSpacing: crossAxisSpacing));
     } else {
       widget = itemExtent == null
-          ? SliverList(delegate: childrenDelegate)
+          ? SliverList(delegate: childrenDelegate!)
           : SliverFixedExtentList(
-              delegate: childrenDelegate, itemExtent: itemExtent);
+              delegate: childrenDelegate!, itemExtent: itemExtent!);
     }
     if (noScrollBehavior)
       return ScrollConfiguration(behavior: NoScrollBehavior(), child: widget);
@@ -558,20 +519,20 @@ class ScrollList extends BoxScrollView {
 
 class ListEntry extends StatelessWidget {
   const ListEntry(
-      {Key key,
-      bool isThreeLine,
-      bool enabled,
-      bool dense,
-      bool arrow,
-      String titleText,
-      double arrowSize,
+      {Key? key,
+      this.isThreeLine = false,
+      this.enabled = true,
+      this.dense = true,
+      this.arrow = false,
+      this.inkWell = false,
+      this.titleText = '',
+      this.arrowSize = 15,
       this.onTap,
       this.heroTag,
       this.onDoubleTap,
       this.onLongPress,
       this.title,
       this.height,
-      this.inkWell,
       this.padding,
       this.margin,
       this.decoration,
@@ -586,78 +547,72 @@ class ListEntry extends StatelessWidget {
       this.prefix,
       this.arrowColor,
       this.arrowIcon})
-      : isThreeLine = isThreeLine ?? false,
-        arrow = arrow ?? false,
-        enabled = enabled ?? true,
-        dense = dense ?? true,
-        arrowSize = arrowSize ?? 15,
-        titleText = titleText ?? '',
-        super(key: key);
+      : super(key: key);
 
   ///  单击事件
-  final GestureTapCallback onTap;
+  final GestureTapCallback? onTap;
 
   ///  双击事件
-  final GestureTapCallback onDoubleTap;
+  final GestureTapCallback? onDoubleTap;
 
   ///  长按事件
-  final GestureLongPressCallback onLongPress;
+  final GestureLongPressCallback? onLongPress;
 
   ///  显示三行
   final bool isThreeLine;
 
   ///  是否默认3行高度，subtitle不为空时才能使用
-  final bool selected;
+  final bool? selected;
 
   ///  设置为true后 高度变小 默认为true
   final bool dense;
 
   ///  内边距
-  final EdgeInsetsGeometry contentPadding;
+  final EdgeInsetsGeometry? contentPadding;
 
   ///  左侧widget
-  final Widget leading;
+  final Widget? leading;
 
   ///  副标题
-  final Widget subtitle;
+  final Widget? subtitle;
 
   ///  右侧widget
-  final Widget child;
+  final Widget? child;
 
   ///  右边是否有箭头
   final bool arrow;
-  final Widget arrowIcon;
+  final Widget? arrowIcon;
   final double arrowSize;
-  final Color arrowColor;
+  final Color? arrowColor;
 
   ///  中间内容
-  final Widget title;
+  final Widget? title;
   final String titleText;
-  final TextStyle titleStyle;
-  final String heroTag;
+  final TextStyle? titleStyle;
+  final String? heroTag;
 
   ///  高
-  final double height;
+  final double? height;
 
   ///  前缀
-  final Widget prefix;
+  final Widget? prefix;
 
-  final EdgeInsetsGeometry padding;
-  final EdgeInsetsGeometry margin;
+  final EdgeInsetsGeometry? padding;
+  final EdgeInsetsGeometry? margin;
   final bool inkWell;
-  final Color underlineColor;
-  final Color color;
+  final Color? underlineColor;
+  final Color? color;
 
   ///  是否可点击
   final bool enabled;
 
   ///  整个ListEntry装饰器
-  final BoxDecoration decoration;
+  final BoxDecoration? decoration;
 
   @override
   Widget build(BuildContext context) {
     final List<Widget> children = <Widget>[];
-    if (prefix != null) children.add(prefix);
+    if (prefix != null) children.add(prefix!);
     children.add(listTile);
     if (arrow || arrowIcon != null) children.add(arrowIcon ?? arrowWidget);
     return Universal(
@@ -674,9 +629,9 @@ class ListEntry extends StatelessWidget {
         children: children);
   }
 
-  Decoration get defaultDecoration => underlineColor != null || color != null
+  Decoration? get defaultDecoration => underlineColor != null || color != null
       ? WayStyles.containerUnderlineBackground(
-          underlineColor: underlineColor, color: color)
+          underlineColor: underlineColor!, color: color!)
       : null;
 
   Widget get arrowWidget =>
@@ -695,7 +650,7 @@ class ListEntry extends StatelessWidget {
           selected: selected ?? false));
 
   Widget hero(Widget text) {
-    if (heroTag != null) return Hero(tag: heroTag, child: text);
+    if (heroTag != null) return Hero(tag: heroTag!, child: text);
     return text;
   }
 }

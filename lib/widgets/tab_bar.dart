@@ -4,48 +4,47 @@ import 'package:flutter_waya/flutter_waya.dart';
 
 class TabBarMerge extends StatelessWidget {
   const TabBarMerge({
-    Key key,
-    @required this.tabBar,
-    @required this.controller,
-    bool reverse,
-    double viewHeight,
+    Key? key,
+    required this.tabBar,
+    this.tabView,
+    required this.controller,
+    this.reverse = false,
+    this.viewHeight = 0,
     this.physics,
     this.width,
     this.among,
     this.header,
     this.footer,
-    this.tabView,
     this.margin,
     this.padding,
     this.decoration,
     this.constraints,
-  })  : viewHeight = viewHeight ?? 0,
-        reverse = reverse ?? false,
-        super(key: key);
+  }) : super(key: key);
 
   ///  建议传 TabBarBox
   final Widget tabBar;
 
   ///  头部
-  final Widget header;
+  final Widget? header;
 
   ///  tabBar和tabBarView中间层
-  final Widget among;
+  final Widget? among;
 
   ///  底部
-  final Widget footer;
+  final Widget? footer;
 
   ///  控制器
   final TabController controller;
 
+  final List<Widget>? tabView;
+
   ///  作用于tabView
-  final List<Widget> tabView;
-  final EdgeInsetsGeometry margin;
-  final EdgeInsetsGeometry padding;
-  final Decoration decoration;
-  final BoxConstraints constraints;
-  final double width;
-  final ScrollPhysics physics;
+  final EdgeInsetsGeometry? margin;
+  final EdgeInsetsGeometry? padding;
+  final Decoration? decoration;
+  final BoxConstraints? constraints;
+  final double? width;
+  final ScrollPhysics? physics;
   final double viewHeight;
 
   ///  [tabBar],[tabView] 反转
@@ -54,16 +53,16 @@ class TabBarMerge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Widget> children = <Widget>[];
-    if (header != null) children.add(header);
+    if (header != null) children.add(header!);
     children
-        .add(tabView == null ? tabBar : (reverse ? tabBarUniversal() : tabBar));
-    if (among != null) children.add(among);
-    if (tabView != null) children.add(reverse ? tabBar : tabBarUniversal());
-    if (footer != null) children.add(footer);
+        .add(tabView == null ? tabBar : (reverse ? tabBarUniversal : tabBar));
+    if (among != null) children.add(among!);
+    if (tabView != null) children.add(reverse ? tabBar : tabBarUniversal);
+    if (footer != null) children.add(footer!);
     return Column(children: children);
   }
 
-  Widget tabBarUniversal() => Universal(
+  Widget get tabBarUniversal => Universal(
       expanded: viewHeight == 0,
       margin: margin,
       padding: padding,
@@ -72,16 +71,16 @@ class TabBarMerge extends StatelessWidget {
       width: width,
       height: viewHeight == 0 ? null : viewHeight,
       child: TabBarView(
-          controller: controller, physics: physics, children: tabView));
+          controller: controller, physics: physics, children: tabView!));
 }
 
 class TabBarBox extends StatelessWidget {
   const TabBarBox({
-    Key key,
-    EdgeInsetsGeometry indicatorPadding,
-    TabBarLevelPosition levelPosition,
-    @required this.controller,
-    @required this.tabs,
+    Key? key,
+    required this.controller,
+    required this.tabs,
+    this.indicatorPadding = EdgeInsets.zero,
+    this.levelPosition = TabBarLevelPosition.right,
     this.labelPadding,
     this.isScrollable,
     this.alignment,
@@ -99,49 +98,46 @@ class TabBarBox extends StatelessWidget {
     this.decoration,
     this.width,
     this.onTap,
-  })  : levelPosition = levelPosition ?? TabBarLevelPosition.right,
-        indicatorPadding = indicatorPadding ?? EdgeInsets.zero,
-        super(key: key);
+  }) : super(key: key);
   final TabController controller;
+  final List<Widget> tabs;
 
   ///  作用于label
-  final EdgeInsetsGeometry labelPadding;
+  final EdgeInsetsGeometry? labelPadding;
 
   ///  作用于指示器
   final EdgeInsetsGeometry indicatorPadding;
 
   ///  指示器高度
-  final double indicatorWeight;
-  final TabBarIndicatorSize indicatorSize;
+  final double? indicatorWeight;
+  final TabBarIndicatorSize? indicatorSize;
 
   ///  tabBar 指示器
-  final Decoration indicator;
-
-  final List<Widget> tabs;
+  final Decoration? indicator;
 
   ///  true 最小宽度，false充满最大宽度
-  final bool isScrollable;
+  final bool? isScrollable;
 
   ///  tabBar 位置
   final TabBarLevelPosition levelPosition;
 
   ///  选中与未选中的指示器和字体样式和颜色，
-  final Color selectedLabelColor;
-  final Color unselectedLabelColor;
-  final TextStyle selectedLabelStyle;
-  final TextStyle unselectedLabelStyle;
+  final Color? selectedLabelColor;
+  final Color? unselectedLabelColor;
+  final TextStyle? selectedLabelStyle;
+  final TextStyle? unselectedLabelStyle;
 
   ///  tabBar 水平左边或者右边的Widget 添加标签
-  final Widget tabBarLevel;
+  final Widget? tabBarLevel;
 
   ///  作用于整个tabBar
-  final AlignmentGeometry alignment;
-  final EdgeInsetsGeometry margin;
-  final EdgeInsetsGeometry padding;
-  final double height;
-  final double width;
-  final Decoration decoration;
-  final ValueChanged<int> onTap;
+  final AlignmentGeometry? alignment;
+  final EdgeInsetsGeometry? margin;
+  final EdgeInsetsGeometry? padding;
+  final double? height;
+  final double? width;
+  final Decoration? decoration;
+  final ValueChanged<int>? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -150,10 +146,10 @@ class TabBarBox extends StatelessWidget {
       switch (levelPosition) {
         case TabBarLevelPosition.right:
           children.add(Expanded(child: tabBarWidget));
-          children.add(tabBarLevel);
+          children.add(tabBarLevel!);
           break;
         case TabBarLevelPosition.left:
-          children.add(tabBarLevel);
+          children.add(tabBarLevel!);
           children.add(Expanded(child: tabBarWidget));
           break;
       }
@@ -188,65 +184,4 @@ class TabBarBox extends StatelessWidget {
         unselectedLabelStyle: unselectedLabelStyle,
         indicatorSize: indicatorSize ?? TabBarIndicatorSize.label,
       );
-}
-
-class TabNavigationPage extends StatefulWidget {
-  const TabNavigationPage(
-      {Key key,
-      this.arguments,
-      this.defaultTabIndex,
-      this.pageList,
-      @required this.navigationBarItem})
-      : assert(navigationBarItem != null),
-        super(key: key);
-
-  final Map<String, Object> arguments;
-  final List<BottomNavigationBarItem> navigationBarItem;
-  final List<Widget> pageList;
-  final int defaultTabIndex;
-
-  @override
-  _TabNavigationPageState createState() => _TabNavigationPageState();
-}
-
-class _TabNavigationPageState extends State<TabNavigationPage> {
-  int tabIndex = 0;
-  Widget currentPage;
-  List<Widget> pageList = <Widget>[];
-
-  @override
-  void initState() {
-    super.initState();
-    pageList = widget.pageList;
-    currentPage = pageList[widget.defaultTabIndex ?? tabIndex];
-  }
-
-  @override
-  Widget build(BuildContext context) => OverlayScaffold(
-        body: currentPage,
-        bottomNavigationBar: BottomNavigationBar(
-          selectedItemColor: ConstColors.blue,
-          unselectedItemColor: ConstColors.background,
-          backgroundColor: ConstColors.white,
-          items: widget.navigationBarItem ??
-              <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
-                    icon: barIcon(Icons.home), label: 'home'),
-                BottomNavigationBarItem(
-                    icon: barIcon(Icons.add_circle), label: 'center'),
-                BottomNavigationBarItem(
-                    icon: barIcon(Icons.account_circle), label: 'mine'),
-              ],
-
-          ///  超过5个页面，需加上此行，不然会无法显示颜色
-          type: BottomNavigationBarType.fixed,
-          onTap: (int index) => setState(() {
-            tabIndex = index;
-            currentPage = pageList[tabIndex];
-          }),
-          currentIndex: tabIndex,
-        ),
-      );
-
-  Widget barIcon(IconData icons) => Icon(icons, size: getWidth(24));
 }

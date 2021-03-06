@@ -11,18 +11,18 @@ typedef DropdownTitleIndexCallBack<int> = void Function(int value);
 
 class PopupBase extends StatelessWidget {
   const PopupBase(
-      {Key key,
-      double fuzzyDegree,
-      bool gaussian,
+      {Key? key,
+      double? fuzzyDegree,
+      bool? gaussian,
+      bool? addMaterial,
+      bool? ignoring,
+      double? left,
+      double? top,
+      double? right,
+      double? bottom,
+      AlignmentGeometry? alignment,
+      MainAxisSize? mainAxisSize,
       this.color,
-      bool addMaterial,
-      bool ignoring,
-      double left,
-      double top,
-      double right,
-      double bottom,
-      AlignmentGeometry alignment,
-      MainAxisSize mainAxisSize,
       this.behavior,
       this.child,
       this.onTap,
@@ -45,15 +45,15 @@ class PopupBase extends StatelessWidget {
         super(key: key);
 
   /// 顶层组件
-  final Widget child;
-  final List<Widget> children;
+  final Widget? child;
+  final List<Widget>? children;
 
   /// 背景事件
-  final GestureTapCallback onTap;
-  final HitTestBehavior behavior;
+  final GestureTapCallback? onTap;
+  final HitTestBehavior? behavior;
 
   /// 背景色
-  final Color color;
+  final Color? color;
 
   /// false 底层不响应事件  true 底层响应事件
   final bool ignoring;
@@ -78,16 +78,16 @@ class PopupBase extends StatelessWidget {
 
   //// [children] 不为null 时以下参数有效
   ///  ****** Flex ******  ///
-  final MainAxisAlignment mainAxisAlignment;
-  final CrossAxisAlignment crossAxisAlignment;
-  final Axis direction;
+  final MainAxisAlignment? mainAxisAlignment;
+  final CrossAxisAlignment? crossAxisAlignment;
+  final Axis? direction;
   final MainAxisSize mainAxisSize;
 
   ///  ****** SingleChildScrollView ******  ///
-  final bool isScroll;
+  final bool? isScroll;
 
   ///  ****** Stack ******  ///
-  final bool isStack;
+  final bool? isStack;
 
   @override
   Widget build(BuildContext context) {
@@ -124,11 +124,11 @@ class PopupBase extends StatelessWidget {
 
 class DropdownMenu extends StatefulWidget {
   const DropdownMenu({
-    Key key,
-    Color itemBackground,
-    Color titleBackground,
-    @required this.title,
-    @required this.value,
+    Key? key,
+    Color? itemBackground,
+    Color? titleBackground,
+    required this.title,
+    required this.value,
     this.titleTap,
     this.valueTap,
     this.titleStyle,
@@ -151,21 +151,21 @@ class DropdownMenu extends StatefulWidget {
   final List<List<String>> value;
 
   /// 点击头部item回调
-  final DropdownTitleIndexCallBack<int> titleTap;
+  final DropdownTitleIndexCallBack<int>? titleTap;
 
   /// 点击菜单的回调
-  final DropdownIndexCallback<int> valueTap;
-  final Color iconColor;
+  final DropdownIndexCallback<int>? valueTap;
+  final Color? iconColor;
   final Color itemBackground;
-  final Color background;
-  final Color titleBackground;
-  final TextStyle titleStyle;
-  final TextStyle valueStyle;
-  final double width;
-  final EdgeInsetsGeometry alertMargin;
-  final EdgeInsetsGeometry itemPadding;
-  final Decoration decoration;
-  final Decoration itemDecoration;
+  final Color? background;
+  final Color? titleBackground;
+  final TextStyle? titleStyle;
+  final TextStyle? valueStyle;
+  final double? width;
+  final EdgeInsetsGeometry? alertMargin;
+  final EdgeInsetsGeometry? itemPadding;
+  final Decoration? decoration;
+  final Decoration? itemDecoration;
 
   @override
   _DropdownMenuState createState() => _DropdownMenuState();
@@ -175,7 +175,7 @@ class _DropdownMenuState extends State<DropdownMenu> {
   List<String> title = <String>[];
   List<List<String>> value = <List<String>>[];
   List<bool> titleState = <bool>[];
-  GlobalKey titleKey = GlobalKey();
+  late GlobalKey titleKey = GlobalKey();
 
   void changeState(int index) => setState(() {
         titleState[index] = !titleState[index];
@@ -183,9 +183,9 @@ class _DropdownMenuState extends State<DropdownMenu> {
 
   void popupWidget(int index) {
     final RenderBox title =
-        titleKey.currentContext.findRenderObject() as RenderBox;
+        titleKey.currentContext!.findRenderObject() as RenderBox;
     final Offset local = title.localToGlobal(Offset.zero);
-    final double titleHeight = context.size.height;
+    final double titleHeight = context.size!.height;
 
     final ScrollList listBuilder = ScrollList.builder(
         itemCount: value[index].length,
@@ -194,7 +194,7 @@ class _DropdownMenuState extends State<DropdownMenu> {
               width: double.infinity,
               textStyle: widget.valueStyle,
               onTap: () {
-                if (widget.valueTap != null) widget.valueTap(index, i);
+                if (widget.valueTap != null) widget.valueTap!(index, i);
                 changeState(index);
               },
               alignment: Alignment.center,
@@ -241,7 +241,7 @@ class _DropdownMenuState extends State<DropdownMenu> {
   }
 
   List<Widget> titleChildren() {
-    if (title == null || title.isEmpty) return <Widget>[];
+    if (title.isEmpty) return <Widget>[];
     return title.length.generate((int index) {
       titleState.add(false);
       return IconBox(
@@ -258,15 +258,18 @@ class _DropdownMenuState extends State<DropdownMenu> {
   }
 
   void onTap(int index) {
-    if (widget.titleTap != null) widget.titleTap(index);
+    if (widget.titleTap != null) widget.titleTap!(index);
     final double keyboardHeight = getViewInsets.bottom;
     if (keyboardHeight > 0) {
       context.focusNode();
-      Timer timer;
+      Timer? timer;
       timer = Timer(const Duration(milliseconds: 300), () {
         changeState(index);
         popupWidget(index);
-        if (timer != null) timer.cancel();
+        if (timer != null) {
+          timer!.cancel();
+          timer = null;
+        }
       });
     } else {
       changeState(index);
@@ -277,12 +280,12 @@ class _DropdownMenuState extends State<DropdownMenu> {
 
 class PopupSureCancel extends StatelessWidget {
   const PopupSureCancel({
-    Key key,
-    Color backgroundColor,
-    Color barrierColor,
-    double width,
+    Key? key,
+    Color? backgroundColor,
+    Color? barrierColor,
+    double? width,
     this.height,
-    @required this.content,
+    required this.content,
     this.padding,
     this.sure,
     this.cancel,
@@ -305,34 +308,34 @@ class PopupSureCancel extends StatelessWidget {
   final Color barrierColor;
 
   /// 弹框
-  final EdgeInsetsGeometry padding;
+  final EdgeInsetsGeometry? padding;
 
   /// 确定按钮
-  final Widget sure;
+  final Widget? sure;
 
   /// 取消按钮
-  final Widget cancel;
+  final Widget? cancel;
 
   /// 背景是否可点击
-  final GestureTapCallback backsideTap;
+  final GestureTapCallback? backsideTap;
   final double width;
-  final double height;
-  final Decoration decoration;
+  final double? height;
+  final Decoration? decoration;
 
   /// 弹窗位置
-  final AlignmentGeometry alignment;
+  final AlignmentGeometry? alignment;
 
   /// 背景是否模糊
-  final bool gaussian;
+  final bool? gaussian;
 
   /// 是否添加Material Widget 部分组件需要基于Material
-  final bool addMaterial;
+  final bool? addMaterial;
 
   @override
   Widget build(BuildContext context) {
     final List<Widget> widgets = <Widget>[];
     widgets.add(content);
-    widgets.add(sureCancel());
+    if (cancel != null && sure != null) widgets.add(sureCancel());
     return PopupBase(
         addMaterial: addMaterial,
         gaussian: gaussian,
@@ -351,19 +354,19 @@ class PopupSureCancel extends StatelessWidget {
 
   Widget sureCancel() =>
       Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: <Widget>[
-        Expanded(child: cancel),
-        Expanded(child: sure),
+        Expanded(child: cancel!),
+        Expanded(child: sure!),
       ]);
 }
 
 class Loading extends Dialog {
   const Loading({
-    Key key,
-    LoadingType loadingType,
+    Key? key,
+    LoadingType? loadingType,
+    double? strokeWidth,
+    String? text,
+    Color? backgroundColor,
     this.textStyle,
-    double strokeWidth,
-    String text,
-    Color backgroundColor,
     this.custom,
     this.ignoring,
     this.gaussian,
@@ -378,23 +381,23 @@ class Loading extends Dialog {
         loadingType = loadingType ?? LoadingType.circular,
         super(key: key);
 
-  final double value;
-  final Animation<Color> valueColor;
-  final String semanticsLabel;
-  final String semanticsValue;
+  final double? value;
+  final Animation<Color>? valueColor;
+  final String? semanticsLabel;
+  final String? semanticsValue;
+  final TextStyle? textStyle;
+  final Widget? custom;
   final LoadingType loadingType;
-  final TextStyle textStyle;
+  final Color color;
   final double strokeWidth;
   final String text;
-  final Widget custom;
-  final Color color;
 
   /// 是否开始背景模糊
-  final bool gaussian;
-  final bool animatedOpacity;
+  final bool? gaussian;
+  final bool? animatedOpacity;
 
   /// 是否可以操作背景 默认false 不可操作
-  final bool ignoring;
+  final bool? ignoring;
 
   @override
   Widget build(BuildContext context) {

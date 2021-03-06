@@ -4,13 +4,14 @@ class ResponseModel extends Response<dynamic> {
   ResponseModel({
     this.type,
     this.statusMessageT,
-    dynamic data,
-    int statusCode,
-    String statusMessage,
-    Headers headers,
-    RequestOptions request,
-    List<RedirectRecord> redirects,
-    Map<String, dynamic> extra,
+    dynamic? data,
+    this.response,
+    int? statusCode,
+    String? statusMessage,
+    Headers? headers,
+    required RequestOptions request,
+    List<RedirectRecord>? redirects,
+    Map<String, dynamic>? extra,
   }) : super(
             data: data,
             headers: headers,
@@ -21,13 +22,16 @@ class ResponseModel extends Response<dynamic> {
             extra: extra);
 
   ///  语言翻译版 状态消息
-  String statusMessageT;
+  String? statusMessageT;
 
   ///  请求返回类型 [DioErrorType].toString
-  String type;
+  String? type;
+
+  /// dio response
+  Response<dynamic>? response;
 
   ///  保存的cookie
-  List<String> cookie;
+  List<String> cookie = <String>[];
 
   Map<String, dynamic> toMap() {
     final Map<String, dynamic> map = <String, dynamic>{};
@@ -53,29 +57,36 @@ class HttpStatus {
 }
 
 class AppConfig {
-  AppConfig({this.androidVersionCode, this.iosVersionCode, this.open});
+  AppConfig(
+      {this.androidVersionCode = 0,
+      this.iosVersionCode = 0,
+      this.open = false});
 
   AppConfig.fromJson(Map<dynamic, dynamic> json) {
     json['open'] == null ? open = false : open = json['open'] as bool;
-    iosVersionCode = json['iosVersionCode'] as int;
-    androidVersionCode = json['androidVersionCode'] as int;
+    json['iosVersionCode'] == null
+        ? iosVersionCode = 0
+        : iosVersionCode = json['iosVersionCode'] as int;
+    json['androidVersionCode'] == null
+        ? androidVersionCode = 0
+        : androidVersionCode = json['androidVersionCode'] as int;
   }
 
-  int androidVersionCode;
-  int iosVersionCode;
-  bool open;
+  late int androidVersionCode;
+  late int iosVersionCode;
+  late bool open;
 }
 
 class DateTimePickerUnit {
   DateTimePickerUnit(
       {this.year, this.month, this.day, this.hour, this.minute, this.second});
 
-  final String year;
-  final String month;
-  final String day;
-  final String hour;
-  final String minute;
-  final String second;
+  final String? year;
+  final String? month;
+  final String? day;
+  final String? hour;
+  final String? minute;
+  final String? second;
 
   int getLength() {
     int i = 0;

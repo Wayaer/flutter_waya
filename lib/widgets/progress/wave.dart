@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 
 class Wave extends StatefulWidget {
   const Wave({
-    Key key,
-    @required this.value,
-    @required this.color,
-    @required this.direction,
+    Key? key,
+    required this.value,
+    required this.color,
+    required this.direction,
   }) : super(key: key);
 
   final double value;
@@ -19,7 +19,7 @@ class Wave extends StatefulWidget {
 }
 
 class _WaveState extends State<Wave> with SingleTickerProviderStateMixin {
-  AnimationController _animationController;
+  late AnimationController _animationController;
 
   @override
   void initState() {
@@ -39,7 +39,7 @@ class _WaveState extends State<Wave> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) => AnimatedBuilder(
       animation: CurvedAnimation(
           parent: _animationController, curve: Curves.easeInOut),
-      builder: (BuildContext context, Widget child) => ClipPath(
+      builder: (BuildContext context, Widget? child) => ClipPath(
           child: Container(color: widget.color),
           clipper: _WaveClipper(
               animationValue: _animationController.value,
@@ -49,9 +49,9 @@ class _WaveState extends State<Wave> with SingleTickerProviderStateMixin {
 
 class _WaveClipper extends CustomClipper<Path> {
   _WaveClipper(
-      {@required this.animationValue,
-      @required this.value,
-      @required this.direction});
+      {required this.animationValue,
+      required this.value,
+      required this.direction});
 
   final double animationValue;
   final double value;

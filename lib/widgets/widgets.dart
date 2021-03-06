@@ -15,7 +15,11 @@ class NoScrollBehavior extends ScrollBehavior {
 ///  发送验证码
 class SendSMS extends StatefulWidget {
   const SendSMS(
-      {Key key,
+      {Key? key,
+      this.defaultText = '获取验证码',
+      this.sendingText = '发送中',
+      this.sentText = '重新发送',
+      this.notTapText = '重新发送',
       this.onTap,
       this.decoration,
       this.borderRadius,
@@ -24,40 +28,33 @@ class SendSMS extends StatefulWidget {
       this.notTapBorderColor,
       this.width,
       this.height,
-      String defaultText,
-      String sendingText,
-      String sentText,
-      String notTapText,
       this.defaultTextStyle,
       this.notTapTextStyle,
       this.background,
       this.seconds,
       this.margin,
       this.padding})
-      : defaultText = defaultText ?? '获取验证码',
-        sendingText = sendingText ?? '发送中',
-        sentText = sentText ?? '重新发送',
-        notTapText = notTapText ?? '重新发送',
-        super(key: key);
+      : super(key: key);
 
-  final Function onTap;
-  final Decoration decoration;
-  final BorderRadiusGeometry borderRadius;
-  final double borderWidth;
-  final double width;
-  final double height;
   final String defaultText;
   final String sendingText;
   final String sentText;
   final String notTapText;
-  final Color defaultBorderColor;
-  final Color notTapBorderColor;
-  final Color background;
-  final TextStyle defaultTextStyle;
-  final TextStyle notTapTextStyle;
-  final int seconds;
-  final EdgeInsetsGeometry margin;
-  final EdgeInsetsGeometry padding;
+
+  final Function? onTap;
+  final Decoration? decoration;
+  final BorderRadiusGeometry? borderRadius;
+  final double? borderWidth;
+  final double? width;
+  final double? height;
+  final Color? defaultBorderColor;
+  final Color? notTapBorderColor;
+  final Color? background;
+  final TextStyle? defaultTextStyle;
+  final TextStyle? notTapTextStyle;
+  final int? seconds;
+  final EdgeInsetsGeometry? margin;
+  final EdgeInsetsGeometry? padding;
 
   @override
   _SendSMSState createState() => _SendSMSState();
@@ -65,8 +62,8 @@ class SendSMS extends StatefulWidget {
 
 class _SendSMSState extends State<SendSMS> {
   int seconds = 0;
-  String verifyStr;
-  Timer timer;
+  late String verifyStr;
+  Timer? timer;
 
   @override
   void initState() {
@@ -98,15 +95,15 @@ class _SendSMSState extends State<SendSMS> {
         child: Text(verifyStr,
             style: seconds == 0
                 ? const BasisTextStyle(fontSize: 13, color: ConstColors.blue)
-                    .merge(widget?.defaultTextStyle)
+                    .merge(widget.defaultTextStyle)
                 : const BasisTextStyle(fontSize: 13, color: ConstColors.black70)
-                    .merge(widget?.notTapTextStyle)),
+                    .merge(widget.notTapTextStyle)),
       );
 
   void onTap() {
     verifyStr = widget.sendingText;
     setState(() {});
-    widget.onTap(send);
+    if (widget.onTap != null) widget.onTap!(send);
   }
 
   void send(bool sending) {
@@ -122,7 +119,7 @@ class _SendSMSState extends State<SendSMS> {
     seconds = widget.seconds ?? 60;
     timer = Timer.periodic(const Duration(seconds: 1), (Timer time) {
       if (seconds == 0) {
-        timer.cancel();
+        timer!.cancel();
         return;
       }
       seconds--;
@@ -135,38 +132,40 @@ class _SendSMSState extends State<SendSMS> {
   @override
   void dispose() {
     super.dispose();
-    if (timer != null) timer.cancel();
+    if (timer != null) {
+      timer!.cancel();
+      timer = null;
+    }
   }
 }
 
 ///  点击跳过
 class CountDownSkip extends StatefulWidget {
   const CountDownSkip({
-    Key key,
-    String skipText,
-    int seconds,
+    Key? key,
+    this.skipText = '',
+    this.seconds = 5,
     this.textStyle,
     this.onChange,
     this.onTap,
     this.decoration,
-  })  : skipText = skipText ?? '',
-        seconds = seconds ?? 5,
-        super(key: key);
+  }) : super(key: key);
 
   final String skipText;
   final int seconds;
-  final TextStyle textStyle;
-  final ValueChanged<int> onChange;
-  final GestureTapCallback onTap;
-  final Decoration decoration;
+
+  final TextStyle? textStyle;
+  final ValueChanged<int>? onChange;
+  final GestureTapCallback? onTap;
+  final Decoration? decoration;
 
   @override
   _CountDownSkipState createState() => _CountDownSkipState();
 }
 
 class _CountDownSkipState extends State<CountDownSkip> {
-  int seconds;
-  Timer timer;
+  late int seconds;
+  Timer? timer;
 
   @override
   void initState() {
@@ -177,7 +176,7 @@ class _CountDownSkipState extends State<CountDownSkip> {
         timer = Timer.periodic(const Duration(seconds: 1), (Timer time) {
           seconds -= 1;
           setState(() {});
-          if (widget.onChange != null) widget.onChange(seconds);
+          if (widget.onChange != null) widget.onChange!(seconds);
           if (seconds == 0) timer?.cancel();
         });
       }
@@ -200,54 +199,55 @@ class _CountDownSkipState extends State<CountDownSkip> {
   void dispose() {
     super.dispose();
     timer?.cancel();
+    timer = null;
   }
 }
 
 ///  侧滑菜单
 class CustomDismissible extends Dismissible {
-  const CustomDismissible(
-      {Key key,
+  const CustomDismissible({
+    required Key key,
+    required Widget child,
 
-      ///  滑动时组件下一层显示的内容
-      ///  没有设置secondaryBackground时，从右往左或者从左往右滑动都显示该内容
-      ///  设置了secondaryBackground后，从左往右滑动显示该内容，从右往左滑动显示secondaryBackground的内容
-      Widget background,
+    ///  滑动时组件下一层显示的内容
+    ///  没有设置secondaryBackground时，从右往左或者从左往右滑动都显示该内容
+    ///  设置了secondaryBackground后，从左往右滑动显示该内容，从右往左滑动显示secondaryBackground的内容
+    Widget? background,
 
-      ///  不能单独设置，只能在已经设置了background后才能设置，从右往左滑动时显示
-      Widget secondaryBackground,
+    ///  不能单独设置，只能在已经设置了background后才能设置，从右往左滑动时显示
+    Widget? secondaryBackground,
 
-      ///  组件消失前回调，可以弹出是否消失确认窗口。
-      ConfirmDismissCallback confirmDismiss,
+    ///  组件消失前回调，可以弹出是否消失确认窗口。
+    ConfirmDismissCallback? confirmDismiss,
 
-      ///  组件大小改变时回调
-      VoidCallback onResize,
+    ///  组件大小改变时回调
+    VoidCallback? onResize,
 
-      ///  组件消失后回调
-      DismissDirectionCallback onDismissed,
+    ///  组件消失后回调
+    DismissDirectionCallback? onDismissed,
 
-      ///  滑动方向（水平、垂直）
-      ///  默认DismissDirection.horizontal 水平
-      DismissDirection direction,
+    ///  滑动方向（水平、垂直）
+    ///  默认DismissDirection.horizontal 水平
+    DismissDirection? direction,
 
-      ///  组件大小改变的时长，默认300毫秒。Duration(milliseconds: 300)
-      Duration resizeDuration,
+    ///  组件大小改变的时长，默认300毫秒。Duration(milliseconds: 300)
+    Duration? resizeDuration,
 
-      ///  必须拖动项目的偏移阈值才能被视为已解除
-      Map<DismissDirection, double> dismissThresholds,
+    ///  必须拖动项目的偏移阈值才能被视为已解除
+    Map<DismissDirection, double>? dismissThresholds,
 
-      ///  组件消失的时长，默认200毫秒。Duration(milliseconds: 200)
-      Duration movementDuration,
+    ///  组件消失的时长，默认200毫秒。Duration(milliseconds: 200)
+    Duration? movementDuration,
 
-      ///  滑动时偏移量，默认0.0，
-      double crossAxisEndOffset,
+    ///  滑动时偏移量，默认0.0，
+    double? crossAxisEndOffset,
 
-      ///  拖动消失后组件大小改变方式
-      ///  start：下面组件向上滑动
-      ///  down：上面组件向下滑动
-      ///  默认DragStartBehavior.start
-      DragStartBehavior dragStartBehavior,
-      Widget child})
-      : super(
+    ///  拖动消失后组件大小改变方式
+    ///  start：下面组件向上滑动
+    ///  down：上面组件向下滑动
+    ///  默认DragStartBehavior.start
+    DragStartBehavior? dragStartBehavior,
+  }) : super(
           key: key,
           child: child,
           background: background,
@@ -269,8 +269,9 @@ class CustomDismissible extends Dismissible {
 ///  组件右上角加红点
 class HintDot extends StatelessWidget {
   const HintDot(
-      {Key key,
-      @required this.child,
+      {Key? key,
+      required this.child,
+      this.hide = false,
       this.pointPadding,
       this.width,
       this.height,
@@ -282,39 +283,37 @@ class HintDot extends StatelessWidget {
       this.bottom,
       this.left,
       this.pointSize,
-      bool hide,
       this.pointChild,
       this.alignment})
-      : hide = hide ?? false,
-        super(key: key);
+      : super(key: key);
 
-  final Widget child;
-  final Widget pointChild;
-  final double width;
-  final double height;
-  final GestureTapCallback onTap;
-  final EdgeInsetsGeometry margin;
-  final EdgeInsetsGeometry pointPadding;
-  final Color pointColor;
-  final double pointSize;
   final bool hide;
-  final double top;
-  final double right;
-  final double bottom;
-  final double left;
-  final AlignmentGeometry alignment;
+  final Widget child;
+
+  final Widget? pointChild;
+  final double? width;
+  final double? height;
+  final GestureTapCallback? onTap;
+  final EdgeInsetsGeometry? margin;
+  final EdgeInsetsGeometry? pointPadding;
+  final Color? pointColor;
+  final double? pointSize;
+  final double? top;
+  final double? right;
+  final double? bottom;
+  final double? left;
+  final AlignmentGeometry? alignment;
 
   @override
   Widget build(BuildContext context) {
     if (hide) return child;
-    final List<Widget> children = <Widget>[];
-    if (child != null) children.add(child);
+    final List<Widget> children = <Widget>[child];
     Widget dot = dotWidget;
-    if (alignment != null) dot = Align(alignment: alignment, child: dot);
+    if (alignment != null) dot = Align(alignment: alignment!, child: dot);
     if (right != null || top != null || bottom != null || left != null)
       dot = Positioned(
           right: right, top: top, bottom: bottom, left: left, child: dot);
-    if (dot != null) children.add(dot);
+    children.add(dot);
     return Universal(
         onTap: onTap,
         margin: margin,
@@ -336,15 +335,14 @@ class HintDot extends StatelessWidget {
 /// 旋转组件
 class ToggleRotate extends StatefulWidget {
   const ToggleRotate(
-      {Key key,
-      this.child,
-      @required this.onTap,
+      {Key? key,
+      required this.child,
+      required this.onTap,
       this.rad = pi / 2,
       this.clockwise = true,
-      Duration duration = const Duration(milliseconds: 200),
+      this.duration = const Duration(milliseconds: 200),
       this.curve = Curves.fastOutSlowIn})
-      : duration = duration ?? const Duration(milliseconds: 200),
-        super(key: key);
+      : super(key: key);
 
   final Widget child;
 
@@ -371,8 +369,8 @@ class _ToggleRotateState extends State<ToggleRotate>
     with SingleTickerProviderStateMixin {
   double _rad = 0;
   bool _rotated = false;
-  AnimationController _controller;
-  Animation<double> _rotate;
+  late AnimationController _controller;
+  late Animation<double> _rotate;
 
   @override
   void initState() {
@@ -408,38 +406,37 @@ const Duration _kExpand = Duration(milliseconds: 200);
 
 class NoBorderExpansionTile extends StatefulWidget {
   const NoBorderExpansionTile({
-    Key key,
+    Key? key,
     this.leading,
-    @required this.title,
+    required this.title,
+    this.children = const <Widget>[],
+    this.initiallyExpanded = false,
     this.subtitle,
     this.backgroundColor,
     this.onExpansionChanged,
-    this.children = const <Widget>[],
     this.trailing,
-    this.initiallyExpanded = false,
-  })  : assert(initiallyExpanded != null),
-        super(key: key);
+  }) : super(key: key);
 
   /// 标题左侧图标，
-  final Widget leading;
+  final Widget? leading;
 
   /// title:闭合时显示的标题，
   final Widget title;
 
   /// 副标题
-  final Widget subtitle;
+  final Widget? subtitle;
 
   /// 展开或关闭监听
-  final ValueChanged<bool> onExpansionChanged;
+  final ValueChanged<bool>? onExpansionChanged;
 
   /// 子元素，
   final List<Widget> children;
 
   ///  展开时的背景颜色，
-  final Color backgroundColor;
+  final Color? backgroundColor;
 
   ///  右侧的箭头
-  final Widget trailing;
+  final Widget? trailing;
 
   /// 初始状态是否展开，
   final bool initiallyExpanded;
@@ -461,12 +458,12 @@ class _ExpansionTileState extends State<ExpansionTile>
   final ColorTween _iconColorTween = ColorTween();
   final ColorTween _backgroundColorTween = ColorTween();
 
-  AnimationController _controller;
-  Animation<double> _iconTurns;
-  Animation<double> _heightFactor;
-  Animation<Color> _headerColor;
-  Animation<Color> _iconColor;
-  Animation<Color> _backgroundColor;
+  late AnimationController _controller;
+  late Animation<double> _iconTurns;
+  late Animation<double> _heightFactor;
+  late Animation<Color?> _headerColor;
+  late Animation<Color?> _iconColor;
+  late Animation<Color?> _backgroundColor;
 
   bool _isExpanded = false;
 
@@ -503,55 +500,53 @@ class _ExpansionTileState extends State<ExpansionTile>
       }
     });
     if (widget.onExpansionChanged != null)
-      widget.onExpansionChanged(_isExpanded);
+      widget.onExpansionChanged!(_isExpanded);
   }
-
-  Widget _buildChildren(BuildContext context, Widget child) => Universal(
-          color: _backgroundColor.value ?? Colors.transparent,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            ListTileTheme.merge(
-                iconColor: _iconColor.value,
-                textColor: _headerColor.value,
-                child: ListEntry(
-                    onTap: _handleTap,
-                    leading: widget.leading,
-                    title: widget.title,
-                    subtitle: widget.subtitle,
-                    child: widget.trailing ??
-                        RotationTransition(
-                          turns: _iconTurns,
-                          child: const Icon(Icons.expand_more),
-                        ))),
-            ClipRect(
-                child: Align(heightFactor: _heightFactor.value, child: child)),
-          ]);
 
   @override
   Widget build(BuildContext context) {
     final bool closed = !_isExpanded && _controller.isDismissed;
     return AnimatedBuilder(
         animation: _controller.view,
-        builder: _buildChildren,
+        builder: (BuildContext context, Widget? child) => Universal(
+                color: _backgroundColor.value ?? Colors.transparent,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  ListTileTheme.merge(
+                      iconColor: _iconColor.value,
+                      textColor: _headerColor.value,
+                      child: ListEntry(
+                          onTap: _handleTap,
+                          leading: widget.leading,
+                          title: widget.title,
+                          subtitle: widget.subtitle,
+                          child: widget.trailing ??
+                              RotationTransition(
+                                turns: _iconTurns,
+                                child: const Icon(Icons.expand_more),
+                              ))),
+                  ClipRect(
+                      child: Align(
+                          heightFactor: _heightFactor.value, child: child)),
+                ]),
         child: closed ? null : Column(children: widget.children));
   }
 }
 
 class CustomDrawer extends StatefulWidget {
   CustomDrawer({
-    Key key,
-    double elevation,
-    double width,
-    @required this.child,
+    Key? key,
+    double? width,
+    this.elevation = 16.0,
+    required this.child,
     this.backgroundColor,
     this.callback,
   })  : width = width ?? deviceWidth * 0.7,
-        elevation = elevation ?? 16.0,
         super(key: key);
 
-  final Color backgroundColor;
+  final Color? backgroundColor;
   final Widget child;
-  final DrawerCallback callback;
+  final DrawerCallback? callback;
   final double width;
   final double elevation;
 
@@ -562,13 +557,13 @@ class CustomDrawer extends StatefulWidget {
 class _CustomDrawerState extends State<CustomDrawer> {
   @override
   void initState() {
-    if (widget.callback != null) widget.callback(true);
+    if (widget.callback != null) widget.callback!(true);
     super.initState();
   }
 
   @override
   void dispose() {
-    if (widget.callback != null) widget.callback(false);
+    if (widget.callback != null) widget.callback!(false);
     super.dispose();
   }
 

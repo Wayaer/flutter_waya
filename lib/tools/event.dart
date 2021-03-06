@@ -21,7 +21,7 @@ class Event<T> {
   void listen(void onData(dynamic event)) =>
       _streamController.stream.listen(onData);
 
-  void error(dynamic error) => _streamController.addError(error);
+  void error(Object error) => _streamController.addError(error);
 
   void stream(Stream<T> stream) => _streamController.addStream(stream);
 }
@@ -33,24 +33,24 @@ class EventFactory {
     event = Event<dynamic>();
   }
 
-  static EventFactory get instance => _getInstance();
+  static EventFactory? get instance => _getInstance();
 
-  static EventFactory _instance;
+  static EventFactory? _instance;
 
-  Event<dynamic> event;
+  late Event<dynamic> event;
 
   static EventFactory _getInstance() {
     _instance ??= EventFactory._internal();
-    return _instance;
+    return _instance!;
   }
 }
 
-void sendEvent(dynamic message) => EventFactory.instance.event.send(message);
+void sendEvent(dynamic message) => EventFactory.instance!.event.send(message);
 
-void eventDestroy() => EventFactory.instance.event.close();
+void eventDestroy() => EventFactory.instance!.event.close();
 
 void eventListen(void onData(dynamic event)) =>
-    EventFactory.instance.event.listen(onData);
+    EventFactory.instance!.event.listen(onData);
 
 /// 订阅者回调签名
 typedef EventCallback = void Function(dynamic data);
@@ -66,19 +66,18 @@ class EventBus {
   static final EventBus _singleton = EventBus._internal();
 
   /// 保存事件订阅者队列，key:事件名(id)，value: 对应事件的订阅者队列
-  final Map<dynamic, List<EventCallback>> _map =
+  final Map<dynamic, List<EventCallback>?> _map =
       <dynamic, List<EventCallback>>{};
 
   /// 添加订阅者
   void add(String eventName, EventCallback eventCallback) {
-    if (eventName == null || eventCallback == null) return;
     _map[eventName] ??= <EventCallback>[];
-    _map[eventName].add(eventCallback);
+    _map[eventName]!.add(eventCallback);
   }
 
   /// 移除订阅者
-  void remove(dynamic eventName, [EventCallback eventCallback]) {
-    final List<EventCallback> list = _map[eventName];
+  void remove(dynamic eventName, [EventCallback? eventCallback]) {
+    final List<EventCallback>? list = _map[eventName];
     if (eventName == null || list == null) return;
     if (eventCallback == null) {
       _map[eventName] = null;
@@ -89,7 +88,7 @@ class EventBus {
 
   /// 触发事件，事件触发后该事件所有订阅者会被调用
   void emit(dynamic eventName, [dynamic data]) {
-    final List<EventCallback> list = _map[eventName];
+    final List<EventCallback>? list = _map[eventName];
     if (list == null) return;
     final int len = list.length - 1;
 

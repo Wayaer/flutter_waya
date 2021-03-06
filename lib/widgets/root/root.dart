@@ -12,27 +12,27 @@ part 'root_part.dart';
 GlobalKey<NavigatorState> _globalNavigatorKey = GlobalKey();
 List<GlobalKey<State>> _scaffoldKeyList = <GlobalKey<State>>[];
 List<OverlayEntryAuto> _overlayEntryList = <OverlayEntryAuto>[];
-OverlayState _overlay;
+OverlayState? _overlay;
 EventBus eventBus = EventBus();
 
 ///  GlobalWidgetsApp
 class GlobalWidgetsApp extends StatelessWidget {
   GlobalWidgetsApp({
-    Key key,
-    Map<String, WidgetBuilder> routes,
-    String title,
-    ThemeMode themeMode,
-    Locale locale,
-    Color color,
-    Iterable<LocalizationsDelegate<dynamic>> localizationsDelegates,
-    Iterable<Locale> supportedLocales,
-    bool debugShowMaterialGrid,
-    bool showPerformanceOverlay,
-    bool checkerboardRasterCacheImages,
-    bool checkerboardOffscreenLayers,
-    bool showSemanticsDebugger,
-    bool debugShowCheckedModeBanner,
-    List<NavigatorObserver> navigatorObservers,
+    Key? key,
+    Map<String, WidgetBuilder>? routes,
+    String? title,
+    ThemeMode? themeMode,
+    Locale? locale,
+    Color? color,
+    Iterable<LocalizationsDelegate<dynamic>>? localizationsDelegates,
+    Iterable<Locale>? supportedLocales,
+    bool? debugShowMaterialGrid,
+    bool? showPerformanceOverlay,
+    bool? checkerboardRasterCacheImages,
+    bool? checkerboardOffscreenLayers,
+    bool? showSemanticsDebugger,
+    bool? debugShowCheckedModeBanner,
+    List<NavigatorObserver>? navigatorObservers,
     this.navigatorKey,
     this.home,
     this.initialRoute,
@@ -74,41 +74,41 @@ class GlobalWidgetsApp extends StatelessWidget {
         super(key: key);
 
   ///  风格
-  final WidgetMode widgetMode;
+  final WidgetMode? widgetMode;
 
   ///  导航键
-  final GlobalKey<NavigatorState> navigatorKey;
+  final GlobalKey<NavigatorState>? navigatorKey;
 
   ///  主页
-  final Widget home;
+  final Widget? home;
 
   ///  初始路由
-  final String initialRoute;
+  final String? initialRoute;
 
   ///  生成路由
-  final RouteFactory onGenerateRoute;
+  final RouteFactory? onGenerateRoute;
 
   ///  未知路由
-  final RouteFactory onUnknownRoute;
+  final RouteFactory? onUnknownRoute;
 
   ///  建造者
-  final TransitionBuilder builder;
+  final TransitionBuilder? builder;
 
   ///  区域分辨回调
-  final LocaleListResolutionCallback localeListResolutionCallback;
+  final LocaleListResolutionCallback? localeListResolutionCallback;
 
-  final LocaleResolutionCallback localeResolutionCallback;
+  final LocaleResolutionCallback? localeResolutionCallback;
 
   ///  生成标题
-  final GenerateAppTitle onGenerateTitle;
+  final GenerateAppTitle? onGenerateTitle;
 
   ///  主题
-  final ThemeData theme;
+  final ThemeData? theme;
 
   ///  Cupertino主题
-  final CupertinoThemeData cupertinoTheme;
+  final CupertinoThemeData? cupertinoTheme;
 
-  final ThemeData darkTheme;
+  final ThemeData? darkTheme;
 
   ///  颜色
   final Color color;
@@ -148,19 +148,16 @@ class GlobalWidgetsApp extends StatelessWidget {
   final bool debugShowCheckedModeBanner;
 
   final bool debugShowMaterialGrid;
-  final Map<LogicalKeySet, Intent> shortcuts;
-  final Map<Type, Action<Intent>> actions;
-  final InitialRouteListFactory onGenerateInitialRoutes;
-  final InspectorSelectButtonBuilder inspectorSelectButtonBuilder;
+  final Map<LogicalKeySet, Intent>? shortcuts;
+  final Map<Type, Action<Intent>>? actions;
+  final InitialRouteListFactory? onGenerateInitialRoutes;
+  final InspectorSelectButtonBuilder? inspectorSelectButtonBuilder;
 
   @override
   Widget build(BuildContext context) {
-    if (navigatorKey != null) _globalNavigatorKey = navigatorKey;
-    if (theme != null ||
-        debugShowMaterialGrid != null ||
-        darkTheme != null ||
-        themeMode != null ||
-        widgetMode == WidgetMode.material) return materialApp();
+    if (navigatorKey != null) _globalNavigatorKey = navigatorKey!;
+    if (theme != null || darkTheme != null || widgetMode == WidgetMode.material)
+      return materialApp();
     if (cupertinoTheme != null || widgetMode == WidgetMode.cupertino)
       return cupertinoApp();
     return WidgetsApp(
@@ -262,17 +259,17 @@ class GlobalWidgetsApp extends StatelessWidget {
 ///  OverlayScaffold
 class OverlayScaffold extends StatefulWidget {
   const OverlayScaffold({
-    Key key,
-    bool paddingStatusBar,
-    bool enablePullDown,
-    bool enablePullUp,
-    bool enableTwoLevel,
-    bool primary,
-    bool extendBody,
-    bool isStack,
-    bool isScroll,
-    DragStartBehavior drawerDragStartBehavior,
-    bool onWillPopOverlayClose,
+    Key? key,
+    bool? paddingStatusBar,
+    bool? enablePullDown,
+    bool? enablePullUp,
+    bool? enableTwoLevel,
+    bool? primary,
+    bool? extendBody,
+    bool? isStack,
+    bool? isScroll,
+    DragStartBehavior? drawerDragStartBehavior,
+    bool? onWillPopOverlayClose,
     this.appBar,
     this.body,
     this.padding,
@@ -331,66 +328,66 @@ class OverlayScaffold extends StatefulWidget {
             drawerDragStartBehavior ?? DragStartBehavior.start,
         super(key: key);
 
-  final Color backgroundColor;
+  final Color? backgroundColor;
 
   /// 主体部分
-  final Widget body;
+  final Widget? body;
 
   /// 相当于给[body] 套用 [Column]、[Row]、[Stack]
-  final List<Widget> children;
+  final List<Widget>? children;
 
   /// [children].length > 0 && [isStack]=false 有效;
-  final MainAxisAlignment mainAxisAlignment;
+  final MainAxisAlignment? mainAxisAlignment;
 
   /// [children].length > 0 && [isStack]=false 有效;
-  final CrossAxisAlignment crossAxisAlignment;
+  final CrossAxisAlignment? crossAxisAlignment;
 
   /// [children].length > 0 && [isStack]=false 有效;
-  final Axis direction;
+  final Axis? direction;
 
   /// [children].length > 0有效;
   /// 添加 [Stack]组件
-  final bool isStack;
+  final bool? isStack;
 
   /// 是否添加滚动组件
-  final bool isScroll;
+  final bool? isScroll;
 
   /// [body]top padding 出状态栏高度 [padding]!=null 时此参数无效
   final bool paddingStatusBar;
-  final EdgeInsetsGeometry padding;
-  final EdgeInsetsGeometry margin;
-  final Decoration decoration;
+  final EdgeInsetsGeometry? padding;
+  final EdgeInsetsGeometry? margin;
+  final Decoration? decoration;
 
   ///  true 点击android实体返回按键先关闭Overlay【toast loading ...】但不pop 当前页面
   ///  false 点击android实体返回按键先关闭Overlay【toast loading ...】并pop 当前页面
   final bool onWillPopOverlayClose;
 
   ///  返回按键监听
-  final WillPopCallback onWillPop;
+  final WillPopCallback? onWillPop;
 
   ///  刷新组件相关
-  final RefreshController controller;
+  final RefreshController? controller;
   final bool enablePullDown;
   final bool enablePullUp;
   final bool enableTwoLevel;
-  final Widget header;
-  final Widget footer;
-  final VoidCallback onRefresh;
-  final VoidCallback onLoading;
-  final VoidCallback onTwoLevel;
+  final Widget? header;
+  final Widget? footer;
+  final VoidCallback? onRefresh;
+  final VoidCallback? onLoading;
+  final VoidCallback? onTwoLevel;
 
   ///  Scaffold相关属性
-  final Widget bottomNavigationBar;
-  final Widget appBar;
-  final double appBarHeight;
-  final Widget floatingActionButton;
-  final FloatingActionButtonAnimator floatingActionButtonAnimator;
-  final FloatingActionButtonLocation floatingActionButtonLocation;
-  final Widget bottomSheet;
-  final Widget endDrawer;
-  final Widget drawer;
-  final List<Widget> persistentFooterButtons;
-  final bool resizeToAvoidBottomInset;
+  final Widget? bottomNavigationBar;
+  final Widget? appBar;
+  final double? appBarHeight;
+  final Widget? floatingActionButton;
+  final FloatingActionButtonAnimator? floatingActionButtonAnimator;
+  final FloatingActionButtonLocation? floatingActionButtonLocation;
+  final Widget? bottomSheet;
+  final Widget? endDrawer;
+  final Widget? drawer;
+  final List<Widget>? persistentFooterButtons;
+  final bool? resizeToAvoidBottomInset;
   final bool primary;
   final bool extendBody;
   final DragStartBehavior drawerDragStartBehavior;
@@ -466,15 +463,15 @@ class _OverlayScaffoldState extends State<OverlayScaffold> {
       header: widget.header,
       footer: widget.footer);
 
-  PreferredSizeWidget get appBar {
+  PreferredSizeWidget? get appBar {
     if (widget.appBar is AppBar && widget.appBarHeight == null)
       return widget.appBar as AppBar;
     return widget.appBar == null
         ? null
         : PreferredSize(
-            child: widget.appBar,
+            child: widget.appBar!,
             preferredSize: Size.fromHeight(
-                getStatusBarHeight + widget.appBarHeight ?? 30));
+                getStatusBarHeight + (widget.appBarHeight ?? 30)));
   }
 
   Universal get universal => Universal(
@@ -504,11 +501,11 @@ class _OverlayScaffoldState extends State<OverlayScaffold> {
 ///
 ///  打开新页面
 Future<dynamic> push(Widget widget,
-        {bool maintainState,
-        bool fullscreenDialog,
-        WidgetMode widgetMode,
-        BuildContext context}) =>
-    _globalNavigatorKey.currentState.push(_pageRoute(widget,
+        {bool? maintainState,
+        bool? fullscreenDialog,
+        WidgetMode? widgetMode,
+        BuildContext? context}) =>
+    _globalNavigatorKey.currentState!.push(_pageRoute(widget,
         maintainState: maintainState,
         fullscreenDialog: fullscreenDialog,
         context: context,
@@ -516,16 +513,20 @@ Future<dynamic> push(Widget widget,
 
 /// 打开新页面替换当前页面
 Future<dynamic> pushReplacement(Widget widget,
-        {bool maintainState, bool fullscreenDialog, WidgetMode widgetMode}) =>
-    _globalNavigatorKey.currentState.pushReplacement(_pageRoute(widget,
+        {bool? maintainState,
+        bool? fullscreenDialog,
+        WidgetMode? widgetMode}) =>
+    _globalNavigatorKey.currentState!.pushReplacement(_pageRoute(widget,
         maintainState: maintainState,
         fullscreenDialog: fullscreenDialog,
         widgetMode: widgetMode));
 
 /// 打开新页面 并移出堆栈所有页面
 Future<dynamic> pushAndRemoveUntil(Widget widget,
-        {bool maintainState, bool fullscreenDialog, WidgetMode widgetMode}) =>
-    _globalNavigatorKey.currentState.pushAndRemoveUntil(
+        {bool? maintainState,
+        bool? fullscreenDialog,
+        WidgetMode? widgetMode}) =>
+    _globalNavigatorKey.currentState!.pushAndRemoveUntil(
         _pageRoute(widget,
             maintainState: maintainState,
             fullscreenDialog: fullscreenDialog,
@@ -534,11 +535,11 @@ Future<dynamic> pushAndRemoveUntil(Widget widget,
 
 /// 可能返回到上一个页面
 Future<bool> maybePop<T extends Object>([dynamic result]) =>
-    _globalNavigatorKey.currentState.maybePop<dynamic>(result);
+    _globalNavigatorKey.currentState!.maybePop<dynamic>(result);
 
 /// 返回上一个页面
 void pop<T extends Object>([dynamic result]) =>
-    _globalNavigatorKey.currentState.pop<dynamic>(result);
+    _globalNavigatorKey.currentState!.pop<dynamic>(result);
 
 /// pop 返回简写 带参数  nullBack  navigator 返回为空 就继续返回上一页面
 void popBack(Future<dynamic> navigator, {bool nullBack = true}) {
@@ -548,18 +549,17 @@ void popBack(Future<dynamic> navigator, {bool nullBack = true}) {
 
 /// 循环pop 直到pop至指定页面
 void popUntil(RoutePredicate predicate) =>
-    _globalNavigatorKey.currentState.popUntil(predicate);
+    _globalNavigatorKey.currentState!.popUntil(predicate);
 
-WidgetMode _widgetMode;
+WidgetMode? _widgetMode;
 
 void setGlobalPushMode(WidgetMode widgetMode) => _widgetMode = widgetMode;
 
 PageRoute<T> _pageRoute<T>(Widget widget,
-    {bool maintainState,
-    bool fullscreenDialog,
-    WidgetMode widgetMode,
-    BuildContext context}) {
-  assert(widget != null);
+    {bool? maintainState,
+    bool? fullscreenDialog,
+    WidgetMode? widgetMode,
+    BuildContext? context}) {
   switch (widgetMode ?? _widgetMode) {
     case WidgetMode.cupertino:
       return CupertinoPageRoute<T>(
@@ -575,7 +575,7 @@ PageRoute<T> _pageRoute<T>(Widget widget,
       return RipplePageRoute<T>(
           widget: widget,
           routeConfig: RouteConfig.fromContext(
-              context ?? _globalNavigatorKey.currentContext));
+              (context ?? _globalNavigatorKey.currentContext)!));
     default:
       return CupertinoPageRoute<T>(
           maintainState: maintainState ?? true,

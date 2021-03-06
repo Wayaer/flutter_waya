@@ -4,8 +4,8 @@ import 'package:flutter/widgets.dart';
 
 typedef ValueBuilderUpdateCallback<T> = void Function(T snapshot);
 
-typedef ValueBuilderBuilder<T> = Widget Function(
-    T snapshot, ValueBuilderUpdateCallback<T> updater);
+typedef ValueBuilderFunction<T> = Widget Function(
+    T? snapshot, ValueBuilderUpdateCallback<T> updater);
 
 /// Example:
 /// ```
@@ -21,24 +21,24 @@ typedef ValueBuilderBuilder<T> = Widget Function(
 ///  ```
 class ValueBuilder<T> extends StatefulWidget {
   const ValueBuilder({
-    Key key,
+    Key? key,
     this.initialValue,
     this.onDispose,
     this.onUpdate,
-    @required this.builder,
+    required this.builder,
   }) : super(key: key);
 
-  final T initialValue;
-  final ValueBuilderBuilder<T> builder;
-  final void Function() onDispose;
-  final void Function(T) onUpdate;
+  final T? initialValue;
+  final ValueBuilderFunction<T> builder;
+  final void Function()? onDispose;
+  final void Function(T)? onUpdate;
 
   @override
   _ValueBuilderState<T> createState() => _ValueBuilderState<T>();
 }
 
 class _ValueBuilderState<T> extends State<ValueBuilder<T>> {
-  T value;
+  T? value;
 
   @override
   void initState() {
@@ -50,7 +50,7 @@ class _ValueBuilderState<T> extends State<ValueBuilder<T>> {
   Widget build(BuildContext context) => widget.builder(value, updater);
 
   void updater(T newValue) {
-    if (widget.onUpdate != null) widget.onUpdate(newValue);
+    if (widget.onUpdate != null) widget.onUpdate!(newValue);
     value = newValue;
     setState(() {});
   }
@@ -58,11 +58,11 @@ class _ValueBuilderState<T> extends State<ValueBuilder<T>> {
   @override
   void dispose() {
     super.dispose();
-    widget?.onDispose?.call();
+    widget.onDispose!.call();
     if (value is ChangeNotifier) {
-      (value as ChangeNotifier)?.dispose();
+      (value as ChangeNotifier).dispose();
     } else if (value is StreamController) {
-      (value as StreamController<T>)?.close();
+      (value as StreamController<T>).close();
     }
     value = null;
   }

@@ -7,13 +7,13 @@ import 'package:flutter_waya/flutter_waya.dart';
 enum CarouselEvent { next, previous, start, stop }
 
 class CarouselController extends ChangeNotifier {
-  Completer<dynamic> _completer;
+  late Completer<dynamic> _completer;
 
-  int index;
-  bool animation;
-  CarouselEvent event;
+  int index = 0;
+  bool animation = false;
+  late CarouselEvent event;
 
-  bool autoPlay;
+  bool autoPlay = false;
 
   ///  开始自动播放
   void startAutoPlay() {
@@ -32,7 +32,7 @@ class CarouselController extends ChangeNotifier {
   ///  下一页
   Future<void> next({bool animation = true}) {
     event = CarouselEvent.next;
-    this.animation = animation ?? true;
+    this.animation = animation;
     _completer = Completer<dynamic>();
     notifyListeners();
     return _completer.future;
@@ -41,7 +41,7 @@ class CarouselController extends ChangeNotifier {
   ///  	上一页
   Future<void> previous({bool animation = true}) {
     event = CarouselEvent.previous;
-    this.animation = animation ?? true;
+    this.animation = animation;
     _completer = Completer<dynamic>();
     notifyListeners();
     return _completer.future;
@@ -54,11 +54,11 @@ class CarouselController extends ChangeNotifier {
 
 class CarouselPluginConfig {
   const CarouselPluginConfig({
-    int activeIndex,
+    int? activeIndex,
     this.controller,
-    int itemCount,
-    Axis scrollDirection,
-    bool loop,
+    int? itemCount,
+    Axis? scrollDirection,
+    bool? loop,
   })  : itemCount = itemCount ?? 0,
         activeIndex = activeIndex ?? 0,
         loop = loop ?? true,
@@ -67,7 +67,7 @@ class CarouselPluginConfig {
   final int itemCount;
   final Axis scrollDirection;
   final bool loop;
-  final CarouselController controller;
+  final CarouselController? controller;
 }
 
 abstract class CarouselPlugin {
@@ -100,24 +100,24 @@ class ArrowPagination extends CarouselPlugin {
 
   ///  Icon normal color, The theme's [ThemeData.primaryColor] by default.
   ///  控制按钮颜色
-  final Color color;
+  final Color? color;
 
   ///  if set loop=false on Carousel, this color will be used when carousel goto the last slide.
   ///  The theme's [ThemeData.disabledColor] by default.
-  final Color disableColor;
+  final Color? disableColor;
 
   ///  控制按钮与容器的距离
   final EdgeInsetsGeometry padding;
 
-  final Key key;
+  final Key? key;
 
   Widget buildButton(CarouselPluginConfig config, Color color,
           IconData iconData, int quarterTurns, bool previous) =>
       Universal(
           behavior: HitTestBehavior.opaque,
           onTap: () => previous
-              ? config.controller.previous(animation: true)
-              : config.controller.next(animation: true),
+              ? config.controller!.previous(animation: true)
+              : config.controller!.next(animation: true),
           padding: padding,
           child: RotatedBox(
               quarterTurns: quarterTurns,
@@ -165,10 +165,10 @@ class FractionPagination extends CarouselPlugin {
       this.activeFontSize = 35.0});
 
   ///  color ,if set null , will be Theme.of(context).scaffoldBackgroundColor
-  final Color color;
+  final Color? color;
 
   ///  color when active,if set null , will be Theme.of(context).primaryColor
-  final Color activeColor;
+  final Color? activeColor;
 
   ///  font size
   final double fontSize;
@@ -176,7 +176,7 @@ class FractionPagination extends CarouselPlugin {
   ///  font size when active
   final double activeFontSize;
 
-  final Key key;
+  final Key? key;
 
   @override
   Widget build(BuildContext context, CarouselPluginConfig config) {
@@ -210,10 +210,10 @@ class DotCarouselPagination extends CarouselPlugin {
       this.space = 3.0});
 
   ///  color when current index,if set null , will be Theme.of(context).primaryColor
-  final Color activeColor;
+  final Color? activeColor;
 
   ///  if set null , will be Theme.of(context).scaffoldBackgroundColor
-  final Color color;
+  final Color? color;
 
   ///  Size of the dot when activate
   final double activeSize;
@@ -224,7 +224,7 @@ class DotCarouselPagination extends CarouselPlugin {
   ///  Space between dots
   final double space;
 
-  final Key key;
+  final Key? key;
 
   @override
   Widget build(BuildContext context, CarouselPluginConfig config) {
@@ -232,8 +232,8 @@ class DotCarouselPagination extends CarouselPlugin {
       print(
           'The itemCount is too big, we suggest use FractionPaginationBuilder instead of DotCarouselPaginationBuilder in this sitituation');
     }
-    Color activeColor = this.activeColor;
-    Color color = this.color;
+    Color? activeColor = this.activeColor;
+    Color? color = this.color;
 
     if (activeColor == null || color == null) {
       final ThemeData themeData = Theme.of(context);
@@ -270,7 +270,7 @@ class CarouselPagination extends CarouselPlugin {
 
   ///  Alignment.bottomCenter by default when scrollDirection== Axis.horizontal
   ///  Alignment.centerRight by default when scrollDirection== Axis.vertical
-  final Alignment alignment;
+  final Alignment? alignment;
 
   ///  Distance between pagination and the container
   final EdgeInsetsGeometry margin;
@@ -278,7 +278,7 @@ class CarouselPagination extends CarouselPlugin {
   ///  Build the wide
   final CarouselPlugin builder;
 
-  final Key key;
+  final Key? key;
 
   @override
   Widget build(BuildContext context, CarouselPluginConfig config) {
@@ -298,7 +298,7 @@ typedef CarouselPaginationBuilder = Widget Function(
     BuildContext context, CarouselPluginConfig config);
 
 class CarouselCustomPagination extends CarouselPlugin {
-  CarouselCustomPagination({@required this.builder}) : assert(builder != null);
+  CarouselCustomPagination({required this.builder}) : assert(builder != null);
 
   final CarouselPaginationBuilder builder;
 

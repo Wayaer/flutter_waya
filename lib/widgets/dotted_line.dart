@@ -4,15 +4,15 @@ import 'package:flutter/material.dart';
 
 /// 虚线
 class DottedLine extends StatelessWidget {
-  const DottedLine(
-      {Key key,
-      double strokeWidth,
-      Color color,
-      double gap,
-      double width,
-      this.margin,
-      double height})
-      : strokeWidth = strokeWidth ?? 1,
+  const DottedLine({
+    Key? key,
+    double? strokeWidth,
+    Color? color,
+    double? gap,
+    double? width,
+    double? height,
+    this.margin,
+  })  : strokeWidth = strokeWidth ?? 1,
         color = color ?? Colors.greenAccent,
         gap = gap ?? 5.0,
         height = height ?? 1.0,
@@ -23,7 +23,7 @@ class DottedLine extends StatelessWidget {
   final double gap;
   final double width;
   final double height;
-  final EdgeInsetsGeometry margin;
+  final EdgeInsetsGeometry? margin;
 
   @override
   Widget build(BuildContext context) => Container(
@@ -72,9 +72,9 @@ class _DottedPainter extends CustomPainter {
   }
 
   Path getDashedPath({
-    @required math.Point<double> a,
-    @required math.Point<double> b,
-    @required double gap,
+    required math.Point<double> a,
+    required math.Point<double> b,
+    required double gap,
   }) {
     final Size size = Size(b.x - a.x, b.y - a.y);
     final Path path = Path();

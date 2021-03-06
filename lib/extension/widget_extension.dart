@@ -4,10 +4,10 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 extension ExtensionWidget on Widget {
-  Padding padding(EdgeInsetsGeometry padding, {Key key}) =>
+  Padding padding(EdgeInsetsGeometry padding, {Key? key}) =>
       Padding(key: key, padding: padding, child: this);
 
-  Padding margin(EdgeInsetsGeometry margin, {Key key}) =>
+  Padding margin(EdgeInsetsGeometry margin, {Key? key}) =>
       Padding(key: key, padding: margin, child: this);
 
   Widget paddingAll(double padding) =>
@@ -50,18 +50,18 @@ extension ExtensionWidget on Widget {
 
   Widget get sliverBox => SliverToBoxAdapter(child: this);
 
-  ColoredBox color(Color color, {Key key}) =>
+  ColoredBox color(Color color, {Key? key}) =>
       ColoredBox(key: key, color: color);
 
   Card card({
-    Color color,
-    Color shadowColor,
-    double elevation,
-    ShapeBorder shape,
-    bool borderOnForeground,
-    EdgeInsetsGeometry margin,
-    Clip clipBehavior,
-    bool semanticContainer,
+    Color? color,
+    Color? shadowColor,
+    double? elevation,
+    ShapeBorder? shape,
+    bool? borderOnForeground,
+    EdgeInsetsGeometry? margin,
+    Clip? clipBehavior,
+    bool? semanticContainer,
   }) =>
       Card(
           child: this,
@@ -75,13 +75,13 @@ extension ExtensionWidget on Widget {
           semanticContainer: semanticContainer ?? true);
 
   Positioned positioned(
-          {Key key,
-          double left,
-          double top,
-          double right,
-          double bottom,
-          double width,
-          double height}) =>
+          {Key? key,
+          double? left,
+          double? top,
+          double? right,
+          double? bottom,
+          double? width,
+          double? height}) =>
       Positioned(
           key: key,
           left: left,
@@ -92,37 +92,40 @@ extension ExtensionWidget on Widget {
           height: height,
           child: this);
 
-  Center center({Key key, double widthFactor, double heightFactor}) => Center(
-      key: key,
-      widthFactor: widthFactor,
-      heightFactor: heightFactor,
-      child: this);
+  Center center({Key? key, double? widthFactor, double? heightFactor}) =>
+      Center(
+          key: key,
+          widthFactor: widthFactor,
+          heightFactor: heightFactor,
+          child: this);
 
-  Expanded expanded({Key key, int flex = 1}) =>
+  Expanded expanded({Key? key, int flex = 1}) =>
       Expanded(key: key, flex: flex, child: this);
 
-  Flexible flexible({Key key, int flex = 1, FlexFit fit = FlexFit.loose}) =>
+  Expanded get expandedNull => Expanded(flex: 1, child: this);
+
+  Flexible flexible({Key? key, int flex = 1, FlexFit fit = FlexFit.loose}) =>
       Flexible(key: key, flex: flex, fit: fit, child: this);
 
-  SizedBox sizedBox({Key key, double width, double height}) =>
+  SizedBox sizedBox({Key? key, double? width, double? height}) =>
       SizedBox(key: key, width: width, height: height, child: this);
 
   SizedBox get expand => SizedBox.expand(child: this);
 
   SizedBox get shrink => SizedBox.shrink(child: this);
 
-  SizedBox fromSize(Size size, {Key key}) =>
+  SizedBox fromSize(Size size, {Key? key}) =>
       SizedBox.fromSize(key: key, child: this, size: size);
 
-  ConstrainedBox constrainedBox(BoxConstraints constraints, {Key key}) =>
+  ConstrainedBox constrainedBox(BoxConstraints constraints, {Key? key}) =>
       ConstrainedBox(key: key, constraints: constraints, child: this);
 
   Transform transform(
-          {Key key,
-          Matrix4 transform,
-          Offset origin,
-          AlignmentGeometry alignment,
-          bool transformHitTests}) =>
+          {Key? key,
+          required Matrix4 transform,
+          Offset? origin,
+          AlignmentGeometry? alignment,
+          bool? transformHitTests}) =>
       Transform(
           key: key,
           transform: transform,
@@ -133,10 +136,10 @@ extension ExtensionWidget on Widget {
 
   Hero hero(
     Object tag, {
-    Key key,
-    CreateRectTween createRectTween,
-    HeroFlightShuttleBuilder flightShuttleBuilder,
-    HeroPlaceholderBuilder placeholderBuilder,
+    Key? key,
+    CreateRectTween? createRectTween,
+    HeroFlightShuttleBuilder? flightShuttleBuilder,
+    HeroPlaceholderBuilder? placeholderBuilder,
     bool transitionOnUserGestures = false,
   }) =>
       Hero(
@@ -149,18 +152,18 @@ extension ExtensionWidget on Widget {
           child: this);
 
   Container container({
-    Key key,
-    EdgeInsetsGeometry padding,
-    Decoration foregroundDecoration,
-    Matrix4 transform,
-    BoxConstraints constraints,
-    Color color,
-    double width,
-    double height,
-    EdgeInsetsGeometry margin,
-    Decoration decoration,
-    Clip clipBehavior,
-    AlignmentGeometry alignment,
+    Key? key,
+    EdgeInsetsGeometry? padding,
+    Decoration? foregroundDecoration,
+    Matrix4? transform,
+    BoxConstraints? constraints,
+    Color? color,
+    double? width,
+    double? height,
+    EdgeInsetsGeometry? margin,
+    Decoration? decoration,
+    Clip? clipBehavior,
+    AlignmentGeometry? alignment,
   }) =>
       Container(
           key: key,
@@ -180,10 +183,10 @@ extension ExtensionWidget on Widget {
   List<Widget> asList() => <Widget>[this];
 
   Align align(
-          {Key key,
+          {Key? key,
           Alignment alignment = Alignment.center,
-          double widthFactor,
-          double heightFactor}) =>
+          double? widthFactor,
+          double? heightFactor}) =>
       Align(
           key: key,
           alignment: alignment,
@@ -192,9 +195,9 @@ extension ExtensionWidget on Widget {
           child: this);
 
   ClipRRect clipRRect(
-          {Key key,
+          {Key? key,
           BorderRadius borderRadius = BorderRadius.zero,
-          CustomClipper<RRect> clipper,
+          CustomClipper<RRect>? clipper,
           Clip clipBehavior = Clip.antiAlias}) =>
       ClipRRect(
           key: key,
@@ -204,41 +207,41 @@ extension ExtensionWidget on Widget {
           child: this);
 
   ClipOval clipOval(
-          {Key key,
+          {Key? key,
           BorderRadius borderRadius = BorderRadius.zero,
-          CustomClipper<Rect> clipper,
+          CustomClipper<Rect>? clipper,
           Clip clipBehavior = Clip.antiAlias}) =>
       ClipOval(
           key: key, clipper: clipper, clipBehavior: clipBehavior, child: this);
 
   ClipPath clipPath(
-          {Key key,
+          {Key? key,
           BorderRadius borderRadius = BorderRadius.zero,
-          CustomClipper<Path> clipper,
+          CustomClipper<Path>? clipper,
           Clip clipBehavior = Clip.antiAlias}) =>
       ClipPath(
           key: key, clipper: clipper, clipBehavior: clipBehavior, child: this);
 
-  Offstage offstage(bool offstage, {Key key}) =>
+  Offstage offstage(bool offstage, {Key? key}) =>
       Offstage(key: key, offstage: offstage, child: this);
 
-  Visibility visibility(bool visible, {Key key}) =>
+  Visibility visibility(bool visible, {Key? key}) =>
       Visibility(key: key, visible: visible, child: this);
 
   LimitedBox limitedBox(
-          {Key key,
+          {Key? key,
           double maxWidth = double.infinity,
           double maxHeight = double.infinity}) =>
       LimitedBox(
           key: key, maxWidth: maxWidth, maxHeight: maxHeight, child: this);
 
   OverflowBox overflowBox(
-          {Key key,
+          {Key? key,
           Alignment alignment = Alignment.center,
-          double minWidth,
-          double maxWidth,
-          double minHeight,
-          double maxHeight}) =>
+          double? minWidth,
+          double? maxWidth,
+          double? minHeight,
+          double? maxHeight}) =>
       OverflowBox(
           key: key,
           alignment: alignment,
@@ -249,35 +252,35 @@ extension ExtensionWidget on Widget {
           child: this);
 
   SizedOverflowBox sizedOverflowBox(Size size,
-          {Key key, Alignment alignment = Alignment.center}) =>
+          {Key? key, Alignment alignment = Alignment.center}) =>
       SizedOverflowBox(key: key, size: size, alignment: alignment, child: this);
 
   FittedBox fittedBox(
-          {Key key,
+          {Key? key,
           BoxFit fit = BoxFit.contain,
           AlignmentGeometry alignment = Alignment.center}) =>
       FittedBox(key: key, fit: fit, alignment: alignment, child: this);
 
   DecoratedBox decoratedBox(Decoration decoration,
-          {Key key,
+          {Key? key,
           DecorationPosition position = DecorationPosition.background}) =>
       DecoratedBox(
           key: key, decoration: decoration, position: position, child: this);
 
-  RotatedBox rotatedBox(int quarterTurns, {Key key}) =>
+  RotatedBox rotatedBox(int quarterTurns, {Key? key}) =>
       RotatedBox(key: key, quarterTurns: quarterTurns, child: this);
 
   ConstrainedBox intoConstrainedBox(
     BoxConstraints constraints, {
-    Key key,
+    Key? key,
   }) =>
       ConstrainedBox(key: key, constraints: constraints, child: this);
 
   UnconstrainedBox unconstrainedBox(
-          {Key key,
-          TextDirection textDirection,
+          {Key? key,
+          TextDirection? textDirection,
           Alignment alignment = Alignment.center,
-          Axis constrainedAxis}) =>
+          Axis? constrainedAxis}) =>
       UnconstrainedBox(
           key: key,
           textDirection: textDirection,
@@ -286,10 +289,10 @@ extension ExtensionWidget on Widget {
           child: this);
 
   AnimatedAlign animatedAlign(Duration duration,
-          {Key key,
+          {Key? key,
           Alignment alignment = Alignment.center,
           Curve curve = Curves.linear,
-          VoidCallback onEnd}) =>
+          VoidCallback? onEnd}) =>
       AnimatedAlign(
           key: key,
           alignment: alignment,
@@ -299,11 +302,11 @@ extension ExtensionWidget on Widget {
           child: this);
 
   AnimatedPadding animatedPadding(
-          {Key key,
+          {Key? key,
           Curve curve = Curves.linear,
-          @required Duration duration,
-          @required EdgeInsetsGeometry padding,
-          VoidCallback onEnd}) =>
+          required Duration duration,
+          required EdgeInsetsGeometry padding,
+          VoidCallback? onEnd}) =>
       AnimatedPadding(
           key: key,
           padding: padding,
@@ -313,19 +316,19 @@ extension ExtensionWidget on Widget {
           child: this);
 
   AnimatedContainer animatedContainer(Duration duration,
-          {Key key,
-          Alignment alignment,
-          EdgeInsetsGeometry padding,
-          Color color,
-          Decoration decoration,
-          Decoration foregroundDecoration,
-          double width,
-          double height,
-          BoxConstraints constraints,
-          EdgeInsetsGeometry margin,
-          Matrix4 transform,
+          {Key? key,
+          Alignment? alignment,
+          EdgeInsetsGeometry? padding,
+          Color? color,
+          Decoration? decoration,
+          Decoration? foregroundDecoration,
+          double? width,
+          double? height,
+          BoxConstraints? constraints,
+          EdgeInsetsGeometry? margin,
+          Matrix4? transform,
           Curve curve = Curves.linear,
-          VoidCallback onEnd}) =>
+          VoidCallback? onEnd}) =>
       AnimatedContainer(
           key: key,
           alignment: alignment,
@@ -344,13 +347,13 @@ extension ExtensionWidget on Widget {
           child: this);
 
   SingleChildScrollView singleChildScrollView(
-          {Key key,
+          {Key? key,
           Axis scrollDirection = Axis.vertical,
           bool reverse = false,
-          EdgeInsetsGeometry padding,
-          bool primary,
-          ScrollPhysics physics,
-          ScrollController controller,
+          EdgeInsetsGeometry? padding,
+          bool? primary,
+          ScrollPhysics? physics,
+          ScrollController? controller,
           DragStartBehavior dragStartBehavior = DragStartBehavior.start}) =>
       SingleChildScrollView(
           key: key,
@@ -363,54 +366,54 @@ extension ExtensionWidget on Widget {
           dragStartBehavior: dragStartBehavior,
           child: this);
 
-  GestureDetector onTap(GestureTapCallback onTap, {Key key}) =>
+  GestureDetector onTap(GestureTapCallback onTap, {Key? key}) =>
       gestureDetector(onTap: onTap, key: key);
 
-  GestureDetector onDoubleTap(GestureTapCallback onDoubleTap, {Key key}) =>
+  GestureDetector onDoubleTap(GestureTapCallback onDoubleTap, {Key? key}) =>
       gestureDetector(onDoubleTap: onDoubleTap, key: key);
 
   GestureDetector onLongPress(GestureLongPressCallback onLongPress,
-          {Key key}) =>
+          {Key? key}) =>
       gestureDetector(onLongPress: onLongPress, key: key);
 
   GestureDetector gestureDetector(
-          {Key key,
-          GestureTapDownCallback onTapDown,
-          GestureTapUpCallback onTapUp,
-          GestureTapCallback onTap,
-          GestureTapCancelCallback onTapCancel,
-          GestureTapDownCallback onSecondaryTapDown,
-          GestureTapUpCallback onSecondaryTapUp,
-          GestureTapCancelCallback onSecondaryTapCancel,
-          GestureTapCallback onDoubleTap,
-          GestureLongPressCallback onLongPress,
-          GestureLongPressStartCallback onLongPressStart,
-          GestureLongPressMoveUpdateCallback onLongPressMoveUpdate,
-          GestureLongPressUpCallback onLongPressUp,
-          GestureLongPressEndCallback onLongPressEnd,
-          GestureDragDownCallback onVerticalDragDown,
-          GestureDragStartCallback onVerticalDragStart,
-          GestureDragUpdateCallback onVerticalDragUpdate,
-          GestureDragEndCallback onVerticalDragEnd,
-          GestureDragCancelCallback onVerticalDragCancel,
-          GestureDragDownCallback onHorizontalDragDown,
-          GestureDragStartCallback onHorizontalDragStart,
-          GestureDragUpdateCallback onHorizontalDragUpdate,
-          GestureDragEndCallback onHorizontalDragEnd,
-          GestureDragCancelCallback onHorizontalDragCancel,
-          GestureForcePressStartCallback onForcePressStart,
-          GestureForcePressPeakCallback onForcePressPeak,
-          GestureForcePressUpdateCallback onForcePressUpdate,
-          GestureForcePressEndCallback onForcePressEnd,
-          GestureDragDownCallback onPanDown,
-          GestureDragStartCallback onPanStart,
-          GestureDragUpdateCallback onPanUpdate,
-          GestureDragEndCallback onPanEnd,
-          GestureDragCancelCallback onPanCancel,
-          GestureScaleStartCallback onScaleStart,
-          GestureScaleUpdateCallback onScaleUpdate,
-          GestureScaleEndCallback onScaleEnd,
-          HitTestBehavior behavior,
+          {Key? key,
+          GestureTapDownCallback? onTapDown,
+          GestureTapUpCallback? onTapUp,
+          GestureTapCallback? onTap,
+          GestureTapCancelCallback? onTapCancel,
+          GestureTapDownCallback? onSecondaryTapDown,
+          GestureTapUpCallback? onSecondaryTapUp,
+          GestureTapCancelCallback? onSecondaryTapCancel,
+          GestureTapCallback? onDoubleTap,
+          GestureLongPressCallback? onLongPress,
+          GestureLongPressStartCallback? onLongPressStart,
+          GestureLongPressMoveUpdateCallback? onLongPressMoveUpdate,
+          GestureLongPressUpCallback? onLongPressUp,
+          GestureLongPressEndCallback? onLongPressEnd,
+          GestureDragDownCallback? onVerticalDragDown,
+          GestureDragStartCallback? onVerticalDragStart,
+          GestureDragUpdateCallback? onVerticalDragUpdate,
+          GestureDragEndCallback? onVerticalDragEnd,
+          GestureDragCancelCallback? onVerticalDragCancel,
+          GestureDragDownCallback? onHorizontalDragDown,
+          GestureDragStartCallback? onHorizontalDragStart,
+          GestureDragUpdateCallback? onHorizontalDragUpdate,
+          GestureDragEndCallback? onHorizontalDragEnd,
+          GestureDragCancelCallback? onHorizontalDragCancel,
+          GestureForcePressStartCallback? onForcePressStart,
+          GestureForcePressPeakCallback? onForcePressPeak,
+          GestureForcePressUpdateCallback? onForcePressUpdate,
+          GestureForcePressEndCallback? onForcePressEnd,
+          GestureDragDownCallback? onPanDown,
+          GestureDragStartCallback? onPanStart,
+          GestureDragUpdateCallback? onPanUpdate,
+          GestureDragEndCallback? onPanEnd,
+          GestureDragCancelCallback? onPanCancel,
+          GestureScaleStartCallback? onScaleStart,
+          GestureScaleUpdateCallback? onScaleUpdate,
+          GestureScaleEndCallback? onScaleEnd,
+          HitTestBehavior? behavior,
           bool excludeFromSemantics = false,
           DragStartBehavior dragStartBehavior = DragStartBehavior.start}) =>
       GestureDetector(
@@ -458,12 +461,12 @@ extension ExtensionWidget on Widget {
 
 extension ExtensionFlex on Flex {
   Widget isScroll({
-    Key key,
+    Key? key,
     bool noScrollBehavior = true,
-    ScrollPhysics physics,
-    ScrollController scrollController,
+    ScrollPhysics? physics,
+    ScrollController? scrollController,
     bool reverse = false,
-    bool primary,
+    bool? primary,
     DragStartBehavior dragStartBehavior = DragStartBehavior.start,
   }) =>
       noScrollBehavior

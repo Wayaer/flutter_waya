@@ -6,59 +6,59 @@ import 'package:flutter_waya/flutter_waya.dart';
 
 class RichTextSpan extends RichText {
   RichTextSpan({
-    Key key,
+    Key? key,
 
     /// 第一个[text]
-    String text,
+    String? text,
 
     /// 排在第一个[text]后面
-    List<String> texts,
+    List<String>? texts,
 
     /// 所有[text]、[texts]默认样式
-    TextStyle style,
+    TextStyle? style,
 
     /// [texts]内样式
-    List<TextStyle> styles,
+    List<TextStyle>? styles,
 
     /// 所有[text]、[texts]手势
-    GestureRecognizer recognizer,
+    GestureRecognizer? recognizer,
 
     /// [texts]内手势
-    List<GestureRecognizer> recognizers,
+    List<GestureRecognizer>? recognizers,
 
     /// 所有[text]、[texts]语义 - 语义描述标签，相当于此text的别名
-    String semanticsLabel,
+    String? semanticsLabel,
 
     /// [texts]内语义 - 语义描述标签，相当于此text的别名
-    List<String> semanticsLabels,
+    List<String>? semanticsLabels,
 
     ///  StrutStyle,影响Text在垂直方向上的布局
-    StrutStyle strutStyle,
+    StrutStyle? strutStyle,
 
     ///  TextAlign,内容对齐方式
-    TextAlign textAlign,
+    TextAlign? textAlign,
 
     ///  TextDirection,内容的走向方式
-    TextDirection textDirection,
+    TextDirection? textDirection,
 
     ///  Locale，当相同的Unicode字符可以根据不同的地区以不同的方式呈现时，用于选择字体
-    Locale locale,
+    Locale? locale,
 
     ///  bool 文本是否应在软换行时断行
-    bool softWrap,
+    bool? softWrap,
 
     ///  TextOverflow，内容溢出时的处理方式
-    TextOverflow overflow,
+    TextOverflow? overflow,
 
     ///  double 设置文字的放大缩小，例如，fontSize=10，this.textScaleFactor=2.0，最终得到的文字大小为10*2.0
-    double textScaleFactor,
+    double? textScaleFactor,
 
     ///  int 设置文字的最大展示行数
-    int maxLines,
+    int? maxLines,
 
     ///  TextWidthBasis 测量一行或多行文本宽度
-    TextWidthBasis textWidthBasis,
-    ui.TextHeightBehavior textHeightBehavior,
+    TextWidthBasis? textWidthBasis,
+    ui.TextHeightBehavior? textHeightBehavior,
   }) : super(
             text: texts == null || texts.isEmpty
                 ? textSpan(
@@ -68,12 +68,12 @@ class RichTextSpan extends RichText {
                     semanticsLabel: semanticsLabel ?? text)
                 : textSpans(
                     text: text ?? '',
-                    texts: texts ?? <String>[],
+                    texts: texts,
                     style: style,
                     styles: styles ?? <TextStyle>[],
                     recognizer: recognizer,
                     recognizers: recognizers ?? <GestureRecognizer>[],
-                    semanticsLabel: semanticsLabel ?? text,
+                    semanticsLabel: semanticsLabel,
                     semanticsLabels: semanticsLabels ?? <String>[]),
             key: key,
             textAlign: textAlign ?? TextAlign.center,
@@ -88,10 +88,10 @@ class RichTextSpan extends RichText {
             textHeightBehavior: textHeightBehavior);
 
   static TextSpan textSpan(
-          {String text,
-          TextStyle style,
-          GestureRecognizer recognizer,
-          String semanticsLabel}) =>
+          {required String text,
+          TextStyle? style,
+          GestureRecognizer? recognizer,
+          String? semanticsLabel}) =>
       TextSpan(
           text: text,
           style: style,
@@ -99,14 +99,14 @@ class RichTextSpan extends RichText {
           recognizer: recognizer);
 
   static TextSpan textSpans({
-    List<String> texts,
-    List<TextStyle> styles,
-    String text,
-    TextStyle style,
-    GestureRecognizer recognizer,
-    List<GestureRecognizer> recognizers,
-    String semanticsLabel,
-    List<String> semanticsLabels,
+    required List<String> texts,
+    required List<TextStyle> styles,
+    String? text,
+    TextStyle? style,
+    GestureRecognizer? recognizer,
+    required List<GestureRecognizer> recognizers,
+    String? semanticsLabel,
+    required List<String> semanticsLabels,
   }) {
     if (texts.length > styles.length && styles.isNotEmpty) {
       styles.addAll(
@@ -120,7 +120,7 @@ class RichTextSpan extends RichText {
     }
     if (texts.length > recognizers.length &&
         recognizers.isNotEmpty &&
-        recognizers != null) {
+        recognizer != null) {
       recognizers.addAll((texts.length - recognizers.length)
           .generate((int index) => recognizer));
     }
@@ -129,7 +129,7 @@ class RichTextSpan extends RichText {
         style: const BasisTextStyle().merge(style),
         semanticsLabel: semanticsLabel,
         recognizer: recognizer,
-        children: texts?.builderEntry((MapEntry<int, String> entry) => TextSpan(
+        children: texts.builderEntry((MapEntry<int, String> entry) => TextSpan(
             text: entry.value,
             semanticsLabel:
                 semanticsLabels.isEmpty ? null : semanticsLabels[entry.key],
@@ -142,93 +142,93 @@ class RichTextSpan extends RichText {
 class BasisText extends RichTextSpan {
   BasisText(
     String text, {
-    Key key,
+    Key? key,
 
     /// [text]手势
-    GestureRecognizer recognizer,
+    GestureRecognizer? recognizer,
 
     /// [text]语义 - 语义描述标签，相当于此text的别名
-    String semanticsLabel,
+    String? semanticsLabel,
 
     ///  StrutStyle,影响Text在垂直方向上的布局
-    StrutStyle strutStyle,
+    StrutStyle? strutStyle,
 
     ///  TextAlign,内容对齐方式
-    TextAlign textAlign,
+    TextAlign? textAlign,
 
     ///  TextDirection,内容的走向方式
-    TextDirection textDirection,
+    TextDirection? textDirection,
 
     ///  Locale，当相同的Unicode字符可以根据不同的地区以不同的方式呈现时，用于选择字体
-    Locale locale,
+    Locale? locale,
 
     ///  bool 文本是否应在软换行时断行
-    bool softWrap,
+    bool? softWrap,
 
     ///  TextOverflow，内容溢出时的处理方式
-    TextOverflow overflow,
+    TextOverflow? overflow,
 
     ///  double 设置文字的放大缩小，例如，fontSize=10，this.textScaleFactor=2.0，最终得到的文字大小为10*2.0
-    double textScaleFactor,
+    double? textScaleFactor,
 
     ///  int 设置文字的最大展示行数
-    int maxLines,
+    int? maxLines,
 
     ///  TextWidthBasis 测量一行或多行文本宽度
-    TextWidthBasis textWidthBasis,
-    ui.TextHeightBehavior textHeightBehavior,
+    TextWidthBasis? textWidthBasis,
+    ui.TextHeightBehavior? textHeightBehavior,
 
     /// 使劲此参数 以下单独字体样式无效
-    TextStyle style,
+    TextStyle? style,
 
     ///  TextStyle 以下是字体样式
     /// 默认样式会继承层级最为接近的 DefaultTextStyle，为true 表示继承，false 表示完全重写
-    bool inherit,
+    bool? inherit,
 
     /// 字体颜色，注意： 如果有特殊的foreground，此值必须是null
-    Color color,
-    Color backgroundColor,
-    String fontFamily,
-    List<String> fontFamilyFallback,
-    String package,
+    Color? color,
+    Color? backgroundColor,
+    String? fontFamily,
+    List<String>? fontFamilyFallback,
+    String? package,
 
     /// 字体大小 默认的是 14
-    double fontSize,
+    double? fontSize,
 
     /// 字体的粗细程度 FontWeight.w100 -- FontWeight.w900 . 默认是FontWeight.w400，
-    FontWeight fontWeight,
+    FontWeight? fontWeight,
 
     /// [FontStyle.normal]正常 [FontStyle.italic]斜体
-    FontStyle fontStyle,
+    FontStyle? fontStyle,
 
     /// 单个字母或者汉字的距离，默认是1.0，负数可以拉近距离
-    double letterSpacing,
+    double? letterSpacing,
 
     /// 单词之间添加的空间间隔，负数可以拉近距离
-    double wordSpacing,
+    double? wordSpacing,
 
     /// [TextBaseline.ideographic]用来对齐表意文字的水平线
     /// [TextBaseline.alphabetic ]以标准的字母顺序为基线
-    TextBaseline textBaseline,
+    TextBaseline? textBaseline,
 
     /// 文本的高度 主要用于[TextSpan] 来设置不同的高度
-    double height,
+    double? height,
 
     ///  text的前景色，与 [color] 不能同时设置
-    Paint foreground,
+    Paint? foreground,
 
     /// [text]的背景色
-    Paint background,
+    Paint? background,
 
     /// [text]的划线
     /// [TextDecoration.none] 没有 默认
     /// [TextDecoration.underline] 下划线
     /// [TextDecoration.overline] 上划线
     /// [TextDecoration.lineThrough] 中间的线（删除线）
-    TextDecoration decoration,
+    TextDecoration? decoration,
 
     /// [decoration]划线的颜色
-    Color decorationColor,
+    Color? decorationColor,
 
     /// [decoration]划线的样式
     /// [TextDecorationStyle.solid]实线
@@ -236,15 +236,15 @@ class BasisText extends RichTextSpan {
     /// [TextDecorationStyle.dotted] 点线（一个点一个点的）
     /// [TextDecorationStyle.dashed] 虚线（一个长方形一个长方形的线）
     /// [TextDecorationStyle.wavy] 正玄曲线
-    TextDecorationStyle decorationStyle,
-    double decorationThickness,
+    TextDecorationStyle? decorationStyle,
+    double? decorationThickness,
 
     /// 只在调试的使用
-    String debugLabel,
+    String? debugLabel,
 
     /// 将在[text]下方绘制的阴影列表
-    List<ui.Shadow> shadows,
-    List<ui.FontFeature> fontFeatures,
+    List<ui.Shadow>? shadows,
+    List<ui.FontFeature>? fontFeatures,
   })  : assert(color == null || foreground == null, _kColorForegroundWarning),
         assert(backgroundColor == null || background == null,
             _kColorBackgroundWarning),
@@ -294,55 +294,55 @@ class BasisText extends RichTextSpan {
 class BasisTextStyle extends TextStyle {
   const BasisTextStyle({
     /// 默认样式会继承层级最为接近的 DefaultTextStyle，为true 表示继承，false 表示完全重写
-    bool inherit,
+    bool? inherit,
 
     /// 字体颜色，注意： 如果有特殊的foreground，此值必须是null
-    Color color,
-    Color backgroundColor,
-    String fontFamily,
-    List<String> fontFamilyFallback,
-    String package,
+    Color? color,
+    Color? backgroundColor,
+    String? fontFamily,
+    List<String>? fontFamilyFallback,
+    String? package,
 
     ///  Locale，当相同的Unicode字符可以根据不同的地区以不同的方式呈现时，用于选择字体
-    Locale locale,
+    Locale? locale,
 
     /// 字体大小 默认的是 14
-    double fontSize,
+    double? fontSize,
 
     /// 字体的粗细程度 FontWeight.w100 -- FontWeight.w900 . 默认是FontWeight.w400，
-    FontWeight fontWeight,
+    FontWeight? fontWeight,
 
     /// [FontStyle.normal]正常 [FontStyle.italic]斜体
-    FontStyle fontStyle,
+    FontStyle? fontStyle,
 
     /// 单个字母或者汉字的距离，默认是1.0，负数可以拉近距离
-    double letterSpacing,
+    double? letterSpacing,
 
     /// 单词之间添加的空间间隔，负数可以拉近距离
-    double wordSpacing,
+    double? wordSpacing,
 
     /// [TextBaseline.ideographic]用来对齐表意文字的水平线
     /// [TextBaseline.alphabetic ]以标准的字母顺序为基线
-    TextBaseline textBaseline,
+    TextBaseline? textBaseline,
 
     /// 文本的高度 主要用于[TextSpan] 来设置不同的高度
-    double height,
+    double? height,
 
     ///  text的前景色，与 [color] 不能同时设置
-    Paint foreground,
+    Paint? foreground,
 
     /// [text]的背景色
-    Paint background,
+    Paint? background,
 
     /// [text]的划线
     /// [TextDecoration.none] 没有 默认
     /// [TextDecoration.underline] 下划线
     /// [TextDecoration.overline] 上划线
     /// [TextDecoration.lineThrough] 中间的线（删除线）
-    TextDecoration decoration,
+    TextDecoration? decoration,
 
     /// [decoration]划线的颜色
-    Color decorationColor,
+    Color? decorationColor,
 
     /// [decoration]划线的样式
     /// [TextDecorationStyle.solid]实线
@@ -350,15 +350,15 @@ class BasisTextStyle extends TextStyle {
     /// [TextDecorationStyle.dotted] 点线（一个点一个点的）
     /// [TextDecorationStyle.dashed] 虚线（一个长方形一个长方形的线）
     /// [TextDecorationStyle.wavy] 正玄曲线
-    TextDecorationStyle decorationStyle,
-    double decorationThickness,
+    TextDecorationStyle? decorationStyle,
+    double? decorationThickness,
 
     /// 只在调试的使用
-    String debugLabel,
+    String? debugLabel,
 
     /// 将在[text]下方绘制的阴影列表
-    List<ui.Shadow> shadows,
-    List<ui.FontFeature> fontFeatures,
+    List<ui.Shadow>? shadows,
+    List<ui.FontFeature>? fontFeatures,
   }) : super(
             inherit: inherit ?? true,
             color: color ?? Colors.black87,

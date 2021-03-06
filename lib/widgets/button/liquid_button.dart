@@ -9,10 +9,10 @@ import 'package:flutter_waya/flutter_waya.dart';
 
 class LiquidButton extends StatefulWidget {
   const LiquidButton(
-      {Key key,
-      @required this.height,
-      @required this.width,
-      @required this.backgroundColor,
+      {Key? key,
+      required this.height,
+      required this.width,
+      required this.backgroundColor,
       this.gradientColor,
       this.gap = 1,
       this.duration = const Duration(milliseconds: 500),
@@ -24,11 +24,11 @@ class LiquidButton extends StatefulWidget {
         assert(gap >= 1 && gap <= height / 2),
         assert(tension >= 0.01 && tension <= 1.0),
         super(key: key);
-  final Widget child;
+  final Widget? child;
   final double height;
   final double width;
   final Color backgroundColor;
-  final Color gradientColor;
+  final Color? gradientColor;
   final int gap;
   final Duration duration;
   final bool retainGradient;
@@ -41,10 +41,10 @@ class LiquidButton extends StatefulWidget {
 
 class _LiquidButtonState extends State<LiquidButton>
     with TickerProviderStateMixin {
-  Offset position = const Offset(0, 0);
-  Animation<double> animation;
-  AnimationController animationController;
-  RenderBox renderBox;
+  late Offset position = const Offset(0, 0);
+  late Animation<double> animation;
+  late AnimationController animationController;
+  late RenderBox renderBox;
 
   @override
   void initState() {
@@ -111,22 +111,23 @@ class _LiquidButtonState extends State<LiquidButton>
     setState(() {});
   }
 
-  void onEnter(PointerEnterEvent event) =>
+  void onEnter(PointerEnterEvent? event) =>
       animationController.reverse(from: widget.expandFactor);
 
-  void onExit(PointerExitEvent event) => animationController.forward(from: 0.0);
+  void onExit(PointerExitEvent? event) =>
+      animationController.forward(from: 0.0);
 }
 
 class _LiquidButtonCustomPainter extends CustomPainter {
   _LiquidButtonCustomPainter(
-      {@required this.expandFactor,
-      @required this.position,
-      @required this.gap,
-      @required this.tension,
-      @required this.maxExpansion,
-      @required this.canvasColor,
-      @required this.gradientColor,
-      @required this.retainGradient});
+      {required this.expandFactor,
+      required this.position,
+      required this.gap,
+      required this.tension,
+      required this.maxExpansion,
+      required this.canvasColor,
+      required this.gradientColor,
+      required this.retainGradient});
 
   final double expandFactor;
   final double maxExpansion;

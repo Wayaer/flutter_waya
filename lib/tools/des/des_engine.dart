@@ -11,8 +11,8 @@ abstract class Engine {
 }
 
 abstract class BaseEngine implements Engine {
-  bool forEncryption;
-  List<int> key;
+  late bool forEncryption;
+  List<int>? key;
 
   @override
   void init(bool forEncryption, List<int> key) {
@@ -32,21 +32,24 @@ abstract class BaseEngine implements Engine {
   List<int> process(List<int> dataWords) {
     const int blockSize = 2;
     if (forEncryption) _pkc7Pad(dataWords, blockSize);
-    const bool doFlush = false;
+
+    /// const bool doFlush = false;
     final int dataSigBytes = dataWords.length;
     const int blockSizeBytes = blockSize * 4;
     const int minBufferSize = 0;
 
     ///  Count blocks ready
     int nBlocksReady = dataSigBytes ~/ blockSizeBytes;
-    if (doFlush) {
-      ///  Round up to include partial blocks
-      nBlocksReady = nBlocksReady.ceil();
-    } else {
-      ///  Round down to include only full blocks,
-      ///  less the number of blocks that must remain in the buffer
-      nBlocksReady = max((nBlocksReady | 0) - minBufferSize, 0);
-    }
+
+    /// if (doFlush) {
+    ///   ///  Round up to include partial blocks
+    ///   nBlocksReady = nBlocksReady.ceil();
+    /// } else {
+    ///  Round down to include only full blocks,
+    ///  less the number of blocks that must remain in the buffer
+    nBlocksReady = max((nBlocksReady | 0) - minBufferSize, 0);
+
+    /// }
 
     ///  Count words ready
     final int nWordsReady = nBlocksReady * blockSize;
@@ -55,7 +58,7 @@ abstract class BaseEngine implements Engine {
     final int nBytesReady = min(nWordsReady * 4, dataSigBytes);
 
     ///  Process blocks
-    List<int> processedWords;
+    late List<int> processedWords;
     if (nWordsReady != 0) {
       for (int offset = 0; offset < nWordsReady; offset += blockSize) {
         ///  Perform concrete-algorithm logic
@@ -76,9 +79,9 @@ abstract class BaseEngine implements Engine {
 }
 
 class DESEngine extends BaseEngine {
-  List<List<int>> _subKeys;
-  int _lBlock;
-  int _rBlock;
+  List<List<int>>? _subKeys;
+  late int _lBlock;
+  late int _rBlock;
 
   String get algorithmName => 'DES';
 
@@ -91,8 +94,9 @@ class DESEngine extends BaseEngine {
     ///  Select 56 bits according to pc1
     final List<int> keyBits = 56.generate((int index) {
       final int keyBitPos = pc1[index] - 1;
-      return (this
-              .key[keyBitPos.rightShift32(5)]
+      final List<int>? k = this.key;
+      if (k != null) return 0;
+      return (k![keyBitPos.rightShift32(5)]
               .rightShift32((31 - keyBitPos % 32).toInt())) &
           1;
     });
@@ -134,10 +138,10 @@ class DESEngine extends BaseEngine {
   int processBlock(List<int> M, int offset) {
     final List<List<int>> invSubKeys = <List<int>>[];
     if (!forEncryption) {
-      for (int i = 0; i < 16; i++) invSubKeys[i] = _subKeys[15 - i];
+      for (int i = 0; i < 16; i++) invSubKeys[i] = _subKeys![15 - i];
     }
 
-    final List<List<int>> subKeys = forEncryption ? _subKeys : invSubKeys;
+    final List<List<int>> subKeys = (forEncryption ? _subKeys : invSubKeys)!;
 
     _lBlock = M[offset].toSigned(32);
     _rBlock = M[offset + 1].toSigned(32);
@@ -160,7 +164,7 @@ class DESEngine extends BaseEngine {
       int f = 0.toSigned(32);
       for (int i = 0; i < 8; i++) {
         (f |= (sBoxP[i][((rBlock ^ subKey[i]).toSigned(32) & sBoxMask[i])
-                    .toUnsigned(32)])
+                    .toUnsigned(32)])!
                 .toSigned(32))
             .toSigned(32);
       }
@@ -191,8 +195,8 @@ class DESEngine extends BaseEngine {
     forEncryption = false;
     key = null;
     _subKeys = null;
-    _lBlock = null;
-    _rBlock = null;
+    // _lBlock = null;
+    // _rBlock = null;
   }
 
   ///  Swap bits across the left and right words
@@ -200,6 +204,7 @@ class DESEngine extends BaseEngine {
     final int t =
         (((_lBlock.rightShift32(offset)).toSigned(32) ^ _rBlock) & mask)
             .toSigned(32);
+
     (_rBlock ^= t).toSigned(32);
     _lBlock ^= (t << offset).toSigned(32);
   }
@@ -221,18 +226,18 @@ class DES3Engine extends BaseEngine {
     final DESEngine des2 = DESEngine();
     final DESEngine des3 = DESEngine();
     if (forEncryption) {
-      des1.init(true, key.sublist(0, 2));
+      des1.init(true, key!.sublist(0, 2));
       des1.processBlock(M, offset);
-      des2.init(false, key.sublist(2, 4));
+      des2.init(false, key!.sublist(2, 4));
       des2.processBlock(M, offset);
-      des3.init(true, key.sublist(4, 6));
+      des3.init(true, key!.sublist(4, 6));
       des3.processBlock(M, offset);
     } else {
-      des3.init(false, key.sublist(4, 6));
+      des3.init(false, key!.sublist(4, 6));
       des3.processBlock(M, offset);
-      des2.init(true, key.sublist(2, 4));
+      des2.init(true, key!.sublist(2, 4));
       des2.processBlock(M, offset);
-      des1.init(false, key.sublist(0, 2));
+      des1.init(false, key!.sublist(0, 2));
       des1.processBlock(M, offset);
     }
     return blockSize;
@@ -297,7 +302,7 @@ void _concat(List<int> a, List<int> b) {
   a.length = thisSigBytes + thatSigBytes;
 }
 
-void _expandList(List<int> data, int newLength) {
+void _expandList(List<int?> data, int newLength) {
   if (newLength <= data.length) return;
 
   ///  update the length

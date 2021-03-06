@@ -31,12 +31,12 @@ class RouteConfig {
     }
   }
 
-  Offset offset;
-  double circleRadius;
+  late Offset offset;
+  late double circleRadius;
 }
 
 class RipplePageRoute<T> extends PageRouteBuilder<T> {
-  RipplePageRoute({this.widget, this.routeConfig})
+  RipplePageRoute({required this.widget, required this.routeConfig})
       : super(
             transitionDuration: const Duration(milliseconds: 300),
             pageBuilder: (_, __, ___) => widget,

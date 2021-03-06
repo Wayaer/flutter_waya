@@ -8,9 +8,9 @@ import 'package:flutter_waya/flutter_waya.dart';
 /// 配合 sliver 家族组件 无需设置高度  自适应高度
 class ScrollViewAuto extends StatefulWidget {
   const ScrollViewAuto(
-      {Key key,
+      {Key? key,
       this.expanded = false,
-      this.flex,
+      this.flex = 1,
       this.headerSliverBuilder,
       this.floatHeaderSlivers = true,
       this.clipBehavior = Clip.hardEdge,
@@ -32,9 +32,9 @@ class ScrollViewAuto extends StatefulWidget {
         super(key: key);
 
   const ScrollViewAuto.nested(
-      {Key key,
+      {Key? key,
       this.expanded = false,
-      this.flex,
+      this.flex = 1,
       this.headerSliverBuilder,
       this.floatHeaderSlivers = true,
       this.clipBehavior = Clip.hardEdge,
@@ -48,9 +48,9 @@ class ScrollViewAuto extends StatefulWidget {
       this.slivers = const <Widget>[]})
       : isNestedScrollView = true,
         primary = null,
-        shrinkWrap = null,
+        shrinkWrap = false,
         center = null,
-        anchor = null,
+        anchor = 0.0,
         cacheExtent = null,
         semanticChildCount = null,
         super(key: key);
@@ -63,30 +63,30 @@ class ScrollViewAuto extends StatefulWidget {
   final int flex;
 
   /// **** NestedScrollView **** ///
-  final Widget body;
+  final Widget? body;
 
   /// 当[isNestedScrollView]=true , 使用 [headerSliverBuilder] 时 [slivers] 无效,
-  final NestedScrollViewHeaderSliversBuilder headerSliverBuilder;
+  final NestedScrollViewHeaderSliversBuilder? headerSliverBuilder;
 
   /// **** CustomScrollView **** ///
   final bool floatHeaderSlivers;
   final Clip clipBehavior;
   final bool reverse;
-  final ScrollPhysics physics;
+  final ScrollPhysics? physics;
   final Axis scrollDirection;
   final DragStartBehavior dragStartBehavior;
 
-  final ScrollController controller;
-  final String restorationId;
+  final ScrollController? controller;
+  final String? restorationId;
 
   /// **** CustomScrollView **** ///
   final List<Widget> slivers;
-  final bool primary;
+  final bool? primary;
   final bool shrinkWrap;
-  final Key center;
+  final Key? center;
   final double anchor;
-  final double cacheExtent;
-  final int semanticChildCount;
+  final double? cacheExtent;
+  final int? semanticChildCount;
 
   @override
   _ScrollViewAutoState createState() => _ScrollViewAutoState();
@@ -94,12 +94,12 @@ class ScrollViewAuto extends StatefulWidget {
 
 class _ScrollViewAutoState extends State<ScrollViewAuto> {
   bool showNestedScroll = false;
-  List<Widget> slivers;
+  late List<Widget> slivers;
   List<_SliverModel> sliverModel = <_SliverModel>[];
 
   @override
   void initState() {
-    slivers = widget.slivers ?? <Widget>[];
+    slivers = widget.slivers;
     super.initState();
     addPostFrameCallback((Duration duration) {
       _calculate(slivers, sliverModel);
@@ -126,7 +126,7 @@ class _ScrollViewAutoState extends State<ScrollViewAuto> {
       reverse: widget.reverse,
       physics: widget.physics,
       dragStartBehavior: widget.dragStartBehavior,
-      body: widget.body,
+      body: widget.body!,
       restorationId: widget.restorationId,
       controller: widget.controller,
       headerSliverBuilder: widget.headerSliverBuilder ??
@@ -153,12 +153,12 @@ class _ScrollViewAutoState extends State<ScrollViewAuto> {
 /// 自动初始化 delegate
 class SliverAutoPersistentHeader extends StatelessWidget {
   const SliverAutoPersistentHeader(
-      {Key key,
+      {Key? key,
       this.pinned = true,
       this.floating = true,
-      this.minHeight,
-      this.maxHeight,
-      this.child})
+      this.minHeight = kToolbarHeight,
+      this.maxHeight = kToolbarHeight,
+      required this.child})
       : super(key: key);
 
   /// 是否折叠 [child]
@@ -189,59 +189,59 @@ class SliverAutoPersistentHeader extends StatelessWidget {
 /// 配合 [ScrollViewAuto] 使用 无需设置 [expandedHeight]
 class SliverAutoAppBar extends SliverAppBar {
   SliverAutoAppBar({
-    Key key,
+    Key? key,
 
     /// 是否提供控件占位。
     bool automaticallyImplyLeading = true,
 
     /// 左侧的图标或文字，多为返回箭头
-    Widget leading,
-    double leadingWidth,
+    Widget? leading,
+    double? leadingWidth,
 
     /// 已被显示最高为 [kToolbarHeight]
-    Widget title,
+    Widget? title,
 
     /// 标题是否居中显示
     bool centerTitle = true,
 
     /// 标题右侧的操作
-    List<Widget> actions,
+    List<Widget>? actions,
 
     /// 已被限制显示最高为 [kToolbarHeight]
     /// SliverAppBar的底部区
-    Widget bottom,
-    Size bottomSize,
+    Widget? bottom,
+    Size? bottomSize,
 
     /// 阴影
-    double elevation,
+    double? elevation,
 
     /// 是否显示阴影
     bool forceElevated = false,
 
     /// FlexibleSpaceBar
     /// 可以理解为SliverAppBar的背景内容区
-    Widget flexibleSpaceTitle,
-    Widget flexibleSpace,
-    Widget background,
+    Widget? flexibleSpaceTitle,
+    Widget? flexibleSpace,
+    Widget? background,
     bool flexibleCenterTitle = true,
-    EdgeInsetsGeometry titlePadding,
+    EdgeInsetsGeometry? titlePadding,
     CollapseMode collapseMode = CollapseMode.pin,
     List<StretchMode> stretchModes = const <StretchMode>[
       StretchMode.zoomBackground
     ],
-    double expandedHeight,
+    double? expandedHeight,
 
     /// 背景颜色
-    Color backgroundColor,
+    Color? backgroundColor,
 
     /// SliverAppBar图标主题
-    IconThemeData iconTheme,
+    IconThemeData? iconTheme,
 
     /// 文字主题
-    TextTheme textTheme,
+    TextTheme? textTheme,
 
     /// action图标主题
-    IconThemeData actionsIconTheme,
+    IconThemeData? actionsIconTheme,
 
     /// 如果希望title占用所有可用空间，请将此值设置为0.0。
     double titleSpacing = NavigationToolbar.kMiddleSpacing,
@@ -250,8 +250,8 @@ class SliverAutoAppBar extends SliverAppBar {
     bool primary = true,
 
     /// 状态栏主题，默认Brightness.dark
-    Brightness brightness,
-    AsyncCallback onStretchTrigger,
+    Brightness? brightness,
+    AsyncCallback? onStretchTrigger,
 
     ///[pinned]=true AppBar[title]不消失
     bool pinned = false,
@@ -263,10 +263,11 @@ class SliverAutoAppBar extends SliverAppBar {
     bool snap = false,
     bool stretch = true,
     double stretchTriggerOffset = 100,
-    ShapeBorder shape,
+    ShapeBorder? shape,
     double toolbarHeight = kToolbarHeight,
-    double collapsedHeight,
-  }) : super(
+    double? collapsedHeight,
+  })  : assert(bottom != null && bottomSize != null),
+        super(
             key: key,
             title: title,
             actions: actions,
@@ -295,7 +296,7 @@ class SliverAutoAppBar extends SliverAppBar {
             automaticallyImplyLeading: automaticallyImplyLeading,
             bottom: bottom == null
                 ? null
-                : PreferredSize(child: bottom, preferredSize: bottomSize),
+                : PreferredSize(child: bottom, preferredSize: bottomSize!),
             flexibleSpace: flexibleSpace ??
                 (flexibleSpaceTitle != null || background != null
                     ? FlexibleSpaceBar(
@@ -319,9 +320,9 @@ class FlexibleSpaceAutoBar extends StatelessWidget {
       this.stretchModes = const <StretchMode>[StretchMode.zoomBackground]})
       : super();
 
-  final Widget title;
-  final Widget background;
-  final EdgeInsetsGeometry titlePadding;
+  final Widget? title;
+  final Widget? background;
+  final EdgeInsetsGeometry? titlePadding;
   final bool centerTitle;
   final CollapseMode collapseMode;
   final List<StretchMode> stretchModes;
@@ -344,10 +345,10 @@ class _SliverModel {
       this.extraKey,
       this.extraSize = const Size(0, 0)});
 
-  Widget sliver;
-  GlobalKey key;
+  Widget? sliver;
+  GlobalKey? key;
   Size size;
-  GlobalKey extraKey;
+  GlobalKey? extraKey;
   Size extraSize;
 }
 
@@ -388,9 +389,9 @@ void _calculate(List<Widget> slivers, List<_SliverModel> sliver) {
 
 class _Calculate extends StatelessWidget {
   const _Calculate({
-    Key key,
-    @required this.slivers,
-    this.sliverModel,
+    Key? key,
+    required this.slivers,
+    required this.sliverModel,
   }) : super(key: key);
   final List<Widget> slivers;
   final List<_SliverModel> sliverModel;
@@ -398,26 +399,23 @@ class _Calculate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Widget> column = <Widget>[];
-    if (slivers != null && slivers.isNotEmpty) {
+    if (slivers.isNotEmpty) {
       for (final Widget element in slivers) {
         final _SliverModel _sliver = _SliverModel();
         _sliver.sliver = element;
         if (element is SliverAppBar) {
-          final Widget flexibleSpace = element.flexibleSpace;
-          if (flexibleSpace != null) {
-            final GlobalKey flexibleSpaceKey = GlobalKey();
-            if (flexibleSpace is FlexibleSpaceBar) {
-              final List<Widget> stack = <Widget>[];
-              final FlexibleSpaceBar space = flexibleSpace;
-              if (space.title != null) stack.add(space.title);
-              if (space.background != null) stack.add(space.background);
-              column.add(Stack(key: flexibleSpaceKey, children: stack));
-            } else {
-              column
-                  .add(Container(key: flexibleSpaceKey, child: flexibleSpace));
-            }
-            _sliver.key = flexibleSpaceKey;
+          final Widget flexibleSpace = element.flexibleSpace!;
+          final GlobalKey flexibleSpaceKey = GlobalKey();
+          if (flexibleSpace is FlexibleSpaceBar) {
+            final List<Widget> stack = <Widget>[];
+            final FlexibleSpaceBar space = flexibleSpace;
+            if (space.title != null) stack.add(space.title!);
+            if (space.background != null) stack.add(space.background!);
+            column.add(Stack(key: flexibleSpaceKey, children: stack));
+          } else {
+            column.add(Container(key: flexibleSpaceKey, child: flexibleSpace));
           }
+          _sliver.key = flexibleSpaceKey;
           if (element.bottom != null) {
             final GlobalKey bottomKey = GlobalKey();
             column.add(Container(key: bottomKey, child: element.bottom));
@@ -438,8 +436,8 @@ class _Calculate extends StatelessWidget {
 /// SliverPersistentHeader 固定
 class _PinnedPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
   _PinnedPersistentHeaderDelegate({
-    @required this.child,
-    @required this.height,
+    required this.child,
+    this.height = kToolbarHeight,
   });
 
   final Widget child;
@@ -463,9 +461,9 @@ class _PinnedPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
 /// SliverPersistentHeader 不固定
 class _NoPinnedPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
   _NoPinnedPersistentHeaderDelegate({
-    @required this.minHeight,
-    @required this.maxHeight,
-    @required this.child,
+    this.minHeight = 0,
+    this.maxHeight = kToolbarHeight,
+    required this.child,
   });
 
   final double minHeight;
@@ -491,18 +489,19 @@ class _NoPinnedPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
 }
 
 class _SliverAutoPersistentHeader extends SliverPersistentHeader {
-  _SliverAutoPersistentHeader({Key key, @required this.header, this.maxHeight})
+  _SliverAutoPersistentHeader(
+      {Key? key, required this.header, required this.maxHeight})
       : super(
             key: key,
             pinned: header.pinned,
             floating: header.floating,
             delegate: header.pinned
                 ? _PinnedPersistentHeaderDelegate(
-                    height: header?.maxHeight ?? maxHeight, child: header.child)
+                    height: header.maxHeight ?? maxHeight, child: header.child)
                 : _NoPinnedPersistentHeaderDelegate(
                     child: header.child,
-                    minHeight: header?.minHeight ?? maxHeight,
-                    maxHeight: header?.maxHeight ?? maxHeight,
+                    minHeight: header.minHeight ?? maxHeight,
+                    maxHeight: header.maxHeight ?? maxHeight,
                   ));
 
   final SliverAutoPersistentHeader header;
@@ -511,45 +510,46 @@ class _SliverAutoPersistentHeader extends SliverPersistentHeader {
 
 class _SliverAppBar extends SliverAppBar {
   _SliverAppBar({
-    Key key,
-    this.sliverAppBar,
-    double expandedHeight,
-    Size bottomSize,
-  }) : super(
+    Key? key,
+    required this.sliverAppBar,
+    double? expandedHeight,
+    Size? bottomSize,
+  })  : assert(sliverAppBar.bottom != null && bottomSize != null),
+        super(
             key: key,
-            automaticallyImplyLeading: sliverAppBar?.automaticallyImplyLeading,
-            title: sliverAppBar?.title,
-            actions: sliverAppBar?.actions,
-            forceElevated: sliverAppBar?.forceElevated,
-            backgroundColor: sliverAppBar?.backgroundColor,
-            iconTheme: sliverAppBar?.iconTheme,
-            actionsIconTheme: sliverAppBar?.actionsIconTheme,
-            textTheme: sliverAppBar?.textTheme,
-            primary: sliverAppBar?.primary,
-            centerTitle: sliverAppBar?.centerTitle,
-            titleSpacing: sliverAppBar?.titleSpacing,
-            snap: sliverAppBar?.snap,
-            stretch: sliverAppBar?.stretch,
-            stretchTriggerOffset: sliverAppBar?.stretchTriggerOffset,
-            onStretchTrigger: sliverAppBar?.onStretchTrigger,
-            elevation: sliverAppBar?.elevation,
-            brightness: sliverAppBar?.brightness,
-            leading: sliverAppBar?.leading,
-            pinned: sliverAppBar?.pinned,
-            floating: sliverAppBar?.floating,
-            expandedHeight: sliverAppBar?.expandedHeight ?? expandedHeight,
-            shape: sliverAppBar?.shape,
-            toolbarHeight: sliverAppBar?.toolbarHeight,
-            leadingWidth: sliverAppBar?.leadingWidth,
-            bottom: sliverAppBar?.bottom == null
+            automaticallyImplyLeading: sliverAppBar.automaticallyImplyLeading,
+            title: sliverAppBar.title,
+            actions: sliverAppBar.actions,
+            forceElevated: sliverAppBar.forceElevated,
+            backgroundColor: sliverAppBar.backgroundColor,
+            iconTheme: sliverAppBar.iconTheme,
+            actionsIconTheme: sliverAppBar.actionsIconTheme,
+            textTheme: sliverAppBar.textTheme,
+            primary: sliverAppBar.primary,
+            centerTitle: sliverAppBar.centerTitle,
+            titleSpacing: sliverAppBar.titleSpacing,
+            snap: sliverAppBar.snap,
+            stretch: sliverAppBar.stretch,
+            stretchTriggerOffset: sliverAppBar.stretchTriggerOffset,
+            onStretchTrigger: sliverAppBar.onStretchTrigger,
+            elevation: sliverAppBar.elevation,
+            brightness: sliverAppBar.brightness,
+            leading: sliverAppBar.leading,
+            pinned: sliverAppBar.pinned,
+            floating: sliverAppBar.floating,
+            expandedHeight: sliverAppBar.expandedHeight ?? expandedHeight,
+            shape: sliverAppBar.shape,
+            toolbarHeight: sliverAppBar.toolbarHeight,
+            leadingWidth: sliverAppBar.leadingWidth,
+            bottom: sliverAppBar.bottom == null
                 ? null
                 : PreferredSize(
                     child: ConstrainedBox(
                         constraints:
-                            BoxConstraints(maxHeight: bottomSize.height),
-                        child: sliverAppBar?.bottom),
+                            BoxConstraints(maxHeight: bottomSize!.height),
+                        child: sliverAppBar.bottom),
                     preferredSize: bottomSize),
-            flexibleSpace: sliverAppBar?.flexibleSpace);
+            flexibleSpace: sliverAppBar.flexibleSpace);
 
   final SliverAppBar sliverAppBar;
 }

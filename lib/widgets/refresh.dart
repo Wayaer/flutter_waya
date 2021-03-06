@@ -3,17 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-void sendRefreshType([RefreshCompletedType refresh]) =>
+void sendRefreshType([RefreshCompletedType? refresh]) =>
     eventBus.emit(refreshEvent, refresh ?? RefreshCompletedType.refresh);
 
 class Refreshed extends StatefulWidget {
   Refreshed({
-    Key key,
+    Key? key,
+    bool? enablePullUp,
+    bool? enableTwoLevel,
+    bool? enablePullDown,
+    Widget? header,
     this.child,
-    bool enablePullUp,
-    bool enableTwoLevel,
-    bool enablePullDown,
-    Widget header,
     this.onLoading,
     this.onRefresh,
     this.footer,
@@ -38,11 +38,11 @@ class Refreshed extends StatefulWidget {
   ///  可不传controller，
   ///  若想关闭刷新组件可以通过发送消息
   ///  sendRefreshType(RefreshCompletedType.refresh);
-  final RefreshController controller;
-  final VoidCallback onRefresh;
-  final VoidCallback onLoading;
-  final VoidCallback onTwoLevel;
-  final Widget child;
+  final RefreshController? controller;
+  final VoidCallback? onRefresh;
+  final VoidCallback? onLoading;
+  final VoidCallback? onTwoLevel;
+  final Widget? child;
   final bool enablePullDown;
   final bool enablePullUp;
   final bool enableTwoLevel;
@@ -51,24 +51,24 @@ class Refreshed extends StatefulWidget {
   final Widget header;
 
   /// CustomFooter
-  final Widget footer;
+  final Widget? footer;
 
-  final OnOffsetChange onOffsetChange;
-  final Axis scrollDirection;
-  final bool reverse;
-  final ScrollController scrollController;
-  final bool primary;
-  final ScrollPhysics physics;
-  final double cacheExtent;
-  final int semanticChildCount;
-  final DragStartBehavior dragStartBehavior;
+  final OnOffsetChange? onOffsetChange;
+  final Axis? scrollDirection;
+  final bool? reverse;
+  final ScrollController? scrollController;
+  final bool? primary;
+  final ScrollPhysics? physics;
+  final double? cacheExtent;
+  final int? semanticChildCount;
+  final DragStartBehavior? dragStartBehavior;
 
   @override
   _RefreshedState createState() => _RefreshedState();
 }
 
 class _RefreshedState extends State<Refreshed> {
-  RefreshController controller;
+  late RefreshController controller;
 
   @override
   void initState() {
@@ -80,25 +80,25 @@ class _RefreshedState extends State<Refreshed> {
               if (data != null && data is RefreshCompletedType) {
                 switch (data) {
                   case RefreshCompletedType.refresh:
-                    controller?.refreshCompleted();
+                    controller.refreshCompleted();
                     break;
                   case RefreshCompletedType.refreshFailed:
-                    controller?.refreshFailed();
+                    controller.refreshFailed();
                     break;
                   case RefreshCompletedType.refreshToIdle:
-                    controller?.refreshToIdle();
+                    controller.refreshToIdle();
                     break;
                   case RefreshCompletedType.onLoading:
-                    controller?.loadComplete();
+                    controller.loadComplete();
                     break;
                   case RefreshCompletedType.loadFailed:
-                    controller?.loadFailed();
+                    controller.loadFailed();
                     break;
                   case RefreshCompletedType.loadNoData:
-                    controller?.loadNoData();
+                    controller.loadNoData();
                     break;
                   case RefreshCompletedType.twoLevel:
-                    controller?.twoLevelComplete();
+                    controller.twoLevelComplete();
                     break;
                 }
               }

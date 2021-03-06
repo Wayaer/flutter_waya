@@ -8,9 +8,9 @@ import 'package:flutter_waya/flutter_waya.dart';
 
 class ClothButton extends StatefulWidget {
   const ClothButton.round(
-      {Key key,
-      @required this.size,
-      @required this.backgroundColor,
+      {Key? key,
+      required this.size,
+      required this.backgroundColor,
       this.child,
       this.retainGradient = false,
       this.gap = 1,
@@ -21,9 +21,9 @@ class ClothButton extends StatefulWidget {
         super(key: key);
 
   const ClothButton.rectangle(
-      {Key key,
-      @required this.size,
-      @required this.backgroundColor,
+      {Key? key,
+      required this.size,
+      required this.backgroundColor,
       this.duration = const Duration(milliseconds: 500),
       this.child,
       this.expandFactor = 10.0,
@@ -34,13 +34,13 @@ class ClothButton extends StatefulWidget {
         super(key: key);
 
   final Size size;
-  final Widget child;
+  final Widget? child;
   final Color backgroundColor;
-  final Color gradientColor;
+  final Color? gradientColor;
   final Duration duration;
   final double expandFactor;
   final bool retainGradient;
-  final int gap;
+  final int? gap;
 
   @override
   _ClothButtonState createState() => _ClothButtonState();
@@ -48,10 +48,10 @@ class ClothButton extends StatefulWidget {
 
 class _ClothButtonState extends State<ClothButton>
     with TickerProviderStateMixin {
-  Offset position;
-  Animation<double> animation;
-  AnimationController animationController;
-  RenderBox renderBox;
+  late Offset position;
+  late Animation<double> animation;
+  late AnimationController animationController;
+  late RenderBox renderBox;
 
   @override
   void initState() {
@@ -78,7 +78,7 @@ class _ClothButtonState extends State<ClothButton>
             retainGradient: widget.retainGradient,
             gradientColor: widget.gradientColor ?? widget.backgroundColor)
         : _RoundClothCustomPainter(
-            gap: widget.gap,
+            gap: widget.gap!,
             relativePosition: position,
             expandFactor: animation.value,
             backgroundColor: widget.backgroundColor,
@@ -110,20 +110,21 @@ class _ClothButtonState extends State<ClothButton>
     setState(() {});
   }
 
-  void onEnter(PointerEnterEvent event) =>
+  void onEnter(PointerEnterEvent? event) =>
       animationController.reverse(from: widget.expandFactor);
 
-  void onExit(PointerExitEvent event) => animationController.forward(from: 0.0);
+  void onExit(PointerExitEvent? event) =>
+      animationController.forward(from: 0.0);
 }
 
 class _ClothCustomPainter extends CustomPainter {
   _ClothCustomPainter(
-      {this.maxExpand,
-      this.expandFactor,
-      this.relativePosition,
-      this.backgroundColor,
-      this.gradientColor,
-      this.retainGradient});
+      {required this.maxExpand,
+      required this.expandFactor,
+      required this.relativePosition,
+      required this.backgroundColor,
+      required this.gradientColor,
+      required this.retainGradient});
 
   final double expandFactor;
   final double maxExpand;
@@ -214,13 +215,13 @@ class _ClothCustomPainter extends CustomPainter {
 
 class _RoundClothCustomPainter extends CustomPainter {
   _RoundClothCustomPainter(
-      {@required this.maxExpand,
-      @required this.expandFactor,
-      @required this.relativePosition,
-      @required this.backgroundColor,
-      @required this.gap,
-      @required this.gradientColor,
-      @required this.retainGradient});
+      {required this.maxExpand,
+      required this.expandFactor,
+      required this.relativePosition,
+      required this.backgroundColor,
+      required this.gap,
+      required this.gradientColor,
+      required this.retainGradient});
 
   final double expandFactor;
   final double maxExpand;

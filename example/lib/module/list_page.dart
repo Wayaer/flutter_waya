@@ -172,7 +172,7 @@ class _ListPageState extends State<ListPage> {
 }
 
 class _DraggableScrollbar extends StatefulWidget {
-  const _DraggableScrollbar(this.colors, {Key key}) : super(key: key);
+  const _DraggableScrollbar(this.colors, {Key? key}) : super(key: key);
 
   final List<Color> colors;
 
@@ -207,7 +207,7 @@ class _DraggableScrollbarState extends State<_DraggableScrollbar> {
 }
 
 class _SimpleListRefreshed extends StatelessWidget {
-  const _SimpleListRefreshed(this.colors, {Key key}) : super(key: key);
+  const _SimpleListRefreshed(this.colors, {Key? key}) : super(key: key);
 
   final List<Color> colors;
 

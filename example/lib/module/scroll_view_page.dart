@@ -54,7 +54,7 @@ class ScrollViewPage extends StatelessWidget {
 }
 
 class _ScrollViewAutoNestedPage extends StatelessWidget {
-  const _ScrollViewAutoNestedPage(this.slivers, {Key key}) : super(key: key);
+  const _ScrollViewAutoNestedPage(this.slivers, {Key? key}) : super(key: key);
 
   final List<Widget> slivers;
 
@@ -71,7 +71,7 @@ class _ScrollViewAutoNestedPage extends StatelessWidget {
 }
 
 class _ScrollViewAutoPage extends StatelessWidget {
-  const _ScrollViewAutoPage(this.slivers, {Key key}) : super(key: key);
+  const _ScrollViewAutoPage(this.slivers, {Key? key}) : super(key: key);
 
   final List<Widget> slivers;
 

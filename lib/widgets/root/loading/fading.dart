@@ -1,8 +1,8 @@
-part of 'tweens/delay_tween.dart';
+part of 'tween/delay_tween.dart';
 
 class SpinKitFadingFour extends StatefulWidget {
   const SpinKitFadingFour({
-    Key key,
+    Key? key,
     this.color,
     this.shape = BoxShape.circle,
     this.size = 50.0,
@@ -13,16 +13,14 @@ class SpinKitFadingFour extends StatefulWidget {
             !(itemBuilder is IndexedWidgetBuilder && color is Color) &&
                 !(itemBuilder == null && color == null),
             'You should specify either a itemBuilder or a color'),
-        assert(shape != null),
-        assert(size != null),
         super(key: key);
 
-  final Color color;
+  final Color? color;
   final BoxShape shape;
   final double size;
-  final IndexedWidgetBuilder itemBuilder;
+  final IndexedWidgetBuilder? itemBuilder;
   final Duration duration;
-  final AnimationController controller;
+  final AnimationController? controller;
 
   @override
   _SpinKitFadingFourState createState() => _SpinKitFadingFourState();
@@ -31,12 +29,11 @@ class SpinKitFadingFour extends StatefulWidget {
 class _SpinKitFadingFourState extends State<SpinKitFadingFour>
     with SingleTickerProviderStateMixin {
   final List<double> delays = <double>[.0, -0.9, -0.6, -0.3];
-  AnimationController _controller;
+  late AnimationController _controller;
 
   @override
   void initState() {
     super.initState();
-
     _controller = (widget.controller ??
         AnimationController(vsync: this, duration: widget.duration))
       ..repeat();
@@ -72,14 +69,14 @@ class _SpinKitFadingFourState extends State<SpinKitFadingFour>
           }))));
 
   Widget _itemBuilder(int index) => widget.itemBuilder != null
-      ? widget.itemBuilder(context, index)
+      ? widget.itemBuilder!(context, index)
       : DecoratedBox(
           decoration: BoxDecoration(color: widget.color, shape: widget.shape));
 }
 
 class SpinKitWanderingCubes extends StatefulWidget {
   const SpinKitWanderingCubes({
-    Key key,
+    Key? key,
     this.color,
     this.shape = BoxShape.rectangle,
     this.size = 50.0,
@@ -89,16 +86,14 @@ class SpinKitWanderingCubes extends StatefulWidget {
             !(itemBuilder is IndexedWidgetBuilder && color is Color) &&
                 !(itemBuilder == null && color == null),
             'You should specify either a itemBuilder or a color'),
-        assert(shape != null),
-        assert(size != null),
         offset = size * 0.75,
         super(key: key);
 
-  final Color color;
+  final Color? color;
   final BoxShape shape;
   final double offset;
   final double size;
-  final IndexedWidgetBuilder itemBuilder;
+  final IndexedWidgetBuilder? itemBuilder;
   final Duration duration;
 
   @override
@@ -107,14 +102,13 @@ class SpinKitWanderingCubes extends StatefulWidget {
 
 class _SpinKitWanderingCubesState extends State<SpinKitWanderingCubes>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  Animation<double> _scale1, _scale2, _scale3, _scale4, _rotate;
-  Animation<double> _translate1, _translate2, _translate3, _translate4;
+  late AnimationController _controller;
+  late Animation<double> _scale1, _scale2, _scale3, _scale4, _rotate;
+  late Animation<double> _translate1, _translate2, _translate3, _translate4;
 
   @override
   void initState() {
     super.initState();
-
     _controller = AnimationController(vsync: this, duration: widget.duration)
       ..addListener(() => setState(() {}))
       ..repeat();
@@ -203,7 +197,7 @@ class _SpinKitWanderingCubesState extends State<SpinKitWanderingCubes>
   }
 
   Widget _itemBuilder(int index) => widget.itemBuilder != null
-      ? widget.itemBuilder(context, index)
+      ? widget.itemBuilder!(context, index)
       : DecoratedBox(
           decoration: BoxDecoration(color: widget.color, shape: widget.shape));
 }

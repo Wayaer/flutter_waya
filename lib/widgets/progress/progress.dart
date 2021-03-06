@@ -6,13 +6,13 @@ import 'package:vector_math/vector_math.dart';
 
 class Progress extends StatefulWidget {
   Progress.circular({
-    Key key,
+    Key? key,
     this.percent = 0.0,
     this.lineWidth = 5.0,
     this.startAngle = 0.0,
-    @required this.radius,
-    Color backgroundColor,
-    Color progressColor,
+    required this.radius,
+    Color? backgroundColor,
+    Color? progressColor,
     this.backgroundWidth = -1,
     this.linearGradient,
     this.animation = false,
@@ -21,7 +21,7 @@ class Progress extends StatefulWidget {
     this.footer,
     this.center,
     this.addAutomaticKeepAlive = true,
-    this.circularStrokeCap,
+    this.circularStrokeCap = CircularStrokeCap.round,
     this.arcBackgroundColor,
     this.arcType,
     this.animateFromLastPercent = false,
@@ -32,8 +32,7 @@ class Progress extends StatefulWidget {
     this.onAnimationEnd,
     this.widgetIndicator,
     this.rotateLinearGradient = false,
-  })  : assert(startAngle >= 0.0),
-        assert(curve != null),
+  })  : assert(startAngle! >= 0.0),
         assert(linearGradient != null || progressColor != null,
             'Cannot provide both linearGradient and progressColor'),
         assert(percent > 0.0 || percent < 1.0,
@@ -44,23 +43,23 @@ class Progress extends StatefulWidget {
         progressColor = progressColor ?? ConstColors.red,
         state = _CircularState(),
         width = null,
-        lineHeight = null,
+        lineHeight = 0,
         leading = null,
         trailing = null,
-        linearStrokeCap = null,
-        mainAxisAlignment = null,
-        padding = null,
-        isRTL = null,
-        clipLinearGradient = null,
+        linearStrokeCap = LinearStrokeCap.butt,
+        mainAxisAlignment = MainAxisAlignment.start,
+        padding = const EdgeInsets.symmetric(horizontal: 10.0),
+        isRTL = false,
+        clipLinearGradient = false,
         super(key: key);
 
   Progress.linear({
-    Key key,
+    Key? key,
     this.percent = 0.0,
     this.lineHeight = 5.0,
     this.width,
-    Color backgroundColor,
-    Color progressColor,
+    Color? backgroundColor,
+    Color? progressColor,
     this.linearGradient,
     this.animation = false,
     this.animationDuration = const Duration(milliseconds: 500),
@@ -70,7 +69,7 @@ class Progress extends StatefulWidget {
     this.trailing,
     this.center,
     this.addAutomaticKeepAlive = true,
-    this.linearStrokeCap,
+    this.linearStrokeCap = LinearStrokeCap.butt,
     this.padding = const EdgeInsets.symmetric(horizontal: 10.0),
     this.mainAxisAlignment = MainAxisAlignment.start,
     this.maskFilter,
@@ -81,22 +80,21 @@ class Progress extends StatefulWidget {
     this.widgetIndicator,
   })  : backgroundColor = backgroundColor ?? ConstColors.black30,
         progressColor = progressColor ?? ConstColors.red,
-        assert(curve != null),
         assert(linearGradient != null || progressColor != null,
             'Cannot provide both linearGradient and progressColor'),
         assert(percent > 0.0 || percent < 1.0,
             'Percent value must be a double between 0.0 and 1.0'),
         state = _LinearState(),
-        radius = null,
-        lineWidth = null,
-        backgroundWidth = null,
+        radius = 0,
+        lineWidth = 5.0,
+        backgroundWidth = 1,
         header = null,
         footer = null,
-        circularStrokeCap = null,
+        circularStrokeCap = CircularStrokeCap.round,
         startAngle = null,
         arcType = null,
         arcBackgroundColor = null,
-        reverse = null,
+        reverse = false,
         rotateLinearGradient = null,
         super(key: key);
 
@@ -117,7 +115,7 @@ class Progress extends StatefulWidget {
   final Duration animationDuration;
 
   /// widget inside the Line
-  final Widget center;
+  final Widget? center;
 
   /// set true if you want to animate the linear from the last percent value you set
   final bool animateFromLastPercent;
@@ -125,13 +123,13 @@ class Progress extends StatefulWidget {
   /// If present, this will make the progress bar colored by this gradient.
   ///
   /// This will override [progressColor]. It is an error to provide both.
-  final LinearGradient linearGradient;
+  final LinearGradient? linearGradient;
 
   /// set false if you don't want to preserve the state of the widget
   final bool addAutomaticKeepAlive;
 
   /// Creates a mask filter that takes the progress shape being drawn and blurs it.
-  final MaskFilter maskFilter;
+  final MaskFilter? maskFilter;
 
   /// set a linear curve animation type
   final Curve curve;
@@ -141,10 +139,10 @@ class Progress extends StatefulWidget {
   final bool restartAnimation;
 
   /// Callback called when the animation ends (only if `animation` is true)
-  final VoidCallback onAnimationEnd;
+  final VoidCallback? onAnimationEnd;
 
   /// Display a widget indicator at the end of the progress. It only works when `animation` is true
-  final Widget widgetIndicator;
+  final Widget? widgetIndicator;
 
   //// circular
 
@@ -155,13 +153,13 @@ class Progress extends StatefulWidget {
   final double lineWidth;
 
   /// Width of the unfilled background of the progress bar
-  final double backgroundWidth;
+  final double? backgroundWidth;
 
   /// widget at the top of the circle
-  final Widget header;
+  final Widget? header;
 
   /// widget at the bottom of the circle
-  final Widget footer;
+  final Widget? footer;
 
   /// The kind of finish to place on the end of lines drawn, values
   /// supported: butt, round, square
@@ -169,33 +167,33 @@ class Progress extends StatefulWidget {
 
   /// the angle which the circle will start the progress (in degrees, eg: 0
   /// .0, 45.0, 90.0)
-  final double startAngle;
+  final double? startAngle;
 
   /// set the arc type
-  final ArcType arcType;
+  final ArcType? arcType;
 
   /// set a circular background color when use the arcType property
-  final Color arcBackgroundColor;
+  final Color? arcBackgroundColor;
 
   /// set true when you want to display the progress in reverse mode
   final bool reverse;
 
   /// Set to true if you want to rotate linear gradient in accordance to the [startAngle].
-  final bool rotateLinearGradient;
+  final bool? rotateLinearGradient;
 
   //// linear
 
   /// Percent value between 0.0 and 1.0
-  final double width;
+  final double? width;
 
   /// Height of the line
   final double lineHeight;
 
   /// widget at the left of the Line
-  final Widget leading;
+  final Widget? leading;
 
   /// widget at the right of the Line
-  final Widget trailing;
+  final Widget? trailing;
 
   /// The kind of finish to place on the end of lines drawn, values
   /// supported: butt, round, roundAll
@@ -222,8 +220,8 @@ class Progress extends StatefulWidget {
 
 abstract class _ProgressSubState extends State<Progress>
     with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
-  AnimationController animationController;
-  Animation<double> animation;
+  AnimationController? animationController;
+  Animation<double>? animation;
   double percent = 0.0;
 
   @override
@@ -233,18 +231,18 @@ abstract class _ProgressSubState extends State<Progress>
       animationController =
           AnimationController(vsync: this, duration: widget.animationDuration);
       animation = Tween<double>(begin: 0.0, end: widget.percent).animate(
-        CurvedAnimation(parent: animationController, curve: widget.curve),
+        CurvedAnimation(parent: animationController!, curve: widget.curve),
       )..addListener(() {
-          percent = animation.value;
+          percent = animation!.value;
           setState(() {});
           if (widget.restartAnimation && percent == 1.0)
-            animationController.repeat(min: 0, max: 1.0);
+            animationController!.repeat(min: 0, max: 1.0);
         });
-      animationController.addStatusListener((AnimationStatus status) {
+      animationController!.addStatusListener((AnimationStatus status) {
         if (widget.onAnimationEnd != null &&
-            status == AnimationStatus.completed) widget.onAnimationEnd();
+            status == AnimationStatus.completed) widget.onAnimationEnd!();
       });
-      animationController.forward();
+      animationController!.forward();
     }
     super.initState();
   }
@@ -254,14 +252,14 @@ abstract class _ProgressSubState extends State<Progress>
     super.didUpdateWidget(oldWidget);
     if (oldWidget.percent != widget.percent) {
       if (animationController != null) {
-        animationController.duration = widget.animationDuration;
+        animationController!.duration = widget.animationDuration;
         animation = Tween<double>(
                 begin: widget.animateFromLastPercent ? oldWidget.percent : 0.0,
                 end: widget.percent)
             .animate(
-          CurvedAnimation(parent: animationController, curve: widget.curve),
+          CurvedAnimation(parent: animationController!, curve: widget.curve),
         );
-        animationController.forward(from: 0.0);
+        animationController!.forward(from: 0.0);
       } else {
         percent = widget.percent;
         setState(() {});
@@ -285,7 +283,7 @@ class _CircularState extends _ProgressSubState {
   Widget build(BuildContext context) {
     super.build(context);
     final List<Widget> items = <Widget>[];
-    if (widget.header != null) items.add(widget.header);
+    if (widget.header != null) items.add(widget.header!);
     items.add(Universal(
         isStack: true,
         height: widget.radius + widget.lineWidth,
@@ -296,20 +294,20 @@ class _CircularState extends _ProgressSubState {
                 progress: percent * 360,
                 progressColor: widget.progressColor,
                 backgroundColor: widget.backgroundColor,
-                startAngle: widget.startAngle,
+                startAngle: widget.startAngle!,
                 circularStrokeCap: widget.circularStrokeCap,
                 radius: (widget.radius / 2) - widget.lineWidth / 2,
                 lineWidth: widget.lineWidth,
                 backgroundWidth: //negative values ignored, replaced with lineWidth
-                    widget.backgroundWidth >= 0.0
-                        ? (widget.backgroundWidth)
+                    widget.backgroundWidth! >= 0.0
+                        ? widget.backgroundWidth!
                         : widget.lineWidth,
                 arcBackgroundColor: widget.arcBackgroundColor,
                 arcType: widget.arcType,
                 reverse: widget.reverse,
                 linearGradient: widget.linearGradient,
                 maskFilter: widget.maskFilter,
-                rotateLinearGradient: widget.rotateLinearGradient),
+                rotateLinearGradient: widget.rotateLinearGradient!),
             child: (widget.center != null)
                 ? Center(child: widget.center)
                 : Container(),
@@ -334,7 +332,7 @@ class _CircularState extends _ProgressSubState {
             ))
         ]));
 
-    if (widget.footer != null) items.add(widget.footer);
+    if (widget.footer != null) items.add(widget.footer!);
     return Universal(mainAxisSize: MainAxisSize.min, children: items);
   }
 }
@@ -349,9 +347,9 @@ class _LinearState extends _ProgressSubState {
   void initState() {
     addPostFrameCallback((_) {
       if (mounted) {
-        _containerWidth = _containerKey.currentContext.size.width;
+        _containerWidth = _containerKey.currentContext!.size!.width;
         if (_keyIndicator.currentContext != null) {
-          _indicatorWidth = _keyIndicator.currentContext.size.width;
+          _indicatorWidth = _keyIndicator.currentContext!.size!.width;
         }
         setState(() {});
       }
@@ -363,7 +361,7 @@ class _LinearState extends _ProgressSubState {
   Widget build(BuildContext context) {
     super.build(context);
     final List<Widget> items = <Widget>[];
-    if (widget.leading != null) items.add(widget.leading);
+    if (widget.leading != null) items.add(widget.leading!);
     final double percentPositionedHorizontal =
         _containerWidth * percent - _indicatorWidth / 3;
     final Stack bar = Stack(children: <Widget>[
@@ -392,7 +390,7 @@ class _LinearState extends _ProgressSubState {
             right: widget.isRTL ? percentPositionedHorizontal : null,
             left: !widget.isRTL ? percentPositionedHorizontal : null,
             top: 0,
-            child: widget.widgetIndicator),
+            child: widget.widgetIndicator!),
     ]);
     items.add(bar);
     if (widget.trailing != null)
@@ -408,15 +406,15 @@ class _LinearState extends _ProgressSubState {
 
 class _LinearPainter extends CustomPainter {
   _LinearPainter({
-    this.lineWidth,
-    this.progress,
-    this.isRTL,
-    this.progressColor,
-    this.backgroundColor,
+    required this.lineWidth,
+    required this.progress,
+    required this.isRTL,
+    required this.progressColor,
+    required this.backgroundColor,
     this.linearStrokeCap = LinearStrokeCap.butt,
     this.linearGradient,
     this.maskFilter,
-    this.clipLinearGradient,
+    required this.clipLinearGradient,
   }) {
     _paintBackground.color = backgroundColor;
     _paintBackground.style = PaintingStyle.stroke;
@@ -446,8 +444,8 @@ class _LinearPainter extends CustomPainter {
   final Color progressColor;
   final Color backgroundColor;
   final LinearStrokeCap linearStrokeCap;
-  final LinearGradient linearGradient;
-  final MaskFilter maskFilter;
+  final LinearGradient? linearGradient;
+  final MaskFilter? maskFilter;
   final bool clipLinearGradient;
 
   @override
@@ -473,7 +471,7 @@ class _LinearPainter extends CustomPainter {
   Shader _createGradientShaderRightToLeft(Size size, double xProgress) {
     final Offset shaderEndPoint =
         clipLinearGradient ? Offset.zero : Offset(xProgress, size.height);
-    return linearGradient.createShader(
+    return linearGradient!.createShader(
         Rect.fromPoints(Offset(size.width, size.height), shaderEndPoint));
   }
 
@@ -481,7 +479,7 @@ class _LinearPainter extends CustomPainter {
     final Offset shaderEndPoint = clipLinearGradient
         ? Offset(size.width, size.height)
         : Offset(xProgress, size.height);
-    return linearGradient
+    return linearGradient!
         .createShader(Rect.fromPoints(Offset.zero, shaderEndPoint));
   }
 
@@ -491,20 +489,20 @@ class _LinearPainter extends CustomPainter {
 
 class _CirclePainter extends CustomPainter {
   _CirclePainter(
-      {this.lineWidth,
-      this.backgroundWidth,
-      this.progress,
-      @required this.radius,
-      this.progressColor,
-      this.backgroundColor,
+      {required this.lineWidth,
+      required this.backgroundWidth,
+      required this.progress,
+      required this.radius,
+      required this.progressColor,
+      required this.backgroundColor,
       this.startAngle = 0.0,
       this.circularStrokeCap = CircularStrokeCap.round,
       this.linearGradient,
-      this.reverse,
+      this.reverse = false,
       this.arcBackgroundColor,
       this.arcType,
       this.maskFilter,
-      this.rotateLinearGradient}) {
+      required this.rotateLinearGradient}) {
     _paintBackground.color = backgroundColor;
     _paintBackground.style = PaintingStyle.stroke;
     _paintBackground.strokeWidth = backgroundWidth;
@@ -516,7 +514,7 @@ class _CirclePainter extends CustomPainter {
       _paintBackground.strokeCap = StrokeCap.square;
     }
     if (arcBackgroundColor != null) {
-      _paintBackgroundStartAngle.color = arcBackgroundColor;
+      _paintBackgroundStartAngle.color = arcBackgroundColor!;
       _paintBackgroundStartAngle.style = PaintingStyle.stroke;
       _paintBackgroundStartAngle.strokeWidth = lineWidth;
       if (circularStrokeCap == CircularStrokeCap.round) {
@@ -551,11 +549,11 @@ class _CirclePainter extends CustomPainter {
   final Color backgroundColor;
   final CircularStrokeCap circularStrokeCap;
   final double startAngle;
-  final LinearGradient linearGradient;
-  final Color arcBackgroundColor;
-  final ArcType arcType;
+  final LinearGradient? linearGradient;
+  final Color? arcBackgroundColor;
+  final ArcType? arcType;
   final bool reverse;
-  final MaskFilter maskFilter;
+  final MaskFilter? maskFilter;
   final bool rotateLinearGradient;
 
   @override
@@ -597,11 +595,11 @@ class _CirclePainter extends CustomPainter {
                 endAngle: radians(progress),
                 tileMode: TileMode.clamp,
                 colors: reverse
-                    ? linearGradient.colors.reversed.toList()
-                    : linearGradient.colors)
+                    ? linearGradient!.colors.reversed.toList()
+                    : linearGradient!.colors)
             .createShader(Rect.fromCircle(center: center, radius: radius));
       } else if (!rotateLinearGradient) {
-        _paintLine.shader = linearGradient
+        _paintLine.shader = linearGradient!
             .createShader(Rect.fromCircle(center: center, radius: radius));
       }
     }

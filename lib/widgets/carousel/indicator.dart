@@ -4,8 +4,8 @@ import 'package:flutter_waya/flutter_waya.dart';
 /// 指示器
 class Indicator extends StatelessWidget {
   const Indicator(
-      {Key key,
-      @required this.count,
+      {Key? key,
+      required this.count,
       this.size = 20.0,
       this.space = 5.0,
       this.activeSize = 20.0,
@@ -14,10 +14,9 @@ class Indicator extends StatelessWidget {
       this.activeColor = Colors.white,
       this.scale = 0.6,
       this.dropHeight = 20.0,
-      @required this.index,
-      @required this.position})
-      : assert(count != null),
-        super(key: key);
+      required this.index,
+      required this.position})
+      : super(key: key);
 
   final int index;
   final double position;
@@ -52,17 +51,17 @@ class Indicator extends StatelessWidget {
     final Paint _paint = Paint();
     switch (layout) {
       case IndicatorType.none:
-        return _NonePainter(this, position ?? 0.0, index, _paint);
+        return _NonePainter(this, position, index, _paint);
       case IndicatorType.slide:
-        return _SlidePainter(this, position ?? 0.0, index, _paint);
+        return _SlidePainter(this, position, index, _paint);
       case IndicatorType.warm:
-        return _WarmPainter(this, position ?? 0.0, index, _paint);
+        return _WarmPainter(this, position, index, _paint);
       case IndicatorType.color:
-        return _ColorPainter(this, position ?? 0.0, index, _paint);
+        return _ColorPainter(this, position, index, _paint);
       case IndicatorType.scale:
-        return _ScalePainter(this, position ?? 0.0, index, _paint);
+        return _ScalePainter(this, position, index, _paint);
       case IndicatorType.drop:
-        return _DropPainter(this, position ?? 0.0, index, _paint);
+        return _DropPainter(this, position, index, _paint);
       default:
         throw Exception('Not a valid layout');
     }
@@ -185,14 +184,14 @@ class _ScalePainter extends _IndicatorPainter {
         : radius + ((index + 1) * (size + space));
 
     final double progress = page - index;
-    _paint.color = Color.lerp(widget.activeColor, widget.color, progress);
+    _paint.color = Color.lerp(widget.activeColor, widget.color, progress)!;
 
     /// last
     canvas.drawCircle(Offset(radius + (index * (size + space)), radius),
         lerp(radius, radius * widget.scale, progress), _paint);
 
     /// first
-    _paint.color = Color.lerp(widget.color, widget.activeColor, progress);
+    _paint.color = Color.lerp(widget.color, widget.activeColor, progress)!;
     canvas.drawCircle(Offset(secondOffset, radius),
         lerp(radius * widget.scale, radius, progress), _paint);
   }
@@ -214,14 +213,14 @@ class _ColorPainter extends _IndicatorPainter {
     final double secondOffset = index == widget.count - 1
         ? radius
         : radius + ((index + 1) * (size + space));
-    _paint.color = Color.lerp(widget.activeColor, widget.color, progress);
+    _paint.color = Color.lerp(widget.activeColor, widget.color, progress)!;
 
     /// left
     canvas.drawCircle(
         Offset(radius + (index * (size + space)), radius), radius, _paint);
 
     /// right
-    _paint.color = Color.lerp(widget.color, widget.activeColor, progress);
+    _paint.color = Color.lerp(widget.color, widget.activeColor, progress)!;
     canvas.drawCircle(Offset(secondOffset, radius), radius, _paint);
   }
 }

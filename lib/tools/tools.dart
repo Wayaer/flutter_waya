@@ -49,22 +49,22 @@ String getFileSize(int size) {
   return size.toString();
 }
 
-WidgetsBinding widgetsBinding = WidgetsBinding.instance;
+WidgetsBinding? widgetsBinding = WidgetsBinding.instance;
 
 void addPostFrameCallback(FrameCallback callback) =>
-    widgetsBinding.addPostFrameCallback(callback);
+    widgetsBinding?.addPostFrameCallback(callback);
 
 void addObserver(WidgetsBindingObserver observer) =>
-    widgetsBinding.addObserver(observer);
+    widgetsBinding?.addObserver(observer);
 
 void removeObserver(WidgetsBindingObserver observer) =>
-    widgetsBinding.removeObserver(observer);
+    widgetsBinding?.removeObserver(observer);
 
 void addPersistentFrameCallback(FrameCallback callback) =>
-    widgetsBinding.addPersistentFrameCallback(callback);
+    widgetsBinding?.addPersistentFrameCallback(callback);
 
 void addTimingsCallback(TimingsCallback callback) =>
-    widgetsBinding.addTimingsCallback(callback);
+    widgetsBinding?.addTimingsCallback(callback);
 
 void setStatusBarLight(bool isLight) {
   const Color color = ConstColors.transparent;

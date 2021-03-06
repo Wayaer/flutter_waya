@@ -14,9 +14,9 @@ const Duration kDefaultAutoPlayDelay = Duration(seconds: 3);
 
 class Carousel extends StatefulWidget {
   const Carousel.builder({
-    Key key,
-    @required this.itemBuilder,
-    @required this.itemCount,
+    Key? key,
+    required this.itemBuilder,
+    required this.itemCount,
     this.autoPlay = true,
     this.layout = CarouselLayout.stack,
     this.duration = kDefaultAutoPlayDelay,
@@ -29,17 +29,9 @@ class Carousel extends StatefulWidget {
     this.curve = Curves.ease,
     this.scrollDirection = Axis.horizontal,
     this.controller,
-    @required this.itemHeight,
-    @required this.itemWidth,
-  })  : assert(itemCount != null),
-        assert(itemBuilder != null),
-        assert(loop != null),
-        assert(autoPlay != null),
-        assert(scrollDirection != null),
-        assert(pagination != null),
-        assert(duration != null),
-        assert(transitionDuration != null),
-        super(key: key);
+    required this.itemHeight,
+    required this.itemWidth,
+  }) : super(key: key);
 
   ///  Inner item height, this property is valid if layout=stack or layout=tinder,
   final double itemHeight;
@@ -54,7 +46,7 @@ class Carousel extends StatefulWidget {
   final int itemCount;
 
   ///  当用户手动拖拽或者自动播放引起下标改变的时候调用
-  final ValueChanged<int> onChanged;
+  final ValueChanged<int>? onChanged;
 
   ///  auto play config
   ///  自动播放开关.
@@ -80,17 +72,17 @@ class Carousel extends StatefulWidget {
   ///  If not set , the `Carousel` is 'uncontrolled', which means manage index by itself
   ///  If set , the `Carousel` is 'controlled', which means the index is fully managed by parent widget.
   ///  初始的时候下标位置
-  final int index;
+  final int? index;
 
   ///  Called when tap
   ///  当用户点击某个轮播的时候调用
-  final CarouselOnTap onTap;
+  final CarouselOnTap? onTap;
 
   ///  other plugins, you can custom your own plugin
   final List<CarouselPlugin> pagination;
 
   ///  控制器
-  final CarouselController controller;
+  final CarouselController? controller;
 
   ///  Build in layouts
   final CarouselLayout layout;
@@ -100,9 +92,9 @@ class Carousel extends StatefulWidget {
 }
 
 abstract class _CarouselTimerMixin extends State<Carousel> {
-  Timer _timer;
+  Timer? _timer;
 
-  CarouselController _controller;
+  late CarouselController _controller;
 
   @override
   void initState() {
@@ -120,7 +112,6 @@ abstract class _CarouselTimerMixin extends State<Carousel> {
       case CarouselEvent.stop:
         if (_timer != null) _stopAutoPlay();
         break;
-        break;
       case CarouselEvent.next:
         break;
       case CarouselEvent.previous:
@@ -137,15 +128,15 @@ abstract class _CarouselTimerMixin extends State<Carousel> {
   @override
   void didUpdateWidget(Carousel oldWidget) {
     if (_controller != oldWidget.controller && oldWidget.controller != null) {
-      oldWidget.controller.removeListener(_onController);
-      _controller = oldWidget.controller;
+      oldWidget.controller!.removeListener(_onController);
+      _controller = oldWidget.controller!;
       _controller.addListener(_onController);
     }
     _handleAutoPlay();
     super.didUpdateWidget(oldWidget);
   }
 
-  bool _autoPlayEnabled() => _controller.autoPlay ?? widget.autoPlay;
+  bool _autoPlayEnabled() => _controller.autoPlay || widget.autoPlay;
 
   void _startAutoPlay() {
     _timer = widget.duration
@@ -165,7 +156,7 @@ abstract class _CarouselTimerMixin extends State<Carousel> {
 }
 
 class _CarouselState extends _CarouselTimerMixin {
-  int _activeIndex;
+  late int _activeIndex;
 
   @override
   void initState() {
@@ -177,7 +168,7 @@ class _CarouselState extends _CarouselTimerMixin {
   void didUpdateWidget(Carousel oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.index != null && widget.index != _activeIndex)
-      _activeIndex = widget.index;
+      _activeIndex = widget.index!;
   }
 
   Widget get buildCarousel {
@@ -185,7 +176,7 @@ class _CarouselState extends _CarouselTimerMixin {
         ? widget.itemBuilder
         : (BuildContext context, int index) => GestureDetector(
             behavior: HitTestBehavior.opaque,
-            onTap: () => widget.onTap(index),
+            onTap: () => widget.onTap!(index),
             child: widget.itemBuilder(context, index));
     return _SubCarousel(
         loop: widget.loop,
@@ -200,7 +191,7 @@ class _CarouselState extends _CarouselTimerMixin {
         onChanged: (int index) {
           _activeIndex = index;
           setState(() {});
-          if (widget.onChanged != null) widget.onChanged(index);
+          if (widget.onChanged != null) widget.onChanged!(index);
         },
         controller: _controller,
         scrollDirection: widget.scrollDirection);
@@ -210,7 +201,7 @@ class _CarouselState extends _CarouselTimerMixin {
   Widget build(BuildContext context) {
     if (widget.pagination.isEmpty) return buildCarousel;
     final List<Widget> children = <Widget>[buildCarousel];
-    widget?.pagination?.builder((CarouselPlugin plugin) {
+    widget.pagination.builder((CarouselPlugin plugin) {
       children.add(plugin.build(
           context,
           CarouselPluginConfig(
@@ -226,28 +217,28 @@ class _CarouselState extends _CarouselTimerMixin {
 
 class _SubCarousel extends StatefulWidget {
   const _SubCarousel(
-      {Key key,
-      this.loop,
-      this.itemHeight,
-      this.itemWidth,
-      this.duration,
+      {Key? key,
+      this.loop = false,
+      required this.itemHeight,
+      required this.itemWidth,
+      this.duration = const Duration(seconds: 3),
       this.curve,
       this.itemBuilder,
       this.controller,
-      this.index,
-      this.itemCount,
+      this.index = 0,
+      this.itemCount = 0,
       this.scrollDirection = Axis.horizontal,
       this.onChanged,
-      this.layout})
+      this.layout = CarouselLayout.tinder})
       : super(key: key);
 
-  final IndexedWidgetBuilder itemBuilder;
+  final IndexedWidgetBuilder? itemBuilder;
   final int itemCount;
   final int index;
-  final ValueChanged<int> onChanged;
-  final CarouselController controller;
+  final ValueChanged<int>? onChanged;
+  final CarouselController? controller;
   final Duration duration;
-  final Curve curve;
+  final Curve? curve;
   final double itemWidth;
   final double itemHeight;
   final bool loop;
@@ -267,11 +258,11 @@ class _SubCarousel extends StatefulWidget {
 }
 
 class _TinderState extends _LayoutState<_SubCarousel> {
-  List<double> scales;
-  List<double> offsetsX;
-  List<double> offsetsY;
-  List<double> opacity;
-  List<double> rotates;
+  late List<double> scales;
+  late List<double> offsetsX;
+  late List<double> offsetsY;
+  late List<double> opacity;
+  late List<double> rotates;
 
   double getOffsetY(double scale) =>
       widget.itemHeight - widget.itemHeight * scale;
@@ -324,9 +315,11 @@ class _TinderState extends _LayoutState<_SubCarousel> {
                   scale: s,
                   alignment: alignment,
                   child: SizedBox(
-                    width: widget.itemWidth ?? double.infinity,
-                    height: widget.itemHeight ?? double.infinity,
-                    child: widget.itemBuilder(context, realIndex),
+                    width: widget.itemWidth,
+                    height: widget.itemHeight,
+                    child: widget.itemBuilder == null
+                        ? null
+                        : widget.itemBuilder!(context, realIndex),
                   )),
             )));
   }
@@ -345,9 +338,9 @@ double _getValue(List<double> values, double animationValue, int index) {
 }
 
 class _StackState extends _LayoutState<_SubCarousel> {
-  List<double> scales;
-  List<double> offsets;
-  List<double> opacity;
+  late List<double> scales;
+  late List<double> offsets;
+  late List<double> opacity;
 
   void _updateValues() {
     if (widget.scrollDirection == Axis.horizontal) {
@@ -409,9 +402,11 @@ class _StackState extends _LayoutState<_SubCarousel> {
               scale: s,
               alignment: alignment,
               child: SizedBox(
-                width: widget.itemWidth ?? double.infinity,
-                height: widget.itemHeight ?? double.infinity,
-                child: widget.itemBuilder(context, realIndex),
+                width: widget.itemWidth,
+                height: widget.itemHeight,
+                child: widget.itemBuilder == null
+                    ? null
+                    : widget.itemBuilder!(context, realIndex),
               )),
         ));
   }
@@ -420,28 +415,22 @@ class _StackState extends _LayoutState<_SubCarousel> {
 ///  _LayoutState
 abstract class _LayoutState<T extends _SubCarousel> extends State<T>
     with SingleTickerProviderStateMixin {
-  double _carouselWidth;
-  double _carouselHeight;
-  Animation<double> _animation;
-  AnimationController _animationController;
-  int _startIndex;
-  int _animationCount;
-  int _currentIndex = 0;
+  late double _carouselWidth;
+  late double _carouselHeight;
+  late Animation<double> _animation;
+  late AnimationController _animationController;
+  late int _startIndex;
+  int? _animationCount;
+  late int _currentIndex = 0;
 
   @override
   void initState() {
-    if (widget.itemWidth == null)
-      throw Exception(
-          '==============\n\nwidget.itemWith must not be null when use stack layout.\n========\n');
-    _createAnimationController();
-    widget.controller.addListener(_onController);
-    super.initState();
-  }
-
-  void _createAnimationController() {
     _animationController = AnimationController(vsync: this, value: 0.5);
     final Tween<double> tween = Tween<double>(begin: 0.0, end: 1.0);
     _animation = tween.animate(_animationController);
+    widget.controller!.addListener(_onController);
+    _startIndex = 0;
+    super.initState();
   }
 
   @override
@@ -452,7 +441,7 @@ abstract class _LayoutState<T extends _SubCarousel> extends State<T>
 
   @mustCallSuper
   void afterRender() {
-    final RenderObject renderObject = context.findRenderObject();
+    final RenderObject renderObject = context.findRenderObject()!;
     final Size size = renderObject.paintBounds.size;
     _carouselWidth = size.width;
     _carouselHeight = size.height;
@@ -462,8 +451,8 @@ abstract class _LayoutState<T extends _SubCarousel> extends State<T>
   @override
   void didUpdateWidget(T oldWidget) {
     if (widget.controller != oldWidget.controller) {
-      oldWidget.controller.removeListener(_onController);
-      widget.controller.addListener(_onController);
+      oldWidget.controller!.removeListener(_onController);
+      widget.controller!.addListener(_onController);
     }
     if (widget.loop != oldWidget.loop && !widget.loop)
       _currentIndex = _ensureIndex(_currentIndex);
@@ -478,7 +467,7 @@ abstract class _LayoutState<T extends _SubCarousel> extends State<T>
 
   @override
   void dispose() {
-    _animationController?.dispose();
+    _animationController.dispose();
     super.dispose();
   }
 
@@ -486,42 +475,41 @@ abstract class _LayoutState<T extends _SubCarousel> extends State<T>
 
   Widget _buildContainer(List<Widget> list) => Stack(children: list);
 
-  Widget _buildAnimation(BuildContext context, Widget w) {
-    final List<Widget> list = <Widget>[];
-    final double animationValue = _animation.value;
-    for (int i = 0; i < _animationCount; ++i) {
-      int realIndex = _currentIndex + i + _startIndex;
-      realIndex = realIndex % widget.itemCount;
-      if (realIndex < 0) realIndex += widget.itemCount;
-      list.add(_buildItem(i, realIndex, animationValue));
-    }
-    return GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onPanStart: _onPanStart,
-        onPanEnd: _onPanEnd,
-        onPanUpdate: _onPanUpdate,
-        child: ClipRect(child: Center(child: _buildContainer(list))));
-  }
-
   @override
   Widget build(BuildContext context) {
     if (_animationCount == null) return Container();
     return AnimatedBuilder(
-        animation: _animationController, builder: _buildAnimation);
+        animation: _animationController,
+        builder: (BuildContext context, Widget? w) {
+          final List<Widget> list = <Widget>[];
+          final double animationValue = _animation.value;
+          for (int i = 0; i < _animationCount!; ++i) {
+            int realIndex = _currentIndex + i + _startIndex;
+            realIndex = realIndex % widget.itemCount;
+            if (realIndex < 0) realIndex += widget.itemCount;
+            list.add(_buildItem(i, realIndex, animationValue));
+          }
+          return GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onPanStart: _onPanStart,
+              onPanEnd: _onPanEnd,
+              onPanUpdate: _onPanUpdate,
+              child: ClipRect(child: Center(child: _buildContainer(list))));
+        });
   }
 
-  double _currentValue;
-  double _currentPos;
+  late double _currentValue;
+  late double _currentPos;
   bool _lockScroll = false;
 
-  Future<void> _move(double position, {int nextIndex}) async {
+  Future<void> _move(double position, {int? nextIndex}) async {
     if (_lockScroll) return;
     try {
       _lockScroll = true;
       await _animationController.animateTo(position,
-          duration: widget.duration, curve: widget.curve);
-      if (nextIndex != null) {
-        widget.onChanged(widget.getCorrectIndex(nextIndex));
+          duration: widget.duration, curve: widget.curve!);
+      if (nextIndex != null && widget.onChanged != null) {
+        widget.onChanged!(widget.getCorrectIndex(nextIndex));
       }
     } catch (e) {
       print(e);
@@ -552,7 +540,7 @@ abstract class _LayoutState<T extends _SubCarousel> extends State<T>
   }
 
   void _onController() {
-    switch (widget.controller.event) {
+    switch (widget.controller!.event) {
       case CarouselEvent.previous:
         final int prevIndex = _prevIndex();
         if (prevIndex == _currentIndex) return;

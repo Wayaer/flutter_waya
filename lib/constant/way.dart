@@ -17,7 +17,7 @@ class WayStyles {
   static EdgeInsetsGeometry edgeInsetsHorizontal({double width = 20}) =>
       EdgeInsets.symmetric(horizontal: getWidth(width));
 
-  static Decoration borderRadiusTop({Color color, double radius}) =>
+  static Decoration borderRadiusTop({Color? color, double? radius}) =>
       BoxDecoration(
           color: color ?? ConstColors.white,
           borderRadius: BorderRadius.only(
@@ -30,7 +30,7 @@ class WayStyles {
 
   /// 统一白色背景 圆角
   static Decoration containerWhiteRadius(
-          {Color color, double radius, bool shadow = false}) =>
+          {Color? color, double? radius, bool shadow = false}) =>
       BoxDecoration(
           color: color ?? ConstColors.white,
           borderRadius: BorderRadius.circular(radius ?? _radiusLocal),
@@ -38,7 +38,7 @@ class WayStyles {
 
   /// 统一 白色背景 圆角 边框
   static Decoration containerRadiusWidth(
-          {Color color, double width, Color widthColor, double radius}) =>
+          {Color? color, double? width, Color? widthColor, double? radius}) =>
       BoxDecoration(
           color: color ?? ConstColors.white,
           borderRadius: BorderRadius.circular(radius ?? _radiusLocal),
@@ -48,18 +48,18 @@ class WayStyles {
 
   /// 统一下划线样式
   static Decoration containerUnderlineBackground(
-          {Color color, double width, Color underlineColor}) =>
+          {Color? color, double? width, Color? underlineColor}) =>
       BoxDecoration(
           color: color,
           border: underlineColor == null
               ? null
               : Border(
                   bottom: BorderSide(
-                      width: width ?? getHeight(1),
+                      width: width ?? 1,
                       color: underlineColor ?? ConstColors.background)));
 
   /// 统一上划线样式
-  static Decoration containerTopLineBackground({Color color}) => BoxDecoration(
+  static Decoration containerTopLineBackground({Color? color}) => BoxDecoration(
       color: color,
       border: const Border(top: BorderSide(color: ConstColors.background)));
 }
@@ -67,11 +67,11 @@ class WayStyles {
 ///  垂直线
 class LineVertical extends Container {
   LineVertical(
-      {double height,
-      EdgeInsetsGeometry padding,
-      double width,
-      Color color,
-      EdgeInsetsGeometry margin})
+      {double? height,
+      EdgeInsetsGeometry? padding,
+      double? width,
+      Color? color,
+      EdgeInsetsGeometry? margin})
       : super(
             height: height ?? double.infinity,
             width: width ?? 1,
@@ -82,12 +82,12 @@ class LineVertical extends Container {
 
 ///  暂无数据
 class PlaceholderChild extends StatelessWidget {
-  const PlaceholderChild({Key key, this.margin}) : super(key: key);
+  const PlaceholderChild({Key? key, this.margin = const EdgeInsets.all(100)})
+      : super(key: key);
 
   final EdgeInsetsGeometry margin;
 
   @override
-  Widget build(BuildContext context) => Container(
-      margin: margin ?? const EdgeInsets.all(100),
-      child: Center(child: BasisText('暂无数据')));
+  Widget build(BuildContext context) =>
+      Container(margin: margin, child: Center(child: BasisText('暂无数据')));
 }

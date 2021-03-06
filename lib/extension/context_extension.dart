@@ -7,11 +7,11 @@ import 'package:flutter/widgets.dart';
 
 extension ExtensionContext on BuildContext {
   ///  移出焦点 focusNode==null  移出焦点 （可用于关闭键盘） focusNode！!= null 获取焦点
-  void focusNode([FocusNode focusNode]) =>
+  void focusNode([FocusNode? focusNode]) =>
       FocusScope.of(this).requestFocus(focusNode ?? FocusNode());
 
   ///  自动获取焦点
-  void autoFocus([FocusNode focusNode]) =>
+  void autoFocus([FocusNode? focusNode]) =>
       FocusScope.of(this).autofocus(focusNode ?? FocusNode());
 
   /// The same of [MediaQuery.of(context).size]
@@ -69,7 +69,7 @@ extension ExtensionContext on BuildContext {
   bool get isDarkMode => theme.brightness == Brightness.dark;
 
   /// give access to Theme.of(context).iconTheme.color
-  Color get iconColor => theme.iconTheme.color;
+  Color? get iconColor => theme.iconTheme.color;
 
   /// similar to [MediaQuery.of(context).padding]
   TextTheme get textTheme => Theme.of(this).textTheme;
@@ -122,12 +122,12 @@ extension ExtensionContext on BuildContext {
 
 extension ExtensionGlobalKey on GlobalKey {
   ///  截屏
-  Future<ByteData> screenshots({ui.ImageByteFormat format}) async {
+  Future<ByteData?> screenshots({ui.ImageByteFormat? format}) async {
     final RenderRepaintBoundary boundary =
-        currentContext.findRenderObject() as RenderRepaintBoundary;
+        currentContext!.findRenderObject() as RenderRepaintBoundary;
     final ui.Image image =
         await boundary.toImage(pixelRatio: ui.window.devicePixelRatio);
-    final ByteData byteData =
+    final ByteData? byteData =
         await image.toByteData(format: format ?? ui.ImageByteFormat.rawRgba);
 
     ///  Uint8List uint8list = byteData.buffer.asUint8List();

@@ -13,13 +13,13 @@ typedef ImageSequenceProcessCallback = void Function(
 
 class ImageSequence extends StatefulWidget {
   const ImageSequence(
+    Key? key,
     this.folderName,
     this.fileName,
     this.suffixStart,
     this.suffixCount,
     this.fileFormat,
     this.frameCount, {
-    Key key,
     this.fps = 60,
     this.isLooping = false,
     this.isBoomerang = false,
@@ -74,16 +74,16 @@ class ImageSequence extends StatefulWidget {
   final Color color;
 
   ///  The callback for when the [ImageSequenceState] is ready to start playing.
-  final ImageSequenceProcessCallback onReadyToPlay;
+  final ImageSequenceProcessCallback? onReadyToPlay;
 
   ///  The callback for when the [ImageSequenceState] starts playing.
-  final ImageSequenceProcessCallback onStartPlaying;
+  final ImageSequenceProcessCallback? onStartPlaying;
 
   ///  The callback for when the [ImageSequenceState] is playing. This callback is continuously through the entire process.
-  final ImageSequenceProcessCallback onPlaying;
+  final ImageSequenceProcessCallback? onPlaying;
 
   ///  The callback for when the [ImageSequenceState] finishes playing.
-  final ImageSequenceProcessCallback onFinishPlaying;
+  final ImageSequenceProcessCallback? onFinishPlaying;
 
   @override
   ImageSequenceState createState() => ImageSequenceState();
@@ -91,60 +91,31 @@ class ImageSequence extends StatefulWidget {
 
 class ImageSequenceState extends State<ImageSequence>
     with SingleTickerProviderStateMixin {
-  String folderName;
-  String fileName;
-  int suffixStart;
-  int suffixCount;
+  late String folderName;
+  late String fileName;
+  late int suffixStart;
+  late int suffixCount;
+  late double frameCount;
+  late double fps;
+  late bool isAutoPlay;
+  ImageSequenceProcessCallback? onReadyToPlay;
+  ImageSequenceProcessCallback? onStartPlaying;
+  ImageSequenceProcessCallback? onPlaying;
+  ImageSequenceProcessCallback? onFinishPlaying;
 
-  double frameCount;
-  double fps;
-  bool isAutoPlay;
-  ImageSequenceProcessCallback onReadyToPlay;
-  ImageSequenceProcessCallback onStartPlaying;
-  ImageSequenceProcessCallback onPlaying;
-  ImageSequenceProcessCallback onFinishPlaying;
+  late String fileFormat;
 
-  String fileFormat;
+  late bool isLooping;
+  late bool isBoomerang;
 
-  int get fpsInMilliseconds => (1.0 / fps * 1000.0).floor();
-  bool isLooping;
-  bool isBoomerang;
-
-  Color color;
+  Color? color;
   bool colorChanged = false;
 
   ///  The [AnimationController] used to control the image sequence.
-  AnimationController animationController;
+  late AnimationController animationController;
   final ValueNotifier<int> changeNotifier = ValueNotifier<int>(0);
   int previousFrame = 0;
-  Image currentFrame;
-
-  ///  Use this value to get the total time of the animation in milliseconds.
-  double get totalTime => animationController.upperBound * fpsInMilliseconds;
-
-  ///  Use this value to get the current time of the animation in milliseconds.
-  double get currentTime => animationController.value * fpsInMilliseconds;
-
-  void animationListener() {
-    changeNotifier.value++;
-    if (onPlaying != null) onPlaying(this);
-  }
-
-  void animationStatusListener(AnimationStatus animationStatus) {
-    switch (animationStatus) {
-      case AnimationStatus.completed:
-        if (onFinishPlaying != null) onFinishPlaying(this);
-        if (isLooping) restart();
-        if (isBoomerang) rewind();
-        break;
-      case AnimationStatus.dismissed:
-        if (onFinishPlaying != null) onFinishPlaying(this);
-        if (isLooping || isBoomerang) play();
-        break;
-      default:
-        break;
-    }
-  }
+  Image? currentFrame;
 
   @override
   void initState() {
@@ -169,8 +140,37 @@ class ImageSequenceState extends State<ImageSequence>
       ..addStatusListener(animationStatusListener);
     if (isLooping) isBoomerang = false;
     if (fileFormat.startsWith('.')) fileFormat = fileFormat.substring(1);
-    if (onReadyToPlay != null) onReadyToPlay(this);
+    if (onReadyToPlay != null) onReadyToPlay!(this);
     if (isAutoPlay) play();
+  }
+
+  int get fpsInMilliseconds => (1.0 / fps * 1000.0).floor();
+
+  ///  Use this value to get the total time of the animation in milliseconds.
+  double get totalTime => animationController.upperBound * fpsInMilliseconds;
+
+  ///  Use this value to get the current time of the animation in milliseconds.
+  double get currentTime => animationController.value * fpsInMilliseconds;
+
+  void animationListener() {
+    changeNotifier.value++;
+    if (onPlaying != null) onPlaying!(this);
+  }
+
+  void animationStatusListener(AnimationStatus animationStatus) {
+    switch (animationStatus) {
+      case AnimationStatus.completed:
+        if (onFinishPlaying != null) onFinishPlaying!(this);
+        if (isLooping) restart();
+        if (isBoomerang) rewind();
+        break;
+      case AnimationStatus.dismissed:
+        if (onFinishPlaying != null) onFinishPlaying!(this);
+        if (isLooping || isBoomerang) play();
+        break;
+      default:
+        break;
+    }
   }
 
   @override
@@ -209,7 +209,7 @@ class ImageSequenceState extends State<ImageSequence>
 
   void play({double from = -1.0}) {
     if (!animationController.isAnimating && onStartPlaying != null)
-      onStartPlaying(this);
+      onStartPlaying!(this);
     if (from == -1.0)
       animationController.forward();
     else
@@ -218,7 +218,7 @@ class ImageSequenceState extends State<ImageSequence>
 
   void rewind({double from = -1.0}) {
     if (!animationController.isAnimating && onStartPlaying != null)
-      onStartPlaying(this);
+      onStartPlaying!(this);
     if (from == -1.0)
       animationController.reverse();
     else
@@ -265,7 +265,7 @@ class ImageSequenceState extends State<ImageSequence>
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<int>(
-        builder: (BuildContext context, int change, Widget cachedChild) {
+        builder: (BuildContext context, int change, Widget? cachedChild) {
           if (currentFrame == null ||
               animationController.value.floor() != previousFrame ||
               colorChanged) {
@@ -275,7 +275,7 @@ class ImageSequenceState extends State<ImageSequence>
               currentFrame = Image.asset(getDirectory(),
                   color: color, gaplessPlayback: true);
           }
-          return currentFrame;
+          return currentFrame!;
         },
         valueListenable: changeNotifier);
   }
@@ -285,10 +285,15 @@ class ImageSequenceState extends State<ImageSequence>
 class GifCache {
   final Map<String, List<ImageInfo>> caches = <String, List<ImageInfo>>{};
 
-  void clear() => caches.clear();
+  void get clear => caches.clear();
 
   bool evict(Object key) {
-    final List<ImageInfo> pendingImage = caches.remove(key);
+    List<ImageInfo>? pendingImage;
+    try {
+      pendingImage = caches.remove(key);
+    } catch (e) {
+      print(e);
+    }
     if (pendingImage != null) return true;
     return false;
   }
@@ -297,11 +302,11 @@ class GifCache {
 ///  Controller gif
 class GifController extends AnimationController {
   GifController(
-      {@required TickerProvider vsync,
+      {required TickerProvider vsync,
       double value = 0.0,
-      Duration reverseDuration,
-      Duration duration,
-      AnimationBehavior animationBehavior})
+      Duration? reverseDuration,
+      Duration? duration,
+      AnimationBehavior? animationBehavior})
       : super.unbounded(
             value: value,
             reverseDuration: reverseDuration,
@@ -315,8 +320,8 @@ class GifController extends AnimationController {
 
 class GifImage extends StatefulWidget {
   const GifImage({
-    @required this.image,
-    @required this.controller,
+    required this.image,
+    required this.controller,
     this.semanticLabel,
     this.excludeFromSemantics = false,
     this.width,
@@ -332,20 +337,20 @@ class GifImage extends StatefulWidget {
     this.gapLessPlayback = false,
   });
 
-  final VoidCallback onFetchCompleted;
+  final VoidCallback? onFetchCompleted;
   final GifController controller;
   final ImageProvider image;
-  final double width;
-  final double height;
-  final Color color;
-  final BlendMode colorBlendMode;
-  final BoxFit fit;
+  final double? width;
+  final double? height;
+  final Color? color;
+  final BlendMode? colorBlendMode;
+  final BoxFit? fit;
   final AlignmentGeometry alignment;
   final ImageRepeat repeat;
-  final Rect centerSlice;
+  final Rect? centerSlice;
   final bool matchTextDirection;
   final bool gapLessPlayback;
-  final String semanticLabel;
+  final String? semanticLabel;
   final bool excludeFromSemantics;
 
   @override
@@ -355,24 +360,24 @@ class GifImage extends StatefulWidget {
 }
 
 class _GifImageState extends State<GifImage> {
-  List<ImageInfo> _images;
+  List<ImageInfo>? _images;
   int _curIndex = 0;
   bool _fetchComplete = false;
 
-  ImageInfo get _imageInfo {
+  ImageInfo? get _imageInfo {
     if (!_fetchComplete) return null;
-    return _images == null ? null : _images[_curIndex];
+    return _images == null ? null : _images![_curIndex];
   }
 
   @override
   void initState() {
     super.initState();
-    widget?.controller?.addListener(_listener);
+    widget.controller.addListener(_listener);
   }
 
   @override
   void dispose() {
-    widget?.controller?.removeListener(_listener);
+    widget.controller.removeListener(_listener);
     super.dispose();
   }
 
@@ -380,13 +385,13 @@ class _GifImageState extends State<GifImage> {
   void didUpdateWidget(GifImage oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.image != oldWidget.image) {
-      _fetchGif(widget.image).then((List<ImageInfo> imageInfo) {
+      _fetchGif(widget.image).then((List<ImageInfo>? imageInfo) {
         if (imageInfo == null) return;
         if (mounted) {
           _images = imageInfo;
           _fetchComplete = true;
           _curIndex = widget.controller.value.toInt();
-          if (widget.onFetchCompleted != null) widget.onFetchCompleted();
+          if (widget.onFetchCompleted != null) widget.onFetchCompleted!();
           setState(() {});
         }
       });
@@ -408,7 +413,7 @@ class _GifImageState extends State<GifImage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (_images == null) {
-      _fetchGif(widget.image).then((List<ImageInfo> imageInfo) {
+      _fetchGif(widget.image).then((List<ImageInfo>? imageInfo) {
         if (imageInfo == null) return;
         if (mounted) {
           _images = imageInfo;
@@ -442,7 +447,7 @@ class _GifImageState extends State<GifImage> {
         child: image);
   }
 
-  Future<List<ImageInfo>> _fetchGif(ImageProvider provider) async {
+  Future<List<ImageInfo>?> _fetchGif(ImageProvider provider) async {
     List<ImageInfo> images = <ImageInfo>[];
     dynamic data;
     final String key = provider is NetworkImage
@@ -453,7 +458,7 @@ class _GifImageState extends State<GifImage> {
                 ? provider.bytes.toString()
                 : '';
     if (GifImage.cache.caches.containsKey(key)) {
-      images = GifImage.cache.caches[key];
+      images = GifImage.cache.caches[key]!;
       return images;
     }
     if (provider is NetworkImage) {
@@ -462,8 +467,8 @@ class _GifImageState extends State<GifImage> {
           options.headers.addAll(<String, String>{name: value}));
       final ResponseModel result =
           await DioTools.getInstance(options: options).getHttp(provider.url);
-      if (result?.statusCode != 200) {
-        showToast(result?.statusMessage);
+      if (result.statusCode != 200) {
+        showToast(result.statusMessage!);
         return null;
       }
       data = result.data as Uint8List;
@@ -476,7 +481,7 @@ class _GifImageState extends State<GifImage> {
     } else if (provider is MemoryImage) {
       data = provider.bytes;
     }
-    final ui.Codec codec = await PaintingBinding.instance
+    final ui.Codec codec = await PaintingBinding.instance!
         .instantiateImageCodec(data.buffer.asUint8List() as Uint8List);
     images = <ImageInfo>[];
     for (int i = 0; i < codec.frameCount; i++) {

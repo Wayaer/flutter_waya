@@ -5,14 +5,12 @@ import 'package:flutter_waya/flutter_waya.dart';
 
 class StretchyHeader extends StretchyHeaderBase {
   StretchyHeader.singleChild({
-    Key key,
-    @required HeaderData headerData,
-    @required Widget child,
-    double displacement,
-    VoidCallback onRefresh,
-  })  : assert(headerData != null),
-        assert(child != null),
-        super(
+    Key? key,
+    required HeaderData headerData,
+    required Widget child,
+    double? displacement,
+    VoidCallback? onRefresh,
+  }) : super(
             key: key,
             headerData: headerData,
             displacement: displacement,
@@ -29,14 +27,12 @@ class StretchyHeader extends StretchyHeaderBase {
                     children: <Widget>[topWidget, child]));
 
   StretchyHeader.listView({
-    Key key,
-    @required HeaderData headerData,
-    @required List<Widget> children,
-    double displacement,
-    VoidCallback onRefresh,
-  })  : assert(headerData != null),
-        assert(children != null),
-        super(
+    Key? key,
+    required HeaderData headerData,
+    required List<Widget> children,
+    double? displacement,
+    VoidCallback? onRefresh,
+  }) : super(
             key: key,
             headerData: headerData,
             displacement: displacement,
@@ -54,15 +50,13 @@ class StretchyHeader extends StretchyHeaderBase {
                 ));
 
   StretchyHeader.listViewBuilder({
-    Key key,
-    @required HeaderData headerData,
-    @required IndexedWidgetBuilder itemBuilder,
-    double displacement,
-    VoidCallback onRefresh,
-    int itemCount,
-  })  : assert(headerData != null),
-        assert(itemBuilder != null),
-        super(
+    Key? key,
+    required HeaderData headerData,
+    required IndexedWidgetBuilder itemBuilder,
+    double? displacement,
+    VoidCallback? onRefresh,
+    int? itemCount,
+  }) : super(
             key: key,
             headerData: headerData,
             displacement: displacement,
@@ -85,17 +79,15 @@ class StretchyHeader extends StretchyHeaderBase {
 @immutable
 class HeaderData {
   const HeaderData({
-    @required this.header,
-    @required this.headerHeight,
+    required this.header,
+    required this.headerHeight,
     this.highlightHeader,
     this.blurContent = true,
     this.highlightHeaderAlignment = StretchyHeaderAlignment.bottom,
     this.overlay,
     this.blurColor,
     this.backgroundColor,
-  })  : assert(header != null),
-        assert(headerHeight != null && headerHeight >= 0.0),
-        assert(highlightHeaderAlignment != null);
+  }) : assert(headerHeight >= 0.0);
 
   ///  Header Widget that will be stretched, it will appear at the top of the page
   ///  标题小部件，将被拉伸，它将出现在页面的顶部
@@ -107,21 +99,21 @@ class HeaderData {
 
   ///  highlight header that will be placed on the header,  this widget always be visible without blurring effect
   ///  突出显示将放置在页眉上的标题，此小部件始终可见而不模糊效果
-  final Widget highlightHeader;
+  final Widget? highlightHeader;
 
   ///  alignment for the highlight header
   ///  突出显示标题的对齐方式
   final StretchyHeaderAlignment highlightHeaderAlignment;
 
-  final Widget overlay;
+  final Widget? overlay;
 
   ///  The color of the blur, white by default
   ///  模糊的颜色，默认为白色
-  final Color blurColor;
+  final Color? blurColor;
 
   ///  Background Color of all of the content
   ///  所有内容的背景色
-  final Color backgroundColor;
+  final Color? backgroundColor;
 
   ///  If you want to blur the content when scroll. True by default
   ///  如果你想模糊滚动时的内容。默认为True
@@ -130,14 +122,12 @@ class HeaderData {
 
 class StretchyHeaderBase extends StatefulWidget {
   const StretchyHeaderBase({
-    Key key,
-    @required this.headerData,
-    @required this.listBuilder,
-    double displacement,
+    Key? key,
+    required this.headerData,
+    required this.listBuilder,
+    double? displacement,
     this.onRefresh,
   })  : displacement = displacement ?? 40.0,
-        assert(headerData != null),
-        assert(listBuilder != null),
         super(key: key);
 
   ///  Header parameters describing how the header will be displayed
@@ -164,7 +154,7 @@ class StretchyHeaderBase extends StatefulWidget {
   ///  far enough to demonstrate that they want the app to refresh.
   ///  当用户拖动Stretchy标头时调用的函数
   ///  足以证明他们希望应用程序刷新。
-  final VoidCallback onRefresh;
+  final VoidCallback? onRefresh;
 
   @override
   _StretchyHeaderBaseState createState() => _StretchyHeaderBaseState();
@@ -178,7 +168,7 @@ typedef HeaderListViewBuilder = ListView Function(
     Widget topWidget);
 
 class _StretchyHeaderBaseState extends State<StretchyHeaderBase> {
-  ScrollController _scrollController;
+  late ScrollController _scrollController;
   final GlobalKey _keyHighlightHeader = GlobalKey();
   double _offset = 0.0;
   double _headerSize = 0.0;
@@ -187,7 +177,7 @@ class _StretchyHeaderBaseState extends State<StretchyHeaderBase> {
 
   void _onLayoutDone(Duration duration) {
     final RenderBox renderBox =
-        _keyHighlightHeader.currentContext.findRenderObject() as RenderBox;
+        _keyHighlightHeader.currentContext!.findRenderObject() as RenderBox;
     _highlightHeaderSize = renderBox.size.height;
     setState(() {});
   }
@@ -227,7 +217,7 @@ class _StretchyHeaderBaseState extends State<StretchyHeaderBase> {
         ? Positioned(
             key: _keyHighlightHeader,
             top: highlightPosition,
-            child: widget.headerData.highlightHeader)
+            child: widget.headerData.highlightHeader!)
         : const SizedBox.shrink();
 
     return Universal(
@@ -272,7 +262,7 @@ class _StretchyHeaderBaseState extends State<StretchyHeaderBase> {
                 canTriggerRefresh = true;
               } else if (currentDisplacement <= -widget.displacement &&
                   canTriggerRefresh) {
-                widget.onRefresh();
+                widget.onRefresh!();
                 canTriggerRefresh = false;
               }
             }
