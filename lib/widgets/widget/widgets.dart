@@ -337,7 +337,7 @@ class ToggleRotate extends StatefulWidget {
   const ToggleRotate(
       {Key? key,
       required this.child,
-      required this.onTap,
+      this.onTap,
       this.rad = pi / 2,
       this.clockwise = true,
       this.duration = const Duration(milliseconds: 200),
@@ -347,9 +347,10 @@ class ToggleRotate extends StatefulWidget {
   final Widget child;
 
   /// 点击事件
-  final Function onTap;
+  final Function? onTap;
 
   /// 旋转角度 pi / 2
+  /// 1=90℃  2=180℃
   final double rad;
 
   /// 动画时长
@@ -398,7 +399,7 @@ class _ToggleRotateState extends State<ToggleRotate>
       ).onTap(() {
         _controller.reset();
         _controller.forward();
-        widget.onTap();
+        if (widget.onTap != null) widget.onTap!();
       });
 }
 

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 import 'package:waya/main.dart';
@@ -97,22 +99,57 @@ class PinBoxPage extends StatelessWidget {
           ]);
 }
 
-class ButtonPage extends StatelessWidget {
+class CounterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => OverlayScaffold(
           backgroundColor: Colors.white,
-          appBar: AppBar(title: const Text('Button Demo'), centerTitle: true),
+          appBar: AppBar(title: const Text('Counter Demo'), centerTitle: true),
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            customElasticButton('ElasticButton',
-                onTap: () => showToast('ElasticButton')),
-            const SizedBox(height: 20),
-            const ClothButton.rectangle(
-                size: Size(200, 60), backgroundColor: Colors.blue),
-            const SizedBox(height: 20),
-            const ClothButton.round(
-                size: Size(200, 60), backgroundColor: Colors.blue),
+            CounterAnimation(
+                animationType: CountAnimationType.part,
+                count: 100,
+                onTap: (int c) {
+                  showToast(c.toString());
+                },
+                countBuilder: (int count, String text) =>
+                    BasisText(text, fontSize: 30)).color(Colors.black12),
             const SizedBox(height: 40),
-            const LiquidButton(
-                width: 200, height: 60, backgroundColor: Colors.blue),
+            CounterAnimation(
+                animationType: CountAnimationType.all,
+                count: 100,
+                onTap: (int c) {
+                  showToast(c.toString());
+                },
+                countBuilder: (int count, String text) =>
+                    BasisText(text, fontSize: 30)).color(Colors.black12),
+          ]);
+}
+
+class ToggleRotatePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) => OverlayScaffold(
+          backgroundColor: Colors.white,
+          appBar:
+              AppBar(title: const Text('ToggleRotate Demo'), centerTitle: true),
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            const ToggleRotate(
+                duration: Duration(milliseconds: 800),
+                rad: pi / 2,
+                child: Icon(Icons.chevron_left, size: 30)),
+            const SizedBox(height: 40),
+            ToggleRotate(
+                duration: const Duration(seconds: 2),
+                onTap: () {
+                  showToast('旋转');
+                },
+                rad: pi,
+                child: const Icon(Icons.chevron_left, size: 30)),
+            const SizedBox(height: 40),
+            const ToggleRotate(
+                duration: Duration(seconds: 3),
+                rad: pi * 1.5,
+                child: Icon(Icons.chevron_left, size: 30)),
           ]);
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
+import 'package:waya/module/button_page.dart';
 import 'package:waya/module/carousel_page.dart';
 import 'package:waya/module/json_parse_page.dart';
 import 'package:waya/module/list_page.dart';
@@ -26,6 +27,9 @@ class Home extends StatelessWidget {
         body: Wrap(runSpacing: 10, spacing: 10, children: <Widget>[
           customElasticButton('Toast', onTap: () => push(ToastPage())),
           customElasticButton('Button', onTap: () => push(ButtonPage())),
+          customElasticButton('ToggleRotate',
+              onTap: () => push(ToggleRotatePage())),
+          customElasticButton('Counter', onTap: () => push(CounterPage())),
           customElasticButton('Picker', onTap: () => push(PickerPage())),
           customElasticButton('Popup', onTap: () => push(PopupPage())),
           customElasticButton('PinBox', onTap: () => push(PinBoxPage())),
@@ -49,7 +53,7 @@ class Home extends StatelessWidget {
 Widget customElasticButton(String text, {GestureTapCallback? onTap}) =>
     Universal(
       addInkWell: true,
-      margin: const EdgeInsets.symmetric(vertical: 10),
+      margin: const EdgeInsets.symmetric(vertical: 6),
       child: ElasticButton(
           withOpacity: true,
           onTap: onTap,

@@ -51,7 +51,7 @@ extension ExtensionWidget on Widget {
   Widget get sliverBox => SliverToBoxAdapter(child: this);
 
   ColoredBox color(Color color, {Key? key}) =>
-      ColoredBox(key: key, color: color);
+      ColoredBox(key: key, color: color, child: this);
 
   Card card({
     Color? color,

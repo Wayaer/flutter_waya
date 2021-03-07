@@ -176,3 +176,11 @@ enum CircularStrokeCap { butt, round, square }
 enum LinearStrokeCap { butt, round, roundAll }
 
 enum ArcType { half, full }
+
+enum CountAnimationType {
+  ///animation only on change part
+  part,
+
+  ///animation on all
+  all,
+}

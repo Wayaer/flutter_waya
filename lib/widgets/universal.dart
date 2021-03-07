@@ -584,28 +584,27 @@ class Universal extends StatelessWidget {
   Widget offstageWidget(Widget current) =>
       Offstage(child: current, offstage: offstage);
 
+  /// 裁剪组件
   Widget clipWidget(Widget current, {CustomClipper<dynamic>? clipper}) {
-    if (clipper is Rect) {
-      return ClipRect(
-          child: current,
-          clipper: clipper as CustomClipper<Rect>,
-          clipBehavior: clipBehavior ?? Clip.hardEdge);
-    }
-    if (clipper is Path) {
-      return ClipPath(
-          child: current,
-          clipper: clipper as CustomClipper<Path>,
-          clipBehavior: clipBehavior ?? Clip.antiAlias);
-    }
-    if (clipper is RRect)
-      return ClipRRect(
-          child: current,
-          borderRadius: borderRadius,
-          clipper: clipper as CustomClipper<RRect>,
-          clipBehavior: clipBehavior ?? Clip.antiAlias);
     if (isOval)
       return ClipOval(
           child: current, clipBehavior: clipBehavior ?? Clip.antiAlias);
+    if (clipper is CustomClipper<Rect>)
+      return ClipRect(
+          child: current,
+          clipper: clipper,
+          clipBehavior: clipBehavior ?? Clip.hardEdge);
+    if (clipper is CustomClipper<Path>)
+      return ClipPath(
+          child: current,
+          clipper: clipper,
+          clipBehavior: clipBehavior ?? Clip.antiAlias);
+    if (clipper is CustomClipper<RRect>)
+      return ClipRRect(
+          child: current,
+          borderRadius: borderRadius,
+          clipper: clipper,
+          clipBehavior: clipBehavior ?? Clip.antiAlias);
     return current;
   }
 

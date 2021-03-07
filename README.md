@@ -11,7 +11,7 @@
 
 ### [PopupWidgets 弹窗底层组件](lib/widgets/root/dialog/popup_widgets.dart)
 
-### [widgets多个组件](lib/widgets/widgets.dart)
+### [widgets多个组件](lib/widgets/widget/widgets.dart)
 
 ## 快捷打包命令 [builds](builds)
 
