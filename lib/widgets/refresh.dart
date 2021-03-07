@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 void sendRefreshType([RefreshCompletedType? refresh]) =>
     eventBus.emit(refreshEvent, refresh ?? RefreshCompletedType.refresh);
@@ -96,25 +97,25 @@ class _RefreshedState extends State<Refreshed> {
               if (data != null && data is RefreshCompletedType) {
                 switch (data) {
                   case RefreshCompletedType.refresh:
-                    // controller.refreshCompleted();
+                    controller.refreshCompleted();
                     break;
                   case RefreshCompletedType.refreshFailed:
-                    // controller.refreshFailed();
+                    controller.refreshFailed();
                     break;
                   case RefreshCompletedType.refreshToIdle:
-                    // controller.refreshToIdle();
+                    controller.refreshToIdle();
                     break;
                   case RefreshCompletedType.onLoading:
-                    // controller.loadComplete();
+                    controller.loadComplete();
                     break;
                   case RefreshCompletedType.loadFailed:
-                    // controller.loadFailed();
+                    controller.loadFailed();
                     break;
                   case RefreshCompletedType.loadNoData:
-                    // controller.loadNoData();
+                    controller.loadNoData();
                     break;
                   case RefreshCompletedType.twoLevel:
-                    // controller.twoLevelComplete();
+                    controller.twoLevelComplete();
                     break;
                 }
               }
@@ -124,66 +125,66 @@ class _RefreshedState extends State<Refreshed> {
   @override
   Widget build(BuildContext context) {
     return Container(child: widget.child);
-    // return SmartRefresher(
-    //     child: widget.child,
-    //     controller: controller,
-    //     enablePullDown: widget.enablePullDown,
-    //     enablePullUp: widget.enablePullUp,
-    //     enableTwoLevel: widget.enableTwoLevel,
-    //     header: widget.header,
-    //     footer: widget.footer ?? customFooter,
-    //     onRefresh: widget.onRefresh ?? onRefresh,
-    //     onLoading: widget.onLoading ?? onLoading,
-    //     onTwoLevel: widget.onTwoLevel ?? onTwoLevel,
-    //     onOffsetChange: widget.onOffsetChange,
-    //     dragStartBehavior: widget.dragStartBehavior,
-    //     primary: widget.primary,
-    //     cacheExtent: widget.cacheExtent,
-    //     semanticChildCount: widget.semanticChildCount,
-    //     reverse: widget.reverse,
-    //     physics: widget.physics,
-    //     scrollDirection: widget.scrollDirection,
-    //     scrollController: widget.scrollController);
+    return SmartRefresher(
+        child: widget.child,
+        controller: controller,
+        enablePullDown: widget.enablePullDown,
+        enablePullUp: widget.enablePullUp,
+        enableTwoLevel: widget.enableTwoLevel,
+        header: widget.header,
+        footer: widget.footer ?? customFooter,
+        onRefresh: widget.onRefresh ?? onRefresh,
+        onLoading: widget.onLoading ?? onLoading,
+        onTwoLevel: widget.onTwoLevel ?? onTwoLevel,
+        onOffsetChange: widget.onOffsetChange,
+        dragStartBehavior: widget.dragStartBehavior,
+        primary: widget.primary,
+        cacheExtent: widget.cacheExtent,
+        semanticChildCount: widget.semanticChildCount,
+        reverse: widget.reverse,
+        physics: widget.physics,
+        scrollDirection: widget.scrollDirection,
+        scrollController: widget.scrollController);
   }
 
-  // Widget get customFooter =>
-  //     CustomFooter(builder: (BuildContext context, LoadStatus mode) {
-  //       Widget body;
-  //       if (mode == LoadStatus.idle) {
-  //         body = footerText('pull loading');
-  //       } else if (mode == LoadStatus.loading) {
-  //         body = footerText('loading');
-  //       } else if (mode == LoadStatus.failed) {
-  //         body = footerText('load failed');
-  //       } else if (mode == LoadStatus.canLoading) {
-  //         body = footerText('load data');
-  //       } else {
-  //         body = footerText('load not data');
-  //       }
-  //       return Container(height: 40, alignment: Alignment.center, child: body);
-  //     });
+  Widget get customFooter =>
+      CustomFooter(builder: (BuildContext context, LoadStatus mode) {
+        Widget body;
+        if (mode == LoadStatus.idle) {
+          body = footerText('pull loading');
+        } else if (mode == LoadStatus.loading) {
+          body = footerText('loading');
+        } else if (mode == LoadStatus.failed) {
+          body = footerText('load failed');
+        } else if (mode == LoadStatus.canLoading) {
+          body = footerText('load data');
+        } else {
+          body = footerText('load not data');
+        }
+        return Container(height: 40, alignment: Alignment.center, child: body);
+      });
 
   Widget footerText(String text) => BasisText(text,
       style: const BasisTextStyle(fontSize: 13, color: ConstColors.black70));
 
   void onTwoLevel() {
     log('onTwoLevel');
-    // const Duration(seconds: 2).timer(() => controller.twoLevelComplete());
+    const Duration(seconds: 2).timer(() => controller.twoLevelComplete());
   }
 
   void onRefresh() {
     log('onRefresh');
-    // const Duration(seconds: 2).timer(() => controller.refreshCompleted());
+    const Duration(seconds: 2).timer(() => controller.refreshCompleted());
   }
 
   void onLoading() {
     log('onLoading');
-    // const Duration(seconds: 2).timer(() => controller.loadNoData());
+    const Duration(seconds: 2).timer(() => controller.loadNoData());
   }
 }
 
-class RefreshController {
-  RefreshController({required this.initialRefresh});
-
-  final bool initialRefresh;
-}
+// class RefreshController {
+//   RefreshController({required this.initialRefresh});
+//
+//   final bool initialRefresh;
+// }

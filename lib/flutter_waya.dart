@@ -1,6 +1,6 @@
 library flutter_waya;
 
-// export 'package:pull_to_refresh/pull_to_refresh.dart';
+export 'package:pull_to_refresh/pull_to_refresh.dart';
 
 export 'constant/area.dart';
 export 'constant/constant.dart';
