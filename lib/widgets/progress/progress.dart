@@ -2,7 +2,6 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:vector_math/vector_math.dart';
 
 class Progress extends StatefulWidget {
   Progress.circular({

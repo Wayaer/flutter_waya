@@ -7,10 +7,10 @@ environment:
   sdk: ">=2.12.0-0 <3.0.0"
 
 dependencies:
-  equatable: ^2.0.0
   flutter:
     sdk: flutter
-  flutter_curiosity: ^2.0.0
+  flutter_curiosity:
+    path: ../../flutter_curiosity
   flutter_localizations:
     sdk: flutter
   flutter_waya:
