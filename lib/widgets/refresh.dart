@@ -124,7 +124,6 @@ class _RefreshedState extends State<Refreshed> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(child: widget.child);
     return SmartRefresher(
         child: widget.child,
         controller: controller,

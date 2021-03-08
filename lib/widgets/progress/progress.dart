@@ -314,13 +314,13 @@ class _CircularState extends _ProgressSubState {
           if (widget.widgetIndicator != null && widget.animation)
             Positioned.fill(
                 child: Transform.rotate(
-              angle: radians(
+              angle: _radians(
                   (widget.circularStrokeCap != CircularStrokeCap.butt &&
                           widget.reverse)
                       ? -15
                       : 0),
               child: Transform.rotate(
-                  angle: radians((widget.reverse ? -360 : 360) * percent),
+                  angle: _radians((widget.reverse ? -360 : 360) * percent),
                   child: Transform.translate(
                       offset: Offset(
                           (widget.circularStrokeCap != CircularStrokeCap.butt)
@@ -571,8 +571,8 @@ class _CirclePainter extends CustomPainter {
       }
     }
     arcType == ArcType.half
-        ? canvas.drawArc(rectForArc, radians(-90.0 + fixedStartAngle),
-            radians(360 * startAngleFixedMargin), false, _paintBackground)
+        ? canvas.drawArc(rectForArc, _radians(-90.0 + fixedStartAngle),
+            _radians(360 * startAngleFixedMargin), false, _paintBackground)
         : canvas.drawCircle(center, radius, _paintBackground);
 
     if (maskFilter != null) _paintLine.maskFilter = maskFilter;
@@ -587,11 +587,11 @@ class _CirclePainter extends CustomPainter {
         _paintLine.shader = SweepGradient(
                 transform: reverse
                     ? GradientRotation(
-                        radians(-90 - progress + startAngle) - correction)
+                        _radians(-90 - progress + startAngle) - correction)
                     : GradientRotation(
-                        radians(-90.0 + startAngle) - correction),
-                startAngle: radians(0),
-                endAngle: radians(progress),
+                        _radians(-90.0 + startAngle) - correction),
+                startAngle: _radians(0),
+                endAngle: _radians(progress),
                 tileMode: TileMode.clamp,
                 colors: reverse
                     ? linearGradient!.colors.reversed.toList()
@@ -619,27 +619,27 @@ class _CirclePainter extends CustomPainter {
     if (arcBackgroundColor != null)
       canvas.drawArc(
           Rect.fromCircle(center: center, radius: radius),
-          radians(-90.0 + fixedStartAngle),
-          radians(360 * startAngleFixedMargin),
+          _radians(-90.0 + fixedStartAngle),
+          _radians(360 * startAngleFixedMargin),
           false,
           _paintBackgroundStartAngle);
 
     if (reverse) {
       final double start =
-          radians(360 * startAngleFixedMargin - 90.0 + fixedStartAngle);
-      final double end = radians(-progress * startAngleFixedMargin);
+          _radians(360 * startAngleFixedMargin - 90.0 + fixedStartAngle);
+      final double end = _radians(-progress * startAngleFixedMargin);
       canvas.drawArc(Rect.fromCircle(center: center, radius: radius), start,
           end, false, _paintLine);
     } else {
-      final double start = radians(-90.0 + fixedStartAngle);
-      final double end = radians(progress * startAngleFixedMargin);
+      final double start = _radians(-90.0 + fixedStartAngle);
+      final double end = _radians(progress * startAngleFixedMargin);
       canvas.drawArc(Rect.fromCircle(center: center, radius: radius), start,
           end, false, _paintLine);
     }
   }
 
-  double radians(num deg) => (deg * (math.pi / 180.0)).toDouble();
-
   @override
   bool shouldRepaint(CustomPainter oldDelegate) => true;
 }
+
+double _radians(num deg) => (deg * (math.pi / 180.0)).toDouble();

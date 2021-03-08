@@ -124,7 +124,7 @@ class DioTools {
         statusCode: error?.response?.statusCode ?? httpStatus!.code,
         statusMessage: error?.response?.statusMessage ?? httpStatus!.message,
         statusMessageT: httpStatus!.messageT,
-        type: (error?.type ?? DioErrorType.other).toString());
+        type: (error?.type ?? DioErrorType.DEFAULT).toString());
   }
 
   /// 下载文件需要申请文件储存权限
@@ -230,32 +230,32 @@ class InterceptorWrap<T> extends InterceptorsWrapper {
   @override
   Future<String> onError(DioError err) async {
     responseModel.type = err.type.toString();
-    if (err.type == DioErrorType.other) {
+    if (err.type == DioErrorType.DEFAULT) {
       final HttpStatus status = ConstConstant.httpStatus[404]!;
       responseModel.statusCode = status.code;
       responseModel.statusMessage = status.message;
       responseModel.statusMessageT = status.messageT;
-    } else if (err.type == DioErrorType.cancel) {
+    } else if (err.type == DioErrorType.CANCEL) {
       final HttpStatus status = ConstConstant.httpStatus[420]!;
       responseModel.statusCode = status.code;
       responseModel.statusMessage = status.message;
       responseModel.statusMessageT = status.messageT;
-    } else if (err.type == DioErrorType.connectTimeout) {
+    } else if (err.type == DioErrorType.CONNECT_TIMEOUT) {
       final HttpStatus status = ConstConstant.httpStatus[408]!;
       responseModel.statusCode = status.code;
       responseModel.statusMessage = status.message;
       responseModel.statusMessageT = status.messageT;
-    } else if (err.type == DioErrorType.receiveTimeout) {
+    } else if (err.type == DioErrorType.RECEIVE_TIMEOUT) {
       final HttpStatus status = ConstConstant.httpStatus[502]!;
       responseModel.statusCode = status.code;
       responseModel.statusMessage = status.message;
       responseModel.statusMessageT = status.messageT;
-    } else if (err.type == DioErrorType.sendTimeout) {
+    } else if (err.type == DioErrorType.SEND_TIMEOUT) {
       final HttpStatus status = ConstConstant.httpStatus[450]!;
       responseModel.statusCode = status.code;
       responseModel.statusMessage = status.message;
       responseModel.statusMessageT = status.messageT;
-    } else if (err.type == DioErrorType.response) {
+    } else if (err.type == DioErrorType.RESPONSE) {
       final HttpStatus status = ConstConstant.httpStatus[500]!;
       responseModel.statusCode = err.response?.statusCode;
       responseModel.statusMessage =
