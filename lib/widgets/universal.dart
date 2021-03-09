@@ -18,6 +18,7 @@ class Universal extends StatelessWidget {
     bool? offstage = false,
     bool? reverse = false,
     bool? isOval = false,
+    bool? isClipRRect = false,
     bool? isCircleAvatar = false,
     bool? canRequestFocus,
     bool? enableFeedback,
@@ -141,6 +142,7 @@ class Universal extends StatelessWidget {
         expand = expand ?? false,
         shrink = shrink ?? false,
         isOval = isOval ?? false,
+        isClipRRect = isClipRRect ?? false,
         visible = visible ?? true,
         offstage = offstage ?? false,
         enabled = enabled ?? false,
@@ -248,6 +250,7 @@ class Universal extends StatelessWidget {
   /// [RRect]、[Path]、[Rect]
   final CustomClipper<dynamic>? clipper;
   final bool isOval;
+  final bool isClipRRect;
 
   ///  ****** [CircleAvatar] ******  ///
   final bool isCircleAvatar;
@@ -521,7 +524,7 @@ class Universal extends StatelessWidget {
     if (heroTag != null) current = heroWidget(current);
     if (addCard) current = cardWidget(current, context);
     if (isCircleAvatar) current = circleAvatarWidget(current);
-    if (clipper != null || isOval)
+    if (clipper != null || isOval || isClipRRect)
       current = clipWidget(current, clipper: clipper);
     if (refreshConfig != null) current = refreshedWidget(current);
     if (constraints != null)
@@ -561,7 +564,8 @@ class Universal extends StatelessWidget {
           child: current,
           clipper: clipper,
           clipBehavior: clipBehavior ?? Clip.antiAlias);
-    if (clipper is CustomClipper<RRect>)
+    if (clipper is CustomClipper<RRect> ||
+        (clipper is CustomClipper<RRect> && isClipRRect))
       return ClipRRect(
           child: current,
           borderRadius: borderRadius,
