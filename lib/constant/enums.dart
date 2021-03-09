@@ -133,7 +133,7 @@ enum RefreshCompletedType {
   refresh,
   refreshFailed,
   refreshToIdle,
-  onLoading,
+  loading,
   loadFailed,
   loadNoData,
   twoLevel

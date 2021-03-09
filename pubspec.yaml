@@ -11,10 +11,10 @@ dependencies:
   dio: ^4.0.0-beta6
   flutter:
     sdk: flutter
-  flutter_easyrefresh: ^2.1.8
+  #  flutter_easyrefresh: ^2.1.8
   flutter_localizations:
     sdk: flutter
-
+  pull_to_refresh: ^1.6.4
 
 flutter:
   fonts:

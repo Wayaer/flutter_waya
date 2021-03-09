@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 class Universal extends StatelessWidget {
@@ -523,7 +524,6 @@ class Universal extends StatelessWidget {
     if (clipper != null || isOval)
       current = clipWidget(current, clipper: clipper);
     if (refreshConfig != null) current = refreshedWidget(current);
-
     if (constraints != null)
       current = ConstrainedBox(constraints: constraints!, child: current);
 
@@ -542,14 +542,6 @@ class Universal extends StatelessWidget {
   }
 
   Widget get statefulBuilder => StatefulBuilder(builder: builder!);
-
-  Widget refreshedWidget(Widget current) => Refreshed(
-      controller: refreshConfig?.controller,
-      child: current,
-      onRefresh: refreshConfig?.onRefresh,
-      onLoading: refreshConfig?.onLoading,
-      header: refreshConfig?.header,
-      footer: refreshConfig?.footer);
 
   Widget offstageWidget(Widget current) =>
       Offstage(child: current, offstage: offstage);
@@ -587,13 +579,6 @@ class Universal extends StatelessWidget {
       radius: radius,
       minRadius: minRadius,
       maxRadius: maxRadius);
-
-  Widget stackWidget(List<Widget> children) => Stack(
-      alignment: alignment ?? AlignmentDirectional.topStart,
-      textDirection: textDirection,
-      fit: stackFit,
-      clipBehavior: clipBehavior ?? Clip.hardEdge,
-      children: children);
 
   Widget heroWidget(Widget current) => Hero(
       tag: heroTag!,
@@ -684,15 +669,30 @@ class Universal extends StatelessWidget {
           onFocusChange: onFocusChange,
           autofocus: autoFocus));
 
-  Widget singleChildScrollViewWidget(Widget current) => SingleChildScrollView(
+  Widget singleChildScrollViewWidget(Widget current) {
+    return SingleChildScrollView(
+        physics: physics,
+        reverse: reverse,
+        primary: primary,
+        dragStartBehavior: dragStartBehavior,
+        controller: scrollController,
+        scrollDirection: direction,
+        clipBehavior: clipBehavior ?? Clip.hardEdge,
+        child: current);
+  }
+
+  Widget refreshedWidget(Widget current) => PullRefreshed(
+      controller: refreshConfig?.controller,
+      scrollController: scrollController,
+      child: current,
       physics: physics,
       reverse: reverse,
       primary: primary,
-      dragStartBehavior: dragStartBehavior,
-      controller: scrollController,
       scrollDirection: direction,
-      clipBehavior: clipBehavior ?? Clip.hardEdge,
-      child: current);
+      onRefresh: refreshConfig?.onRefresh,
+      onLoading: refreshConfig?.onLoading,
+      header: refreshConfig?.header,
+      footer: refreshConfig?.footer);
 
   Widget flexWidget(List<Widget> children) => Flex(
       children: children,
@@ -703,6 +703,13 @@ class Universal extends StatelessWidget {
       verticalDirection: verticalDirection,
       textDirection: textDirection,
       mainAxisSize: mainAxisSize);
+
+  Widget stackWidget(List<Widget> children) => Stack(
+      alignment: alignment ?? AlignmentDirectional.topStart,
+      textDirection: textDirection,
+      fit: stackFit,
+      clipBehavior: clipBehavior ?? Clip.hardEdge,
+      children: children);
 
   Widget gestureDetectorWidget(Widget current) => GestureDetector(
       onTapDown: onTapDown,

@@ -215,10 +215,16 @@ class _SimpleListRefreshed extends StatelessWidget {
         appBar: AppBar(
             title: const Text('SimpleList Refreshed Demo'), centerTitle: true),
         body: SimpleList.builder(
-            refreshConfig: RefreshConfig(onRefresh: () async {
+            refreshConfig: RefreshConfig(onRefresh: () {
               showToast('onRefresh');
-            }, onLoading: () async {
+              2.seconds.timer(() {
+                sendRefreshType();
+              });
+            }, onLoading: () {
               showToast('onLoading');
+              2.seconds.timer(() {
+                sendRefreshType(RefreshCompletedType.loadNoData);
+              });
             }),
             padding: const EdgeInsets.all(10),
             maxCrossAxisExtent: 60,

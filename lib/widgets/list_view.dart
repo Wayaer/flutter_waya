@@ -230,7 +230,7 @@ class SimpleList extends StatelessWidget {
       childAspectRatio: childAspectRatio,
       noScrollBehavior: noScrollBehavior);
 
-  Refreshed refresherListView(Widget child) => Refreshed(
+  Widget refresherListView(Widget child) => PullRefreshed(
       controller: refreshConfig?.controller,
       child: child,
       onRefresh: refreshConfig?.onRefresh,

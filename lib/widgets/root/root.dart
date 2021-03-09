@@ -407,7 +407,7 @@ class _OverlayScaffoldState extends State<OverlayScaffold> {
         backgroundColor: widget.backgroundColor ?? ConstColors.background,
         appBar: appBar,
         bottomNavigationBar: widget.bottomNavigationBar,
-        body: widget.refreshConfig != null ? refresherUniversal : universal);
+        body: universal);
     if (widget.onWillPop != null || widget.onWillPopOverlayClose) {
       scaffold = WillPopScope(
           child: scaffold, onWillPop: widget.onWillPop ?? onWillPop);
@@ -428,14 +428,6 @@ class _OverlayScaffoldState extends State<OverlayScaffold> {
     return true;
   }
 
-  Refreshed get refresherUniversal => Refreshed(
-      controller: widget.refreshConfig?.controller,
-      child: universal,
-      onRefresh: widget.refreshConfig?.onRefresh,
-      onLoading: widget.refreshConfig?.onLoading,
-      header: widget.refreshConfig?.header,
-      footer: widget.refreshConfig?.footer);
-
   PreferredSizeWidget? get appBar {
     if (widget.appBar is AppBar && widget.appBarHeight == null)
       return widget.appBar as AppBar;
@@ -449,6 +441,7 @@ class _OverlayScaffoldState extends State<OverlayScaffold> {
 
   Universal get universal => Universal(
       expand: true,
+      refreshConfig: widget.refreshConfig,
       margin: widget.margin,
       padding: widget.paddingStatusBar
           ? EdgeInsets.only(top: getStatusBarHeight)
