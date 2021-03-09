@@ -18,9 +18,6 @@ class Universal extends StatelessWidget {
     bool? reverse = false,
     bool? isOval = false,
     bool? isCircleAvatar = false,
-    bool? enablePullDown = false,
-    bool? enablePullUp = false,
-    bool? enableTwoLevel = false,
     bool? canRequestFocus,
     bool? enableFeedback,
     bool? excludeFromSemantics,
@@ -119,12 +116,6 @@ class Universal extends StatelessWidget {
     this.minRadius,
     this.maxRadius,
     this.clipper,
-    this.refreshController,
-    this.onRefresh,
-    this.onLoading,
-    this.onTwoLevel,
-    this.refreshHeader,
-    this.refreshFooter,
     this.size,
     this.onSecondaryTap,
     this.onSecondaryLongPressMoveUpdate,
@@ -140,6 +131,7 @@ class Universal extends StatelessWidget {
     this.elevation,
     this.opacity,
     this.clipBehavior,
+    this.refreshConfig,
   })  : addCard = addCard ?? false,
         addInkWell = addInkWell ?? false,
         isScroll = isScroll ?? false,
@@ -153,9 +145,6 @@ class Universal extends StatelessWidget {
         enabled = enabled ?? false,
         reverse = reverse ?? false,
         autoFocus = autoFocus ?? false,
-        enablePullDown = enablePullDown ?? false,
-        enablePullUp = enablePullUp ?? false,
-        enableTwoLevel = enableTwoLevel ?? false,
         maintainState = maintainState ?? false,
         transitionOnUserGestures = transitionOnUserGestures ?? false,
         isCircleAvatar = isCircleAvatar ?? false,
@@ -465,15 +454,7 @@ class Universal extends StatelessWidget {
   final StackFit stackFit;
 
   ///  ****** [Refreshed] ******  ///
-  final RefreshController? refreshController;
-  final VoidCallback? onRefresh;
-  final VoidCallback? onLoading;
-  final VoidCallback? onTwoLevel;
-  final bool enablePullDown;
-  final bool enablePullUp;
-  final bool enableTwoLevel;
-  final Widget? refreshHeader;
-  final Widget? refreshFooter;
+  final RefreshConfig? refreshConfig;
 
   EdgeInsetsGeometry? get _paddingIncludingDecoration {
     if (decoration == null || decoration!.padding == null) return padding;
@@ -541,14 +522,7 @@ class Universal extends StatelessWidget {
     if (isCircleAvatar) current = circleAvatarWidget(current);
     if (clipper != null || isOval)
       current = clipWidget(current, clipper: clipper);
-    if (refreshController != null ||
-        onRefresh != null ||
-        onLoading != null ||
-        onTwoLevel != null ||
-        refreshFooter != null ||
-        refreshHeader != null) {
-      current = refreshedWidget(current);
-    }
+    if (refreshConfig != null) current = refreshedWidget(current);
 
     if (constraints != null)
       current = ConstrainedBox(constraints: constraints!, child: current);
@@ -570,16 +544,12 @@ class Universal extends StatelessWidget {
   Widget get statefulBuilder => StatefulBuilder(builder: builder!);
 
   Widget refreshedWidget(Widget current) => Refreshed(
-      controller: refreshController,
+      controller: refreshConfig?.controller,
       child: current,
-      onRefresh: onRefresh,
-      onLoading: onLoading,
-      onTwoLevel: onTwoLevel,
-      enablePullDown: enablePullDown,
-      enablePullUp: enablePullUp,
-      enableTwoLevel: enableTwoLevel,
-      header: refreshHeader,
-      footer: refreshFooter);
+      onRefresh: refreshConfig?.onRefresh,
+      onLoading: refreshConfig?.onLoading,
+      header: refreshConfig?.header,
+      footer: refreshConfig?.footer);
 
   Widget offstageWidget(Widget current) =>
       Offstage(child: current, offstage: offstage);

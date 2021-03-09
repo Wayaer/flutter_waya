@@ -24,8 +24,6 @@ class _ListPageState extends State<ListPage> {
           appBar:
               AppBar(title: const Text('SimpleList Demo'), centerTitle: true),
           isScroll: true,
-          enablePullDown: true,
-          // header: BezierCircleHeader(bezierColor: colors[0]),
           padding: const EdgeInsets.symmetric(horizontal: 10),
           children: <Widget>[
             SimpleButton(
@@ -172,7 +170,7 @@ class _ListPageState extends State<ListPage> {
 }
 
 class _DraggableScrollbar extends StatefulWidget {
-  const _DraggableScrollbar(this.colors, {Key? key}) : super(key: key);
+  const _DraggableScrollbar(this.colors, {Key key}) : super(key: key);
 
   final List<Color> colors;
 
@@ -207,7 +205,7 @@ class _DraggableScrollbarState extends State<_DraggableScrollbar> {
 }
 
 class _SimpleListRefreshed extends StatelessWidget {
-  const _SimpleListRefreshed(this.colors, {Key? key}) : super(key: key);
+  const _SimpleListRefreshed(this.colors, {Key key}) : super(key: key);
 
   final List<Color> colors;
 
@@ -217,10 +215,12 @@ class _SimpleListRefreshed extends StatelessWidget {
         appBar: AppBar(
             title: const Text('SimpleList Refreshed Demo'), centerTitle: true),
         body: SimpleList.builder(
-            enablePullDown: true,
-            enablePullUp: true,
+            refreshConfig: RefreshConfig(onRefresh: () async {
+              showToast('onRefresh');
+            }, onLoading: () async {
+              showToast('onLoading');
+            }),
             padding: const EdgeInsets.all(10),
-            // refreshHeader: BezierCircleHeader(bezierColor: colors[0]),
             maxCrossAxisExtent: 60,
             mainAxisSpacing: 10,
             crossAxisSpacing: 10,

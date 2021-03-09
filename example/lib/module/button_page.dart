@@ -28,7 +28,7 @@ class ButtonPage extends StatelessWidget {
 }
 
 class _BubbleButtonPage extends StatelessWidget {
-  late final double size = 40.0;
+  final double size = 40.0;
 
   @override
   Widget build(BuildContext context) {

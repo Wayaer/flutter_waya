@@ -50,7 +50,7 @@ class Home extends StatelessWidget {
   void showOverlayLoading() => showLoading(gaussian: true);
 }
 
-Widget customElasticButton(String text, {GestureTapCallback? onTap}) =>
+Widget customElasticButton(String text, {GestureTapCallback onTap}) =>
     Universal(
       addInkWell: true,
       margin: const EdgeInsets.symmetric(vertical: 6),

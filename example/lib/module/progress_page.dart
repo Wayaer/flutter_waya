@@ -8,7 +8,7 @@ class ProgressPage extends StatefulWidget {
 
 class _ProgressPageState extends State<ProgressPage>
     with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
+  AnimationController _animationController;
 
   @override
   void initState() {

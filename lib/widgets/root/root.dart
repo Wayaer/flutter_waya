@@ -261,9 +261,6 @@ class OverlayScaffold extends StatefulWidget {
   const OverlayScaffold({
     Key? key,
     bool? paddingStatusBar,
-    bool? enablePullDown,
-    bool? enablePullUp,
-    bool? enableTwoLevel,
     bool? primary,
     bool? extendBody,
     bool? isStack,
@@ -307,19 +304,11 @@ class OverlayScaffold extends StatefulWidget {
     this.mainAxisAlignment,
     this.crossAxisAlignment,
     this.direction,
-    this.onLoading,
-    this.onTwoLevel,
-    this.controller,
-    this.onRefresh,
-    this.header,
-    this.footer,
     this.margin,
     this.decoration,
+    this.refreshConfig,
   })  : onWillPopOverlayClose = onWillPopOverlayClose ?? false,
         paddingStatusBar = paddingStatusBar ?? false,
-        enablePullDown = enablePullDown ?? false,
-        enablePullUp = enablePullUp ?? false,
-        enableTwoLevel = enableTwoLevel ?? false,
         primary = primary ?? true,
         extendBody = extendBody ?? false,
         isStack = isStack ?? false,
@@ -365,16 +354,8 @@ class OverlayScaffold extends StatefulWidget {
   ///  返回按键监听
   final WillPopCallback? onWillPop;
 
-  ///  刷新组件相关
-  final RefreshController? controller;
-  final bool enablePullDown;
-  final bool enablePullUp;
-  final bool enableTwoLevel;
-  final Widget? header;
-  final Widget? footer;
-  final VoidCallback? onRefresh;
-  final VoidCallback? onLoading;
-  final VoidCallback? onTwoLevel;
+  ///  ****** 刷新组件相关 ******  ///
+  final RefreshConfig? refreshConfig;
 
   ///  Scaffold相关属性
   final Widget? bottomNavigationBar;
@@ -426,11 +407,7 @@ class _OverlayScaffoldState extends State<OverlayScaffold> {
         backgroundColor: widget.backgroundColor ?? ConstColors.background,
         appBar: appBar,
         bottomNavigationBar: widget.bottomNavigationBar,
-        body: widget.enablePullDown ||
-                widget.enablePullUp ||
-                widget.enableTwoLevel
-            ? refresherUniversal
-            : universal);
+        body: widget.refreshConfig != null ? refresherUniversal : universal);
     if (widget.onWillPop != null || widget.onWillPopOverlayClose) {
       scaffold = WillPopScope(
           child: scaffold, onWillPop: widget.onWillPop ?? onWillPop);
@@ -452,16 +429,12 @@ class _OverlayScaffoldState extends State<OverlayScaffold> {
   }
 
   Refreshed get refresherUniversal => Refreshed(
-      enablePullDown: widget.enablePullDown,
-      enablePullUp: widget.enablePullUp,
-      enableTwoLevel: widget.enableTwoLevel,
-      onLoading: widget.onLoading,
-      onTwoLevel: widget.onTwoLevel,
-      controller: widget.controller,
-      onRefresh: widget.onRefresh,
+      controller: widget.refreshConfig?.controller,
       child: universal,
-      header: widget.header,
-      footer: widget.footer);
+      onRefresh: widget.refreshConfig?.onRefresh,
+      onLoading: widget.refreshConfig?.onLoading,
+      header: widget.refreshConfig?.header,
+      footer: widget.refreshConfig?.footer);
 
   PreferredSizeWidget? get appBar {
     if (widget.appBar is AppBar && widget.appBarHeight == null)

@@ -9,8 +9,6 @@ import 'package:flutter_waya/flutter_waya.dart';
 class SimpleList extends StatelessWidget {
   const SimpleList.custom({
     Key? key,
-    this.enablePullDown = false,
-    this.enablePullUp = false,
     this.noScrollBehavior = false,
     this.crossAxisFlex = false,
     this.crossAxisCount = 1,
@@ -29,11 +27,7 @@ class SimpleList extends StatelessWidget {
     this.clipBehavior = Clip.hardEdge,
     this.itemExtent,
     this.placeholder,
-    this.refreshController,
-    this.onLoading,
-    this.onRefresh,
-    this.refreshHeader,
-    this.refreshFooter,
+    this.refreshConfig,
     this.maxCrossAxisExtent,
   })  : assert(!crossAxisFlex ||
             (maxCrossAxisExtent != null && maxCrossAxisExtent > 0)),
@@ -44,8 +38,6 @@ class SimpleList extends StatelessWidget {
 
   const SimpleList.builder({
     Key? key,
-    this.enablePullDown = false,
-    this.enablePullUp = false,
     this.noScrollBehavior = false,
     this.crossAxisFlex = false,
     this.crossAxisCount = 1,
@@ -66,11 +58,7 @@ class SimpleList extends StatelessWidget {
     this.clipBehavior = Clip.hardEdge,
     this.maxCrossAxisExtent,
     this.placeholder,
-    this.refreshController,
-    this.onLoading,
-    this.onRefresh,
-    this.refreshHeader,
-    this.refreshFooter,
+    this.refreshConfig,
   })  : assert(itemCount >= 0),
         separatorBuilder = null,
         children = null,
@@ -80,8 +68,6 @@ class SimpleList extends StatelessWidget {
 
   const SimpleList.separated({
     Key? key,
-    this.enablePullDown = false,
-    this.enablePullUp = false,
     this.noScrollBehavior = false,
     this.crossAxisFlex = false,
     this.scrollDirection = Axis.vertical,
@@ -97,11 +83,7 @@ class SimpleList extends StatelessWidget {
     this.cacheExtent,
     this.clipBehavior = Clip.hardEdge,
     this.placeholder,
-    this.refreshController,
-    this.onLoading,
-    this.onRefresh,
-    this.refreshHeader,
-    this.refreshFooter,
+    this.refreshConfig,
   })  : assert(itemBuilder != null),
         assert(separatorBuilder != null),
         assert(itemCount >= 0),
@@ -125,13 +107,7 @@ class SimpleList extends StatelessWidget {
   final Axis scrollDirection;
 
   ///  刷新组件相关
-  final bool enablePullDown;
-  final bool enablePullUp;
-  final RefreshController? refreshController;
-  final VoidCallback? onLoading;
-  final VoidCallback? onRefresh;
-  final Widget? refreshHeader;
-  final Widget? refreshFooter;
+  final RefreshConfig? refreshConfig;
 
   /// 是否倒置列表
   final bool reverse;
@@ -195,7 +171,7 @@ class SimpleList extends StatelessWidget {
         widget = separatorBuilder == null ? builder : separated;
       }
     }
-    if (enablePullDown || enablePullUp) widget = refresherListView(widget);
+    if (refreshConfig != null) widget = refresherListView(widget);
     return widget;
   }
 
@@ -255,14 +231,12 @@ class SimpleList extends StatelessWidget {
       noScrollBehavior: noScrollBehavior);
 
   Refreshed refresherListView(Widget child) => Refreshed(
-      enablePullDown: enablePullDown,
-      enablePullUp: enablePullUp,
-      controller: refreshController,
-      onLoading: onLoading,
-      onRefresh: onRefresh,
-      child: Container(child: child),
-      header: refreshHeader,
-      footer: refreshFooter);
+      controller: refreshConfig?.controller,
+      child: child,
+      onRefresh: refreshConfig?.onRefresh,
+      onLoading: refreshConfig?.onLoading,
+      header: refreshConfig?.header,
+      footer: refreshConfig?.footer);
 }
 
 /// 自定义List Grid  List

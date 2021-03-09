@@ -1,4 +1,4 @@
-part of 'tween/delay_tween.dart';
+part of 'loading.dart';
 
 class SpinKitDoubleBounce extends StatefulWidget {
   const SpinKitDoubleBounce({
@@ -107,21 +107,17 @@ class _SpinKitThreeBounceState extends State<SpinKitThreeBounce>
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: SizedBox.fromSize(
+    return SizedBox.fromSize(
         size: Size(widget.size * 2, widget.size),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: 3.generate((int i) => ScaleTransition(
-                scale: DelayTween(begin: 0.0, end: 1.0, delay: i * .2)
-                    .animate(_controller),
-                child: SizedBox.fromSize(
-                    size: Size.square(widget.size * 0.5),
-                    child: _itemBuilder(i)),
-              )),
-        ),
-      ),
-    );
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: 3.generate((int i) => ScaleTransition(
+                  scale: DelayTween(begin: 0.0, end: 1.0, delay: i * .2)
+                      .animate(_controller),
+                  child: SizedBox.fromSize(
+                      size: Size.square(widget.size * 0.5),
+                      child: _itemBuilder(i)),
+                )))).center();
   }
 
   Widget _itemBuilder(int index) => widget.itemBuilder != null
@@ -179,18 +175,16 @@ class _SpinKitPulseState extends State<SpinKitPulse>
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Opacity(
-        opacity: 1.0 - _animation.value,
-        child: Transform.scale(
-          scale: _animation.value,
-          child: SizedBox.fromSize(
-            size: Size.square(widget.size),
-            child: _itemBuilder(0),
-          ),
+    return Opacity(
+      opacity: 1.0 - _animation.value,
+      child: Transform.scale(
+        scale: _animation.value,
+        child: SizedBox.fromSize(
+          size: Size.square(widget.size),
+          child: _itemBuilder(0),
         ),
       ),
-    );
+    ).center();
   }
 
   Widget _itemBuilder(int index) => widget.itemBuilder != null

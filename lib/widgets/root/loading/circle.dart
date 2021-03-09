@@ -1,4 +1,4 @@
-part of 'tween/delay_tween.dart';
+part of 'loading.dart';
 
 class SpinKitCircle extends StatefulWidget {
   const SpinKitCircle({

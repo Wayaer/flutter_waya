@@ -1,6 +1,5 @@
 library flutter_waya;
 
-export 'package:pull_to_refresh/pull_to_refresh.dart';
 export 'package:dio/dio.dart';
 
 export 'constant/area.dart';
@@ -36,7 +35,7 @@ export 'widgets/progress/wave.dart';
 export 'widgets/refresh/refresh.dart';
 export 'widgets/root/dialog/picker.dart';
 export 'widgets/root/dialog/popup_widgets.dart';
-export 'widgets/root/loading/tween/delay_tween.dart';
+export 'widgets/root/loading/loading.dart';
 export 'widgets/root/root.dart';
 export 'widgets/scroll_view.dart';
 export 'widgets/tab_bar.dart';

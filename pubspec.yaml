@@ -11,13 +11,10 @@ dependencies:
   dio: ^4.0.0-beta6
   flutter:
     sdk: flutter
+  flutter_easyrefresh: ^2.1.8
   flutter_localizations:
     sdk: flutter
-  pull_to_refresh:
-#    path: ../pulltorefresh
-    git:
-      url: https://github.com/fzyzcjy/flutter_pulltorefresh.git
-      ref: master
+
 
 flutter:
   fonts:

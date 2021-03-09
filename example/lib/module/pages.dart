@@ -10,7 +10,7 @@ class ImagePage extends StatefulWidget {
 }
 
 class _ImagePageState extends State<ImagePage> with TickerProviderStateMixin {
-  late GifController controller;
+  GifController controller;
 
   String uri =
       'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3681478079,2138136230&fm=26&gp=0.jpg';
