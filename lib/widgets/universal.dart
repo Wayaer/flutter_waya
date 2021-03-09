@@ -564,12 +564,11 @@ class Universal extends StatelessWidget {
           child: current,
           clipper: clipper,
           clipBehavior: clipBehavior ?? Clip.antiAlias);
-    if (clipper is CustomClipper<RRect> ||
-        (clipper is CustomClipper<RRect> && isClipRRect))
+    if (clipper is CustomClipper<RRect> || isClipRRect)
       return ClipRRect(
           child: current,
           borderRadius: borderRadius,
-          clipper: clipper,
+          clipper: clipper is CustomClipper<RRect> ? clipper : null,
           clipBehavior: clipBehavior ?? Clip.antiAlias);
     return current;
   }
