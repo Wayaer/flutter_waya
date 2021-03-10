@@ -1,4 +1,4 @@
-## [1.7.1]
+## [1.7.2]
   * update flutter 2.0
 ## [1.6.0]
   * add [Progress.circular] [Progress.linear]
