@@ -605,7 +605,7 @@ class ListEntry extends StatelessWidget {
 
   Decoration? get defaultDecoration => underlineColor != null || color != null
       ? WayStyles.containerUnderlineBackground(
-          underlineColor: underlineColor!, color: color!)
+          underlineColor: underlineColor, color: color)
       : null;
 
   Widget get arrowWidget =>
