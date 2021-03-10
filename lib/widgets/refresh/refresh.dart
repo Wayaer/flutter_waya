@@ -285,4 +285,10 @@ class _PullRefreshedState extends State<PullRefreshed> {
       physics: widget.physics,
       scrollDirection: widget.scrollDirection,
       scrollController: widget.scrollController);
+
+  @override
+  void dispose() {
+    super.dispose();
+    controller.dispose();
+  }
 }
