@@ -7,6 +7,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
+/// 流体按钮
 class LiquidButton extends StatefulWidget {
   const LiquidButton(
       {Key? key,
