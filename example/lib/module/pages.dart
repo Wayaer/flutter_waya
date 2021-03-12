@@ -153,3 +153,28 @@ class ToggleRotatePage extends StatelessWidget {
                 child: Icon(Icons.chevron_left, size: 30)),
           ]);
 }
+
+class ExpansionTilesPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return OverlayScaffold(
+        backgroundColor: Colors.white,
+        appBar:
+            AppBar(title: const Text('ToggleRotate Demo'), centerTitle: true),
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          ExpansionTiles(
+              title: BasisText('title'),
+              children: 5.generate((int index) => Universal(
+                  margin: const EdgeInsets.all(12),
+                  alignment: Alignment.centerLeft,
+                  child: BasisText('item$index')))),
+          ExpansionTiles(
+              title: BasisText('title'),
+              children: 5.generate((int index) => Universal(
+                  margin: const EdgeInsets.all(12),
+                  alignment: Alignment.centerLeft,
+                  child: BasisText('item$index')))),
+        ]);
+  }
+}

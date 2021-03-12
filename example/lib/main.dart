@@ -39,6 +39,8 @@ class Home extends StatelessWidget {
           customElasticButton('Progress', onTap: () => push(ProgressPage())),
           customElasticButton('Universal', onTap: () => push(UniversalPage())),
           customElasticButton('JsonParse', onTap: () => push(JsonParsePage())),
+          customElasticButton('ExpansionTiles',
+              onTap: () => push(ExpansionTilesPage())),
           customElasticButton('ScrollView',
               onTap: () => push(ScrollViewPage())),
           customElasticButton('DropdownMenu',

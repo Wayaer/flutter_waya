@@ -19,6 +19,7 @@ class Universal extends StatelessWidget {
     bool? reverse = false,
     bool? isOval = false,
     bool? isClipRRect = false,
+    bool? isClipRect = false,
     bool? isCircleAvatar = false,
     bool? canRequestFocus,
     bool? enableFeedback,
@@ -134,6 +135,8 @@ class Universal extends StatelessWidget {
     this.opacity,
     this.clipBehavior,
     this.refreshConfig,
+    this.widthFactor,
+    this.heightFactor,
   })  : addCard = addCard ?? false,
         addInkWell = addInkWell ?? false,
         isScroll = isScroll ?? false,
@@ -143,6 +146,7 @@ class Universal extends StatelessWidget {
         shrink = shrink ?? false,
         isOval = isOval ?? false,
         isClipRRect = isClipRRect ?? false,
+        isClipRect = isClipRect ?? false,
         visible = visible ?? true,
         offstage = offstage ?? false,
         enabled = enabled ?? false,
@@ -188,6 +192,8 @@ class Universal extends StatelessWidget {
 
   ///  ****** [Align] ******  ///
   final AlignmentGeometry? alignment;
+  final double? widthFactor;
+  final double? heightFactor;
 
   ///  [InkWell]飞溅半径
   ///  [Material]圆角半径
@@ -251,6 +257,7 @@ class Universal extends StatelessWidget {
   final CustomClipper<dynamic>? clipper;
   final bool isOval;
   final bool isClipRRect;
+  final bool isClipRect;
 
   ///  ****** [CircleAvatar] ******  ///
   final bool isCircleAvatar;
@@ -484,8 +491,12 @@ class Universal extends StatelessWidget {
 
     if (_paddingIncludingDecoration != null)
       current = Padding(padding: _paddingIncludingDecoration!, child: current);
-    if (alignment != null)
-      current = Align(alignment: alignment!, child: current);
+    if (alignment != null || widthFactor != null || heightFactor != null)
+      current = Align(
+          alignment: alignment!,
+          widthFactor: widthFactor,
+          heightFactor: heightFactor,
+          child: current);
 
     if (color != null && decoration == null && !addInkWell && !addCard)
       current = ColoredBox(color: color!, child: current);
@@ -554,10 +565,10 @@ class Universal extends StatelessWidget {
     if (isOval)
       return ClipOval(
           child: current, clipBehavior: clipBehavior ?? Clip.antiAlias);
-    if (clipper is CustomClipper<Rect>)
+    if (clipper is CustomClipper<Rect> || isClipRect)
       return ClipRect(
           child: current,
-          clipper: clipper,
+          clipper: clipper is CustomClipper<Rect> ? clipper : null,
           clipBehavior: clipBehavior ?? Clip.hardEdge);
     if (clipper is CustomClipper<Path>)
       return ClipPath(

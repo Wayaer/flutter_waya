@@ -405,8 +405,8 @@ class _ToggleRotateState extends State<ToggleRotate>
 
 const Duration _kExpand = Duration(milliseconds: 200);
 
-class NoBorderExpansionTile extends StatefulWidget {
-  const NoBorderExpansionTile({
+class ExpansionTiles extends StatefulWidget {
+  const ExpansionTiles({
     Key? key,
     this.leading,
     required this.title,
@@ -443,10 +443,10 @@ class NoBorderExpansionTile extends StatefulWidget {
   final bool initiallyExpanded;
 
   @override
-  _ExpansionTileState createState() => _ExpansionTileState();
+  _ExpansionTilesState createState() => _ExpansionTilesState();
 }
 
-class _ExpansionTileState extends State<ExpansionTile>
+class _ExpansionTilesState extends State<ExpansionTiles>
     with SingleTickerProviderStateMixin {
   static final Animatable<double> _easeOutTween =
       CurveTween(curve: Curves.easeOut);
@@ -528,7 +528,7 @@ class _ExpansionTileState extends State<ExpansionTile>
                               ))),
                   ClipRect(
                       child: Align(
-                          heightFactor: _heightFactor.value, child: child)),
+                          heightFactor: _heightFactor.value, child: child))
                 ]),
         child: closed ? null : Column(children: widget.children));
   }
