@@ -1,3 +1,5 @@
+## [1.7.3]
+  * add ExpansionTiles example and fix bug
 ## [1.7.2]
   * update flutter 2.0
 ## [1.6.0]
