@@ -46,7 +46,7 @@ class _ListPageState extends State<ListPage> {
                 onTap: () => push(_SimpleListRefreshed(colors))),
             const Text('SimpleList.custom 单列')
                 .padding(const EdgeInsets.only(top: 10)),
-            SimpleList.custom(
+            SimpleList.count(
               physics: const NeverScrollableScrollPhysics(),
               children: colors
                   .map((Color e) => Container(
@@ -58,7 +58,7 @@ class _ListPageState extends State<ListPage> {
             ),
             const Text('SimpleList.custom 4列')
                 .padding(const EdgeInsets.symmetric(vertical: 10)),
-            SimpleList.custom(
+            SimpleList.count(
               physics: const NeverScrollableScrollPhysics(),
               maxCrossAxisExtent: 60,
               mainAxisSpacing: 10,
@@ -71,7 +71,7 @@ class _ListPageState extends State<ListPage> {
             ),
             const Text('SimpleList.custom 列数自适应')
                 .padding(const EdgeInsets.symmetric(vertical: 10)),
-            SimpleList.custom(
+            SimpleList.count(
               physics: const NeverScrollableScrollPhysics(),
               crossAxisFlex: true,
               maxCrossAxisExtent: 60,
@@ -84,7 +84,7 @@ class _ListPageState extends State<ListPage> {
             ),
             const Text('SimpleList.custom placeholder')
                 .padding(const EdgeInsets.symmetric(vertical: 10)),
-            SimpleList.custom(
+            SimpleList.count(
                 placeholder:
                     const Text('没有数据', style: TextStyle(color: Colors.white))
                         .container(
