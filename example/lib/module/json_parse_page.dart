@@ -12,8 +12,8 @@ class JsonParsePage extends StatelessWidget {
         appBar: AppBar(title: const Text('JsonParse Demo'), centerTitle: true),
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          customElasticButton('JsonParse', onTap: () => push(_JsonParsePage())),
-          customElasticButton('JsonParse.list',
+          CustomElastic('JsonParse', onTap: () => push(_JsonParsePage())),
+          CustomElastic('JsonParse.list',
               onTap: () => push(_JsonParseListPage())),
         ]);
   }

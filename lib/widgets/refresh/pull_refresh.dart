@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-void sendRefreshType([RefreshCompletedType? refresh]) =>
-    eventBus.emit(refreshEvent, refresh ?? RefreshCompletedType.refresh);
 
 class RefreshConfig {
   RefreshConfig({
@@ -11,7 +9,6 @@ class RefreshConfig {
     this.controller,
     this.onRefresh,
     this.onLoading,
-    this.onTwoLevel,
     this.footer,
   }) : header = header ?? BezierCircleHeader();
 
@@ -22,9 +19,6 @@ class RefreshConfig {
 
   /// 上拉加载回调(null为不开启加载)
   VoidCallback? onLoading;
-
-  /// 二楼
-  VoidCallback? onTwoLevel;
 
   /// CustomHeader
   Widget? header;
@@ -47,7 +41,6 @@ class PullRefreshed extends StatefulWidget {
     this.scrollController,
     this.primary,
     this.physics,
-    this.onTwoLevel,
     this.cacheExtent,
   })  : header =
             header ?? BezierCircleHeader(bezierColor: ConstColors.transparent),
@@ -59,7 +52,6 @@ class PullRefreshed extends StatefulWidget {
   final RefreshController? controller;
   final VoidCallback? onRefresh;
   final VoidCallback? onLoading;
-  final VoidCallback? onTwoLevel;
   final Widget child;
 
   /// CustomHeader
@@ -94,23 +86,21 @@ class _PullRefreshedState extends State<PullRefreshed> {
                   case RefreshCompletedType.refresh:
                     controller.refreshCompleted();
                     break;
+                  case RefreshCompletedType.refreshSuccess:
+                    controller.refreshCompleted();
+                    break;
                   case RefreshCompletedType.refreshFailed:
                     controller.refreshFailed();
                     break;
-                  case RefreshCompletedType.refreshToIdle:
-                    controller.refreshToIdle();
-                    break;
+
                   case RefreshCompletedType.loading:
                     controller.loadComplete();
                     break;
                   case RefreshCompletedType.loadFailed:
                     controller.loadFailed();
                     break;
-                  case RefreshCompletedType.loadNoData:
+                  case RefreshCompletedType.loadingSuccess:
                     controller.loadNoData();
-                    break;
-                  case RefreshCompletedType.twoLevel:
-                    controller.twoLevelComplete();
                     break;
                 }
               }
@@ -123,12 +113,10 @@ class _PullRefreshedState extends State<PullRefreshed> {
       controller: controller,
       enablePullDown: widget.onRefresh != null,
       enablePullUp: widget.onLoading != null,
-      enableTwoLevel: widget.onTwoLevel != null,
       header: widget.header,
       footer: widget.footer,
       onRefresh: widget.onRefresh,
       onLoading: widget.onLoading,
-      onTwoLevel: widget.onTwoLevel,
       primary: widget.primary,
       cacheExtent: widget.cacheExtent,
       reverse: widget.reverse,

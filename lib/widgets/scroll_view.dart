@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_waya/constant/way.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 /// 配合 sliver 家族组件 无需设置高度  自适应高度
@@ -550,4 +551,454 @@ class _SliverAppBar extends SliverAppBar {
             flexibleSpace: sliverAppBar.flexibleSpace);
 
   final SliverAppBar sliverAppBar;
+}
+
+class ScrollList extends ScrollView {
+  /// 滑动类型设置 [physics]
+  /// AlwaysScrollableScrollPhysics() 总是可以滑动
+  /// NeverScrollableScrollPhysics() 禁止滚动
+  /// BouncingScrollPhysics()  内容超过一屏 上拉有回弹效果
+  /// ClampingScrollPhysics()  包裹内容 不会有回弹
+
+  ScrollList({
+    Key? key,
+    Clip? clipBehavior,
+    bool? reverse,
+    double? cacheExtent,
+    bool? primary,
+    ScrollPhysics? physics,
+    Axis? scrollDirection,
+    DragStartBehavior? dragStartBehavior,
+    ScrollController? controller,
+    String? restorationId,
+    bool? shrinkWrap = false,
+    bool? noScrollBehavior = false,
+    this.gridDelegates,
+    this.itemExtents,
+    required this.delegates,
+    this.padding,
+    this.easyRefreshConfig,
+  })  : noScrollBehavior = noScrollBehavior ?? false,
+        placeholder = null,
+        super(
+            key: key,
+            controller: controller,
+            scrollDirection: scrollDirection ?? Axis.vertical,
+            shrinkWrap: _shrinkWrap(shrinkWrap, physics),
+            reverse: reverse ?? false,
+            clipBehavior: clipBehavior ?? Clip.hardEdge,
+            dragStartBehavior: dragStartBehavior ?? DragStartBehavior.start,
+            cacheExtent: cacheExtent,
+            restorationId: restorationId,
+            physics: physics,
+            primary: primary);
+
+  ScrollList.custom(
+      {Key? key,
+      Clip? clipBehavior,
+      bool? reverse,
+      double? cacheExtent,
+      bool? primary,
+      ScrollPhysics? physics,
+      Axis? scrollDirection,
+      DragStartBehavior? dragStartBehavior,
+      ScrollController? controller,
+      String? restorationId,
+      bool? shrinkWrap = false,
+      bool? noScrollBehavior = false,
+      SliverGridDelegate? gridDelegate,
+      double? itemExtent,
+      required SliverChildDelegate delegate,
+      this.padding,
+      this.easyRefreshConfig})
+      : noScrollBehavior = noScrollBehavior ?? false,
+        delegates = <SliverChildDelegate>[delegate],
+        gridDelegates = <SliverGridDelegate?>[gridDelegate],
+        itemExtents = <double?>[itemExtent],
+        placeholder = null,
+        super(
+            key: key,
+            controller: controller,
+            scrollDirection: scrollDirection ?? Axis.vertical,
+            shrinkWrap: _shrinkWrap(shrinkWrap, physics),
+            reverse: reverse ?? false,
+            clipBehavior: clipBehavior ?? Clip.hardEdge,
+            dragStartBehavior: dragStartBehavior ?? DragStartBehavior.start,
+            cacheExtent: cacheExtent,
+            restorationId: restorationId,
+            physics: physics,
+            primary: primary);
+
+  ScrollList.builder(
+      {Key? key,
+      Clip? clipBehavior,
+      bool? reverse,
+      double? cacheExtent,
+      bool? primary,
+      ScrollPhysics? physics,
+      Axis? scrollDirection,
+      DragStartBehavior? dragStartBehavior,
+      ScrollController? controller,
+      String? restorationId,
+      bool? shrinkWrap = false,
+      bool? noScrollBehavior = false,
+      double? itemExtent,
+      required IndexedWidgetBuilder itemBuilder,
+      required int itemCount,
+      ChildIndexGetter? findChildIndexCallback,
+      bool addAutomaticKeepALives = true,
+      bool addRepaintBoundaries = true,
+      bool addSemanticIndexes = true,
+
+      /// 多列最大列数 [crossAxisCount]>1 固定列
+      int? crossAxisCount = 1,
+
+      /// 水平子Widget之间间距
+      double? mainAxisSpacing = 0,
+
+      /// 垂直子Widget之间间距
+      double? crossAxisSpacing = 0,
+
+      /// 子 Widget 宽高比例 [crossAxisCount]>1是 有效
+      double? childAspectRatio = 1,
+
+      /// 是否开启列数自适应
+      /// [crossAxisFlex]=true 为多列 且宽度自适应
+      /// [maxCrossAxisExtent]设置最大宽度
+      bool? crossAxisFlex = false,
+
+      ///  单个子Widget的水平最大宽度
+      double? maxCrossAxisExtent,
+      double? mainAxisExtent,
+      this.padding,
+      this.placeholder,
+      this.easyRefreshConfig})
+      : noScrollBehavior = noScrollBehavior ?? false,
+        delegates = itemCount < 1
+            ? null
+            : _getSliverBuilderDelegates(
+                itemBuilder: itemBuilder,
+                itemCount: itemCount,
+                findChildIndexCallback: findChildIndexCallback,
+                addAutomaticKeepALives: addAutomaticKeepALives,
+                addRepaintBoundaries: addRepaintBoundaries,
+                addSemanticIndexes: addSemanticIndexes),
+        gridDelegates = _getGridDelegates(
+            crossAxisCount: crossAxisCount,
+            mainAxisSpacing: mainAxisSpacing,
+            crossAxisSpacing: crossAxisSpacing,
+            childAspectRatio: childAspectRatio,
+            crossAxisFlex: crossAxisFlex,
+            mainAxisExtent: mainAxisExtent,
+            maxCrossAxisExtent: maxCrossAxisExtent),
+        itemExtents = <double?>[itemExtent],
+        super(
+            key: key,
+            controller: controller,
+            scrollDirection: scrollDirection ?? Axis.vertical,
+            shrinkWrap: _shrinkWrap(shrinkWrap, physics),
+            reverse: reverse ?? false,
+            clipBehavior: clipBehavior ?? Clip.hardEdge,
+            dragStartBehavior: dragStartBehavior ?? DragStartBehavior.start,
+            cacheExtent: cacheExtent,
+            restorationId: restorationId,
+            physics: physics,
+            primary: primary);
+
+  ScrollList.separated(
+      {Key? key,
+      Clip? clipBehavior,
+      bool? reverse,
+      double? cacheExtent,
+      bool? primary,
+      ScrollPhysics? physics,
+      Axis? scrollDirection,
+      DragStartBehavior? dragStartBehavior,
+      ScrollController? controller,
+      String? restorationId,
+      bool? shrinkWrap = false,
+      bool? noScrollBehavior = false,
+      double? itemExtent,
+      required IndexedWidgetBuilder itemBuilder,
+      required int itemCount,
+      required IndexedWidgetBuilder separatorBuilder,
+      bool addAutomaticKeepALives = true,
+      bool addRepaintBoundaries = true,
+      bool addSemanticIndexes = true,
+      this.padding,
+      this.placeholder,
+      this.easyRefreshConfig})
+      : noScrollBehavior = noScrollBehavior ?? false,
+        delegates = itemCount < 1
+            ? null
+            : _getSliverBuilderDelegates(
+                itemBuilder: (BuildContext context, int index) {
+                  final int itemIndex = index ~/ 2;
+                  Widget? widget;
+                  if (index.isEven) {
+                    widget = itemBuilder(context, itemIndex);
+                  } else {
+                    widget = separatorBuilder(context, itemIndex);
+                    assert(() {
+                      if (widget == null)
+                        throw FlutterError(
+                            'separatorBuilder cannot return null.');
+                      return true;
+                    }());
+                  }
+                  return widget;
+                },
+                itemCount: itemCount,
+                addAutomaticKeepALives: addAutomaticKeepALives,
+                addRepaintBoundaries: addRepaintBoundaries,
+                addSemanticIndexes: addSemanticIndexes,
+                semanticIndexCallback: (Widget _, int index) =>
+                    index.isEven ? index ~/ 2 : null),
+        gridDelegates = null,
+        itemExtents = <double?>[itemExtent],
+        super(
+            key: key,
+            controller: controller,
+            scrollDirection: scrollDirection ?? Axis.vertical,
+            shrinkWrap: _shrinkWrap(shrinkWrap, physics),
+            reverse: reverse ?? false,
+            clipBehavior: clipBehavior ?? Clip.hardEdge,
+            dragStartBehavior: dragStartBehavior ?? DragStartBehavior.start,
+            cacheExtent: cacheExtent,
+            restorationId: restorationId,
+            physics: physics,
+            primary: primary);
+
+  ScrollList.count(
+      {Key? key,
+      Clip? clipBehavior,
+      bool? reverse,
+      double? cacheExtent,
+      bool? primary,
+      ScrollPhysics? physics,
+      Axis? scrollDirection,
+      DragStartBehavior? dragStartBehavior,
+      ScrollController? controller,
+      String? restorationId,
+      bool? shrinkWrap = false,
+      bool? noScrollBehavior = false,
+      double? itemExtent,
+      required List<Widget> children,
+      bool addAutomaticKeepALives = true,
+      bool addRepaintBoundaries = true,
+      bool addSemanticIndexes = true,
+
+      /// 多列最大列数 [crossAxisCount]>1 固定列
+      int? crossAxisCount = 1,
+
+      /// 水平子Widget之间间距
+      double? mainAxisSpacing = 0,
+
+      /// 垂直子Widget之间间距
+      double? crossAxisSpacing = 0,
+
+      /// 子 Widget 宽高比例 [crossAxisCount]>1是 有效
+      double? childAspectRatio = 1,
+
+      /// 是否开启列数自适应
+      /// [crossAxisFlex]=true 为多列 且宽度自适应
+      /// [maxCrossAxisExtent]设置最大宽度
+      bool? crossAxisFlex = false,
+
+      ///  单个子Widget的水平最大宽度
+      double? maxCrossAxisExtent,
+      double? mainAxisExtent,
+      this.padding,
+      this.placeholder,
+      this.easyRefreshConfig})
+      : noScrollBehavior = noScrollBehavior ?? false,
+        delegates = children.isEmpty
+            ? null
+            : _getSliverListDelegates(
+                children: children,
+                addAutomaticKeepALives: addAutomaticKeepALives,
+                addRepaintBoundaries: addRepaintBoundaries,
+                addSemanticIndexes: addSemanticIndexes),
+        gridDelegates = _getGridDelegates(
+            crossAxisCount: crossAxisCount,
+            mainAxisSpacing: mainAxisSpacing,
+            crossAxisSpacing: crossAxisSpacing,
+            childAspectRatio: childAspectRatio,
+            crossAxisFlex: crossAxisFlex,
+            mainAxisExtent: mainAxisExtent,
+            maxCrossAxisExtent: maxCrossAxisExtent),
+        itemExtents = <double?>[itemExtent],
+        super(
+            key: key,
+            controller: controller,
+            scrollDirection: scrollDirection ?? Axis.vertical,
+            shrinkWrap: _shrinkWrap(shrinkWrap, physics),
+            reverse: reverse ?? false,
+            clipBehavior: clipBehavior ?? Clip.hardEdge,
+            dragStartBehavior: dragStartBehavior ?? DragStartBehavior.start,
+            cacheExtent: cacheExtent,
+            restorationId: restorationId,
+            physics: physics,
+            primary: primary);
+
+  static bool _shrinkWrap(bool? shrinkWrap, ScrollPhysics? physics) {
+    if (physics == const NeverScrollableScrollPhysics()) return true;
+    return shrinkWrap ?? false;
+  }
+
+  static List<SliverChildDelegate> _getSliverListDelegates(
+          {required List<Widget> children,
+          bool? addAutomaticKeepALives,
+          bool? addRepaintBoundaries,
+          bool? addSemanticIndexes}) =>
+      <SliverChildDelegate>[
+        SliverChildListDelegate(children,
+            addAutomaticKeepAlives: addAutomaticKeepALives ?? true,
+            addRepaintBoundaries: addRepaintBoundaries ?? true,
+            addSemanticIndexes: addSemanticIndexes ?? true)
+      ];
+
+  static List<SliverChildDelegate> _getSliverBuilderDelegates(
+          {required IndexedWidgetBuilder itemBuilder,
+          required int itemCount,
+          ChildIndexGetter? findChildIndexCallback,
+          bool? addAutomaticKeepALives,
+          bool? addRepaintBoundaries,
+          bool? addSemanticIndexes,
+          SemanticIndexCallback? semanticIndexCallback}) =>
+      <SliverChildDelegate>[
+        SliverChildBuilderDelegate(itemBuilder,
+            childCount: itemCount,
+            findChildIndexCallback: findChildIndexCallback,
+            addAutomaticKeepAlives: addAutomaticKeepALives ?? true,
+            addRepaintBoundaries: addRepaintBoundaries ?? true,
+            addSemanticIndexes: addSemanticIndexes ?? true,
+            semanticIndexCallback: semanticIndexCallback ??
+                (Widget _, int localIndex) => localIndex)
+      ];
+
+  static List<SliverGridDelegate?>? _getGridDelegates(
+          {int? crossAxisCount,
+          bool? crossAxisFlex,
+          double? mainAxisSpacing,
+          double? crossAxisSpacing,
+          double? childAspectRatio,
+          double? maxCrossAxisExtent,
+          double? mainAxisExtent}) =>
+      !((crossAxisFlex ?? false) || (crossAxisCount ?? 1) > 1)
+          ? null
+          : <SliverGridDelegate?>[
+              _getGridDelegate(
+                  crossAxisCount: crossAxisCount ?? 1,
+                  mainAxisSpacing: mainAxisSpacing ?? 0,
+                  crossAxisSpacing: crossAxisSpacing ?? 0,
+                  childAspectRatio: childAspectRatio ?? 1,
+                  crossAxisFlex: crossAxisFlex ?? false,
+                  mainAxisExtent: mainAxisExtent,
+                  maxCrossAxisExtent: maxCrossAxisExtent ?? 100)
+            ];
+
+  static SliverGridDelegate _getGridDelegate(
+          {required int crossAxisCount,
+          required bool crossAxisFlex,
+          required double mainAxisSpacing,
+          required double crossAxisSpacing,
+          required double childAspectRatio,
+          required double maxCrossAxisExtent,
+          double? mainAxisExtent}) =>
+      crossAxisFlex
+          ? SliverGridDelegateWithMaxCrossAxisExtent(
+              mainAxisExtent: mainAxisExtent,
+              mainAxisSpacing: mainAxisSpacing,
+              crossAxisSpacing: crossAxisSpacing,
+              childAspectRatio: childAspectRatio,
+              maxCrossAxisExtent: maxCrossAxisExtent)
+          : SliverGridDelegateWithFixedCrossAxisCount(
+              mainAxisSpacing: mainAxisSpacing,
+              crossAxisSpacing: crossAxisSpacing,
+              childAspectRatio: childAspectRatio,
+              crossAxisCount: crossAxisCount,
+              mainAxisExtent: mainAxisExtent);
+
+  final EasyRefreshConfig? easyRefreshConfig;
+  final bool noScrollBehavior;
+  final EdgeInsetsGeometry? padding;
+  final Widget? placeholder;
+
+  /// 添加多列滚动 [gridDelegates]、[gridDelegate]
+  /// [SliverGridDelegateWithMaxCrossAxisExtent]
+  /// [SliverGridDelegateWithFixedCrossAxisCount]
+  final List<SliverGridDelegate?>? gridDelegates;
+
+  /// 确定每一个item的高度 会让item加载更加高效 [itemExtents]
+  final List<double?>? itemExtents;
+
+  /// [delegates]、[delegate]
+  /// 创建无限滚动组件而不消耗过多性能
+  /// [SliverChildBuilderDelegate]
+  /// 创建少量数量的滚动组件
+  /// [SliverChildListDelegate]
+  final List<SliverChildDelegate>? delegates;
+
+  @override
+  Widget build(BuildContext context) {
+    Widget widget = super.build(context);
+    if (easyRefreshConfig != null)
+      widget = EasyRefreshed(
+          slivers: buildSlivers(context),
+          scrollDirection: scrollDirection,
+          reverse: reverse,
+          scrollController: controller,
+          controller: easyRefreshConfig!.controller,
+          onLoading: easyRefreshConfig!.onLoading,
+          onRefresh: easyRefreshConfig!.onRefresh,
+          header: easyRefreshConfig!.header,
+          footer: easyRefreshConfig!.footer,
+          primary: primary,
+          shrinkWrap: shrinkWrap,
+          cacheExtent: cacheExtent,
+          dragStartBehavior: dragStartBehavior);
+    if (padding != null) widget = Padding(padding: padding!, child: widget);
+
+    if (noScrollBehavior)
+      widget = ScrollConfiguration(behavior: NoScrollBehavior(), child: widget);
+    return widget;
+  }
+
+  @override
+  List<Widget> buildSlivers(BuildContext context) {
+    List<Widget> slivers = [];
+    if (delegates == null) {
+      Widget _placeholder = placeholder ?? const PlaceholderChild();
+      if (padding != null)
+        _placeholder = Padding(padding: padding!, child: _placeholder);
+      slivers = <Widget>[SliverToBoxAdapter(child: _placeholder)];
+    } else {
+      if (gridDelegates != null && gridDelegates!.isNotEmpty) {
+        if (gridDelegates!.length < delegates!.length)
+          gridDelegates!.addAll((delegates!.length - gridDelegates!.length)
+              .generate((int index) => null));
+      }
+      if (itemExtents != null && itemExtents!.isNotEmpty) {
+        if (itemExtents!.length < delegates!.length)
+          itemExtents!.addAll((delegates!.length - itemExtents!.length)
+              .generate((int index) => null));
+      }
+      slivers =
+          delegates!.builderEntry((MapEntry<int, SliverChildDelegate> entry) {
+        final int i = entry.key;
+        final SliverChildDelegate delegate = entry.value;
+        if (gridDelegates != null && gridDelegates![i] != null) {
+          return SliverGrid(
+              delegate: delegate, gridDelegate: gridDelegates![i]!);
+        } else {
+          return (itemExtents != null && itemExtents![i] != null)
+              ? SliverFixedExtentList(
+                  delegate: delegate, itemExtent: itemExtents![i]!)
+              : SliverList(delegate: delegate);
+        }
+      });
+    }
+    return slivers;
+  }
 }

@@ -9,10 +9,10 @@ class PopupPage extends StatelessWidget {
           backgroundColor: Colors.white,
           appBar: AppBar(title: const Text('Popup Demo'), centerTitle: true),
           children: <Widget>[
-            customElasticButton('showBottomPopup', onTap: () => showBottom()),
-            customElasticButton('showDialogSureCancel',
+            CustomElastic('showBottomPopup', onTap: () => showBottom()),
+            CustomElastic('showDialogSureCancel',
                 onTap: () => push(_ContentPage())),
-            customElasticButton('showBottomPagePopup',
+            CustomElastic('showBottomPagePopup',
                 onTap: () => showBottomPage()),
           ]);
 
@@ -62,7 +62,7 @@ class _ContentPage extends StatelessWidget {
   Widget build(BuildContext context) => OverlayScaffold(
           appBar: AppBar(title: const Text('Content'), centerTitle: true),
           children: <Widget>[
-            customElasticButton('showDialogSureCancel',
+            CustomElastic('showDialogSureCancel',
                 onTap: () => showDialogSureCancel()),
           ]);
 

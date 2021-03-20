@@ -465,7 +465,7 @@ class Universal extends StatelessWidget {
   final StackFit stackFit;
 
   ///  ****** [Refreshed] ******  ///
-  final RefreshConfig? refreshConfig;
+  final EasyRefreshConfig? refreshConfig;
 
   EdgeInsetsGeometry? get _paddingIncludingDecoration {
     if (decoration == null || decoration!.padding == null) return padding;
@@ -482,7 +482,7 @@ class Universal extends StatelessWidget {
       current = isStack ? stackWidget(children!) : flexWidget(children!);
     }
     if (builder != null) current = statefulBuilder;
-    if (isScroll)
+    if (isScroll && refreshConfig == null)
       current = noScrollBehavior
           ? ScrollConfiguration(
               behavior: NoScrollBehavior(),
@@ -497,7 +497,7 @@ class Universal extends StatelessWidget {
           widthFactor: widthFactor,
           heightFactor: heightFactor,
           child: current);
-
+    if (refreshConfig != null) current = refreshedWidget(current);
     if (color != null && decoration == null && !addInkWell && !addCard)
       current = ColoredBox(color: color!, child: current);
 
@@ -537,7 +537,7 @@ class Universal extends StatelessWidget {
     if (isCircleAvatar) current = circleAvatarWidget(current);
     if (clipper != null || isOval || isClipRRect)
       current = clipWidget(current, clipper: clipper);
-    if (refreshConfig != null) current = refreshedWidget(current);
+
     if (constraints != null)
       current = ConstrainedBox(constraints: constraints!, child: current);
 
@@ -683,23 +683,20 @@ class Universal extends StatelessWidget {
           onFocusChange: onFocusChange,
           autofocus: autoFocus));
 
-  Widget singleChildScrollViewWidget(Widget current) {
-    return SingleChildScrollView(
-        physics: physics,
-        reverse: reverse,
-        primary: primary,
-        dragStartBehavior: dragStartBehavior,
-        controller: scrollController,
-        scrollDirection: direction,
-        clipBehavior: clipBehavior ?? Clip.hardEdge,
-        child: current);
-  }
+  Widget singleChildScrollViewWidget(Widget current) => SingleChildScrollView(
+      physics: physics,
+      reverse: reverse,
+      primary: primary,
+      dragStartBehavior: dragStartBehavior,
+      controller: scrollController,
+      scrollDirection: direction,
+      clipBehavior: clipBehavior ?? Clip.hardEdge,
+      child: current);
 
-  Widget refreshedWidget(Widget current) => PullRefreshed(
+  Widget refreshedWidget(Widget current) => EasyRefreshed(
       controller: refreshConfig?.controller,
       scrollController: scrollController,
-      child: current,
-      physics: physics,
+      slivers: <Widget>[SliverToBoxAdapter(child: current)],
       reverse: reverse,
       primary: primary,
       scrollDirection: direction,

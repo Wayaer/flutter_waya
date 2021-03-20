@@ -131,12 +131,11 @@ enum InputTextType {
 ///  刷新类型
 enum RefreshCompletedType {
   refresh,
+  refreshSuccess,
   refreshFailed,
-  refreshToIdle,
   loading,
+  loadingSuccess,
   loadFailed,
-  loadNoData,
-  twoLevel
 }
 
 enum StretchyHeaderAlignment { bottom, center, top }

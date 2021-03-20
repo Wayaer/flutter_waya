@@ -4,12 +4,11 @@ import 'package:flutter_waya/flutter_waya.dart';
 import 'package:waya/module/button_page.dart';
 import 'package:waya/module/carousel_page.dart';
 import 'package:waya/module/json_parse_page.dart';
-import 'package:waya/module/list_page.dart';
 import 'package:waya/module/pages.dart';
 import 'package:waya/module/picker_page.dart';
 import 'package:waya/module/popup_page.dart';
 import 'package:waya/module/progress_page.dart';
-import 'package:waya/module/scroll_view_page.dart';
+import 'package:waya/module/scroll_page.dart';
 import 'package:waya/module/universal_page.dart';
 
 void main() {
@@ -25,26 +24,22 @@ class Home extends StatelessWidget {
         appBar: AppBar(title: const Text('Waya Demo'), centerTitle: true),
         padding: const EdgeInsets.symmetric(horizontal: 10),
         body: Wrap(runSpacing: 10, spacing: 10, children: <Widget>[
-          customElasticButton('Toast', onTap: () => push(ToastPage())),
-          customElasticButton('Button', onTap: () => push(ButtonPage())),
-          customElasticButton('ToggleRotate',
-              onTap: () => push(ToggleRotatePage())),
-          customElasticButton('Counter', onTap: () => push(CounterPage())),
-          customElasticButton('Picker', onTap: () => push(PickerPage())),
-          customElasticButton('Popup', onTap: () => push(PopupPage())),
-          customElasticButton('PinBox', onTap: () => push(PinBoxPage())),
-          customElasticButton('Image', onTap: () => push(ImagePage())),
-          customElasticButton('Carousel', onTap: () => push(CarouselPage())),
-          customElasticButton('SimpleList', onTap: () => push(ListPage())),
-          customElasticButton('Progress', onTap: () => push(ProgressPage())),
-          customElasticButton('Universal', onTap: () => push(UniversalPage())),
-          customElasticButton('JsonParse', onTap: () => push(JsonParsePage())),
-          customElasticButton('ExpansionTiles',
+          CustomElastic('Toast', onTap: () => push(ToastPage())),
+          CustomElastic('Button', onTap: () => push(ButtonPage())),
+          CustomElastic('ToggleRotate', onTap: () => push(ToggleRotatePage())),
+          CustomElastic('Counter', onTap: () => push(CounterPage())),
+          CustomElastic('Picker', onTap: () => push(PickerPage())),
+          CustomElastic('Popup', onTap: () => push(PopupPage())),
+          CustomElastic('PinBox', onTap: () => push(PinBoxPage())),
+          CustomElastic('Image', onTap: () => push(ImagePage())),
+          CustomElastic('Carousel', onTap: () => push(CarouselPage())),
+          CustomElastic('Progress', onTap: () => push(ProgressPage())),
+          CustomElastic('Universal', onTap: () => push(UniversalPage())),
+          CustomElastic('JsonParse', onTap: () => push(JsonParsePage())),
+          CustomElastic('ExpansionTiles',
               onTap: () => push(ExpansionTilesPage())),
-          customElasticButton('ScrollView',
-              onTap: () => push(ScrollViewPage())),
-          customElasticButton('DropdownMenu',
-              onTap: () => push(DropdownMenuPage())),
+          CustomElastic('ScrollView', onTap: () => push(ScrollViewPage())),
+          CustomElastic('JsonParse', onTap: () => push(JsonParsePage())),
           ElevatedButton(onPressed: () {}, child: const Text('ElevatedButton')),
         ]),
       );
@@ -52,16 +47,23 @@ class Home extends StatelessWidget {
   void showOverlayLoading() => showLoading(gaussian: true);
 }
 
-Widget customElasticButton(String text, {GestureTapCallback onTap}) =>
-    Universal(
-      addInkWell: true,
-      margin: const EdgeInsets.symmetric(vertical: 6),
-      child: ElasticButton(
-          withOpacity: true,
-          onTap: onTap,
-          child: Container(
-            color: Colors.blue,
-            padding: const EdgeInsets.all(10),
-            child: Text(text, style: const TextStyle(color: Colors.white)),
-          ).clipRRect(borderRadius: BorderRadius.circular(6))),
-    );
+class CustomElastic extends StatelessWidget {
+  const CustomElastic(this.text, {Key key, this.onTap}) : super(key: key);
+
+  final String text;
+  final GestureTapCallback onTap;
+
+  @override
+  Widget build(BuildContext context) => Universal(
+        addInkWell: true,
+        margin: const EdgeInsets.symmetric(vertical: 6),
+        child: ElasticButton(
+            withOpacity: true,
+            onTap: onTap,
+            child: Container(
+              color: Colors.blue,
+              padding: const EdgeInsets.all(10),
+              child: Text(text, style: const TextStyle(color: Colors.white)),
+            ).clipRRect(borderRadius: BorderRadius.circular(6))),
+      );
+}

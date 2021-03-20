@@ -221,7 +221,7 @@ class _HttpDataPageState extends State<_HttpDataPage> {
             color: Colors.white,
             borderRadius: BorderRadius.circular(10),
             border: Border.all(color: Colors.grey.withOpacity(0.5))),
-        child: SimpleList.builder(
+        child: ScrollList.builder(
             itemCount: httpDataList.length,
             padding: const EdgeInsets.all(10),
             itemBuilder: (_, int index) {

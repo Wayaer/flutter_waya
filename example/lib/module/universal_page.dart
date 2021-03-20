@@ -8,6 +8,10 @@ class UniversalPage extends StatelessWidget {
           appBar: AppBar(title: const Text('PinBox Demo'), centerTitle: true),
           mainAxisAlignment: MainAxisAlignment.center,
           isScroll: true,
+          refreshConfig: EasyRefreshConfig(onRefresh: () async {
+            await showToast('onRefresh');
+            sendRefreshType(RefreshCompletedType.refreshSuccess);
+          }),
           children: <Widget>[
             const Universal(width: 50, height: 50, color: Colors.blue),
             const SizedBox(height: 10),
@@ -64,11 +68,14 @@ class UniversalPage extends StatelessWidget {
                 addCard: true,
                 onDoubleTap: () => showToast('Card onDoubleTap')),
             const SizedBox(height: 10),
-            const Universal(
-                decoration: BoxDecoration(color: Colors.red),
+            Universal(
+                decoration: const BoxDecoration(color: Colors.red),
                 clipBehavior: Clip.antiAlias,
                 color: Colors.blue,
                 opacity: 0.2,
+                onTap: () {
+                  sendRefreshType(RefreshCompletedType.refresh);
+                },
                 size: Size(200, 50)),
             const SizedBox(height: 10),
             const SizedBox(height: 10),

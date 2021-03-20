@@ -10,10 +10,10 @@ class ButtonPage extends StatelessWidget {
           appBar: AppBar(title: const Text('Button Demo'), centerTitle: true),
           children: <Widget>[
             const SizedBox(height: 20),
-            customElasticButton('ElasticButton',
+            CustomElastic('ElasticButton',
                 onTap: () => showToast('ElasticButton')),
             const SizedBox(height: 20),
-            customElasticButton('BubbleButton',
+            CustomElastic('BubbleButton',
                 onTap: () => push(_BubbleButtonPage())),
             const SizedBox(height: 40),
             const ClothButton.rectangle(

@@ -67,7 +67,7 @@ class ToastPage extends StatelessWidget {
         appBar: AppBar(title: const Text('Toast Demo'), centerTitle: true),
         mainAxisAlignment: MainAxisAlignment.center,
         children: toastList.builder(
-            (ToastType e) => customElasticButton(e.toString(), onTap: () async {
+            (ToastType e) => CustomElastic(e.toString(), onTap: () async {
                   await showToast(e.toString(), toastType: e);
                   log('开始弹第二个');
                   showToast('添加await第一个Toast完了之后弹出第二个Toast');

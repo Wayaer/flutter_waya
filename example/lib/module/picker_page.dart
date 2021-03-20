@@ -8,10 +8,10 @@ class PickerPage extends StatelessWidget {
           backgroundColor: Colors.white,
           appBar: AppBar(title: const Text('Picker Demo'), centerTitle: true),
           children: <Widget>[
-            customElasticButton('showAreaPicker', onTap: () => selectCity()),
-            customElasticButton('showChoicePicker',
+            CustomElastic('showAreaPicker', onTap: () => selectCity()),
+            CustomElastic('showChoicePicker',
                 onTap: () => showChoicePicker()),
-            customElasticButton('showDateTimePicker',
+            CustomElastic('showDateTimePicker',
                 onTap: () => selectTime()),
           ]);
 
