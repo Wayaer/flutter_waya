@@ -70,7 +70,7 @@ class _SpinKitCircleState extends State<SpinKitCircle>
                     child: Align(
                         alignment: Alignment.center,
                         child: ScaleTransition(
-                          scale: DelayTween(
+                          scale: _DelayTween(
                                   begin: 0.0, end: 1.0, delay: delays[index])
                               .animate(_controller),
                           child: SizedBox.fromSize(
@@ -158,9 +158,9 @@ class _SpinKitFadingCircleState extends State<SpinKitFadingCircle>
                     child: Align(
                         alignment: Alignment.center,
                         child: FadeTransition(
-                          opacity:
-                              DelayTween(begin: 0.0, end: 1.0, delay: delays[i])
-                                  .animate(_controller),
+                          opacity: _DelayTween(
+                                  begin: 0.0, end: 1.0, delay: delays[i])
+                              .animate(_controller),
                           child: SizedBox.fromSize(
                               size: Size.square(widget.size * 0.15),
                               child: _itemBuilder(i)),

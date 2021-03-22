@@ -60,7 +60,7 @@ class _SpinKitFadingFourState extends State<SpinKitFadingFour>
                     child: Align(
                         alignment: Alignment.center,
                         child: FadeTransition(
-                            opacity: DelayTween(
+                            opacity: _DelayTween(
                                     begin: 0.0, end: 1.0, delay: delays[i])
                                 .animate(_controller),
                             child: SizedBox.fromSize(

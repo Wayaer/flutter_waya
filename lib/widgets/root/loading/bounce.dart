@@ -112,7 +112,7 @@ class _SpinKitThreeBounceState extends State<SpinKitThreeBounce>
         child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: 3.generate((int i) => ScaleTransition(
-                  scale: DelayTween(begin: 0.0, end: 1.0, delay: i * .2)
+                  scale: _DelayTween(begin: 0.0, end: 1.0, delay: i * .2)
                       .animate(_controller),
                   child: SizedBox.fromSize(
                       size: Size.square(widget.size * 0.5),

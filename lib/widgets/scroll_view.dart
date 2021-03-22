@@ -967,7 +967,7 @@ class ScrollList extends ScrollView {
 
   @override
   List<Widget> buildSlivers(BuildContext context) {
-    List<Widget> slivers = [];
+    List<Widget> slivers = <Widget>[];
     if (delegates == null) {
       Widget _placeholder = placeholder ?? const PlaceholderChild();
       if (padding != null)

@@ -1,3 +1,5 @@
+## [1.8.0]
+  * Replace refresh component
 ## [1.7.5]
   * add ExpansionTiles example and fix bug
 ## [1.7.2]
