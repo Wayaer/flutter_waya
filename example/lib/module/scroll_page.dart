@@ -92,7 +92,7 @@ class _ScrollListSeparatedPage extends StatelessWidget {
             title: const Text('ScrollList.separated Demo'), centerTitle: true),
         body: ScrollList.separated(
           padding: const EdgeInsets.all(10),
-          easyRefreshConfig: EasyRefreshConfig(
+          refreshConfig: RefreshConfig(
             onRefresh: () async {
               await showToast('onRefresh');
               await 2.seconds.delayed(() {
@@ -131,7 +131,7 @@ class _ScrollListPlaceholderPage extends StatelessWidget {
             title: const Text('ScrollList.builder Demo'), centerTitle: true),
         body: ScrollList.builder(
             padding: const EdgeInsets.all(10),
-            easyRefreshConfig: EasyRefreshConfig(onRefresh: () async {
+            refreshConfig: RefreshConfig(onRefresh: () async {
               await showToast('onRefresh');
               await 2.seconds.delayed(() {
                 sendRefreshType(RefreshCompletedType.refreshSuccess);
@@ -171,7 +171,7 @@ class _ScrollListBuilderGridPage extends StatelessWidget {
             centerTitle: true),
         body: ScrollList.builder(
             padding: const EdgeInsets.all(10),
-            easyRefreshConfig: EasyRefreshConfig(
+            refreshConfig: RefreshConfig(
               onRefresh: () async {
                 await showToast('onRefresh');
                 await 2.seconds.delayed(() {
@@ -209,7 +209,7 @@ class _ScrollListBuilderPage extends StatelessWidget {
             title: const Text('ScrollList.builder Demo'), centerTitle: true),
         body: ScrollList.builder(
             padding: const EdgeInsets.all(10),
-            easyRefreshConfig: EasyRefreshConfig(
+            refreshConfig: RefreshConfig(
               onRefresh: () async {
                 await showToast('onRefresh');
                 await 2.seconds.delayed(() {
@@ -243,7 +243,7 @@ class _ScrollListPage extends StatelessWidget {
         appBar: AppBar(title: const Text('ScrollList Demo'), centerTitle: true),
         body: ScrollList(
             padding: const EdgeInsets.all(10),
-            easyRefreshConfig: EasyRefreshConfig(
+            refreshConfig: RefreshConfig(
               onRefresh: () async {
                 await showToast('onRefresh');
                 await 2.seconds.delayed(() {
@@ -301,7 +301,7 @@ class _ScrollListCustomPage extends StatelessWidget {
           title: const Text('ScrollList.custom Demo'), centerTitle: true),
       body: ScrollList.custom(
           padding: const EdgeInsets.all(10),
-          easyRefreshConfig: EasyRefreshConfig(onRefresh: () async {
+          refreshConfig: RefreshConfig(onRefresh: () async {
             await showToast('onRefresh');
             await 2.seconds.delayed(() {
               sendRefreshType(RefreshCompletedType.refreshSuccess);
@@ -330,7 +330,7 @@ class _ScrollViewAutoNestedPage extends StatelessWidget {
       body: ScrollViewAuto.nested(
           slivers: slivers,
           body: Universal(
-              refreshConfig: EasyRefreshConfig(onRefresh: () async {
+              refreshConfig: RefreshConfig(onRefresh: () async {
                 await showToast('onRefresh');
                 sendRefreshType(RefreshCompletedType.refreshSuccess);
               }),

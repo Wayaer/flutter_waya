@@ -577,7 +577,7 @@ class ScrollList extends ScrollView {
     this.itemExtents,
     required this.delegates,
     this.padding,
-    this.easyRefreshConfig,
+    this.refreshConfig,
   })  : noScrollBehavior = noScrollBehavior ?? false,
         placeholder = null,
         super(
@@ -610,7 +610,7 @@ class ScrollList extends ScrollView {
       double? itemExtent,
       required SliverChildDelegate delegate,
       this.padding,
-      this.easyRefreshConfig})
+      this.refreshConfig})
       : noScrollBehavior = noScrollBehavior ?? false,
         delegates = <SliverChildDelegate>[delegate],
         gridDelegates = <SliverGridDelegate?>[gridDelegate],
@@ -672,7 +672,7 @@ class ScrollList extends ScrollView {
       double? mainAxisExtent,
       this.padding,
       this.placeholder,
-      this.easyRefreshConfig})
+      this.refreshConfig})
       : noScrollBehavior = noScrollBehavior ?? false,
         delegates = itemCount < 1
             ? null
@@ -727,7 +727,7 @@ class ScrollList extends ScrollView {
       bool addSemanticIndexes = true,
       this.padding,
       this.placeholder,
-      this.easyRefreshConfig})
+      this.refreshConfig})
       : noScrollBehavior = noScrollBehavior ?? false,
         delegates = itemCount < 1
             ? null
@@ -810,7 +810,7 @@ class ScrollList extends ScrollView {
       double? mainAxisExtent,
       this.padding,
       this.placeholder,
-      this.easyRefreshConfig})
+      this.refreshConfig})
       : noScrollBehavior = noScrollBehavior ?? false,
         delegates = children.isEmpty
             ? null
@@ -920,7 +920,7 @@ class ScrollList extends ScrollView {
               crossAxisCount: crossAxisCount,
               mainAxisExtent: mainAxisExtent);
 
-  final EasyRefreshConfig? easyRefreshConfig;
+  final RefreshConfig? refreshConfig;
   final bool noScrollBehavior;
   final EdgeInsetsGeometry? padding;
   final Widget? placeholder;
@@ -943,17 +943,17 @@ class ScrollList extends ScrollView {
   @override
   Widget build(BuildContext context) {
     Widget widget = super.build(context);
-    if (easyRefreshConfig != null)
+    if (refreshConfig != null)
       widget = EasyRefreshed(
           slivers: buildSlivers(context),
           scrollDirection: scrollDirection,
           reverse: reverse,
           scrollController: controller,
-          controller: easyRefreshConfig!.controller,
-          onLoading: easyRefreshConfig!.onLoading,
-          onRefresh: easyRefreshConfig!.onRefresh,
-          header: easyRefreshConfig!.header,
-          footer: easyRefreshConfig!.footer,
+          controller: refreshConfig!.controller,
+          onLoading: refreshConfig!.onLoading,
+          onRefresh: refreshConfig!.onRefresh,
+          header: refreshConfig!.header,
+          footer: refreshConfig!.footer,
           primary: primary,
           shrinkWrap: shrinkWrap,
           cacheExtent: cacheExtent,

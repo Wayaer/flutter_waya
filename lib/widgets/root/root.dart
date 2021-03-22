@@ -355,7 +355,7 @@ class OverlayScaffold extends StatefulWidget {
   final WillPopCallback? onWillPop;
 
   ///  ****** 刷新组件相关 ******  ///
-  final EasyRefreshConfig? refreshConfig;
+  final RefreshConfig? refreshConfig;
 
   ///  Scaffold相关属性
   final Widget? bottomNavigationBar;

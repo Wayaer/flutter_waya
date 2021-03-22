@@ -8,7 +8,7 @@ class UniversalPage extends StatelessWidget {
           appBar: AppBar(title: const Text('PinBox Demo'), centerTitle: true),
           mainAxisAlignment: MainAxisAlignment.center,
           isScroll: true,
-          refreshConfig: EasyRefreshConfig(onRefresh: () async {
+          refreshConfig: RefreshConfig(onRefresh: () async {
             await showToast('onRefresh');
             sendRefreshType(RefreshCompletedType.refreshSuccess);
           }),
@@ -76,7 +76,7 @@ class UniversalPage extends StatelessWidget {
                 onTap: () {
                   sendRefreshType(RefreshCompletedType.refresh);
                 },
-                size: Size(200, 50)),
+                size: const Size(200, 50)),
             const SizedBox(height: 10),
             const SizedBox(height: 10),
           ]);

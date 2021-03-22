@@ -465,7 +465,7 @@ class Universal extends StatelessWidget {
   final StackFit stackFit;
 
   ///  ****** [Refreshed] ******  ///
-  final EasyRefreshConfig? refreshConfig;
+  final RefreshConfig? refreshConfig;
 
   EdgeInsetsGeometry? get _paddingIncludingDecoration {
     if (decoration == null || decoration!.padding == null) return padding;

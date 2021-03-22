@@ -8,8 +8,8 @@ import 'package:flutter_waya/flutter_waya.dart';
 void sendRefreshType([RefreshCompletedType? refresh]) =>
     eventBus.emit(refreshEvent, refresh ?? RefreshCompletedType.refreshSuccess);
 
-class EasyRefreshConfig {
-  EasyRefreshConfig({
+class RefreshConfig {
+  RefreshConfig({
     Header? header,
     this.controller,
     this.onRefresh,
