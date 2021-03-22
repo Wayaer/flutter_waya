@@ -27,7 +27,6 @@ export 'widgets/carousel/pagination.dart';
 export 'widgets/icon.dart';
 export 'widgets/image.dart';
 export 'widgets/input_field.dart';
-export 'widgets/list_view.dart';
 export 'widgets/list_wheel.dart';
 export 'widgets/progress/liquid_progress.dart';
 export 'widgets/progress/progress.dart';
