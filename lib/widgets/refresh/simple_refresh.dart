@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_waya/flutter_waya.dart';
@@ -36,12 +38,53 @@ class _RefreshState extends State<SimpleRefresh> {
 
   GlobalKey keyHeight = GlobalKey();
   double scrollHeight = 0;
+  int i = 0;
+  Timer? timer;
+
+  void addEvent() {
+    eventBus.add(refreshEvent, (dynamic data) {
+      if (data == null) return;
+      if (data != null && data is RefreshCompletedType) {
+        timer = 1.seconds.timerPeriodic((Timer t) {
+          i += 1;
+          if (i >= 3) {
+            i = 0;
+            if (timer != null) {
+              timer!.cancel();
+              timer = null;
+            }
+          }
+        });
+        switch (data) {
+          case RefreshCompletedType.refresh:
+            controller.refreshIng;
+            break;
+          case RefreshCompletedType.refreshSuccess:
+            controller.refreshCompleted;
+            break;
+          case RefreshCompletedType.refreshFailed:
+            controller.refreshFailed;
+            break;
+          case RefreshCompletedType.loading:
+            controller.loading;
+            break;
+          case RefreshCompletedType.loadingSuccess:
+            controller.loadNoMore;
+            break;
+          case RefreshCompletedType.loadFailed:
+            controller.loadFailed;
+            break;
+        }
+      }
+    });
+  }
 
   @override
   void initState() {
     super.initState();
     addPostFrameCallback((Duration callback) {
       jumpToOffset(100);
+      addEvent();
     });
 
     schedulerBinding!.addPostFrameCallback((Duration timestamp) {
@@ -56,18 +99,12 @@ class _RefreshState extends State<SimpleRefresh> {
           if (widget.onRefresh != null) widget.onRefresh!.call();
         }
       }
-      if (footer.value != controller.loadStatus) {
+      if (footer.value == LoadStatus.canLoading) {
         if (controller.loadStatus == LoadStatus.loading) {
           if (widget.onLoading != null) widget.onLoading!.call();
         }
       }
     });
-  }
-
-  void animateToOffset(double offset) {
-    controller.animateTo(offset,
-        duration: const Duration(milliseconds: 500), curve: Curves.linear);
-    scroll = false;
   }
 
   void jumpToOffset(double offset) {
@@ -141,6 +178,7 @@ class _RefreshState extends State<SimpleRefresh> {
         if (widget.header != null) {
           child = widget.header!(status);
         } else {
+          log(status);
           switch (status) {
             case RefreshStatus.canRefresh:
               child = const Text('可以刷新');
@@ -170,6 +208,7 @@ class _RefreshState extends State<SimpleRefresh> {
           child = widget.footer!(status);
           visible = status != LoadStatus.loading;
         } else {
+          log(status);
           switch (status) {
             case LoadStatus.canLoading:
               child = const Text('可以加载更多');
@@ -199,6 +238,10 @@ class _RefreshState extends State<SimpleRefresh> {
     header.dispose();
     footer.dispose();
     controller.dispose();
+    if (timer != null) {
+      timer!.cancel();
+      timer = null;
+    }
   }
 }
 
@@ -208,24 +251,30 @@ class RefreshController extends ScrollController {
 
   /// 刷新中
   void get refreshIng {
+    if (refreshStatus == RefreshStatus.refreshing) return;
     refreshStatus = RefreshStatus.refreshing;
     notifyListeners();
   }
 
   /// 刷新完成
   void get refreshCompleted {
+    if (refreshStatus == RefreshStatus.completed) return;
     refreshStatus = RefreshStatus.completed;
+    jumpTo(100);
     notifyListeners();
   }
 
   /// 刷新失败
   void get refreshFailed {
+    if (refreshStatus == RefreshStatus.failed) return;
     refreshStatus = RefreshStatus.failed;
+    jumpTo(100);
     notifyListeners();
   }
 
   /// 重置刷新
   void get refreshReset {
+    if (refreshStatus == RefreshStatus.canRefresh) return;
     refreshStatus = RefreshStatus.canRefresh;
     jumpTo(100);
     notifyListeners();
@@ -233,24 +282,28 @@ class RefreshController extends ScrollController {
 
   /// 加载中
   void get loading {
+    if (loadStatus == LoadStatus.loading) return;
     loadStatus = LoadStatus.loading;
     notifyListeners();
   }
 
   /// 加载完成 没有更多
   void get loadNoMore {
+    if (loadStatus == LoadStatus.noMore) return;
     loadStatus = LoadStatus.noMore;
     notifyListeners();
   }
 
   /// 加载失败
   void get loadFailed {
+    if (loadStatus == LoadStatus.failed) return;
     loadStatus = LoadStatus.failed;
     notifyListeners();
   }
 
   /// 重置加载
   void get loadReset {
+    if (loadStatus == LoadStatus.canLoading) return;
     loadStatus = LoadStatus.canLoading;
     notifyListeners();
   }

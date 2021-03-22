@@ -15,11 +15,6 @@ class _RefreshPageState extends State<RefreshPage> {
   void initState() {
     super.initState();
     colors.addAll(Colors.accents);
-    colors.addAll(Colors.accents);
-    colors.addAll(Colors.accents);
-    colors.addAll(Colors.accents);
-    colors.addAll(Colors.accents);
-    colors.addAll(Colors.accents);
     // colors.addAll(Colors.accents.sublist(0, 6));
   }
 
@@ -31,9 +26,16 @@ class _RefreshPageState extends State<RefreshPage> {
             AppBar(title: const Text('RefreshPage Demo'), centerTitle: true),
         body: SimpleRefresh(
             onRefresh: () {
-
-
-
+              3.seconds.delayed(() {
+                sendRefreshType(RefreshCompletedType.refreshSuccess);
+                // showToast('刷新完成');
+              });
+            },
+            onLoading: () {
+              3.seconds.delayed(() {
+                sendRefreshType(RefreshCompletedType.loadingSuccess);
+                showToast('加载完成');
+              });
             },
             child: ScrollList.builder(
                 padding: const EdgeInsets.all(10),

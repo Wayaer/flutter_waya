@@ -118,7 +118,6 @@ class _EasyRefreshedState extends State<EasyRefreshed> {
                   }
                 });
                 if (i > 0) return;
-                log('刷新组件结束');
                 switch (data) {
                   case RefreshCompletedType.refresh:
                     controller.callRefresh();
