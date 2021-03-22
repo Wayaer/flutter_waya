@@ -364,4 +364,26 @@ extension DurationExtension on Duration {
   /// 需要手动释放timer
   Timer timerPeriodic(void callback(Timer timer)) =>
       Timer.periodic(this, (Timer time) => callback(time));
+
+  /// 防抖函数
+  /// 最后一次触发结束的一段时间之后，再去执行
+  void debounce(Function function) => timer(() => function.call());
+
+  /// 节流函数
+  void throttle(Function function,
+      {String? throttleId,
+      Duration duration = const Duration(seconds: 1),
+      Map<String, int>? startTime,
+      Function? continueClick}) {
+    throttleId ??= 'DeFaultThrottleId';
+    startTime ??= <String, int>{throttleId: 0};
+    final int currentTime = DateTime.now().millisecondsSinceEpoch;
+
+    if (currentTime - (startTime[throttleId] ?? 0) > duration.inMilliseconds) {
+      function.call();
+      startTime[throttleId] = DateTime.now().millisecondsSinceEpoch;
+    } else {
+      continueClick?.call();
+    }
+  }
 }

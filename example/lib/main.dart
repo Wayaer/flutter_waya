@@ -8,6 +8,7 @@ import 'package:waya/module/pages.dart';
 import 'package:waya/module/picker_page.dart';
 import 'package:waya/module/popup_page.dart';
 import 'package:waya/module/progress_page.dart';
+import 'package:waya/module/refresh_page.dart';
 import 'package:waya/module/scroll_page.dart';
 import 'package:waya/module/universal_page.dart';
 
@@ -40,7 +41,11 @@ class Home extends StatelessWidget {
               onTap: () => push(ExpansionTilesPage())),
           CustomElastic('ScrollView', onTap: () => push(ScrollViewPage())),
           CustomElastic('JsonParse', onTap: () => push(JsonParsePage())),
-          ElevatedButton(onPressed: () {}, child: const Text('ElevatedButton')),
+          ElevatedButton(
+              onPressed: () {
+                push(RefreshPage());
+              },
+              child: const Text('ElevatedButton')),
         ]),
       );
 

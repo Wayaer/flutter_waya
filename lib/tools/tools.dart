@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
@@ -50,6 +51,7 @@ String getFileSize(int size) {
 }
 
 WidgetsBinding? widgetsBinding = WidgetsBinding.instance;
+SchedulerBinding? schedulerBinding = SchedulerBinding.instance;
 
 void addPostFrameCallback(FrameCallback callback) =>
     widgetsBinding?.addPostFrameCallback(callback);
