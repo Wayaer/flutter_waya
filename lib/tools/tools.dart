@@ -53,8 +53,8 @@ String getFileSize(int size) {
 WidgetsBinding? widgetsBinding = WidgetsBinding.instance;
 SchedulerBinding? schedulerBinding = SchedulerBinding.instance;
 
-void addPostFrameCallback(FrameCallback callback) =>
-    widgetsBinding?.addPostFrameCallback(callback);
+void addPostFrameCallback(FrameCallback duration) =>
+    widgetsBinding?.addPostFrameCallback(duration);
 
 void addObserver(WidgetsBindingObserver observer) =>
     widgetsBinding?.addObserver(observer);
@@ -62,8 +62,8 @@ void addObserver(WidgetsBindingObserver observer) =>
 void removeObserver(WidgetsBindingObserver observer) =>
     widgetsBinding?.removeObserver(observer);
 
-void addPersistentFrameCallback(FrameCallback callback) =>
-    widgetsBinding?.addPersistentFrameCallback(callback);
+void addPersistentFrameCallback(FrameCallback duration) =>
+    widgetsBinding?.addPersistentFrameCallback(duration);
 
 void addTimingsCallback(TimingsCallback callback) =>
     widgetsBinding?.addTimingsCallback(callback);

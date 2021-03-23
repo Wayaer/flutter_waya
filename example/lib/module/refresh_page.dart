@@ -8,8 +8,8 @@ class RefreshPage extends StatefulWidget {
 }
 
 class _RefreshPageState extends State<RefreshPage> {
-  final List<Color> colors = <Color>[];
-  final ScrollController scrollController = ScrollController();
+  List<Color> colors = <Color>[];
+  final RefreshController controller = RefreshController();
 
   @override
   void initState() {
@@ -25,16 +25,17 @@ class _RefreshPageState extends State<RefreshPage> {
         appBar:
             AppBar(title: const Text('RefreshPage Demo'), centerTitle: true),
         body: SimpleRefresh(
+            controller: controller,
             onRefresh: () {
               3.seconds.delayed(() {
-                sendRefreshType(RefreshCompletedType.refreshSuccess);
-                // showToast('刷新完成');
+                sendSimpleRefreshType(RefreshType.refreshCompleted);
+                showToast('刷新完成');
               });
             },
             onLoading: () {
               3.seconds.delayed(() {
-                sendRefreshType(RefreshCompletedType.loadingSuccess);
-                showToast('加载完成');
+                showToast('加载失败');
+                sendSimpleRefreshType(RefreshType.loadFailed);
               });
             },
             child: ScrollList.builder(
