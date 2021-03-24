@@ -1,3 +1,5 @@
+## [1.8.5]
+  * Repair [ScrollList.separated] bug
 ## [1.8.3]
   * global optimization refresh
 ## [1.8.0]

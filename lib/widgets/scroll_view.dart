@@ -748,7 +748,7 @@ class ScrollList extends ScrollView {
                   }
                   return widget;
                 },
-                itemCount: itemCount,
+                itemCount: _computeActualChildCount(itemCount),
                 addAutomaticKeepALives: addAutomaticKeepALives,
                 addRepaintBoundaries: addRepaintBoundaries,
                 addSemanticIndexes: addSemanticIndexes,
@@ -840,6 +840,10 @@ class ScrollList extends ScrollView {
             restorationId: restorationId,
             physics: physics,
             primary: primary);
+
+  /// Helper method to compute the actual child count for the separated constructor.
+  static int _computeActualChildCount(int itemCount) =>
+      math.max(0, itemCount * 2 - 1);
 
   static bool _shrinkWrap(bool? shrinkWrap, ScrollPhysics? physics) {
     if (physics == const NeverScrollableScrollPhysics()) return true;
