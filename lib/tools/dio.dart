@@ -60,6 +60,7 @@ class DioTools {
       dynamic? data,
       HttpType httpType = HttpType.get,
       BaseOptions? options}) async {
+    log('\n==================== 开始一个请求 ====================\n');
     try {
       _initOptions(_dio, options: options);
       log('${httpType.toString()} url:$url  params:${params.toString()}  data:${data.toString()}');
@@ -94,12 +95,14 @@ class DioTools {
         log('$httpType url:$url  responseData==  ${responseModel.toMap().toString()}');
       }
       if (logTools) setHttpData(responseModel);
+      log('\n==================== 结束一个请求 ====================\n');
       return responseModel;
     } on DioError catch (e) {
       final DioError error = e;
       final ResponseModel errorResponse = constResponseModel(
           httpStatus: ConstConstant.httpStatus[404], error: error);
       log('error:$url  errorData==  ${errorResponse.toMap()}');
+      log('\n==================== 结束一个请求 ====================\n');
       if (logTools) setHttpData(errorResponse);
       return errorResponse;
     } catch (e) {

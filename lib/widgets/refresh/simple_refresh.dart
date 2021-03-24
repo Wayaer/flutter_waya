@@ -291,9 +291,7 @@ class RefreshController extends ScrollController {
   /// 开始刷新
   void startRefresh() {
     if (header.value == RefreshStatus.refreshing) return;
-    log(header.value);
     header.value = RefreshStatus.refreshing;
-    log(header.value);
     notify();
   }
 

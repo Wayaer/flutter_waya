@@ -395,7 +395,7 @@ extension DurationExtension on Duration {
   Timer timer([Function? function]) {
     late Timer timer;
     timer = Timer(this, () {
-      if (function != null) function();
+      if (function != null) function.call();
       timer.cancel();
     });
     return timer;
