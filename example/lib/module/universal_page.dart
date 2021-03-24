@@ -10,7 +10,7 @@ class UniversalPage extends StatelessWidget {
           isScroll: true,
           refreshConfig: RefreshConfig(onRefresh: () async {
             await showToast('onRefresh');
-            sendRefreshType(RefreshCompletedType.refreshSuccess);
+            sendRefreshType(EasyRefreshType.refreshSuccess);
           }),
           children: <Widget>[
             const Universal(width: 50, height: 50, color: Colors.blue),
@@ -74,7 +74,7 @@ class UniversalPage extends StatelessWidget {
                 color: Colors.blue,
                 opacity: 0.2,
                 onTap: () {
-                  sendRefreshType(RefreshCompletedType.refresh);
+                  sendRefreshType(EasyRefreshType.refresh);
                 },
                 size: const Size(200, 50)),
             const SizedBox(height: 10),

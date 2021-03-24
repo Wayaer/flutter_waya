@@ -359,6 +359,17 @@ class PopupSureCancel extends StatelessWidget {
       ]);
 }
 
+enum LoadingType {
+  ///  圆圈
+  circular,
+
+  ///  横条
+  linear,
+
+  ///  不常用 下拉刷新圆圈
+  refresh,
+}
+
 class Loading extends Dialog {
   const Loading({
     Key? key,

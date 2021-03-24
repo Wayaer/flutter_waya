@@ -1,16 +1,13 @@
 import 'dart:math';
+
 import 'package:flutter/animation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 part 'bounce.dart';
-
 part 'circle.dart';
-
 part 'cube.dart';
-
 part 'fading.dart';
-
 part 'ring.dart';
 
 class _DelayTween extends Tween<double> {

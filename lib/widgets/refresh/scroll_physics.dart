@@ -29,21 +29,21 @@ class EasyRefreshPhysics extends ScrollPhysics {
   /// 任务状态
   final ValueNotifier<double> taskNotifier;
 
-  // 回弹设置
+  /// 回弹设置
   final ValueNotifier<BouncingSettings> bouncingNotifier;
 
-  // 列表未占满时多余长度
+  /// 列表未占满时多余长度
   final ValueNotifier<double> extraExtentNotifier;
 
-  // @override
-  // EasyRefreshPhysics applyTo(ScrollPhysics ancestor) {
-  //   return EasyRefreshPhysics(
-  //     parent: buildParent(ancestor)!,
-  //     taskNotifier: taskNotifier,
-  //     bouncingNotifier: bouncingNotifier,
-  //     extraExtentNotifier: extraExtentNotifier,
-  //   );
-  // }
+  /// @override
+  /// EasyRefreshPhysics applyTo(ScrollPhysics ancestor) {
+  ///   return EasyRefreshPhysics(
+  ///     parent: buildParent(ancestor)!,
+  ///     taskNotifier: taskNotifier,
+  ///     bouncingNotifier: bouncingNotifier,
+  ///     extraExtentNotifier: extraExtentNotifier,
+  ///   );
+  /// }
 
   /// 是否允许Bottom越界(列表未占满)
   bool get bottomOverScroll => extraExtentNotifier.value > 0.0;
@@ -96,30 +96,36 @@ class EasyRefreshPhysics extends ScrollPhysics {
   double applyBoundaryConditions(ScrollMetrics position, double value) {
     if (!bouncingNotifier.value.top) {
       if (value < position.pixels &&
-          position.pixels <= position.minScrollExtent) // underscroll
+          position.pixels <= position.minScrollExtent)
+
+        /// underscroll
         return value - position.pixels;
       if (value < position.minScrollExtent &&
-          position.minScrollExtent < position.pixels) // hit top edge
+          position.minScrollExtent < position.pixels)
+
+        /// hit top edge
         return value - position.minScrollExtent;
     }
     if (!bouncingNotifier.value.top && value - position.minScrollExtent < 0.0) {
-      // 防止越界超过header高度
+      /// 防止越界超过header高度
       return value - position.minScrollExtent + 0.0001;
     }
     if (!bouncingNotifier.value.bottom && !bottomOverScroll) {
       if (position.maxScrollExtent <= position.pixels &&
           position.pixels < value) {
-        // overScroll
+        /// overScroll
         return value - position.pixels;
       }
       if (position.pixels < position.maxScrollExtent &&
-          position.maxScrollExtent < value) // hit bottom edge
+          position.maxScrollExtent < value)
+
+        /// hit bottom edge
         return value - position.maxScrollExtent;
     }
     if (!bouncingNotifier.value.bottom &&
         value - position.maxScrollExtent > 0.0 &&
         !bottomOverScroll) {
-      // 防止越界超过footer高度
+      /// 防止越界超过footer高度
       return value - position.maxScrollExtent;
     }
     return 0.0;
@@ -142,21 +148,21 @@ class EasyRefreshPhysics extends ScrollPhysics {
     return null;
   }
 
-  // The ballistic simulation here decelerates more slowly than the one for
-  // ClampingScrollPhysics so we require a more deliberate input gesture
-  // to trigger a fling.
+  /// The ballistic simulation here decelerates more slowly than the one for
+  /// ClampingScrollPhysics so we require a more deliberate input gesture
+  /// to trigger a fling.
   @override
   double get minFlingVelocity => kMinFlingVelocity * 2.0;
 
-  // Methodology:
-  // 1- Use https://github.com/flutter/scroll_overlay to test with Flutter and
-  //    platform scroll views superimposed.
-  // 2- Record incoming speed and make rapid flings in the test app.
-  // 3- If the scrollables stopped overlapping at any moment, adjust the desired
-  //    output value of this function at that input speed.
-  // 4- Feed new input/output set into a power curve fitter. Change function
-  //    and repeat from 2.
-  // 5- Repeat from 2 with medium and slow flings.
+  /// Methodology:
+  /// 1- Use https:///github.com/flutter/scroll_overlay to test with Flutter and
+  ///    platform scroll views superimposed.
+  /// 2- Record incoming speed and make rapid flings in the test app.
+  /// 3- If the scrollable stopped overlapping at any moment, adjust the desired
+  ///    output value of this function at that input speed.
+  /// 4- Feed new input/output set into a power curve fitter. Change function
+  ///    and repeat from 2.
+  /// 5- Repeat from 2 with medium and slow flings.
   /// Momentum build-up function that mimics iOS's scroll speed increase with repeated flings.
   ///
   /// The velocity of the last fling is not an important factor. Existing speed
@@ -169,8 +175,8 @@ class EasyRefreshPhysics extends ScrollPhysics {
             40000.0);
   }
 
-  // Eyeballed from observation to counter the effect of an unintended scroll
-  // from the natural motion of lifting the finger after a scroll.
+  /// Eyeballed from observation to counter the effect of an unintended scroll
+  /// from the natural motion of lifting the finger after a scroll.
   @override
   double get dragStartDistanceMotionThreshold => 3.5;
 }

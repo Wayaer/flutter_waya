@@ -4,7 +4,6 @@ export 'package:dio/dio.dart';
 
 export 'constant/area.dart';
 export 'constant/constant.dart';
-export 'constant/enums.dart';
 export 'constant/model.dart';
 export 'extension/context_extension.dart';
 export 'extension/object_extension.dart';

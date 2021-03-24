@@ -3,6 +3,12 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
+enum CircularStrokeCap { butt, round, square }
+
+enum LinearStrokeCap { butt, round, roundAll }
+
+enum ArcType { half, full }
+
 class Progress extends StatefulWidget {
   Progress.circular({
     Key? key,

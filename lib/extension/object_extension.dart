@@ -5,7 +5,6 @@ import 'dart:typed_data';
 
 import 'package:crypto/crypto.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_waya/constant/enums.dart';
 
 /// num 扩展
 extension ExtensionNum on num {
@@ -294,6 +293,47 @@ extension ExtensionMapt<T> on Map<T, T> {
 
   List<E> builderEntry<E>(E Function(MapEntry<T, T>) builder) =>
       entries.map((MapEntry<T, T> entry) => builder(entry)).toList();
+}
+
+enum DateTimeDist {
+  ///  2020-01-01 00:00:00
+  yearSecond,
+
+  ///  2020-01-01 00:00
+  yearMinute,
+
+  ///  2020-01-01 00
+  yearHour,
+
+  ///  2020-01-01
+  yearDay,
+
+  ///  01-01 00:00:00
+  monthSecond,
+
+  ///  01-01 00:00
+  monthMinute,
+
+  ///  01-01 00
+  monthHour,
+
+  ///  01-01
+  monthDay,
+
+  ///  01 00:00:00
+  daySecond,
+
+  ///  01 00:00
+  dayMinute,
+
+  ///  01 00
+  dayHour,
+
+  ///  00:00:00
+  hourSecond,
+
+  ///  00:00
+  hourMinute,
 }
 
 /// DateTime 扩展

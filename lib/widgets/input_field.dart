@@ -2,6 +2,52 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
+enum LineType { outline, underline }
+
+enum InputTextType {
+  ///  字母和数字
+  lettersNumbers,
+
+  ///  密码 字母和数字和.
+  password,
+
+  ///  整数
+  number,
+
+  ///  文本
+  text,
+
+  ///  小数
+  decimal,
+
+  ///  字母
+  letter,
+
+  ///  中文
+  chinese,
+
+  ///  邮箱
+  email,
+
+  ///  手机号码
+  mobilePhone,
+
+  ///  电话号码
+  phone,
+
+  ///  身份证
+  idCard,
+
+  ///  ip地址
+  ip,
+
+  ///  正数
+  positive,
+
+  ///  负数
+  negative,
+}
+
 class InputField extends StatelessWidget {
   const InputField({
     Key? key,

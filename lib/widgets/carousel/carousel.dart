@@ -12,6 +12,8 @@ const Duration kDefaultAutoPlayTransitionDuration = Duration(milliseconds: 400);
 ///  default auto play Duration
 const Duration kDefaultAutoPlayDelay = Duration(seconds: 3);
 
+enum CarouselLayout { stack, tinder }
+
 class Carousel extends StatefulWidget {
   const Carousel.builder({
     Key? key,

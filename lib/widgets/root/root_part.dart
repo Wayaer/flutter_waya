@@ -92,6 +92,10 @@ void setToastDuration(Duration duration) => _duration = duration;
 
 bool haveToast = false;
 
+///  Toast类型
+///  如果使用custom  请设置 customIcon
+enum ToastType { success, fail, info, warning, smile, custom }
+
 ///  Toast
 ///  关闭 closeOverlay();
 ///  添加 await Toast 关闭后继续执行之后的方法
@@ -171,6 +175,21 @@ Future<void> showToast(String message,
 ///  添加popup进入方向属性
 ///  关闭 closePopup()
 ///  Dialog
+///
+enum PopupFromType {
+  ///  从左边进入
+  fromLeft,
+
+  ///  从右边进入
+  fromRight,
+
+  ///  从头部进入
+  fromTop,
+
+  ///  从底部进入
+  fromBottom,
+}
+
 Future<T?> showDialogPopup<T>({
   ///  进入方向的距离
   double? startOffset,

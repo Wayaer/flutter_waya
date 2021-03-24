@@ -5,6 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/constant/way.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
+enum ListWheelChildDelegateType {
+  ///  有大量子控件时使用 子组件不会全部渲染
+  builder,
+
+  ///  不推荐使用 子组件会全部渲染
+  list,
+
+  ///  一个提供无限通过循环显式列表的子级
+  looping
+}
+
 class ListWheel extends StatefulWidget {
   ListWheel({
     Key? key,

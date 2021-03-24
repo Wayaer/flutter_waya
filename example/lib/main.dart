@@ -41,11 +41,9 @@ class Home extends StatelessWidget {
               onTap: () => push(ExpansionTilesPage())),
           CustomElastic('ScrollView', onTap: () => push(ScrollViewPage())),
           CustomElastic('JsonParse', onTap: () => push(JsonParsePage())),
-          ElevatedButton(
-              onPressed: () {
-                push(RefreshPage());
-              },
-              child: const Text('ElevatedButton')),
+          CustomElastic('SimpleRefresh', onTap: () => push(RefreshPage())),
+          CustomElastic('EasyRefreshed', onTap: () => push(EasyRefreshPage())),
+          ElevatedButton(onPressed: () {}, child: const Text('ElevatedButton')),
         ]),
       );
 

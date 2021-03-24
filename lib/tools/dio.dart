@@ -17,6 +17,8 @@ const List<String> HTTP_CONTENT_TYPE = <String>[
   'text/xml'
 ];
 
+enum HttpType { get, post, put, delete }
+
 class DioTools {
   factory DioTools() => getInstance();
 

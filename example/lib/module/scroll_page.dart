@@ -96,13 +96,13 @@ class _ScrollListSeparatedPage extends StatelessWidget {
             onRefresh: () async {
               await showToast('onRefresh');
               await 2.seconds.delayed(() {
-                sendRefreshType(RefreshCompletedType.refreshSuccess);
+                sendRefreshType(EasyRefreshType.refreshSuccess);
               });
             },
             onLoading: () async {
               await showToast('onLoading');
               await 2.seconds.delayed(() {
-                sendRefreshType(RefreshCompletedType.loadingSuccess);
+                sendRefreshType(EasyRefreshType.loadingSuccess);
               });
             },
           ),
@@ -134,12 +134,12 @@ class _ScrollListPlaceholderPage extends StatelessWidget {
             refreshConfig: RefreshConfig(onRefresh: () async {
               await showToast('onRefresh');
               await 2.seconds.delayed(() {
-                sendRefreshType(RefreshCompletedType.refreshSuccess);
+                sendRefreshType(EasyRefreshType.refreshSuccess);
               });
             }, onLoading: () async {
               await showToast('onLoading');
               await 2.seconds.delayed(() {
-                sendRefreshType(RefreshCompletedType.loadingSuccess);
+                sendRefreshType(EasyRefreshType.loadingSuccess);
               });
             }),
             placeholder:
@@ -175,13 +175,13 @@ class _ScrollListBuilderGridPage extends StatelessWidget {
               onRefresh: () async {
                 await showToast('onRefresh');
                 await 2.seconds.delayed(() {
-                  sendRefreshType(RefreshCompletedType.refreshSuccess);
+                  sendRefreshType(EasyRefreshType.refreshSuccess);
                 });
               },
               onLoading: () async {
                 await showToast('onLoading');
                 await 2.seconds.delayed(() {
-                  sendRefreshType(RefreshCompletedType.loadingSuccess);
+                  sendRefreshType(EasyRefreshType.loadingSuccess);
                 });
               },
             ),
@@ -213,13 +213,13 @@ class _ScrollListBuilderPage extends StatelessWidget {
               onRefresh: () async {
                 await showToast('onRefresh');
                 await 2.seconds.delayed(() {
-                  sendRefreshType(RefreshCompletedType.refreshSuccess);
+                  sendRefreshType(EasyRefreshType.refreshSuccess);
                 });
               },
               onLoading: () async {
                 await showToast('onLoading');
                 await 2.seconds.delayed(() {
-                  sendRefreshType(RefreshCompletedType.loadingSuccess);
+                  sendRefreshType(EasyRefreshType.loadingSuccess);
                 });
               },
             ),
@@ -247,13 +247,13 @@ class _ScrollListPage extends StatelessWidget {
               onRefresh: () async {
                 await showToast('onRefresh');
                 await 2.seconds.delayed(() {
-                  sendRefreshType(RefreshCompletedType.refreshSuccess);
+                  sendRefreshType(EasyRefreshType.refreshSuccess);
                 });
               },
               onLoading: () async {
                 await showToast('onLoading');
                 await 2.seconds.delayed(() {
-                  sendRefreshType(RefreshCompletedType.loadingSuccess);
+                  sendRefreshType(EasyRefreshType.loadingSuccess);
                 });
               },
             ),
@@ -304,12 +304,12 @@ class _ScrollListCustomPage extends StatelessWidget {
           refreshConfig: RefreshConfig(onRefresh: () async {
             await showToast('onRefresh');
             await 2.seconds.delayed(() {
-              sendRefreshType(RefreshCompletedType.refreshSuccess);
+              sendRefreshType(EasyRefreshType.refreshSuccess);
             });
           }, onLoading: () async {
             await showToast('onLoading');
             await 2.seconds.delayed(() {
-              sendRefreshType(RefreshCompletedType.loadingSuccess);
+              sendRefreshType(EasyRefreshType.loadingSuccess);
             });
           }),
           delegate: SliverChildBuilderDelegate(
@@ -332,7 +332,7 @@ class _ScrollViewAutoNestedPage extends StatelessWidget {
           body: Universal(
               refreshConfig: RefreshConfig(onRefresh: () async {
                 await showToast('onRefresh');
-                sendRefreshType(RefreshCompletedType.refreshSuccess);
+                sendRefreshType(EasyRefreshType.refreshSuccess);
               }),
               isScroll: true,
               color: Colors.yellow,

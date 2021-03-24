@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/flutter_waya.dart';
+
+enum IndicatorType { none, slide, warm, color, scale, drop }
 
 /// 指示器
 class Indicator extends StatelessWidget {

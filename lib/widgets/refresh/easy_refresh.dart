@@ -1,12 +1,12 @@
-import 'dart:async';
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-void sendRefreshType([RefreshCompletedType? refresh]) =>
-    eventBus.emit(refreshEvent, refresh ?? RefreshCompletedType.refreshSuccess);
+void sendRefreshType([EasyRefreshType? refresh]) {
+  log(_eventName);
+  eventBus.emit(_eventName, refresh ?? EasyRefreshType.refreshSuccess);
+}
 
 class RefreshConfig {
   RefreshConfig({
@@ -30,6 +30,31 @@ class RefreshConfig {
 
   /// CustomFooter
   Footer? footer;
+}
+
+EasyRefreshController? _holdController;
+
+String get _eventName => refreshEvent + _holdController.hashCode.toString();
+
+///  刷新类型
+enum EasyRefreshType {
+  /// 触发刷新
+  refresh,
+
+  /// 刷新成功
+  refreshSuccess,
+
+  /// 刷新失败
+  refreshFailed,
+
+  /// 触发加载
+  loading,
+
+  /// 加载成功
+  loadingSuccess,
+
+  /// 加载失败
+  loadFailed,
 }
 
 class EasyRefreshed extends StatefulWidget {
@@ -96,50 +121,43 @@ class EasyRefreshed extends StatefulWidget {
 
 class _EasyRefreshedState extends State<EasyRefreshed> {
   late EasyRefreshController controller;
-  int i = 0;
-  Timer? timer;
 
   @override
   void initState() {
     super.initState();
     controller = widget.controller ?? EasyRefreshController();
-    addPostFrameCallback(
-        (Duration callback) => eventBus.add(refreshEvent, (dynamic data) {
-              if (data == null) return;
-              if (data != null && data is RefreshCompletedType) {
-                timer = 1.seconds.timerPeriodic((Timer t) {
-                  i += 1;
-                  if (i >= 3) {
-                    i = 0;
-                    if (timer != null) {
-                      timer!.cancel();
-                      timer = null;
-                    }
-                  }
-                });
-                if (i > 0) return;
-                switch (data) {
-                  case RefreshCompletedType.refresh:
-                    controller.callRefresh();
-                    break;
-                  case RefreshCompletedType.refreshSuccess:
-                    controller.finishRefresh(success: true);
-                    break;
-                  case RefreshCompletedType.refreshFailed:
-                    controller.finishRefresh(success: false);
-                    break;
-                  case RefreshCompletedType.loading:
-                    controller.callLoad();
-                    break;
-                  case RefreshCompletedType.loadingSuccess:
-                    controller.finishLoad();
-                    break;
-                  case RefreshCompletedType.loadFailed:
-                    controller.finishLoad(success: false);
-                    break;
-                }
-              }
-            }));
+  }
+
+  void initEventBus() {
+    eventBus.add(_eventName, (dynamic data) {
+      if (data != null && data is EasyRefreshType) {
+        switch (data) {
+          case EasyRefreshType.refresh:
+            _holdController!.callRefresh();
+            break;
+          case EasyRefreshType.refreshSuccess:
+            _holdController!.finishRefresh(success: true);
+            _holdController!.resetRefreshState();
+            break;
+          case EasyRefreshType.refreshFailed:
+            _holdController!.finishRefresh(success: false);
+            _holdController!.resetRefreshState();
+            break;
+          case EasyRefreshType.loading:
+            _holdController!.callLoad();
+            break;
+          case EasyRefreshType.loadingSuccess:
+            _holdController!.finishLoad(success: true);
+            _holdController!.resetLoadState();
+            break;
+          case EasyRefreshType.loadFailed:
+            _holdController!.finishLoad(success: false);
+            _holdController!.resetLoadState();
+            break;
+        }
+      }
+      eventBus.remove(_eventName);
+    });
   }
 
   @override
@@ -148,10 +166,36 @@ class _EasyRefreshedState extends State<EasyRefreshed> {
         enableControlFinishRefresh: true,
         enableControlFinishLoad: true,
         controller: controller,
-        header: widget.header,
-        footer: widget.footer,
-        onLoad: widget.onLoading,
-        onRefresh: widget.onRefresh,
+        header: widget.header ??
+            ClassicalHeader(
+                refreshText: '请尽情拉我',
+                refreshReadyText: '我要开始刷新了',
+                refreshingText: '我在拼命刷新中',
+                refreshedText: '我已经刷新完成了',
+                refreshFailedText: '我刷新失败了唉',
+                noMoreText: '没有更多了',
+                infoText:
+                    '现在时刻 : ' + DateTime.now().format(DateTimeDist.hourMinute)),
+        footer: widget.footer ??
+            ClassicalFooter(
+                loadText: '请尽情拉我',
+                loadReadyText: '我要准备加载了',
+                loadingText: '我在拼命加载中',
+                loadedText: '我已经加载完成了',
+                loadFailedText: '我加载失败了唉',
+                noMoreText: '没有更多了哦',
+                infoText:
+                    '现在时刻 : ' + DateTime.now().format(DateTimeDist.hourMinute)),
+        onLoad: () async {
+          _holdController = controller;
+          initEventBus();
+          if (widget.onLoading != null) widget.onLoading!.call();
+        },
+        onRefresh: () async {
+          _holdController = controller;
+          initEventBus();
+          if (widget.onRefresh != null) widget.onRefresh!.call();
+        },
         slivers: widget.slivers,
         scrollDirection: widget.scrollDirection,
         reverse: widget.reverse,
@@ -166,9 +210,5 @@ class _EasyRefreshedState extends State<EasyRefreshed> {
   void dispose() {
     super.dispose();
     controller.dispose();
-    if (timer != null) {
-      timer!.cancel();
-      timer = null;
-    }
   }
 }

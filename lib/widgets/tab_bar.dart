@@ -74,6 +74,8 @@ class TabBarMerge extends StatelessWidget {
           controller: controller, physics: physics, children: tabView!));
 }
 
+enum TabBarLevelPosition { right, left }
+
 class TabBarBox extends StatelessWidget {
   const TabBarBox({
     Key? key,

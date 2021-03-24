@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/widgets/refresh/simple_refresh.dart';
+import 'package:waya/main.dart';
 
 class RefreshPage extends StatefulWidget {
   @override
@@ -54,4 +55,78 @@ class _Item extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(height: 80, color: color);
+}
+
+class EasyRefreshPage extends StatefulWidget {
+  @override
+  _EasyRefreshPageState createState() => _EasyRefreshPageState();
+}
+
+class _EasyRefreshPageState extends State<EasyRefreshPage> {
+  List<Color> colors = <Color>[];
+  final RefreshController controller = RefreshController();
+
+  @override
+  void initState() {
+    super.initState();
+    colors.addAll(Colors.accents);
+    // colors.addAll(Colors.accents.sublist(0, 6));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return OverlayScaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+            title: const Text('EasyRefreshPage Demo'), centerTitle: true),
+        bottomNavigationBar: Universal(
+            direction: Axis.horizontal,
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            padding: EdgeInsets.fromLTRB(
+                10, 10, 10, getBottomNavigationBarHeight + 10),
+            children: <Widget>[
+              CustomElastic('Refresh', onTap: () {
+                sendRefreshType(EasyRefreshType.refresh);
+              }),
+              CustomElastic('开启新的页面', onTap: () {
+                push(EasyRefreshPage());
+              }),
+              CustomElastic('Loading', onTap: () {
+                sendRefreshType(EasyRefreshType.loading);
+                colors.addAll(Colors.accents);
+                setState(() {});
+              }),
+            ]),
+        body: DefaultTabController(
+          length: 3,
+          child: TabBarView(
+            children: 3.generate(
+              (int index) => EasyRefreshed(
+                onRefresh: () async {
+                  2.seconds.delayed(() {
+                    sendRefreshType(EasyRefreshType.refreshSuccess);
+                  });
+                },
+                onLoading: () async {
+                  2.seconds.delayed(() {
+                    colors.addAll(Colors.accents);
+                    setState(() {});
+                    sendRefreshType(EasyRefreshType.loadingSuccess);
+                  });
+                },
+                slivers: <Widget>[
+                  SliverToBoxAdapter(
+                      child: Universal(
+                          padding: const EdgeInsets.all(10),
+                          children: colors.builderEntry(
+                              (MapEntry<int, Color> entry) =>
+                                  _Item(entry.key, entry.value)
+                                      .paddingOnly(bottom: 10))))
+                ],
+              ),
+            ),
+          ),
+        ));
+  }
 }

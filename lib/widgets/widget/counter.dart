@@ -3,6 +3,8 @@ import 'package:flutter_waya/flutter_waya.dart';
 
 typedef CountBuilder = Widget Function(int count, String text);
 
+enum CountAnimationType { part, all }
+
 class CounterAnimation extends StatefulWidget {
   const CounterAnimation({
     Key? key,

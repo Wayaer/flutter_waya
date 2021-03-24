@@ -15,6 +15,17 @@ List<OverlayEntryAuto> _overlayEntryList = <OverlayEntryAuto>[];
 OverlayState? _overlay;
 EventBus eventBus = EventBus();
 
+enum WidgetMode {
+  ///  Cupertino风格
+  cupertino,
+
+  ///  Material风格
+  material,
+
+  ///
+  ripple,
+}
+
 ///  GlobalWidgetsApp
 class GlobalWidgetsApp extends StatelessWidget {
   GlobalWidgetsApp({
