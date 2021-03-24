@@ -207,25 +207,38 @@ class _ScrollListBuilderPage extends StatelessWidget {
         backgroundColor: Colors.white,
         appBar: AppBar(
             title: const Text('ScrollList.builder Demo'), centerTitle: true),
-        body: ScrollList.builder(
-            padding: const EdgeInsets.all(10),
-            refreshConfig: RefreshConfig(
-              onRefresh: () async {
-                await showToast('onRefresh');
-                await 2.seconds.delayed(() {
-                  sendRefreshType(EasyRefreshType.refreshSuccess);
-                });
-              },
-              onLoading: () async {
-                await showToast('onLoading');
-                await 2.seconds.delayed(() {
-                  sendRefreshType(EasyRefreshType.loadingSuccess);
-                });
-              },
-            ),
-            itemCount: colors.length,
-            itemBuilder: (_, int index) =>
-                _Item(index, colors[index]).paddingOnly(bottom: 10)));
+        body: Column(
+          children: <Widget>[
+            Container(
+                height: 100,
+                color: Colors.blue,
+                alignment: Alignment.center,
+                child: BasisText('这里是头部',
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20)),
+            ScrollList.builder(
+                    padding: const EdgeInsets.all(10),
+                    refreshConfig: RefreshConfig(
+                      onRefresh: () async {
+                        showToast('onRefresh');
+                        2.seconds.delayed(() {
+                          sendRefreshType(EasyRefreshType.refreshSuccess);
+                        });
+                      },
+                      onLoading: () async {
+                        showToast('onLoading');
+                        2.seconds.delayed(() {
+                          sendRefreshType(EasyRefreshType.loadingSuccess);
+                        });
+                      },
+                    ),
+                    itemCount: colors.length,
+                    itemBuilder: (_, int index) =>
+                        _Item(index, colors[index]).paddingOnly(bottom: 10))
+                .expandedNull,
+          ],
+        ));
   }
 }
 
@@ -245,14 +258,14 @@ class _ScrollListPage extends StatelessWidget {
             padding: const EdgeInsets.all(10),
             refreshConfig: RefreshConfig(
               onRefresh: () async {
-                await showToast('onRefresh');
-                await 2.seconds.delayed(() {
+                showToast('onRefresh');
+                2.seconds.delayed(() {
                   sendRefreshType(EasyRefreshType.refreshSuccess);
                 });
               },
               onLoading: () async {
-                await showToast('onLoading');
-                await 2.seconds.delayed(() {
+                showToast('onLoading');
+                2.seconds.delayed(() {
                   sendRefreshType(EasyRefreshType.loadingSuccess);
                 });
               },

@@ -4,18 +4,16 @@ import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 void sendRefreshType([EasyRefreshType? refresh]) {
-  log(_eventName);
   eventBus.emit(_eventName, refresh ?? EasyRefreshType.refreshSuccess);
 }
 
 class RefreshConfig {
-  RefreshConfig({
-    Header? header,
-    this.controller,
-    this.onRefresh,
-    this.onLoading,
-    this.footer,
-  }) : header = header ?? BezierCircleHeader();
+  RefreshConfig(
+      {this.header,
+      this.controller,
+      this.onRefresh,
+      this.onLoading,
+      this.footer});
 
   EasyRefreshController? controller;
 
@@ -137,22 +135,18 @@ class _EasyRefreshedState extends State<EasyRefreshed> {
             break;
           case EasyRefreshType.refreshSuccess:
             _holdController!.finishRefresh(success: true);
-            _holdController!.resetRefreshState();
             break;
           case EasyRefreshType.refreshFailed:
             _holdController!.finishRefresh(success: false);
-            _holdController!.resetRefreshState();
             break;
           case EasyRefreshType.loading:
             _holdController!.callLoad();
             break;
           case EasyRefreshType.loadingSuccess:
             _holdController!.finishLoad(success: true);
-            _holdController!.resetLoadState();
             break;
           case EasyRefreshType.loadFailed:
             _holdController!.finishLoad(success: false);
-            _holdController!.resetLoadState();
             break;
         }
       }
