@@ -1,4 +1,4 @@
-## [1.8.2]
+## [1.8.3]
   * global optimization refresh
 ## [1.8.0]
   * Replace refresh component

@@ -1,4 +1,4 @@
-part of 'loading.dart';
+part of 'spinKit.dart';
 
 class SpinKitCubeGrid extends StatefulWidget {
   const SpinKitCubeGrid({

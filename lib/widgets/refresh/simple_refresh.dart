@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_waya/flutter_waya.dart';
+import 'package:flutter_waya/widgets/spinKit/spinKit.dart';
 
 void sendSimpleRefreshType(RefreshType refresh) =>
     eventBus.emit(refreshEvent, refresh);
@@ -180,7 +181,8 @@ class _RefreshState extends State<SimpleRefresh> {
               child = const Text('麻烦松手了');
               break;
             case RefreshStatus.refreshing:
-              child = const SpinKitSquareCircle(color: Colors.blue);
+              child =
+                  const SpinKit(SpinKitStyle.squareCircle, color: Colors.blue);
               break;
             case RefreshStatus.completed:
               child = const Text('刷新完了');
