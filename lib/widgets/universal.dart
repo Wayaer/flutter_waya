@@ -21,6 +21,8 @@ class Universal extends StatelessWidget {
     bool? isClipRRect = false,
     bool? isClipRect = false,
     bool? isCircleAvatar = false,
+    bool? intrinsicHeight = false,
+    bool? intrinsicWidth = false,
     bool? canRequestFocus,
     bool? enableFeedback,
     bool? excludeFromSemantics,
@@ -144,6 +146,8 @@ class Universal extends StatelessWidget {
         expanded = expanded ?? false,
         expand = expand ?? false,
         shrink = shrink ?? false,
+        intrinsicHeight = intrinsicHeight ?? false,
+        intrinsicWidth = intrinsicWidth ?? false,
         isOval = isOval ?? false,
         isClipRRect = isClipRRect ?? false,
         isClipRect = isClipRect ?? false,
@@ -180,6 +184,10 @@ class Universal extends StatelessWidget {
   ///  public
 
   final DragStartBehavior dragStartBehavior;
+
+  ///  ****** [IntrinsicHeight]、[IntrinsicWidth] ******  ///
+  final bool intrinsicHeight;
+  final bool intrinsicWidth;
 
   /// 控制剪辑方式
   /// [Clip.none]没有剪辑        最快
@@ -497,6 +505,9 @@ class Universal extends StatelessWidget {
           widthFactor: widthFactor,
           heightFactor: heightFactor,
           child: current);
+    if (intrinsicWidth) current = IntrinsicWidth(child: current);
+    if (intrinsicHeight) current = IntrinsicHeight(child: current);
+
     if (refreshConfig != null) current = refreshedWidget(current);
     if (color != null && decoration == null && !addInkWell && !addCard)
       current = ColoredBox(color: color!, child: current);
@@ -532,6 +543,7 @@ class Universal extends StatelessWidget {
     if (width != null || height != null)
       current = SizedBox(width: width, height: height, child: current);
     if (size != null) current = SizedBox.fromSize(size: size, child: current);
+
     if (heroTag != null) current = heroWidget(current);
     if (addCard) current = cardWidget(current, context);
     if (isCircleAvatar) current = circleAvatarWidget(current);
@@ -552,6 +564,7 @@ class Universal extends StatelessWidget {
 
     if (offstage) current = offstageWidget(current);
     if (!visible) current = visibilityWidget(current);
+
     return current;
   }
 

@@ -162,7 +162,8 @@ class _RefreshState extends State<SimpleRefresh> {
 
   EdgeInsetsGeometry? get isScrollListPadding {
     final Widget child = widget.child;
-    if (child is ScrollList && child.padding != null) return child.padding;
+    if ((child is ScrollList) && child.padding != null) return child.padding;
+    if (child is BoxScrollView && child.padding != null) return child.padding;
     return null;
   }
 
@@ -222,19 +223,23 @@ class _RefreshState extends State<SimpleRefresh> {
           }
         }
         return Universal(
-            alignment: Alignment.center, height: 100, child: child);
+            color: Colors.red,
+            alignment: Alignment.center,
+            height: 100,
+            child: child);
       });
 
   List<Widget> _buildSliversByChild() {
+    log(controller.scrollHeight);
     final Widget child = widget.child;
-    List<Widget>? slivers;
+    late List<Widget> slivers = [];
     if (child is ScrollView) {
       if (child is BoxScrollView) {
         slivers = child.buildSlivers(context);
       } else if (child is ScrollList) {
         slivers = child.buildSlivers(context);
-      } else {
-        slivers = <Widget>[SliverToBoxAdapter(child: child.build(context))];
+      } else if (child is CustomScrollView) {
+        slivers = child.slivers;
       }
     } else if (child is SingleChildScrollView) {
       if (child.child != null)
@@ -242,7 +247,8 @@ class _RefreshState extends State<SimpleRefresh> {
     } else if (child is! Scrollable) {
       slivers = <Widget>[SliverToBoxAdapter(child: child)];
     }
-    return slivers ?? <Widget>[];
+    slivers.add(_SliverFillViewport());
+    return slivers;
   }
 
   @override
@@ -262,6 +268,15 @@ class _RefreshState extends State<SimpleRefresh> {
     controller.removeListener(listener);
     controller.dispose();
   }
+}
+
+class _SliverFillViewport extends SliverFillViewport {
+  _SliverFillViewport()
+      : super(
+            viewportFraction: 1,
+            delegate: SliverChildBuilderDelegate(
+                (_, int index) => const SizedBox(height: 1),
+                childCount: 1));
 }
 
 class RefreshController extends ScrollController {

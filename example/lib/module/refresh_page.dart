@@ -13,37 +13,32 @@ class _RefreshPageState extends State<RefreshPage> {
   final RefreshController controller = RefreshController();
 
   @override
-  void initState() {
-    super.initState();
-    colors.addAll(Colors.accents);
-    // colors.addAll(Colors.accents.sublist(0, 6));
-  }
-
-  @override
   Widget build(BuildContext context) {
+    // colors.addAll(Colors.accents);
     return OverlayScaffold(
         backgroundColor: Colors.white,
         appBar:
             AppBar(title: const Text('RefreshPage Demo'), centerTitle: true),
         body: SimpleRefresh(
-            controller: controller,
-            onRefresh: () {
-              3.seconds.delayed(() {
-                sendSimpleRefreshType(RefreshType.refreshCompleted);
-                showToast('刷新完成');
-              });
-            },
-            onLoading: () {
-              3.seconds.delayed(() {
-                showToast('加载失败');
-                sendSimpleRefreshType(RefreshType.loadFailed);
-              });
-            },
-            child: ScrollList.builder(
-                padding: const EdgeInsets.all(10),
-                itemBuilder: (_, int index) =>
-                    _Item(index, colors[index]).paddingOnly(bottom: 10),
-                itemCount: colors.length)));
+          controller: controller,
+          onRefresh: () {
+            3.seconds.delayed(() {
+              sendSimpleRefreshType(RefreshType.refreshCompleted);
+              showToast('刷新完成');
+            });
+          },
+          onLoading: () {
+            3.seconds.delayed(() {
+              showToast('加载失败');
+              sendSimpleRefreshType(RefreshType.loadFailed);
+            });
+          },
+          child: ScrollList.builder(
+              padding: const EdgeInsets.all(10),
+              itemBuilder: (_, int index) =>
+                  _Item(index, colors[index]).paddingOnly(bottom: 10),
+              itemCount: colors.length),
+        ));
   }
 }
 
@@ -70,7 +65,6 @@ class _EasyRefreshPageState extends State<EasyRefreshPage> {
   void initState() {
     super.initState();
     colors.addAll(Colors.accents);
-    // colors.addAll(Colors.accents.sublist(0, 6));
   }
 
   @override
