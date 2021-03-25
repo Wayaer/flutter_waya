@@ -120,8 +120,8 @@ class DioTools {
     BaseOptions? options,
   }) async {
     try {
-      log('Download url:$url  savePath:${savePath.toString()}');
       log('\n==================== 开始下载 ====================\n');
+      log('Download url:$url  savePath:${savePath.toString()}');
       final Dio dio = Dio();
       _initOptions(dio, options: options);
       final Response<dynamic> response = await dio.download(url, savePath,
@@ -151,8 +151,8 @@ class DioTools {
       ProgressCallback? onSendProgress,
       ProgressCallback? onReceiveProgress}) async {
     try {
-      log('Upload url:$url  params:${params.toString()}  data:${data.toString()}');
       log('\n==================== 开始上传 ====================\n');
+      log('Upload url:$url  params:${params.toString()}  data:${data.toString()}');
       final Dio dio = Dio();
       _initOptions(dio, options: options);
       final Response<dynamic> response = await dio.post<dynamic>(url,
