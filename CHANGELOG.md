@@ -1,3 +1,5 @@
+## [1.8.6]
+  * optimization is not an [http-200] state return parameter
 ## [1.8.5]
   * Repair [ScrollList.separated] bug
 ## [1.8.3]
