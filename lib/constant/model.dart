@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 
+import 'constant.dart';
+
 class ResponseModel extends Response<dynamic> {
   ResponseModel({
     this.type,
@@ -42,6 +44,85 @@ class ResponseModel extends Response<dynamic> {
     map['statusMessage'] = statusMessage;
     map['statusMessageT'] = statusMessageT;
     return map;
+  }
+
+  static ResponseModel formResponse(Response<dynamic> response) =>
+      ResponseModel(
+          request: response.request,
+          type: null,
+          statusCode: response.statusCode,
+          statusMessage: response.statusMessage,
+          statusMessageT: response.statusMessage,
+          data: response.data,
+          extra: response.extra,
+          headers: response.headers,
+          redirects: response.redirects,
+          response: response);
+
+  static ResponseModel mergeError(DioError err, ResponseModel responseModel) {
+    responseModel.type = err.type.toString();
+    final Response<dynamic>? errResponse = err.response;
+    if (err.type == DioErrorType.other) {
+      final HttpStatus status = ConstConstant.httpStatus[404]!;
+      responseModel.statusCode = status.code;
+      responseModel.statusMessage = status.message;
+      responseModel.statusMessageT = status.messageT;
+    } else if (err.type == DioErrorType.cancel) {
+      final HttpStatus status = ConstConstant.httpStatus[420]!;
+      responseModel.statusCode = status.code;
+      responseModel.statusMessage = status.message;
+      responseModel.statusMessageT = status.messageT;
+    } else if (err.type == DioErrorType.connectTimeout) {
+      final HttpStatus status = ConstConstant.httpStatus[408]!;
+      responseModel.statusCode = status.code;
+      responseModel.statusMessage = status.message;
+      responseModel.statusMessageT = status.messageT;
+    } else if (err.type == DioErrorType.receiveTimeout) {
+      final HttpStatus status = ConstConstant.httpStatus[502]!;
+      responseModel.statusCode = status.code;
+      responseModel.statusMessage = status.message;
+      responseModel.statusMessageT = status.messageT;
+    } else if (err.type == DioErrorType.sendTimeout) {
+      final HttpStatus status = ConstConstant.httpStatus[450]!;
+      responseModel.statusCode = status.code;
+      responseModel.statusMessage = status.message;
+      responseModel.statusMessageT = status.messageT;
+    } else if (err.type == DioErrorType.response) {
+      final HttpStatus status = ConstConstant.httpStatus[500]!;
+      responseModel.statusCode = errResponse?.statusCode;
+      responseModel.statusMessage =
+          errResponse!.statusCode.toString() + ':' + status.message;
+      responseModel.statusMessageT = status.messageT;
+    }
+    if (err.request != null) responseModel.request = err.request!;
+    if (errResponse != null) {
+      responseModel.headers = errResponse.headers;
+      responseModel.redirects = errResponse.redirects;
+      responseModel.extra = errResponse.extra;
+      if (errResponse.statusCode != null)
+        responseModel.statusCode = errResponse.statusCode;
+      if (errResponse.statusMessage != null &&
+          errResponse.statusMessage!.isNotEmpty) {
+        responseModel.statusMessage = errResponse.statusMessage;
+        responseModel.statusMessageT = errResponse.statusMessage;
+      }
+      if (errResponse.data != null && errResponse.data.toString().isNotEmpty)
+        responseModel.data = errResponse.data;
+    }
+    responseModel.cookie = <String>[];
+    return responseModel;
+  }
+
+  static ResponseModel constResponseModel(
+      {HttpStatus? httpStatus, DioError? error}) {
+    const Map<int, HttpStatus> status = ConstConstant.httpStatus;
+    httpStatus ??= status[error?.response?.statusCode ?? 100] ?? status[100];
+    return ResponseModel(
+        request: error?.request ?? RequestOptions(path: ''),
+        statusCode: error?.response?.statusCode ?? httpStatus!.code,
+        statusMessage: error?.response?.statusMessage ?? httpStatus!.message,
+        statusMessageT: httpStatus!.messageT,
+        type: (error?.type ?? DioErrorType.other).toString());
   }
 
   String toJson() =>

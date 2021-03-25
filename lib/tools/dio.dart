@@ -4,10 +4,10 @@ import 'package:dio/dio.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 /// 网络链接超时时间
-const int HTTP_TIMEOUT_CONNECT = 5000;
+int httpConnectTimeout = 5000;
 
 /// 接收超时时间
-const int HTTP_TIMEOUT_RECEIVE = 10000;
+int httpReceiveTimeout = 10000;
 
 /// 请求数据类型 (4种): application/x-www-form-urlencoded 、multipart/form-data、application/json、text/xml
 const List<String> HTTP_CONTENT_TYPE = <String>[
@@ -36,8 +36,8 @@ class DioTools {
 
   void _initOptions(Dio dio, {BaseOptions? options}) {
     final BaseOptions _options = dio.options;
-    _options.connectTimeout = options?.connectTimeout ?? HTTP_TIMEOUT_CONNECT;
-    _options.receiveTimeout = options?.receiveTimeout ?? HTTP_TIMEOUT_RECEIVE;
+    _options.connectTimeout = options?.connectTimeout ?? httpConnectTimeout;
+    _options.receiveTimeout = options?.receiveTimeout ?? httpReceiveTimeout;
     _options.contentType = options?.contentType ??
         (dio == _dio ? HTTP_CONTENT_TYPE[2] : HTTP_CONTENT_TYPE[1]);
     _options.responseType = options?.responseType ?? ResponseType.json;
@@ -97,30 +97,19 @@ class DioTools {
       return responseModel;
     } on DioError catch (e) {
       final DioError error = e;
-      ResponseModel errResponse = constResponseModel(
+      ResponseModel errResponse = ResponseModel.constResponseModel(
           httpStatus: ConstConstant.httpStatus[404], error: error);
-      errResponse = _dioErrorToResponse(error, errResponse);
+      errResponse = ResponseModel.mergeError(error, errResponse);
       log('error:$url  errorData==  ${errResponse.toMap()}');
-      log('\n==================== 结束一个请求 ====================\n');
+      log('\n==================== 结束一个请求 DioError ====================\n');
       if (logTools) setHttpData(errResponse);
       return errResponse;
     } catch (e) {
-      final ResponseModel responseModel = constResponseModel();
-      log('\n==================== 结束一个请求 ====================\n');
+      final ResponseModel responseModel = ResponseModel.constResponseModel();
+      log('\n==================== 结束一个请求 catch ====================\n');
       if (logTools) setHttpData(responseModel);
       return responseModel;
     }
-  }
-
-  ResponseModel constResponseModel({HttpStatus? httpStatus, DioError? error}) {
-    const Map<int, HttpStatus> status = ConstConstant.httpStatus;
-    httpStatus ??= status[error?.response?.statusCode ?? 100] ?? status[100];
-    return ResponseModel(
-        request: error?.request ?? RequestOptions(path: ''),
-        statusCode: error?.response?.statusCode ?? httpStatus!.code,
-        statusMessage: error?.response?.statusMessage ?? httpStatus!.message,
-        statusMessageT: httpStatus!.messageT,
-        type: (error?.type ?? DioErrorType.other).toString());
   }
 
   /// 下载文件需要申请文件储存权限
@@ -138,18 +127,18 @@ class DioTools {
       final Response<dynamic> response = await dio.download(url, savePath,
           cancelToken: _cancelToken, onReceiveProgress: onReceiveProgress);
       log('\n==================== 下载结束 ====================\n');
-      return response as ResponseModel;
+      return ResponseModel.formResponse(response);
     } on DioError catch (e) {
       final DioError error = e;
-      ResponseModel errResponse = constResponseModel(
+      ResponseModel errResponse = ResponseModel.constResponseModel(
           httpStatus: ConstConstant.httpStatus[404], error: error);
-      errResponse = _dioErrorToResponse(error, errResponse);
+      errResponse = ResponseModel.mergeError(error, errResponse);
       log('error:$url  errorData==  ${errResponse.toMap()}');
-      log('\n==================== 下载结束 ====================\n');
+      log('\n==================== 下载结束 DioError ====================\n');
       return errResponse;
     } catch (e) {
-      log('\n==================== 下载结束 ====================\n');
-      return constResponseModel();
+      log('\n==================== 下载结束 catch ====================\n');
+      return ResponseModel.constResponseModel();
     }
   }
 
@@ -173,18 +162,17 @@ class DioTools {
           onSendProgress: onSendProgress,
           onReceiveProgress: onReceiveProgress);
       log('\n==================== 结束上传 ====================\n');
-      return response as ResponseModel;
+      return ResponseModel.formResponse(response);
     } on DioError catch (e) {
       final DioError error = e;
-      ResponseModel errResponse = constResponseModel(
+      ResponseModel errResponse = ResponseModel.constResponseModel(
           httpStatus: ConstConstant.httpStatus[404], error: error);
-      errResponse = _dioErrorToResponse(error, errResponse);
-      log('error:$url  errorData==  ${errResponse.toMap()}');
-      log('\n==================== 结束上传 ====================\n');
+      errResponse = ResponseModel.mergeError(error, errResponse);
+      log('\n==================== 结束上传 DioError ====================\n');
       return errResponse;
     } catch (e) {
-      log('\n==================== 结束上传 ====================\n');
-      return constResponseModel();
+      log('\n==================== 结束上传 catch ====================\n');
+      return ResponseModel.constResponseModel();
     }
   }
 
@@ -232,59 +220,5 @@ class InterceptorWrap<T> extends InterceptorsWrapper {
 
   @override
   Future<ResponseModel> onError(DioError err) async =>
-      _dioErrorToResponse(err, responseModel);
-}
-
-ResponseModel _dioErrorToResponse(DioError err, ResponseModel responseModel) {
-  responseModel.type = err.type.toString();
-  final Response<dynamic>? errResponse = err.response;
-  if (err.type == DioErrorType.other) {
-    final HttpStatus status = ConstConstant.httpStatus[404]!;
-    responseModel.statusCode = status.code;
-    responseModel.statusMessage = status.message;
-    responseModel.statusMessageT = status.messageT;
-  } else if (err.type == DioErrorType.cancel) {
-    final HttpStatus status = ConstConstant.httpStatus[420]!;
-    responseModel.statusCode = status.code;
-    responseModel.statusMessage = status.message;
-    responseModel.statusMessageT = status.messageT;
-  } else if (err.type == DioErrorType.connectTimeout) {
-    final HttpStatus status = ConstConstant.httpStatus[408]!;
-    responseModel.statusCode = status.code;
-    responseModel.statusMessage = status.message;
-    responseModel.statusMessageT = status.messageT;
-  } else if (err.type == DioErrorType.receiveTimeout) {
-    final HttpStatus status = ConstConstant.httpStatus[502]!;
-    responseModel.statusCode = status.code;
-    responseModel.statusMessage = status.message;
-    responseModel.statusMessageT = status.messageT;
-  } else if (err.type == DioErrorType.sendTimeout) {
-    final HttpStatus status = ConstConstant.httpStatus[450]!;
-    responseModel.statusCode = status.code;
-    responseModel.statusMessage = status.message;
-    responseModel.statusMessageT = status.messageT;
-  } else if (err.type == DioErrorType.response) {
-    final HttpStatus status = ConstConstant.httpStatus[500]!;
-    responseModel.statusCode = errResponse?.statusCode;
-    responseModel.statusMessage =
-        errResponse!.statusCode.toString() + ':' + status.message;
-    responseModel.statusMessageT = status.messageT;
-  }
-  if (err.request != null) responseModel.request = err.request!;
-  if (errResponse != null) {
-    responseModel.headers = errResponse.headers;
-    responseModel.redirects = errResponse.redirects;
-    responseModel.extra = errResponse.extra;
-    if (errResponse.statusCode != null)
-      responseModel.statusCode = errResponse.statusCode;
-    if (errResponse.statusMessage != null &&
-        errResponse.statusMessage!.isNotEmpty) {
-      responseModel.statusMessage = errResponse.statusMessage;
-      responseModel.statusMessageT = errResponse.statusMessage;
-    }
-    if (errResponse.data != null && errResponse.data.toString().isNotEmpty)
-      responseModel.data = errResponse.data;
-  }
-  responseModel.cookie = <String>[];
-  return responseModel;
+      ResponseModel.mergeError(err, responseModel);
 }
