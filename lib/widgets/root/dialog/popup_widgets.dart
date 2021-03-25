@@ -370,7 +370,7 @@ enum LoadingType {
   refresh,
 }
 
-class Loading extends Dialog {
+class Loading extends StatelessWidget {
   const Loading({
     Key? key,
     LoadingType? loadingType,

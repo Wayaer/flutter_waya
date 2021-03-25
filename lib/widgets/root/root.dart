@@ -168,9 +168,9 @@ class GlobalWidgetsApp extends StatelessWidget {
   Widget build(BuildContext context) {
     if (navigatorKey != null) _globalNavigatorKey = navigatorKey!;
     if (theme != null || darkTheme != null || widgetMode == WidgetMode.material)
-      return materialApp();
+      return materialApp;
     if (cupertinoTheme != null || widgetMode == WidgetMode.cupertino)
-      return cupertinoApp();
+      return cupertinoApp;
     return WidgetsApp(
         key: key,
         navigatorKey: _globalNavigatorKey,
@@ -207,7 +207,7 @@ class GlobalWidgetsApp extends StatelessWidget {
         actions: actions);
   }
 
-  Widget materialApp() => MaterialApp(
+  Widget get materialApp => MaterialApp(
       key: key,
       navigatorKey: _globalNavigatorKey,
       home: home,
@@ -238,7 +238,7 @@ class GlobalWidgetsApp extends StatelessWidget {
       shortcuts: shortcuts,
       actions: actions);
 
-  Widget cupertinoApp() => CupertinoApp(
+  Widget get cupertinoApp => CupertinoApp(
       key: key,
       navigatorKey: _globalNavigatorKey,
       home: home,
