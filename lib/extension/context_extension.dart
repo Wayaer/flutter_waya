@@ -118,6 +118,27 @@ extension ExtensionContext on BuildContext {
 
   /// True if the current device is Tablet
   bool get isTablet => isSmallTablet || isLargeTablet;
+
+  ///get Widget Bounds (width, height, left, top, right, bottom and so on).Widgets must be rendered completely.
+  ///获取widget Rect
+  Rect get getWidgetBounds {
+    RenderBox? box = getRenderBox;
+    return box?.semanticBounds ?? Rect.zero;
+  }
+
+  RenderBox? get getRenderBox {
+    final RenderObject? renderObject = findRenderObject();
+    RenderBox? box;
+    if (renderObject != null) box = renderObject as RenderBox;
+    return box;
+  }
+
+  ///Get the coordinates of the widget on the screen.Widgets must be rendered completely.
+  ///获取widget在屏幕上的坐标,widget必须渲染完成
+  Offset get getWidgetLocalToGlobal {
+    final RenderBox? box = getRenderBox;
+    return box == null ? Offset.zero : box.localToGlobal(Offset.zero);
+  }
 }
 
 extension ExtensionGlobalKey on GlobalKey {

@@ -189,6 +189,34 @@ extension ExtensionString on String {
 
     return parseLoop(base64Str, base64StrLength, reverseMap);
   }
+
+  /// 每隔 x位 加 pattern
+  String formatDigitPattern({int digit = 4, String pattern = ' '}) {
+    String text = this;
+    text = text.replaceAllMapped(
+        RegExp('(.{$digit})'), (Match match) => '${match.group(0)}$pattern');
+    if (text.endsWith(pattern)) text = text.substring(0, text.length - 1);
+    return text;
+  }
+
+  /// 每隔 x位 加 pattern, 从末尾开始
+  String formatDigitPatternEnd(String text,
+      {int digit = 4, String pattern = ' '}) {
+    String temp = reverse;
+    temp = formatDigitPattern(digit: digit, pattern: pattern);
+    temp = reverse;
+    return temp;
+  }
+
+  /// reverse
+  String get reverse {
+    final String text = this;
+    if (isEmpty) return '';
+    StringBuffer sb = StringBuffer();
+    for (int i = text.length - 1; i >= 0; i--)
+      sb.writeCharCode(text.codeUnitAt(i));
+    return sb.toString();
+  }
 }
 
 extension ExtensionUint8List on Uint8List {
@@ -380,6 +408,11 @@ extension ExtensionDateTime on DateTime {
         return '$hour:$minute';
     }
   }
+
+  /// Return whether it is leap year.
+  /// 是否是闰年
+  bool get isLeapYearByYear =>
+      year % 4 == 0 && year % 100 != 0 || year % 400 == 0;
 }
 
 extension DurationExtension on Duration {

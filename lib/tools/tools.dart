@@ -15,6 +15,8 @@ void log(dynamic msg) {
   if (message.length < _limitLength) {
     print(msg);
   } else {
+    print(
+        ' — — — — — — — — — — — — — — — — st — — — — — — — — — — — — — — — —');
     final StringBuffer outStr = StringBuffer();
     for (int index = 0; index < message.length; index++) {
       outStr.write(message[index]);
@@ -30,6 +32,7 @@ void log(dynamic msg) {
         }
       }
     }
+    print('— — — — — — — — — — — — — — — — ed — — — — — — — — — — — — — — — —');
   }
 }
 
