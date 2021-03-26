@@ -4,11 +4,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-typedef DropdownIndexCallback<int> = void Function(
-    int titleIndex, int valueIndex);
-
-typedef DropdownTitleIndexCallBack<int> = void Function(int value);
-
 class PopupBase extends StatelessWidget {
   const PopupBase(
       {Key? key,
@@ -151,10 +146,10 @@ class DropdownMenu extends StatefulWidget {
   final List<List<String>> value;
 
   /// 点击头部item回调
-  final DropdownTitleIndexCallBack<int>? titleTap;
+  final ValueCallback<int>? titleTap;
 
   /// 点击菜单的回调
-  final DropdownIndexCallback<int>? valueTap;
+  final ValueTwoCallback<int, int>? valueTap;
   final Color? iconColor;
   final Color itemBackground;
   final Color? background;
@@ -192,7 +187,8 @@ class _DropdownMenuState extends State<DropdownMenu> {
         itemBuilder: (_, int i) => SimpleButton(
               text: value[index][i],
               width: double.infinity,
-              textStyle: widget.valueStyle,
+              textStyle: widget.valueStyle ??
+                  const BasisTextStyle(color: Colors.black),
               onTap: () {
                 if (widget.valueTap != null) widget.valueTap!(index, i);
                 changeState(index);
@@ -263,7 +259,7 @@ class _DropdownMenuState extends State<DropdownMenu> {
     if (keyboardHeight > 0) {
       context.focusNode();
       Timer? timer;
-      timer = Timer(const Duration(milliseconds: 300), () {
+      timer = const Duration(milliseconds: 300).timer(() {
         changeState(index);
         popupWidget(index);
         if (timer != null) {

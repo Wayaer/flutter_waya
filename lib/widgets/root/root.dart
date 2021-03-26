@@ -11,6 +11,7 @@ part 'root_part.dart';
 
 GlobalKey<NavigatorState> _globalNavigatorKey = GlobalKey();
 List<GlobalKey<State>> _scaffoldKeyList = <GlobalKey<State>>[];
+GlobalKey<ScaffoldMessengerState>? _scaffoldMessengerKey;
 List<OverlayEntryAuto> _overlayEntryList = <OverlayEntryAuto>[];
 OverlayState? _overlay;
 EventBus eventBus = EventBus();
@@ -61,6 +62,7 @@ class GlobalWidgetsApp extends StatelessWidget {
     this.inspectorSelectButtonBuilder,
     this.widgetMode,
     this.cupertinoTheme,
+    this.scaffoldMessengerKey,
   })  : debugShowMaterialGrid = debugShowMaterialGrid ?? false,
         showPerformanceOverlay = showPerformanceOverlay ?? false,
         checkerboardRasterCacheImages = checkerboardRasterCacheImages ?? false,
@@ -86,6 +88,8 @@ class GlobalWidgetsApp extends StatelessWidget {
 
   ///  风格
   final WidgetMode? widgetMode;
+
+  final GlobalKey<ScaffoldMessengerState>? scaffoldMessengerKey;
 
   ///  导航键
   final GlobalKey<NavigatorState>? navigatorKey;
@@ -207,36 +211,41 @@ class GlobalWidgetsApp extends StatelessWidget {
         actions: actions);
   }
 
-  Widget get materialApp => MaterialApp(
-      key: key,
-      navigatorKey: _globalNavigatorKey,
-      home: home,
-      routes: routes,
-      initialRoute: initialRoute,
-      debugShowMaterialGrid: debugShowMaterialGrid,
-      onGenerateRoute: onGenerateRoute,
-      onGenerateInitialRoutes: onGenerateInitialRoutes,
-      onUnknownRoute: onUnknownRoute,
-      navigatorObservers: navigatorObservers,
-      builder: builder,
-      title: title,
-      onGenerateTitle: onGenerateTitle,
-      color: color,
-      theme: theme,
-      darkTheme: darkTheme,
-      themeMode: themeMode,
-      locale: locale,
-      localizationsDelegates: localizationsDelegates,
-      localeListResolutionCallback: localeListResolutionCallback,
-      localeResolutionCallback: localeResolutionCallback,
-      supportedLocales: supportedLocales,
-      showPerformanceOverlay: showPerformanceOverlay,
-      checkerboardRasterCacheImages: checkerboardRasterCacheImages,
-      checkerboardOffscreenLayers: checkerboardOffscreenLayers,
-      showSemanticsDebugger: showSemanticsDebugger,
-      debugShowCheckedModeBanner: debugShowCheckedModeBanner,
-      shortcuts: shortcuts,
-      actions: actions);
+  Widget get materialApp {
+    _scaffoldMessengerKey =
+        scaffoldMessengerKey ?? GlobalKey<ScaffoldMessengerState>();
+    return MaterialApp(
+        key: key,
+        navigatorKey: _globalNavigatorKey,
+        scaffoldMessengerKey: _scaffoldMessengerKey,
+        home: home,
+        routes: routes,
+        initialRoute: initialRoute,
+        debugShowMaterialGrid: debugShowMaterialGrid,
+        onGenerateRoute: onGenerateRoute,
+        onGenerateInitialRoutes: onGenerateInitialRoutes,
+        onUnknownRoute: onUnknownRoute,
+        navigatorObservers: navigatorObservers,
+        builder: builder,
+        title: title,
+        onGenerateTitle: onGenerateTitle,
+        color: color,
+        theme: theme,
+        darkTheme: darkTheme,
+        themeMode: themeMode,
+        locale: locale,
+        localizationsDelegates: localizationsDelegates,
+        localeListResolutionCallback: localeListResolutionCallback,
+        localeResolutionCallback: localeResolutionCallback,
+        supportedLocales: supportedLocales,
+        showPerformanceOverlay: showPerformanceOverlay,
+        checkerboardRasterCacheImages: checkerboardRasterCacheImages,
+        checkerboardOffscreenLayers: checkerboardOffscreenLayers,
+        showSemanticsDebugger: showSemanticsDebugger,
+        debugShowCheckedModeBanner: debugShowCheckedModeBanner,
+        shortcuts: shortcuts,
+        actions: actions);
+  }
 
   Widget get cupertinoApp => CupertinoApp(
       key: key,

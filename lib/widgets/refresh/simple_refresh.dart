@@ -230,7 +230,6 @@ class _RefreshState extends State<SimpleRefresh> {
       });
 
   List<Widget> _buildSliversByChild() {
-    log(controller.scrollHeight);
     final Widget child = widget.child;
     late List<Widget> slivers = [];
     if (child is ScrollView) {

@@ -15,13 +15,14 @@ class PickerSub {
       this.cancelTap,
       this.sureTap,
       this.sureIndexTap})
-      : sure = sure ?? BasisText('sure'),
-        title = title ?? BasisText('title'),
-        cancel = cancel ?? BasisText('cancel'),
+      : sure = sure ?? BasisText('sure', color: Colors.black),
+        title = title ?? BasisText('title', color: Colors.black),
+        cancel = cancel ?? BasisText('cancel', color: Colors.black),
         height = height ?? ConstConstant.pickerHeight,
         backgroundColor = backgroundColor ?? ConstColors.white,
         contentStyle = contentStyle ??
-            const BasisTextStyle(backgroundColor: Colors.transparent),
+            const BasisTextStyle(
+                backgroundColor: Colors.transparent, color: Colors.black),
         titlePadding =
             titlePadding ?? const EdgeInsets.symmetric(horizontal: 10);
 

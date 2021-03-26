@@ -56,6 +56,16 @@ void closeAllOverlay() {
   _overlayEntryList = <OverlayEntryAuto>[];
 }
 
+ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? showSnackBar(
+    SnackBar snackBar) {
+  if (_scaffoldMessengerKey != null) {
+    return _scaffoldMessengerKey!.currentState!.showSnackBar(snackBar);
+  } else {
+    log('GlobalWidgetsApp widgetMode must be WidgetMode.material');
+  }
+  return null;
+}
+
 ///  loading 加载框
 ///  关闭 closeOverlay();
 OverlayEntryAuto? showLoading({

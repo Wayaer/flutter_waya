@@ -29,19 +29,30 @@ class DioTools {
       ResponseSaveCookies? saveCookies}) {
     _dio = Dio();
     logTools = logTs;
-    _initOptions(_dio, options: options);
+    _initOptions(_dio,
+        options: options ??
+            BaseOptions(
+                connectTimeout: httpConnectTimeout,
+                receiveTimeout: httpReceiveTimeout,
+                contentType: HTTP_CONTENT_TYPE[2],
+                responseType: ResponseType.json,
+                headers: <String, dynamic>{}));
     _dio.interceptors.add(InterceptorWrap<dynamic>(
         requestCookie: requestCookie, saveCookies: saveCookies));
   }
 
   void _initOptions(Dio dio, {BaseOptions? options}) {
     final BaseOptions _options = dio.options;
-    _options.connectTimeout = options?.connectTimeout ?? httpConnectTimeout;
-    _options.receiveTimeout = options?.receiveTimeout ?? httpReceiveTimeout;
-    _options.contentType = options?.contentType ??
-        (dio == _dio ? HTTP_CONTENT_TYPE[2] : HTTP_CONTENT_TYPE[1]);
-    _options.responseType = options?.responseType ?? ResponseType.json;
-    _options.headers = options?.headers ?? <String, dynamic>{};
+    if (options?.connectTimeout != null)
+      _options.connectTimeout = options!.connectTimeout;
+    if (options?.receiveTimeout != null)
+      _options.receiveTimeout = options!.receiveTimeout;
+    if (options?.contentType != null)
+      _options.contentType = options?.contentType ??
+          (dio == _dio ? HTTP_CONTENT_TYPE[2] : HTTP_CONTENT_TYPE[1]);
+    if (options?.responseType != null)
+      _options.responseType = options!.responseType;
+    if (options?.headers != null) _options.headers = options!.headers;
   }
 
   late Dio _dio;
@@ -87,7 +98,7 @@ class DioTools {
               queryParameters: params, cancelToken: _cancelToken);
           break;
       }
-      final ResponseModel responseModel = response as ResponseModel;
+      final ResponseModel responseModel = ResponseModel.formResponse(response);
       if (responseModel.request.responseType != ResponseType.bytes &&
           responseModel.request.responseType != ResponseType.stream) {
         log('$httpType url:$url  responseData==  ${responseModel.toMap()}');

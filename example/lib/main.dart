@@ -15,7 +15,8 @@ import 'package:waya/module/universal_page.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   setGlobalPushMode(WidgetMode.ripple);
-  runApp(GlobalWidgetsApp(title: 'Waya Demo', home: Home()));
+  runApp(GlobalWidgetsApp(
+      title: 'Waya Demo', home: Home(), widgetMode: WidgetMode.material));
 }
 
 class Home extends StatelessWidget {
@@ -27,6 +28,7 @@ class Home extends StatelessWidget {
         body: Wrap(runSpacing: 10, spacing: 10, children: <Widget>[
           CustomElastic('Toast', onTap: () => push(ToastPage())),
           CustomElastic('Button', onTap: () => push(ButtonPage())),
+          CustomElastic('DropdownMenu', onTap: () => push(DropdownMenuPage())),
           CustomElastic('ToggleRotate', onTap: () => push(ToggleRotatePage())),
           CustomElastic('Counter', onTap: () => push(CounterPage())),
           CustomElastic('Picker', onTap: () => push(PickerPage())),
@@ -43,7 +45,12 @@ class Home extends StatelessWidget {
           CustomElastic('JsonParse', onTap: () => push(JsonParsePage())),
           CustomElastic('SimpleRefresh', onTap: () => push(RefreshPage())),
           CustomElastic('EasyRefreshed', onTap: () => push(EasyRefreshPage())),
-          ElevatedButton(onPressed: () {}, child: const Text('ElevatedButton')),
+          ElevatedButton(
+              onPressed: () {
+                showSnackBar(SnackBar(content: BasisText('Popup SnackBar')));
+              },
+              child: BasisText('showSnackBar')),
+          ElevatedButton(onPressed: () {}, child: BasisText('ElevatedButton')),
         ]),
       );
 

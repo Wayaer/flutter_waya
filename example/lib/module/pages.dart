@@ -168,13 +168,13 @@ class ExpansionTilesPage extends StatelessWidget {
               children: 5.generate((int index) => Universal(
                   margin: const EdgeInsets.all(12),
                   alignment: Alignment.centerLeft,
-                  child: BasisText('item$index')))),
+                  child: BasisText('item$index', color: Colors.black)))),
           ExpansionTiles(
               title: BasisText('title'),
               children: 5.generate((int index) => Universal(
                   margin: const EdgeInsets.all(12),
                   alignment: Alignment.centerLeft,
-                  child: BasisText('item$index')))),
+                  child: BasisText('item$index', color: Colors.black)))),
         ]);
   }
 }

@@ -1,3 +1,8 @@
+## [1.8.7]
+  * add [DropdownMenuButton]
+  * add example
+  * add scaffoldMessengerKey for [MaterialApp]
+  * add showSnackBar
 ## [1.8.6]
   * optimization is not an [http-200] state return parameter
 ## [1.8.5]

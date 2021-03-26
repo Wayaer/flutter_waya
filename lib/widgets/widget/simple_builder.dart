@@ -1,11 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/widgets.dart';
-
-typedef ValueBuilderUpdateCallback<T> = void Function(T snapshot);
+import 'package:flutter_waya/constant/constant.dart';
 
 typedef ValueBuilderFunction<T> = Widget Function(
-    T? snapshot, ValueBuilderUpdateCallback<T> updater);
+    T? snapshot, ValueCallback<T> updater);
 
 /// Example:
 /// ```

@@ -361,9 +361,9 @@ class BasisTextStyle extends TextStyle {
     List<ui.FontFeature>? fontFeatures,
   }) : super(
             inherit: inherit ?? true,
-            color: color ?? Colors.black87,
+            color: color,
             backgroundColor: backgroundColor,
-            fontSize: fontSize ?? 14,
+            fontSize: fontSize,
             fontWeight: fontWeight,
             fontStyle: fontStyle,
             letterSpacing: letterSpacing,

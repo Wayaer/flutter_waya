@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:typed_data';
 import 'dart:ui' as ui show Codec;
 import 'dart:ui';
@@ -9,7 +10,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 typedef ImageSequenceProcessCallback = void Function(
-    ImageSequenceState _imageSequenceAnimator);
+    ImageSequenceState imageSequenceAnimator);
 
 class ImageSequence extends StatefulWidget {
   const ImageSequence(
@@ -466,12 +467,14 @@ class _GifImageState extends State<GifImage> {
       provider.headers?.forEach((String name, String value) =>
           options.headers.addAll(<String, String>{name: value}));
       final ResponseModel result =
-          await DioTools.getInstance(options: options).getHttp(provider.url);
+          await DioTools.getInstance(options: options).getHttp(
+        provider.url,
+      );
       if (result.statusCode != 200) {
         showToast(result.statusMessage!);
         return null;
       }
-      data = result.data as Uint8List;
+      data = result.response!.data as Uint8List;
     } else if (provider is AssetImage) {
       final AssetBundleImageKey key =
           await provider.obtainKey(const ImageConfiguration());
