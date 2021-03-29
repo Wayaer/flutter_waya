@@ -1,5 +1,6 @@
 ## [1.9.0]
   * update [dio] to 4.0.0
+  * fix bugs
 ## [1.8.7]
   * add [DropdownMenuButton]
   * add example
