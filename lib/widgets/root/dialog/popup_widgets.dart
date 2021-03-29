@@ -35,7 +35,7 @@ class PopupBase extends StatelessWidget {
         gaussian = gaussian ?? false,
         addMaterial = addMaterial ?? false,
         ignoring = ignoring ?? false,
-        fuzzyDegree = fuzzyDegree ?? 2,
+        fuzzyDegree = fuzzyDegree ?? 4,
         mainAxisSize = mainAxisSize ?? MainAxisSize.min,
         super(key: key);
 
@@ -377,11 +377,13 @@ class Loading extends StatelessWidget {
     this.custom,
     this.ignoring,
     this.gaussian,
-    this.animatedOpacity,
     this.value,
     this.valueColor,
     this.semanticsLabel,
     this.semanticsValue,
+    this.onTap,
+    this.behavior,
+    this.fuzzyDegree,
   })  : text = text ?? '加载中...',
         strokeWidth = strokeWidth ?? 4.0,
         color = backgroundColor ?? ConstColors.white,
@@ -399,12 +401,18 @@ class Loading extends StatelessWidget {
   final double strokeWidth;
   final String text;
 
+  /// 模糊程度 0-100
+  final double? fuzzyDegree;
+
   /// 是否开始背景模糊
   final bool? gaussian;
-  final bool? animatedOpacity;
 
   /// 是否可以操作背景 默认false 不可操作
   final bool? ignoring;
+
+  /// 背景事件
+  final GestureTapCallback? onTap;
+  final HitTestBehavior? behavior;
 
   @override
   Widget build(BuildContext context) {
@@ -443,8 +451,9 @@ class Loading extends StatelessWidget {
     return PopupBase(
         ignoring: ignoring,
         gaussian: gaussian,
+        fuzzyDegree: fuzzyDegree,
         alignment: Alignment.center,
-        onTap: () {},
+        onTap: onTap,
         child: custom ??
             Universal(
                 padding:

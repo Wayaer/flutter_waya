@@ -71,6 +71,7 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? showSnackBar(
 OverlayEntryAuto? showLoading({
   Widget? custom,
   String? text,
+  TextStyle? textStyle,
   double? value,
   bool? gaussian,
   Color? backgroundColor,
@@ -79,13 +80,22 @@ OverlayEntryAuto? showLoading({
   String? semanticsLabel,
   String? semanticsValue,
   LoadingType? loadingType,
-  TextStyle? textStyle,
+
+  /// 背景点击事件
+  GestureTapCallback? onTap,
+  HitTestBehavior? behavior,
+
+  /// 背景模糊模糊程度 0-100 [gaussian]=true 有效
+  double? fuzzyDegree,
 }) =>
     showOverlay(Loading(
         custom: custom,
         gaussian: gaussian,
+        onTap: onTap,
+        behavior: behavior,
         text: text,
         value: value,
+        fuzzyDegree: fuzzyDegree,
         backgroundColor: backgroundColor,
         valueColor: valueColor,
         strokeWidth: strokeWidth ?? 4.0,

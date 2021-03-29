@@ -50,11 +50,18 @@ class Home extends StatelessWidget {
                 showSnackBar(SnackBar(content: BasisText('Popup SnackBar')));
               },
               child: BasisText('showSnackBar')),
-          ElevatedButton(onPressed: () {}, child: BasisText('ElevatedButton')),
+          ElevatedButton(
+              onPressed: () {
+                showOverlayLoading();
+              },
+              child: BasisText('showOverlayLoading')),
         ]),
       );
 
-  void showOverlayLoading() => showLoading(gaussian: true);
+  void showOverlayLoading() => showLoading(
+      gaussian: true,
+      onTap: closeOverlay,
+      custom: const SpinKitWave(color: Colors.blue));
 }
 
 class CustomElastic extends StatelessWidget {
