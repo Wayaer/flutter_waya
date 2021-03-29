@@ -122,7 +122,7 @@ extension ExtensionContext on BuildContext {
   ///get Widget Bounds (width, height, left, top, right, bottom and so on).Widgets must be rendered completely.
   ///获取widget Rect
   Rect get getWidgetBounds {
-    RenderBox? box = getRenderBox;
+    final RenderBox? box = getRenderBox;
     return box?.semanticBounds ?? Rect.zero;
   }
 

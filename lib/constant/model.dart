@@ -11,13 +11,13 @@ class ResponseModel extends Response<dynamic> {
     int? statusCode,
     String? statusMessage,
     Headers? headers,
-    required RequestOptions request,
+    required RequestOptions requestOptions,
     List<RedirectRecord>? redirects,
     Map<String, dynamic>? extra,
   }) : super(
             data: data,
             headers: headers,
-            request: request,
+            requestOptions: requestOptions,
             statusCode: statusCode,
             statusMessage: statusMessage,
             redirects: redirects,
@@ -46,10 +46,11 @@ class ResponseModel extends Response<dynamic> {
     return map;
   }
 
-  static ResponseModel formResponse(Response<dynamic> response) =>
+  static ResponseModel formResponse(Response<dynamic> response,
+          {DioErrorType? type}) =>
       ResponseModel(
-          request: response.request,
-          type: null,
+          requestOptions: response.requestOptions,
+          type: type.toString(),
           statusCode: response.statusCode,
           statusMessage: response.statusMessage,
           statusMessageT: response.statusMessage,
@@ -94,7 +95,7 @@ class ResponseModel extends Response<dynamic> {
           errResponse!.statusCode.toString() + ':' + status.message;
       responseModel.statusMessageT = status.messageT;
     }
-    if (err.request != null) responseModel.request = err.request!;
+    responseModel.requestOptions = err.requestOptions;
     if (errResponse != null) {
       responseModel.headers = errResponse.headers;
       responseModel.redirects = errResponse.redirects;
@@ -118,7 +119,7 @@ class ResponseModel extends Response<dynamic> {
     const Map<int, HttpStatus> status = ConstConstant.httpStatus;
     httpStatus ??= status[error?.response?.statusCode ?? 100] ?? status[100];
     return ResponseModel(
-        request: error?.request ?? RequestOptions(path: ''),
+        requestOptions: error?.requestOptions ?? RequestOptions(path: ''),
         statusCode: error?.response?.statusCode ?? httpStatus!.code,
         statusMessage: error?.response?.statusMessage ?? httpStatus!.message,
         statusMessageT: httpStatus!.messageT,

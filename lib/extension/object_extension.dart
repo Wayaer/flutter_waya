@@ -212,7 +212,7 @@ extension ExtensionString on String {
   String get reverse {
     final String text = this;
     if (isEmpty) return '';
-    StringBuffer sb = StringBuffer();
+    final StringBuffer sb = StringBuffer();
     for (int i = text.length - 1; i >= 0; i--)
       sb.writeCharCode(text.codeUnitAt(i));
     return sb.toString();

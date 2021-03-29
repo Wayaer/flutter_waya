@@ -120,7 +120,7 @@ class _JsonParseState extends State<JsonParse> {
 }
 
 void setHttpData(ResponseModel res) {
-  final _HttpDataModel data = _HttpDataModel(res.request.path, res.data);
+  final _HttpDataModel data = _HttpDataModel(res.requestOptions.path, res.data);
   if (_httpDataOverlay == null) {
     _httpDataOverlay = showOverlay(_HttpDataPage(data))!;
   } else {

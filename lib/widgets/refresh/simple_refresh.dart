@@ -231,7 +231,7 @@ class _RefreshState extends State<SimpleRefresh> {
 
   List<Widget> _buildSliversByChild() {
     final Widget child = widget.child;
-    late List<Widget> slivers = [];
+    late List<Widget> slivers = <Widget>[];
     if (child is ScrollView) {
       if (child is BoxScrollView) {
         slivers = child.buildSlivers(context);

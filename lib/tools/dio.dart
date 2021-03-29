@@ -17,7 +17,7 @@ const List<String> HTTP_CONTENT_TYPE = <String>[
   'text/xml'
 ];
 
-enum HttpType { get, post, put, delete }
+enum HttpType { get, post, put, delete, patch }
 
 class DioTools {
   factory DioTools() => getInstance();
@@ -93,14 +93,18 @@ class DioTools {
           response = await _dio.delete<dynamic>(url,
               queryParameters: params, data: data, cancelToken: _cancelToken);
           break;
+        case HttpType.patch:
+          response = await _dio.patch<dynamic>(url,
+              queryParameters: params, data: data, cancelToken: _cancelToken);
+          break;
         default:
           response = await _dio.get<dynamic>(url,
               queryParameters: params, cancelToken: _cancelToken);
           break;
       }
       final ResponseModel responseModel = ResponseModel.formResponse(response);
-      if (responseModel.request.responseType != ResponseType.bytes &&
-          responseModel.request.responseType != ResponseType.stream) {
+      if (responseModel.requestOptions.responseType != ResponseType.bytes &&
+          responseModel.requestOptions.responseType != ResponseType.stream) {
         log('$httpType url:$url  responseData==  ${responseModel.toMap()}');
       }
       if (logTools) setHttpData(responseModel);
@@ -204,32 +208,32 @@ class InterceptorWrap<T> extends InterceptorsWrapper {
   late ResponseModel responseModel;
 
   @override
-  Future<void> onRequest(RequestOptions options) async {
-    responseModel = ResponseModel(request: options);
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+    responseModel = ResponseModel(requestOptions: options);
     if (requestCookie != null) requestCookie!(options);
+    super.onRequest(options, handler);
   }
 
   @override
-  Future<ResponseModel> onResponse(Response<dynamic> response) async {
+  void onResponse(
+      Response<dynamic> response, ResponseInterceptorHandler handler) {
     responseModel.response = response;
     if (saveCookies != null) responseModel.cookie = saveCookies!(response);
+    responseModel = ResponseModel.formResponse(response);
     if (response.statusCode == 200) {
       responseModel.statusMessage = ConstConstant.success;
       responseModel.statusMessageT = ConstConstant.success;
-    } else {
-      responseModel.statusMessage = response.statusMessage;
-      responseModel.statusMessageT = response.statusMessage;
     }
-    responseModel.data = response.data;
-    responseModel.statusCode = response.statusCode;
-    responseModel.request = response.request;
-    responseModel.headers = response.headers;
-    responseModel.redirects = response.redirects;
-    responseModel.extra = response.extra;
-    return responseModel;
+    super.onResponse(responseModel, handler);
   }
 
   @override
-  Future<ResponseModel> onError(DioError err) async =>
-      ResponseModel.mergeError(err, responseModel);
+  void onError(DioError err, ErrorInterceptorHandler handler) {
+    log('onError===>' + err.type.toString());
+    super.onError(
+        DioError(
+            response: ResponseModel.mergeError(err, responseModel),
+            requestOptions: err.requestOptions),
+        handler);
+  }
 }

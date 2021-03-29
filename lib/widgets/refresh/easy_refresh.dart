@@ -180,16 +180,20 @@ class _EasyRefreshedState extends State<EasyRefreshed> {
         controller: controller,
         header: widget.header ?? globalRefreshHeader,
         footer: widget.footer ?? globalRefreshFooter,
-        onLoad: () async {
-          _holdController = controller;
-          initEventBus();
-          if (widget.onLoading != null) widget.onLoading!.call();
-        },
-        onRefresh: () async {
-          _holdController = controller;
-          initEventBus();
-          if (widget.onRefresh != null) widget.onRefresh!.call();
-        },
+        onLoad: widget.onLoading == null
+            ? null
+            : () async {
+                _holdController = controller;
+                initEventBus();
+                widget.onLoading!.call();
+              },
+        onRefresh: widget.onRefresh == null
+            ? null
+            : () async {
+                _holdController = controller;
+                initEventBus();
+                widget.onRefresh!.call();
+              },
         slivers: widget.slivers,
         scrollDirection: widget.scrollDirection,
         reverse: widget.reverse,
