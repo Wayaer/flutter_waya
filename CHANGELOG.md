@@ -1,3 +1,5 @@
+## [1.9.1]
+  * remove [DropdownMenuButton] constraints.
 ## [1.9.0]
   * update [dio] to 4.0.0
   * fix bugs

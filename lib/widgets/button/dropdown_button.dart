@@ -94,7 +94,6 @@ class _DropdownMenuButtonState extends State<DropdownMenuButton> {
           decoration: widget.decoration,
           color: widget.backgroundColor,
           mainAxisSize: MainAxisSize.min,
-          constraints: const BoxConstraints(maxHeight: 100),
           children: widget.itemCount.generate((int index) => Universal(
               onTap: () => tapItem(index), child: widget.itemBuilder(index)))),
     ));
