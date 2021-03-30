@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 
 /// 弹性按钮
 class ElasticButton extends StatefulWidget {
@@ -45,7 +46,7 @@ class ElasticButton extends StatefulWidget {
     this.onScaleUpdate,
     this.onScaleEnd,
   })  : withOpacity = withOpacity ?? false,
-        scaleCoefficient = scaleCoefficient ?? 0.80,
+        scaleCoefficient = scaleCoefficient ?? 0.95,
         useCache = useCache ?? true,
         alignment = alignment ?? Alignment.center,
         super(key: key);
@@ -233,7 +234,29 @@ class _ElasticButtonState extends State<ElasticButton>
     if (!isSpringDown) animationController.value = 1;
   }
 
-  Widget get wrapper => GestureDetector(
+  @override
+  Widget build(BuildContext context) => AnimatedBuilder(
+      animation: animation,
+      child: widget.useCache ? uiChild : null,
+      builder: (BuildContext context, Widget? cachedChild) {
+        final Transform transform = Transform.scale(
+            scale: animation.value,
+            alignment: widget.alignment,
+            child: widget.useCache ? cachedChild : wrapper);
+        if (widget.withOpacity)
+          return Opacity(
+              opacity: animation.value.clamp(0.5, 1.0).toDouble(),
+              child: transform);
+        return transform;
+      });
+
+  @override
+  void dispose() {
+    animationController.dispose();
+    super.dispose();
+  }
+
+  Widget get wrapper => Universal(
       behavior: HitTestBehavior.translucent,
       onTapDown: !hasTap
           ? null
@@ -462,26 +485,4 @@ class _ElasticButtonState extends State<ElasticButton>
               if (widget.onScaleEnd != null && isEnabled) widget.onScaleEnd!(_);
             },
       child: widget.child);
-
-  @override
-  Widget build(BuildContext context) => AnimatedBuilder(
-      animation: animation,
-      child: widget.useCache ? uiChild : null,
-      builder: (BuildContext context, Widget? cachedChild) {
-        final Transform transform = Transform.scale(
-            scale: animation.value,
-            alignment: widget.alignment,
-            child: widget.useCache ? cachedChild : wrapper);
-        if (widget.withOpacity)
-          return Opacity(
-              opacity: animation.value.clamp(0.5, 1.0).toDouble(),
-              child: transform);
-        return transform;
-      });
-
-  @override
-  void dispose() {
-    animationController.dispose();
-    super.dispose();
-  }
 }

@@ -9,11 +9,67 @@ class ButtonPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => OverlayScaffold(
           backgroundColor: Colors.white,
+          isScroll: true,
           appBar: AppBar(title: const Text('Button Demo'), centerTitle: true),
           children: <Widget>[
+            const DropdownMenu(
+              value: <List<String>>[
+                <String>['男', '女'],
+                <String>['12岁', '13岁', '14岁'],
+                <String>['湖北', '四川', '重庆']
+              ],
+              title: <String>['性别', '年龄', '地区'],
+            ),
             const SizedBox(height: 20),
             CustomElastic('ElasticButton',
                 onTap: () => showToast('ElasticButton')),
+            const SizedBox(height: 20),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              DropdownMenuButton(
+                defaultBuilder: (int index) {
+                  return BasisText(index == null ? '请选择' : _colors[index],
+                      color: Colors.black);
+                },
+                decoration: BoxDecoration(
+                    color: Colors.blue, borderRadius: BorderRadius.circular(4)),
+                margin: const EdgeInsets.only(top: 2),
+                itemCount: _colors.length,
+                onChanged: (int index) {
+                  showToast('点击了${_colors[index]}');
+                },
+                toggle:
+                    const Icon(Icons.arrow_right_rounded, color: Colors.black),
+                itemBuilder: (int index) => Container(
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.symmetric(vertical: 6),
+                    decoration: const BoxDecoration(
+                        border:
+                            Border(bottom: BorderSide(color: Colors.white))),
+                    child: BasisText(_colors[index])),
+              ),
+              const SizedBox(width: 30),
+              DropdownMenuButton.material(
+                  itemBuilder: (int index) => Container(
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.symmetric(vertical: 6),
+                      decoration: const BoxDecoration(
+                          border:
+                              Border(bottom: BorderSide(color: Colors.white))),
+                      child: BasisText(_colors[index])),
+                  itemCount: _colors.length,
+                  defaultBuilder: (int index) {
+                    return BasisText(index == null ? '请选择' : _colors[index],
+                        color: Colors.black);
+                  })
+            ]),
+            const SizedBox(height: 20),
+            SimpleButton(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
+                text: 'SimpleButton',
+                textStyle: const TextStyle(color: Colors.blue),
+                borderRadius: BorderRadius.circular(4),
+                onTap: () {}),
             const SizedBox(height: 20),
             CustomElastic('BubbleButton',
                 onTap: () => push(_BubbleButtonPage())),
@@ -27,36 +83,6 @@ class ButtonPage extends StatelessWidget {
             const LiquidButton(
                 width: 200, height: 60, backgroundColor: Colors.blue),
             const SizedBox(height: 40),
-            DropdownMenuButton(
-              defaultBuilder: (int index) {
-                return Universal(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                    decoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(4)),
-                    direction: Axis.horizontal,
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      BasisText(index == null ? '请选择' : _colors[index],
-                          color: Colors.white),
-                      const Icon(Icons.arrow_drop_down, color: Colors.white),
-                    ]);
-              },
-              decoration: BoxDecoration(
-                  color: Colors.blue, borderRadius: BorderRadius.circular(4)),
-              margin: const EdgeInsets.only(top: 2),
-              itemCount: _colors.length,
-              onChanged: (int index) {
-                showToast('点击了${_colors[index]}');
-              },
-              itemBuilder: (int index) => Container(
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.symmetric(vertical: 6),
-                  decoration: const BoxDecoration(
-                      border: Border(bottom: BorderSide(color: Colors.white))),
-                  child: BasisText(_colors[index])),
-            )
           ]);
 }
 

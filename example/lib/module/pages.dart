@@ -40,23 +40,7 @@ class _ImagePageState extends State<ImagePage> with TickerProviderStateMixin {
   }
 }
 
-class DropdownMenuPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) => OverlayScaffold(
-          backgroundColor: Colors.white,
-          appBar:
-              AppBar(title: const Text('DropdownMenu Demo'), centerTitle: true),
-          children: const <Widget>[
-            DropdownMenu(
-              value: <List<String>>[
-                <String>['男', '女'],
-                <String>['12岁', '13岁', '14岁'],
-                <String>['湖北', '四川', '重庆']
-              ],
-              title: <String>['性别', '年龄', '地区'],
-            ),
-          ]);
-}
+
 
 class ToastPage extends StatelessWidget {
   @override

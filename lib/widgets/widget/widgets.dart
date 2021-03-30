@@ -267,8 +267,8 @@ class CustomDismissible extends Dismissible {
 }
 
 ///  组件右上角加红点
-class HintDot extends StatelessWidget {
-  const HintDot(
+class Badge extends StatelessWidget {
+  const Badge(
       {Key? key,
       required this.child,
       this.hide = false,
@@ -332,6 +332,8 @@ class HintDot extends StatelessWidget {
           color: pointColor ?? ConstColors.red, shape: BoxShape.circle));
 }
 
+typedef ToggleBuilder = Widget Function(Widget child);
+
 /// 旋转组件
 class ToggleRotate extends StatefulWidget {
   const ToggleRotate(
@@ -341,13 +343,18 @@ class ToggleRotate extends StatefulWidget {
       this.rad = pi / 2,
       this.clockwise = true,
       this.duration = const Duration(milliseconds: 200),
-      this.curve = Curves.fastOutSlowIn})
+      this.curve = Curves.fastOutSlowIn,
+      this.toggleBuilder,
+      this.isRotate = false})
       : super(key: key);
 
   final Widget child;
 
+  /// 是否旋转
+  final bool isRotate;
+
   /// 点击事件
-  final Function? onTap;
+  final GestureTapCallback? onTap;
 
   /// 旋转角度 pi / 2
   /// 1=90℃  2=180℃
@@ -361,6 +368,9 @@ class ToggleRotate extends StatefulWidget {
 
   /// 动画曲线
   final Curve curve;
+
+  /// 自定义非旋转区域
+  final ToggleBuilder? toggleBuilder;
 
   @override
   _ToggleRotateState createState() => _ToggleRotateState();
@@ -392,15 +402,30 @@ class _ToggleRotateState extends State<ToggleRotate>
   }
 
   @override
-  Widget build(BuildContext context) => Transform(
+  void didUpdateWidget(covariant ToggleRotate oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.isRotate != widget.isRotate) {
+      _controller.reset();
+      _controller.forward();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Widget current = Transform(
         transform: Matrix4.rotationZ(widget.clockwise ? _rad : -_rad),
         alignment: Alignment.center,
-        child: widget.child,
-      ).onTap(() {
-        _controller.reset();
-        _controller.forward();
+        child: widget.child);
+    if (widget.toggleBuilder != null) current = widget.toggleBuilder!(current);
+    if (widget.onTap != null) {
+      current = current.onTap(() {
+        // _controller.reset();
+        // _controller.forward();
         if (widget.onTap != null) widget.onTap!();
       });
+    }
+    return current;
+  }
 }
 
 const Duration _kExpand = Duration(milliseconds: 200);

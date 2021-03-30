@@ -28,7 +28,6 @@ class Home extends StatelessWidget {
         body: Wrap(runSpacing: 10, spacing: 10, children: <Widget>[
           CustomElastic('Toast', onTap: () => push(ToastPage())),
           CustomElastic('Button', onTap: () => push(ButtonPage())),
-          CustomElastic('DropdownMenu', onTap: () => push(DropdownMenuPage())),
           CustomElastic('ToggleRotate', onTap: () => push(ToggleRotatePage())),
           CustomElastic('Counter', onTap: () => push(CounterPage())),
           CustomElastic('Picker', onTap: () => push(PickerPage())),

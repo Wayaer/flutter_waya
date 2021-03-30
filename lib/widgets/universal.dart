@@ -806,6 +806,7 @@ class SimpleButton extends StatelessWidget {
     Key? key,
     String? text,
     bool? isElastic,
+    bool? addInkWell,
     TextOverflow? overflow,
     this.textStyle,
     this.visible,
@@ -821,12 +822,17 @@ class SimpleButton extends StatelessWidget {
     this.alignment,
     this.maxLines,
     this.child,
-    this.addInkWell,
     this.withOpacity,
     this.useCache,
     this.scaleCoefficient,
+    this.focusColor,
+    this.hoverColor,
+    this.highlightColor,
+    this.splashColor,
+    this.borderRadius,
   })  : text = text ?? 'Button',
         isElastic = isElastic ?? false,
+        addInkWell = addInkWell ?? true,
         overflow = overflow ?? TextOverflow.ellipsis,
         super(key: key);
 
@@ -843,7 +849,7 @@ class SimpleButton extends StatelessWidget {
   final int? maxLines;
   final TextOverflow overflow;
   final String text;
-  final bool? addInkWell;
+
   final bool? visible;
   final String? heroTag;
   final BoxConstraints? constraints;
@@ -851,6 +857,22 @@ class SimpleButton extends StatelessWidget {
   final bool isElastic;
   final bool? useCache;
   final double? scaleCoefficient;
+
+  /// 是否添加水波纹效果
+  final bool addInkWell;
+
+  ///  获取焦点颜色 [addInkWell] = true
+  final Color? focusColor;
+
+  ///  指针悬停时颜色 [addInkWell] = true
+  final Color? hoverColor;
+
+  ///  点击时的颜色 [addInkWell] = true
+  final Color? highlightColor;
+
+  ///  水波纹颜色 [addInkWell] = true
+  final Color? splashColor;
+  final BorderRadius? borderRadius;
 
   @override
   Widget build(BuildContext context) {
@@ -875,6 +897,11 @@ class SimpleButton extends StatelessWidget {
       visible: visible,
       constraints: constraints,
       addInkWell: addInkWell,
+      borderRadius: borderRadius,
+      highlightColor: highlightColor,
+      hoverColor: hoverColor,
+      splashColor: splashColor,
+      focusColor: focusColor,
       mainAxisSize: MainAxisSize.min,
       child: current,
       onTap: onTap,
