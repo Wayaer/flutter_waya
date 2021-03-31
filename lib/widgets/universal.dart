@@ -832,7 +832,7 @@ class SimpleButton extends StatelessWidget {
     this.borderRadius,
   })  : text = text ?? 'Button',
         isElastic = isElastic ?? false,
-        addInkWell = addInkWell ?? true,
+        addInkWell = addInkWell ?? false,
         overflow = overflow ?? TextOverflow.ellipsis,
         super(key: key);
 
