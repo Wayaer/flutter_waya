@@ -11,7 +11,7 @@ abstract class Engine {
 }
 
 abstract class BaseEngine implements Engine {
-  late bool forEncryption;
+  bool forEncryption = false;
   List<int>? key;
 
   @override
@@ -21,7 +21,7 @@ abstract class BaseEngine implements Engine {
   }
 
   @override
-  Future<void> reset() async {
+  void reset() {
     key = null;
     forEncryption = false;
   }
@@ -33,23 +33,13 @@ abstract class BaseEngine implements Engine {
     const int blockSize = 2;
     if (forEncryption) _pkc7Pad(dataWords, blockSize);
 
-    /// const bool doFlush = false;
     final int dataSigBytes = dataWords.length;
     const int blockSizeBytes = blockSize * 4;
     const int minBufferSize = 0;
 
     ///  Count blocks ready
     int nBlocksReady = dataSigBytes ~/ blockSizeBytes;
-
-    /// if (doFlush) {
-    ///   ///  Round up to include partial blocks
-    ///   nBlocksReady = nBlocksReady.ceil();
-    /// } else {
-    ///  Round down to include only full blocks,
-    ///  less the number of blocks that must remain in the buffer
     nBlocksReady = max((nBlocksReady | 0) - minBufferSize, 0);
-
-    /// }
 
     ///  Count words ready
     final int nWordsReady = nBlocksReady * blockSize;
@@ -58,7 +48,7 @@ abstract class BaseEngine implements Engine {
     final int nBytesReady = min(nWordsReady * 4, dataSigBytes);
 
     ///  Process blocks
-    late List<int> processedWords;
+    List<int>? processedWords;
     if (nWordsReady != 0) {
       for (int offset = 0; offset < nWordsReady; offset += blockSize) {
         ///  Perform concrete-algorithm logic
@@ -69,12 +59,85 @@ abstract class BaseEngine implements Engine {
       processedWords = dataWords.getRange(0, nWordsReady).toList();
       dataWords.removeRange(0, nWordsReady);
     }
-
-    final List<int> result = nBytesReady
-        .generate((int i) => i < processedWords.length ? processedWords[i] : 0);
-
+    final List<int> result = List<int>.generate(nBytesReady,
+        (int i) => i < processedWords!.length ? processedWords[i] : 0);
     if (!forEncryption) _pkc7UnPad(result, blockSize);
     return result;
+  }
+
+  void _pkc7Pad(List<int> data, int blockSize) {
+    final int blockSizeBytes = blockSize * 4;
+
+    ///  Count padding bytes
+    final int nPaddingBytes = blockSizeBytes - data.length % blockSizeBytes;
+
+    ///  Create padding word
+    final int paddingWord = (nPaddingBytes << 24) |
+        (nPaddingBytes << 16) |
+        (nPaddingBytes << 8) |
+        nPaddingBytes;
+
+    ///  Create padding
+    final List<int> paddingWords = <int>[];
+    for (int i = 0; i < nPaddingBytes; i += 4) paddingWords.add(paddingWord);
+    final List<int> padding = List<int>.generate(nPaddingBytes,
+        (int i) => i < paddingWords.length ? paddingWords[i] : 0);
+
+    ///  Add padding
+    _concat(data, padding);
+  }
+
+  void _pkc7UnPad(List<int> data, int blockSize) {
+    final int sigBytes = data.length;
+    final int nPaddingBytes = data[(sigBytes - 1).rightShift32(2)] & 0xff;
+    data.length -= nPaddingBytes;
+  }
+
+  void _concat(List<int> a, List<int> b) {
+    ///  Shortcuts
+    final List<int> thisWords = a;
+    final List<int> thatWords = b;
+    final int thisSigBytes = a.length;
+    final int thatSigBytes = b.length;
+
+    ///  Clamp excess bits
+    _clamp(a);
+
+    ///  Concat
+    if (thisSigBytes % 4 != 0) {
+      ///  Copy one byte at a time
+      for (int i = 0; i < thatSigBytes; i++) {
+        final int thatByte = (thatWords[i >> 2] >> (24 - (i % 4) * 8)) & 0xff;
+        final int idx = (thisSigBytes + i) >> 2;
+        final int newLength = idx + 1;
+        if (newLength <= thisWords.length)
+          return;
+        else
+          thisWords.addAll(List<int>.generate(
+              newLength.length - thisWords.length, (int index) => 0));
+
+        thisWords[idx] |= thatByte << (24 - ((thisSigBytes + i) % 4) * 8);
+      }
+    } else {
+      ///  Copy one word at a time
+      for (int i = 0; i < thatSigBytes; i += 4) {
+        final int idx = (thisSigBytes + i) >> 2;
+        if (idx >= thisWords.length) thisWords.length = idx + 1;
+        thisWords[idx] = thatWords[i >> 2];
+      }
+    }
+    a.length = thisSigBytes + thatSigBytes;
+  }
+
+  void _clamp(List<int> data) {
+    ///  Shortcuts
+    final List<int> words = data;
+    final int sigBytes = data.length;
+
+    ///  Clamp
+    words[sigBytes.rightShift32(2)] &=
+        (0xffffffff << (32 - (sigBytes % 4) * 8)).toSigned(32);
+    words.length = (sigBytes / 4).ceil();
   }
 }
 
@@ -88,21 +151,22 @@ class DESEngine extends BaseEngine {
   int get blockSize => 64 ~/ 32;
 
   @override
-  Future<void> init(bool forEncryption, List<int> key) async {
+  void init(bool forEncryption, List<int> key) {
     super.init(forEncryption, key);
+    final List<List<int>> subKeys =
+        _subKeys = List<List<int>>.generate(16, (_) => <int>[]);
 
     ///  Select 56 bits according to pc1
-    final List<int> keyBits = 56.generate((int index) {
-      final int keyBitPos = pc1[index] - 1;
-      final List<int>? k = this.key;
-      if (k != null) return 0;
-      return (k![keyBitPos.rightShift32(5)]
+    final List<int> keyBits = <int>[];
+    for (int i = 0; i < 56; i++) {
+      final int keyBitPos = pc1[i] - 1;
+      keyBits.add((this
+              .key![keyBitPos.rightShift32(5)]
               .rightShift32((31 - keyBitPos % 32).toInt())) &
-          1;
-    });
+          1);
+    }
 
     ///  Assemble 16 subKeys
-    final List<List<int>> subKeys = _subKeys = 16.generate((_) => <int>[]);
     for (int nSubKey = 0; nSubKey < 16; nSubKey++) {
       ///  Create subKey
       final List<int> subKey =
@@ -136,12 +200,8 @@ class DESEngine extends BaseEngine {
 
   @override
   int processBlock(List<int> M, int offset) {
-    final List<List<int>> invSubKeys = <List<int>>[];
-    if (!forEncryption) {
-      for (int i = 0; i < 16; i++) invSubKeys[i] = _subKeys![15 - i];
-    }
-
-    final List<List<int>> subKeys = (forEncryption ? _subKeys : invSubKeys)!;
+    final List<List<int>> subKeys =
+        forEncryption ? _subKeys! : _subKeys!.reversed.toList();
 
     _lBlock = M[offset].toSigned(32);
     _rBlock = M[offset + 1].toSigned(32);
@@ -191,12 +251,12 @@ class DESEngine extends BaseEngine {
   }
 
   @override
-  Future<void> reset() async {
+  void reset() {
     forEncryption = false;
     key = null;
     _subKeys = null;
-    // _lBlock = null;
-    // _rBlock = null;
+    _lBlock = 0;
+    _rBlock = 0;
   }
 
   ///  Swap bits across the left and right words
@@ -204,7 +264,6 @@ class DESEngine extends BaseEngine {
     final int t =
         (((_lBlock.rightShift32(offset)).toSigned(32) ^ _rBlock) & mask)
             .toSigned(32);
-
     (_rBlock ^= t).toSigned(32);
     _lBlock ^= (t << offset).toSigned(32);
   }
@@ -242,85 +301,4 @@ class DES3Engine extends BaseEngine {
     }
     return blockSize;
   }
-}
-
-void _pkc7Pad(List<int> data, int blockSize) {
-  final int blockSizeBytes = blockSize * 4;
-
-  ///  Count padding bytes
-  final int nPaddingBytes = blockSizeBytes - data.length % blockSizeBytes;
-
-  ///  Create padding word
-  final int paddingWord = (nPaddingBytes << 24) |
-      (nPaddingBytes << 16) |
-      (nPaddingBytes << 8) |
-      nPaddingBytes;
-
-  ///  Create padding
-  final List<int> paddingWords = <int>[];
-  for (int i = 0; i < nPaddingBytes; i += 4) paddingWords.add(paddingWord);
-  final List<int> padding = nPaddingBytes
-      .generate((int i) => i < paddingWords.length ? paddingWords[i] : 0);
-
-  ///  Add padding
-  _concat(data, padding);
-}
-
-void _pkc7UnPad(List<int> data, int blockSize) {
-  final int sigBytes = data.length;
-  final int nPaddingBytes = data[(sigBytes - 1).rightShift32(2)] & 0xff;
-  data.length -= nPaddingBytes;
-}
-
-void _concat(List<int> a, List<int> b) {
-  ///  Shortcuts
-  final List<int> thisWords = a;
-  final List<int> thatWords = b;
-  final int thisSigBytes = a.length;
-  final int thatSigBytes = b.length;
-
-  ///  Clamp excess bits
-  _clamp(a);
-
-  ///  Concat
-  if (thisSigBytes % 4 != 0) {
-    ///  Copy one byte at a time
-    for (int i = 0; i < thatSigBytes; i++) {
-      final int thatByte = (thatWords[i >> 2] >> (24 - (i % 4) * 8)) & 0xff;
-      final int idx = (thisSigBytes + i) >> 2;
-      _expandList(thisWords, idx + 1);
-      thisWords[idx] |= thatByte << (24 - ((thisSigBytes + i) % 4) * 8);
-    }
-  } else {
-    ///  Copy one word at a time
-    for (int i = 0; i < thatSigBytes; i += 4) {
-      final int idx = (thisSigBytes + i) >> 2;
-      if (idx >= thisWords.length) thisWords.length = idx + 1;
-      thisWords[idx] = thatWords[i >> 2];
-    }
-  }
-  a.length = thisSigBytes + thatSigBytes;
-}
-
-void _expandList(List<int?> data, int newLength) {
-  if (newLength <= data.length) return;
-
-  ///  update the length
-  data.length = newLength;
-
-  ///  replace any new allocations with 0
-  for (int i = 0; i < data.length; i++) {
-    if (data[i] == null) data[i] = 0;
-  }
-}
-
-void _clamp(List<int> data) {
-  ///  Shortcuts
-  final List<int> words = data;
-  final int sigBytes = data.length;
-
-  ///  Clamp
-  words[sigBytes.rightShift32(2)] &=
-      (0xffffffff << (32 - (sigBytes % 4) * 8)).toSigned(32);
-  words.length = (sigBytes / 4).ceil();
 }

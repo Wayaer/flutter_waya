@@ -24,7 +24,7 @@ class ButtonPage extends StatelessWidget {
             CustomElastic('ElasticButton',
                 onTap: () => showToast('ElasticButton')),
             const SizedBox(height: 20),
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
               DropdownMenuButton(
                 defaultBuilder: (int index) {
                   return BasisText(index == null ? '请选择' : _colors[index],

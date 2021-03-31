@@ -896,7 +896,7 @@ class SimpleButton extends StatelessWidget {
       heroTag: heroTag,
       visible: visible,
       constraints: constraints,
-      addInkWell: addInkWell,
+      addInkWell: onTap != null && addInkWell,
       borderRadius: borderRadius,
       highlightColor: highlightColor,
       hoverColor: hoverColor,

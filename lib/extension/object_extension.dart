@@ -142,54 +142,6 @@ extension ExtensionString on String {
   /// 进行utf8编码
   List<int> get utf8Encode => utf8.encode(this);
 
-  /// des解码
-  List<int> get desParseBase64 {
-    final String base64Str = this;
-    const String map =
-        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
-    List<int>? reverseMap;
-
-    ///  Shortcuts
-    int base64StrLength = base64Str.length;
-    reverseMap ??= 123.generate((int j) => reverseMap![map.codeUnits[j]] = j);
-
-    ///  Ignore padding
-    final int? paddingChar = map.codeUnits[64];
-    if (paddingChar != null) {
-      final int paddingIndex = base64Str.codeUnits.indexOf(paddingChar);
-      if (paddingIndex != -1) base64StrLength = paddingIndex;
-    }
-
-    List<int> parseLoop(
-        String base64Str, int base64StrLength, List<int> reverseMap) {
-      final List<int?> words = <int>[];
-      int nBytes = 0;
-      for (int i = 0; i < base64StrLength; i++) {
-        if (i % 4 != 0) {
-          final int bits1 = reverseMap[base64Str.codeUnits[i - 1]] <<
-              ((i % 4) * 2).toSigned(32);
-          final int bits2 = reverseMap[base64Str.codeUnits[i]]
-              .rightShift32((6 - (i % 4) * 2).toInt())
-              .toSigned(32);
-          final int idx = nBytes.rightShift32(2);
-          if (words.length <= idx) words.length = idx + 1;
-
-          for (int i = 0; i < words.length; i++) {
-            if (words[i] == null) words[i] = 0;
-          }
-
-          int wordsIdx = words[idx]!;
-          wordsIdx |= ((bits1 | bits2) << (24 - (nBytes % 4) * 8)).toSigned(32);
-          print(wordsIdx);
-          nBytes++;
-        }
-      }
-      return nBytes.generate((int i) => i < words.length ? words[i]! : 0);
-    }
-
-    return parseLoop(base64Str, base64StrLength, reverseMap);
-  }
-
   /// 每隔 x位 加 pattern
   String formatDigitPattern({int digit = 4, String pattern = ' '}) {
     String text = this;
