@@ -34,12 +34,16 @@ event bus
 
 
 ### [button](./lib/widgets/button)
+
 [DropdownMenuButton](./lib/widgets/button/dropdown_button.dart) 仿官方 [DropdownButton] 不遮挡默认
+
 [LiquidButton](./lib/widgets/button/liquid_button.dart) 流体按钮
+
 [ElasticButton](./lib/widgets/button/elastic_button.dart) 弹性按钮
 
 ### [carousel](./lib/widgets/carousel)
 [indicator](./lib/widgets/carousel/indicator.dart) 指示器
+
 [carousel](./lib/widgets/carousel/carousel.dart) 轮播图
 
 ### [progress](./lib/widgets/progress)
@@ -54,6 +58,7 @@ event bus
 [showBottomPagePopup()](./lib/widgets/root/root_part.dart),[showCupertinoBottomPagePopup
 ()](./lib/widgets/root/root_part.dart),[dialogSureCancel()](./lib/widgets/root/root_part.dart),无需传[context],随处可用,
 关闭 以上弹窗或页面 必须使用 [closePopup()](./lib/widgets/root/root_part.dart)或直接[pop()](./lib/widgets/root/root_part.dart),
+
 [Scaffold] 使用 [OverlayScaffold](./lib/widgets/root/root_part.dart) 可以任意处使用 [showOverlay()](./lib/widgets/root/root_part.dart), [showLoading()](./lib/widgets/root/root_part.dart), [showToast()](./lib/widgets/root/root_part.dart),
 关闭Overlay 必须使用 [closeOverlay()](./lib/widgets/root/root_part.dart) 或关闭全部 [closeAllOverlay()](./lib/widgets/root/root_part.dart), 
 
@@ -64,7 +69,9 @@ event bus
 实现 picker 功能的滚动组件
 
 ### [scroll_view](./lib/widgets/scroll_view.dart)
+
 [ScrollViewAuto] 实现 自适应高度的 [SliverAutoPersistentHeader] 和 [SliverAutoAppBar] [FlexibleSpaceAutoBar] 无需设置 expandedHeight
+
 [ScrollList] 合并[ListView] 和 [GridView] 并添加 下拉刷新 和 上拉加载 功能
 
 ### [universal](./lib/widgets/universal.dart)
