@@ -10,8 +10,8 @@ context 扩展
 基础数据类型 扩展
 [object_extension](./lib/extension/object_extension.dart)
 
-  widget 扩展
-  [widget_extension](./lib/extension/widget_extension.dart)
+widget 扩展
+[widget_extension](./lib/extension/widget_extension.dart)
 
 
 
@@ -32,42 +32,43 @@ event bus
 ## 多个UI组件
 ## [widgets](./lib/widgets)
 
-[DropdownMenuButton] 仿官方 [DropdownButton] 不遮挡默认
-[LiquidButton] 流体按钮
-[ElasticButton] 弹性按钮
-[button](./lib/widgets/button)
 
-[indicator] 指示器
-[carousel] 轮播图
-[carousel](./lib/widgets/carousel)
+### [button](./lib/widgets/button)
+[DropdownMenuButton](./lib/widgets/button/dropdown_button.dart) 仿官方 [DropdownButton] 不遮挡默认
+[LiquidButton](./lib/widgets/button/liquid_button.dart) 流体按钮
+[ElasticButton](./lib/widgets/button/elastic_button.dart) 弹性按钮
 
-[LiquidProgress] 流体progress
-[Progress] 普通动画progress
-[progress](./lib/widgets/progress)
+### [carousel](./lib/widgets/carousel)
+[indicator](./lib/widgets/carousel/indicator.dart) 指示器
+[carousel](./lib/widgets/carousel/carousel.dart) 轮播图
 
-[EasyRefreshed] 封装 flutter_easyrefresh 
-[refresh](./lib/widgets/refresh)
+### [progress](./lib/widgets/progress)
+[LiquidProgress](./lib/widgets/progress/liquid_progress.dart) 流体progress
+[Progress](./lib/widgets/progress/progress.dart) 普通动画progress
 
-根组件使用[GlobalWidgetsApp] 可直接使用 push() pop() 等多个路由方法和[showDialogPopup()],[showBottomPopup()],
-[showBottomPagePopup()],[showCupertinoBottomPagePopup()],[dialogSureCancel()],无需传[context],随处可用,
-关闭 以上弹窗或页面 必须使用 [closePopup()]或直接[pop()],
-[Scaffold] 使用 [OverlayScaffold] 可以任意处使用 [showOverlay()], [showLoading()], [showToast()],
-关闭Overlay 必须使用 [closeOverlay()]或关闭全部 [closeAllOverlay()], 
+### [refresh](./lib/widgets/refresh)
+[EasyRefreshed](./lib/widgets/refresh/easy_refresh.dart) 封装 flutter_easyrefresh
 
-[root](./lib/widgets/root)
+### [root](./lib/widgets/root)
+根组件使用[GlobalWidgetsApp](./lib/widgets/root/root.dart) 可直接使用[push()](./lib/widgets/root/root.dart) [pop()](./lib/widgets/root/root.dart) 等多个路由方法和[showDialogPopup()],[showBottomPopup()],
+[showBottomPagePopup()](./lib/widgets/root/root_part.dart),[showCupertinoBottomPagePopup
+()](./lib/widgets/root/root_part.dart),[dialogSureCancel()](./lib/widgets/root/root_part.dart),无需传[context],随处可用,
+关闭 以上弹窗或页面 必须使用 [closePopup()](./lib/widgets/root/root_part.dart)或直接[pop()](./lib/widgets/root/root_part.dart),
+[Scaffold] 使用 [OverlayScaffold](./lib/widgets/root/root_part.dart) 可以任意处使用 [showOverlay()](./lib/widgets/root/root_part.dart), [showLoading()](./lib/widgets/root/root_part.dart), [showToast()](./lib/widgets/root/root_part.dart),
+关闭Overlay 必须使用 [closeOverlay()](./lib/widgets/root/root_part.dart) 或关闭全部 [closeAllOverlay()](./lib/widgets/root/root_part.dart), 
 
+### [widget](./lib/widgets/widget)
 多个组件
-[widget](./lib/widgets/widget)
 
+###[list_wheel](./lib/widgets/list_wheel.dart)
 实现 picker 功能的滚动组件
-[list_wheel](./lib/widgets/list_wheel.dart)
 
+### [scroll_view](./lib/widgets/scroll_view.dart)
 [ScrollViewAuto] 实现 自适应高度的 [SliverAutoPersistentHeader] 和 [SliverAutoAppBar] [FlexibleSpaceAutoBar] 无需设置 expandedHeight
 [ScrollList] 合并[ListView] 和 [GridView] 并添加 下拉刷新 和 上拉加载 功能
-[scroll_view](./lib/widgets/scroll_view.dart)
 
+### [universal](./lib/widgets/universal.dart)
 中合多个官方组件功能  减少嵌套
-[universal](./lib/widgets/universal.dart)
 
 ## 快捷打包命令 [builds](builds)
 
