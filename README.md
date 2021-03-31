@@ -54,9 +54,8 @@ event bus
 [EasyRefreshed](./lib/widgets/refresh/easy_refresh.dart) 封装 flutter_easyrefresh
 
 ### [root](./lib/widgets/root)
-根组件使用[GlobalWidgetsApp](./lib/widgets/root/root.dart) 可直接使用[push()](./lib/widgets/root/root.dart) [pop()](./lib/widgets/root/root.dart) 等多个路由方法和[showDialogPopup()],[showBottomPopup()],
-[showBottomPagePopup()](./lib/widgets/root/root_part.dart),[showCupertinoBottomPagePopup
-()](./lib/widgets/root/root_part.dart),[dialogSureCancel()](./lib/widgets/root/root_part.dart),无需传[context],随处可用,
+根组件使用[GlobalWidgetsApp](./lib/widgets/root/root.dart) 可直接使用[push()](./lib/widgets/root/root.dart) [pop()](./lib/widgets/root/root.dart) 等多个路由方法和[showDialogPopup()](./lib/widgets/root/root.dart),[showBottomPopup()](./lib/widgets/root/root.dart),
+[showBottomPagePopup()](./lib/widgets/root/root_part.dart),[showCupertinoBottomPagePopup()](./lib/widgets/root/root_part.dart),[dialogSureCancel()](./lib/widgets/root/root_part.dart),无需传 context ,随处可用,
 关闭 以上弹窗或页面 必须使用 [closePopup()](./lib/widgets/root/root_part.dart)或直接[pop()](./lib/widgets/root/root_part.dart),
 
 [Scaffold] 使用 [OverlayScaffold](./lib/widgets/root/root_part.dart) 可以任意处使用 [showOverlay()](./lib/widgets/root/root_part.dart), [showLoading()](./lib/widgets/root/root_part.dart), [showToast()](./lib/widgets/root/root_part.dart),
@@ -70,9 +69,9 @@ event bus
 
 ### [scroll_view](./lib/widgets/scroll_view.dart)
 
-[ScrollViewAuto] 实现 自适应高度的 [SliverAutoPersistentHeader] 和 [SliverAutoAppBar] [FlexibleSpaceAutoBar] 无需设置 expandedHeight
+[ScrollViewAuto] 实现 自适应高度的 [SliverAutoPersistentHeader](./lib/widgets/scroll_view.dart) 和 [SliverAutoAppBar](./lib/widgets/scroll_view.dart) [FlexibleSpaceAutoBar] 无需设置 expandedHeight
 
-[ScrollList] 合并[ListView] 和 [GridView] 并添加 下拉刷新 和 上拉加载 功能
+[ScrollList](./lib/widgets/scroll_view.dart) 合并[ListView] 和 [GridView] 并添加 下拉刷新 和 上拉加载 功能
 
 ### [universal](./lib/widgets/universal.dart)
 中合多个官方组件功能  减少嵌套
