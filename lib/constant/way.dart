@@ -5,13 +5,13 @@ const double _radiusLocal = ConstConstant.Radius;
 
 class WayStyles {
   /// 统一所有阴影效果
-  static List<BoxShadow> boxShadow() => <BoxShadow>[
-        const BoxShadow(
-            color: ConstColors.boxShadowColor,
-            blurRadius: _radiusLocal,
-            spreadRadius: 1,
-            offset: Offset(0, 3))
-      ];
+  static const List<BoxShadow> boxShadow = <BoxShadow>[
+    BoxShadow(
+        color: ConstColors.boxShadowColor,
+        blurRadius: _radiusLocal,
+        spreadRadius: 1,
+        offset: Offset(0, 3))
+  ];
 
   /// left right  margin or padding 20
   static EdgeInsetsGeometry edgeInsetsHorizontal({double width = 20}) =>
@@ -34,7 +34,7 @@ class WayStyles {
       BoxDecoration(
           color: color ?? ConstColors.white,
           borderRadius: BorderRadius.circular(radius ?? _radiusLocal),
-          boxShadow: shadow ? boxShadow() : null);
+          boxShadow: shadow ? boxShadow : null);
 
   /// 统一 白色背景 圆角 边框
   static Decoration containerRadiusWidth(

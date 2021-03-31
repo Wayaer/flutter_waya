@@ -48,20 +48,24 @@ class ButtonPage extends StatelessWidget {
                     child: BasisText(_colors[index])),
               ),
               const SizedBox(width: 30),
+              DropdownButton<String>(
+                  value: _colors[0],
+                  onChanged: (String value) {},
+                  items: _colors.builder((String item) =>
+                      DropdownMenuItem<String>(
+                          value: item, child: Text(item)))),
+              const SizedBox(width: 30),
               DropdownMenuButton.material(
-                  itemBuilder: (int index) => Container(
-                      alignment: Alignment.center,
-                      padding: const EdgeInsets.symmetric(vertical: 6),
-                      decoration: const BoxDecoration(
-                          border:
-                              Border(bottom: BorderSide(color: Colors.white))),
-                      child: BasisText(_colors[index])),
+                  itemBuilder: (int index) =>
+                      BasisText(_colors[index], color: Colors.black),
                   itemCount: _colors.length,
                   defaultBuilder: (int index) {
                     return BasisText(index == null ? '请选择' : _colors[index],
-                        color: Colors.black);
+                            color: Colors.black)
+                        .paddingSymmetric(vertical: 10);
                   })
             ]),
+            const SizedBox(height: 20),
             const SizedBox(height: 20),
             SimpleButton(
                 padding:

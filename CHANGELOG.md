@@ -1,5 +1,6 @@
 ## [1.9.2]
   * Change [HintDot] to [Badge] 
+  * add [DropdownMenuButton.material]
 ## [1.9.1]
   * remove [DropdownMenuButton] constraints.
 ## [1.9.0]

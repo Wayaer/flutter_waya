@@ -229,8 +229,8 @@ class _HttpDataPageState extends State<_HttpDataPage> {
               bool showJson = false;
               return Universal(
                 margin: const EdgeInsets.only(top: 10),
-                decoration: BoxDecoration(
-                    color: ConstColors.white, boxShadow: WayStyles.boxShadow()),
+                decoration: const BoxDecoration(
+                    color: ConstColors.white, boxShadow: WayStyles.boxShadow),
                 addCard: true,
                 builder: (_, StateSetter state) => !showJson
                     ? title(res.url, onTap: () {

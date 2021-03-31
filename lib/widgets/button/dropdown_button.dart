@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_waya/constant/way.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 /// 弹出组件每个item样式
@@ -40,6 +41,19 @@ typedef ToggleDefaultBuilder = Widget Function(Widget child, Widget toggle);
 ///               border: Border(bottom: BorderSide(color: Colors.white))),
 ///           child: BasisText(_colors[index])),
 /// )
+///
+///
+///     DropdownMenuButton.material(
+///           itemBuilder: (int index) =>
+///           BasisText(_colors[index], color: Colors.black),
+///           itemCount: _colors.length,
+///           defaultBuilder: (int index) {
+///               return BasisText(index == null ? '请选择' : _colors[index],
+///                         color: Colors.black)
+///                     .paddingSymmetric(vertical: 10);
+///           })
+///
+///
 
 class DropdownMenuButton extends StatefulWidget {
   const DropdownMenuButton(
@@ -56,19 +70,27 @@ class DropdownMenuButton extends StatefulWidget {
       this.toggle})
       : super(key: key);
 
-  const DropdownMenuButton.material({
+  DropdownMenuButton.material({
     Key? key,
-    required this.itemBuilder,
+    required IndexedBuilder itemBuilder,
+    Color? iconColor,
+    double iconSize = 24,
+    IconData? iconData,
     required this.itemCount,
     required this.defaultBuilder,
     this.onChanged,
-    this.backgroundColor = Colors.black12,
+    this.backgroundColor,
     this.onTap,
-    this.decoration,
     this.margin,
     this.padding,
-    this.toggle,
-  }) : super(key: key);
+  })  : toggle = Icon(iconData ?? Icons.arrow_right_rounded,
+            color: iconColor ?? Colors.black, size: iconSize),
+        decoration = BoxDecoration(
+            color: backgroundColor ?? Colors.white,
+            boxShadow: WayStyles.boxShadow),
+        itemBuilder = ((int index) =>
+            itemBuilder(index).paddingSymmetric(vertical: 8, horizontal: 4)),
+        super(key: key);
 
   final Widget? toggle;
   final DefaultBuilder defaultBuilder;
@@ -78,7 +100,7 @@ class DropdownMenuButton extends StatefulWidget {
   final ValueCallback<int>? onChanged;
 
   /// menu 属性
-  final Color backgroundColor;
+  final Color? backgroundColor;
   final Decoration? decoration;
   final EdgeInsetsGeometry? margin;
   final EdgeInsetsGeometry? padding;
