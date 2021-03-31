@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/constant/way.dart';
 import 'package:flutter_waya/flutter_waya.dart';
@@ -172,11 +174,11 @@ class DropdownMenu extends StatefulWidget {
     Key? key,
     Color? itemBackground,
     Color? titleBackground,
+    TextStyle? titleStyle,
     required this.title,
     required this.value,
     this.titleTap,
     this.valueTap,
-    this.titleStyle,
     this.valueStyle,
     this.width,
     this.alertMargin,
@@ -185,7 +187,8 @@ class DropdownMenu extends StatefulWidget {
     this.decoration,
     this.itemDecoration,
     this.background,
-  })  : itemBackground = itemBackground ?? Colors.white,
+  })  : titleStyle = titleStyle ?? const TextStyle(color: Colors.black),
+        itemBackground = itemBackground ?? Colors.white,
         titleBackground = titleBackground ?? Colors.white,
         super(key: key);
 
@@ -231,7 +234,6 @@ class _DropdownMenuState extends State<DropdownMenu> {
         titleKey.currentContext!.findRenderObject() as RenderBox;
     final Offset local = title.localToGlobal(Offset.zero);
     final double titleHeight = context.size!.height;
-
     final ScrollList listBuilder = ScrollList.builder(
         itemCount: value[index].length,
         itemBuilder: (_, int i) => SimpleButton(
@@ -283,24 +285,21 @@ class _DropdownMenuState extends State<DropdownMenu> {
         direction: Axis.horizontal,
         color: widget.titleBackground ?? ConstColors.white,
         decoration: widget.decoration,
-        children: titleChildren());
-  }
-
-  List<Widget> titleChildren() {
-    if (title.isEmpty) return <Widget>[];
-    return title.length.generate((int index) {
-      titleState.add(false);
-      return IconBox(
-          onTap: () => onTap(index),
-          titleStyle: widget.titleStyle,
-          titleText: title[index],
-          reversal: true,
-          color: widget.iconColor ?? ConstColors.black70,
-          size: 20,
-          icon: titleState[index]
-              ? Icons.keyboard_arrow_up
-              : Icons.keyboard_arrow_down);
-    });
+        children: title.length.generate((int index) {
+          titleState.add(false);
+          return ToggleRotate(
+              rad: pi,
+              isRotate: titleState[index],
+              toggleBuilder: (Widget child) => Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        BasisText(title[index], style: widget.titleStyle),
+                        child
+                      ]),
+              child: Icon(Icons.keyboard_arrow_up,
+                  color: widget.iconColor ?? ConstColors.black, size: 20),
+              onTap: () => onTap(index));
+        }));
   }
 
   void onTap(int index) {

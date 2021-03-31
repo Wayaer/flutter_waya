@@ -357,7 +357,7 @@ class ToggleRotate extends StatefulWidget {
   final GestureTapCallback? onTap;
 
   /// 旋转角度 pi / 2
-  /// 1=90℃  2=180℃
+  /// 1=180℃  2=90℃
   final double rad;
 
   /// 动画时长
