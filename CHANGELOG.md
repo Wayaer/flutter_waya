@@ -1,3 +1,6 @@
+## [1.9.5]
+  * fix bugs 
+  * add doc
 ## [1.9.3]
   * fix bugs for [des]
 ## [1.9.2]
