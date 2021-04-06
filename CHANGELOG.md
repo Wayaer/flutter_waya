@@ -1,3 +1,5 @@
+## [1.9.6]
+ * add [EasyRefreshType]
 ## [1.9.5]
   * fix bugs 
   * add doc

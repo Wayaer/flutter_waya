@@ -60,6 +60,9 @@ enum EasyRefreshType {
   /// 刷新成功
   refreshSuccess,
 
+  /// 刷新完成 没有数据
+  refreshNoMore,
+
   /// 刷新失败
   refreshFailed,
 
@@ -71,6 +74,9 @@ enum EasyRefreshType {
 
   /// 加载失败
   loadFailed,
+
+  /// 加载完成 没有数据
+  loadNoMore,
 }
 
 class EasyRefreshed extends StatefulWidget {
@@ -157,6 +163,9 @@ class _EasyRefreshedState extends State<EasyRefreshed> {
           case EasyRefreshType.refreshFailed:
             _holdController!.finishRefresh(success: false);
             break;
+          case EasyRefreshType.refreshNoMore:
+            _holdController!.finishRefresh(success: true, noMore: true);
+            break;
           case EasyRefreshType.loading:
             _holdController!.callLoad();
             break;
@@ -165,6 +174,9 @@ class _EasyRefreshedState extends State<EasyRefreshed> {
             break;
           case EasyRefreshType.loadFailed:
             _holdController!.finishLoad(success: false);
+            break;
+          case EasyRefreshType.loadNoMore:
+            _holdController!.finishLoad(success: true, noMore: true);
             break;
         }
       }
