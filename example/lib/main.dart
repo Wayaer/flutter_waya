@@ -15,12 +15,12 @@ import 'package:waya/module/universal_page.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   setGlobalPushMode(WidgetMode.ripple);
-  des();
+  _des();
   runApp(GlobalWidgetsApp(
       title: 'Waya Demo', home: Home(), widgetMode: WidgetMode.material));
 }
 
-void des() {
+void _des() {
   const String str = 'CfAmqOiIYz6NkH0Te32Uz6obXELPspz1pDj+oOUNNbsmptHP0Jwvdg==';
   const String key = 'a51d3484ad8445df9d9e7aa5e8';
   log('des解密==>\n key = $key \n String = $str');
@@ -34,6 +34,7 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return OverlayScaffold(
       backgroundColor: Colors.white,
+      onWillPopOverlayClose: true,
       appBar: AppBar(title: const Text('Waya Demo'), centerTitle: true),
       padding: const EdgeInsets.symmetric(horizontal: 10),
       body: Wrap(runSpacing: 10, spacing: 10, children: <Widget>[

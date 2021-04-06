@@ -1,5 +1,7 @@
+## [1.9.7]
+  * Modify the method of obtaining the OverlayState
 ## [1.9.6]
- * add [EasyRefreshType]
+  * add [EasyRefreshType]
 ## [1.9.5]
   * fix bugs 
   * add doc

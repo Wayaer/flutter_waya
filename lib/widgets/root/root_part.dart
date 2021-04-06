@@ -20,13 +20,11 @@ class OverlayEntryAuto extends OverlayEntry {
 
 ///  自定义Overlay
 OverlayEntryAuto? showOverlay(Widget widget, {bool autoOff = false}) {
-  if (_scaffoldKeyList.isEmpty) return null;
-  _overlay ??=
-      Overlay.of(_scaffoldKeyList.last.currentContext!, rootOverlay: false);
+  final OverlayState? _overlay = _globalNavigatorKey.currentState!.overlay;
   if (_overlay == null) return null;
   final OverlayEntryAuto entryAuto =
       OverlayEntryAuto(autoOff: autoOff, widget: widget);
-  _overlay!.insert(entryAuto);
+  _overlay.insert(entryAuto);
   _overlayEntryList.add(entryAuto);
   return entryAuto;
 }

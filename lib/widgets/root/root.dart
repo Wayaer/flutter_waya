@@ -10,10 +10,8 @@ import 'package:flutter_waya/widgets/root/route/ripple_router.dart';
 part 'root_part.dart';
 
 GlobalKey<NavigatorState> _globalNavigatorKey = GlobalKey();
-List<GlobalKey<State>> _scaffoldKeyList = <GlobalKey<State>>[];
 GlobalKey<ScaffoldMessengerState>? _scaffoldMessengerKey;
 List<OverlayEntryAuto> _overlayEntryList = <OverlayEntryAuto>[];
-OverlayState? _overlay;
 EventBus eventBus = EventBus();
 
 enum WidgetMode {
@@ -276,8 +274,10 @@ class GlobalWidgetsApp extends StatelessWidget {
       actions: actions);
 }
 
+bool scaffoldWillPop = true;
+
 ///  OverlayScaffold
-class OverlayScaffold extends StatefulWidget {
+class OverlayScaffold extends StatelessWidget {
   const OverlayScaffold({
     Key? key,
     bool? paddingStatusBar,
@@ -394,52 +394,33 @@ class OverlayScaffold extends StatefulWidget {
   final DragStartBehavior drawerDragStartBehavior;
 
   @override
-  _OverlayScaffoldState createState() => _OverlayScaffoldState();
-}
-
-bool scaffoldWillPop = true;
-
-class _OverlayScaffoldState extends State<OverlayScaffold> {
-  GlobalKey<State> _globalKey = GlobalKey();
-
-  @override
-  void initState() {
-    super.initState();
-    if (widget.key != null)
-      _globalKey = widget.key as GlobalKey<State<StatefulWidget>>;
-  }
-
-  @override
   Widget build(BuildContext context) {
     Widget scaffold = Scaffold(
-        key: _globalKey,
-        primary: widget.primary,
-        resizeToAvoidBottomInset: widget.resizeToAvoidBottomInset,
-        drawerDragStartBehavior: widget.drawerDragStartBehavior,
-        bottomSheet: widget.bottomSheet,
-        extendBody: widget.extendBody,
-        endDrawer: widget.endDrawer,
-        drawer: widget.drawer,
-        persistentFooterButtons: widget.persistentFooterButtons,
-        floatingActionButtonLocation: widget.floatingActionButtonLocation,
-        floatingActionButton: widget.floatingActionButton,
-        floatingActionButtonAnimator: widget.floatingActionButtonAnimator,
-        backgroundColor: widget.backgroundColor ?? ConstColors.background,
-        appBar: appBar,
-        bottomNavigationBar: widget.bottomNavigationBar,
+        key: key,
+        primary: primary,
+        resizeToAvoidBottomInset: resizeToAvoidBottomInset,
+        drawerDragStartBehavior: drawerDragStartBehavior,
+        bottomSheet: bottomSheet,
+        extendBody: extendBody,
+        endDrawer: endDrawer,
+        drawer: drawer,
+        persistentFooterButtons: persistentFooterButtons,
+        floatingActionButtonLocation: floatingActionButtonLocation,
+        floatingActionButton: floatingActionButton,
+        floatingActionButtonAnimator: floatingActionButtonAnimator,
+        backgroundColor: backgroundColor ?? ConstColors.background,
+        appBar: appBarFun,
+        bottomNavigationBar: bottomNavigationBar,
         body: universal);
-    if (widget.onWillPop != null || widget.onWillPopOverlayClose) {
-      scaffold = WillPopScope(
-          child: scaffold, onWillPop: widget.onWillPop ?? onWillPop);
-    }
-    if (!_scaffoldKeyList.contains(_globalKey))
-      _scaffoldKeyList.add(_globalKey);
+    if (onWillPop != null || onWillPopOverlayClose)
+      return WillPopScope(
+          child: scaffold, onWillPop: onWillPop ?? onWillPopFun);
     return scaffold;
   }
 
-  Future<bool> onWillPop() async {
+  Future<bool> onWillPopFun() async {
     if (!scaffoldWillPop) return scaffoldWillPop;
-    if (widget.onWillPopOverlayClose &&
+    if (onWillPopOverlayClose &&
         _overlayEntryList.isNotEmpty &&
         !_overlayEntryList.last.autoOff) {
       closeOverlay();
@@ -448,39 +429,30 @@ class _OverlayScaffoldState extends State<OverlayScaffold> {
     return true;
   }
 
-  PreferredSizeWidget? get appBar {
-    if (widget.appBar is AppBar && widget.appBarHeight == null)
-      return widget.appBar as AppBar;
-    return widget.appBar == null
+  PreferredSizeWidget? get appBarFun {
+    if (appBar is AppBar && appBarHeight == null) return appBar as AppBar;
+    return appBar == null
         ? null
         : PreferredSize(
-            child: widget.appBar!,
-            preferredSize: Size.fromHeight(
-                getStatusBarHeight + (widget.appBarHeight ?? 30)));
+            child: appBar!,
+            preferredSize:
+                Size.fromHeight(getStatusBarHeight + (appBarHeight ?? 30)));
   }
 
   Universal get universal => Universal(
       expand: true,
-      refreshConfig: widget.refreshConfig,
-      margin: widget.margin,
-      padding: widget.paddingStatusBar
-          ? EdgeInsets.only(top: getStatusBarHeight)
-          : widget.padding,
-      isScroll: widget.isScroll,
-      isStack: widget.isStack,
-      direction: widget.direction,
-      decoration: widget.decoration,
-      children: widget.children,
-      mainAxisAlignment: widget.mainAxisAlignment,
-      crossAxisAlignment: widget.crossAxisAlignment,
-      child: widget.body);
-
-  @override
-  void dispose() {
-    super.dispose();
-    if (_scaffoldKeyList.contains(_globalKey))
-      _scaffoldKeyList.remove(_globalKey);
-  }
+      refreshConfig: refreshConfig,
+      margin: margin,
+      padding:
+          paddingStatusBar ? EdgeInsets.only(top: getStatusBarHeight) : padding,
+      isScroll: isScroll,
+      isStack: isStack,
+      direction: direction,
+      decoration: decoration,
+      children: children,
+      mainAxisAlignment: mainAxisAlignment,
+      crossAxisAlignment: crossAxisAlignment,
+      child: body);
 }
 
 ///  ************ 以下为 路由跳转 *****************  ///
