@@ -220,7 +220,7 @@ class _HttpDataPageState extends State<_HttpDataPage> {
         decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: Colors.grey.withOpacity(0.5))),
+            border: Border.all(color: Colors.grey.withOpacity(0.3))),
         child: ScrollList.builder(
             itemCount: httpDataList.length,
             padding: const EdgeInsets.all(10),
@@ -252,6 +252,6 @@ class _HttpDataPageState extends State<_HttpDataPage> {
       padding: const EdgeInsets.all(10),
       text: url,
       maxLines: 2,
-      child: BasisText(url, textAlign: TextAlign.start),
+      child: BasisText(url, textAlign: TextAlign.start,color: Colors.black),
       onTap: onTap);
 }

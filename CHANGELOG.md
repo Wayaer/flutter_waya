@@ -1,3 +1,5 @@
+## [1.9.8]
+  * fix bug
 ## [1.9.7]
   * Modify the method of obtaining the OverlayState
 ## [1.9.6]
