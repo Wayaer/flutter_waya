@@ -2,42 +2,40 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 import 'package:waya/main.dart';
 
+final List<Color> _colors = <Color>[
+  ...Colors.accents,
+  ...Colors.primaries,
+];
+
 class ScrollViewPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final List<Color> colors = <Color>[];
     final ScrollController scrollController = ScrollController();
-    colors.addAll(Colors.accents);
-    colors.addAll(Colors.primaries);
-
     return OverlayScaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(title: const Text('ScrollView Demo'), centerTitle: true),
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
+          CustomElastic('CustomScrollView',
+              onTap: () => push(const _CustomScrollViewPage())),
           CustomElastic('ScrollViewAuto',
               onTap: () => push(_ScrollViewAutoPage(slivers))),
           CustomElastic('ScrollViewAuto.nested',
               onTap: () => push(_ScrollViewAutoNestedPage(slivers))),
           CustomElastic('DraggableScrollbar',
-              onTap: () => push(_DraggableScrollbar(colors, scrollController))),
+              onTap: () => push(_DraggableScrollbar(scrollController))),
           CustomElastic('ScrollList',
-              onTap: () => push(_ScrollListPage(colors, scrollController))),
+              onTap: () => push(_ScrollListPage(scrollController))),
           CustomElastic('ScrollList.custom',
-              onTap: () =>
-                  push(_ScrollListCustomPage(colors, scrollController))),
+              onTap: () => push(_ScrollListCustomPage(scrollController))),
           CustomElastic('ScrollList.builder',
-              onTap: () =>
-                  push(_ScrollListBuilderPage(colors, scrollController))),
+              onTap: () => push(_ScrollListBuilderPage(scrollController))),
           CustomElastic('ScrollList.builder-grid',
-              onTap: () =>
-                  push(_ScrollListBuilderGridPage(colors, scrollController))),
+              onTap: () => push(_ScrollListBuilderGridPage(scrollController))),
           CustomElastic('ScrollList.separated',
-              onTap: () =>
-                  push(_ScrollListSeparatedPage(colors, scrollController))),
+              onTap: () => push(_ScrollListSeparatedPage(scrollController))),
           CustomElastic('ScrollList.placeholder',
-              onTap: () =>
-                  push(_ScrollListPlaceholderPage(colors, scrollController))),
+              onTap: () => push(_ScrollListPlaceholderPage(scrollController))),
         ]);
   }
 
@@ -78,10 +76,9 @@ class ScrollViewPage extends StatelessWidget {
 }
 
 class _ScrollListSeparatedPage extends StatelessWidget {
-  const _ScrollListSeparatedPage(this.colors, this.scrollController, {Key key})
+  const _ScrollListSeparatedPage(this.scrollController, {Key key})
       : super(key: key);
 
-  final List<Color> colors;
   final ScrollController scrollController;
 
   @override
@@ -106,9 +103,9 @@ class _ScrollListSeparatedPage extends StatelessWidget {
               });
             },
           ),
-          itemCount: colors.length,
+          itemCount: _colors.length,
           itemBuilder: (_, int index) =>
-              _Item(index, colors[index]).paddingSymmetric(vertical: 5),
+              _Item(index, _colors[index]).paddingSymmetric(vertical: 5),
           separatorBuilder: (_, int index) =>
               const Divider(color: Colors.black, height: 4),
         ));
@@ -116,11 +113,9 @@ class _ScrollListSeparatedPage extends StatelessWidget {
 }
 
 class _ScrollListPlaceholderPage extends StatelessWidget {
-  const _ScrollListPlaceholderPage(this.colors, this.scrollController,
-      {Key key})
+  const _ScrollListPlaceholderPage(this.scrollController, {Key key})
       : super(key: key);
 
-  final List<Color> colors;
   final ScrollController scrollController;
 
   @override
@@ -146,20 +141,18 @@ class _ScrollListPlaceholderPage extends StatelessWidget {
                 BasisText('没有数据', style: const TextStyle(color: Colors.white))
                     .container(
                         alignment: Alignment.center,
-                        color: colors.last,
+                        color: _colors.last,
                         padding: const EdgeInsets.symmetric(vertical: 10)),
             itemCount: 0,
             itemBuilder: (_, int index) =>
-                _Item(index, colors[index]).paddingOnly(bottom: 10)));
+                _Item(index, _colors[index]).paddingOnly(bottom: 10)));
   }
 }
 
 class _ScrollListBuilderGridPage extends StatelessWidget {
-  const _ScrollListBuilderGridPage(this.colors, this.scrollController,
-      {Key key})
+  const _ScrollListBuilderGridPage(this.scrollController, {Key key})
       : super(key: key);
 
-  final List<Color> colors;
   final ScrollController scrollController;
 
   @override
@@ -185,20 +178,19 @@ class _ScrollListBuilderGridPage extends StatelessWidget {
                 });
               },
             ),
-            itemCount: colors.length,
+            itemCount: _colors.length,
             crossAxisFlex: true,
             mainAxisExtent: 100,
             mainAxisSpacing: 15,
             crossAxisSpacing: 15,
-            itemBuilder: (_, int index) => _Item(index, colors[index])));
+            itemBuilder: (_, int index) => _Item(index, _colors[index])));
   }
 }
 
 class _ScrollListBuilderPage extends StatelessWidget {
-  const _ScrollListBuilderPage(this.colors, this.scrollController, {Key key})
+  const _ScrollListBuilderPage(this.scrollController, {Key key})
       : super(key: key);
 
-  final List<Color> colors;
   final ScrollController scrollController;
 
   @override
@@ -233,9 +225,9 @@ class _ScrollListBuilderPage extends StatelessWidget {
                         });
                       },
                     ),
-                    itemCount: colors.length,
+                    itemCount: _colors.length,
                     itemBuilder: (_, int index) =>
-                        _Item(index, colors[index]).paddingOnly(bottom: 10))
+                        _Item(index, _colors[index]).paddingOnly(bottom: 10))
                 .expandedNull,
           ],
         ));
@@ -243,10 +235,8 @@ class _ScrollListBuilderPage extends StatelessWidget {
 }
 
 class _ScrollListPage extends StatelessWidget {
-  const _ScrollListPage(this.colors, this.scrollController, {Key key})
-      : super(key: key);
+  const _ScrollListPage(this.scrollController, {Key key}) : super(key: key);
 
-  final List<Color> colors;
   final ScrollController scrollController;
 
   @override
@@ -283,16 +273,16 @@ class _ScrollListPage extends StatelessWidget {
             delegates: <SliverChildDelegate>[
               SliverChildBuilderDelegate(
                   (_, int index) =>
-                      _Item(index, colors[index]).paddingOnly(bottom: 10),
-                  childCount: colors.length),
-              SliverChildListDelegate(colors.builderEntry(
+                      _Item(index, _colors[index]).paddingOnly(bottom: 10),
+                  childCount: _colors.length),
+              SliverChildListDelegate(_colors.builderEntry(
                   (MapEntry<int, Color> entry) =>
                       _Item(entry.key, entry.value))),
               SliverChildBuilderDelegate(
                   (_, int index) =>
-                      _Item(index, colors[index]).paddingOnly(bottom: 10),
-                  childCount: colors.length),
-              SliverChildListDelegate(colors.builderEntry(
+                      _Item(index, _colors[index]).paddingOnly(bottom: 10),
+                  childCount: _colors.length),
+              SliverChildListDelegate(_colors.builderEntry(
                   (MapEntry<int, Color> entry) =>
                       _Item(entry.key, entry.value))),
             ]));
@@ -300,10 +290,9 @@ class _ScrollListPage extends StatelessWidget {
 }
 
 class _ScrollListCustomPage extends StatelessWidget {
-  const _ScrollListCustomPage(this.colors, this.scrollController, {Key key})
+  const _ScrollListCustomPage(this.scrollController, {Key key})
       : super(key: key);
 
-  final List<Color> colors;
   final ScrollController scrollController;
 
   @override
@@ -327,10 +316,28 @@ class _ScrollListCustomPage extends StatelessWidget {
           }),
           delegate: SliverChildBuilderDelegate(
               (_, int index) =>
-                  _Item(index, colors[index]).paddingOnly(bottom: 10),
-              childCount: colors.length)),
+                  _Item(index, _colors[index]).paddingOnly(bottom: 10),
+              childCount: _colors.length)),
     );
   }
+}
+
+class _CustomScrollViewPage extends StatelessWidget {
+  const _CustomScrollViewPage({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => OverlayScaffold(
+          body: CustomScrollView(slivers: <Widget>[
+        CustomSliverAppbar(title: BasisText('title', color: Colors.white)),
+        SliverPinnedToBoxAdapter(
+          child: Column(
+              children: 4.generate(
+                  (int index) => Text('SliverPinnedToBoxAdapter -- $index'))),
+        ),
+        SliverList(
+            delegate: SliverChildListDelegate(_colors.builderEntry(
+                (MapEntry<int, Color> entry) => _Item(entry.key, entry.value))))
+      ]));
 }
 
 class _ScrollViewAutoNestedPage extends StatelessWidget {
@@ -380,10 +387,8 @@ class _Item extends StatelessWidget {
 }
 
 class _DraggableScrollbar extends StatelessWidget {
-  const _DraggableScrollbar(this.colors, this.scrollController, {Key key})
-      : super(key: key);
+  const _DraggableScrollbar(this.scrollController, {Key key}) : super(key: key);
 
-  final List<Color> colors;
   final ScrollController scrollController;
 
   @override
@@ -391,10 +396,10 @@ class _DraggableScrollbar extends StatelessWidget {
     final ScrollList list = ScrollList.builder(
         controller: scrollController,
         padding: const EdgeInsets.all(10),
-        itemCount: colors.length,
+        itemCount: _colors.length,
         itemBuilder: (_, int index) => Container(
             margin: const EdgeInsets.only(bottom: 10),
-            color: colors[index],
+            color: _colors[index],
             width: double.infinity,
             height: 40));
 

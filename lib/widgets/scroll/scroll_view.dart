@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/constant/way.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
+export 'sliver/sliver.dart';
+
 /// 配合 sliver 家族组件 无需设置高度  自适应高度
 class ScrollViewAuto extends StatefulWidget {
   const ScrollViewAuto(
@@ -151,7 +153,7 @@ class _ScrollViewAutoState extends State<ScrollViewAuto> {
       clipBehavior: widget.clipBehavior);
 }
 
-/// 自动初始化 delegate
+/// 初始化 delegate
 class SliverAutoPersistentHeader extends StatelessWidget {
   const SliverAutoPersistentHeader(
       {Key? key,

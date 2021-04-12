@@ -46,9 +46,9 @@
 
    - [list_wheel](./lib/widgets/list_wheel.dart) 实现 picker 功能的滚动组件
 
-   - [scroll_view](./lib/widgets/scroll_view.dart)  [ScrollViewAuto] 实现 自适应高度的 [SliverAutoPersistentHeader](./lib/widgets/scroll_view.dart) 和 [SliverAutoAppBar](./lib/widgets/scroll_view.dart) [FlexibleSpaceAutoBar] 无需设置 expandedHeight
+   - [scroll_view](lib/widgets/scroll/scroll_view.dart)  [ScrollViewAuto] 实现 自适应高度的 [SliverAutoPersistentHeader](lib/widgets/scroll/scroll_view.dart) 和 [SliverAutoAppBar](lib/widgets/scroll/scroll_view.dart) [FlexibleSpaceAutoBar] 无需设置 expandedHeight
 
-   - [ScrollList](./lib/widgets/scroll_view.dart)  合并[ListView] 和 [GridView] 并添加 下拉刷新 和 上拉加载 功能
+   - [ScrollList](lib/widgets/scroll/scroll_view.dart)  合并[ListView] 和 [GridView] 并添加 下拉刷新 和 上拉加载 功能
 
    - [universal](./lib/widgets/universal.dart)  中合多个官方组件功能  减少嵌套
 
