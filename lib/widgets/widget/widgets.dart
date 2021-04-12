@@ -419,8 +419,8 @@ class _ToggleRotateState extends State<ToggleRotate>
     if (widget.toggleBuilder != null) current = widget.toggleBuilder!(current);
     if (widget.onTap != null) {
       current = current.onTap(() {
-        // _controller.reset();
-        // _controller.forward();
+        /// _controller.reset();
+        /// _controller.forward();
         if (widget.onTap != null) widget.onTap!();
       });
     }

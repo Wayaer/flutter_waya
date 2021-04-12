@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/constant/way.dart';
 import 'package:flutter_waya/flutter_waya.dart';
@@ -38,9 +40,12 @@ class _JsonParseState extends State<JsonParse> {
       final dynamic content = entry.value;
       final List<Widget> row = <Widget>[];
       if (isTap(content)) {
-        row.add(((mapFlag[key.toString()]) ?? false)
-            ? Icon(Icons.arrow_drop_down, size: 18, color: Colors.grey[700])
-            : Icon(Icons.arrow_right, size: 18, color: Colors.grey[700]));
+        row.add(ToggleRotate(
+            rad: pi / 2,
+            clockwise: false,
+            isRotate: (mapFlag[key.toString()]) ?? false,
+            child: Icon(Icons.arrow_drop_down,
+                size: 18, color: Colors.grey[700])));
       } else {
         row.add(const SizedBox(width: 14));
       }
@@ -252,6 +257,6 @@ class _HttpDataPageState extends State<_HttpDataPage> {
       padding: const EdgeInsets.all(10),
       text: url,
       maxLines: 2,
-      child: BasisText(url, textAlign: TextAlign.start,color: Colors.black),
+      child: BasisText(url, textAlign: TextAlign.start, color: Colors.black),
       onTap: onTap);
 }
