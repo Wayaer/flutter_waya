@@ -56,6 +56,7 @@ class Home extends StatelessWidget {
         CustomElastic('JsonParse', onTap: () => push(JsonParsePage())),
         CustomElastic('SimpleRefresh', onTap: () => push(RefreshPage())),
         CustomElastic('EasyRefreshed', onTap: () => push(EasyRefreshPage())),
+        CustomElastic('SimpleBuilder', onTap: () => push(SimpleBuilderPage())),
         ElevatedButton(
             onPressed: () {
               showSnackBar(SnackBar(content: BasisText('Popup SnackBar')));

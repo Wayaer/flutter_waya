@@ -395,7 +395,7 @@ class OverlayScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget scaffold = Scaffold(
+    final Widget scaffold = Scaffold(
         key: key,
         primary: primary,
         resizeToAvoidBottomInset: resizeToAvoidBottomInset,

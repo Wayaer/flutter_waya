@@ -3,14 +3,14 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_waya/constant/constant.dart';
 
-typedef ValueBuilderFunction<T> = Widget Function(
-    T? snapshot, ValueCallback<T> updater);
+typedef ValueBuilderCallback<T> = Widget Function(
+    BuildContext context, T? value, ValueCallback<T> updater);
 
 /// Example:
 /// ```
 ///  ValueBuilder<bool>(
 ///    initialValue: false,
-///    builder: (value, update) {
+///    builder: (BuildContext context, bool value, ValueCallback<bool> update) {
 ///
 ///    return (你需要局部刷新的组件)
 ///
@@ -28,7 +28,7 @@ class ValueBuilder<T> extends StatefulWidget {
   }) : super(key: key);
 
   final T? initialValue;
-  final ValueBuilderFunction<T> builder;
+  final ValueBuilderCallback<T> builder;
   final void Function()? onDispose;
   final void Function(T)? onUpdate;
 
@@ -46,7 +46,7 @@ class _ValueBuilderState<T> extends State<ValueBuilder<T>> {
   }
 
   @override
-  Widget build(BuildContext context) => widget.builder(value, updater);
+  Widget build(BuildContext context) => widget.builder(context, value, updater);
 
   void updater(T newValue) {
     if (widget.onUpdate != null) widget.onUpdate!(newValue);
@@ -65,4 +65,70 @@ class _ValueBuilderState<T> extends State<ValueBuilder<T>> {
     }
     value = null;
   }
+}
+
+/// Example:
+/// ```
+///       ValueListenBuilder<bool>(
+///          initialValue: false,
+///          builder: (BuildContext context,
+///              ValueNotifier<bool> valueListenable) {
+///              /// 赋值即刷新
+///              valueListenable.value = true;
+///              return (你需要局部刷新的组件)
+///           }),
+///  ```
+
+typedef ValueListenBuilderCallback<T> = Widget Function(
+    BuildContext context, ValueNotifier<T?> valueListenable);
+
+class ValueListenBuilder<T> extends StatefulWidget {
+  const ValueListenBuilder({
+    Key? key,
+    required this.builder,
+    this.initialValue,
+  }) : super(key: key);
+  final T? initialValue;
+  final ValueListenBuilderCallback<T> builder;
+
+  @override
+  _ValueListenBuilderState<T> createState() => _ValueListenBuilderState<T>();
+}
+
+class _ValueListenBuilderState<T> extends State<ValueListenBuilder<T>> {
+  late T? value;
+  late ValueNotifier<T?> valueListenable;
+
+  @override
+  void initState() {
+    super.initState();
+    valueListenable = ValueNotifier<T?>(widget.initialValue);
+    value = valueListenable.value;
+    valueListenable.addListener(_valueChanged);
+  }
+
+  ///@override
+  ///void didUpdateWidget(ValueListenBuilder<T> oldWidget) {
+  ///  if (oldWidget.builder != widget.builder) {
+  ///    oldWidget.valueListenable.removeListener(_valueChanged);
+  ///    value = widget.valueListenable.value;
+  ///    widget.valueListenable.addListener(_valueChanged);
+  ///  }
+  ///  super.didUpdateWidget(oldWidget);
+  ///}
+
+  @override
+  void dispose() {
+    valueListenable.removeListener(_valueChanged);
+    super.dispose();
+  }
+
+  void _valueChanged() {
+    value = valueListenable.value;
+    setState(() {});
+  }
+
+  @override
+  Widget build(BuildContext context) =>
+      widget.builder(context, valueListenable);
 }
