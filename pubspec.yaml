@@ -11,7 +11,7 @@ dependencies:
   dio: ^4.0.0
   flutter:
     sdk: flutter
-  flutter_easyrefresh: ^2.2.0
+  flutter_easyrefresh: ^2.2.1
   flutter_localizations:
     sdk: flutter
   http_parser: ^4.0.0
