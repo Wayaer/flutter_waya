@@ -88,6 +88,22 @@ class _ScrollListSeparatedPage extends StatelessWidget {
         appBar: AppBar(
             title: const Text('ScrollList.separated Demo'), centerTitle: true),
         body: ScrollList.separated(
+          header: SliverToBoxAdapter(
+              child: Container(
+            margin: const EdgeInsets.only(bottom: 10),
+            height: 100,
+            alignment: Alignment.center,
+            child: const Text('Header'),
+            color: Colors.grey.withOpacity(0.3),
+          )),
+          footer: SliverToBoxAdapter(
+              child: Container(
+            margin: const EdgeInsets.only(top: 10),
+            height: 100,
+            alignment: Alignment.center,
+            child: const Text('Footer'),
+            color: Colors.grey.withOpacity(0.3),
+          )),
           padding: const EdgeInsets.all(10),
           refreshConfig: RefreshConfig(
             onRefresh: () async {
@@ -125,6 +141,22 @@ class _ScrollListPlaceholderPage extends StatelessWidget {
         appBar: AppBar(
             title: const Text('ScrollList.builder Demo'), centerTitle: true),
         body: ScrollList.builder(
+            header: SliverToBoxAdapter(
+                child: Container(
+              margin: const EdgeInsets.only(bottom: 10),
+              height: 100,
+              alignment: Alignment.center,
+              child: const Text('Header'),
+              color: Colors.grey.withOpacity(0.3),
+            )),
+            footer: SliverToBoxAdapter(
+                child: Container(
+              margin: const EdgeInsets.only(top: 10),
+              height: 100,
+              alignment: Alignment.center,
+              child: const Text('Footer'),
+              color: Colors.grey.withOpacity(0.3),
+            )),
             padding: const EdgeInsets.all(10),
             refreshConfig: RefreshConfig(onRefresh: () async {
               await showToast('onRefresh');
@@ -163,6 +195,22 @@ class _ScrollListBuilderGridPage extends StatelessWidget {
             title: const Text('ScrollList.builder-Grid Demo'),
             centerTitle: true),
         body: ScrollList.builder(
+            header: SliverToBoxAdapter(
+                child: Container(
+              margin: const EdgeInsets.only(bottom: 10),
+              height: 100,
+              alignment: Alignment.center,
+              child: const Text('Header'),
+              color: Colors.grey.withOpacity(0.3),
+            )),
+            footer: SliverToBoxAdapter(
+                child: Container(
+              margin: const EdgeInsets.only(top: 10),
+              height: 100,
+              alignment: Alignment.center,
+              child: const Text('Footer'),
+              color: Colors.grey.withOpacity(0.3),
+            )),
             padding: const EdgeInsets.all(10),
             refreshConfig: RefreshConfig(
               onRefresh: () async {
@@ -210,6 +258,22 @@ class _ScrollListBuilderPage extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     fontSize: 20)),
             ScrollList.builder(
+                    header: SliverToBoxAdapter(
+                        child: Container(
+                      margin: const EdgeInsets.only(bottom: 10),
+                      height: 100,
+                      alignment: Alignment.center,
+                      child: const Text('Header'),
+                      color: Colors.grey.withOpacity(0.3),
+                    )),
+                    footer: SliverToBoxAdapter(
+                        child: Container(
+                      margin: const EdgeInsets.only(top: 10),
+                      height: 100,
+                      alignment: Alignment.center,
+                      child: const Text('Footer'),
+                      color: Colors.grey.withOpacity(0.3),
+                    )),
                     padding: const EdgeInsets.all(10),
                     refreshConfig: RefreshConfig(
                       onRefresh: () async {
@@ -246,6 +310,22 @@ class _ScrollListPage extends StatelessWidget {
         appBar: AppBar(title: const Text('ScrollList Demo'), centerTitle: true),
         body: ScrollList(
             padding: const EdgeInsets.all(10),
+            header: SliverToBoxAdapter(
+                child: Container(
+              margin: const EdgeInsets.only(bottom: 10),
+              height: 100,
+              alignment: Alignment.center,
+              child: const Text('Header'),
+              color: Colors.grey.withOpacity(0.3),
+            )),
+            footer: SliverToBoxAdapter(
+                child: Container(
+              margin: const EdgeInsets.only(top: 10),
+              height: 100,
+              alignment: Alignment.center,
+              child: const Text('Footer'),
+              color: Colors.grey.withOpacity(0.3),
+            )),
             refreshConfig: RefreshConfig(
               onRefresh: () async {
                 showToast('onRefresh');
@@ -302,6 +382,22 @@ class _ScrollListCustomPage extends StatelessWidget {
       appBar: AppBar(
           title: const Text('ScrollList.custom Demo'), centerTitle: true),
       body: ScrollList.custom(
+          header: SliverToBoxAdapter(
+              child: Container(
+            margin: const EdgeInsets.only(bottom: 10),
+            height: 100,
+            alignment: Alignment.center,
+            child: const Text('Header'),
+            color: Colors.grey.withOpacity(0.3),
+          )),
+          footer: SliverToBoxAdapter(
+              child: Container(
+            margin: const EdgeInsets.only(top: 10),
+            height: 100,
+            alignment: Alignment.center,
+            child: const Text('Footer'),
+            color: Colors.grey.withOpacity(0.3),
+          )),
           padding: const EdgeInsets.all(10),
           refreshConfig: RefreshConfig(onRefresh: () async {
             await showToast('onRefresh');

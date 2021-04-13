@@ -1,6 +1,7 @@
 ## [1.9.10]
   * add [ValueListenBuilder] and Example
   * [ValueBuilder] add BuildContext for builder and add Example
+  * [ScrollList] add [Header] and [Footer]
 ## [1.9.9]
   * fix bug
 ## [1.9.7]

@@ -154,19 +154,23 @@ class _ScrollViewAutoState extends State<ScrollViewAuto> {
 }
 
 /// 初始化 delegate
-class SliverAutoPersistentHeader extends StatelessWidget {
-  const SliverAutoPersistentHeader(
+class SliverAutoPersistentHeader extends SliverPersistentHeader {
+  SliverAutoPersistentHeader(
       {Key? key,
-      this.pinned = true,
-      this.floating = true,
+      bool pinned = true,
+      bool floating = true,
       this.minHeight,
       this.maxHeight,
       required this.child})
-      : super(key: key);
-
-  /// 是否折叠 [child]
-  final bool pinned;
-  final bool floating;
+      : super(
+            key: key,
+            pinned: pinned,
+            floating: floating,
+            delegate: pinned
+                ? _PinnedPersistentHeaderDelegate(
+                    height: maxHeight, child: child)
+                : _NoPinnedPersistentHeaderDelegate(
+                    minHeight: minHeight, maxHeight: maxHeight, child: child));
 
   /// 默认为 [kToolbarHeight]
   final double? minHeight;
@@ -176,15 +180,6 @@ class SliverAutoPersistentHeader extends StatelessWidget {
 
   /// header 内容
   final Widget child;
-
-  @override
-  Widget build(BuildContext context) => SliverPersistentHeader(
-      pinned: pinned,
-      floating: floating,
-      delegate: pinned
-          ? _PinnedPersistentHeaderDelegate(height: maxHeight!, child: child)
-          : _NoPinnedPersistentHeaderDelegate(
-              minHeight: minHeight!, maxHeight: maxHeight!, child: child));
 }
 
 /// 组合使用 [FlexibleSpaceBar]、[SliverAppBar]
@@ -312,31 +307,23 @@ class SliverAutoAppBar extends SliverAppBar {
 }
 
 /// 简化部分参数 [FlexibleSpaceBar]
-class FlexibleSpaceAutoBar extends StatelessWidget {
-  const FlexibleSpaceAutoBar(
-      {this.title,
-      this.background,
-      this.centerTitle = true,
-      this.titlePadding,
-      this.collapseMode = CollapseMode.parallax,
-      this.stretchModes = const <StretchMode>[StretchMode.zoomBackground]})
-      : super();
-
-  final Widget? title;
-  final Widget? background;
-  final EdgeInsetsGeometry? titlePadding;
-  final bool centerTitle;
-  final CollapseMode collapseMode;
-  final List<StretchMode> stretchModes;
-
-  @override
-  Widget build(BuildContext context) => FlexibleSpaceBar(
-      title: title,
-      centerTitle: centerTitle,
-      titlePadding: titlePadding,
-      collapseMode: collapseMode,
-      stretchModes: stretchModes,
-      background: background);
+class FlexibleSpaceAutoBar extends FlexibleSpaceBar {
+  const FlexibleSpaceAutoBar({
+    Widget? title,
+    Widget? background,
+    bool centerTitle = true,
+    EdgeInsetsGeometry? titlePadding,
+    CollapseMode collapseMode = CollapseMode.parallax,
+    List<StretchMode> stretchModes = const <StretchMode>[
+      StretchMode.zoomBackground
+    ],
+  }) : super(
+            title: title,
+            centerTitle: centerTitle,
+            titlePadding: titlePadding,
+            collapseMode: collapseMode,
+            stretchModes: stretchModes,
+            background: background);
 }
 
 class _SliverModel {
@@ -439,11 +426,11 @@ class _Calculate extends StatelessWidget {
 class _PinnedPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
   _PinnedPersistentHeaderDelegate({
     required this.child,
-    this.height = kToolbarHeight,
-  });
+    double? height,
+  }) : height = height ?? kToolbarHeight;
 
   final Widget child;
-  final double height;
+  final double? height;
 
   @override
   Widget build(
@@ -451,10 +438,10 @@ class _PinnedPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
       child;
 
   @override
-  double get maxExtent => height;
+  double get maxExtent => height!;
 
   @override
-  double get minExtent => height;
+  double get minExtent => height!;
 
   @override
   bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) => false;
@@ -463,10 +450,11 @@ class _PinnedPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
 /// SliverPersistentHeader 不固定
 class _NoPinnedPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
   _NoPinnedPersistentHeaderDelegate({
-    this.minHeight = 0,
-    this.maxHeight = kToolbarHeight,
+    double? minHeight = 0,
+    double? maxHeight = kToolbarHeight,
     required this.child,
-  });
+  })   : minHeight = minHeight ?? 0,
+        maxHeight = maxHeight ?? kToolbarHeight;
 
   final double minHeight;
   final double maxHeight;
@@ -580,6 +568,8 @@ class ScrollList extends ScrollView {
     required this.delegates,
     this.padding,
     this.refreshConfig,
+    this.header,
+    this.footer,
   })  : noScrollBehavior = noScrollBehavior ?? false,
         placeholder = null,
         super(
@@ -595,25 +585,27 @@ class ScrollList extends ScrollView {
             physics: physics,
             primary: primary);
 
-  ScrollList.custom(
-      {Key? key,
-      Clip? clipBehavior,
-      bool? reverse,
-      double? cacheExtent,
-      bool? primary,
-      ScrollPhysics? physics,
-      Axis? scrollDirection,
-      DragStartBehavior? dragStartBehavior,
-      ScrollController? controller,
-      String? restorationId,
-      bool? shrinkWrap = false,
-      bool? noScrollBehavior = false,
-      SliverGridDelegate? gridDelegate,
-      double? itemExtent,
-      required SliverChildDelegate delegate,
-      this.padding,
-      this.refreshConfig})
-      : noScrollBehavior = noScrollBehavior ?? false,
+  ScrollList.custom({
+    Key? key,
+    Clip? clipBehavior,
+    bool? reverse,
+    double? cacheExtent,
+    bool? primary,
+    ScrollPhysics? physics,
+    Axis? scrollDirection,
+    DragStartBehavior? dragStartBehavior,
+    ScrollController? controller,
+    String? restorationId,
+    bool? shrinkWrap = false,
+    bool? noScrollBehavior = false,
+    SliverGridDelegate? gridDelegate,
+    double? itemExtent,
+    required SliverChildDelegate delegate,
+    this.padding,
+    this.refreshConfig,
+    this.header,
+    this.footer,
+  })  : noScrollBehavior = noScrollBehavior ?? false,
         delegates = <SliverChildDelegate>[delegate],
         gridDelegates = <SliverGridDelegate?>[gridDelegate],
         itemExtents = <double?>[itemExtent],
@@ -631,51 +623,53 @@ class ScrollList extends ScrollView {
             physics: physics,
             primary: primary);
 
-  ScrollList.builder(
-      {Key? key,
-      Clip? clipBehavior,
-      bool? reverse,
-      double? cacheExtent,
-      bool? primary,
-      ScrollPhysics? physics,
-      Axis? scrollDirection,
-      DragStartBehavior? dragStartBehavior,
-      ScrollController? controller,
-      String? restorationId,
-      bool? shrinkWrap = false,
-      bool? noScrollBehavior = false,
-      double? itemExtent,
-      required IndexedWidgetBuilder itemBuilder,
-      required int itemCount,
-      ChildIndexGetter? findChildIndexCallback,
-      bool addAutomaticKeepALives = true,
-      bool addRepaintBoundaries = true,
-      bool addSemanticIndexes = true,
+  ScrollList.builder({
+    Key? key,
+    Clip? clipBehavior,
+    bool? reverse,
+    double? cacheExtent,
+    bool? primary,
+    ScrollPhysics? physics,
+    Axis? scrollDirection,
+    DragStartBehavior? dragStartBehavior,
+    ScrollController? controller,
+    String? restorationId,
+    bool? shrinkWrap = false,
+    bool? noScrollBehavior = false,
+    double? itemExtent,
+    required IndexedWidgetBuilder itemBuilder,
+    required int itemCount,
+    ChildIndexGetter? findChildIndexCallback,
+    bool addAutomaticKeepALives = true,
+    bool addRepaintBoundaries = true,
+    bool addSemanticIndexes = true,
 
-      /// 多列最大列数 [crossAxisCount]>1 固定列
-      int? crossAxisCount = 1,
+    /// 多列最大列数 [crossAxisCount]>1 固定列
+    int? crossAxisCount = 1,
 
-      /// 水平子Widget之间间距
-      double? mainAxisSpacing = 0,
+    /// 水平子Widget之间间距
+    double? mainAxisSpacing = 0,
 
-      /// 垂直子Widget之间间距
-      double? crossAxisSpacing = 0,
+    /// 垂直子Widget之间间距
+    double? crossAxisSpacing = 0,
 
-      /// 子 Widget 宽高比例 [crossAxisCount]>1是 有效
-      double? childAspectRatio = 1,
+    /// 子 Widget 宽高比例 [crossAxisCount]>1是 有效
+    double? childAspectRatio = 1,
 
-      /// 是否开启列数自适应
-      /// [crossAxisFlex]=true 为多列 且宽度自适应
-      /// [maxCrossAxisExtent]设置最大宽度
-      bool? crossAxisFlex = false,
+    /// 是否开启列数自适应
+    /// [crossAxisFlex]=true 为多列 且宽度自适应
+    /// [maxCrossAxisExtent]设置最大宽度
+    bool? crossAxisFlex = false,
 
-      ///  单个子Widget的水平最大宽度
-      double? maxCrossAxisExtent,
-      double? mainAxisExtent,
-      this.padding,
-      this.placeholder,
-      this.refreshConfig})
-      : noScrollBehavior = noScrollBehavior ?? false,
+    ///  单个子Widget的水平最大宽度
+    double? maxCrossAxisExtent,
+    double? mainAxisExtent,
+    this.padding,
+    this.placeholder,
+    this.refreshConfig,
+    this.header,
+    this.footer,
+  })  : noScrollBehavior = noScrollBehavior ?? false,
         delegates = itemCount < 1
             ? null
             : _getSliverBuilderDelegates(
@@ -707,30 +701,32 @@ class ScrollList extends ScrollView {
             physics: physics,
             primary: primary);
 
-  ScrollList.separated(
-      {Key? key,
-      Clip? clipBehavior,
-      bool? reverse,
-      double? cacheExtent,
-      bool? primary,
-      ScrollPhysics? physics,
-      Axis? scrollDirection,
-      DragStartBehavior? dragStartBehavior,
-      ScrollController? controller,
-      String? restorationId,
-      bool? shrinkWrap = false,
-      bool? noScrollBehavior = false,
-      double? itemExtent,
-      required IndexedWidgetBuilder itemBuilder,
-      required int itemCount,
-      required IndexedWidgetBuilder separatorBuilder,
-      bool addAutomaticKeepALives = true,
-      bool addRepaintBoundaries = true,
-      bool addSemanticIndexes = true,
-      this.padding,
-      this.placeholder,
-      this.refreshConfig})
-      : noScrollBehavior = noScrollBehavior ?? false,
+  ScrollList.separated({
+    Key? key,
+    Clip? clipBehavior,
+    bool? reverse,
+    double? cacheExtent,
+    bool? primary,
+    ScrollPhysics? physics,
+    Axis? scrollDirection,
+    DragStartBehavior? dragStartBehavior,
+    ScrollController? controller,
+    String? restorationId,
+    bool? shrinkWrap = false,
+    bool? noScrollBehavior = false,
+    double? itemExtent,
+    required IndexedWidgetBuilder itemBuilder,
+    required int itemCount,
+    required IndexedWidgetBuilder separatorBuilder,
+    bool addAutomaticKeepALives = true,
+    bool addRepaintBoundaries = true,
+    bool addSemanticIndexes = true,
+    this.padding,
+    this.placeholder,
+    this.refreshConfig,
+    this.header,
+    this.footer,
+  })  : noScrollBehavior = noScrollBehavior ?? false,
         delegates = itemCount < 1
             ? null
             : _getSliverBuilderDelegates(
@@ -771,49 +767,51 @@ class ScrollList extends ScrollView {
             physics: physics,
             primary: primary);
 
-  ScrollList.count(
-      {Key? key,
-      Clip? clipBehavior,
-      bool? reverse,
-      double? cacheExtent,
-      bool? primary,
-      ScrollPhysics? physics,
-      Axis? scrollDirection,
-      DragStartBehavior? dragStartBehavior,
-      ScrollController? controller,
-      String? restorationId,
-      bool? shrinkWrap = false,
-      bool? noScrollBehavior = false,
-      double? itemExtent,
-      required List<Widget> children,
-      bool addAutomaticKeepALives = true,
-      bool addRepaintBoundaries = true,
-      bool addSemanticIndexes = true,
+  ScrollList.count({
+    Key? key,
+    Clip? clipBehavior,
+    bool? reverse,
+    double? cacheExtent,
+    bool? primary,
+    ScrollPhysics? physics,
+    Axis? scrollDirection,
+    DragStartBehavior? dragStartBehavior,
+    ScrollController? controller,
+    String? restorationId,
+    bool? shrinkWrap = false,
+    bool? noScrollBehavior = false,
+    double? itemExtent,
+    required List<Widget> children,
+    bool addAutomaticKeepALives = true,
+    bool addRepaintBoundaries = true,
+    bool addSemanticIndexes = true,
 
-      /// 多列最大列数 [crossAxisCount]>1 固定列
-      int? crossAxisCount = 1,
+    /// 多列最大列数 [crossAxisCount]>1 固定列
+    int? crossAxisCount = 1,
 
-      /// 水平子Widget之间间距
-      double? mainAxisSpacing = 0,
+    /// 水平子Widget之间间距
+    double? mainAxisSpacing = 0,
 
-      /// 垂直子Widget之间间距
-      double? crossAxisSpacing = 0,
+    /// 垂直子Widget之间间距
+    double? crossAxisSpacing = 0,
 
-      /// 子 Widget 宽高比例 [crossAxisCount]>1是 有效
-      double? childAspectRatio = 1,
+    /// 子 Widget 宽高比例 [crossAxisCount]>1是 有效
+    double? childAspectRatio = 1,
 
-      /// 是否开启列数自适应
-      /// [crossAxisFlex]=true 为多列 且宽度自适应
-      /// [maxCrossAxisExtent]设置最大宽度
-      bool? crossAxisFlex = false,
+    /// 是否开启列数自适应
+    /// [crossAxisFlex]=true 为多列 且宽度自适应
+    /// [maxCrossAxisExtent]设置最大宽度
+    bool? crossAxisFlex = false,
 
-      ///  单个子Widget的水平最大宽度
-      double? maxCrossAxisExtent,
-      double? mainAxisExtent,
-      this.padding,
-      this.placeholder,
-      this.refreshConfig})
-      : noScrollBehavior = noScrollBehavior ?? false,
+    ///  单个子Widget的水平最大宽度
+    double? maxCrossAxisExtent,
+    double? mainAxisExtent,
+    this.padding,
+    this.placeholder,
+    this.refreshConfig,
+    this.header,
+    this.footer,
+  })  : noScrollBehavior = noScrollBehavior ?? false,
         delegates = children.isEmpty
             ? null
             : _getSliverListDelegates(
@@ -946,6 +944,12 @@ class ScrollList extends ScrollView {
   /// [SliverChildListDelegate]
   final List<SliverChildDelegate>? delegates;
 
+  /// 添加头部 Sliver 组件
+  final Widget? header;
+
+  /// 添加底部 Sliver 组件
+  final Widget? footer;
+
   @override
   Widget build(BuildContext context) {
     Widget widget = super.build(context);
@@ -1005,6 +1009,8 @@ class ScrollList extends ScrollView {
         }
       });
     }
+    if (header != null) slivers.insert(0, header!);
+    if (footer != null) slivers.add(footer!);
     return slivers;
   }
 }
