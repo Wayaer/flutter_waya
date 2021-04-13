@@ -1,15 +1,19 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
+/// [TabBar]和[TabBarView]
+/// 外层添加 常用属性
 class TabBarMerge extends StatelessWidget {
   const TabBarMerge({
     Key? key,
     required this.tabBar,
-    this.tabView,
     required this.controller,
+    this.tabView,
     this.reverse = false,
-    this.viewHeight = 0,
+    this.height,
     this.physics,
     this.width,
     this.among,
@@ -19,15 +23,18 @@ class TabBarMerge extends StatelessWidget {
     this.padding,
     this.decoration,
     this.constraints,
+    this.dragStartBehavior = DragStartBehavior.start,
   }) : super(key: key);
 
-  ///  建议传 TabBarBox
+  ///  使用 [TabBarBox]
   final Widget tabBar;
+
+  final DragStartBehavior dragStartBehavior;
 
   ///  头部
   final Widget? header;
 
-  ///  tabBar和tabBarView中间层
+  ///  [tabBar]和[tabBarView]中间层
   final Widget? among;
 
   ///  底部
@@ -38,14 +45,14 @@ class TabBarMerge extends StatelessWidget {
 
   final List<Widget>? tabView;
 
-  ///  作用于tabView
+  ///  作用于[tabView]
   final EdgeInsetsGeometry? margin;
   final EdgeInsetsGeometry? padding;
   final Decoration? decoration;
   final BoxConstraints? constraints;
   final double? width;
+  final double? height;
   final ScrollPhysics? physics;
-  final double viewHeight;
 
   ///  [tabBar],[tabView] 反转
   final bool reverse;
@@ -63,17 +70,20 @@ class TabBarMerge extends StatelessWidget {
   }
 
   Widget get tabBarUniversal => Universal(
-      expanded: viewHeight == 0,
       margin: margin,
       padding: padding,
       decoration: decoration,
       constraints: constraints,
       width: width,
-      height: viewHeight == 0 ? null : viewHeight,
+      height: height,
       child: TabBarView(
-          controller: controller, physics: physics, children: tabView!));
+          controller: controller,
+          physics: physics,
+          dragStartBehavior: dragStartBehavior,
+          children: tabView!));
 }
 
+/// TabBarLevel 位置
 enum TabBarLevelPosition { right, left }
 
 class TabBarBox extends StatelessWidget {
@@ -84,15 +94,15 @@ class TabBarBox extends StatelessWidget {
     this.indicatorPadding = EdgeInsets.zero,
     this.levelPosition = TabBarLevelPosition.right,
     this.labelPadding,
-    this.isScrollable,
+    this.isScrollable = true,
     this.alignment,
     this.tabBarLevel,
-    this.selectedLabelColor,
+    this.labelColor,
     this.unselectedLabelColor,
     this.indicatorSize,
-    this.selectedLabelStyle,
+    this.labelStyle,
     this.unselectedLabelStyle,
-    this.indicatorWeight,
+    this.indicatorWeight = 1,
     this.indicator,
     this.margin,
     this.padding,
@@ -100,39 +110,22 @@ class TabBarBox extends StatelessWidget {
     this.decoration,
     this.width,
     this.onTap,
+    this.indicatorColor,
+    this.automaticIndicatorColorAdjustment = true,
+    this.dragStartBehavior = DragStartBehavior.start,
+    this.overlayColor,
+    this.mouseCursor,
+    this.enableFeedback,
+    this.physics,
   }) : super(key: key);
-  final TabController controller;
-  final List<Widget> tabs;
 
-  ///  作用于label
-  final EdgeInsetsGeometry? labelPadding;
-
-  ///  作用于指示器
-  final EdgeInsetsGeometry indicatorPadding;
-
-  ///  指示器高度
-  final double? indicatorWeight;
-  final TabBarIndicatorSize? indicatorSize;
-
-  ///  tabBar 指示器
-  final Decoration? indicator;
-
-  ///  true 最小宽度，false充满最大宽度
-  final bool? isScrollable;
-
-  ///  tabBar 位置
+  ///  [TabBar] 位置
   final TabBarLevelPosition levelPosition;
 
-  ///  选中与未选中的指示器和字体样式和颜色，
-  final Color? selectedLabelColor;
-  final Color? unselectedLabelColor;
-  final TextStyle? selectedLabelStyle;
-  final TextStyle? unselectedLabelStyle;
-
-  ///  tabBar 水平左边或者右边的Widget 添加标签
+  ///  [TabBar] 水平左边或者右边的Widget 添加标签
   final Widget? tabBarLevel;
 
-  ///  作用于整个tabBar
+  ///  作用于整个[TabBar]
   final AlignmentGeometry? alignment;
   final EdgeInsetsGeometry? margin;
   final EdgeInsetsGeometry? padding;
@@ -140,6 +133,39 @@ class TabBarBox extends StatelessWidget {
   final double? width;
   final Decoration? decoration;
   final ValueChanged<int>? onTap;
+
+  /// [TabBar]
+  final bool automaticIndicatorColorAdjustment;
+  final DragStartBehavior dragStartBehavior;
+  final MaterialStateProperty<Color?>? overlayColor;
+  final MouseCursor? mouseCursor;
+  final bool? enableFeedback;
+  final ScrollPhysics? physics;
+  final TabController controller;
+  final List<Widget> tabs;
+
+  ///  作用于 label
+  final EdgeInsetsGeometry? labelPadding;
+
+  ///  作用于指示器
+  final EdgeInsetsGeometry indicatorPadding;
+
+  ///  指示器高度
+  final double indicatorWeight;
+  final TabBarIndicatorSize? indicatorSize;
+
+  ///  tabBar 指示器
+  final Decoration? indicator;
+
+  ///  true 最小宽度，false充满最大宽度
+  final bool isScrollable;
+
+  ///  选中与未选中的指示器和字体样式和颜色，
+  final Color? indicatorColor;
+  final Color? labelColor;
+  final Color? unselectedLabelColor;
+  final TextStyle? labelStyle;
+  final TextStyle? unselectedLabelStyle;
 
   @override
   Widget build(BuildContext context) {
@@ -169,20 +195,24 @@ class TabBarBox extends StatelessWidget {
   }
 
   Widget get tabBarWidget => TabBar(
+        automaticIndicatorColorAdjustment: automaticIndicatorColorAdjustment,
+        dragStartBehavior: dragStartBehavior,
+        overlayColor: overlayColor,
+        mouseCursor: mouseCursor,
+        enableFeedback: enableFeedback,
+        physics: physics,
         controller: controller,
         labelPadding: labelPadding,
         tabs: tabs,
         onTap: onTap,
-        isScrollable: isScrollable ?? true,
+        isScrollable: isScrollable,
         indicator: indicator,
-        labelColor: selectedLabelColor ?? ConstColors.blue,
-        unselectedLabelColor: unselectedLabelColor ?? ConstColors.background,
-        indicatorColor: selectedLabelColor ?? ConstColors.blue,
-        indicatorWeight: indicatorWeight ?? getWidth(1),
+        labelColor: labelColor,
+        unselectedLabelColor: unselectedLabelColor,
+        indicatorColor: indicatorColor ?? labelColor,
+        indicatorWeight: indicatorWeight,
         indicatorPadding: indicatorPadding,
-        labelStyle:
-            const BasisTextStyle(fontSize: 13, color: ConstColors.black70)
-                .merge(selectedLabelStyle),
+        labelStyle: labelStyle,
         unselectedLabelStyle: unselectedLabelStyle,
         indicatorSize: indicatorSize ?? TabBarIndicatorSize.label,
       );
