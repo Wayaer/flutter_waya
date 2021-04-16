@@ -1,3 +1,5 @@
+## [1.9.12]
+  * fix bug for popBack
 ## [1.9.11]
   * [Universal] add [ImageFilter]
   * split [ScrollList]
