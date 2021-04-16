@@ -704,7 +704,7 @@ class ScrollList extends RefreshScrollView {
     /// [maxCrossAxisExtent]设置最大宽度
     bool? crossAxisFlex = false,
 
-    ///  单个子Widget的水平最大宽度
+    /// 单个子Widget的水平最大宽度
     double? maxCrossAxisExtent,
     double? mainAxisExtent,
     Widget? placeholder,
@@ -834,7 +834,7 @@ class ScrollList extends RefreshScrollView {
     /// [maxCrossAxisExtent]设置最大宽度
     bool? crossAxisFlex = false,
 
-    ///  单个子Widget的水平最大宽度
+    /// 单个子Widget的水平最大宽度
     double? maxCrossAxisExtent,
     double? mainAxisExtent,
     Widget? placeholder,
