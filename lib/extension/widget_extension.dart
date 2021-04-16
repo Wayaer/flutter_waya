@@ -1,9 +1,17 @@
+import 'dart:ui';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 extension ExtensionWidget on Widget {
+  Widget backdropFilter({ImageFilter? filter, double fuzzyDegree = 4}) =>
+      BackdropFilter(
+          filter: filter ??
+              ImageFilter.blur(sigmaX: fuzzyDegree, sigmaY: fuzzyDegree),
+          child: this);
+
   Padding padding(EdgeInsetsGeometry padding, {Key? key}) =>
       Padding(key: key, padding: padding, child: this);
 

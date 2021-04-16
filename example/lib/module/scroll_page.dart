@@ -18,6 +18,8 @@ class ScrollViewPage extends StatelessWidget {
         children: <Widget>[
           CustomElastic('CustomScrollView',
               onTap: () => push(const _CustomScrollViewPage())),
+          CustomElastic('RefreshScrollView',
+              onTap: () => push(const _RefreshScrollViewPage())),
           CustomElastic('ScrollViewAuto',
               onTap: () => push(_ScrollViewAutoPage(slivers))),
           CustomElastic('ScrollViewAuto.nested',
@@ -26,14 +28,12 @@ class ScrollViewPage extends StatelessWidget {
               onTap: () => push(_DraggableScrollbar(scrollController))),
           CustomElastic('ScrollList',
               onTap: () => push(_ScrollListPage(scrollController))),
-          CustomElastic('ScrollList.custom',
-              onTap: () => push(_ScrollListCustomPage(scrollController))),
           CustomElastic('ScrollList.builder',
               onTap: () => push(_ScrollListBuilderPage(scrollController))),
-          CustomElastic('ScrollList.builder-grid',
-              onTap: () => push(_ScrollListBuilderGridPage(scrollController))),
           CustomElastic('ScrollList.separated',
               onTap: () => push(_ScrollListSeparatedPage(scrollController))),
+          CustomElastic('ScrollList.count',
+              onTap: () => push(_ScrollListCountPage(scrollController))),
           CustomElastic('ScrollList.placeholder',
               onTap: () => push(_ScrollListPlaceholderPage(scrollController))),
         ]);
@@ -181,60 +181,6 @@ class _ScrollListPlaceholderPage extends StatelessWidget {
   }
 }
 
-class _ScrollListBuilderGridPage extends StatelessWidget {
-  const _ScrollListBuilderGridPage(this.scrollController, {Key key})
-      : super(key: key);
-
-  final ScrollController scrollController;
-
-  @override
-  Widget build(BuildContext context) {
-    return OverlayScaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-            title: const Text('ScrollList.builder-Grid Demo'),
-            centerTitle: true),
-        body: ScrollList.builder(
-            header: SliverToBoxAdapter(
-                child: Container(
-              margin: const EdgeInsets.only(bottom: 10),
-              height: 100,
-              alignment: Alignment.center,
-              child: const Text('Header'),
-              color: Colors.grey.withOpacity(0.3),
-            )),
-            footer: SliverToBoxAdapter(
-                child: Container(
-              margin: const EdgeInsets.only(top: 10),
-              height: 100,
-              alignment: Alignment.center,
-              child: const Text('Footer'),
-              color: Colors.grey.withOpacity(0.3),
-            )),
-            padding: const EdgeInsets.all(10),
-            refreshConfig: RefreshConfig(
-              onRefresh: () async {
-                await showToast('onRefresh');
-                await 2.seconds.delayed(() {
-                  sendRefreshType(EasyRefreshType.refreshSuccess);
-                });
-              },
-              onLoading: () async {
-                await showToast('onLoading');
-                await 2.seconds.delayed(() {
-                  sendRefreshType(EasyRefreshType.loadingSuccess);
-                });
-              },
-            ),
-            itemCount: _colors.length,
-            crossAxisFlex: true,
-            mainAxisExtent: 100,
-            mainAxisSpacing: 15,
-            crossAxisSpacing: 15,
-            itemBuilder: (_, int index) => _Item(index, _colors[index])));
-  }
-}
-
 class _ScrollListBuilderPage extends StatelessWidget {
   const _ScrollListBuilderPage(this.scrollController, {Key key})
       : super(key: key);
@@ -247,54 +193,52 @@ class _ScrollListBuilderPage extends StatelessWidget {
         backgroundColor: Colors.white,
         appBar: AppBar(
             title: const Text('ScrollList.builder Demo'), centerTitle: true),
-        body: Column(
-          children: <Widget>[
-            Container(
-                height: 100,
-                color: Colors.blue,
-                alignment: Alignment.center,
-                child: BasisText('这里是头部',
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20)),
-            ScrollList.builder(
-                    header: SliverToBoxAdapter(
-                        child: Container(
-                      margin: const EdgeInsets.only(bottom: 10),
-                      height: 100,
-                      alignment: Alignment.center,
-                      child: const Text('Header'),
-                      color: Colors.grey.withOpacity(0.3),
-                    )),
-                    footer: SliverToBoxAdapter(
-                        child: Container(
-                      margin: const EdgeInsets.only(top: 10),
-                      height: 100,
-                      alignment: Alignment.center,
-                      child: const Text('Footer'),
-                      color: Colors.grey.withOpacity(0.3),
-                    )),
-                    padding: const EdgeInsets.all(10),
-                    refreshConfig: RefreshConfig(
-                      onRefresh: () async {
-                        showToast('onRefresh');
-                        2.seconds.delayed(() {
-                          sendRefreshType(EasyRefreshType.refreshSuccess);
-                        });
-                      },
-                      onLoading: () async {
-                        showToast('onLoading');
-                        2.seconds.delayed(() {
-                          sendRefreshType(EasyRefreshType.loadingSuccess);
-                        });
-                      },
-                    ),
-                    itemCount: _colors.length,
-                    itemBuilder: (_, int index) =>
-                        _Item(index, _colors[index]).paddingOnly(bottom: 10))
-                .expandedNull,
-          ],
-        ));
+        body: Column(children: <Widget>[
+          Container(
+              height: 100,
+              color: Colors.blue,
+              alignment: Alignment.center,
+              child: BasisText('这里是头部',
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20)),
+          ScrollList.builder(
+                  header: SliverToBoxAdapter(
+                      child: Container(
+                    margin: const EdgeInsets.only(bottom: 10),
+                    height: 100,
+                    alignment: Alignment.center,
+                    child: const Text('Header'),
+                    color: Colors.grey.withOpacity(0.3),
+                  )),
+                  footer: SliverToBoxAdapter(
+                      child: Container(
+                    margin: const EdgeInsets.only(top: 10),
+                    height: 100,
+                    alignment: Alignment.center,
+                    child: const Text('Footer'),
+                    color: Colors.grey.withOpacity(0.3),
+                  )),
+                  padding: const EdgeInsets.all(10),
+                  refreshConfig: RefreshConfig(
+                    onRefresh: () async {
+                      showToast('onRefresh');
+                      2.seconds.delayed(() {
+                        sendRefreshType(EasyRefreshType.refreshSuccess);
+                      });
+                    },
+                    onLoading: () async {
+                      showToast('onLoading');
+                      2.seconds.delayed(() {
+                        sendRefreshType(EasyRefreshType.loadingSuccess);
+                      });
+                    },
+                  ),
+                  itemCount: _colors.length,
+                  itemBuilder: (_, int index) =>
+                      _Item(index, _colors[index]).paddingOnly(bottom: 10))
+              .expandedNull,
+        ]));
   }
 }
 
@@ -309,79 +253,7 @@ class _ScrollListPage extends StatelessWidget {
         backgroundColor: Colors.white,
         appBar: AppBar(title: const Text('ScrollList Demo'), centerTitle: true),
         body: ScrollList(
-            padding: const EdgeInsets.all(10),
-            header: SliverToBoxAdapter(
-                child: Container(
-              margin: const EdgeInsets.only(bottom: 10),
-              height: 100,
-              alignment: Alignment.center,
-              child: const Text('Header'),
-              color: Colors.grey.withOpacity(0.3),
-            )),
-            footer: SliverToBoxAdapter(
-                child: Container(
-              margin: const EdgeInsets.only(top: 10),
-              height: 100,
-              alignment: Alignment.center,
-              child: const Text('Footer'),
-              color: Colors.grey.withOpacity(0.3),
-            )),
-            refreshConfig: RefreshConfig(
-              onRefresh: () async {
-                showToast('onRefresh');
-                2.seconds.delayed(() {
-                  sendRefreshType(EasyRefreshType.refreshSuccess);
-                });
-              },
-              onLoading: () async {
-                showToast('onLoading');
-                2.seconds.delayed(() {
-                  sendRefreshType(EasyRefreshType.loadingSuccess);
-                });
-              },
-            ),
-            gridDelegates: const <SliverGridDelegate>[
-              null,
-              SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 100,
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 10),
-              null,
-              SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 6, mainAxisSpacing: 10, crossAxisSpacing: 10),
-            ],
-            delegates: <SliverChildDelegate>[
-              SliverChildBuilderDelegate(
-                  (_, int index) =>
-                      _Item(index, _colors[index]).paddingOnly(bottom: 10),
-                  childCount: _colors.length),
-              SliverChildListDelegate(_colors.builderEntry(
-                  (MapEntry<int, Color> entry) =>
-                      _Item(entry.key, entry.value))),
-              SliverChildBuilderDelegate(
-                  (_, int index) =>
-                      _Item(index, _colors[index]).paddingOnly(bottom: 10),
-                  childCount: _colors.length),
-              SliverChildListDelegate(_colors.builderEntry(
-                  (MapEntry<int, Color> entry) =>
-                      _Item(entry.key, entry.value))),
-            ]));
-  }
-}
-
-class _ScrollListCustomPage extends StatelessWidget {
-  const _ScrollListCustomPage(this.scrollController, {Key key})
-      : super(key: key);
-
-  final ScrollController scrollController;
-
-  @override
-  Widget build(BuildContext context) {
-    return OverlayScaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-          title: const Text('ScrollList.custom Demo'), centerTitle: true),
-      body: ScrollList.custom(
+          padding: const EdgeInsets.all(10),
           header: SliverToBoxAdapter(
               child: Container(
             margin: const EdgeInsets.only(bottom: 10),
@@ -398,24 +270,130 @@ class _ScrollListCustomPage extends StatelessWidget {
             child: const Text('Footer'),
             color: Colors.grey.withOpacity(0.3),
           )),
-          padding: const EdgeInsets.all(10),
-          refreshConfig: RefreshConfig(onRefresh: () async {
-            await showToast('onRefresh');
-            await 2.seconds.delayed(() {
-              sendRefreshType(EasyRefreshType.refreshSuccess);
-            });
-          }, onLoading: () async {
-            await showToast('onLoading');
-            await 2.seconds.delayed(() {
-              sendRefreshType(EasyRefreshType.loadingSuccess);
-            });
-          }),
-          delegate: SliverChildBuilderDelegate(
-              (_, int index) =>
-                  _Item(index, _colors[index]).paddingOnly(bottom: 10),
-              childCount: _colors.length)),
+          refreshConfig: RefreshConfig(
+            onRefresh: () async {
+              showToast('onRefresh');
+              2.seconds.delayed(() {
+                sendRefreshType(EasyRefreshType.refreshSuccess);
+              });
+            },
+            onLoading: () async {
+              showToast('onLoading');
+              2.seconds.delayed(() {
+                sendRefreshType(EasyRefreshType.loadingSuccess);
+              });
+            },
+          ),
+          sliver: <SliverListGrid>[
+            SliverListGrid(
+                itemCount: _colors.length,
+                itemBuilder: (_, int index) =>
+                    _Item(index, _colors[index]).paddingOnly(bottom: 10)),
+            SliverListGrid(
+                itemCount: _colors.length,
+                maxCrossAxisExtent: 100,
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 10,
+                itemBuilder: (_, int index) =>
+                    _Item(index, _colors[index]).paddingOnly(bottom: 10)),
+            SliverListGrid(
+                itemCount: _colors.length,
+                crossAxisCount: 6,
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 10,
+                itemBuilder: (_, int index) =>
+                    _Item(index, _colors[index]).paddingOnly(bottom: 10)),
+          ],
+        ));
+  }
+}
+
+class _ScrollListCountPage extends StatelessWidget {
+  const _ScrollListCountPage(this.scrollController, {Key key})
+      : super(key: key);
+
+  final ScrollController scrollController;
+
+  @override
+  Widget build(BuildContext context) {
+    return OverlayScaffold(
+      backgroundColor: Colors.white,
+      appBar:
+          AppBar(title: const Text('ScrollList.count Demo'), centerTitle: true),
+      body: ScrollList.count(
+        header: SliverToBoxAdapter(
+            child: Container(
+          margin: const EdgeInsets.only(bottom: 10),
+          height: 100,
+          alignment: Alignment.center,
+          child: const Text('Header'),
+          color: Colors.grey.withOpacity(0.3),
+        )),
+        footer: SliverToBoxAdapter(
+            child: Container(
+          margin: const EdgeInsets.only(top: 10),
+          height: 100,
+          alignment: Alignment.center,
+          child: const Text('Footer'),
+          color: Colors.grey.withOpacity(0.3),
+        )),
+        padding: const EdgeInsets.all(10),
+        refreshConfig: RefreshConfig(onRefresh: () async {
+          await showToast('onRefresh');
+          await 2.seconds.delayed(() {
+            sendRefreshType(EasyRefreshType.refreshSuccess);
+          });
+        }, onLoading: () async {
+          await showToast('onLoading');
+          await 2.seconds.delayed(() {
+            sendRefreshType(EasyRefreshType.loadingSuccess);
+          });
+        }),
+        children: _colors.builderEntry(
+            (MapEntry<int, Color> entry) => _Item(entry.key, entry.value)),
+      ),
     );
   }
+}
+
+class _RefreshScrollViewPage extends StatelessWidget {
+  const _RefreshScrollViewPage({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => OverlayScaffold(
+          body: RefreshScrollView(
+              padding: const EdgeInsets.all(10),
+              refreshConfig: RefreshConfig(onRefresh: () async {
+                await showToast('onRefresh');
+                sendRefreshType(EasyRefreshType.refreshSuccess);
+              }, onLoading: () async {
+                await showToast('onLoading');
+                await 2.seconds.delayed(() {
+                  sendRefreshType(EasyRefreshType.loadingSuccess);
+                });
+              }),
+              slivers: <Widget>[
+            SliverAppBar(
+                title: BasisText('RefreshScrollView', color: Colors.white)),
+            SliverListGrid(
+              itemCount: _colors.length,
+              crossAxisFlex: true,
+              maxCrossAxisExtent: 30,
+              separatorBuilder: (_, int index) {
+                return Text('s' + index.toString());
+              },
+              itemBuilder: (_, int index) {
+                return _Item(index, _colors[index]);
+              },
+            ),
+            SliverListGrid(
+              crossAxisCount: 6,
+              mainAxisSpacing: 10,
+              crossAxisSpacing: 10,
+              children: _colors.builderEntry((MapEntry<int, Color> entry) =>
+                  _Item(entry.key, entry.value)),
+            ),
+          ]));
 }
 
 class _CustomScrollViewPage extends StatelessWidget {
@@ -424,7 +402,7 @@ class _CustomScrollViewPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => OverlayScaffold(
           body: CustomScrollView(slivers: <Widget>[
-        CustomSliverAppbar(title: BasisText('title', color: Colors.white)),
+        CustomSliverAppBar(title: BasisText('title', color: Colors.white)),
         SliverPinnedToBoxAdapter(
           child: Column(
               children: 4.generate(

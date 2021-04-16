@@ -1,9 +1,20 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_waya/constant/way.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 import 'element.dart';
 import 'render.dart';
+
+typedef OnSliverPinnedPersistentHeaderDelegateBuild = void Function(
+  BuildContext context,
+  double shrinkOffset,
+  double? minExtent,
+  double maxExtent,
+  bool overlapsContent,
+);
 
 abstract class SliverPinnedPersistentHeaderDelegate {
   SliverPinnedPersistentHeaderDelegate({
@@ -58,8 +69,8 @@ class SliverPinnedToBoxAdapter extends SingleChildRenderObjectWidget {
       RenderSliverPinnedToBoxAdapter();
 }
 
-class CustomSliverAppbar extends StatelessWidget {
-  const CustomSliverAppbar({
+class CustomSliverAppBar extends StatelessWidget {
+  const CustomSliverAppBar({
     this.leading,
     this.title,
     this.actions,
@@ -243,10 +254,146 @@ class _CustomSliverAppbarDelegate extends SliverPinnedPersistentHeaderDelegate {
   }
 }
 
-typedef OnSliverPinnedPersistentHeaderDelegateBuild = void Function(
-  BuildContext context,
-  double shrinkOffset,
-  double? minExtent,
-  double maxExtent,
-  bool overlapsContent,
-);
+/// 组合[SliverList]、[SliverGrid]、[SliverFixedExtentList]
+class SliverListGrid extends StatelessWidget {
+  const SliverListGrid({
+    Key? key,
+
+    /// 多列最大列数 [crossAxisCount]>1 固定列
+    int? crossAxisCount = 1,
+
+    /// 水平子Widget之间间距
+    double? mainAxisSpacing = 0,
+
+    /// 垂直子Widget之间间距
+    double? crossAxisSpacing = 0,
+
+    /// 子 Widget 宽高比例 [crossAxisCount]>1是 有效
+    double? childAspectRatio = 1,
+
+    /// 是否开启列数自适应
+    /// [crossAxisFlex]=true 为多列 且宽度自适应
+    /// [maxCrossAxisExtent]设置最大宽度
+    bool? crossAxisFlex = false,
+
+    ///  [crossAxisFlex]=true 单个子Widget的水平最大宽度
+    double? maxCrossAxisExtent,
+    this.mainAxisExtent,
+    this.itemBuilder,
+    this.itemCount,
+    this.separatorBuilder,
+    this.children,
+    this.findChildIndexCallback,
+    this.semanticIndexCallback,
+    this.itemExtent,
+    bool? addAutomaticKeepALives,
+    bool? addRepaintBoundaries,
+    bool? addSemanticIndexes,
+    Widget? placeholder,
+  })  : assert(children != null || (itemBuilder != null && itemCount != null)),
+        placeholder = placeholder ?? const PlaceholderChild(),
+        addAutomaticKeepALives = addAutomaticKeepALives ?? true,
+        addRepaintBoundaries = addRepaintBoundaries ?? true,
+        addSemanticIndexes = addSemanticIndexes ?? true,
+        crossAxisCount = crossAxisCount ?? 1,
+        mainAxisSpacing = mainAxisSpacing ?? 0,
+        crossAxisSpacing = crossAxisSpacing ?? 0,
+        childAspectRatio = childAspectRatio ?? 1,
+        crossAxisFlex = crossAxisFlex ?? false,
+        maxCrossAxisExtent = maxCrossAxisExtent ?? 10,
+        super(key: key);
+
+  final int crossAxisCount;
+  final double mainAxisSpacing;
+  final double crossAxisSpacing;
+  final double childAspectRatio;
+  final bool crossAxisFlex;
+  final double maxCrossAxisExtent;
+  final double? mainAxisExtent;
+
+  final IndexedWidgetBuilder? itemBuilder;
+  final int? itemCount;
+  final IndexedWidgetBuilder? separatorBuilder;
+  final List<Widget>? children;
+
+  final ChildIndexGetter? findChildIndexCallback;
+  final SemanticIndexCallback? semanticIndexCallback;
+  final bool addAutomaticKeepALives;
+  final bool addRepaintBoundaries;
+  final bool addSemanticIndexes;
+  final double? itemExtent;
+
+  /// 无数据时的组件
+  final Widget? placeholder;
+
+  @override
+  Widget build(BuildContext context) {
+    late Widget current;
+    late SliverChildDelegate delegate;
+    if (itemBuilder != null && itemCount != null && itemCount! > 0) {
+      int childCount = itemCount!;
+      IndexedWidgetBuilder item = itemBuilder!;
+      if (separatorBuilder != null) {
+        item = (BuildContext context, int index) {
+          final int itemIndex = index ~/ 2;
+          Widget? widget;
+          if (index.isEven) {
+            widget = itemBuilder!(context, itemIndex);
+          } else {
+            widget = separatorBuilder!(context, itemIndex);
+            assert(() {
+              if (widget == null)
+                throw FlutterError('separatorBuilder cannot return null.');
+              return true;
+            }());
+          }
+          return widget;
+        };
+        childCount = _computeActualChildCount(itemCount!);
+      }
+      delegate = SliverChildBuilderDelegate(item,
+          childCount: childCount,
+          findChildIndexCallback: findChildIndexCallback,
+          addAutomaticKeepAlives: addAutomaticKeepALives,
+          addRepaintBoundaries: addRepaintBoundaries,
+          addSemanticIndexes: addSemanticIndexes,
+          semanticIndexCallback: semanticIndexCallback ??
+              (Widget _, int localIndex) => localIndex);
+    } else if (children != null && children!.isNotEmpty) {
+      delegate = SliverChildListDelegate(children!,
+          addAutomaticKeepAlives: addAutomaticKeepALives,
+          addRepaintBoundaries: addRepaintBoundaries,
+          addSemanticIndexes: addSemanticIndexes,
+          semanticIndexCallback: semanticIndexCallback ??
+              (Widget _, int localIndex) => localIndex);
+    } else {
+      return SliverToBoxAdapter(child: placeholder);
+    }
+
+    if (crossAxisCount > 1 || crossAxisFlex) {
+      current = SliverGrid(
+          delegate: delegate,
+          gridDelegate: crossAxisFlex
+              ? SliverGridDelegateWithMaxCrossAxisExtent(
+                  mainAxisExtent: mainAxisExtent,
+                  mainAxisSpacing: mainAxisSpacing,
+                  crossAxisSpacing: crossAxisSpacing,
+                  childAspectRatio: childAspectRatio,
+                  maxCrossAxisExtent: maxCrossAxisExtent)
+              : SliverGridDelegateWithFixedCrossAxisCount(
+                  mainAxisSpacing: mainAxisSpacing,
+                  crossAxisSpacing: crossAxisSpacing,
+                  childAspectRatio: childAspectRatio,
+                  crossAxisCount: crossAxisCount,
+                  mainAxisExtent: mainAxisExtent));
+    } else {
+      current = itemExtent != null
+          ? SliverFixedExtentList(delegate: delegate, itemExtent: itemExtent!)
+          : SliverList(delegate: delegate);
+    }
+    return current;
+  }
+
+  /// Helper method to compute the actual child count for the separated constructor.
+  int _computeActualChildCount(int itemCount) => math.max(0, itemCount * 2 - 1);
+}

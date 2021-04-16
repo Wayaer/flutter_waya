@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -23,6 +25,7 @@ class Universal extends StatelessWidget {
     bool? isCircleAvatar = false,
     bool? intrinsicHeight = false,
     bool? intrinsicWidth = false,
+    bool? gaussian = false,
     bool? canRequestFocus,
     bool? enableFeedback,
     bool? excludeFromSemantics,
@@ -34,6 +37,7 @@ class Universal extends StatelessWidget {
     bool? maintainInteractivity,
     bool? transitionOnUserGestures,
     bool? noScrollBehavior,
+    double? fuzzyDegree,
     DragStartBehavior? dragStartBehavior,
     Color? shadowColor,
     Widget? replacement,
@@ -139,6 +143,7 @@ class Universal extends StatelessWidget {
     this.refreshConfig,
     this.widthFactor,
     this.heightFactor,
+    this.filter,
   })  : addCard = addCard ?? false,
         addInkWell = addInkWell ?? false,
         isScroll = isScroll ?? false,
@@ -167,6 +172,8 @@ class Universal extends StatelessWidget {
         enableFeedback = enableFeedback ?? true,
         canRequestFocus = canRequestFocus ?? true,
         noScrollBehavior = noScrollBehavior ?? true,
+        gaussian = gaussian ?? false,
+        fuzzyDegree = fuzzyDegree ?? 4,
         dragStartBehavior = dragStartBehavior ?? DragStartBehavior.start,
         shadowColor = shadowColor ?? Colors.transparent,
         replacement = replacement ?? const SizedBox.shrink(),
@@ -475,6 +482,16 @@ class Universal extends StatelessWidget {
   ///  ****** [Refreshed] ******  ///
   final RefreshConfig? refreshConfig;
 
+  ///  ****** [ImageFilter] ******  ///
+  ///  [filter]!=null 时 [fuzzyDegree] 无效
+  final ImageFilter? filter;
+
+  /// 模糊程度 0-100
+  final double fuzzyDegree;
+
+  /// 是否开始背景模糊 [ImageFilter]
+  final bool gaussian;
+
   EdgeInsetsGeometry? get _paddingIncludingDecoration {
     if (decoration == null || decoration!.padding == null) return padding;
     final EdgeInsetsGeometry decorationPadding = decoration!.padding!;
@@ -558,7 +575,7 @@ class Universal extends StatelessWidget {
     if (left != null || top != null || right != null || bottom != null)
       current = Positioned(
           left: left, top: top, right: right, bottom: bottom, child: current);
-
+    if (gaussian) backdropFilter(current);
     if (opacity != null && opacity! > 0)
       current = Opacity(opacity: opacity!, child: current);
 
@@ -567,6 +584,11 @@ class Universal extends StatelessWidget {
 
     return current;
   }
+
+  Widget backdropFilter(Widget current) => BackdropFilter(
+      filter:
+          filter ?? ImageFilter.blur(sigmaX: fuzzyDegree, sigmaY: fuzzyDegree),
+      child: current);
 
   Widget get statefulBuilder => StatefulBuilder(builder: builder!);
 

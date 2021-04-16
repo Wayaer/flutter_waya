@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_curiosity/flutter_curiosity.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 import 'package:waya/module/button_page.dart';
 import 'package:waya/module/carousel_page.dart';
@@ -16,8 +17,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   setGlobalPushMode(WidgetMode.ripple);
   _des();
-  runApp(GlobalWidgetsApp(
-      title: 'Waya Demo', home: Home(), widgetMode: WidgetMode.material));
+  runApp(_App());
 }
 
 void _des() {
@@ -29,7 +29,26 @@ void _des() {
   log('des解密完成==> $decoded');
 }
 
-class Home extends StatelessWidget {
+class _App extends StatefulWidget {
+  @override
+  _AppState createState() => _AppState();
+}
+
+class _AppState extends State<_App> {
+  @override
+  void initState() {
+    super.initState();
+    addPostFrameCallback((Duration duration) {
+      if (isDebug && isDesktop) setDesktopSizeTo5P8();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) => GlobalWidgetsApp(
+      title: 'Waya Demo', home: _Home(), widgetMode: WidgetMode.material);
+}
+
+class _Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return OverlayScaffold(
