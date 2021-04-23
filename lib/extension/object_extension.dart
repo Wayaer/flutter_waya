@@ -265,14 +265,33 @@ extension ExtensionList<T> on List<T> {
   }
 }
 
-extension ExtensionMapt<T> on Map<T, T> {
-  List<T> keysList({bool growable = true}) => keys.toList(growable: growable);
+extension ExtensionMap<K, V> on Map<K, V> {
+  List<K> keysList({bool growable = true}) => keys.toList(growable: growable);
 
-  List<T> valuesList({bool growable = true}) =>
+  List<V> valuesList({bool growable = true}) =>
       values.toList(growable: growable);
 
-  List<E> builderEntry<E>(E Function(MapEntry<T, T>) builder) =>
-      entries.map((MapEntry<T, T> entry) => builder(entry)).toList();
+  List<E> builderEntry<E>(E Function(MapEntry<K, V>) builder) =>
+      entries.map((MapEntry<K, V> entry) => builder(entry)).toList();
+
+  /// addAll map 并返回 新map
+  Map<K, V> addAllT(Map<K, V> iterable, {bool isAdd = true}) {
+    if (isAdd) addAll(iterable);
+    return this;
+  }
+
+  /// update map 并返回 新map
+  Map<K, V> updateAllT(V update(K key, V value), {bool isUpdate = true}) {
+    if (isUpdate) updateAll(update);
+    return this;
+  }
+
+  /// update map 并返回 新map
+  Map<K, V> updateT(K key, V update(V value),
+      {V ifAbsent()?, bool isUpdate = true}) {
+    if (isUpdate) this.update(key, update, ifAbsent: ifAbsent);
+    return this;
+  }
 }
 
 enum DateTimeDist {

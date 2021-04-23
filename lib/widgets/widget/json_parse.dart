@@ -42,15 +42,15 @@ class _JsonParseState extends State<JsonParse> {
       if (isTap(content)) {
         row.add(ToggleRotate(
             rad: pi / 2,
-            clockwise: false,
+            clockwise: true,
             isRotate: (mapFlag[key.toString()]) ?? false,
-            child: Icon(Icons.arrow_drop_down,
+            child: Icon(Icons.arrow_right_rounded,
                 size: 18, color: Colors.grey[700])));
       } else {
         row.add(const SizedBox(width: 14));
       }
       row.addAll(<Widget>[
-        BasisText(widget.isList || isTap(content) ? '[$key]:' : '$key:',
+        BasisText(widget.isList || isTap(content) ? '[$key]:' : ' $key :',
                 fontWeight: FontWeight.w400,
                 color: content == null ? Colors.grey : Colors.purple[800])
             .onDoubleTap(() {
@@ -125,33 +125,25 @@ class _JsonParseState extends State<JsonParse> {
 }
 
 void setHttpData(ResponseModel res) {
-  final _HttpDataModel data = _HttpDataModel(res.requestOptions.path, res.data);
   if (_httpDataOverlay == null) {
-    _httpDataOverlay = showOverlay(_HttpDataPage(data))!;
+    _httpDataOverlay = showOverlay(_HttpDataPage(res))!;
   } else {
-    eventBus.emit('httpData', data);
+    eventBus.emit('httpData', res);
   }
 }
 
 OverlayEntryAuto? _httpDataOverlay;
 
-class _HttpDataModel {
-  _HttpDataModel(this.url, this.data);
-
-  final String url;
-  final dynamic data;
-}
-
 class _HttpDataPage extends StatefulWidget {
-  const _HttpDataPage(this.initData, {Key? key}) : super(key: key);
-  final _HttpDataModel initData;
+  const _HttpDataPage(this.res, {Key? key}) : super(key: key);
+  final ResponseModel res;
 
   @override
   _HttpDataPageState createState() => _HttpDataPageState();
 }
 
 class _HttpDataPageState extends State<_HttpDataPage> {
-  final List<_HttpDataModel> httpDataList = <_HttpDataModel>[];
+  final List<ResponseModel> httpDataList = <ResponseModel>[];
   final String eventName = 'httpData';
   bool showData = false;
   ValueNotifier<Offset> iconOffSet =
@@ -160,9 +152,9 @@ class _HttpDataPageState extends State<_HttpDataPage> {
   @override
   void initState() {
     super.initState();
-    httpDataList.add(widget.initData);
+    httpDataList.add(widget.res);
     eventBus.add(eventName, (dynamic data) {
-      if (data is _HttpDataModel) {
+      if (data is ResponseModel) {
         httpDataList.insert(0, data);
         if (httpDataList.length > 20) httpDataList.removeLast();
       }
@@ -230,7 +222,7 @@ class _HttpDataPageState extends State<_HttpDataPage> {
             itemCount: httpDataList.length,
             padding: const EdgeInsets.all(10),
             itemBuilder: (_, int index) {
-              final _HttpDataModel res = httpDataList[index];
+              final ResponseModel res = httpDataList[index];
               bool showJson = false;
               return Universal(
                 margin: const EdgeInsets.only(top: 10),
@@ -238,16 +230,19 @@ class _HttpDataPageState extends State<_HttpDataPage> {
                     color: ConstColors.white, boxShadow: WayStyles.boxShadow),
                 addCard: true,
                 builder: (_, StateSetter state) => !showJson
-                    ? title(res.url, onTap: () {
+                    ? title(res.requestOptions.uri.path, onTap: () {
                         showJson = !showJson;
                         state(() {});
                       })
                     : Column(children: <Widget>[
-                        title(res.url, onTap: () {
+                        title(res.requestOptions.uri.path, onTap: () {
                           showJson = !showJson;
                           state(() {});
                         }),
-                        JsonParse(res.data as Map<dynamic, dynamic>),
+                        JsonParse(<String, dynamic>{
+                          'requestOptions': res.requestOptionsToMap(),
+                          'responseData': res.data as Map<String, dynamic>,
+                        }),
                       ]),
               );
             }),
@@ -257,6 +252,7 @@ class _HttpDataPageState extends State<_HttpDataPage> {
       padding: const EdgeInsets.all(10),
       text: url,
       maxLines: 2,
-      child: BasisText(url, textAlign: TextAlign.start, color: Colors.black),
+      child: BasisText(url,
+          textAlign: TextAlign.start, color: Colors.black, fontSize: 13),
       onTap: onTap);
 }

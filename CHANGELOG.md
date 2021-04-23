@@ -1,5 +1,7 @@
 ## [1.9.12]
   * fix bug for popBack
+  * logTools add RequestOptions
+  * 
 ## [1.9.11]
   * [Universal] add [ImageFilter]
   * split [ScrollList]

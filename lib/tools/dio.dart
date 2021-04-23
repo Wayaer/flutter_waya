@@ -107,21 +107,24 @@ class DioTools {
           responseModel.requestOptions.responseType != ResponseType.stream) {
         log('$httpType url:$url  responseData==  ${responseModel.toMap()}');
       }
+      responseModel.baseOptions = _dio.options;
       if (logTools) setHttpData(responseModel);
       log('\n==================== 结束一个请求 ====================\n');
       return responseModel;
     } on DioError catch (e) {
       final DioError error = e;
-      ResponseModel errResponse = ResponseModel.constResponseModel(
+      ResponseModel responseModel = ResponseModel.constResponseModel(
           httpStatus: ConstConstant.httpStatus[404], error: error);
-      errResponse = ResponseModel.mergeError(error, errResponse);
-      log('error:$url  errorData==  ${errResponse.toMap()}');
+      responseModel = ResponseModel.mergeError(error, responseModel);
+      log('error:$url  errorData==  ${responseModel.toMap()}');
       log('\n==================== 结束一个请求 DioError ====================\n');
-      if (logTools) setHttpData(errResponse);
-      return errResponse;
+      responseModel.baseOptions = _dio.options;
+      if (logTools) setHttpData(responseModel);
+      return responseModel;
     } catch (e) {
       final ResponseModel responseModel = ResponseModel.constResponseModel();
       log('\n==================== 结束一个请求 catch ====================\n');
+      responseModel.baseOptions = _dio.options;
       if (logTools) setHttpData(responseModel);
       return responseModel;
     }
@@ -142,7 +145,7 @@ class DioTools {
       final Response<dynamic> response = await dio.download(url, savePath,
           cancelToken: _cancelToken, onReceiveProgress: onReceiveProgress);
       log('\n==================== 下载结束 ====================\n');
-      return ResponseModel.formResponse(response);
+      return ResponseModel.formResponse(response, baseOptions: dio.options);
     } on DioError catch (e) {
       final DioError error = e;
       ResponseModel errResponse = ResponseModel.constResponseModel(
@@ -177,7 +180,7 @@ class DioTools {
           onSendProgress: onSendProgress,
           onReceiveProgress: onReceiveProgress);
       log('\n==================== 结束上传 ====================\n');
-      return ResponseModel.formResponse(response);
+      return ResponseModel.formResponse(response, baseOptions: dio.options);
     } on DioError catch (e) {
       final DioError error = e;
       ResponseModel errResponse = ResponseModel.constResponseModel(

@@ -14,6 +14,7 @@ class ResponseModel extends Response<dynamic> {
     required RequestOptions requestOptions,
     List<RedirectRecord>? redirects,
     Map<String, dynamic>? extra,
+    this.baseOptions,
   }) : super(
             data: data,
             headers: headers,
@@ -22,6 +23,8 @@ class ResponseModel extends Response<dynamic> {
             statusMessage: statusMessage,
             redirects: redirects,
             extra: extra);
+
+  BaseOptions? baseOptions;
 
   ///  语言翻译版 状态消息
   String? statusMessageT;
@@ -47,8 +50,9 @@ class ResponseModel extends Response<dynamic> {
   }
 
   static ResponseModel formResponse(Response<dynamic> response,
-          {DioErrorType? type}) =>
+          {DioErrorType? type, BaseOptions? baseOptions}) =>
       ResponseModel(
+          baseOptions: baseOptions,
           requestOptions: response.requestOptions,
           type: type.toString(),
           statusCode: response.statusCode,
@@ -128,6 +132,24 @@ class ResponseModel extends Response<dynamic> {
 
   String toJson() =>
       '{"type":"${type.toString()}","data":$data,"cookie":$cookie,"statusCode":$statusCode,"statusMessage":"$statusMessage","statusMessageT":"$statusMessageT"}';
+
+  Map<String, dynamic> requestOptionsToMap() {
+    return <String, dynamic>{
+      'uri': requestOptions.uri.path,
+      'method': requestOptions.method,
+      'baseUrl': requestOptions.baseUrl,
+      'path': requestOptions.path,
+      'requestHeaders': baseOptions?.headers,
+      'responseHeaders': response?.headers.map,
+      'body': requestOptions.data,
+      'params': requestOptions.queryParameters,
+      'contentType': requestOptions.contentType,
+      'receiveTimeout': requestOptions.receiveTimeout,
+      'sendTimeout': requestOptions.sendTimeout,
+      'connectTimeout': requestOptions.connectTimeout,
+      'responseType': requestOptions.responseType.toString(),
+    };
+  }
 }
 
 class HttpStatus {
