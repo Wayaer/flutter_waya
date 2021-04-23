@@ -12,18 +12,21 @@ class ScrollViewPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final ScrollController scrollController = ScrollController();
     return OverlayScaffold(
+        isScroll: true,
         backgroundColor: Colors.white,
         appBar: AppBar(title: const Text('ScrollView Demo'), centerTitle: true),
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          CustomElastic('CustomScrollView',
-              onTap: () => push(const _CustomScrollViewPage())),
-          CustomElastic('RefreshScrollView',
-              onTap: () => push(const _RefreshScrollViewPage())),
+          const SizedBox(height: 20),
           CustomElastic('ScrollViewAuto',
               onTap: () => push(_ScrollViewAutoPage(slivers))),
           CustomElastic('ScrollViewAuto.nested',
               onTap: () => push(_ScrollViewAutoNestedPage(slivers))),
+          const SizedBox(height: 40),
+          CustomElastic('CustomScrollView',
+              onTap: () => push(const _CustomScrollViewPage())),
+          CustomElastic('RefreshScrollView',
+              onTap: () => push(const _RefreshScrollViewPage())),
           CustomElastic('DraggableScrollbar',
               onTap: () => push(_DraggableScrollbar(scrollController))),
           CustomElastic('ScrollList',
@@ -421,17 +424,26 @@ class _ScrollViewAutoNestedPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => OverlayScaffold(
-      body: ScrollViewAuto.nested(
-          slivers: slivers,
-          body: Universal(
-              refreshConfig: RefreshConfig(onRefresh: () async {
-                await showToast('onRefresh');
-                sendRefreshType(EasyRefreshType.refreshSuccess);
-              }),
-              isScroll: true,
-              color: Colors.yellow,
-              children: List<Widget>.generate(
-                  50, (int index) => Text(index.toString())))));
+          body: RefreshIndicator(
+        notificationPredicate: (ScrollNotification notification) {
+          /// 返回true即可
+          return true;
+        },
+        onRefresh: () async {
+          /// 模拟网络请求
+          await Future<dynamic>.delayed(const Duration(seconds: 4));
+
+          /// 结束刷新
+          return Future<dynamic>.value(true);
+        },
+        child: ScrollViewAuto.nested(
+            slivers: slivers,
+            body: Universal(
+                isScroll: true,
+                color: Colors.yellow,
+                children: List<Widget>.generate(
+                    50, (int index) => Text(index.toString())))),
+      ));
 }
 
 class _ScrollViewAutoPage extends StatelessWidget {
@@ -441,13 +453,14 @@ class _ScrollViewAutoPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => OverlayScaffold(
-      body: ScrollViewAuto(
-          slivers: slivers,
-          body: Universal(
-              isScroll: true,
-              color: Colors.yellow,
-              children: List<Widget>.generate(
-                  50, (int index) => Text(index.toString())))));
+          body: ScrollViewAuto(slivers: <Widget>[
+        ...slivers,
+        SliverToBoxAdapter(
+            child: Universal(
+                color: Colors.yellow,
+                children: List<Widget>.generate(
+                    50, (int index) => Text(index.toString()))))
+      ]));
 }
 
 class _Item extends StatelessWidget {

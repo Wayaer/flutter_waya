@@ -13,14 +13,11 @@ class ScrollViewAuto extends StatefulWidget {
       {Key? key,
       this.expanded = false,
       this.flex = 1,
-      this.headerSliverBuilder,
-      this.floatHeaderSlivers = true,
       this.clipBehavior = Clip.hardEdge,
       this.reverse = false,
       this.physics,
       this.scrollDirection = Axis.vertical,
       this.dragStartBehavior = DragStartBehavior.start,
-      this.body,
       this.controller,
       this.restorationId,
       this.slivers = const <Widget>[],
@@ -31,24 +28,27 @@ class ScrollViewAuto extends StatefulWidget {
       this.cacheExtent,
       this.semanticChildCount})
       : isNestedScrollView = false,
+        floatHeaderSlivers = true,
+        body = null,
+        headerSliverBuilder = null,
         super(key: key);
 
-  const ScrollViewAuto.nested(
-      {Key? key,
-      this.expanded = false,
-      this.flex = 1,
-      this.headerSliverBuilder,
-      this.floatHeaderSlivers = true,
-      this.clipBehavior = Clip.hardEdge,
-      this.reverse = false,
-      this.physics,
-      this.scrollDirection = Axis.vertical,
-      this.dragStartBehavior = DragStartBehavior.start,
-      this.body,
-      this.controller,
-      this.restorationId,
-      this.slivers = const <Widget>[]})
-      : isNestedScrollView = true,
+  const ScrollViewAuto.nested({
+    Key? key,
+    this.expanded = false,
+    this.flex = 1,
+    this.headerSliverBuilder,
+    this.floatHeaderSlivers = true,
+    this.clipBehavior = Clip.hardEdge,
+    this.reverse = false,
+    this.physics,
+    this.scrollDirection = Axis.vertical,
+    this.dragStartBehavior = DragStartBehavior.start,
+    this.body,
+    this.controller,
+    this.restorationId,
+    this.slivers = const <Widget>[],
+  })  : isNestedScrollView = true,
         primary = null,
         shrinkWrap = false,
         center = null,
@@ -60,28 +60,25 @@ class ScrollViewAuto extends StatefulWidget {
   /// 是否使用 [NestedScrollView]
   final bool isNestedScrollView;
 
-  /// ScrollView 外嵌套Expanded
+  /// [ScrollView] 外嵌套 [Expanded]
   final bool expanded;
   final int flex;
 
-  /// **** NestedScrollView **** ///
-  final Widget? body;
-
-  /// 当[isNestedScrollView]=true , 使用 [headerSliverBuilder] 时 [slivers] 无效,
-  final NestedScrollViewHeaderSliversBuilder? headerSliverBuilder;
-
-  /// **** CustomScrollView **** ///
-  final bool floatHeaderSlivers;
+  /// **** ScrollView **** ///
+  final ScrollController? controller;
+  final String? restorationId;
   final Clip clipBehavior;
   final bool reverse;
   final ScrollPhysics? physics;
   final Axis scrollDirection;
   final DragStartBehavior dragStartBehavior;
 
-  final ScrollController? controller;
-  final String? restorationId;
+  /// **** [NestedScrollView] **** ///
+  final bool floatHeaderSlivers;
+  final Widget? body;
+  final NestedScrollViewHeaderSliversBuilder? headerSliverBuilder;
 
-  /// **** CustomScrollView **** ///
+  /// **** [CustomScrollView] **** ///
   final List<Widget> slivers;
   final bool? primary;
   final bool shrinkWrap;
@@ -95,7 +92,7 @@ class ScrollViewAuto extends StatefulWidget {
 }
 
 class _ScrollViewAutoState extends State<ScrollViewAuto> {
-  bool showNestedScroll = false;
+  bool showScrollView = false;
   late List<Widget> slivers;
   List<_SliverModel> sliverModel = <_SliverModel>[];
 
@@ -105,21 +102,42 @@ class _ScrollViewAutoState extends State<ScrollViewAuto> {
     super.initState();
     addPostFrameCallback((Duration duration) {
       _calculate(slivers, sliverModel);
-      showNestedScroll = true;
+      showScrollView = true;
       setState(() {});
+    });
+  }
+
+  void _calculate(List<Widget> slivers, List<_SliverModel> sliver) {
+    sliver.builderEntry((MapEntry<int, _SliverModel> entry) {
+      final _SliverModel value = entry.value;
+      final int i = entry.key;
+      if (value.key != null) {
+        sliver[i].size = value.key?.currentContext?.size ?? const Size(0, 0);
+        if (value.extraKey != null) {
+          sliver[i].extraSize =
+              value.extraKey?.currentContext?.size ?? const Size(0, 0);
+          if (sliver[i].extraSize.height > kToolbarHeight) {
+            sliver[i].extraSize =
+                Size(sliver[i].extraSize.width, kToolbarHeight);
+          }
+        }
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    if (!showNestedScroll)
-      return _Calculate(slivers: slivers, sliverModel: sliverModel);
-    return expanded(
-        widget.isNestedScrollView ? nestedScrollView : customScrollView);
+    late Widget current = const SizedBox();
+    if (showScrollView) {
+      current = widget.isNestedScrollView ? nestedScrollView : customScrollView;
+      if (widget.expanded) current = expanded(current);
+    } else {
+      current = _Calculate(slivers: slivers, sliverModel: sliverModel);
+    }
+    return current;
   }
 
-  Widget expanded(Widget child) =>
-      widget.expanded ? Expanded(flex: widget.flex, child: child) : child;
+  Widget expanded(Widget child) => Expanded(flex: widget.flex, child: child);
 
   NestedScrollView get nestedScrollView => NestedScrollView(
       floatHeaderSlivers: widget.floatHeaderSlivers,
@@ -150,6 +168,25 @@ class _ScrollViewAutoState extends State<ScrollViewAuto> {
       dragStartBehavior: widget.dragStartBehavior,
       restorationId: widget.restorationId,
       clipBehavior: widget.clipBehavior);
+
+  List<Widget> _sliverBuilder(
+          List<Widget> slivers, List<_SliverModel> _sliver) =>
+      slivers.builderEntry<Widget>((MapEntry<int, Widget> entry) {
+        final Widget element = entry.value;
+        final int index = entry.key;
+        final _SliverModel sliver = _sliver[index];
+        if (element is SliverAppBar) {
+          return _SliverAppBar(
+              sliverAppBar: element,
+              bottomSize: sliver.extraSize,
+              expandedHeight: math.max(sliver.size.height,
+                  kToolbarHeight + sliver.extraSize.height));
+        } else if (element is SliverAutoPersistentHeader) {
+          return _SliverAutoPersistentHeader(
+              header: element, maxHeight: sliver.size.height);
+        }
+        return element;
+      });
 }
 
 /// 初始化 delegate
@@ -250,7 +287,7 @@ class SliverAutoAppBar extends SliverAppBar {
     Brightness? brightness,
     AsyncCallback? onStretchTrigger,
 
-    ///[pinned]=true AppBar[title]不消失
+    /// [pinned]=true AppBar[title]不消失
     bool pinned = false,
 
     /// [floating]=true，AppBar下拉手势时立即展开（即使下面滚动组件不在顶部）
@@ -340,41 +377,6 @@ class _SliverModel {
   Size extraSize;
 }
 
-List<Widget> _sliverBuilder(List<Widget> slivers, List<_SliverModel> _sliver) =>
-    slivers.builderEntry<Widget>((MapEntry<int, Widget> entry) {
-      final Widget element = entry.value;
-      final int index = entry.key;
-      final _SliverModel sliver = _sliver[index];
-      if (element is SliverAppBar) {
-        return _SliverAppBar(
-            sliverAppBar: element,
-            bottomSize: sliver.extraSize,
-            expandedHeight: math.max(
-                sliver.size.height, kToolbarHeight + sliver.extraSize.height));
-      } else if (element is SliverAutoPersistentHeader) {
-        return _SliverAutoPersistentHeader(
-            header: element, maxHeight: sliver.size.height);
-      }
-      return element;
-    });
-
-void _calculate(List<Widget> slivers, List<_SliverModel> sliver) {
-  sliver.builderEntry((MapEntry<int, _SliverModel> entry) {
-    final _SliverModel value = entry.value;
-    final int i = entry.key;
-    if (value.key != null) {
-      sliver[i].size = value.key?.currentContext?.size ?? const Size(0, 0);
-      if (value.extraKey != null) {
-        sliver[i].extraSize =
-            value.extraKey?.currentContext?.size ?? const Size(0, 0);
-        if (sliver[i].extraSize.height > kToolbarHeight) {
-          sliver[i].extraSize = Size(sliver[i].extraSize.width, kToolbarHeight);
-        }
-      }
-    }
-  });
-}
-
 class _Calculate extends StatelessWidget {
   const _Calculate({
     Key? key,
@@ -421,7 +423,7 @@ class _Calculate extends StatelessWidget {
   }
 }
 
-/// SliverPersistentHeader 固定
+/// [SliverPersistentHeader] 固定
 class _PinnedPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
   _PinnedPersistentHeaderDelegate({
     required this.child,
@@ -446,7 +448,7 @@ class _PinnedPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
   bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) => false;
 }
 
-/// SliverPersistentHeader 不固定
+/// [SliverPersistentHeader] 不固定
 class _NoPinnedPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
   _NoPinnedPersistentHeaderDelegate({
     double? minHeight = 0,
