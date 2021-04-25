@@ -73,21 +73,19 @@ void addTimingsCallback(TimingsCallback callback) =>
 
 void setStatusBarLight(bool isLight) {
   const Color color = ConstColors.transparent;
-  if (isLight is bool) {
-    SystemChrome.setSystemUIOverlayStyle(isLight
-        ? const SystemUiOverlayStyle(
-            systemNavigationBarColor: ConstColors.black70,
-            systemNavigationBarDividerColor: ConstColors.transparent,
-            statusBarColor: color,
-            systemNavigationBarIconBrightness: Brightness.light,
-            statusBarIconBrightness: Brightness.light,
-            statusBarBrightness: Brightness.dark)
-        : const SystemUiOverlayStyle(
-            systemNavigationBarColor: ConstColors.black70,
-            systemNavigationBarDividerColor: color,
-            statusBarColor: color,
-            systemNavigationBarIconBrightness: Brightness.light,
-            statusBarIconBrightness: Brightness.dark,
-            statusBarBrightness: Brightness.light));
-  }
+  SystemChrome.setSystemUIOverlayStyle(isLight
+      ? const SystemUiOverlayStyle(
+          systemNavigationBarColor: ConstColors.black70,
+          systemNavigationBarDividerColor: color,
+          statusBarColor: color,
+          systemNavigationBarIconBrightness: Brightness.light,
+          statusBarIconBrightness: Brightness.light,
+          statusBarBrightness: Brightness.dark)
+      : const SystemUiOverlayStyle(
+          systemNavigationBarColor: ConstColors.black70,
+          systemNavigationBarDividerColor: color,
+          statusBarColor: color,
+          systemNavigationBarIconBrightness: Brightness.light,
+          statusBarIconBrightness: Brightness.dark,
+          statusBarBrightness: Brightness.light));
 }
