@@ -221,8 +221,8 @@ class _ListWheelState extends State<ListWheel> {
 
   @override
   void dispose() {
-    controller.dispose();
     super.dispose();
+    if (widget.controller == null) controller.dispose();
   }
 }
 

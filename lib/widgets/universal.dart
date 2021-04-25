@@ -9,7 +9,9 @@ class Universal extends StatelessWidget {
   const Universal({
     Key? key,
     bool? isScroll = false,
+    bool? useSingleChildScrollView = true,
     bool? isStack = false,
+    bool? isWrap = false,
     bool? enabled = false,
     bool? addInkWell = false,
     bool? addCard = false,
@@ -44,16 +46,21 @@ class Universal extends StatelessWidget {
     StackFit? stackFit,
     MainAxisAlignment? mainAxisAlignment,
     CrossAxisAlignment? crossAxisAlignment,
+    WrapAlignment? wrapAlignment,
+    WrapAlignment? runAlignment,
+    WrapCrossAlignment? wrapCrossAlignment,
     Axis? direction,
+    Axis? scrollDirection,
     VerticalDirection? verticalDirection,
     MainAxisSize? mainAxisSize,
     HitTestBehavior? behavior,
     BorderRadius? borderRadius,
+    double? wrapSpacing = 0.0,
+    double? runSpacing = 0.0,
     this.color,
     this.alignment,
     this.child,
     this.children,
-    this.builder,
     this.padding,
     this.physics,
     this.scrollController,
@@ -144,10 +151,13 @@ class Universal extends StatelessWidget {
     this.widthFactor,
     this.heightFactor,
     this.filter,
+    this.builder,
   })  : addCard = addCard ?? false,
         addInkWell = addInkWell ?? false,
         isScroll = isScroll ?? false,
+        useSingleChildScrollView = useSingleChildScrollView ?? true,
         isStack = isStack ?? false,
+        isWrap = isWrap ?? false,
         expanded = expanded ?? false,
         expand = expand ?? false,
         shrink = shrink ?? false,
@@ -174,22 +184,27 @@ class Universal extends StatelessWidget {
         noScrollBehavior = noScrollBehavior ?? true,
         gaussian = gaussian ?? false,
         fuzzyDegree = fuzzyDegree ?? 4,
+        wrapSpacing = wrapSpacing ?? 0.0,
+        runSpacing = runSpacing ?? 0.0,
         dragStartBehavior = dragStartBehavior ?? DragStartBehavior.start,
         shadowColor = shadowColor ?? Colors.transparent,
         replacement = replacement ?? const SizedBox.shrink(),
         stackFit = stackFit ?? StackFit.loose,
         mainAxisSize = mainAxisSize ?? MainAxisSize.max,
         mainAxisAlignment = mainAxisAlignment ?? MainAxisAlignment.start,
+        wrapAlignment = wrapAlignment ?? WrapAlignment.start,
+        runAlignment = runAlignment ?? WrapAlignment.start,
+        wrapCrossAlignment = wrapCrossAlignment ?? WrapCrossAlignment.start,
         crossAxisAlignment = crossAxisAlignment ?? CrossAxisAlignment.center,
         verticalDirection = verticalDirection ?? VerticalDirection.down,
         direction = direction ?? Axis.vertical,
+        scrollDirection = scrollDirection ?? Axis.vertical,
         behavior = behavior ?? HitTestBehavior.opaque,
         borderRadius = borderRadius ?? BorderRadius.zero,
         assert(!((addCard ?? false) && (addInkWell ?? false))),
         super(key: key);
 
-  ///  public
-
+  ///  [GestureDetector]、[SingleChildScrollView] 使用
   final DragStartBehavior dragStartBehavior;
 
   ///  ****** [IntrinsicHeight]、[IntrinsicWidth] ******  ///
@@ -220,7 +235,18 @@ class Universal extends StatelessWidget {
   ///  三个只有一个有效
   final Widget? child;
   final List<Widget>? children;
-  final StatefulWidgetBuilder? builder;
+
+  /// ****** [StatefulBuilder]、[Builder]、[LayoutBuilder] ****** ///
+  /// builder types [LayoutWidgetBuilder]、[WidgetBuilder]、[StatefulWidgetBuilder]
+  final dynamic? builder;
+
+  ///  ****** [Wrap] ******  ///
+  final bool isWrap;
+  final WrapAlignment wrapAlignment;
+  final double wrapSpacing;
+  final WrapAlignment runAlignment;
+  final double runSpacing;
+  final WrapCrossAlignment wrapCrossAlignment;
 
   ///  ****** [Flexible] ******  ///
   final int? flex;
@@ -282,10 +308,17 @@ class Universal extends StatelessWidget {
   final double? minRadius;
   final double? maxRadius;
 
-  ///  ****** [SingleChildScrollView] ******  ///
+  ///  ****** 开始滚动 ******  ///
+  final bool isScroll;
+  final Axis scrollDirection;
+
+  /// 是否使用 [SingleChildScrollView]创建滚动组件
+  final bool useSingleChildScrollView;
+
   ///  移出头部和底部蓝色阴影
   final bool noScrollBehavior;
-  final bool isScroll;
+
+  ///  ****** [SingleChildScrollView] ******  ///
   final ScrollPhysics? physics;
   final ScrollController? scrollController;
   final bool reverse;
@@ -505,17 +538,37 @@ class Universal extends StatelessWidget {
     if (child != null) current = child!;
     if (children != null && children!.isNotEmpty) {
       current = isStack ? stackWidget(children!) : flexWidget(children!);
+      if (isWrap) current = wrapWidget(children!);
     }
-    if (builder != null) current = statefulBuilder;
-    if (isScroll && refreshConfig == null)
-      current = noScrollBehavior
-          ? ScrollConfiguration(
-              behavior: NoScrollBehavior(),
-              child: singleChildScrollViewWidget(current))
-          : singleChildScrollViewWidget(current);
+    if (builder != null) current = builderWidget(current);
 
-    if (_paddingIncludingDecoration != null)
-      current = Padding(padding: _paddingIncludingDecoration!, child: current);
+    if (isScroll || refreshConfig != null) {
+      if (refreshConfig == null && useSingleChildScrollView) {
+        current = noScrollBehavior
+            ? ScrollConfiguration(
+                behavior: NoScrollBehavior(),
+                child: singleChildScrollViewWidget(current))
+            : singleChildScrollViewWidget(current);
+
+        /// 添加padding
+        current = paddingWidget(current);
+      } else {
+        if (child != null || builder != null) if (child != null ||
+            builder != null)
+          current = refreshedWidget(
+              <Widget>[SliverToBoxAdapter(child: current)],
+              _paddingIncludingDecoration);
+        if (children != null && children!.isNotEmpty && !isStack && !isWrap)
+          current = refreshedWidget(
+              children!
+                  .builder((Widget item) => SliverToBoxAdapter(child: item)),
+              _paddingIncludingDecoration);
+      }
+    } else {
+      /// 添加padding
+      current = paddingWidget(current);
+    }
+
     if (alignment != null || widthFactor != null || heightFactor != null)
       current = Align(
           alignment: alignment!,
@@ -525,7 +578,6 @@ class Universal extends StatelessWidget {
     if (intrinsicWidth) current = IntrinsicWidth(child: current);
     if (intrinsicHeight) current = IntrinsicHeight(child: current);
 
-    if (refreshConfig != null) current = refreshedWidget(current);
     if (color != null && decoration == null && !addInkWell && !addCard)
       current = ColoredBox(color: color!, child: current);
 
@@ -585,12 +637,26 @@ class Universal extends StatelessWidget {
     return current;
   }
 
+  Widget builderWidget(Widget current) {
+    if (builder is StatefulWidgetBuilder) {
+      return StatefulBuilder(builder: builder as StatefulWidgetBuilder);
+    } else if (builder is WidgetBuilder) {
+      return Builder(builder: builder as WidgetBuilder);
+    } else if (builder is LayoutWidgetBuilder) {
+      return LayoutBuilder(builder: builder as LayoutWidgetBuilder);
+    }
+
+    return current;
+  }
+
+  Widget paddingWidget(Widget current) => _paddingIncludingDecoration == null
+      ? current
+      : Padding(padding: _paddingIncludingDecoration!, child: current);
+
   Widget backdropFilter(Widget current) => BackdropFilter(
       filter:
           filter ?? ImageFilter.blur(sigmaX: fuzzyDegree, sigmaY: fuzzyDegree),
       child: current);
-
-  Widget get statefulBuilder => StatefulBuilder(builder: builder!);
 
   Widget offstageWidget(Widget current) =>
       Offstage(child: current, offstage: offstage);
@@ -724,21 +790,20 @@ class Universal extends StatelessWidget {
       primary: primary,
       dragStartBehavior: dragStartBehavior,
       controller: scrollController,
-      scrollDirection: direction,
+      scrollDirection: scrollDirection,
       clipBehavior: clipBehavior ?? Clip.hardEdge,
       child: current);
 
-  Widget refreshedWidget(Widget current) => EasyRefreshed(
-      controller: refreshConfig?.controller,
-      scrollController: scrollController,
-      slivers: <Widget>[SliverToBoxAdapter(child: current)],
-      reverse: reverse,
-      primary: primary,
-      scrollDirection: direction,
-      onRefresh: refreshConfig?.onRefresh,
-      onLoading: refreshConfig?.onLoading,
-      header: refreshConfig?.header,
-      footer: refreshConfig?.footer);
+  Widget refreshedWidget(List<Widget> slivers, EdgeInsetsGeometry? padding) =>
+      RefreshScrollView(
+          controller: scrollController,
+          slivers: slivers,
+          padding: padding,
+          noScrollBehavior: noScrollBehavior,
+          reverse: reverse,
+          primary: primary,
+          scrollDirection: scrollDirection,
+          refreshConfig: refreshConfig);
 
   Widget flexWidget(List<Widget> children) => Flex(
       children: children,
@@ -749,6 +814,18 @@ class Universal extends StatelessWidget {
       verticalDirection: verticalDirection,
       textDirection: textDirection,
       mainAxisSize: mainAxisSize);
+
+  Widget wrapWidget(List<Widget> children) => Wrap(
+      children: children,
+      direction: direction,
+      alignment: wrapAlignment,
+      spacing: wrapSpacing,
+      runAlignment: runAlignment,
+      runSpacing: runSpacing,
+      crossAxisAlignment: wrapCrossAlignment,
+      clipBehavior: clipBehavior ?? Clip.none,
+      verticalDirection: verticalDirection,
+      textDirection: textDirection);
 
   Widget stackWidget(List<Widget> children) => Stack(
       alignment: alignment ?? AlignmentDirectional.topStart,

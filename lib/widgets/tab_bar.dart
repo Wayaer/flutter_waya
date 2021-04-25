@@ -70,6 +70,7 @@ class TabBarMerge extends StatelessWidget {
   }
 
   Widget get tabBarUniversal => Universal(
+      expanded: true,
       margin: margin,
       padding: padding,
       decoration: decoration,

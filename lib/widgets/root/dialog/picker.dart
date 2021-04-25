@@ -296,26 +296,24 @@ class _AreaPickerState extends State<AreaPicker> {
         provinceIndex = newIndex;
         refreshCity();
       })),
-      Universal(
-          expanded: true,
+      Expanded(child: StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
-            cityState = setState;
-            return wheelItem(city,
-                childDelegateType: ListWheelChildDelegateType.list,
-                controller: controllerCity, onChanged: (int newIndex) {
-              cityIndex = newIndex;
-              refreshDistrict();
-            });
-          }),
-      Universal(
-          expanded: true,
+        cityState = setState;
+        return wheelItem(city,
+            childDelegateType: ListWheelChildDelegateType.list,
+            controller: controllerCity, onChanged: (int newIndex) {
+          cityIndex = newIndex;
+          refreshDistrict();
+        });
+      })),
+      Expanded(child: StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
-            districtState = setState;
-            return wheelItem(district,
-                childDelegateType: ListWheelChildDelegateType.list,
-                controller: controllerDistrict,
-                onChanged: (int newIndex) => districtIndex = newIndex);
-          }),
+        districtState = setState;
+        return wheelItem(district,
+            childDelegateType: ListWheelChildDelegateType.list,
+            controller: controllerDistrict,
+            onChanged: (int newIndex) => districtIndex = newIndex);
+      })),
     ]);
     return _PickerSub(
         pickerSub: widget.pickerSub, child: row, onTap: sureTapVoid);

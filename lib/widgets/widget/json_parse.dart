@@ -229,21 +229,22 @@ class _HttpDataPageState extends State<_HttpDataPage> {
                 decoration: const BoxDecoration(
                     color: ConstColors.white, boxShadow: WayStyles.boxShadow),
                 addCard: true,
-                builder: (_, StateSetter state) => !showJson
-                    ? title(res.requestOptions.uri.path, onTap: () {
-                        showJson = !showJson;
-                        state(() {});
-                      })
-                    : Column(children: <Widget>[
-                        title(res.requestOptions.uri.path, onTap: () {
-                          showJson = !showJson;
-                          state(() {});
-                        }),
-                        JsonParse(<String, dynamic>{
-                          'requestOptions': res.requestOptionsToMap(),
-                          'responseData': res.data as Map<String, dynamic>,
-                        }),
-                      ]),
+                child: StatefulBuilder(
+                    builder: (_, StateSetter state) => !showJson
+                        ? title(res.requestOptions.uri.path, onTap: () {
+                            showJson = !showJson;
+                            state(() {});
+                          })
+                        : Column(children: <Widget>[
+                            title(res.requestOptions.uri.path, onTap: () {
+                              showJson = !showJson;
+                              state(() {});
+                            }),
+                            JsonParse(<String, dynamic>{
+                              'requestOptions': res.requestOptionsToMap(),
+                              'responseData': res.data as Map<String, dynamic>,
+                            }),
+                          ])),
               );
             }),
       );

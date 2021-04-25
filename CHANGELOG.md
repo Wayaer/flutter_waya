@@ -1,3 +1,10 @@
+## [1.9.13]
+  * [Universal] add useSingleChildScrollView property，The default is true, If
+   useSingleChildScrollView is false, the scrolling component will be created using [Scrollview]
+  * [Universal] add [Wrap],
+  * [Universal] adds [StatefulBuilder]、[Builder] and [LayoutBuilder]，and uses them through builder properties
+  * fix bugs for [TabBarMerge]
+  * fix [ListWheel] controller auto destroy problem
 ## [1.9.12]
   * fix bug for popBack
   * logTools add [RequestOptions]
