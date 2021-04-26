@@ -315,7 +315,7 @@ class Universal extends StatelessWidget {
   /// 是否使用 [SingleChildScrollView]创建滚动组件
   final bool useSingleChildScrollView;
 
-  ///  移出头部和底部蓝色阴影
+  /// 移出头部和底部蓝色阴影
   final bool noScrollBehavior;
 
   ///  ****** [SingleChildScrollView] ******  ///
@@ -645,7 +645,6 @@ class Universal extends StatelessWidget {
     } else if (builder is LayoutWidgetBuilder) {
       return LayoutBuilder(builder: builder as LayoutWidgetBuilder);
     }
-
     return current;
   }
 
