@@ -21,6 +21,17 @@ class _UniversalPageState extends State<UniversalPage>
   @override
   Widget build(BuildContext context) {
     List<Widget> children = <Widget>[
+      Universal(
+        width: 200,
+        height: 50,
+        color: Colors.blue,
+        margin: const EdgeInsets.all(10),
+        isClipRRect: true,
+        borderRadius: BorderRadius.circular(10),
+        alignment: Alignment.center,
+        child: BasisText('ScrollUniversal', color: Colors.white),
+        onTap: () => push(_ScrollUniversalPage()),
+      ),
       const Universal(width: 50, height: 50, color: Colors.blue),
       const SizedBox(height: 10),
       const Universal(
@@ -85,18 +96,82 @@ class _UniversalPageState extends State<UniversalPage>
       const SizedBox(height: 10),
       const SizedBox(height: 10),
     ];
-
     children = children.builder((Widget item) => SizeTransition(
         sizeFactor: controller, axis: Axis.horizontal, child: item));
     return OverlayScaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(title: const Text('Universal Demo'), centerTitle: true),
+      mainAxisAlignment: MainAxisAlignment.center,
+      isScroll: true,
+      refreshConfig: RefreshConfig(onRefresh: () async {
+        await showToast('onRefresh');
+        sendRefreshType(EasyRefreshType.refreshSuccess);
+      }),
+      children: children,
+    );
+  }
+}
+
+class _ScrollUniversalPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return OverlayScaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(title: const Text('PinBox Demo'), centerTitle: true),
+        appBar: AppBar(
+            title: const Text('ScrollUniversal Demo'), centerTitle: true),
         mainAxisAlignment: MainAxisAlignment.center,
+        body: scrollUniversal());
+  }
+
+  Widget scrollUniversal() {
+    return Universal(
         isScroll: true,
+        direction: Axis.horizontal,
+        isWrap: true,
+        margin: const EdgeInsets.all(30),
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: const <BoxShadow>[
+              BoxShadow(color: Colors.red, blurRadius: 20),
+              BoxShadow(color: Colors.greenAccent, blurRadius: 15),
+              BoxShadow(color: Colors.indigo, blurRadius: 10),
+              BoxShadow(color: Colors.yellowAccent, blurRadius: 5)
+            ]),
         refreshConfig: RefreshConfig(onRefresh: () async {
           await showToast('onRefresh');
           sendRefreshType(EasyRefreshType.refreshSuccess);
         }),
-        children: children);
+        child: Container(
+            margin: const EdgeInsets.all(10),
+            width: 130,
+            height: 130,
+            color: Colors.greenAccent),
+        builder: (BuildContext context, StateSetter setState) {
+          return Container(
+              margin: const EdgeInsets.all(10),
+              width: 110,
+              height: 110,
+              color: Colors.red);
+        },
+        // isStack: true,
+        children: <Widget>[
+          Container(
+              margin: const EdgeInsets.all(10),
+              width: 90,
+              height: 90,
+              color: Colors.blue),
+          Container(
+              margin: const EdgeInsets.all(10),
+              width: 70,
+              height: 70,
+              color: Colors.black),
+          Container(
+              margin: const EdgeInsets.all(10),
+              width: 50,
+              height: 50,
+              color: Colors.amberAccent),
+        ]);
   }
 }
