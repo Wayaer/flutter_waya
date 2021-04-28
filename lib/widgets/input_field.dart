@@ -719,7 +719,7 @@ class PinBox extends StatefulWidget {
   const PinBox({
     Key? key,
     this.inputTextType,
-    this.autoFocus = true,
+    bool? autoFocus = true,
     this.controller,
     this.maxLength = 4,
     this.inputFormatter,
@@ -728,12 +728,13 @@ class PinBox extends StatefulWidget {
     this.hasFocusPinDecoration,
     this.pinTextStyle,
     this.decoration,
-    this.boxSize = const Size(50, 50),
+    this.boxSize = const Size(40, 40),
     this.width,
     this.focusNode,
     this.onChanged,
     this.onDone,
-  }) : super(key: key);
+  })  : autoFocus = autoFocus ?? true,
+        super(key: key);
 
   ///  输入内容监听
   final ValueCallback<String>? onChanged;
@@ -808,10 +809,10 @@ class _PinBoxState extends State<PinBox> {
         width: widget.width ?? width,
         height: size.height,
         decoration: widget.decoration,
-        onTap: () => context.focusNode(focusNode),
+        onTap: getFocus,
         children: <Widget>[
-          Container(alignment: Alignment.center, child: pinTextInput),
-          boxRow()
+          SizedBox(height: size.height, child: pinTextInput),
+          boxRow(),
         ]);
   }
 
@@ -833,28 +834,36 @@ class _PinBoxState extends State<PinBox> {
         child: BasisText(texts[i], style: widget.pinTextStyle),
       ));
     }
-    return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween, children: children);
+    return Universal(
+        direction: Axis.horizontal,
+        onTap: getFocus,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: children);
+  }
+
+  void getFocus() {
+    if (focusNode.hasFocus) focusNode.unfocus();
+    context.focusNode(focusNode);
   }
 
   Widget get pinTextInput => InputField(
         focusNode: focusNode,
         contentPadding: EdgeInsets.zero,
-        isDense: true,
+        isDense: false,
         inputTextType: widget.inputTextType ?? InputTextType.text,
-        autoFocus: widget.autoFocus ?? true,
+        autoFocus: widget.autoFocus,
         counter: null,
         maxLines: 1,
-        fillColor: ConstColors.transparent,
+        fillColor: ConstColors.red.withOpacity(0.3),
         filled: true,
         controller: controller,
-        cursorColor: Colors.transparent,
-        cursorWidth: 0,
+        cursorColor: Colors.red,
+        cursorWidth: 3,
         counterText: '',
         counterStyle: const BasisTextStyle(color: Colors.transparent),
         obscureText: false,
         maxLength: widget.maxLength,
-        inputStyle: const BasisTextStyle(color: Colors.transparent),
+        inputStyle: const BasisTextStyle(color: Colors.black),
         labelStyle: const BasisTextStyle(color: Colors.transparent),
         hintStyle: const BasisTextStyle(color: Colors.transparent),
         focusedBorder: InputBorder.none,
@@ -874,8 +883,8 @@ class _PinBoxState extends State<PinBox> {
 
   @override
   void dispose() {
-    focusNode.dispose();
-    controller.dispose();
+    if (widget.focusNode == null) focusNode.dispose();
+    if (widget.controller == null) controller.dispose();
     super.dispose();
   }
 }

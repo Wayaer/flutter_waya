@@ -458,42 +458,52 @@ class OverlayScaffold extends StatelessWidget {
 ///  ************ 以下为 路由跳转 *****************  ///
 ///
 ///  打开新页面
-Future<dynamic> push(Widget widget,
+Future<T?> push<T extends Object?>(Widget widget,
         {bool? maintainState,
         bool? fullscreenDialog,
         WidgetMode? widgetMode,
+        RouteSettings? settings,
         BuildContext? context}) =>
     _globalNavigatorKey.currentState!.push(_pageRoute(widget,
         maintainState: maintainState,
         fullscreenDialog: fullscreenDialog,
         context: context,
+        settings: settings,
         widgetMode: widgetMode));
 
 /// 打开新页面替换当前页面
-Future<dynamic> pushReplacement(Widget widget,
+Future<T?> pushReplacement<T extends Object?, TO extends Object?>(Widget widget,
         {bool? maintainState,
         bool? fullscreenDialog,
-        WidgetMode? widgetMode}) =>
-    _globalNavigatorKey.currentState!.pushReplacement(_pageRoute(widget,
-        maintainState: maintainState,
-        fullscreenDialog: fullscreenDialog,
-        widgetMode: widgetMode));
-
-/// 打开新页面 并移出堆栈所有页面
-Future<dynamic> pushAndRemoveUntil(Widget widget,
-        {bool? maintainState,
-        bool? fullscreenDialog,
-        WidgetMode? widgetMode}) =>
-    _globalNavigatorKey.currentState!.pushAndRemoveUntil(
+        WidgetMode? widgetMode,
+        RouteSettings? settings,
+        TO? result}) =>
+    _globalNavigatorKey.currentState!.pushReplacement(
         _pageRoute(widget,
+            settings: settings,
             maintainState: maintainState,
             fullscreenDialog: fullscreenDialog,
             widgetMode: widgetMode),
-        (_) => false);
+        result: result);
+
+/// 打开新页面 并移出堆栈所有页面
+Future<T?> pushAndRemoveUntil<T extends Object?>(Widget widget,
+        {bool? maintainState,
+        bool? fullscreenDialog,
+        WidgetMode? widgetMode,
+        RouteSettings? settings,
+        RoutePredicate? predicate}) =>
+    _globalNavigatorKey.currentState!.pushAndRemoveUntil(
+        _pageRoute(widget,
+            settings: settings,
+            maintainState: maintainState,
+            fullscreenDialog: fullscreenDialog,
+            widgetMode: widgetMode),
+        predicate ?? (_) => false);
 
 /// 可能返回到上一个页面
-Future<bool> maybePop<T extends Object>([dynamic result]) =>
-    _globalNavigatorKey.currentState!.maybePop<dynamic>(result);
+Future<bool> maybePop<T extends Object>([T? result]) =>
+    _globalNavigatorKey.currentState!.maybePop<T>(result);
 
 /// 返回上一个页面
 void pop<T extends Object>([dynamic result]) =>
@@ -523,15 +533,18 @@ PageRoute<T> _pageRoute<T>(Widget widget,
     {bool? maintainState,
     bool? fullscreenDialog,
     WidgetMode? widgetMode,
+    RouteSettings? settings,
     BuildContext? context}) {
   switch (widgetMode ?? _widgetMode) {
     case WidgetMode.cupertino:
       return CupertinoPageRoute<T>(
+          settings: settings,
           maintainState: maintainState ?? true,
           fullscreenDialog: fullscreenDialog ?? false,
           builder: (_) => widget);
     case WidgetMode.material:
       return MaterialPageRoute<T>(
+          settings: settings,
           maintainState: maintainState ?? true,
           fullscreenDialog: fullscreenDialog ?? false,
           builder: (_) => widget);
@@ -543,6 +556,7 @@ PageRoute<T> _pageRoute<T>(Widget widget,
     default:
       return CupertinoPageRoute<T>(
           maintainState: maintainState ?? true,
+          settings: settings,
           fullscreenDialog: fullscreenDialog ?? false,
           builder: (_) => widget);
   }
