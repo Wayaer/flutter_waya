@@ -25,7 +25,9 @@ class PopupBase extends StatelessWidget {
       this.crossAxisAlignment,
       this.direction,
       this.isScroll,
-      this.isStack})
+      this.isStack,
+      this.onWillPop,
+      this.filter})
       : top = top ?? 0,
         left = left ?? 0,
         right = right ?? 0,
@@ -59,7 +61,12 @@ class PopupBase extends StatelessWidget {
   final bool gaussian;
 
   /// 模糊程度 0-100
+  /// [gaussian] 必须为 true
   final double fuzzyDegree;
+
+  /// [filter]!=null 时 [fuzzyDegree] 无效
+  /// [gaussian] 必须为 true
+  final ImageFilter? filter;
 
   /// 具体位置
   final double left;
@@ -83,6 +90,9 @@ class PopupBase extends StatelessWidget {
   ///  ****** Stack ******  ///
   final bool? isStack;
 
+  /// Android 监听物理返回按键
+  final WillPopCallback? onWillPop;
+
   @override
   Widget build(BuildContext context) {
     Widget child = childWidget;
@@ -93,11 +103,13 @@ class PopupBase extends StatelessWidget {
           child: MediaQuery(
               data: MediaQueryData.fromWindow(window), child: child));
     if (ignoring) child = IgnorePointer(child: child);
+    if (onWillPop != null) WillPopScope(child: child, onWillPop: onWillPop);
     return child;
   }
 
   Widget backdropFilter(Widget child) => BackdropFilter(
-      filter: ImageFilter.blur(sigmaX: fuzzyDegree, sigmaY: fuzzyDegree),
+      filter:
+          filter ?? ImageFilter.blur(sigmaX: fuzzyDegree, sigmaY: fuzzyDegree),
       child: child);
 
   Widget get childWidget => Universal(

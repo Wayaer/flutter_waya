@@ -1,3 +1,5 @@
+## [1.9.15]
+  * [PopupBase] add onWillPop and filter for [WillPopScope] And [BackdropFilter]
 ## [1.9.13]
   * [Universal] add useSingleChildScrollView property，The default is true, If
    useSingleChildScrollView is false, the scrolling component will be created using [Scrollview]

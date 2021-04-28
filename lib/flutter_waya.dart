@@ -34,7 +34,7 @@ export 'widgets/progress/wave.dart';
 export 'widgets/refresh/easy_refresh.dart';
 export 'widgets/refresh/simple_refresh.dart';
 export 'widgets/root/dialog/picker.dart';
-export 'widgets/root/dialog/popup_widgets.dart';
+export 'widgets/root/dialog/popup.dart';
 export 'widgets/root/root.dart';
 export 'widgets/scroll/scroll_view.dart';
 export 'widgets/spinKit/spinKit.dart';
