@@ -826,13 +826,12 @@ class _PinBoxState extends State<PinBox> {
     for (int i = 0; i < widget.maxLength; i++) {
       if (texts[i].isEmpty) hasFocus = true;
       children.add(Container(
-        height: size.height,
-        width: size.width,
-        decoration:
-            hasFocus ? widget.pinDecoration : widget.hasFocusPinDecoration,
-        alignment: Alignment.center,
-        child: BasisText(texts[i], style: widget.pinTextStyle),
-      ));
+          height: size.height,
+          width: size.width,
+          decoration:
+              hasFocus ? widget.pinDecoration : widget.hasFocusPinDecoration,
+          alignment: Alignment.center,
+          child: BasisText(texts[i], style: widget.pinTextStyle)));
     }
     return Universal(
         direction: Axis.horizontal,
@@ -843,7 +842,9 @@ class _PinBoxState extends State<PinBox> {
 
   void getFocus() {
     if (focusNode.hasFocus) focusNode.unfocus();
-    context.focusNode(focusNode);
+    100.milliseconds.delayed(() {
+      context.focusNode(focusNode);
+    });
   }
 
   Widget get pinTextInput => InputField(

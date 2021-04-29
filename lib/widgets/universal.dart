@@ -313,6 +313,7 @@ class Universal extends StatelessWidget {
   final Axis scrollDirection;
 
   /// 是否使用 [SingleChildScrollView]创建滚动组件
+  /// 页面逻辑复杂时 设置为 false 以提高滑动性能
   final bool useSingleChildScrollView;
 
   /// 移出头部和底部蓝色阴影
