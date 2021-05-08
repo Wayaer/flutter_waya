@@ -1,3 +1,7 @@
+## [1.9.16]
+  * showToast add [ignoring]
+  * add [setAllToastIgnoringBackground()],if it is true, the background
+   responds to the click event
 ## [1.9.15]
   * [PopupBase] add onWillPop and filter for [WillPopScope] And [BackdropFilter]
 ## [1.9.13]

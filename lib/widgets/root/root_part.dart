@@ -108,11 +108,16 @@ Duration _duration = const Duration(milliseconds: 1300);
 ///  设置全局弹窗时间
 void setToastDuration(Duration duration) => _duration = duration;
 
-bool haveToast = false;
+bool _haveToast = false;
 
 ///  Toast类型
 ///  如果使用custom  请设置 customIcon
 enum ToastType { success, fail, info, warning, smile, custom }
+
+bool _allToastIgnoring = true;
+
+/// 设置全局Toast 忽略背景点击事件
+void setAllToastIgnoringBackground(bool value) => _allToastIgnoring = value;
 
 ///  Toast
 ///  关闭 closeOverlay();
@@ -124,6 +129,9 @@ Future<void> showToast(String message,
     TextStyle? textStyle,
     Duration? closeDuration,
 
+    /// toast 是否忽略背景点击事件
+    bool? ignoring,
+
     ///  icon style
     ///  如果使用ToastType.custom  请设置 customIcon
     ToastType? toastType,
@@ -131,7 +139,7 @@ Future<void> showToast(String message,
     double? size,
     double? spacing,
     Axis? direction}) async {
-  if (haveToast) return;
+  if (_haveToast) return;
   Widget toast;
   if (toastType != null) {
     IconData icon;
@@ -169,8 +177,9 @@ Future<void> showToast(String message,
 
   final OverlayEntryAuto? entry = showOverlay(
       PopupBase(
-          ignoring: true,
+          ignoring: ignoring ?? _allToastIgnoring,
           alignment: Alignment.center,
+          onTap: () {},
           child: Container(
               margin:
                   const EdgeInsets.symmetric(horizontal: 100, vertical: 100),
@@ -181,10 +190,10 @@ Future<void> showToast(String message,
               padding: const EdgeInsets.all(10),
               child: toast)),
       autoOff: true);
-  haveToast = true;
+  _haveToast = true;
   await (closeDuration ?? _duration).delayed<dynamic>();
   closeOverlay(entry: entry);
-  haveToast = false;
+  _haveToast = false;
 }
 
 ///  ************ 以下为push Popup *****************///
