@@ -12,7 +12,7 @@ version=$(grep "version:" pubspec.yaml)
 version=${version#version: }
 
 mkdir -p "$app/$env/"
-echo "ios===$env====$version"
+echo "ios===$env===$version===AdHoc"
 
 echo "清理 build"
 flutter clean
