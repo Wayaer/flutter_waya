@@ -811,8 +811,8 @@ class _PinBoxState extends State<PinBox> {
         decoration: widget.decoration,
         onTap: getFocus,
         children: <Widget>[
-          SizedBox(height: size.height, child: pinTextInput),
           boxRow(),
+          SizedBox(height: size.height, child: pinTextInput),
         ]);
   }
 
@@ -855,16 +855,16 @@ class _PinBoxState extends State<PinBox> {
         autoFocus: widget.autoFocus,
         counter: null,
         maxLines: 1,
-        fillColor: ConstColors.red.withOpacity(0.3),
-        filled: true,
+        fillColor: ConstColors.transparent,
+        filled: false,
         controller: controller,
-        cursorColor: Colors.red,
-        cursorWidth: 3,
+        cursorColor: Colors.transparent,
+        cursorWidth: 0,
         counterText: '',
         counterStyle: const BasisTextStyle(color: Colors.transparent),
         obscureText: false,
         maxLength: widget.maxLength,
-        inputStyle: const BasisTextStyle(color: Colors.black),
+        inputStyle: const BasisTextStyle(color: Colors.transparent),
         labelStyle: const BasisTextStyle(color: Colors.transparent),
         hintStyle: const BasisTextStyle(color: Colors.transparent),
         focusedBorder: InputBorder.none,
