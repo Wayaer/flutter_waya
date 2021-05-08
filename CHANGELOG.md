@@ -1,4 +1,5 @@
-## [1.9.16]
+## [1.9.17]
+  * fix [PinBox] bugs
   * showToast add [ignoring]
   * add [setAllToastIgnoringBackground()],if it is true, the background
    responds to the click event
