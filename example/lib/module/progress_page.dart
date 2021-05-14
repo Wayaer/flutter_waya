@@ -28,6 +28,7 @@ class _ProgressPageState extends State<ProgressPage>
         appBar: AppBar(title: const Text('PinBox Demo'), centerTitle: true),
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
+          const SizedBox(height: 20),
           Progress.linear(
               width: 300,
               lineHeight: 20,

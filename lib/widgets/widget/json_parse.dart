@@ -242,7 +242,11 @@ class _HttpDataPageState extends State<_HttpDataPage> {
                             }),
                             JsonParse(<String, dynamic>{
                               'requestOptions': res.requestOptionsToMap(),
-                              'responseData': res.data as Map<String, dynamic>,
+                              'responseData': res.data is Map
+                                  ? res.data
+                                  : <String, dynamic>{
+                                      'data': res.data.toString()
+                                    },
                             }),
                           ])),
               );

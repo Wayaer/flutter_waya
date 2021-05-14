@@ -57,7 +57,7 @@ class DioTools {
 
   late Dio _dio;
   late bool logTools;
-  final CancelToken _cancelToken = CancelToken();
+  CancelToken _cancelToken = CancelToken();
 
   static DioTools? _instance;
 
@@ -66,11 +66,13 @@ class DioTools {
   static DioTools getInstance({BaseOptions? options, bool logTs = false}) =>
       _instance ??= DioTools._internal(options: options, logTs: logTs);
 
-  Future<ResponseModel> getHttp(String url,
-      {Map<String, dynamic>? params,
-      dynamic? data,
-      HttpType httpType = HttpType.get,
-      BaseOptions? options}) async {
+  Future<ResponseModel> getHttp(
+    String url, {
+    Map<String, dynamic>? params,
+    dynamic? data,
+    HttpType httpType = HttpType.get,
+    BaseOptions? options,
+  }) async {
     log('\n==================== 开始一个请求 ====================\n');
     try {
       _initOptions(_dio, options: options);
@@ -113,9 +115,7 @@ class DioTools {
       return responseModel;
     } on DioError catch (e) {
       final DioError error = e;
-      ResponseModel responseModel = ResponseModel.constResponseModel(
-          httpStatus: ConstConstant.httpStatus[404], error: error);
-      responseModel = ResponseModel.mergeError(error, responseModel);
+      final ResponseModel responseModel = ResponseModel.mergeError(error);
       log('error:$url  errorData==  ${responseModel.toMap()}');
       log('\n==================== 结束一个请求 DioError ====================\n');
       responseModel.baseOptions = _dio.options;
@@ -148,12 +148,10 @@ class DioTools {
       return ResponseModel.formResponse(response, baseOptions: dio.options);
     } on DioError catch (e) {
       final DioError error = e;
-      ResponseModel errResponse = ResponseModel.constResponseModel(
-          httpStatus: ConstConstant.httpStatus[404], error: error);
-      errResponse = ResponseModel.mergeError(error, errResponse);
-      log('error:$url  errorData==  ${errResponse.toMap()}');
+      final ResponseModel responseModel = ResponseModel.mergeError(error);
+      log('error:$url  errorData==  ${responseModel.toMap()}');
       log('\n==================== 下载结束 DioError ====================\n');
-      return errResponse;
+      return responseModel;
     } catch (e) {
       log('\n==================== 下载结束 catch ====================\n');
       return ResponseModel.constResponseModel();
@@ -161,13 +159,15 @@ class DioTools {
   }
 
   ///  文件上传
-  Future<ResponseModel> upload<T>(String url,
-      {Map<String, dynamic>? params,
-      dynamic? data,
-      BaseOptions? options,
-      CancelToken? cancelToken,
-      ProgressCallback? onSendProgress,
-      ProgressCallback? onReceiveProgress}) async {
+  Future<ResponseModel> upload<T>(
+    String url, {
+    Map<String, dynamic>? params,
+    dynamic? data,
+    BaseOptions? options,
+    CancelToken? cancelToken,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
+  }) async {
     try {
       log('\n==================== 开始上传 ====================\n');
       log('Upload url:$url  params:${params.toString()}  data:${data.toString()}');
@@ -183,18 +183,19 @@ class DioTools {
       return ResponseModel.formResponse(response, baseOptions: dio.options);
     } on DioError catch (e) {
       final DioError error = e;
-      ResponseModel errResponse = ResponseModel.constResponseModel(
-          httpStatus: ConstConstant.httpStatus[404], error: error);
-      errResponse = ResponseModel.mergeError(error, errResponse);
+      final ResponseModel responseModel = ResponseModel.mergeError(error);
       log('\n==================== 结束上传 DioError ====================\n');
-      return errResponse;
+      return responseModel;
     } catch (e) {
       log('\n==================== 结束上传 catch ====================\n');
       return ResponseModel.constResponseModel();
     }
   }
 
-  void get cancel => _cancelToken.cancelError;
+  void cancel([dynamic reason]) {
+    _cancelToken.cancel(reason);
+    _cancelToken = CancelToken();
+  }
 }
 
 /// 添加cookie
@@ -232,7 +233,6 @@ class InterceptorWrap<T> extends InterceptorsWrapper {
 
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) {
-    log('onError===>' + err.type.toString());
     super.onError(
         DioError(
             response: ResponseModel.mergeError(err, responseModel),

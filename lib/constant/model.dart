@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 
 import 'constant.dart';
 
@@ -46,6 +47,7 @@ class ResponseModel extends Response<dynamic> {
     map['statusCode'] = statusCode;
     map['statusMessage'] = statusMessage;
     map['statusMessageT'] = statusMessageT;
+    map['extra'] = extra;
     return map;
   }
 
@@ -64,7 +66,9 @@ class ResponseModel extends Response<dynamic> {
           redirects: response.redirects,
           response: response);
 
-  static ResponseModel mergeError(DioError err, ResponseModel responseModel) {
+  static ResponseModel mergeError(DioError err,
+      [ResponseModel? responseModel]) {
+    responseModel ??= ResponseModel(requestOptions: err.requestOptions);
     responseModel.type = err.type.toString();
     final Response<dynamic>? errResponse = err.response;
     if (err.type == DioErrorType.other) {
@@ -114,24 +118,24 @@ class ResponseModel extends Response<dynamic> {
       if (errResponse.data != null && errResponse.data.toString().isNotEmpty)
         responseModel.data = errResponse.data;
     }
+    if (err.error != null) responseModel.data = err.error;
     responseModel.cookie = <String>[];
     return responseModel;
   }
 
-  static ResponseModel constResponseModel(
-      {HttpStatus? httpStatus, DioError? error}) {
-    const Map<int, HttpStatus> status = ConstConstant.httpStatus;
-    httpStatus ??= status[error?.response?.statusCode ?? 100] ?? status[100];
+  static ResponseModel constResponseModel() {
+    final HttpStatus status = ConstConstant.httpStatus[100]!;
     return ResponseModel(
-        requestOptions: error?.requestOptions ?? RequestOptions(path: ''),
-        statusCode: error?.response?.statusCode ?? httpStatus!.code,
-        statusMessage: error?.response?.statusMessage ?? httpStatus!.message,
-        statusMessageT: httpStatus!.messageT,
-        type: (error?.type ?? DioErrorType.other).toString());
+        requestOptions: RequestOptions(path: ''),
+        statusCode: status.code,
+        statusMessage: status.message,
+        statusMessageT: status.messageT,
+        type: DioErrorType.other.toString());
   }
 
   String toJson() =>
-      '{"type":"${type.toString()}","data":$data,"cookie":$cookie,"statusCode":$statusCode,"statusMessage":"$statusMessage","statusMessageT":"$statusMessageT"}';
+      '{"type":"${type.toString()}","data":$data,"cookie":$cookie,"statusCode'
+      '":$statusCode,"statusMessage":"$statusMessage","statusMessageT":"$statusMessageT","extra":$extra"}';
 
   Map<String, dynamic> requestOptionsToMap() {
     return <String, dynamic>{
@@ -147,6 +151,7 @@ class ResponseModel extends Response<dynamic> {
       'receiveTimeout': requestOptions.receiveTimeout,
       'sendTimeout': requestOptions.sendTimeout,
       'connectTimeout': requestOptions.connectTimeout,
+      'extra': requestOptions.extra,
       'responseType': requestOptions.responseType.toString(),
     };
   }

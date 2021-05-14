@@ -28,12 +28,12 @@ class ConstConstant {
 
   static const Map<int, HttpStatus> httpStatus = <int, HttpStatus>{
     100: HttpStatus(100, '未知异常', 'unknown exception'),
-    404: HttpStatus(404, '网络请求失败', 'Failed'),
-    420: HttpStatus(420, '网络请求已取消', 'Cancel'),
-    408: HttpStatus(408, '网络连接超时', 'Connect Timeout'),
-    450: HttpStatus(450, '网络发送超时', 'Send Timeout'),
-    502: HttpStatus(502, '网络接收超时', 'Receive Timeout'),
-    500: HttpStatus(500, '服务器错误', 'Server Error')
+    404: HttpStatus(404, '网络请求失败', 'failed'),
+    420: HttpStatus(420, '网络请求已取消', 'cancel'),
+    408: HttpStatus(408, '网络连接超时', 'connect timeout'),
+    450: HttpStatus(450, '网络发送超时', 'send timeout'),
+    502: HttpStatus(502, '网络接收超时', 'receive timeout'),
+    500: HttpStatus(500, '服务器错误', 'server error')
   };
 
   static const Map<InputTextType, String> regExp = <InputTextType, String>{
