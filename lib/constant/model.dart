@@ -16,6 +16,7 @@ class ResponseModel extends Response<dynamic> {
     List<RedirectRecord>? redirects,
     Map<String, dynamic>? extra,
     this.baseOptions,
+    this.error,
   }) : super(
             data: data,
             headers: headers,
@@ -36,6 +37,9 @@ class ResponseModel extends Response<dynamic> {
   /// dio response
   Response<dynamic>? response;
 
+  /// error 信息
+  dynamic? error;
+
   ///  保存的cookie
   List<String> cookie = <String>[];
 
@@ -48,6 +52,7 @@ class ResponseModel extends Response<dynamic> {
     map['statusMessage'] = statusMessage;
     map['statusMessageT'] = statusMessageT;
     map['extra'] = extra;
+    map['error'] = error;
     return map;
   }
 
@@ -71,6 +76,17 @@ class ResponseModel extends Response<dynamic> {
     responseModel ??= ResponseModel(requestOptions: err.requestOptions);
     responseModel.type = err.type.toString();
     final Response<dynamic>? errResponse = err.response;
+    responseModel.requestOptions = err.requestOptions;
+    if (errResponse != null) {
+      responseModel.headers = errResponse.headers;
+      responseModel.redirects = errResponse.redirects;
+      responseModel.extra = errResponse.extra;
+      responseModel.statusCode = errResponse.statusCode;
+      responseModel.statusMessage = errResponse.statusMessage;
+      responseModel.statusMessageT = errResponse.statusMessage;
+      responseModel.data = errResponse.data;
+    }
+    responseModel.error = err.error;
     if (err.type == DioErrorType.other) {
       final HttpStatus status = ConstConstant.httpStatus[404]!;
       responseModel.statusCode = status.code;
@@ -103,22 +119,6 @@ class ResponseModel extends Response<dynamic> {
           errResponse!.statusCode.toString() + ':' + status.message;
       responseModel.statusMessageT = status.messageT;
     }
-    responseModel.requestOptions = err.requestOptions;
-    if (errResponse != null) {
-      responseModel.headers = errResponse.headers;
-      responseModel.redirects = errResponse.redirects;
-      responseModel.extra = errResponse.extra;
-      if (errResponse.statusCode != null)
-        responseModel.statusCode = errResponse.statusCode;
-      if (errResponse.statusMessage != null &&
-          errResponse.statusMessage!.isNotEmpty) {
-        responseModel.statusMessage = errResponse.statusMessage;
-        responseModel.statusMessageT = errResponse.statusMessage;
-      }
-      if (errResponse.data != null && errResponse.data.toString().isNotEmpty)
-        responseModel.data = errResponse.data;
-    }
-    if (err.error != null) responseModel.data = err.error;
     responseModel.cookie = <String>[];
     return responseModel;
   }
