@@ -1,3 +1,6 @@
+## [1.10.0]
+  * optimize the return data of network request error
+  * fix the cancel network request bug and return the error message
 ## [1.9.17]
   * fix [PinBox] bugs
   * showToast add [ignoring]
