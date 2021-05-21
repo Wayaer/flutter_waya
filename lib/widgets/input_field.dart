@@ -173,6 +173,7 @@ class InputField extends StatelessWidget {
         enabled = enabled ?? true,
         textAlign = textAlign ?? TextAlign.left,
         super(key: key);
+
   final TextEditingController? controller;
 
   final List<TextInputFormatter>? inputFormatter;

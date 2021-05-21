@@ -1,3 +1,5 @@
+## [1.10.1]
+  * fix the [remove] error of [Eventbus] when the project supports null-safety
 ## [1.10.0]
   * optimize the return data of network request error
   * fix the cancel network request bug and return the error message

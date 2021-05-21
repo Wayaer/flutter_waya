@@ -76,18 +76,18 @@ class EventBus {
   }
 
   /// 移除订阅者
-  void remove(dynamic eventName, [EventCallback? eventCallback]) {
+  void remove(String eventName, [EventCallback? eventCallback]) {
     final List<EventCallback>? list = _map[eventName];
-    if (eventName == null || list == null) return;
+    if (list == null) return;
     if (eventCallback == null) {
-      _map[eventName] = null;
+      _map.remove(eventName);
     } else {
       list.remove(eventCallback);
     }
   }
 
   /// 触发事件，事件触发后该事件所有订阅者会被调用
-  void emit(dynamic eventName, [dynamic data]) {
+  void emit(String eventName, [dynamic data]) {
     final List<EventCallback>? list = _map[eventName];
     if (list == null) return;
     final int len = list.length - 1;
