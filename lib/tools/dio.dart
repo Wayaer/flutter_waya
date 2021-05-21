@@ -1,13 +1,11 @@
-import 'dart:math';
-
 import 'package:dio/dio.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 /// 网络链接超时时间
-int httpConnectTimeout = 5000;
+const int _httpConnectTimeout = 5000;
 
 /// 接收超时时间
-int httpReceiveTimeout = 10000;
+const int _httpReceiveTimeout = 10000;
 
 /// 请求数据类型 (4种): application/x-www-form-urlencoded 、multipart/form-data、application/json、text/xml
 const List<String> HTTP_CONTENT_TYPE = <String>[
@@ -32,8 +30,8 @@ class DioTools {
     _initOptions(_dio,
         options: options ??
             BaseOptions(
-                connectTimeout: httpConnectTimeout,
-                receiveTimeout: httpReceiveTimeout,
+                connectTimeout: _httpConnectTimeout,
+                receiveTimeout: _httpReceiveTimeout,
                 contentType: HTTP_CONTENT_TYPE[2],
                 responseType: ResponseType.json,
                 headers: <String, dynamic>{}));
@@ -69,7 +67,7 @@ class DioTools {
   Future<ResponseModel> getHttp(
     String url, {
     Map<String, dynamic>? params,
-    dynamic? data,
+    dynamic data,
     HttpType httpType = HttpType.get,
     BaseOptions? options,
   }) async {
@@ -162,7 +160,7 @@ class DioTools {
   Future<ResponseModel> upload<T>(
     String url, {
     Map<String, dynamic>? params,
-    dynamic? data,
+    dynamic data,
     BaseOptions? options,
     CancelToken? cancelToken,
     ProgressCallback? onSendProgress,

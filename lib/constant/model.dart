@@ -7,7 +7,7 @@ class ResponseModel extends Response<dynamic> {
   ResponseModel({
     this.type,
     this.statusMessageT,
-    dynamic? data,
+    dynamic data,
     this.response,
     int? statusCode,
     String? statusMessage,
@@ -38,7 +38,7 @@ class ResponseModel extends Response<dynamic> {
   Response<dynamic>? response;
 
   /// error 信息
-  dynamic? error;
+  dynamic error;
 
   ///  保存的cookie
   List<String> cookie = <String>[];

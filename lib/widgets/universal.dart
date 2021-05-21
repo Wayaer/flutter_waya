@@ -238,7 +238,7 @@ class Universal extends StatelessWidget {
 
   /// ****** [StatefulBuilder]、[Builder]、[LayoutBuilder] ****** ///
   /// builder types [LayoutWidgetBuilder]、[WidgetBuilder]、[StatefulWidgetBuilder]
-  final dynamic? builder;
+  final dynamic builder;
 
   ///  ****** [Wrap] ******  ///
   final bool isWrap;
