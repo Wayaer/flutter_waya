@@ -287,6 +287,7 @@ class OverlayScaffold extends StatelessWidget {
     bool? isScroll,
     DragStartBehavior? drawerDragStartBehavior,
     bool? onWillPopOverlayClose,
+    bool? useSingleChildScrollView,
     this.appBar,
     this.body,
     this.padding,
@@ -329,6 +330,7 @@ class OverlayScaffold extends StatelessWidget {
     this.refreshConfig,
   })  : onWillPopOverlayClose = onWillPopOverlayClose ?? false,
         paddingStatusBar = paddingStatusBar ?? false,
+        useSingleChildScrollView = useSingleChildScrollView ?? true,
         primary = primary ?? true,
         extendBody = extendBody ?? false,
         isStack = isStack ?? false,
@@ -390,6 +392,7 @@ class OverlayScaffold extends StatelessWidget {
   final List<Widget>? persistentFooterButtons;
   final bool? resizeToAvoidBottomInset;
   final bool primary;
+  final bool useSingleChildScrollView;
   final bool extendBody;
   final DragStartBehavior drawerDragStartBehavior;
 
@@ -443,6 +446,7 @@ class OverlayScaffold extends StatelessWidget {
       expand: true,
       refreshConfig: refreshConfig,
       margin: margin,
+      useSingleChildScrollView: useSingleChildScrollView,
       padding:
           paddingStatusBar ? EdgeInsets.only(top: getStatusBarHeight) : padding,
       isScroll: isScroll,
