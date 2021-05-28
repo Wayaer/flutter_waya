@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/constant/way.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 enum ListWheelChildDelegateType {
@@ -446,9 +445,12 @@ class ListEntry extends StatelessWidget {
         children: children);
   }
 
-  Decoration? get defaultDecoration => underlineColor != null || color != null
-      ? WayStyles.containerUnderlineBackground(
-          underlineColor: underlineColor, color: color)
+  Decoration? get defaultDecoration => color != null
+      ? BoxDecoration(
+          color: color,
+          border: underlineColor != null
+              ? Border(bottom: BorderSide(color: underlineColor!))
+              : null)
       : null;
 
   Widget get arrowWidget =>

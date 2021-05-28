@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/constant/way.dart';
+import 'package:flutter_waya/constant/src/way.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 class JsonParse extends StatefulWidget {
@@ -227,7 +227,7 @@ class _HttpDataPageState extends State<_HttpDataPage> {
               return Universal(
                 margin: const EdgeInsets.only(top: 10),
                 decoration: const BoxDecoration(
-                    color: ConstColors.white, boxShadow: WayStyles.boxShadow),
+                    color: ConstColors.white, boxShadow: boxShadow),
                 addCard: true,
                 child: StatefulBuilder(
                     builder: (_, StateSetter state) => !showJson

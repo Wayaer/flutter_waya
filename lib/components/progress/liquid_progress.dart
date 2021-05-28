@@ -1,7 +1,8 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/widgets/progress/wave.dart';
+
+import 'wave.dart';
 
 const double _sweep = (math.pi * 2.0) - .001;
 enum _LiquidProgressType {

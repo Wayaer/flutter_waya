@@ -1,6 +1,5 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 void sendRefreshType([EasyRefreshType? refresh]) {

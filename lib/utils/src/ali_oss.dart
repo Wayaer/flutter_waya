@@ -1,7 +1,4 @@
-import 'package:crypto/crypto.dart';
-import 'package:dio/dio.dart';
-import 'package:flutter_waya/extension/object_extension.dart';
-import 'package:http_parser/http_parser.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 
 class AliOSS {
   factory AliOSS() => getInstance();

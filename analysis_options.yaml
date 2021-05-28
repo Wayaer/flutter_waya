@@ -1,32 +1,19 @@
 analyzer:
   enable-experiment:
     - extension-methods
-
   strong-mode:
     implicit-casts: false
     implicit-dynamic: false
   errors:
-    # treat missing required parameters as a warning (not a hint)
     missing_required_param: warning
-    # treat missing returns as a warning (not a hint)
     missing_return: warning
-    # allow having TODOs in the code
     todo: ignore
-    # Ignore analyzer hints for updating pubspecs when using Future or
-    # Stream and not importing dart:async
-    # Please see https://github.com/flutter/flutter/pull/24528 for details.
     sdk_version_async_exported_from_core: ignore
   exclude:
-    # Ignore generated files
-    - 'lib/constant/area.dart'
-    # the following two are relative to the stocks example and the flutter package respectively
-    # see https://github.com/dart-lang/sdk/issues/28463
+    - 'lib/constant/src/area.dart'
 
 linter:
   rules:
-    # these rules are documented on and in the same order as
-    # the Dart Lint rules page to make maintenance easier
-    # https://github.com/dart-lang/linter/blob/master/example/all.yaml
     - always_declare_return_types
     # - always_put_control_body_on_new_line
     # - always_put_required_named_parameters_first # we prefer having parameters in the same order as fields https://github.com/flutter/flutter/issues/10219

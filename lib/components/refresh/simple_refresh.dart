@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:flutter_waya/widgets/spinKit/spinKit.dart';
 
 void sendSimpleRefreshType(RefreshType refresh) =>
     eventBus.emit(refreshEvent, refresh);

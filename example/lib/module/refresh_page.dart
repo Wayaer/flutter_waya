@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:flutter_waya/widgets/refresh/simple_refresh.dart';
 import 'package:waya/main.dart';
 
 class RefreshPage extends StatefulWidget {

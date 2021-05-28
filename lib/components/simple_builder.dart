@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:flutter/widgets.dart';
-import 'package:flutter_waya/constant/constant.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 
 typedef ValueBuilderCallback<T> = Widget Function(
     BuildContext context, T? value, ValueCallback<T> updater);

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/constant/area.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 class PickerSub {
@@ -394,7 +393,7 @@ class DateTimePicker extends _PickerConfig {
     this.endDate,
     required PickerSub pickerSub,
     required PickerWheel pickerWheel,
-  })   : unit = unit ?? DateTimePickerUnit().getDefaultUnit,
+  })  : unit = unit ?? DateTimePickerUnit().getDefaultUnit,
         showUnit = showUnit ?? true,
         dual = dual ?? true,
         super(key: key, pickerSub: pickerSub, pickerWheel: pickerWheel);

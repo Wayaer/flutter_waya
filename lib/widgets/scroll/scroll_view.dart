@@ -5,8 +5,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-export 'sliver/sliver.dart';
-
 /// 配合 sliver 家族组件 无需设置高度  自适应高度
 class ScrollViewAuto extends StatefulWidget {
   const ScrollViewAuto(
@@ -454,7 +452,7 @@ class _NoPinnedPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
     double? minHeight = 0,
     double? maxHeight = kToolbarHeight,
     required this.child,
-  })   : minHeight = minHeight ?? 0,
+  })  : minHeight = minHeight ?? 0,
         maxHeight = maxHeight ?? kToolbarHeight;
 
   final double minHeight;

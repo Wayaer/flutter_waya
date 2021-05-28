@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/constant/way.dart';
+import 'package:flutter_waya/constant/src/way.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 /// 弹出组件每个item样式
@@ -11,51 +11,6 @@ typedef IndexedBuilder = Widget Function(int index);
 typedef DefaultBuilder = Widget Function(int? index);
 
 typedef ToggleDefaultBuilder = Widget Function(Widget child, Widget toggle);
-
-/// DropdownMenuButton(
-///   defaultBuilder: (int index) {
-///     return Universal(
-///         padding:
-///         const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-///         decoration: BoxDecoration(
-///             color: Colors.blue,
-///             borderRadius: BorderRadius.circular(4)),
-///         direction: Axis.horizontal,
-///         mainAxisSize: MainAxisSize.min,
-///         children: <Widget>[
-///           BasisText(index == null ? '请选择' : _colors[index],
-///               color: Colors.white),
-///           const Icon(Icons.arrow_drop_down, color: Colors.white),
-///         ]);
-///   },
-///   decoration: BoxDecoration(
-///       color: Colors.blue, borderRadius: BorderRadius.circular(4)),
-///   margin: const EdgeInsets.only(top: 2),
-///   itemCount: _colors.length,
-///   onChanged: (int index) {
-///     showToast('点击了${_colors[index]}');
-///   },
-///   itemBuilder: (int index) =>
-///       Container(
-///           alignment: Alignment.center,
-///           padding: const EdgeInsets.symmetric(vertical: 6),
-///           decoration: const BoxDecoration(
-///               border: Border(bottom: BorderSide(color: Colors.white))),
-///           child: BasisText(_colors[index])),
-/// )
-///
-///
-///     DropdownMenuButton.material(
-///           itemBuilder: (int index) =>
-///           BasisText(_colors[index], color: Colors.black),
-///           itemCount: _colors.length,
-///           defaultBuilder: (int index) {
-///               return BasisText(index == null ? '请选择' : _colors[index],
-///                         color: Colors.black)
-///                     .paddingSymmetric(vertical: 10);
-///           })
-///
-///
 
 class DropdownMenuButton extends StatefulWidget {
   const DropdownMenuButton(
@@ -88,8 +43,7 @@ class DropdownMenuButton extends StatefulWidget {
   })  : toggle = Icon(iconData ?? Icons.arrow_right_rounded,
             color: iconColor ?? Colors.black, size: iconSize),
         decoration = BoxDecoration(
-            color: backgroundColor ?? Colors.white,
-            boxShadow: WayStyles.boxShadow),
+            color: backgroundColor ?? Colors.white, boxShadow: boxShadow),
         itemBuilder = ((int index) =>
             itemBuilder(index).paddingSymmetric(vertical: 8, horizontal: 4)),
         super(key: key);

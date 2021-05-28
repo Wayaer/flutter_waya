@@ -6,7 +6,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_waya/flutter_waya.dart';
+import 'package:flutter_waya/constant/constant.dart';
+
+export 'src/ali_oss.dart';
+export 'src/des/des.dart';
+export 'src/des/des_engine.dart';
+export 'src/des/permuted.dart';
+export 'src/dio.dart';
+export 'src/event.dart';
+export 'src/screen_fit.dart';
 
 void log(dynamic msg) {
   final String message = msg.toString();

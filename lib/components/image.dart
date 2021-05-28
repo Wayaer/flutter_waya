@@ -6,7 +6,6 @@ import 'dart:ui';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 typedef ImageSequenceProcessCallback = void Function(

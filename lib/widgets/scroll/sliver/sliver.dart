@@ -1,12 +1,8 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_waya/constant/way.dart';
+import 'package:flutter_waya/constant/src/way.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-
-import 'element.dart';
-import 'render.dart';
 
 typedef OnSliverPinnedPersistentHeaderDelegateBuild = void Function(
   BuildContext context,
