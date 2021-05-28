@@ -360,7 +360,7 @@ Future<T?> showCupertinoBottomPagePopup<T>(
 ///  关闭 closePopup()
 ///  popup 确定和取消
 ///  Dialog
-Future<T?>? dialogSureCancel<T>({
+Future<T?>? showDialogSureCancel<T>({
   required Widget content,
   Widget? sure,
   Widget? cancel,
@@ -413,11 +413,11 @@ Future<T?>? dialogSureCancel<T>({
 
 ///  关闭弹窗
 ///  也可以通过 Navigator.of(context).pop()
-void closePopup([dynamic value]) => pop(value);
+void closePopup([dynamic value]) => maybePop(value);
 
 ///  日期选择器
 ///  关闭 closePopup()
-Future<T?> showDateTimePicker<T>({
+Future<String?> showDateTimePicker<T>({
   ///  选择框内单位文字样式
   TextStyle? unitStyle,
 
@@ -459,12 +459,12 @@ Future<T?> showDateTimePicker<T>({
       dual: dual,
       showUnit: showUnit,
       unit: unit);
-  return showBottomPopup(widget: widget);
+  return showBottomPopup<String?>(widget: widget);
 }
 
 ///  地区选择器
 ///  关闭 closePopup()
-Future<T?> showAreaPicker<T>({
+Future<String?> showAreaPicker<T>({
   /// 默认选择的省
   String? defaultProvince,
 
@@ -491,7 +491,7 @@ Future<T?> showAreaPicker<T>({
       defaultDistrict: defaultDistrict,
       pickerSub: pickerSub,
       pickerWheel: pickerWheel);
-  return showBottomPopup(widget: widget);
+  return showBottomPopup<String?>(widget: widget);
 }
 
 ///  wheel 单列 取消确认 选择

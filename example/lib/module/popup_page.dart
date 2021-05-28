@@ -12,8 +12,7 @@ class PopupPage extends StatelessWidget {
             CustomElastic('showBottomPopup', onTap: () => showBottom()),
             CustomElastic('showDialogSureCancel',
                 onTap: () => push(_ContentPage())),
-            CustomElastic('showBottomPagePopup',
-                onTap: () => showBottomPage()),
+            CustomElastic('showBottomPagePopup', onTap: () => showBottomPage()),
           ]);
 
   void showBottomPage() {
@@ -62,13 +61,12 @@ class _ContentPage extends StatelessWidget {
   Widget build(BuildContext context) => OverlayScaffold(
           appBar: AppBar(title: const Text('Content'), centerTitle: true),
           children: <Widget>[
-            CustomElastic('showDialogSureCancel',
-                onTap: () => showDialogSureCancel()),
+            CustomElastic('showDialogSureCancel', onTap: sureCancel),
           ]);
 
-  void showDialogSureCancel() {
+  void sureCancel() {
     const bool isOverlay = true;
-    dialogSureCancel<dynamic>(
+    showDialogSureCancel<dynamic>(
         isOverlay: isOverlay,
         sure: SimpleButton(
           alignment: Alignment.center,
