@@ -54,38 +54,32 @@ class _Home extends StatelessWidget {
     return OverlayScaffold(
       backgroundColor: Colors.white,
       onWillPopOverlayClose: true,
-      appBar: AppBar(title: const Text('Waya Demo'), centerTitle: true),
-      padding: const EdgeInsets.symmetric(horizontal: 10),
+      appBar: AppBarText('Flutter Waya Example'),
+      padding: const EdgeInsets.all(10),
       body: Wrap(runSpacing: 10, spacing: 10, children: <Widget>[
-        CustomElastic('Toast', onTap: () => push(ToastPage())),
-        CustomElastic('Button', onTap: () => push(ButtonPage())),
-        CustomElastic('ToggleRotate', onTap: () => push(ToggleRotatePage())),
-        CustomElastic('Counter', onTap: () => push(CounterPage())),
-        CustomElastic('Picker', onTap: () => push(PickerPage())),
-        CustomElastic('Popup', onTap: () => push(PopupPage())),
-        CustomElastic('PinBox', onTap: () => push(PinBoxPage())),
-        CustomElastic('Image', onTap: () => push(ImagePage())),
-        CustomElastic('Carousel', onTap: () => push(CarouselPage())),
-        CustomElastic('Progress', onTap: () => push(ProgressPage())),
-        CustomElastic('Universal', onTap: () => push(UniversalPage())),
-        CustomElastic('JsonParse', onTap: () => push(JsonParsePage())),
-        CustomElastic('ExpansionTiles',
-            onTap: () => push(ExpansionTilesPage())),
-        CustomElastic('ScrollView', onTap: () => push(ScrollViewPage())),
-        CustomElastic('JsonParse', onTap: () => push(JsonParsePage())),
-        CustomElastic('SimpleRefresh', onTap: () => push(RefreshPage())),
-        CustomElastic('EasyRefreshed', onTap: () => push(EasyRefreshPage())),
-        CustomElastic('SimpleBuilder', onTap: () => push(SimpleBuilderPage())),
-        ElevatedButton(
-            onPressed: () {
-              showSnackBar(SnackBar(content: BasisText('Popup SnackBar')));
-            },
-            child: BasisText('showSnackBar')),
-        ElevatedButton(
-            onPressed: () {
-              showOverlayLoading();
-            },
-            child: BasisText('showOverlayLoading')),
+        ElevatedText('Toast', onTap: () => push(ToastPage())),
+        ElevatedText('Button', onTap: () => push(ButtonPage())),
+        ElevatedText('ToggleRotate', onTap: () => push(ToggleRotatePage())),
+        ElevatedText('Counter', onTap: () => push(CounterPage())),
+        ElevatedText('Picker', onTap: () => push(PickerPage())),
+        ElevatedText('Popup', onTap: () => push(PopupPage())),
+        ElevatedText('PinBox', onTap: () => push(PinBoxPage())),
+        ElevatedText('Image', onTap: () => push(ImagePage())),
+        ElevatedText('Carousel', onTap: () => push(CarouselPage())),
+        ElevatedText('Progress', onTap: () => push(ProgressPage())),
+        ElevatedText('Universal', onTap: () => push(UniversalPage())),
+        ElevatedText('JsonParse', onTap: () => push(JsonParsePage())),
+        ElevatedText('ExpansionTiles', onTap: () => push(ExpansionTilesPage())),
+        ElevatedText('ScrollView', onTap: () => push(ScrollViewPage())),
+        ElevatedText('SimpleRefresh', onTap: () => push(RefreshPage())),
+        ElevatedText('EasyRefreshed', onTap: () => push(EasyRefreshPage())),
+        ElevatedText('SimpleBuilder', onTap: () => push(SimpleBuilderPage())),
+        ElevatedText('showSnackBar', onTap: () {
+          showSnackBar(SnackBar(content: BasisText('Popup SnackBar')));
+        }),
+        ElevatedText('showOverlayLoading', onTap: () {
+          showOverlayLoading();
+        }),
       ]),
     );
   }
@@ -93,26 +87,42 @@ class _Home extends StatelessWidget {
   void showOverlayLoading() => showLoading(
       gaussian: true,
       onTap: closeOverlay,
-      custom: const SpinKitWave(color: Colors.blue));
+      custom: const SpinKitWave(color: color));
 }
 
-class CustomElastic extends StatelessWidget {
-  const CustomElastic(this.text, {Key key, this.onTap}) : super(key: key);
+class AppBarText extends AppBar {
+  AppBarText(String text, {Key key})
+      : super(
+            key: key,
+            elevation: 0,
+            iconTheme: const IconThemeData.fallback(),
+            title: BasisText(text,
+                color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
+            centerTitle: true,
+            backgroundColor: color);
+}
+
+const Color color = Colors.amber;
+
+class ElevatedText extends StatelessWidget {
+  const ElevatedText(this.text, {Key key, this.onTap}) : super(key: key);
 
   final String text;
-  final GestureTapCallback onTap;
+  final VoidCallback onTap;
 
   @override
-  Widget build(BuildContext context) => Universal(
-        addInkWell: true,
-        margin: const EdgeInsets.symmetric(vertical: 6),
-        child: ElasticButton(
-            withOpacity: true,
-            onTap: onTap,
-            child: Container(
-              color: Colors.blue,
-              padding: const EdgeInsets.all(10),
-              child: Text(text, style: const TextStyle(color: Colors.white)),
-            ).clipRRect(borderRadius: BorderRadius.circular(6))),
+  Widget build(BuildContext context) => SimpleButton(
+        isElastic: true,
+        onTap: onTap,
+        margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        decoration: BoxDecoration(boxShadow: const <BoxShadow>[
+          BoxShadow(
+              color: color,
+              offset: Offset(0, 0),
+              blurRadius: 1.0,
+              spreadRadius: 1.0)
+        ], color: color, borderRadius: BorderRadius.circular(4)),
+        child: BasisText(text, color: Colors.black),
       );
 }

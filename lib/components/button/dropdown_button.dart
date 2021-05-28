@@ -43,7 +43,7 @@ class DropdownMenuButton extends StatefulWidget {
   })  : toggle = Icon(iconData ?? Icons.arrow_right_rounded,
             color: iconColor ?? Colors.black, size: iconSize),
         decoration = BoxDecoration(
-            color: backgroundColor ?? Colors.white, boxShadow: boxShadow),
+            color: backgroundColor ?? Colors.white, boxShadow: baseBoxShadow),
         itemBuilder = ((int index) =>
             itemBuilder(index).paddingSymmetric(vertical: 8, horizontal: 4)),
         super(key: key);

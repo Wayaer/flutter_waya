@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-const List<BoxShadow> boxShadow = <BoxShadow>[
+const List<BoxShadow> baseBoxShadow = <BoxShadow>[
   BoxShadow(
       color: ConstColors.boxShadowColor,
       blurRadius: ConstConstant.radius,

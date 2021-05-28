@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
+import 'package:waya/main.dart';
 
 class UniversalPage extends StatefulWidget {
   @override
@@ -24,7 +25,7 @@ class _UniversalPageState extends State<UniversalPage>
       Universal(
         width: 200,
         height: 50,
-        color: Colors.blue,
+        color:color,
         margin: const EdgeInsets.all(10),
         isClipRRect: true,
         borderRadius: BorderRadius.circular(10),
@@ -32,18 +33,18 @@ class _UniversalPageState extends State<UniversalPage>
         child: BasisText('ScrollUniversal', color: Colors.white),
         onTap: () => push(_ScrollUniversalPage()),
       ),
-      const Universal(width: 50, height: 50, color: Colors.blue),
+      const Universal(width: 50, height: 50, color:color),
       const SizedBox(height: 10),
       const Universal(
-          width: 50, height: 50, color: Colors.blue, size: Size(60, 60)),
+          width: 50, height: 50, color:color, size: Size(60, 60)),
       const SizedBox(height: 10),
       Universal(
-          color: Colors.blue.withOpacity(0.2),
+          color:color.withOpacity(0.2),
           isStack: true,
           size: const Size(100, 100),
           children: const <Widget>[
             Universal(
-                left: 10, top: 10, color: Colors.blue, size: Size(50, 50)),
+                left: 10, top: 10, color:color, size: Size(50, 50)),
           ]),
       const SizedBox(height: 10),
       Universal(
@@ -65,11 +66,11 @@ class _UniversalPageState extends State<UniversalPage>
         addInkWell: true,
         radius: 100,
         margin: const EdgeInsets.all(10),
-        splashColor: Colors.blue,
+        splashColor:color,
         highlightColor: Colors.red,
         hoverColor: Colors.black,
         elevation: 5,
-        child: BasisText('InkWell', color: Colors.blue),
+        child: BasisText('InkWell', color:color),
         onLongPress: () => showToast('InkWell onLongPress'),
         onDoubleTap: () => showToast('InkWell onDoubleTap'),
         onTap: () => showToast('InkWell onTap'),
@@ -87,7 +88,7 @@ class _UniversalPageState extends State<UniversalPage>
       Universal(
           decoration: const BoxDecoration(color: Colors.red),
           clipBehavior: Clip.antiAlias,
-          color: Colors.blue,
+          color:color,
           opacity: 0.2,
           onTap: () {
             sendRefreshType(EasyRefreshType.refresh);
@@ -100,7 +101,7 @@ class _UniversalPageState extends State<UniversalPage>
         sizeFactor: controller, axis: Axis.horizontal, child: item));
     return OverlayScaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(title: const Text('Universal Demo'), centerTitle: true),
+      appBar: AppBarText('Universal Demo'),
       mainAxisAlignment: MainAxisAlignment.center,
       isScroll: true,
       refreshConfig: RefreshConfig(onRefresh: () async {
@@ -117,8 +118,7 @@ class _ScrollUniversalPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return OverlayScaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-            title: const Text('ScrollUniversal Demo'), centerTitle: true),
+        appBar: AppBarText('ScrollUniversal Demo'),
         mainAxisAlignment: MainAxisAlignment.center,
         body: scrollUniversal());
   }
@@ -161,7 +161,7 @@ class _ScrollUniversalPage extends StatelessWidget {
               margin: const EdgeInsets.all(10),
               width: 90,
               height: 90,
-              color: Colors.blue),
+              color:color),
           Container(
               margin: const EdgeInsets.all(10),
               width: 70,

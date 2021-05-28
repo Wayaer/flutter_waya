@@ -9,11 +9,11 @@ class JsonParsePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return OverlayScaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(title: const Text('JsonParse Demo'), centerTitle: true),
+        appBar: AppBarText('JsonParse Demo'),
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          CustomElastic('JsonParse', onTap: () => push(_JsonParsePage())),
-          CustomElastic('JsonParse.list',
+          ElevatedText('JsonParse', onTap: () => push(_JsonParsePage())),
+          ElevatedText('JsonParse.list',
               onTap: () => push(_JsonParseListPage())),
         ]);
   }
@@ -32,7 +32,7 @@ class _JsonParsePage extends StatelessWidget {
             as Map<dynamic, dynamic>;
     return OverlayScaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(title: const Text('JsonParse'), centerTitle: true),
+        appBar: AppBarText('JsonParse'),
         mainAxisAlignment: MainAxisAlignment.center,
         body: JsonParse(json));
   }
@@ -47,7 +47,7 @@ class _JsonParseListPage extends StatelessWidget {
         as List<dynamic>;
     return OverlayScaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(title: const Text('JsonParse.list'), centerTitle: true),
+        appBar: AppBarText('JsonParse.list'),
         mainAxisAlignment: MainAxisAlignment.center,
         body: JsonParse.list(json));
   }

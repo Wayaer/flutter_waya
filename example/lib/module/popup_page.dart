@@ -7,12 +7,11 @@ class PopupPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => OverlayScaffold(
           backgroundColor: Colors.white,
-          appBar: AppBar(title: const Text('Popup Demo'), centerTitle: true),
+          appBar: AppBarText('Popup Demo'),
           children: <Widget>[
-            CustomElastic('showBottomPopup', onTap: () => showBottom()),
-            CustomElastic('showDialogSureCancel',
-                onTap: () => push(_ContentPage())),
-            CustomElastic('showBottomPagePopup', onTap: () => showBottomPage()),
+            ElevatedText('showBottomPopup', onTap: () => showBottom()),
+            ElevatedText('showDialogSureCancel', onTap: sureCancel),
+            ElevatedText('showBottomPagePopup', onTap: () => showBottomPage()),
           ]);
 
   void showBottomPage() {
@@ -54,15 +53,6 @@ class PopupPage extends StatelessWidget {
       ],
     ));
   }
-}
-
-class _ContentPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) => OverlayScaffold(
-          appBar: AppBar(title: const Text('Content'), centerTitle: true),
-          children: <Widget>[
-            CustomElastic('showDialogSureCancel', onTap: sureCancel),
-          ]);
 
   void sureCancel() {
     const bool isOverlay = true;

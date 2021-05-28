@@ -28,7 +28,7 @@ class _ImagePageState extends State<ImagePage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) => OverlayScaffold(
           backgroundColor: Colors.white,
-          appBar: AppBar(title: const Text('GifImage Demo'), centerTitle: true),
+          appBar: AppBarText('GifImage Demo'),
           children: <Widget>[
             GifImage(image: NetworkImage(uri), controller: controller),
           ]);
@@ -46,10 +46,10 @@ class ToastPage extends StatelessWidget {
     const List<ToastType> toastList = ToastType.values;
     return OverlayScaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(title: const Text('Toast Demo'), centerTitle: true),
+        appBar: AppBarText('Toast Demo'),
         mainAxisAlignment: MainAxisAlignment.center,
         children: toastList.builder(
-            (ToastType e) => CustomElastic(e.toString(), onTap: () async {
+            (ToastType e) => ElevatedText(e.toString(), onTap: () async {
                   await showToast(e.toString(), toastType: e);
                   log('开始弹第二个');
                   showToast('添加await第一个Toast完了之后弹出第二个Toast');
@@ -61,7 +61,7 @@ class PinBoxPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => OverlayScaffold(
           backgroundColor: Colors.white,
-          appBar: AppBar(title: const Text('PinBox Demo'), centerTitle: true),
+          appBar: AppBarText('PinBox Demo'),
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             PinBox(
@@ -85,7 +85,7 @@ class CounterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => OverlayScaffold(
           backgroundColor: Colors.white,
-          appBar: AppBar(title: const Text('Counter Demo'), centerTitle: true),
+          appBar: AppBarText('Counter Demo'),
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             CounterAnimation(
@@ -112,8 +112,7 @@ class ToggleRotatePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => OverlayScaffold(
           backgroundColor: Colors.white,
-          appBar:
-              AppBar(title: const Text('ToggleRotate Demo'), centerTitle: true),
+          appBar: AppBarText('ToggleRotate Demo'),
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const ToggleRotate(
@@ -141,18 +140,17 @@ class ExpansionTilesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return OverlayScaffold(
         backgroundColor: Colors.white,
-        appBar:
-            AppBar(title: const Text('ToggleRotate Demo'), centerTitle: true),
+        appBar: AppBarText('ExpansionTiles Demo'),
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           ExpansionTiles(
-              title: BasisText('title'),
+              title: BasisText('title', color: Colors.black),
               children: 5.generate((int index) => Universal(
                   margin: const EdgeInsets.all(12),
                   alignment: Alignment.centerLeft,
                   child: BasisText('item$index', color: Colors.black)))),
           ExpansionTiles(
-              title: BasisText('title'),
+              title: BasisText('title', color: Colors.black),
               children: 5.generate((int index) => Universal(
                   margin: const EdgeInsets.all(12),
                   alignment: Alignment.centerLeft,
@@ -167,8 +165,7 @@ class SimpleBuilderPage extends StatelessWidget {
     const int i = 0;
     return OverlayScaffold(
         backgroundColor: Colors.white,
-        appBar:
-            AppBar(title: const Text('SimpleBuilder Demo'), centerTitle: true),
+        appBar: AppBarText('SimpleBuilder Demo'),
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           ValueBuilder<int>(

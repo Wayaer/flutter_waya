@@ -10,7 +10,7 @@ class ButtonPage extends StatelessWidget {
   Widget build(BuildContext context) => OverlayScaffold(
           backgroundColor: Colors.white,
           isScroll: true,
-          appBar: AppBar(title: const Text('Button Demo'), centerTitle: true),
+          appBar: AppBarText('Button Demo'),
           children: <Widget>[
             const DropdownMenu(
               value: <List<String>>[
@@ -21,7 +21,7 @@ class ButtonPage extends StatelessWidget {
               title: <String>['性别', '年龄', '地区'],
             ),
             const SizedBox(height: 20),
-            CustomElastic('ElasticButton',
+            ElevatedText('ElasticButton',
                 onTap: () => showToast('ElasticButton')),
             const SizedBox(height: 20),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
@@ -31,7 +31,7 @@ class ButtonPage extends StatelessWidget {
                       color: Colors.black);
                 },
                 decoration: BoxDecoration(
-                    color: Colors.blue, borderRadius: BorderRadius.circular(4)),
+                    color: color, borderRadius: BorderRadius.circular(4)),
                 margin: const EdgeInsets.only(top: 2),
                 itemCount: _colors.length,
                 onChanged: (int index) {
@@ -71,21 +71,20 @@ class ButtonPage extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
                 text: 'SimpleButton',
-                textStyle: const TextStyle(color: Colors.blue),
+                textStyle: const TextStyle(color: color),
                 borderRadius: BorderRadius.circular(4),
                 onTap: () {}),
             const SizedBox(height: 20),
-            CustomElastic('BubbleButton',
+            ElevatedText('BubbleButton',
                 onTap: () => push(_BubbleButtonPage())),
             const SizedBox(height: 40),
             const ClothButton.rectangle(
-                size: Size(200, 60), backgroundColor: Colors.blue),
+                size: Size(200, 60), backgroundColor: color),
             const SizedBox(height: 20),
             const ClothButton.round(
-                size: Size(200, 60), backgroundColor: Colors.blue),
+                size: Size(200, 60), backgroundColor: color),
             const SizedBox(height: 40),
-            const LiquidButton(
-                width: 200, height: 60, backgroundColor: Colors.blue),
+            const LiquidButton(width: 200, height: 60, backgroundColor: color),
             const SizedBox(height: 40),
           ]);
 }
@@ -96,7 +95,7 @@ class _BubbleButtonPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return OverlayScaffold(
-        appBar: AppBar(title: const Text('Bubble')),
+        appBar: AppBarText('Bubble'),
         padding: const EdgeInsets.symmetric(vertical: 40),
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
@@ -106,7 +105,7 @@ class _BubbleButtonPage extends StatelessWidget {
               bubbleBuilder: (bool value) => Universal(
                   isOval: true,
                   alignment: Alignment.center,
-                  color: value ? Colors.blue : Colors.grey,
+                  color: value ? color : Colors.grey,
                   child: BasisText('点击', color: Colors.white))),
           BubbleButton(
               size: size,

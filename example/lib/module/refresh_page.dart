@@ -16,8 +16,7 @@ class _RefreshPageState extends State<RefreshPage> {
     // colors.addAll(Colors.accents);
     return OverlayScaffold(
         backgroundColor: Colors.white,
-        appBar:
-            AppBar(title: const Text('RefreshPage Demo'), centerTitle: true),
+        appBar: AppBarText('RefreshPage Demo'),
         body: SimpleRefresh(
           controller: controller,
           onRefresh: () {
@@ -70,8 +69,7 @@ class _EasyRefreshPageState extends State<EasyRefreshPage> {
   Widget build(BuildContext context) {
     return OverlayScaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-            title: const Text('EasyRefreshPage Demo'), centerTitle: true),
+        appBar: AppBarText('EasyRefreshPage Demo'),
         bottomNavigationBar: Universal(
             direction: Axis.horizontal,
             mainAxisSize: MainAxisSize.min,
@@ -79,13 +77,13 @@ class _EasyRefreshPageState extends State<EasyRefreshPage> {
             padding: EdgeInsets.fromLTRB(
                 10, 10, 10, getBottomNavigationBarHeight + 10),
             children: <Widget>[
-              CustomElastic('Refresh', onTap: () {
+              ElevatedText('Refresh', onTap: () {
                 sendRefreshType(EasyRefreshType.refresh);
               }),
-              CustomElastic('开启新的页面', onTap: () {
+              ElevatedText('开启新的页面', onTap: () {
                 push(EasyRefreshPage());
               }),
-              CustomElastic('Loading', onTap: () {
+              ElevatedText('Loading', onTap: () {
                 sendRefreshType(EasyRefreshType.loading);
                 colors.addAll(Colors.accents);
                 setState(() {});

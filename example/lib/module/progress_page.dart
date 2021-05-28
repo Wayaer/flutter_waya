@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
+import 'package:waya/main.dart';
 
 class ProgressPage extends StatefulWidget {
   @override
@@ -25,7 +26,7 @@ class _ProgressPageState extends State<ProgressPage>
     return OverlayScaffold(
         isScroll: true,
         backgroundColor: Colors.white,
-        appBar: AppBar(title: const Text('PinBox Demo'), centerTitle: true),
+        appBar: AppBarText('PinBox Demo'),
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           const SizedBox(height: 20),
@@ -36,15 +37,15 @@ class _ProgressPageState extends State<ProgressPage>
               animation: true,
               isRTL: true,
               animationDuration: const Duration(seconds: 5),
-              linearGradient: const LinearGradient(
-                  colors: <Color>[Colors.red, Colors.blue]),
+              linearGradient:
+              const LinearGradient(colors: <Color>[Colors.red, color]),
               mainAxisAlignment: MainAxisAlignment.center,
               trailing: const Text('LinearProgress',
                   style: TextStyle(color: Colors.white)),
               progressColor: Colors.lightGreen,
               backgroundColor: Colors.black12,
               widgetIndicator:
-                  Container(width: 20, height: 20, color: Colors.amber)),
+              Container(width: 20, height: 20, color: Colors.amber)),
           const SizedBox(height: 20),
           Progress.circular(
               radius: 120,
@@ -55,21 +56,21 @@ class _ProgressPageState extends State<ProgressPage>
               arcBackgroundColor: Colors.cyan,
               center: const Text('70.0%',
                   style:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0)),
+                  TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0)),
               footer: const Text('CircularProgress',
                   style:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0)),
+                  TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0)),
               circularStrokeCap: CircularStrokeCap.round,
-              linearGradient: const LinearGradient(
-                  colors: <Color>[Colors.red, Colors.blue])),
+              linearGradient:
+              const LinearGradient(colors: <Color>[Colors.red, color])),
           const SizedBox(height: 20),
           SizedBox.fromSize(
               size: const Size(150, 30),
               child: const LiquidProgress.linear(
                   value: 0.4,
                   backgroundColor: Colors.white,
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
-                  borderColor: Colors.blue,
+                  valueColor: AlwaysStoppedAnimation<Color>(color),
+                  borderColor: color,
                   borderWidth: 1.0)),
           const SizedBox(height: 20),
           SizedBox.fromSize(
@@ -77,8 +78,8 @@ class _ProgressPageState extends State<ProgressPage>
               child: LiquidProgress.linear(
                   value: _animationController.value,
                   backgroundColor: Colors.white,
-                  borderColor: Colors.blue,
-                  valueColor: const AlwaysStoppedAnimation<Color>(Colors.blue),
+                  borderColor: color,
+                  valueColor: const AlwaysStoppedAnimation<Color>(color),
                   center: BasisText('${percentage.toStringAsFixed(0)}%',
                       style: const BasisTextStyle(
                           color: Colors.lightBlueAccent,
@@ -90,8 +91,8 @@ class _ProgressPageState extends State<ProgressPage>
             child: LiquidProgress.circular(
                 value: _animationController.value,
                 backgroundColor: Colors.white,
-                borderColor: Colors.blue,
-                valueColor: const AlwaysStoppedAnimation<Color>(Colors.blue),
+                borderColor: color,
+                valueColor: const AlwaysStoppedAnimation<Color>(color),
                 center: BasisText('${percentage.toStringAsFixed(0)}%',
                     style: const BasisTextStyle(
                         color: Colors.lightBlueAccent,
@@ -104,8 +105,8 @@ class _ProgressPageState extends State<ProgressPage>
               child: LiquidProgress.circular(
                   value: _animationController.value,
                   backgroundColor: Colors.white,
-                  borderColor: Colors.blue,
-                  valueColor: const AlwaysStoppedAnimation<Color>(Colors.blue),
+                  borderColor: color,
+                  valueColor: const AlwaysStoppedAnimation<Color>(color),
                   center: BasisText('${percentage.toStringAsFixed(0)}%',
                       style: const BasisTextStyle(
                           color: Colors.lightBlueAccent,
@@ -120,14 +121,14 @@ class _ProgressPageState extends State<ProgressPage>
           LiquidProgress.custom(
               direction: Axis.horizontal,
               backgroundColor: Colors.grey[300],
-              valueColor: const AlwaysStoppedAnimation<Color>(Colors.blue),
+              valueColor: const AlwaysStoppedAnimation<Color>(color),
               shapePath: _buildSpeechBubblePath()),
           const SizedBox(height: 20),
           LiquidProgress.custom(
               value: _animationController.value,
               direction: Axis.vertical,
               backgroundColor: Colors.white,
-              valueColor: const AlwaysStoppedAnimation<Color>(Colors.blue),
+              valueColor: const AlwaysStoppedAnimation<Color>(color),
               shapePath: _buildHeartPath(),
               center: BasisText('${percentage.toStringAsFixed(0)}%',
                   style: const BasisTextStyle(
@@ -141,38 +142,27 @@ class _ProgressPageState extends State<ProgressPage>
   Path _buildBoatPath() {
     return Path()
       ..moveTo(15, 120)
-      ..lineTo(0, 85)
-      ..lineTo(50, 85)
-      ..lineTo(50, 0)
-      ..lineTo(105, 80)
-      ..lineTo(60, 80)
-      ..lineTo(60, 85)
-      ..lineTo(120, 85)
-      ..lineTo(105, 120)
+      ..lineTo(0, 85)..lineTo(50, 85)..lineTo(50, 0)..lineTo(105, 80)..lineTo(
+          60, 80)..lineTo(60, 85)..lineTo(120, 85)..lineTo(105, 120)
       ..close();
   }
 
   Path _buildSpeechBubblePath() {
     return Path()
       ..moveTo(50, 0)
-      ..quadraticBezierTo(0, 0, 0, 37.5)
-      ..quadraticBezierTo(0, 75, 25, 75)
-      ..quadraticBezierTo(25, 95, 5, 95)
-      ..quadraticBezierTo(35, 95, 40, 75)
-      ..quadraticBezierTo(100, 75, 100, 37.5)
-      ..quadraticBezierTo(100, 0, 50, 0)
+      ..quadraticBezierTo(0, 0, 0, 37.5)..quadraticBezierTo(
+          0, 75, 25, 75)..quadraticBezierTo(25, 95, 5, 95)..quadraticBezierTo(
+          35, 95, 40, 75)..quadraticBezierTo(
+          100, 75, 100, 37.5)..quadraticBezierTo(100, 0, 50, 0)
       ..close();
   }
 
   Path _buildHeartPath() {
     return Path()
       ..moveTo(55, 15)
-      ..cubicTo(55, 12, 50, 0, 30, 0)
-      ..cubicTo(0, 0, 0, 37.5, 0, 37.5)
-      ..cubicTo(0, 55, 20, 77, 55, 95)
-      ..cubicTo(90, 77, 110, 55, 110, 37.5)
-      ..cubicTo(110, 37.5, 110, 0, 80, 0)
-      ..cubicTo(65, 0, 55, 12, 55, 15)
+      ..cubicTo(55, 12, 50, 0, 30, 0)..cubicTo(0, 0, 0, 37.5, 0, 37.5)..cubicTo(
+          0, 55, 20, 77, 55, 95)..cubicTo(90, 77, 110, 55, 110, 37.5)..cubicTo(
+          110, 37.5, 110, 0, 80, 0)..cubicTo(65, 0, 55, 12, 55, 15)
       ..close();
   }
 

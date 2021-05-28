@@ -96,7 +96,7 @@ class _JsonParseState extends State<JsonParse> {
       color = Colors.redAccent;
     } else if (content is bool) {
       text = content.toString();
-      color = Colors.blue;
+      color = color;
     } else if (content is double) {
       text = content.toString();
       color = Colors.teal;
@@ -227,7 +227,7 @@ class _HttpDataPageState extends State<_HttpDataPage> {
               return Universal(
                 margin: const EdgeInsets.only(top: 10),
                 decoration: const BoxDecoration(
-                    color: ConstColors.white, boxShadow: boxShadow),
+                    color: ConstColors.white, boxShadow: baseBoxShadow),
                 addCard: true,
                 child: StatefulBuilder(
                     builder: (_, StateSetter state) => !showJson

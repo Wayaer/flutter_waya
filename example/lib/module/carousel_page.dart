@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
+import 'package:waya/main.dart';
 
 class CarouselPage extends StatefulWidget {
   @override
@@ -11,8 +12,8 @@ class _CarouselPageState extends State<CarouselPage> {
 
   List<Color> list = <Color>[
     Colors.tealAccent,
-    Colors.blueAccent,
     Colors.green,
+    Colors.amber,
     Colors.redAccent
   ];
   List<String> images = <String>[
@@ -26,7 +27,7 @@ class _CarouselPageState extends State<CarouselPage> {
   Widget build(BuildContext context) => OverlayScaffold(
           isScroll: true,
           backgroundColor: Colors.white,
-          appBar: AppBar(title: const Text('Carousel Demo'), centerTitle: true),
+          appBar: AppBarText('Carousel Demo'),
           children: <Widget>[
             Container(
               height: 200,

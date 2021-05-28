@@ -14,30 +14,30 @@ class ScrollViewPage extends StatelessWidget {
     return OverlayScaffold(
         isScroll: true,
         backgroundColor: Colors.white,
-        appBar: AppBar(title: const Text('ScrollView Demo'), centerTitle: true),
+        appBar: AppBarText('ScrollView Demo'),
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           const SizedBox(height: 20),
-          CustomElastic('ScrollViewAuto',
+          ElevatedText('ScrollViewAuto',
               onTap: () => push(_ScrollViewAutoPage(slivers))),
-          CustomElastic('ScrollViewAuto.nested',
+          ElevatedText('ScrollViewAuto.nested',
               onTap: () => push(_ScrollViewAutoNestedPage(slivers))),
           const SizedBox(height: 40),
-          CustomElastic('CustomScrollView',
+          ElevatedText('CustomScrollView',
               onTap: () => push(const _CustomScrollViewPage())),
-          CustomElastic('RefreshScrollView',
+          ElevatedText('RefreshScrollView',
               onTap: () => push(const _RefreshScrollViewPage())),
-          CustomElastic('DraggableScrollbar',
+          ElevatedText('DraggableScrollbar',
               onTap: () => push(_DraggableScrollbar(scrollController))),
-          CustomElastic('ScrollList',
+          ElevatedText('ScrollList',
               onTap: () => push(_ScrollListPage(scrollController))),
-          CustomElastic('ScrollList.builder',
+          ElevatedText('ScrollList.builder',
               onTap: () => push(_ScrollListBuilderPage(scrollController))),
-          CustomElastic('ScrollList.separated',
+          ElevatedText('ScrollList.separated',
               onTap: () => push(_ScrollListSeparatedPage(scrollController))),
-          CustomElastic('ScrollList.count',
+          ElevatedText('ScrollList.count',
               onTap: () => push(_ScrollListCountPage(scrollController))),
-          CustomElastic('ScrollList.placeholder',
+          ElevatedText('ScrollList.placeholder',
               onTap: () => push(_ScrollListPlaceholderPage(scrollController))),
         ]);
   }
@@ -72,7 +72,7 @@ class ScrollViewPage extends StatelessWidget {
             pinned: true,
             floating: false,
             child: Container(
-                color: Colors.blueAccent,
+                color:Colors.blueAccent,
                 alignment: Alignment.center,
                 child: const Text('SliverAutoPersistentHeader'))),
       ];
@@ -88,8 +88,7 @@ class _ScrollListSeparatedPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return OverlayScaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-            title: const Text('ScrollList.separated Demo'), centerTitle: true),
+        appBar: AppBarText('ScrollList.separated Demo'),
         body: ScrollList.separated(
           header: SliverToBoxAdapter(
               child: Container(
@@ -141,8 +140,7 @@ class _ScrollListPlaceholderPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return OverlayScaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-            title: const Text('ScrollList.builder Demo'), centerTitle: true),
+        appBar: AppBarText('ScrollList.builder Demo'),
         body: ScrollList.builder(
             header: SliverToBoxAdapter(
                 child: Container(
@@ -194,12 +192,11 @@ class _ScrollListBuilderPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return OverlayScaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-            title: const Text('ScrollList.builder Demo'), centerTitle: true),
+        appBar: AppBarText('ScrollList.builder Demo'),
         body: Column(children: <Widget>[
           Container(
               height: 100,
-              color: Colors.blue,
+              color:color,
               alignment: Alignment.center,
               child: BasisText('这里是头部',
                   color: Colors.white,
@@ -254,7 +251,7 @@ class _ScrollListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return OverlayScaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(title: const Text('ScrollList Demo'), centerTitle: true),
+        appBar: AppBarText('ScrollList Demo'),
         body: ScrollList(
           padding: const EdgeInsets.all(10),
           header: SliverToBoxAdapter(
@@ -321,8 +318,7 @@ class _ScrollListCountPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return OverlayScaffold(
       backgroundColor: Colors.white,
-      appBar:
-          AppBar(title: const Text('ScrollList.count Demo'), centerTitle: true),
+      appBar: AppBarText('ScrollList.count Demo'),
       body: ScrollList.count(
         header: SliverToBoxAdapter(
             child: Container(
@@ -495,8 +491,7 @@ class _DraggableScrollbar extends StatelessWidget {
 
     return OverlayScaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-            title: const Text('DraggableScrollbar Demo'), centerTitle: true),
+        appBar: AppBarText('DraggableScrollbar Demo'),
         body: scrollbar);
   }
 }

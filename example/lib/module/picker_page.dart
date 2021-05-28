@@ -6,12 +6,12 @@ class PickerPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => OverlayScaffold(
           backgroundColor: Colors.white,
-          appBar: AppBar(title: const Text('Picker Demo'), centerTitle: true),
+          appBar: AppBarText('Picker Demo'),
           children: <Widget>[
-            CustomElastic('showAreaPicker', onTap: () => selectCity()),
-            CustomElastic('showChoicePicker',
+            ElevatedText('showAreaPicker', onTap: () => selectCity()),
+            ElevatedText('showChoicePicker',
                 onTap: () => showChoicePicker()),
-            CustomElastic('showDateTimePicker',
+            ElevatedText('showDateTimePicker',
                 onTap: () => selectTime()),
           ]);
 
