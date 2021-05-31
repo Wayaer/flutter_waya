@@ -18,12 +18,13 @@ class OverlayEntryAuto extends OverlayEntry {
   final bool autoOff;
 
   bool removeEntry() {
-    if (!autoOff) {
-      _overlayEntryList.removeWhere(
-          (OverlayEntryAuto element) => element.hashCode == hashCode);
+    try {
+      super.remove();
+      if (!autoOff) _overlayEntryList.remove(this);
+      return true;
+    } catch (e) {
+      return false;
     }
-    if (mounted) super.remove();
-    return true;
   }
 }
 
@@ -40,16 +41,11 @@ OverlayEntryAuto? showOverlay(Widget widget, {bool autoOff = false}) {
 
 ///  关闭最顶层的Overlay
 bool closeOverlay({OverlayEntryAuto? entry}) {
-  try {
-    if (entry != null) {
-      return entry.removeEntry();
-    } else {
-      if (_overlayEntryList.isNotEmpty && _overlayEntryList.last.mounted) {
-        return _overlayEntryList.last.removeEntry();
-      }
-    }
-  } catch (e) {
-    log(e.toString());
+  if (entry != null) {
+    return entry.removeEntry();
+  } else {
+    if (_overlayEntryList.isNotEmpty)
+      return _overlayEntryList.last.removeEntry();
   }
   return false;
 }
