@@ -126,7 +126,7 @@ class _JsonParseState extends State<JsonParse> {
 
 void setHttpData(ResponseModel res) {
   if (_httpDataOverlay == null) {
-    _httpDataOverlay = showOverlay(_HttpDataPage(res))!;
+    _httpDataOverlay = showOverlay(_HttpDataPage(res), autoOff: true)!;
   } else {
     eventBus.emit('httpData', res);
   }

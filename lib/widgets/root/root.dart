@@ -421,9 +421,7 @@ class OverlayScaffold extends StatelessWidget {
 
   Future<bool> onWillPopFun() async {
     if (!scaffoldWillPop) return scaffoldWillPop;
-    if (onWillPopOverlayClose &&
-        _overlayEntryList.isNotEmpty &&
-        !_overlayEntryList.last.autoOff) {
+    if (onWillPopOverlayClose && _overlayEntryList.isNotEmpty) {
       closeOverlay();
       return false;
     }
@@ -508,8 +506,8 @@ Future<bool> maybePop<T extends Object>([T? result]) =>
     _globalNavigatorKey.currentState!.maybePop<T>(result);
 
 /// 返回上一个页面
-void pop<T extends Object>([dynamic result]) =>
-    _globalNavigatorKey.currentState!.pop<dynamic>(result);
+void pop<T extends Object>([T? result]) =>
+    _globalNavigatorKey.currentState!.pop<T>(result);
 
 /// pop 返回简写 带参数  [nullBack] =true  navigator 返回为空 就继续返回上一页面
 void popBack(Future<dynamic> navigator, {bool nullBack = false}) {

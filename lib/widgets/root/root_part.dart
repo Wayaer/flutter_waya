@@ -16,6 +16,15 @@ class OverlayEntryAuto extends OverlayEntry {
 
   ///  是否自动关闭
   final bool autoOff;
+
+  bool removeEntry() {
+    if (!autoOff) {
+      _overlayEntryList.removeWhere(
+          (OverlayEntryAuto element) => element.hashCode == hashCode);
+    }
+    if (mounted) super.remove();
+    return true;
+  }
 }
 
 ///  自定义Overlay
@@ -25,7 +34,7 @@ OverlayEntryAuto? showOverlay(Widget widget, {bool autoOff = false}) {
   final OverlayEntryAuto entryAuto =
       OverlayEntryAuto(autoOff: autoOff, widget: widget);
   _overlay.insert(entryAuto);
-  _overlayEntryList.add(entryAuto);
+  if (!autoOff) _overlayEntryList.add(entryAuto);
   return entryAuto;
 }
 
@@ -33,13 +42,10 @@ OverlayEntryAuto? showOverlay(Widget widget, {bool autoOff = false}) {
 bool closeOverlay({OverlayEntryAuto? entry}) {
   try {
     if (entry != null) {
-      entry.remove();
-      if (_overlayEntryList.contains(entry))
-        return _overlayEntryList.remove(entry);
+      return entry.removeEntry();
     } else {
-      if (_overlayEntryList.isNotEmpty) {
-        _overlayEntryList.last.remove();
-        return _overlayEntryList.remove(_overlayEntryList.last);
+      if (_overlayEntryList.isNotEmpty && _overlayEntryList.last.mounted) {
+        return _overlayEntryList.last.removeEntry();
       }
     }
   } catch (e) {
@@ -50,8 +56,8 @@ bool closeOverlay({OverlayEntryAuto? entry}) {
 
 ///  关闭所有Overlay
 void closeAllOverlay() {
-  for (final OverlayEntryAuto element in _overlayEntryList) element.remove();
-  _overlayEntryList = <OverlayEntryAuto>[];
+  for (final OverlayEntryAuto element in _overlayEntryList)
+    element.removeEntry();
 }
 
 ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? showSnackBar(
@@ -200,7 +206,7 @@ Future<void> showToast(String message,
 
 ///  showGeneralDialog 去除context
 ///  添加popup进入方向属性
-///  关闭 closePopup()
+///  关闭 [closePopup]
 ///  Dialog
 ///
 enum PopupFromType {
@@ -412,8 +418,8 @@ Future<T?>? showDialogSureCancel<T>({
 }
 
 ///  关闭弹窗
-///  也可以通过 Navigator.of(context).pop()
-void closePopup([dynamic value]) => maybePop(value);
+///  也可以通过 Navigator.of(context).maybePop()
+Future<bool> closePopup([dynamic value]) => maybePop(value);
 
 ///  日期选择器
 ///  关闭 closePopup()

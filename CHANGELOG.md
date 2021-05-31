@@ -1,5 +1,7 @@
 ## [1.10.2]
   * optimize import
+  * [OverlayEntryAuto] add removeEntry(),When autoOff is true, the OverlayScaffold call onWillPop will filter the
+   OverlayEntryAuto
 ## [1.10.1]
   * fix the [remove] error of [Eventbus] when the project supports null-safety
 ## [1.10.0]
