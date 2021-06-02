@@ -193,8 +193,8 @@ class _DropdownMenuState extends State<DropdownMenu> {
         itemBuilder: (_, int i) => SimpleButton(
               text: value[index][i],
               width: double.infinity,
-              textStyle: widget.valueStyle ??
-                  const BTextStyle(color: Colors.black),
+              textStyle:
+                  widget.valueStyle ?? const BTextStyle(color: Colors.black),
               onTap: () {
                 if (widget.valueTap != null) widget.valueTap!(index, i);
                 changeState(index);
