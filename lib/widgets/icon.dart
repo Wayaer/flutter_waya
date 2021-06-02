@@ -154,8 +154,8 @@ class IconBox extends StatelessWidget {
   Widget get titleWidget {
     if (title != null) return title!;
     final TextStyle style =
-        BasisTextStyle(color: color ?? ConstColors.black70).merge(titleStyle);
-    return BasisText(titleText ?? '',
+        BTextStyle(color: color ?? ConstColors.black70).merge(titleStyle);
+    return BText(titleText ?? '',
         style: style,
         textAlign: textAlign,
         maxLines: maxLines,
@@ -220,11 +220,12 @@ class CheckBox extends StatefulWidget {
     this.visible = true,
     this.activeColor,
     this.value = false,
+    this.shape,
   }) : super(key: key);
 
   final ValueCallback<bool>? onChange;
   final Color checkColor;
-  final Color? activeColor;
+
   final Color? background;
   final Color uncheckColor;
   final TextStyle? titleStyle;
@@ -241,6 +242,10 @@ class CheckBox extends StatefulWidget {
   final bool visible;
   final MainAxisAlignment mainAxisAlignment;
   final CrossAxisAlignment crossAxisAlignment;
+
+  /// [Checkbox]
+  final OutlinedBorder? shape;
+  final Color? activeColor;
 
   @override
   _CheckBoxState createState() => _CheckBoxState();
@@ -302,6 +307,7 @@ class _CheckBoxState extends State<CheckBox> {
       tristate: false,
       activeColor: widget.activeColor,
       checkColor: widget.checkColor,
+      shape: widget.shape,
       value: value,
       onChanged: (bool? v) {
         if (value != v) {

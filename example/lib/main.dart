@@ -74,8 +74,9 @@ class _Home extends StatelessWidget {
         ElevatedText('SimpleRefresh', onTap: () => push(RefreshPage())),
         ElevatedText('EasyRefreshed', onTap: () => push(EasyRefreshPage())),
         ElevatedText('SimpleBuilder', onTap: () => push(SimpleBuilderPage())),
+        ElevatedText('TextField', onTap: () => push(InputFieldPage())),
         ElevatedText('showSnackBar', onTap: () {
-          showSnackBar(SnackBar(content: BasisText('Popup SnackBar')));
+          showSnackBar(SnackBar(content: BText('Popup SnackBar')));
         }),
         ElevatedText('showOverlayLoading', onTap: () {
           showOverlayLoading();
@@ -96,7 +97,7 @@ class AppBarText extends AppBar {
             key: key,
             elevation: 0,
             iconTheme: const IconThemeData.fallback(),
-            title: BasisText(text,
+            title: BText(text,
                 color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
             centerTitle: true,
             backgroundColor: color);
@@ -123,6 +124,6 @@ class ElevatedText extends StatelessWidget {
               blurRadius: 1.0,
               spreadRadius: 1.0)
         ], color: color, borderRadius: BorderRadius.circular(4)),
-        child: BasisText(text, color: Colors.black),
+        child: BText(text, color: Colors.black),
       );
 }

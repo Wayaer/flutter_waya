@@ -171,7 +171,7 @@ class _ScrollListPlaceholderPage extends StatelessWidget {
               });
             }),
             placeholder:
-                BasisText('没有数据', style: const TextStyle(color: Colors.white))
+                BText('没有数据', style: const TextStyle(color: Colors.white))
                     .container(
                         alignment: Alignment.center,
                         color: _colors.last,
@@ -198,7 +198,7 @@ class _ScrollListBuilderPage extends StatelessWidget {
               height: 100,
               color:color,
               alignment: Alignment.center,
-              child: BasisText('这里是头部',
+              child: BText('这里是头部',
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
                   fontSize: 20)),
@@ -373,7 +373,7 @@ class _RefreshScrollViewPage extends StatelessWidget {
               }),
               slivers: <Widget>[
             SliverAppBar(
-                title: BasisText('RefreshScrollView', color: Colors.white)),
+                title: BText('RefreshScrollView', color: Colors.white)),
             SliverListGrid(
               itemCount: _colors.length,
               crossAxisFlex: true,
@@ -401,7 +401,7 @@ class _CustomScrollViewPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => OverlayScaffold(
           body: CustomScrollView(slivers: <Widget>[
-        CustomSliverAppBar(title: BasisText('title', color: Colors.white)),
+        CustomSliverAppBar(title: BText('title', color: Colors.white)),
         SliverPinnedToBoxAdapter(
           child: Column(
               children: 4.generate(

@@ -172,9 +172,9 @@ Future<void> showToast(String message,
         spacing: spacing ?? 10,
         size: size ?? 30,
         color: ConstColors.white,
-        title: BasisText(message, color: ConstColors.white, maxLines: 4));
+        title: BText(message, color: ConstColors.white, maxLines: 4));
   } else {
-    toast = BasisText(message, color: ConstColors.white, maxLines: 4);
+    toast = BText(message, color: ConstColors.white, maxLines: 4);
   }
 
   final OverlayEntryAuto? entry = showOverlay(

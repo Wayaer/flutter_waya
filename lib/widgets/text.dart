@@ -4,8 +4,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-class RichTextSpan extends RichText {
-  RichTextSpan({
+class RText extends RichText {
+  RText({
     Key? key,
 
     /// 第一个[text]
@@ -126,7 +126,7 @@ class RichTextSpan extends RichText {
     }
     return TextSpan(
         text: text,
-        style: const BasisTextStyle().merge(style),
+        style: const BTextStyle().merge(style),
         semanticsLabel: semanticsLabel,
         recognizer: recognizer,
         children: texts.builderEntry((MapEntry<int, String> entry) => TextSpan(
@@ -134,13 +134,13 @@ class RichTextSpan extends RichText {
             semanticsLabel:
                 semanticsLabels.isEmpty ? null : semanticsLabels[entry.key],
             recognizer: recognizers.isEmpty ? null : recognizers[entry.key],
-            style: const BasisTextStyle()
+            style: const BTextStyle()
                 .merge(styles.isEmpty ? null : styles[entry.key]))));
   }
 }
 
-class BasisText extends RichTextSpan {
-  BasisText(
+class BText extends RText {
+  BText(
     String text, {
     Key? key,
 
@@ -251,7 +251,7 @@ class BasisText extends RichTextSpan {
         super(
             key: key,
             text: text,
-            style: BasisTextStyle(
+            style: BTextStyle(
                     inherit: inherit,
                     color: color,
                     backgroundColor: backgroundColor,
@@ -291,8 +291,8 @@ class BasisText extends RichTextSpan {
             textHeightBehavior: textHeightBehavior);
 }
 
-class BasisTextStyle extends TextStyle {
-  const BasisTextStyle({
+class BTextStyle extends TextStyle {
+  const BTextStyle({
     /// 默认样式会继承层级最为接近的 DefaultTextStyle，为true 表示继承，false 表示完全重写
     bool? inherit,
 

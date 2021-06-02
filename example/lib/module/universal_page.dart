@@ -25,26 +25,24 @@ class _UniversalPageState extends State<UniversalPage>
       Universal(
         width: 200,
         height: 50,
-        color:color,
+        color: color,
         margin: const EdgeInsets.all(10),
         isClipRRect: true,
         borderRadius: BorderRadius.circular(10),
         alignment: Alignment.center,
-        child: BasisText('ScrollUniversal', color: Colors.white),
+        child: BText('ScrollUniversal', color: Colors.white),
         onTap: () => push(_ScrollUniversalPage()),
       ),
-      const Universal(width: 50, height: 50, color:color),
+      const Universal(width: 50, height: 50, color: color),
       const SizedBox(height: 10),
-      const Universal(
-          width: 50, height: 50, color:color, size: Size(60, 60)),
+      const Universal(width: 50, height: 50, color: color, size: Size(60, 60)),
       const SizedBox(height: 10),
       Universal(
-          color:color.withOpacity(0.2),
+          color: color.withOpacity(0.2),
           isStack: true,
           size: const Size(100, 100),
           children: const <Widget>[
-            Universal(
-                left: 10, top: 10, color:color, size: Size(50, 50)),
+            Universal(left: 10, top: 10, color: color, size: Size(50, 50)),
           ]),
       const SizedBox(height: 10),
       Universal(
@@ -66,11 +64,11 @@ class _UniversalPageState extends State<UniversalPage>
         addInkWell: true,
         radius: 100,
         margin: const EdgeInsets.all(10),
-        splashColor:color,
+        splashColor: color,
         highlightColor: Colors.red,
         hoverColor: Colors.black,
         elevation: 5,
-        child: BasisText('InkWell', color:color),
+        child: BText('InkWell', color: color),
         onLongPress: () => showToast('InkWell onLongPress'),
         onDoubleTap: () => showToast('InkWell onDoubleTap'),
         onTap: () => showToast('InkWell onTap'),
@@ -88,7 +86,7 @@ class _UniversalPageState extends State<UniversalPage>
       Universal(
           decoration: const BoxDecoration(color: Colors.red),
           clipBehavior: Clip.antiAlias,
-          color:color,
+          color: color,
           opacity: 0.2,
           onTap: () {
             sendRefreshType(EasyRefreshType.refresh);
@@ -96,6 +94,17 @@ class _UniversalPageState extends State<UniversalPage>
           size: const Size(200, 50)),
       const SizedBox(height: 10),
       const SizedBox(height: 10),
+      ValueBuilder<bool>(
+          initialValue: false,
+          builder: (_, bool value, Function update) {
+            return Checkbox(
+              value: value,
+              shape: const CircleBorder(),
+              onChanged: (bool v) {
+                update(v);
+              },
+            );
+          })
     ];
     children = children.builder((Widget item) => SizeTransition(
         sizeFactor: controller, axis: Axis.horizontal, child: item));
@@ -161,7 +170,7 @@ class _ScrollUniversalPage extends StatelessWidget {
               margin: const EdgeInsets.all(10),
               width: 90,
               height: 90,
-              color:color),
+              color: color),
           Container(
               margin: const EdgeInsets.all(10),
               width: 70,

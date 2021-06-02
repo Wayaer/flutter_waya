@@ -1,3 +1,11 @@
+## [1.10.5]
+  * change [RichTextSpan] to [RText]
+  * change [BasisText] to [BText]
+  * change [BasisTextStyle] to [BTextStyle]
+  * remove [InputField]
+  * add [WidgetPendant] for all widgets, add header, footer, extraPrefix
+  , extraSuffix, prefix, suffix. you can use it with [CupertinoTextField] or [TextField]
+  * add inputTextTypeToTextInputFormatter()  
 ## [1.10.3]
   * optimize import
   * [OverlayEntryAuto] add removeEntry(),When autoOff is true, the OverlayScaffold call onWillPop will filter the

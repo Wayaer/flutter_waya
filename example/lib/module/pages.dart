@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 import 'package:waya/main.dart';
@@ -40,6 +41,70 @@ class _ImagePageState extends State<ImagePage> with TickerProviderStateMixin {
   }
 }
 
+class InputFieldPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return OverlayScaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBarText('TextField Demo'),
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          TextField(
+              decoration: InputDecoration(
+                  hintText: '11111',
+                  icon: const Icon(Icons.call),
+                  filled: true,
+                  fillColor: Colors.grey,
+                  contentPadding: const EdgeInsets.all(6),
+                  prefixIcon: Container(
+                    color: Colors.red.withOpacity(0.2),
+                    width: 20,
+                  ),
+                  suffixIcon:
+                      Container(color: Colors.red.withOpacity(0.2), width: 20),
+                  prefix: Container(
+                    color: Colors.green,
+                    width: 20,
+                    height: 20,
+                  ),
+                  isDense: true,
+                  suffix: Container(
+                    color: Colors.green,
+                    width: 20,
+                    height: 20,
+                  ),
+                  // labelText: '22222',
+                  helperText: '33333',
+                  errorText: '5555',
+                  counterText: '',
+                  border: const OutlineInputBorder()),
+              textInputAction: TextInputAction.done),
+          WidgetPendant(
+            borderType: BorderType.underline,
+            fillColor: Colors.amberAccent,
+            borderColor: Colors.greenAccent,
+            // borderRadius: BorderRadius.circular(30),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            extraPrefix: const Text('前缀'),
+            extraSuffix: const Text('后缀'),
+            prefix: const Text('前缀'),
+            suffix: const Text('后缀'),
+            header: Row(children: const <Widget>[Text('头部')]),
+            footer: Row(children: const <Widget>[Text('底部')]),
+            child: CupertinoTextField.borderless(
+                prefixMode: OverlayVisibilityMode.always,
+                prefix: Container(color: Colors.green, width: 20, height: 20),
+                suffixMode: OverlayVisibilityMode.editing,
+                suffix: Container(
+                  color: Colors.green,
+                  width: 20,
+                  height: 20,
+                )),
+          ),
+        ]);
+  }
+}
+
 class ToastPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -67,7 +132,6 @@ class PinBoxPage extends StatelessWidget {
             PinBox(
                 maxLength: 4,
                 autoFocus: false,
-                decoration: const BoxDecoration(color: Colors.transparent),
                 boxSpacing: 10,
                 hasFocusPinDecoration: BoxDecoration(
                     color: Colors.purple,
@@ -95,7 +159,7 @@ class CounterPage extends StatelessWidget {
                   showToast(c.toString());
                 },
                 countBuilder: (int count, String text) =>
-                    BasisText(text, fontSize: 30)).color(Colors.black12),
+                    BText(text, fontSize: 30)).color(Colors.black12),
             const SizedBox(height: 40),
             CounterAnimation(
                 animationType: CountAnimationType.all,
@@ -104,7 +168,7 @@ class CounterPage extends StatelessWidget {
                   showToast(c.toString());
                 },
                 countBuilder: (int count, String text) =>
-                    BasisText(text, fontSize: 30)).color(Colors.black12),
+                    BText(text, fontSize: 30)).color(Colors.black12),
           ]);
 }
 
@@ -144,17 +208,17 @@ class ExpansionTilesPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           ExpansionTiles(
-              title: BasisText('title', color: Colors.black),
+              title: BText('title', color: Colors.black),
               children: 5.generate((int index) => Universal(
                   margin: const EdgeInsets.all(12),
                   alignment: Alignment.centerLeft,
-                  child: BasisText('item$index', color: Colors.black)))),
+                  child: BText('item$index', color: Colors.black)))),
           ExpansionTiles(
-              title: BasisText('title', color: Colors.black),
+              title: BText('title', color: Colors.black),
               children: 5.generate((int index) => Universal(
                   margin: const EdgeInsets.all(12),
                   alignment: Alignment.centerLeft,
-                  child: BasisText('item$index', color: Colors.black)))),
+                  child: BText('item$index', color: Colors.black)))),
         ]);
   }
 }

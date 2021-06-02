@@ -27,7 +27,7 @@ class ButtonPage extends StatelessWidget {
             Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
               DropdownMenuButton(
                 defaultBuilder: (int index) {
-                  return BasisText(index == null ? '请选择' : _colors[index],
+                  return BText(index == null ? '请选择' : _colors[index],
                       color: Colors.black);
                 },
                 decoration: BoxDecoration(
@@ -45,7 +45,7 @@ class ButtonPage extends StatelessWidget {
                     decoration: const BoxDecoration(
                         border:
                             Border(bottom: BorderSide(color: Colors.white))),
-                    child: BasisText(_colors[index])),
+                    child: BText(_colors[index])),
               ),
               const SizedBox(width: 30),
               DropdownButton<String>(
@@ -57,10 +57,10 @@ class ButtonPage extends StatelessWidget {
               const SizedBox(width: 30),
               DropdownMenuButton.material(
                   itemBuilder: (int index) =>
-                      BasisText(_colors[index], color: Colors.black),
+                      BText(_colors[index], color: Colors.black),
                   itemCount: _colors.length,
                   defaultBuilder: (int index) {
-                    return BasisText(index == null ? '请选择' : _colors[index],
+                    return BText(index == null ? '请选择' : _colors[index],
                             color: Colors.black)
                         .paddingSymmetric(vertical: 10);
                   })
@@ -106,7 +106,7 @@ class _BubbleButtonPage extends StatelessWidget {
                   isOval: true,
                   alignment: Alignment.center,
                   color: value ? color : Colors.grey,
-                  child: BasisText('点击', color: Colors.white))),
+                  child: BText('点击', color: Colors.white))),
           BubbleButton(
               size: size,
               onTap: (bool isBubbled) async => !isBubbled,

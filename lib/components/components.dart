@@ -37,6 +37,8 @@ class NoScrollBehavior extends ScrollBehavior {
       child;
 }
 
+typedef SendSMSValueCallback = void Function(void Function(bool send));
+
 ///  发送验证码
 class SendSMS extends StatefulWidget {
   const SendSMS(
@@ -66,7 +68,7 @@ class SendSMS extends StatefulWidget {
   final String sentText;
   final String notTapText;
 
-  final Function? onTap;
+  final SendSMSValueCallback? onTap;
   final Decoration? decoration;
   final BorderRadiusGeometry? borderRadius;
   final double? borderWidth;
@@ -102,8 +104,8 @@ class _SendSMSState extends State<SendSMS> {
         padding: widget.padding,
         onTap: (seconds == 0 && widget.onTap != null) ? onTap : null,
         alignment: Alignment.center,
-        width: widget.width ?? getWidth(86),
-        height: widget.height ?? getHeight(25),
+        width: widget.width,
+        height: widget.height,
         decoration: widget.decoration ??
             BoxDecoration(
                 color: widget.background,
@@ -117,11 +119,11 @@ class _SendSMSState extends State<SendSMS> {
                             : (widget.notTapBorderColor ??
                                 ConstColors.black70)),
                 borderRadius: widget.borderRadius ?? BorderRadius.circular(20)),
-        child: Text(verifyStr,
+        child: BText(verifyStr,
             style: seconds == 0
-                ? const BasisTextStyle(fontSize: 13, color: ConstColors.blue)
+                ? const BTextStyle(fontSize: 13, color: ConstColors.blue)
                     .merge(widget.defaultTextStyle)
-                : const BasisTextStyle(fontSize: 13, color: ConstColors.black70)
+                : const BTextStyle(fontSize: 13, color: ConstColors.black70)
                     .merge(widget.notTapTextStyle)),
       );
 
@@ -142,7 +144,7 @@ class _SendSMSState extends State<SendSMS> {
 
   void startTimer() {
     seconds = widget.seconds ?? 60;
-    timer = Timer.periodic(const Duration(seconds: 1), (Timer time) {
+    timer = 1.seconds.timerPeriodic((Timer time) {
       if (seconds == 0) {
         timer!.cancel();
         return;
@@ -217,8 +219,7 @@ class _CountDownSkipState extends State<CountDownSkip> {
               borderRadius: BorderRadius.circular(5)),
       padding:
           EdgeInsets.symmetric(horizontal: getHeight(5), vertical: getWidth(4)),
-      child:
-          BasisText(seconds.toString() + 's' + widget.skipText, fontSize: 12));
+      child: BText(seconds.toString() + 's' + widget.skipText, fontSize: 12));
 
   @override
   void dispose() {

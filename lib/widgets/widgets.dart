@@ -1,7 +1,7 @@
 export '../components/components.dart';
 export '../spinKit/spinKit.dart';
 export 'icon.dart';
-export 'input_field.dart';
+export 'input_text.dart';
 export 'list_wheel.dart';
 export 'root/root.dart';
 export 'root/route/ripple_router.dart';

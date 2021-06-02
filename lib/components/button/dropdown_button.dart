@@ -194,7 +194,7 @@ class _DropdownMenuState extends State<DropdownMenu> {
               text: value[index][i],
               width: double.infinity,
               textStyle: widget.valueStyle ??
-                  const BasisTextStyle(color: Colors.black),
+                  const BTextStyle(color: Colors.black),
               onTap: () {
                 if (widget.valueTap != null) widget.valueTap!(index, i);
                 changeState(index);
@@ -247,7 +247,7 @@ class _DropdownMenuState extends State<DropdownMenu> {
               toggleBuilder: (Widget child) => Row(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        BasisText(title[index], style: widget.titleStyle),
+                        BText(title[index], style: widget.titleStyle),
                         child
                       ]),
               child: Icon(Icons.keyboard_arrow_up,

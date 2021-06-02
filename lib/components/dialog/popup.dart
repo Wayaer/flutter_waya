@@ -301,7 +301,7 @@ class Loading extends StatelessWidget {
     }
     children.add(Container(
         margin: const EdgeInsets.only(top: 16),
-        child: BasisText(text, style: textStyle)));
+        child: BText(text, style: textStyle)));
     return PopupBase(
         ignoring: ignoring,
         gaussian: gaussian,

@@ -50,7 +50,7 @@ class _JsonParseState extends State<JsonParse> {
         row.add(const SizedBox(width: 14));
       }
       row.addAll(<Widget>[
-        BasisText(widget.isList || isTap(content) ? '[$key]:' : ' $key :',
+        BText(widget.isList || isTap(content) ? '[$key]:' : ' $key :',
                 fontWeight: FontWeight.w400,
                 color: content == null ? Colors.grey : Colors.purple[800])
             .onDoubleTap(() {
@@ -110,7 +110,7 @@ class _JsonParseState extends State<JsonParse> {
       color = Colors.grey;
     }
     return Expanded(
-        child: BasisText(text,
+        child: BText(text,
             color: color,
             fontWeight: FontWeight.w400,
             textAlign: TextAlign.left));
@@ -257,7 +257,7 @@ class _HttpDataPageState extends State<_HttpDataPage> {
       padding: const EdgeInsets.all(10),
       text: url,
       maxLines: 2,
-      child: BasisText(url,
+      child: BText(url,
           textAlign: TextAlign.start, color: Colors.black, fontSize: 13),
       onTap: onTap);
 }

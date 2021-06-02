@@ -459,7 +459,7 @@ class ListEntry extends StatelessWidget {
   Widget get listTile => Expanded(
       child: ListTile(
           contentPadding: contentPadding,
-          title: hero(title ?? BasisText(titleText, style: titleStyle)),
+          title: hero(title ?? BText(titleText, style: titleStyle)),
           subtitle: subtitle,
           leading: leading,
           trailing: child,

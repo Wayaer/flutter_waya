@@ -18,5 +18,5 @@ class PlaceholderChild extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) =>
-      Container(margin: margin, child: Center(child: BasisText('暂无数据')));
+      Container(margin: margin, child: Center(child: BText('暂无数据')));
 }

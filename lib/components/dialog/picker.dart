@@ -14,13 +14,13 @@ class PickerSub {
       this.cancelTap,
       this.sureTap,
       this.sureIndexTap})
-      : sure = sure ?? BasisText('sure', color: Colors.black),
-        title = title ?? BasisText('title', color: Colors.black),
-        cancel = cancel ?? BasisText('cancel', color: Colors.black),
+      : sure = sure ?? BText('sure', color: Colors.black),
+        title = title ?? BText('title', color: Colors.black),
+        cancel = cancel ?? BText('cancel', color: Colors.black),
         height = height ?? ConstConstant.pickerHeight,
         backgroundColor = backgroundColor ?? ConstColors.white,
         contentStyle = contentStyle ??
-            const BasisTextStyle(
+            const BTextStyle(
                 backgroundColor: Colors.transparent, color: Colors.black),
         titlePadding =
             titlePadding ?? const EdgeInsets.symmetric(horizontal: 10);
@@ -336,7 +336,7 @@ class _AreaPickerState extends State<AreaPicker> {
 
   Widget item(String value) => Container(
       alignment: Alignment.center,
-      child: BasisText(value,
+      child: BText(value,
           fontSize: 12, overflow: TextOverflow.ellipsis, style: contentStyle));
 
   void jumpToIndex(int index, FixedExtentScrollController controller,
@@ -670,7 +670,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
                       margin: const EdgeInsets.only(left: 2),
                       alignment: Alignment.center,
                       height: double.infinity,
-                      child: BasisText(unit!, style: unitStyle))
+                      child: BText(unit!, style: unitStyle))
                 ],
           child: widget.showUnit
               ? null
@@ -692,7 +692,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
           initialIndex: initialIndex,
           itemBuilder: (_, int index) => Container(
                 alignment: Alignment.center,
-                child: BasisText(
+                child: BText(
                     padLeft(
                         startZero ?? true ? list![index] : list![index] + 1),
                     fontSize: 12,
