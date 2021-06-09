@@ -281,11 +281,15 @@ class OverlayScaffold extends StatelessWidget {
     bool? paddingStatusBar,
     bool? primary,
     bool? extendBody,
+    bool? extendBodyBehindAppBar,
     bool? isStack,
     bool? isScroll,
     DragStartBehavior? drawerDragStartBehavior,
     bool? onWillPopOverlayClose,
     bool? useSingleChildScrollView,
+    bool? drawerEnableOpenDragGesture,
+    bool? endDrawerEnableOpenDragGesture,
+    Color? backgroundColor,
     this.appBar,
     this.body,
     this.padding,
@@ -311,12 +315,15 @@ class OverlayScaffold extends StatelessWidget {
 
     /// 底部导航
     this.bottomSheet,
-    this.backgroundColor,
 
     /// 类似于 Android 中的 android:windowSoftInputMode=”adjustResize”，
     /// 控制界面内容 body 是否重新布局来避免底部被覆盖了，比如当键盘显示的时候，
     /// 重新布局避免被键盘盖住内容。默认值为 true。
     this.resizeToAvoidBottomInset,
+    this.onDrawerChanged,
+    this.onEndDrawerChanged,
+    this.drawerEdgeDragWidth,
+    this.drawerScrimColor,
     this.onWillPop,
     this.appBarHeight,
     this.children,
@@ -330,17 +337,16 @@ class OverlayScaffold extends StatelessWidget {
         paddingStatusBar = paddingStatusBar ?? false,
         useSingleChildScrollView = useSingleChildScrollView ?? true,
         primary = primary ?? true,
+        drawerEnableOpenDragGesture = drawerEnableOpenDragGesture ?? true,
+        endDrawerEnableOpenDragGesture = endDrawerEnableOpenDragGesture ?? true,
         extendBody = extendBody ?? false,
+        extendBodyBehindAppBar = extendBodyBehindAppBar ?? false,
         isStack = isStack ?? false,
         isScroll = isScroll ?? false,
+        backgroundColor = backgroundColor ?? ConstColors.background,
         drawerDragStartBehavior =
             drawerDragStartBehavior ?? DragStartBehavior.start,
         super(key: key);
-
-  final Color? backgroundColor;
-
-  /// 主体部分
-  final Widget? body;
 
   /// 相当于给[body] 套用 [Column]、[Row]、[Stack]
   final List<Widget>? children;
@@ -377,22 +383,34 @@ class OverlayScaffold extends StatelessWidget {
   ///  ****** 刷新组件相关 ******  ///
   final RefreshConfig? refreshConfig;
 
+  final bool useSingleChildScrollView;
+
   ///  Scaffold相关属性
-  final Widget? bottomNavigationBar;
+  final Widget? body;
+  final Color backgroundColor;
+
+  final bool extendBody;
+  final bool extendBodyBehindAppBar;
+
   final Widget? appBar;
   final double? appBarHeight;
   final Widget? floatingActionButton;
   final FloatingActionButtonAnimator? floatingActionButtonAnimator;
   final FloatingActionButtonLocation? floatingActionButtonLocation;
   final Widget? bottomSheet;
-  final Widget? endDrawer;
+  final Widget? bottomNavigationBar;
+  final DragStartBehavior drawerDragStartBehavior;
   final Widget? drawer;
+  final DrawerCallback? onDrawerChanged;
+  final Widget? endDrawer;
+  final DrawerCallback? onEndDrawerChanged;
+  final double? drawerEdgeDragWidth;
+  final Color? drawerScrimColor;
+  final bool drawerEnableOpenDragGesture;
+  final bool endDrawerEnableOpenDragGesture;
   final List<Widget>? persistentFooterButtons;
   final bool? resizeToAvoidBottomInset;
   final bool primary;
-  final bool useSingleChildScrollView;
-  final bool extendBody;
-  final DragStartBehavior drawerDragStartBehavior;
 
   @override
   Widget build(BuildContext context) {
@@ -401,17 +419,24 @@ class OverlayScaffold extends StatelessWidget {
         primary: primary,
         resizeToAvoidBottomInset: resizeToAvoidBottomInset,
         drawerDragStartBehavior: drawerDragStartBehavior,
-        bottomSheet: bottomSheet,
+        extendBodyBehindAppBar: extendBodyBehindAppBar,
         extendBody: extendBody,
-        endDrawer: endDrawer,
         drawer: drawer,
+        endDrawer: endDrawer,
+        onDrawerChanged: onDrawerChanged,
+        onEndDrawerChanged: onEndDrawerChanged,
+        drawerScrimColor: drawerScrimColor,
+        drawerEdgeDragWidth: drawerEdgeDragWidth,
+        drawerEnableOpenDragGesture: drawerEnableOpenDragGesture,
+        endDrawerEnableOpenDragGesture: endDrawerEnableOpenDragGesture,
         persistentFooterButtons: persistentFooterButtons,
         floatingActionButtonLocation: floatingActionButtonLocation,
         floatingActionButton: floatingActionButton,
         floatingActionButtonAnimator: floatingActionButtonAnimator,
-        backgroundColor: backgroundColor ?? ConstColors.background,
+        backgroundColor: backgroundColor,
         appBar: appBarFun,
         bottomNavigationBar: bottomNavigationBar,
+        bottomSheet: bottomSheet,
         body: universal);
     if (onWillPop != null || onWillPopOverlayClose)
       return WillPopScope(

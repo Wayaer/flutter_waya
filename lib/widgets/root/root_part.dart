@@ -21,11 +21,15 @@ class OverlayEntryAuto extends OverlayEntry {
     try {
       super.remove();
       if (!autoOff) _overlayEntryList.remove(this);
+      if (scaffoldWillPop) scaffoldWillPop = false;
       return true;
     } catch (e) {
       return false;
     }
   }
+
+  @override
+  void remove() => removeEntry();
 }
 
 ///  自定义Overlay
