@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 /// 配合 sliver 家族组件 无需设置高度  自适应高度
-class ScrollViewAuto extends StatefulWidget {
-  const ScrollViewAuto(
+class ExtendScrollView extends StatefulWidget {
+  const ExtendScrollView(
       {Key? key,
       this.expanded = false,
       this.flex = 1,
@@ -31,7 +31,7 @@ class ScrollViewAuto extends StatefulWidget {
         headerSliverBuilder = null,
         super(key: key);
 
-  const ScrollViewAuto.nested({
+  const ExtendScrollView.nested({
     Key? key,
     this.expanded = false,
     this.flex = 1,
@@ -86,10 +86,10 @@ class ScrollViewAuto extends StatefulWidget {
   final int? semanticChildCount;
 
   @override
-  _ScrollViewAutoState createState() => _ScrollViewAutoState();
+  _ExtendScrollViewState createState() => _ExtendScrollViewState();
 }
 
-class _ScrollViewAutoState extends State<ScrollViewAuto> {
+class _ExtendScrollViewState extends State<ExtendScrollView> {
   bool showScrollView = false;
   late List<Widget> slivers;
   List<_SliverModel> sliverModel = <_SliverModel>[];
@@ -179,8 +179,8 @@ class _ScrollViewAutoState extends State<ScrollViewAuto> {
               bottomSize: sliver.extraSize,
               expandedHeight: math.max(sliver.size.height,
                   kToolbarHeight + sliver.extraSize.height));
-        } else if (element is SliverAutoPersistentHeader) {
-          return _SliverAutoPersistentHeader(
+        } else if (element is ExtendSliverPersistentHeader) {
+          return _ExtendSliverPersistentHeader(
               header: element, maxHeight: sliver.size.height);
         }
         return element;
@@ -188,8 +188,8 @@ class _ScrollViewAutoState extends State<ScrollViewAuto> {
 }
 
 /// 初始化 delegate
-class SliverAutoPersistentHeader extends SliverPersistentHeader {
-  SliverAutoPersistentHeader(
+class ExtendSliverPersistentHeader extends SliverPersistentHeader {
+  ExtendSliverPersistentHeader(
       {Key? key,
       bool pinned = true,
       bool floating = true,
@@ -218,9 +218,9 @@ class SliverAutoPersistentHeader extends SliverPersistentHeader {
 
 /// 组合使用 [FlexibleSpaceBar]、[SliverAppBar]
 /// bottom 添加PreferredSize
-/// 配合 [ScrollViewAuto] 使用 无需设置 [expandedHeight]
-class SliverAutoAppBar extends SliverAppBar {
-  SliverAutoAppBar({
+/// 配合 [ExtendScrollView] 使用 无需设置 [expandedHeight]
+class ExtendSliverAppBar extends SliverAppBar {
+  ExtendSliverAppBar({
     Key? key,
 
     /// 是否提供控件占位。
@@ -341,8 +341,8 @@ class SliverAutoAppBar extends SliverAppBar {
 }
 
 /// 简化部分参数 [FlexibleSpaceBar]
-class FlexibleSpaceAutoBar extends FlexibleSpaceBar {
-  const FlexibleSpaceAutoBar({
+class ExtendFlexibleSpaceBar extends FlexibleSpaceBar {
+  const ExtendFlexibleSpaceBar({
     Widget? title,
     Widget? background,
     bool centerTitle = true,
@@ -409,7 +409,7 @@ class _Calculate extends StatelessWidget {
             column.add(Container(key: bottomKey, child: element.bottom));
             _sliver.extraKey = bottomKey;
           }
-        } else if (element is SliverAutoPersistentHeader) {
+        } else if (element is ExtendSliverPersistentHeader) {
           final GlobalKey persistentHeaderKey = GlobalKey();
           column.add(Container(key: persistentHeaderKey, child: element.child));
           _sliver.key = persistentHeaderKey;
@@ -477,8 +477,8 @@ class _NoPinnedPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
       child != oldDelegate.child;
 }
 
-class _SliverAutoPersistentHeader extends SliverPersistentHeader {
-  _SliverAutoPersistentHeader(
+class _ExtendSliverPersistentHeader extends SliverPersistentHeader {
+  _ExtendSliverPersistentHeader(
       {Key? key, required this.header, required this.maxHeight})
       : super(
             key: key,
@@ -493,7 +493,7 @@ class _SliverAutoPersistentHeader extends SliverPersistentHeader {
                     maxHeight: header.maxHeight ?? maxHeight,
                   ));
 
-  final SliverAutoPersistentHeader header;
+  final ExtendSliverPersistentHeader header;
   final double maxHeight;
 }
 

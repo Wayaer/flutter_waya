@@ -8,9 +8,9 @@ typedef ValueBuilderCallback<T> = Widget Function(
 
 /// Example:
 /// ```
-///  ValueBuilder<bool>(
-///    initialValue: false,
-///    builder: (BuildContext context, bool value, ValueCallback<bool> update) {
+///  ValueBuilder<T>(
+///    initialValue: T,
+///    builder: (BuildContext context, bool value, ValueCallback<T> update) {
 ///
 ///    return (你需要局部刷新的组件)
 ///
@@ -29,8 +29,8 @@ class ValueBuilder<T> extends StatefulWidget {
 
   final T? initialValue;
   final ValueBuilderCallback<T> builder;
-  final void Function()? onDispose;
-  final void Function(T)? onUpdate;
+  final VoidCallback? onDispose;
+  final ValueCallback<T?>? onUpdate;
 
   @override
   _ValueBuilderState<T> createState() => _ValueBuilderState<T>();
@@ -48,10 +48,20 @@ class _ValueBuilderState<T> extends State<ValueBuilder<T>> {
   @override
   Widget build(BuildContext context) => widget.builder(context, value, updater);
 
-  void updater(T newValue) {
+  void updater(T? newValue) {
     if (widget.onUpdate != null) widget.onUpdate!(newValue);
     value = newValue;
     setState(() {});
+  }
+
+  @override
+  void didUpdateWidget(covariant ValueBuilder<T> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.initialValue != widget.initialValue &&
+        widget.initialValue != value) {
+      value = widget.initialValue;
+      setState(() {});
+    }
   }
 
   @override
@@ -63,7 +73,6 @@ class _ValueBuilderState<T> extends State<ValueBuilder<T>> {
     } else if (value is StreamController) {
       (value as StreamController<T>).close();
     }
-    value = null;
   }
 }
 
@@ -87,16 +96,20 @@ class ValueListenBuilder<T> extends StatefulWidget {
     Key? key,
     required this.builder,
     this.initialValue,
+    this.onDispose,
+    this.onUpdate,
   }) : super(key: key);
   final T? initialValue;
   final ValueListenBuilderCallback<T> builder;
+  final VoidCallback? onDispose;
+  final ValueCallback<T?>? onUpdate;
 
   @override
   _ValueListenBuilderState<T> createState() => _ValueListenBuilderState<T>();
 }
 
 class _ValueListenBuilderState<T> extends State<ValueListenBuilder<T>> {
-  late T? value;
+  T? value;
   late ValueNotifier<T?> valueListenable;
 
   @override
@@ -107,28 +120,34 @@ class _ValueListenBuilderState<T> extends State<ValueListenBuilder<T>> {
     valueListenable.addListener(_valueChanged);
   }
 
-  ///@override
-  ///void didUpdateWidget(ValueListenBuilder<T> oldWidget) {
-  ///  if (oldWidget.builder != widget.builder) {
-  ///    oldWidget.valueListenable.removeListener(_valueChanged);
-  ///    value = widget.valueListenable.value;
-  ///    widget.valueListenable.addListener(_valueChanged);
-  ///  }
-  ///  super.didUpdateWidget(oldWidget);
-  ///}
-
   @override
-  void dispose() {
-    valueListenable.removeListener(_valueChanged);
-    super.dispose();
+  void didUpdateWidget(ValueListenBuilder<T> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.initialValue != widget.initialValue &&
+        widget.initialValue != value) {
+      valueListenable.value = widget.initialValue;
+    }
   }
 
   void _valueChanged() {
     value = valueListenable.value;
+    if (widget.onUpdate != null) widget.onUpdate!(value);
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) =>
       widget.builder(context, valueListenable);
+
+  @override
+  void dispose() {
+    valueListenable.removeListener(_valueChanged);
+    super.dispose();
+    if (widget.onDispose != null) widget.onDispose!.call();
+    if (value is ChangeNotifier) {
+      (value as ChangeNotifier).dispose();
+    } else if (value is StreamController) {
+      (value as StreamController<T>).close();
+    }
+  }
 }

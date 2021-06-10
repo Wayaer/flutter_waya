@@ -1,8 +1,8 @@
 part of 'root.dart';
 
 ///  ************ 以下为Scaffold Overlay *****************   ///
-class OverlayEntryAuto extends OverlayEntry {
-  OverlayEntryAuto({
+class ExtendOverlayEntry extends OverlayEntry {
+  ExtendOverlayEntry({
     this.autoOff = false,
     WidgetBuilder? builder,
     Widget? widget,
@@ -33,18 +33,18 @@ class OverlayEntryAuto extends OverlayEntry {
 }
 
 ///  自定义Overlay
-OverlayEntryAuto? showOverlay(Widget widget, {bool autoOff = false}) {
+ExtendOverlayEntry? showOverlay(Widget widget, {bool autoOff = false}) {
   final OverlayState? _overlay = _globalNavigatorKey.currentState!.overlay;
   if (_overlay == null) return null;
-  final OverlayEntryAuto entryAuto =
-      OverlayEntryAuto(autoOff: autoOff, widget: widget);
+  final ExtendOverlayEntry entryAuto =
+      ExtendOverlayEntry(autoOff: autoOff, widget: widget);
   _overlay.insert(entryAuto);
   if (!autoOff) _overlayEntryList.add(entryAuto);
   return entryAuto;
 }
 
 ///  关闭最顶层的Overlay
-bool closeOverlay({OverlayEntryAuto? entry}) {
+bool closeOverlay({ExtendOverlayEntry? entry}) {
   if (entry != null) {
     return entry.removeEntry();
   } else {
@@ -56,7 +56,7 @@ bool closeOverlay({OverlayEntryAuto? entry}) {
 
 ///  关闭所有Overlay
 void closeAllOverlay() {
-  for (final OverlayEntryAuto element in _overlayEntryList)
+  for (final ExtendOverlayEntry element in _overlayEntryList)
     element.removeEntry();
 }
 
@@ -72,7 +72,7 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? showSnackBar(
 
 ///  loading 加载框
 ///  关闭 closeOverlay();
-OverlayEntryAuto? showLoading({
+ExtendOverlayEntry? showLoading({
   Widget? custom,
   String? text,
   TextStyle? textStyle,
@@ -181,7 +181,7 @@ Future<void> showToast(String message,
     toast = BText(message, color: ConstColors.white, maxLines: 4);
   }
 
-  final OverlayEntryAuto? entry = showOverlay(
+  final ExtendOverlayEntry? entry = showOverlay(
       PopupBase(
           ignoring: ignoring ?? _allToastIgnoring,
           alignment: Alignment.center,

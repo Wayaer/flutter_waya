@@ -18,10 +18,10 @@ class ScrollViewPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           const SizedBox(height: 20),
-          ElevatedText('ScrollViewAuto',
-              onTap: () => push(_ScrollViewAutoPage(slivers))),
-          ElevatedText('ScrollViewAuto.nested',
-              onTap: () => push(_ScrollViewAutoNestedPage(slivers))),
+          ElevatedText('ExtendScrollView',
+              onTap: () => push(_ExtendScrollViewPage(slivers))),
+          ElevatedText('ExtendScrollView.nested',
+              onTap: () => push(_ExtendScrollViewNestedPage(slivers))),
           const SizedBox(height: 40),
           ElevatedText('CustomScrollView',
               onTap: () => push(const _CustomScrollViewPage())),
@@ -43,7 +43,7 @@ class ScrollViewPage extends StatelessWidget {
   }
 
   List<Widget> get slivers => <Widget>[
-        SliverAutoAppBar(
+        ExtendSliverAppBar(
             pinned: true,
             snap: true,
             floating: true,
@@ -52,7 +52,7 @@ class ScrollViewPage extends StatelessWidget {
                 const Text('title', style: TextStyle(color: Colors.black)),
             background:
                 Container(height: kToolbarHeight * 2, color: Colors.green)),
-        SliverAutoAppBar(
+        ExtendSliverAppBar(
             pinned: true,
             snap: true,
             floating: true,
@@ -61,20 +61,20 @@ class ScrollViewPage extends StatelessWidget {
                 const Text('第二个Title', style: TextStyle(color: Colors.black)),
             background:
                 Container(height: kToolbarHeight, color: Colors.greenAccent)),
-        SliverAutoPersistentHeader(
+        ExtendSliverPersistentHeader(
             pinned: true,
             floating: false,
             child: Container(
                 color: Colors.redAccent,
                 alignment: Alignment.center,
-                child: const Text('SliverAutoPersistentHeader'))),
-        SliverAutoPersistentHeader(
+                child: const Text('ExtendSliverPersistentHeader'))),
+        ExtendSliverPersistentHeader(
             pinned: true,
             floating: false,
             child: Container(
-                color:Colors.blueAccent,
+                color: Colors.blueAccent,
                 alignment: Alignment.center,
-                child: const Text('SliverAutoPersistentHeader'))),
+                child: const Text('ExtendSliverPersistentHeader'))),
       ];
 }
 
@@ -196,7 +196,7 @@ class _ScrollListBuilderPage extends StatelessWidget {
         body: Column(children: <Widget>[
           Container(
               height: 100,
-              color:color,
+              color: color,
               alignment: Alignment.center,
               child: BText('这里是头部',
                   color: Colors.white,
@@ -413,8 +413,8 @@ class _CustomScrollViewPage extends StatelessWidget {
       ]));
 }
 
-class _ScrollViewAutoNestedPage extends StatelessWidget {
-  const _ScrollViewAutoNestedPage(this.slivers, {Key key}) : super(key: key);
+class _ExtendScrollViewNestedPage extends StatelessWidget {
+  const _ExtendScrollViewNestedPage(this.slivers, {Key key}) : super(key: key);
 
   final List<Widget> slivers;
 
@@ -432,7 +432,7 @@ class _ScrollViewAutoNestedPage extends StatelessWidget {
           /// 结束刷新
           return Future<dynamic>.value(true);
         },
-        child: ScrollViewAuto.nested(
+        child: ExtendScrollView.nested(
             slivers: slivers,
             body: Universal(
                 isScroll: true,
@@ -442,14 +442,14 @@ class _ScrollViewAutoNestedPage extends StatelessWidget {
       ));
 }
 
-class _ScrollViewAutoPage extends StatelessWidget {
-  const _ScrollViewAutoPage(this.slivers, {Key key}) : super(key: key);
+class _ExtendScrollViewPage extends StatelessWidget {
+  const _ExtendScrollViewPage(this.slivers, {Key key}) : super(key: key);
 
   final List<Widget> slivers;
 
   @override
   Widget build(BuildContext context) => OverlayScaffold(
-          body: ScrollViewAuto(slivers: <Widget>[
+          body: ExtendScrollView(slivers: <Widget>[
         ...slivers,
         SliverToBoxAdapter(
             child: Universal(

@@ -132,7 +132,7 @@ void setHttpData(ResponseModel res) {
   }
 }
 
-OverlayEntryAuto? _httpDataOverlay;
+ExtendOverlayEntry? _httpDataOverlay;
 
 class _HttpDataPage extends StatefulWidget {
   const _HttpDataPage(this.res, {Key? key}) : super(key: key);

@@ -9,7 +9,7 @@ part 'root_part.dart';
 
 GlobalKey<NavigatorState> _globalNavigatorKey = GlobalKey();
 GlobalKey<ScaffoldMessengerState>? _scaffoldMessengerKey;
-List<OverlayEntryAuto> _overlayEntryList = <OverlayEntryAuto>[];
+List<ExtendOverlayEntry> _overlayEntryList = <ExtendOverlayEntry>[];
 EventBus eventBus = EventBus();
 
 enum WidgetMode {
