@@ -18,10 +18,10 @@ class ScrollViewPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           const SizedBox(height: 20),
-          ElevatedText('ExtendScrollView',
-              onTap: () => push(_ExtendScrollViewPage(slivers))),
-          ElevatedText('ExtendScrollView.nested',
-              onTap: () => push(_ExtendScrollViewNestedPage(slivers))),
+          ElevatedText('ExtendedScrollView',
+              onTap: () => push(_ExtendedScrollViewPage(slivers))),
+          ElevatedText('ExtendedScrollView.nested',
+              onTap: () => push(_ExtendedScrollViewNestedPage(slivers))),
           const SizedBox(height: 40),
           ElevatedText('CustomScrollView',
               onTap: () => push(const _CustomScrollViewPage())),
@@ -43,7 +43,7 @@ class ScrollViewPage extends StatelessWidget {
   }
 
   List<Widget> get slivers => <Widget>[
-        ExtendSliverAppBar(
+        ExtendedSliverAppBar(
             pinned: true,
             snap: true,
             floating: true,
@@ -52,7 +52,7 @@ class ScrollViewPage extends StatelessWidget {
                 const Text('title', style: TextStyle(color: Colors.black)),
             background:
                 Container(height: kToolbarHeight * 2, color: Colors.green)),
-        ExtendSliverAppBar(
+        ExtendedSliverAppBar(
             pinned: true,
             snap: true,
             floating: true,
@@ -61,20 +61,20 @@ class ScrollViewPage extends StatelessWidget {
                 const Text('第二个Title', style: TextStyle(color: Colors.black)),
             background:
                 Container(height: kToolbarHeight, color: Colors.greenAccent)),
-        ExtendSliverPersistentHeader(
+        ExtendedSliverPersistentHeader(
             pinned: true,
             floating: false,
             child: Container(
                 color: Colors.redAccent,
                 alignment: Alignment.center,
-                child: const Text('ExtendSliverPersistentHeader'))),
-        ExtendSliverPersistentHeader(
+                child: const Text('ExtendedSliverPersistentHeader'))),
+        ExtendedSliverPersistentHeader(
             pinned: true,
             floating: false,
             child: Container(
                 color: Colors.blueAccent,
                 alignment: Alignment.center,
-                child: const Text('ExtendSliverPersistentHeader'))),
+                child: const Text('ExtendedSliverPersistentHeader'))),
       ];
 }
 
@@ -413,8 +413,9 @@ class _CustomScrollViewPage extends StatelessWidget {
       ]));
 }
 
-class _ExtendScrollViewNestedPage extends StatelessWidget {
-  const _ExtendScrollViewNestedPage(this.slivers, {Key key}) : super(key: key);
+class _ExtendedScrollViewNestedPage extends StatelessWidget {
+  const _ExtendedScrollViewNestedPage(this.slivers, {Key key})
+      : super(key: key);
 
   final List<Widget> slivers;
 
@@ -432,7 +433,7 @@ class _ExtendScrollViewNestedPage extends StatelessWidget {
           /// 结束刷新
           return Future<dynamic>.value(true);
         },
-        child: ExtendScrollView.nested(
+        child: ExtendedScrollView.nested(
             slivers: slivers,
             body: Universal(
                 isScroll: true,
@@ -442,14 +443,14 @@ class _ExtendScrollViewNestedPage extends StatelessWidget {
       ));
 }
 
-class _ExtendScrollViewPage extends StatelessWidget {
-  const _ExtendScrollViewPage(this.slivers, {Key key}) : super(key: key);
+class _ExtendedScrollViewPage extends StatelessWidget {
+  const _ExtendedScrollViewPage(this.slivers, {Key key}) : super(key: key);
 
   final List<Widget> slivers;
 
   @override
   Widget build(BuildContext context) => OverlayScaffold(
-          body: ExtendScrollView(slivers: <Widget>[
+          body: ExtendedScrollView(slivers: <Widget>[
         ...slivers,
         SliverToBoxAdapter(
             child: Universal(

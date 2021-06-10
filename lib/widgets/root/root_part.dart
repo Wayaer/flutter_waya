@@ -1,8 +1,8 @@
 part of 'root.dart';
 
 ///  ************ 以下为Scaffold Overlay *****************   ///
-class ExtendOverlayEntry extends OverlayEntry {
-  ExtendOverlayEntry({
+class ExtendedOverlayEntry extends OverlayEntry {
+  ExtendedOverlayEntry({
     this.autoOff = false,
     WidgetBuilder? builder,
     Widget? widget,
@@ -33,18 +33,18 @@ class ExtendOverlayEntry extends OverlayEntry {
 }
 
 ///  自定义Overlay
-ExtendOverlayEntry? showOverlay(Widget widget, {bool autoOff = false}) {
+ExtendedOverlayEntry? showOverlay(Widget widget, {bool autoOff = false}) {
   final OverlayState? _overlay = _globalNavigatorKey.currentState!.overlay;
   if (_overlay == null) return null;
-  final ExtendOverlayEntry entryAuto =
-      ExtendOverlayEntry(autoOff: autoOff, widget: widget);
+  final ExtendedOverlayEntry entryAuto =
+      ExtendedOverlayEntry(autoOff: autoOff, widget: widget);
   _overlay.insert(entryAuto);
   if (!autoOff) _overlayEntryList.add(entryAuto);
   return entryAuto;
 }
 
 ///  关闭最顶层的Overlay
-bool closeOverlay({ExtendOverlayEntry? entry}) {
+bool closeOverlay({ExtendedOverlayEntry? entry}) {
   if (entry != null) {
     return entry.removeEntry();
   } else {
@@ -56,7 +56,7 @@ bool closeOverlay({ExtendOverlayEntry? entry}) {
 
 ///  关闭所有Overlay
 void closeAllOverlay() {
-  for (final ExtendOverlayEntry element in _overlayEntryList)
+  for (final ExtendedOverlayEntry element in _overlayEntryList)
     element.removeEntry();
 }
 
@@ -72,7 +72,7 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? showSnackBar(
 
 ///  loading 加载框
 ///  关闭 closeOverlay();
-ExtendOverlayEntry? showLoading({
+ExtendedOverlayEntry? showLoading({
   Widget? custom,
   String? text,
   TextStyle? textStyle,
@@ -181,7 +181,7 @@ Future<void> showToast(String message,
     toast = BText(message, color: ConstColors.white, maxLines: 4);
   }
 
-  final ExtendOverlayEntry? entry = showOverlay(
+  final ExtendedOverlayEntry? entry = showOverlay(
       PopupBase(
           ignoring: ignoring ?? _allToastIgnoring,
           alignment: Alignment.center,

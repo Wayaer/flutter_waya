@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 /// 配合 sliver 家族组件 无需设置高度  自适应高度
-class ExtendScrollView extends StatefulWidget {
-  const ExtendScrollView(
+class ExtendedScrollView extends StatefulWidget {
+  const ExtendedScrollView(
       {Key? key,
       this.expanded = false,
       this.flex = 1,
@@ -31,7 +31,7 @@ class ExtendScrollView extends StatefulWidget {
         headerSliverBuilder = null,
         super(key: key);
 
-  const ExtendScrollView.nested({
+  const ExtendedScrollView.nested({
     Key? key,
     this.expanded = false,
     this.flex = 1,
@@ -86,10 +86,10 @@ class ExtendScrollView extends StatefulWidget {
   final int? semanticChildCount;
 
   @override
-  _ExtendScrollViewState createState() => _ExtendScrollViewState();
+  _ExtendedScrollViewState createState() => _ExtendedScrollViewState();
 }
 
-class _ExtendScrollViewState extends State<ExtendScrollView> {
+class _ExtendedScrollViewState extends State<ExtendedScrollView> {
   bool showScrollView = false;
   late List<Widget> slivers;
   List<_SliverModel> sliverModel = <_SliverModel>[];
@@ -179,8 +179,8 @@ class _ExtendScrollViewState extends State<ExtendScrollView> {
               bottomSize: sliver.extraSize,
               expandedHeight: math.max(sliver.size.height,
                   kToolbarHeight + sliver.extraSize.height));
-        } else if (element is ExtendSliverPersistentHeader) {
-          return _ExtendSliverPersistentHeader(
+        } else if (element is ExtendedSliverPersistentHeader) {
+          return _ExtendedSliverPersistentHeader(
               header: element, maxHeight: sliver.size.height);
         }
         return element;
@@ -188,8 +188,8 @@ class _ExtendScrollViewState extends State<ExtendScrollView> {
 }
 
 /// 初始化 delegate
-class ExtendSliverPersistentHeader extends SliverPersistentHeader {
-  ExtendSliverPersistentHeader(
+class ExtendedSliverPersistentHeader extends SliverPersistentHeader {
+  ExtendedSliverPersistentHeader(
       {Key? key,
       bool pinned = true,
       bool floating = true,
@@ -218,9 +218,9 @@ class ExtendSliverPersistentHeader extends SliverPersistentHeader {
 
 /// 组合使用 [FlexibleSpaceBar]、[SliverAppBar]
 /// bottom 添加PreferredSize
-/// 配合 [ExtendScrollView] 使用 无需设置 [expandedHeight]
-class ExtendSliverAppBar extends SliverAppBar {
-  ExtendSliverAppBar({
+/// 配合 [ExtendedScrollView] 使用 无需设置 [expandedHeight]
+class ExtendedSliverAppBar extends SliverAppBar {
+  ExtendedSliverAppBar({
     Key? key,
 
     /// 是否提供控件占位。
@@ -341,8 +341,8 @@ class ExtendSliverAppBar extends SliverAppBar {
 }
 
 /// 简化部分参数 [FlexibleSpaceBar]
-class ExtendFlexibleSpaceBar extends FlexibleSpaceBar {
-  const ExtendFlexibleSpaceBar({
+class ExtendedFlexibleSpaceBar extends FlexibleSpaceBar {
+  const ExtendedFlexibleSpaceBar({
     Widget? title,
     Widget? background,
     bool centerTitle = true,
@@ -409,7 +409,7 @@ class _Calculate extends StatelessWidget {
             column.add(Container(key: bottomKey, child: element.bottom));
             _sliver.extraKey = bottomKey;
           }
-        } else if (element is ExtendSliverPersistentHeader) {
+        } else if (element is ExtendedSliverPersistentHeader) {
           final GlobalKey persistentHeaderKey = GlobalKey();
           column.add(Container(key: persistentHeaderKey, child: element.child));
           _sliver.key = persistentHeaderKey;
@@ -477,8 +477,8 @@ class _NoPinnedPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
       child != oldDelegate.child;
 }
 
-class _ExtendSliverPersistentHeader extends SliverPersistentHeader {
-  _ExtendSliverPersistentHeader(
+class _ExtendedSliverPersistentHeader extends SliverPersistentHeader {
+  _ExtendedSliverPersistentHeader(
       {Key? key, required this.header, required this.maxHeight})
       : super(
             key: key,
@@ -493,7 +493,7 @@ class _ExtendSliverPersistentHeader extends SliverPersistentHeader {
                     maxHeight: header.maxHeight ?? maxHeight,
                   ));
 
-  final ExtendSliverPersistentHeader header;
+  final ExtendedSliverPersistentHeader header;
   final double maxHeight;
 }
 

@@ -9,10 +9,8 @@ class PickerPage extends StatelessWidget {
           appBar: AppBarText('Picker Demo'),
           children: <Widget>[
             ElevatedText('showAreaPicker', onTap: () => selectCity()),
-            ElevatedText('showChoicePicker',
-                onTap: () => showChoicePicker()),
-            ElevatedText('showDateTimePicker',
-                onTap: () => selectTime()),
+            ElevatedText('showChoicePicker', onTap: () => showChoicePicker()),
+            ElevatedText('showDateTimePicker', onTap: () => selectTime()),
           ]);
 
   Future<void> selectTime() async {
