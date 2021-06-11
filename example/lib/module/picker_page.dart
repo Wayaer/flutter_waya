@@ -4,7 +4,7 @@ import 'package:waya/main.dart';
 
 class PickerPage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) => OverlayScaffold(
+  Widget build(BuildContext context) => ExtendedScaffold(
           backgroundColor: Colors.white,
           appBar: AppBarText('Picker Demo'),
           children: <Widget>[
@@ -41,7 +41,7 @@ class PickerPage extends StatelessWidget {
     final int index = await showMultipleChoicePicker<int>(
         itemBuilder: (_, int index) =>
             Container(alignment: Alignment.center, child: Text(list[index])),
-        pickerWheel: PickerWheel(itemHeight: 24, useMagnifier: false),
+        wheel: PickerWheel(itemHeight: 24, useMagnifier: false),
         itemCount: list.length);
     if (index == null) return;
     showToast(list[index].toString());

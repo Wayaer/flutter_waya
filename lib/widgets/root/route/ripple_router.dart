@@ -36,10 +36,10 @@ class RouteConfig {
 }
 
 class RipplePageRoute<T> extends PageRouteBuilder<T> {
-  RipplePageRoute({required this.widget, required this.routeConfig})
+  RipplePageRoute({required this.builder, required this.routeConfig})
       : super(
             transitionDuration: const Duration(milliseconds: 300),
-            pageBuilder: (_, __, ___) => widget,
+            pageBuilder: (BuildContext context, _, __) => builder(context),
             opaque: false,
             transitionsBuilder: (_, Animation<double> animation,
                 Animation<double> __, Widget child) {
@@ -68,6 +68,6 @@ class RipplePageRoute<T> extends PageRouteBuilder<T> {
                         children: widget.asList())),
               ]);
             });
-  final Widget widget;
+  final WidgetBuilder builder;
   final RouteConfig routeConfig;
 }

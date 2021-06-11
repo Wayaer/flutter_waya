@@ -41,9 +41,9 @@
       - [EasyRefreshed](./lib/components/refresh/easy_refresh.dart) 封装 flutter_easyrefresh
 
    - [root](./lib/widgets/root)
-      - 根组件使用[GlobalWidgetsApp](./lib/widgets/root/root.dart) 可直接使用[push()](./lib/widgets/root/root.dart) [pop()](./lib/widgets/root/root.dart) 等多个路由方法和[showDialogPopup()](./lib/widgets/root/root.dart),[showBottomPopup()](./lib/widgets/root/root.dart),[showBottomPagePopup()](./lib/widgets/root/root_part.dart),[showCupertinoBottomPagePopup()](./lib/widgets/root/root_part.dart),[dialogSureCancel()](./lib/widgets/root/root_part.dart),无需传 context ,随处打开,关闭 以上弹窗或页面 必须使用 [closePopup()](./lib/widgets/root/root_part.dart)或直接[pop()](./lib/widgets/root/root_part.dart),
+      - 根组件使用[ExtendedWidgetsApp](./lib/widgets/root/root.dart) 可直接使用[push()](./lib/widgets/root/root.dart) [pop()](./lib/widgets/root/root.dart) 等多个路由方法和[showDialogPopup()](./lib/widgets/root/root.dart),[showBottomPopup()](./lib/widgets/root/root.dart),[showBottomPagePopup()](./lib/widgets/root/root_part.dart),[showCupertinoBottomPagePopup()](./lib/widgets/root/root_part.dart),[dialogSureCancel()](./lib/widgets/root/root_part.dart),无需传 context ,随处打开,关闭 以上弹窗或页面 必须使用 [closePopup()](./lib/widgets/root/root_part.dart)或直接[pop()](./lib/widgets/root/root_part.dart),
     
-      - [Scaffold] 使用 [OverlayScaffold](./lib/widgets/root/root_part.dart) 可以任意处使用 [showOverlay()](./lib/widgets/root/root_part.dart), [showLoading()](./lib/widgets/root/root_part.dart), [showToast()](./lib/widgets/root/root_part.dart),关闭Overlay 必须使用 [closeOverlay()](./lib/widgets/root/root_part.dart) 或关闭全部 [closeAllOverlay()](./lib/widgets/root/root_part.dart), 
+      - [Scaffold] 使用 [ExtendedScaffold](./lib/widgets/root/root_part.dart) 可以任意处使用 [showOverlay()](./lib/widgets/root/root_part.dart), [showLoading()](./lib/widgets/root/root_part.dart), [showToast()](./lib/widgets/root/root_part.dart),关闭Overlay 必须使用 [closeOverlay()](./lib/widgets/root/root_part.dart) 或关闭全部 [closeAllOverlay()](./lib/widgets/root/root_part.dart), 
 
    - [widget](./lib/widgets) 简单封装原生组件
 

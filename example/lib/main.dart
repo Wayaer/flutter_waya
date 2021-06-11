@@ -44,14 +44,14 @@ class _AppState extends State<_App> {
   }
 
   @override
-  Widget build(BuildContext context) => GlobalWidgetsApp(
+  Widget build(BuildContext context) => ExtendedWidgetsApp(
       title: 'Waya Demo', home: _Home(), widgetMode: WidgetMode.material);
 }
 
 class _Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return OverlayScaffold(
+    return ExtendedScaffold(
       backgroundColor: Colors.white,
       onWillPopOverlayClose: true,
       appBar: AppBarText('Flutter Waya Example'),

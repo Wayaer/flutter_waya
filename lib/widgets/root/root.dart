@@ -23,23 +23,25 @@ enum WidgetMode {
   ripple,
 }
 
-///  GlobalWidgetsApp
-class GlobalWidgetsApp extends StatelessWidget {
-  GlobalWidgetsApp({
+///  ExtendedWidgetsApp
+class ExtendedWidgetsApp extends StatelessWidget {
+  ExtendedWidgetsApp({
     Key? key,
     Map<String, WidgetBuilder>? routes,
     String? title,
-    ThemeMode? themeMode,
+    ThemeMode? themeMode = ThemeMode.system,
+    WidgetMode? widgetMode = WidgetMode.material,
     Locale? locale,
     Color? color,
     Iterable<LocalizationsDelegate<dynamic>>? localizationsDelegates,
     Iterable<Locale>? supportedLocales,
-    bool? debugShowMaterialGrid,
+    bool? debugShowMaterialGrid = false,
+    bool? debugShowWidgetInspector = false,
+    bool? debugShowCheckedModeBanner = false,
     bool? showPerformanceOverlay,
     bool? checkerboardRasterCacheImages,
     bool? checkerboardOffscreenLayers,
     bool? showSemanticsDebugger,
-    bool? debugShowCheckedModeBanner,
     List<NavigatorObserver>? navigatorObservers,
     this.navigatorKey,
     this.home,
@@ -50,22 +52,28 @@ class GlobalWidgetsApp extends StatelessWidget {
     this.onGenerateTitle,
     this.theme,
     this.darkTheme,
+    this.highContrastTheme,
+    this.highContrastDarkTheme,
     this.localeListResolutionCallback,
     this.localeResolutionCallback,
     this.shortcuts,
     this.actions,
     this.onGenerateInitialRoutes,
     this.inspectorSelectButtonBuilder,
-    this.widgetMode,
     this.cupertinoTheme,
     this.scaffoldMessengerKey,
+    this.scrollBehavior,
+    this.restorationScopeId,
+    this.textStyle,
   })  : debugShowMaterialGrid = debugShowMaterialGrid ?? false,
+        debugShowWidgetInspector = debugShowWidgetInspector ?? false,
         showPerformanceOverlay = showPerformanceOverlay ?? false,
         checkerboardRasterCacheImages = checkerboardRasterCacheImages ?? false,
         checkerboardOffscreenLayers = checkerboardOffscreenLayers ?? false,
         showSemanticsDebugger = showSemanticsDebugger ?? false,
         debugShowCheckedModeBanner = debugShowCheckedModeBanner ?? false,
         themeMode = themeMode ?? ThemeMode.system,
+        widgetMode = widgetMode ?? WidgetMode.material,
         title = title ?? '',
         color = color ?? ConstColors.white,
         routes = routes ?? const <String, WidgetBuilder>{},
@@ -83,7 +91,7 @@ class GlobalWidgetsApp extends StatelessWidget {
         super(key: key);
 
   ///  风格
-  final WidgetMode? widgetMode;
+  final WidgetMode widgetMode;
 
   final GlobalKey<ScaffoldMessengerState>? scaffoldMessengerKey;
 
@@ -113,13 +121,14 @@ class GlobalWidgetsApp extends StatelessWidget {
   ///  生成标题
   final GenerateAppTitle? onGenerateTitle;
 
-  ///  主题
-  final ThemeData? theme;
-
   ///  Cupertino主题
   final CupertinoThemeData? cupertinoTheme;
 
+  ///  Material主题
+  final ThemeData? theme;
   final ThemeData? darkTheme;
+  final ThemeData? highContrastTheme;
+  final ThemeData? highContrastDarkTheme;
 
   ///  颜色
   final Color color;
@@ -157,12 +166,15 @@ class GlobalWidgetsApp extends StatelessWidget {
 
   ///  调试显示检查模式横幅
   final bool debugShowCheckedModeBanner;
-
+  final ScrollBehavior? scrollBehavior;
   final bool debugShowMaterialGrid;
   final Map<LogicalKeySet, Intent>? shortcuts;
   final Map<Type, Action<Intent>>? actions;
   final InitialRouteListFactory? onGenerateInitialRoutes;
   final InspectorSelectButtonBuilder? inspectorSelectButtonBuilder;
+  final String? restorationScopeId;
+  final bool debugShowWidgetInspector;
+  final TextStyle? textStyle;
 
   @override
   Widget build(BuildContext context) {
@@ -174,25 +186,31 @@ class GlobalWidgetsApp extends StatelessWidget {
     return WidgetsApp(
         key: key,
         navigatorKey: _globalNavigatorKey,
-        home: home,
-        routes: routes,
-        initialRoute: initialRoute,
-        pageRouteBuilder: <T>(RouteSettings settings, WidgetBuilder builder) {
-          if (widgetMode == WidgetMode.cupertino) {
-            return CupertinoPageRoute<T>(settings: settings, builder: builder);
-          } else {
-            return MaterialPageRoute<T>(settings: settings, builder: builder);
-          }
-        },
         onGenerateRoute: onGenerateRoute,
         onGenerateInitialRoutes: onGenerateInitialRoutes,
         onUnknownRoute: onUnknownRoute,
         navigatorObservers: navigatorObservers,
+        initialRoute: initialRoute,
+        pageRouteBuilder: <T>(RouteSettings settings, WidgetBuilder builder) {
+          switch (widgetMode) {
+            case WidgetMode.cupertino:
+              return CupertinoPageRoute<T>(
+                  settings: settings, builder: builder);
+            case WidgetMode.material:
+              return MaterialPageRoute<T>(settings: settings, builder: builder);
+            case WidgetMode.ripple:
+              return RipplePageRoute<T>(
+                  builder: builder,
+                  routeConfig: RouteConfig.fromContext(context));
+          }
+        },
+        home: home,
+        routes: routes,
         builder: builder,
         title: title,
         onGenerateTitle: onGenerateTitle,
+        textStyle: textStyle,
         color: color,
-        inspectorSelectButtonBuilder: inspectorSelectButtonBuilder,
         locale: locale,
         localizationsDelegates: localizationsDelegates,
         localeListResolutionCallback: localeListResolutionCallback,
@@ -202,9 +220,12 @@ class GlobalWidgetsApp extends StatelessWidget {
         checkerboardRasterCacheImages: checkerboardRasterCacheImages,
         checkerboardOffscreenLayers: checkerboardOffscreenLayers,
         showSemanticsDebugger: showSemanticsDebugger,
+        debugShowWidgetInspector: debugShowWidgetInspector,
         debugShowCheckedModeBanner: debugShowCheckedModeBanner,
+        inspectorSelectButtonBuilder: inspectorSelectButtonBuilder,
         shortcuts: shortcuts,
-        actions: actions);
+        actions: actions,
+        restorationScopeId: restorationScopeId);
   }
 
   Widget get materialApp {
@@ -217,7 +238,6 @@ class GlobalWidgetsApp extends StatelessWidget {
         home: home,
         routes: routes,
         initialRoute: initialRoute,
-        debugShowMaterialGrid: debugShowMaterialGrid,
         onGenerateRoute: onGenerateRoute,
         onGenerateInitialRoutes: onGenerateInitialRoutes,
         onUnknownRoute: onUnknownRoute,
@@ -228,25 +248,31 @@ class GlobalWidgetsApp extends StatelessWidget {
         color: color,
         theme: theme,
         darkTheme: darkTheme,
+        highContrastTheme: highContrastTheme,
+        highContrastDarkTheme: highContrastDarkTheme,
         themeMode: themeMode,
         locale: locale,
         localizationsDelegates: localizationsDelegates,
         localeListResolutionCallback: localeListResolutionCallback,
         localeResolutionCallback: localeResolutionCallback,
         supportedLocales: supportedLocales,
+        debugShowMaterialGrid: debugShowMaterialGrid,
         showPerformanceOverlay: showPerformanceOverlay,
         checkerboardRasterCacheImages: checkerboardRasterCacheImages,
         checkerboardOffscreenLayers: checkerboardOffscreenLayers,
         showSemanticsDebugger: showSemanticsDebugger,
         debugShowCheckedModeBanner: debugShowCheckedModeBanner,
         shortcuts: shortcuts,
-        actions: actions);
+        actions: actions,
+        restorationScopeId: restorationScopeId,
+        scrollBehavior: scrollBehavior);
   }
 
   Widget get cupertinoApp => CupertinoApp(
       key: key,
       navigatorKey: _globalNavigatorKey,
       home: home,
+      theme: cupertinoTheme,
       routes: routes,
       initialRoute: initialRoute,
       onGenerateRoute: onGenerateRoute,
@@ -257,7 +283,6 @@ class GlobalWidgetsApp extends StatelessWidget {
       title: title,
       onGenerateTitle: onGenerateTitle,
       color: color,
-      theme: cupertinoTheme,
       locale: locale,
       localizationsDelegates: localizationsDelegates,
       localeListResolutionCallback: localeListResolutionCallback,
@@ -269,14 +294,16 @@ class GlobalWidgetsApp extends StatelessWidget {
       showSemanticsDebugger: showSemanticsDebugger,
       debugShowCheckedModeBanner: debugShowCheckedModeBanner,
       shortcuts: shortcuts,
-      actions: actions);
+      actions: actions,
+      restorationScopeId: restorationScopeId,
+      scrollBehavior: scrollBehavior);
 }
 
 bool scaffoldWillPop = true;
 
-///  OverlayScaffold
-class OverlayScaffold extends StatelessWidget {
-  const OverlayScaffold({
+///  ExtendedScaffold
+class ExtendedScaffold extends StatelessWidget {
+  const ExtendedScaffold({
     Key? key,
     bool? paddingStatusBar,
     bool? primary,
@@ -550,7 +577,7 @@ void popBack(Future<dynamic> navigator, {bool nullBack = false}) {
 void popUntil(RoutePredicate predicate) =>
     _globalNavigatorKey.currentState!.popUntil(predicate);
 
-WidgetMode? _widgetMode;
+WidgetMode _widgetMode = WidgetMode.cupertino;
 
 void setGlobalPushMode(WidgetMode widgetMode) => _widgetMode = widgetMode;
 
@@ -575,14 +602,8 @@ PageRoute<T> _pageRoute<T>(Widget widget,
           builder: (_) => widget);
     case WidgetMode.ripple:
       return RipplePageRoute<T>(
-          widget: widget,
+          builder: (_) => widget,
           routeConfig: RouteConfig.fromContext(
               (context ?? _globalNavigatorKey.currentContext)!));
-    default:
-      return CupertinoPageRoute<T>(
-          maintainState: maintainState ?? true,
-          settings: settings,
-          fullscreenDialog: fullscreenDialog ?? false,
-          builder: (_) => widget);
   }
 }

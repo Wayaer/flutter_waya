@@ -3,8 +3,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-class PopupBase extends StatelessWidget {
-  const PopupBase(
+class PopupOptions extends StatelessWidget {
+  const PopupOptions(
       {Key? key,
       double? fuzzyDegree,
       bool? gaussian,
@@ -186,7 +186,7 @@ class PopupSureCancel extends StatelessWidget {
     final List<Widget> widgets = <Widget>[];
     widgets.add(content);
     if (cancel != null && sure != null) widgets.add(sureCancel());
-    return PopupBase(
+    return PopupOptions(
         addMaterial: addMaterial,
         gaussian: gaussian,
         onTap: backsideTap,
@@ -302,7 +302,7 @@ class Loading extends StatelessWidget {
     children.add(Container(
         margin: const EdgeInsets.only(top: 16),
         child: BText(text, style: textStyle)));
-    return PopupBase(
+    return PopupOptions(
         ignoring: ignoring,
         gaussian: gaussian,
         fuzzyDegree: fuzzyDegree,

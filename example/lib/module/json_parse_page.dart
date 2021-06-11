@@ -7,7 +7,7 @@ import 'package:waya/main.dart';
 class JsonParsePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return OverlayScaffold(
+    return ExtendedScaffold(
         backgroundColor: Colors.white,
         appBar: AppBarText('JsonParse Demo'),
         mainAxisAlignment: MainAxisAlignment.center,
@@ -30,7 +30,7 @@ class _JsonParsePage extends StatelessWidget {
                 '{"name":"Baidu","url":"http://www.baidu.com"},'
                 '{"name":"SoSo","url":"http://www.SoSo.com"}]}')
             as Map<dynamic, dynamic>;
-    return OverlayScaffold(
+    return ExtendedScaffold(
         backgroundColor: Colors.white,
         appBar: AppBarText('JsonParse'),
         mainAxisAlignment: MainAxisAlignment.center,
@@ -45,7 +45,7 @@ class _JsonParseListPage extends StatelessWidget {
             '[{"name":"Google","url":"http://www.google.com"},{"name":"Baidu",'
             '"url":"http://www.baidu.com"},{"name":"SoSo","url":"http://www.SoSo.com"}]')
         as List<dynamic>;
-    return OverlayScaffold(
+    return ExtendedScaffold(
         backgroundColor: Colors.white,
         appBar: AppBarText('JsonParse.list'),
         mainAxisAlignment: MainAxisAlignment.center,

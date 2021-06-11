@@ -622,5 +622,5 @@ class _CustomDrawerState extends State<CustomDrawer> {
   @override
   Widget build(BuildContext context) => ConstrainedBox(
       constraints: BoxConstraints(maxWidth: widget.width),
-      child: PopupBase(color: widget.backgroundColor, child: widget.child));
+      child: PopupOptions(color: widget.backgroundColor, child: widget.child));
 }

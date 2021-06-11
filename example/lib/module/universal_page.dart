@@ -108,7 +108,7 @@ class _UniversalPageState extends State<UniversalPage>
     ];
     children = children.builder((Widget item) => SizeTransition(
         sizeFactor: controller, axis: Axis.horizontal, child: item));
-    return OverlayScaffold(
+    return ExtendedScaffold(
       backgroundColor: Colors.white,
       appBar: AppBarText('Universal Demo'),
       mainAxisAlignment: MainAxisAlignment.center,
@@ -125,7 +125,7 @@ class _UniversalPageState extends State<UniversalPage>
 class _ScrollUniversalPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return OverlayScaffold(
+    return ExtendedScaffold(
         backgroundColor: Colors.white,
         appBar: AppBarText('ScrollUniversal Demo'),
         mainAxisAlignment: MainAxisAlignment.center,

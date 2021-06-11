@@ -7,7 +7,7 @@ const List<String> _colors = <String>['红色', '黄色', '蓝色'];
 
 class ButtonPage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) => OverlayScaffold(
+  Widget build(BuildContext context) => ExtendedScaffold(
           backgroundColor: Colors.white,
           isScroll: true,
           appBar: AppBarText('Button Demo'),
@@ -94,7 +94,7 @@ class _BubbleButtonPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return OverlayScaffold(
+    return ExtendedScaffold(
         appBar: AppBarText('Bubble'),
         padding: const EdgeInsets.symmetric(vertical: 40),
         mainAxisAlignment: MainAxisAlignment.spaceAround,

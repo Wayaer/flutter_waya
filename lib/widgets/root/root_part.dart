@@ -65,7 +65,7 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? showSnackBar(
   if (_scaffoldMessengerKey != null) {
     return _scaffoldMessengerKey!.currentState!.showSnackBar(snackBar);
   } else {
-    log('GlobalWidgetsApp widgetMode must be WidgetMode.material');
+    log('ExtendedWidgetsApp widgetMode must be WidgetMode.material');
   }
   return null;
 }
@@ -182,7 +182,7 @@ Future<void> showToast(String message,
   }
 
   final ExtendedOverlayEntry? entry = showOverlay(
-      PopupBase(
+      PopupOptions(
           ignoring: ignoring ?? _allToastIgnoring,
           alignment: Alignment.center,
           onTap: () {},
@@ -446,19 +446,19 @@ Future<String?> showDateTimePicker<T>({
   DateTimePickerUnit? unit,
 
   /// 头部和背景色配置
-  PickerSub? pickerSub,
+  PickerOptions? options,
 
   /// Wheel配置信息
-  PickerWheel? pickerWheel,
+  PickerWheel? wheel,
 }) {
   _globalNavigatorKey.currentContext!.focusNode();
-  pickerWheel ??= PickerWheel();
-  pickerSub ??= PickerSub();
-  pickerSub.cancelTap ??= () => closePopup();
-  pickerSub.sureTap ??= (String text) => closePopup(text);
+  wheel ??= PickerWheel();
+  options ??= PickerOptions();
+  options.cancelTap ??= () => closePopup();
+  options.sureTap ??= (String text) => closePopup(text);
   final Widget widget = DateTimePicker(
-      pickerSub: pickerSub,
-      pickerWheel: pickerWheel,
+      options: options,
+      wheel: wheel,
       startDate: startDate,
       endDate: endDate,
       defaultDate: defaultDate,
@@ -481,22 +481,22 @@ Future<String?> showAreaPicker<T>({
   String? defaultDistrict,
 
   /// 头部和背景色配置
-  PickerSub? pickerSub,
+  PickerOptions? options,
 
   /// Wheel配置信息
-  PickerWheel? pickerWheel,
+  PickerWheel? wheel,
 }) {
   _globalNavigatorKey.currentContext!.focusNode();
-  pickerWheel ??= PickerWheel();
-  pickerSub ??= PickerSub();
-  pickerSub.cancelTap ??= () => closePopup();
-  pickerSub.sureTap ??= (String text) => closePopup(text);
+  wheel ??= PickerWheel();
+  options ??= PickerOptions();
+  options.cancelTap ??= () => closePopup();
+  options.sureTap ??= (String text) => closePopup(text);
   final Widget widget = AreaPicker(
       defaultProvince: defaultProvince,
       defaultCity: defaultCity,
       defaultDistrict: defaultDistrict,
-      pickerSub: pickerSub,
-      pickerWheel: pickerWheel);
+      options: options,
+      wheel: wheel);
   return showBottomPopup<String?>(widget: widget);
 }
 
@@ -510,20 +510,20 @@ Future<T?> showMultipleChoicePicker<T>({
   required IndexedWidgetBuilder itemBuilder,
 
   /// 头部和背景色配置
-  PickerSub? pickerSub,
+  PickerOptions? options,
 
   /// Wheel配置信息
-  PickerWheel? pickerWheel,
+  PickerWheel? wheel,
 }) {
   _globalNavigatorKey.currentContext!.focusNode();
-  pickerSub ??= PickerSub();
-  pickerSub.cancelTap ??= () => closePopup();
-  pickerSub.sureIndexTap ??= (int index) => closePopup(index);
+  options ??= PickerOptions();
+  options.cancelTap ??= () => closePopup();
+  options.sureIndexTap ??= (int index) => closePopup(index);
   final Widget widget = MultipleChoicePicker(
       itemCount: itemCount,
       itemBuilder: itemBuilder,
-      pickerSub: pickerSub,
-      pickerWheel: pickerWheel,
+      options: options,
+      wheel: wheel,
       initialIndex: initialIndex);
   return showBottomPopup(widget: widget);
 }

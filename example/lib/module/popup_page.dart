@@ -5,7 +5,7 @@ import 'package:waya/main.dart';
 
 class PopupPage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) => OverlayScaffold(
+  Widget build(BuildContext context) => ExtendedScaffold(
           backgroundColor: Colors.white,
           appBar: AppBarText('Popup Demo'),
           children: <Widget>[

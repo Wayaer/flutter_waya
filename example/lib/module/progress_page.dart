@@ -23,7 +23,7 @@ class _ProgressPageState extends State<ProgressPage>
   @override
   Widget build(BuildContext context) {
     final double percentage = _animationController.value * 100;
-    return OverlayScaffold(
+    return ExtendedScaffold(
         isScroll: true,
         backgroundColor: Colors.white,
         appBar: AppBarText('PinBox Demo'),

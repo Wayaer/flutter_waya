@@ -1,5 +1,10 @@
 ## [1.11.0]
+  * change [PopupBase] to [PopupOptions] 
+  * change [GlobalWidgetsApp] to [ExtendedWidgetsApp] 
+  * change [OverlayScaffold] to [ExtendedScaffold] 
   * change [SliverAutoAppBar] to [ExtendedSliverAppBar] 
+  * change [PickerSub] to [PickerOptions] and change pickerSub to options
+  , change pickerWheel to wheel
   * change [FlexibleSpaceAutoBar] to [ExtendedFlexibleSpaceBar] 
   * change [SliverAutoPersistentHeader] to [ExtendedSliverPersistentHeader] 
   * change [ScrollViewAuto] to [ExtendedScrollView] 
@@ -16,7 +21,7 @@
   * add inputTextTypeToTextInputFormatter()  
 ## [1.10.3]
   * optimize import
-  * [OverlayEntryAuto] add removeEntry(),When autoOff is true, the OverlayScaffold call onWillPop will filter the
+  * [OverlayEntryAuto] add removeEntry(),When autoOff is true, the ExtendedScaffold call onWillPop will filter the
    OverlayEntryAuto
 ## [1.10.1]
   * fix the [remove] error of [Eventbus] when the project supports null-safety
@@ -29,7 +34,7 @@
   * add [setAllToastIgnoringBackground()],if it is true, the background
    responds to the click event
 ## [1.9.15]
-  * [PopupBase] add onWillPop and filter for [WillPopScope] And [BackdropFilter]
+  * [PopupOptions] add onWillPop and filter for [WillPopScope] And [BackdropFilter]
 ## [1.9.13]
   * [Universal] add useSingleChildScrollView property，The default is true, If
    useSingleChildScrollView is false, the scrolling component will be created using [Scrollview]
@@ -97,10 +102,10 @@
   * showToast add async callback
 ## [1.5.0]
   * change Tools to Ts.
-  * change GlobalMaterial to GlobalWidgetsApp.
+  * change GlobalMaterial to ExtendedWidgetsApp.
   * modify push and pop
   * add Universal tagging
-  * fix GlobalWidgetsApp did not return MaterialApp
+  * fix ExtendedWidgetsApp did not return MaterialApp
   * modify styles.dart
   * Universal add Refreshed
   * add des encode and decode
@@ -118,7 +123,7 @@
 ## [1.3.9]
   * remove Overflow for Universal
 ## [1.3.7]
-  * simplifying some component parameters 【PopupSureCancel，PopupBase】
+  * simplifying some component parameters 【PopupSureCancel，PopupOptions】
   * modify utils partial method name
 ## [1.3.3]
   * add showCupertinoBottomPagePopup

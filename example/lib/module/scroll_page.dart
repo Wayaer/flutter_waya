@@ -11,7 +11,7 @@ class ScrollViewPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ScrollController scrollController = ScrollController();
-    return OverlayScaffold(
+    return ExtendedScaffold(
         isScroll: true,
         backgroundColor: Colors.white,
         appBar: AppBarText('ScrollView Demo'),
@@ -86,7 +86,7 @@ class _ScrollListSeparatedPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return OverlayScaffold(
+    return ExtendedScaffold(
         backgroundColor: Colors.white,
         appBar: AppBarText('ScrollList.separated Demo'),
         body: ScrollList.separated(
@@ -138,7 +138,7 @@ class _ScrollListPlaceholderPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return OverlayScaffold(
+    return ExtendedScaffold(
         backgroundColor: Colors.white,
         appBar: AppBarText('ScrollList.builder Demo'),
         body: ScrollList.builder(
@@ -190,7 +190,7 @@ class _ScrollListBuilderPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return OverlayScaffold(
+    return ExtendedScaffold(
         backgroundColor: Colors.white,
         appBar: AppBarText('ScrollList.builder Demo'),
         body: Column(children: <Widget>[
@@ -249,7 +249,7 @@ class _ScrollListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return OverlayScaffold(
+    return ExtendedScaffold(
         backgroundColor: Colors.white,
         appBar: AppBarText('ScrollList Demo'),
         body: ScrollList(
@@ -316,7 +316,7 @@ class _ScrollListCountPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return OverlayScaffold(
+    return ExtendedScaffold(
       backgroundColor: Colors.white,
       appBar: AppBarText('ScrollList.count Demo'),
       body: ScrollList.count(
@@ -359,7 +359,7 @@ class _RefreshScrollViewPage extends StatelessWidget {
   const _RefreshScrollViewPage({Key key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => OverlayScaffold(
+  Widget build(BuildContext context) => ExtendedScaffold(
           body: RefreshScrollView(
               padding: const EdgeInsets.all(10),
               refreshConfig: RefreshConfig(onRefresh: () async {
@@ -399,7 +399,7 @@ class _CustomScrollViewPage extends StatelessWidget {
   const _CustomScrollViewPage({Key key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => OverlayScaffold(
+  Widget build(BuildContext context) => ExtendedScaffold(
           body: CustomScrollView(slivers: <Widget>[
         CustomSliverAppBar(title: BText('title', color: Colors.white)),
         SliverPinnedToBoxAdapter(
@@ -420,7 +420,7 @@ class _ExtendedScrollViewNestedPage extends StatelessWidget {
   final List<Widget> slivers;
 
   @override
-  Widget build(BuildContext context) => OverlayScaffold(
+  Widget build(BuildContext context) => ExtendedScaffold(
           body: RefreshIndicator(
         notificationPredicate: (ScrollNotification notification) {
           /// 返回true即可
@@ -449,7 +449,7 @@ class _ExtendedScrollViewPage extends StatelessWidget {
   final List<Widget> slivers;
 
   @override
-  Widget build(BuildContext context) => OverlayScaffold(
+  Widget build(BuildContext context) => ExtendedScaffold(
           body: ExtendedScrollView(slivers: <Widget>[
         ...slivers,
         SliverToBoxAdapter(
@@ -490,7 +490,7 @@ class _DraggableScrollbar extends StatelessWidget {
     final DraggableScrollbar scrollbar =
         DraggableScrollbar(controller: scrollController, child: list);
 
-    return OverlayScaffold(
+    return ExtendedScaffold(
         backgroundColor: Colors.white,
         appBar: AppBarText('DraggableScrollbar Demo'),
         body: scrollbar);

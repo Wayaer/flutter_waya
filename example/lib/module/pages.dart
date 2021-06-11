@@ -27,7 +27,7 @@ class _ImagePageState extends State<ImagePage> with TickerProviderStateMixin {
   }
 
   @override
-  Widget build(BuildContext context) => OverlayScaffold(
+  Widget build(BuildContext context) => ExtendedScaffold(
           backgroundColor: Colors.white,
           appBar: AppBarText('GifImage Demo'),
           children: <Widget>[
@@ -44,7 +44,7 @@ class _ImagePageState extends State<ImagePage> with TickerProviderStateMixin {
 class InputFieldPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return OverlayScaffold(
+    return ExtendedScaffold(
         backgroundColor: Colors.white,
         appBar: AppBarText('TextField Demo'),
         mainAxisAlignment: MainAxisAlignment.center,
@@ -109,7 +109,7 @@ class ToastPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const List<ToastType> toastList = ToastType.values;
-    return OverlayScaffold(
+    return ExtendedScaffold(
         backgroundColor: Colors.white,
         appBar: AppBarText('Toast Demo'),
         mainAxisAlignment: MainAxisAlignment.center,
@@ -124,7 +124,7 @@ class ToastPage extends StatelessWidget {
 
 class PinBoxPage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) => OverlayScaffold(
+  Widget build(BuildContext context) => ExtendedScaffold(
           backgroundColor: Colors.white,
           appBar: AppBarText('PinBox Demo'),
           mainAxisAlignment: MainAxisAlignment.center,
@@ -147,7 +147,7 @@ class PinBoxPage extends StatelessWidget {
 
 class CounterPage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) => OverlayScaffold(
+  Widget build(BuildContext context) => ExtendedScaffold(
           backgroundColor: Colors.white,
           appBar: AppBarText('Counter Demo'),
           mainAxisAlignment: MainAxisAlignment.center,
@@ -174,7 +174,7 @@ class CounterPage extends StatelessWidget {
 
 class ToggleRotatePage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) => OverlayScaffold(
+  Widget build(BuildContext context) => ExtendedScaffold(
           backgroundColor: Colors.white,
           appBar: AppBarText('ToggleRotate Demo'),
           mainAxisAlignment: MainAxisAlignment.center,
@@ -202,7 +202,7 @@ class ToggleRotatePage extends StatelessWidget {
 class ExpansionTilesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return OverlayScaffold(
+    return ExtendedScaffold(
         backgroundColor: Colors.white,
         appBar: AppBarText('ExpansionTiles Demo'),
         mainAxisAlignment: MainAxisAlignment.center,
@@ -227,7 +227,7 @@ class SimpleBuilderPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const int i = 0;
-    return OverlayScaffold(
+    return ExtendedScaffold(
         backgroundColor: Colors.white,
         appBar: AppBarText('SimpleBuilder Demo'),
         mainAxisAlignment: MainAxisAlignment.center,

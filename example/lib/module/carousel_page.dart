@@ -24,7 +24,7 @@ class _CarouselPageState extends State<CarouselPage> {
   ];
 
   @override
-  Widget build(BuildContext context) => OverlayScaffold(
+  Widget build(BuildContext context) => ExtendedScaffold(
           isScroll: true,
           backgroundColor: Colors.white,
           appBar: AppBarText('Carousel Demo'),
