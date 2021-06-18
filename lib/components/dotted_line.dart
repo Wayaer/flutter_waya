@@ -105,46 +105,57 @@ class _DottedPainter extends CustomPainter {
 }
 
 class DottedLineBorder extends BoxBorder {
-  const DottedLineBorder(
-      {this.top = BorderSide.none,
-      this.right = BorderSide.none,
-      this.bottom = BorderSide.none,
-      this.left = BorderSide.none,
-      this.dottedLength = 5,
-      this.dottedSpace = 3});
+  const DottedLineBorder({
+    this.top = BorderSide.none,
+    this.right = BorderSide.none,
+    this.bottom = BorderSide.none,
+    this.left = BorderSide.none,
+    this.length = 5,
+    this.space = 3,
+  });
 
   const DottedLineBorder.fromBorderSide(
     BorderSide side, {
-    this.dottedLength = 5,
-    this.dottedSpace = 3,
+    this.length = 5,
+    this.space = 3,
   })  : top = side,
         right = side,
         bottom = side,
         left = side;
 
-  const DottedLineBorder.symmetric(
-      {BorderSide vertical = BorderSide.none,
-      BorderSide horizontal = BorderSide.none,
-      this.dottedLength = 5,
-      this.dottedSpace = 3})
-      : left = vertical,
+  const DottedLineBorder.symmetric({
+    BorderSide vertical = BorderSide.none,
+    BorderSide horizontal = BorderSide.none,
+    this.length = 5,
+    this.space = 3,
+  })  : left = vertical,
         top = horizontal,
         right = vertical,
         bottom = horizontal;
 
-  factory DottedLineBorder.all(
-      {Color color = const Color(0xFF000000),
-      double width = 1.0,
-      double dottedLength = 5,
-      double dottedSpace = 3}) {
+  factory DottedLineBorder.all({
+    Color color = const Color(0xFF000000),
+    double width = 1.0,
+    double length = 5,
+    double space = 3,
+  }) {
     final BorderSide side =
         BorderSide(color: color, width: width, style: BorderStyle.solid);
-    return DottedLineBorder.fromBorderSide(side,
-        dottedLength: dottedLength, dottedSpace: dottedSpace);
+    return DottedLineBorder.fromBorderSide(side, length: length, space: space);
   }
 
-  final double dottedLength;
-  final double dottedSpace;
+  final double length;
+  final double space;
+
+  @override
+  final BorderSide top;
+
+  final BorderSide right;
+
+  @override
+  final BorderSide bottom;
+
+  final BorderSide left;
 
   static DottedLineBorder merge(DottedLineBorder a, DottedLineBorder b) {
     assert(BorderSide.canMerge(a.top, b.top));
@@ -156,11 +167,10 @@ class DottedLineBorder extends BoxBorder {
         right: BorderSide.merge(a.right, b.right),
         bottom: BorderSide.merge(a.bottom, b.bottom),
         left: BorderSide.merge(a.left, b.left),
-        dottedSpace: a.dottedSpace + b.dottedSpace,
-        dottedLength: a.dottedLength + b.dottedLength);
+        space: a.space + b.space,
+        length: a.length + b.length);
   }
 
-  @override
   @override
   EdgeInsetsGeometry get dimensions =>
       EdgeInsets.fromLTRB(left.width, top.width, right.width, bottom.width);
@@ -207,9 +217,7 @@ class DottedLineBorder extends BoxBorder {
               final Paint paint = top.toPaint();
               final Rect inner = rect.deflate(width);
               canvas.drawPath(
-                  _buildDashPath(
-                      Path()..addOval(inner), dottedLength, dottedSpace),
-                  paint);
+                  _buildDashPath(Path()..addOval(inner), length, space), paint);
               break;
             case BoxShape.rectangle:
               if (borderRadius != null) {
@@ -221,14 +229,12 @@ class DottedLineBorder extends BoxBorder {
                     ..style = PaintingStyle.stroke
                     ..strokeWidth = 0.0;
                   canvas.drawPath(
-                      _buildDashPath(
-                          Path()..addRRect(outer), dottedLength, dottedSpace),
+                      _buildDashPath(Path()..addRRect(outer), length, space),
                       paint);
                 } else {
                   final RRect inner = outer.deflate(width);
                   canvas.drawPath(
-                      _buildDashPath(
-                          Path()..addRRect(inner), dottedLength, dottedSpace),
+                      _buildDashPath(Path()..addRRect(inner), length, space),
                       paint
                         ..isAntiAlias = true
                         ..style = PaintingStyle.stroke
@@ -240,7 +246,7 @@ class DottedLineBorder extends BoxBorder {
               final Paint paint = top.toPaint();
               canvas.drawPath(
                   _buildDashPath(Path()..addRect(rect.deflate(width / 2.0)),
-                      dottedLength, dottedSpace),
+                      length, space),
                   paint);
               break;
           }
@@ -295,7 +301,7 @@ class DottedLineBorder extends BoxBorder {
         path.lineTo(rect.right, rect.top + top.width / 2);
         paint.style = PaintingStyle.stroke;
 
-        canvas.drawPath(_buildDashPath(path, dottedLength, dottedSpace),
+        canvas.drawPath(_buildDashPath(path, length, space),
             paint..strokeWidth = top.width);
         break;
       case BorderStyle.none:
@@ -308,7 +314,7 @@ class DottedLineBorder extends BoxBorder {
         path.moveTo(rect.right, rect.top);
         path.lineTo(rect.right, rect.bottom);
         paint.style = PaintingStyle.stroke;
-        canvas.drawPath(_buildDashPath(path, dottedLength, dottedSpace),
+        canvas.drawPath(_buildDashPath(path, length, space),
             paint..strokeWidth = right.width);
         break;
       case BorderStyle.none:
@@ -322,7 +328,7 @@ class DottedLineBorder extends BoxBorder {
         path.moveTo(rect.right, rect.bottom);
         path.lineTo(rect.left, rect.bottom);
         paint.style = PaintingStyle.stroke;
-        canvas.drawPath(_buildDashPath(path, dottedLength, dottedSpace),
+        canvas.drawPath(_buildDashPath(path, length, space),
             paint..strokeWidth = bottom.width);
         break;
       case BorderStyle.none:
@@ -336,7 +342,7 @@ class DottedLineBorder extends BoxBorder {
         path.moveTo(rect.left + left.width / 2, rect.bottom);
         path.lineTo(rect.left + left.width / 2, rect.top);
         paint.style = PaintingStyle.stroke;
-        canvas.drawPath(_buildDashPath(path, dottedLength, dottedSpace),
+        canvas.drawPath(_buildDashPath(path, length, space),
             paint..strokeWidth = left.width);
         break;
       case BorderStyle.none:
@@ -344,14 +350,14 @@ class DottedLineBorder extends BoxBorder {
     }
   }
 
-  Path _buildDashPath(Path path, double dottedLength, double dottedSpace) {
+  Path _buildDashPath(Path path, double length, double space) {
     final Path r = Path();
     for (final PathMetric metric in path.computeMetrics()) {
       double start = 0.0;
       while (start < metric.length) {
-        final double end = start + dottedLength;
+        final double end = start + length;
         r.addPath(metric.extractPath(start, end), Offset.zero);
-        start = end + dottedSpace;
+        start = end + space;
       }
     }
     return r;
@@ -374,14 +380,4 @@ class DottedLineBorder extends BoxBorder {
       return DottedLineBorder.merge(this, other);
     return null;
   }
-
-  @override
-  final BorderSide top;
-
-  final BorderSide right;
-
-  @override
-  final BorderSide bottom;
-
-  final BorderSide left;
 }
