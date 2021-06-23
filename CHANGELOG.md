@@ -1,3 +1,6 @@
+## [1.11.1]
+  * remove [DottedLine]
+  * add [DottedLinePainter]
 ## [1.11.0]
   * change [PopupBase] to [PopupOptions] 
   * change [GlobalWidgetsApp] to [ExtendedWidgetsApp] 

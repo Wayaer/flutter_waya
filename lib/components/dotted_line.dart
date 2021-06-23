@@ -4,40 +4,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 /// 虚线
-class DottedLine extends StatelessWidget {
-  const DottedLine({
-    Key? key,
-    double? strokeWidth,
-    Color? color,
-    double? gap,
-    double? width,
-    double? height,
-    this.margin,
-  })  : strokeWidth = strokeWidth ?? 1,
-        color = color ?? Colors.greenAccent,
-        gap = gap ?? 5.0,
-        height = height ?? 1.0,
-        width = width ?? double.infinity,
-        super(key: key);
-  final double strokeWidth;
-  final Color color;
-  final double gap;
-  final double width;
-  final double height;
-  final EdgeInsetsGeometry? margin;
-
-  @override
-  Widget build(BuildContext context) => Container(
-      width: width,
-      height: height,
-      margin: margin,
-      child: CustomPaint(
-          painter: _DottedPainter(
-              color: color, strokeWidth: strokeWidth, gap: gap)));
-}
-
-class _DottedPainter extends CustomPainter {
-  _DottedPainter(
+class DottedLinePainter extends CustomPainter {
+  DottedLinePainter(
       {this.strokeWidth = 5.0,
       this.color = Colors.greenAccent,
       this.gap = 5.0});
