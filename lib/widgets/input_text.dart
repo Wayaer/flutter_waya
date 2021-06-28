@@ -52,13 +52,43 @@ enum InputTextType {
 ///  按回车时调用 先调用此方法  然后调用onSubmitted方法
 ///  final VoidCallback? onEditingComplete;
 ///  final ValueCallback<String>? onSubmitted;
+///
+///
+///   键盘颜色    Brightness.dark 深色模式
+///   final Brightness keyboardAppearance;
+///
+///
 ///  长按输入的文字时，true显示系统的粘贴板  false不显示
 ///  final bool enableInteractiveSelection;
-///  TextCapitalization.characters,  ///  输入时键盘的英文都是大写
-///  TextCapitalization.none,  ///  键盘英文默认显示小写
-///  TextCapitalization.sentences, ///  在输入每个句子的第一个字母时，键盘大写形式，输入后续字母时键盘小写形式
-///  TextCapitalization.words,///  在输入每个单词的第一个字母时，键盘大写形式，输入其他字母时键盘小写形式
+///
+///
+///       设置键盘上enter键的显示内容
+///       textInputAction: TextInputAction.search, ///  搜索
+///       textInputAction: TextInputAction.none,///  默认回车符号
+///       textInputAction: TextInputAction.done,///  安卓显示 回车符号
+///       textInputAction: TextInputAction.go,///  开始
+///       textInputAction: TextInputAction.next,///  下一步
+///       textInputAction: TextInputAction.send,///  发送
+///       textInputAction: TextInputAction.continueAction,///  android  不支持
+///       textInputAction: TextInputAction.emergencyCall,///  android  不支持
+///       textInputAction: TextInputAction.newline,///  安卓显示 回车符号
+///       textInputAction: TextInputAction.route,///  android  不支持
+///       textInputAction: TextInputAction.join,///  android  不支持
+///       textInputAction: TextInputAction.previous,///  安卓显示 回车符号
+///       textInputAction: TextInputAction.unspecified,///  安卓显示 回车符号
+///  final TextInputAction? textInputAction,
+///
+///
+///     输入时键盘的英文都是大写
+///     textCapitalization: TextCapitalization.characters,
+///     键盘英文默认显示小写
+///     textCapitalization:  TextCapitalization.none,
+///     在输入每个句子的第一个字母时，键盘大写形式，输入后续字母时键盘小写形式
+///     textCapitalization:  TextCapitalization.sentences,
+///     在输入每个单词的第一个字母时，键盘大写形式，输入其他字母时键盘小写形式
+///     textCapitalization: TextCapitalization.words,
 ///  final TextCapitalization textCapitalization;
+///
 ///  自定义数字显示   指定maxLength后 右下角会出现字数，flutter有默认实现  可以通过这个自定义
 ///  final InputCounterWidgetBuilder? buildCounter;
 
