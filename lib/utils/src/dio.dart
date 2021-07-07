@@ -70,8 +70,9 @@ class DioTools {
     dynamic data,
     HttpType httpType = HttpType.get,
     BaseOptions? options,
+    bool useLog = true,
   }) async {
-    log('\n==================== 开始一个请求 ====================\n');
+    if (useLog) log('\n==================== 开始一个请求 ====================\n');
     try {
       _initOptions(_dio, options: options);
       log('${httpType.toString()} url:$url  params:${params.toString()}  data:${data.toString()}');
@@ -103,27 +104,34 @@ class DioTools {
           break;
       }
       final ResponseModel responseModel = ResponseModel.formResponse(response);
-      if (responseModel.requestOptions.responseType != ResponseType.bytes &&
+      if (useLog &&
+          responseModel.requestOptions.responseType != ResponseType.bytes &&
           responseModel.requestOptions.responseType != ResponseType.stream) {
         log('$httpType url:$url  responseData==  ${responseModel.toMap()}');
       }
       responseModel.baseOptions = _dio.options;
       if (logTools) setHttpData(responseModel);
-      log('\n==================== 结束一个请求 ====================\n');
+      if (useLog) log('\n==================== 结束一个请求 ====================\n');
       return responseModel;
     } on DioError catch (e) {
       final DioError error = e;
       final ResponseModel responseModel = ResponseModel.mergeError(error);
-      log('error:$url  errorData==  ${responseModel.toMap()}');
-      log('\n==================== 结束一个请求 DioError ====================\n');
+
       responseModel.baseOptions = _dio.options;
       if (logTools) setHttpData(responseModel);
+      if (useLog) {
+        log('error:$url  errorData==  ${responseModel.toMap()}');
+        log('\n==================== 结束一个请求 DioError ====================\n');
+      }
       return responseModel;
     } catch (e) {
       final ResponseModel responseModel = ResponseModel.constResponseModel();
-      log('\n==================== 结束一个请求 catch ====================\n');
+
       responseModel.baseOptions = _dio.options;
       if (logTools) setHttpData(responseModel);
+      if (useLog) {
+        log('\n==================== 结束一个请求 catch ====================\n');
+      }
       return responseModel;
     }
   }
@@ -134,24 +142,30 @@ class DioTools {
     String savePath, {
     ProgressCallback? onReceiveProgress,
     BaseOptions? options,
+    bool useLog = true,
   }) async {
     try {
-      log('\n==================== 开始下载 ====================\n');
-      log('Download url:$url  savePath:${savePath.toString()}');
+      if (useLog) {
+        log('\n==================== 开始下载 ====================\n');
+        log('Download url:$url  savePath:${savePath.toString()}');
+      }
       final Dio dio = Dio();
       _initOptions(dio, options: options);
       final Response<dynamic> response = await dio.download(url, savePath,
           cancelToken: _cancelToken, onReceiveProgress: onReceiveProgress);
-      log('\n==================== 下载结束 ====================\n');
+      if (useLog) log('\n==================== 下载结束 ====================\n');
       return ResponseModel.formResponse(response, baseOptions: dio.options);
     } on DioError catch (e) {
       final DioError error = e;
       final ResponseModel responseModel = ResponseModel.mergeError(error);
-      log('error:$url  errorData==  ${responseModel.toMap()}');
-      log('\n==================== 下载结束 DioError ====================\n');
+      if (useLog) {
+        log('error:$url  errorData==  ${responseModel.toMap()}');
+        log('\n==================== 下载结束 DioError ====================\n');
+      }
       return responseModel;
     } catch (e) {
-      log('\n==================== 下载结束 catch ====================\n');
+      if (useLog)
+        log('\n==================== 下载结束 catch ====================\n');
       return ResponseModel.constResponseModel();
     }
   }
@@ -165,10 +179,13 @@ class DioTools {
     CancelToken? cancelToken,
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
+    bool useLog = true,
   }) async {
     try {
-      log('\n==================== 开始上传 ====================\n');
-      log('Upload url:$url  params:${params.toString()}  data:${data.toString()}');
+      if (useLog) {
+        log('\n==================== 开始上传 ====================\n');
+        log('Upload url:$url  params:${params.toString()}  data:${data.toString()}');
+      }
       final Dio dio = Dio();
       _initOptions(dio, options: options);
       final Response<dynamic> response = await dio.post<dynamic>(url,
@@ -177,15 +194,17 @@ class DioTools {
           cancelToken: cancelToken ?? _cancelToken,
           onSendProgress: onSendProgress,
           onReceiveProgress: onReceiveProgress);
-      log('\n==================== 结束上传 ====================\n');
+      if (useLog) log('\n==================== 结束上传 ====================\n');
       return ResponseModel.formResponse(response, baseOptions: dio.options);
     } on DioError catch (e) {
       final DioError error = e;
       final ResponseModel responseModel = ResponseModel.mergeError(error);
-      log('\n==================== 结束上传 DioError ====================\n');
+      if (useLog)
+        log('\n==================== 结束上传 DioError ====================\n');
       return responseModel;
     } catch (e) {
-      log('\n==================== 结束上传 catch ====================\n');
+      if (useLog)
+        log('\n==================== 结束上传 catch ====================\n');
       return ResponseModel.constResponseModel();
     }
   }

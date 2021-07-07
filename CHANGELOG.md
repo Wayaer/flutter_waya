@@ -1,3 +1,5 @@
+## [1.11.2]
+  *  DioTools add [useLog]
 ## [1.11.1]
   * remove [DottedLine]
   * add [DottedLinePainter]
