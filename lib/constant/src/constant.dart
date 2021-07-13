@@ -14,14 +14,8 @@ class ConstConstant {
   /// 导航栏高度
   static const double appBarHeight = 43;
 
-  /// picker itemHeight
-  static const double pickerItemHeight = 22;
-
   /// picker 高
   static const double pickerHeight = 200;
-
-  /// 放大倍率
-  static const double listWheelMagnification = 1.1;
 
   static const String success = 'success';
 

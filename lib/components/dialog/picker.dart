@@ -50,16 +50,16 @@ class PickerOptions {
 
 class PickerWheel {
   PickerWheel(
-      {this.itemHeight,
-      this.isCupertino,
+      {this.itemHeight = 22,
+      this.isCupertino = false,
       this.itemWidth,
-      this.diameterRatio,
-      this.offAxisFraction,
-      this.perspective,
-      this.magnification,
-      this.useMagnifier,
-      this.squeeze,
-      this.physics});
+      this.diameterRatio = 1,
+      this.offAxisFraction = 0,
+      this.perspective = 0.01,
+      this.magnification = 1.1,
+      this.useMagnifier = false,
+      this.squeeze = 1,
+      this.physics = const FixedExtentScrollPhysics()});
 
   ///  以下为ListWheel属性
   ///  高度
@@ -84,7 +84,7 @@ class PickerWheel {
   ///  是否启用放大镜
   final bool? useMagnifier;
 
-  ///  1或者2
+  /// 上下间距默认为1 数越小 间距越大
   final double? squeeze;
   final ScrollPhysics? physics;
 }

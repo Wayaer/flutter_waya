@@ -44,12 +44,12 @@ class ListWheel extends StatefulWidget {
         offAxisFraction = offAxisFraction ?? 0,
         initialIndex = initialIndex ?? 0,
         perspective = perspective ?? 0.01,
-        magnification = magnification ?? ConstConstant.listWheelMagnification,
+        magnification = magnification ?? 1.1,
         useMagnifier = useMagnifier ?? false,
         looping = looping ?? false,
         squeeze = squeeze ?? 1,
         isCupertino = isCupertino ?? true,
-        itemExtent = itemExtent ?? ConstConstant.pickerItemHeight,
+        itemExtent = itemExtent ?? 22,
         physics = physics ?? const FixedExtentScrollPhysics(),
         super(key: key) {
     if (childDelegateType == ListWheelChildDelegateType.list ||
@@ -95,7 +95,7 @@ class ListWheel extends StatefulWidget {
   ///  是否启用放大镜
   final bool useMagnifier;
 
-  ///  1或者2
+  /// 上下间距默认为1 数越小 间距越大
   final double squeeze;
 
   ///
