@@ -14,7 +14,7 @@ class PickerPage extends StatelessWidget {
           ]);
 
   Future<void> selectTime() async {
-    final String text = await showDateTimePicker<String>(
+    final String? text = await showDateTimePicker<String>(
         startDate: DateTime(2020, 12, 20),
         defaultDate: DateTime(2021, 11, 16),
         endDate: DateTime(2022, 1, 10));
@@ -22,7 +22,7 @@ class PickerPage extends StatelessWidget {
   }
 
   Future<void> selectCity() async {
-    final String data = await showAreaPicker<String>();
+    final String? data = await showAreaPicker<String>();
     if (data != null) showToast(data.toString());
   }
 
@@ -38,7 +38,7 @@ class PickerPage extends StatelessWidget {
       '八',
       '十'
     ];
-    final int index = await showMultipleChoicePicker<int>(
+    final int? index = await showMultipleChoicePicker<int>(
         itemBuilder: (_, int index) =>
             Container(alignment: Alignment.center, child: Text(list[index])),
         wheel: PickerWheel(itemHeight: 24, useMagnifier: false),

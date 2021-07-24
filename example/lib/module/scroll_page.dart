@@ -79,7 +79,7 @@ class ScrollViewPage extends StatelessWidget {
 }
 
 class _ScrollListSeparatedPage extends StatelessWidget {
-  const _ScrollListSeparatedPage(this.scrollController, {Key key})
+  const _ScrollListSeparatedPage(this.scrollController, {Key? key})
       : super(key: key);
 
   final ScrollController scrollController;
@@ -131,7 +131,7 @@ class _ScrollListSeparatedPage extends StatelessWidget {
 }
 
 class _ScrollListPlaceholderPage extends StatelessWidget {
-  const _ScrollListPlaceholderPage(this.scrollController, {Key key})
+  const _ScrollListPlaceholderPage(this.scrollController, {Key? key})
       : super(key: key);
 
   final ScrollController scrollController;
@@ -183,7 +183,7 @@ class _ScrollListPlaceholderPage extends StatelessWidget {
 }
 
 class _ScrollListBuilderPage extends StatelessWidget {
-  const _ScrollListBuilderPage(this.scrollController, {Key key})
+  const _ScrollListBuilderPage(this.scrollController, {Key? key})
       : super(key: key);
 
   final ScrollController scrollController;
@@ -243,7 +243,7 @@ class _ScrollListBuilderPage extends StatelessWidget {
 }
 
 class _ScrollListPage extends StatelessWidget {
-  const _ScrollListPage(this.scrollController, {Key key}) : super(key: key);
+  const _ScrollListPage(this.scrollController, {Key? key}) : super(key: key);
 
   final ScrollController scrollController;
 
@@ -309,7 +309,7 @@ class _ScrollListPage extends StatelessWidget {
 }
 
 class _ScrollListCountPage extends StatelessWidget {
-  const _ScrollListCountPage(this.scrollController, {Key key})
+  const _ScrollListCountPage(this.scrollController, {Key? key})
       : super(key: key);
 
   final ScrollController scrollController;
@@ -356,7 +356,7 @@ class _ScrollListCountPage extends StatelessWidget {
 }
 
 class _RefreshScrollViewPage extends StatelessWidget {
-  const _RefreshScrollViewPage({Key key}) : super(key: key);
+  const _RefreshScrollViewPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => ExtendedScaffold(
@@ -396,7 +396,7 @@ class _RefreshScrollViewPage extends StatelessWidget {
 }
 
 class _CustomScrollViewPage extends StatelessWidget {
-  const _CustomScrollViewPage({Key key}) : super(key: key);
+  const _CustomScrollViewPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => ExtendedScaffold(
@@ -414,7 +414,7 @@ class _CustomScrollViewPage extends StatelessWidget {
 }
 
 class _ExtendedScrollViewNestedPage extends StatelessWidget {
-  const _ExtendedScrollViewNestedPage(this.slivers, {Key key})
+  const _ExtendedScrollViewNestedPage(this.slivers, {Key? key})
       : super(key: key);
 
   final List<Widget> slivers;
@@ -444,7 +444,7 @@ class _ExtendedScrollViewNestedPage extends StatelessWidget {
 }
 
 class _ExtendedScrollViewPage extends StatelessWidget {
-  const _ExtendedScrollViewPage(this.slivers, {Key key}) : super(key: key);
+  const _ExtendedScrollViewPage(this.slivers, {Key? key}) : super(key: key);
 
   final List<Widget> slivers;
 
@@ -471,7 +471,7 @@ class _Item extends StatelessWidget {
 }
 
 class _DraggableScrollbar extends StatelessWidget {
-  const _DraggableScrollbar(this.scrollController, {Key key}) : super(key: key);
+  const _DraggableScrollbar(this.scrollController, {Key? key}) : super(key: key);
 
   final ScrollController scrollController;
 

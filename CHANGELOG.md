@@ -1,5 +1,6 @@
 ## [1.11.2]
-  *  DioTools add [useLog]
+  * DioTools add [useLog]
+  * add [ExtensionFunction] including debounce function and throttle function
 ## [1.11.1]
   * remove [DottedLine]
   * add [DottedLinePainter]

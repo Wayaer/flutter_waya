@@ -9,7 +9,7 @@ class UniversalPage extends StatefulWidget {
 
 class _UniversalPageState extends State<UniversalPage>
     with SingleTickerProviderStateMixin {
-  AnimationController controller;
+  late AnimationController controller;
 
   @override
   void initState() {
@@ -96,14 +96,11 @@ class _UniversalPageState extends State<UniversalPage>
       const SizedBox(height: 10),
       ValueBuilder<bool>(
           initialValue: false,
-          builder: (_, bool value, Function update) {
+          builder: (_, bool? value, Function update) {
             return Checkbox(
-              value: value,
-              shape: const CircleBorder(),
-              onChanged: (bool v) {
-                update(v);
-              },
-            );
+                value: value,
+                shape: const CircleBorder(),
+                onChanged: (bool? v) => update(v));
           })
     ];
     children = children.builder((Widget item) => SizeTransition(

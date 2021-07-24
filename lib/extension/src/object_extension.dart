@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:flutter_waya/flutter_waya.dart';
+
 import '../extension.dart';
 
 extension ExtensionUint8List on Uint8List {
@@ -128,43 +130,43 @@ extension ExtensionMap<K, V> on Map<K, V> {
 }
 
 enum DateTimeDist {
-  ///  2020-01-01 00:00:00
+  /// 2020-01-01 00:00:00
   yearSecond,
 
-  ///  2020-01-01 00:00
+  /// 2020-01-01 00:00
   yearMinute,
 
-  ///  2020-01-01 00
+  /// 2020-01-01 00
   yearHour,
 
-  ///  2020-01-01
+  /// 2020-01-01
   yearDay,
 
-  ///  01-01 00:00:00
+  /// 01-01 00:00:00
   monthSecond,
 
-  ///  01-01 00:00
+  /// 01-01 00:00
   monthMinute,
 
-  ///  01-01 00
+  /// 01-01 00
   monthHour,
 
-  ///  01-01
+  /// 01-01
   monthDay,
 
-  ///  01 00:00:00
+  /// 01 00:00:00
   daySecond,
 
-  ///  01 00:00
+  /// 01 00:00
   dayMinute,
 
-  ///  01 00
+  /// 01 00
   dayHour,
 
-  ///  00:00:00
+  /// 00:00:00
   hourSecond,
 
-  ///  00:00
+  /// 00:00
   hourMinute,
 }
 
@@ -241,26 +243,29 @@ extension DurationExtension on Duration {
   /// 需要手动释放timer
   Timer timerPeriodic(void callback(Timer timer)) =>
       Timer.periodic(this, (Timer time) => callback(time));
+}
 
-  /// 防抖函数
-  /// 最后一次触发结束的一段时间之后，再去执行
-  void debounce(Function function) => timer(() => function.call());
+extension ExtensionFunction on Function() {
+  /// 函数防抖
+  Function() debounce([Duration delay = const Duration(seconds: 2)]) {
+    Timer? timer;
+    log('timer start ');
+    return () {
+      if (timer?.isActive ?? false) timer?.cancel();
+      timer = Timer(delay, () => this.call());
+    };
+  }
 
-  /// 节流函数
-  void throttle(Function function,
-      {String? throttleId,
-      Duration duration = const Duration(seconds: 1),
-      Map<String, int>? startTime,
-      Function? continueClick}) {
-    throttleId ??= 'DeFaultThrottleId';
-    startTime ??= <String, int>{throttleId: 0};
-    final int currentTime = DateTime.now().millisecondsSinceEpoch;
-
-    if (currentTime - (startTime[throttleId] ?? 0) > duration.inMilliseconds) {
-      function.call();
-      startTime[throttleId] = DateTime.now().millisecondsSinceEpoch;
-    } else {
-      continueClick?.call();
-    }
+  /// 截流函数
+  Function() throttle([Duration delay = const Duration(seconds: 2)]) {
+    bool enable = true;
+    log('enable start $enable');
+    return () {
+      if (enable == true) {
+        enable = false;
+        this.call();
+        delay.delayed(() => enable = true);
+      }
+    };
   }
 }

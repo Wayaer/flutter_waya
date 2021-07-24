@@ -11,7 +11,7 @@ class ImagePage extends StatefulWidget {
 }
 
 class _ImagePageState extends State<ImagePage> with TickerProviderStateMixin {
-  GifController controller;
+  late GifController controller;
 
   String uri =
       'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3681478079,2138136230&fm=26&gp=0.jpg';
@@ -234,39 +234,42 @@ class SimpleBuilderPage extends StatelessWidget {
         children: <Widget>[
           ValueBuilder<int>(
               initialValue: i,
-              builder: (BuildContext context, int value,
-                  ValueCallback<int> updater) {
+              builder: (_, int? value, ValueCallback<int> updater) {
                 return Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       IconBox(
                           icon: Icons.remove_circle_outline,
                           onTap: () {
-                            updater(value -= 1);
+                            int v = value ?? 0;
+                            v -= 1;
+                            updater(v);
                           }),
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(value.toString()),
-                      ),
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(value.toString())),
                       IconBox(
                           icon: Icons.add_circle_outline,
                           onTap: () {
-                            updater(value += 1);
+                            int v = value ?? 0;
+                            v += 1;
+                            updater(v);
                           })
                     ]);
               }),
           const Center(child: SizedBox(height: 30)),
           ValueListenBuilder<int>(
               initialValue: 1,
-              builder:
-                  (BuildContext context, ValueNotifier<int> valueListenable) {
+              builder: (_, ValueNotifier<int?> valueListenable) {
                 return Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       IconBox(
                           icon: Icons.remove_circle_outline,
                           onTap: () {
-                            valueListenable.value -= 1;
+                            int num = valueListenable.value ?? 0;
+                            num -= 1;
+                            valueListenable.value = num;
                           }),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -275,7 +278,9 @@ class SimpleBuilderPage extends StatelessWidget {
                       IconBox(
                           icon: Icons.add_circle_outline,
                           onTap: () {
-                            valueListenable.value += 1;
+                            int num = valueListenable.value ?? 0;
+                            num += 1;
+                            valueListenable.value = num;
                           })
                     ]);
               }),

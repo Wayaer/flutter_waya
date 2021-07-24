@@ -26,7 +26,7 @@ class ButtonPage extends StatelessWidget {
             const SizedBox(height: 20),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
               DropdownMenuButton(
-                defaultBuilder: (int index) {
+                defaultBuilder: (int? index) {
                   return BText(index == null ? '请选择' : _colors[index],
                       color: Colors.black);
                 },
@@ -50,7 +50,7 @@ class ButtonPage extends StatelessWidget {
               const SizedBox(width: 30),
               DropdownButton<String>(
                   value: _colors[0],
-                  onChanged: (String value) {},
+                  onChanged: (String? value) {},
                   items: _colors.builder((String item) =>
                       DropdownMenuItem<String>(
                           value: item, child: Text(item)))),
@@ -59,7 +59,7 @@ class ButtonPage extends StatelessWidget {
                   itemBuilder: (int index) =>
                       BText(_colors[index], color: Colors.black),
                   itemCount: _colors.length,
-                  defaultBuilder: (int index) {
+                  defaultBuilder: (int? index) {
                     return BText(index == null ? '请选择' : _colors[index],
                             color: Colors.black)
                         .paddingSymmetric(vertical: 10);

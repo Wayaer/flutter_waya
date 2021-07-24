@@ -16,9 +16,7 @@ export 'src/dio.dart';
 export 'src/event.dart';
 export 'src/screen_fit.dart';
 
-void log_d(dynamic msg) {
-  debugPrint(msg.toString());
-}
+void logDebug(dynamic msg) => debugPrint(msg.toString());
 
 void log(dynamic msg) {
   final String message = msg.toString();

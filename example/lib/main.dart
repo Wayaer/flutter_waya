@@ -4,6 +4,7 @@ import 'package:flutter_curiosity/flutter_curiosity.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 import 'package:waya/module/button_page.dart';
 import 'package:waya/module/carousel_page.dart';
+import 'package:waya/module/extension_page.dart';
 import 'package:waya/module/json_parse_page.dart';
 import 'package:waya/module/pages.dart';
 import 'package:waya/module/picker_page.dart';
@@ -25,7 +26,7 @@ void _des() {
   const String key = 'a51d3484ad8445df9d9e7aa5e8';
   log('des解密==>\n key = $key \n String = $str');
   final DES des = DES(DESEngine(), 'a51d3484ad8445df9d9e7aa5e8');
-  final String decoded = des.decodeBase64(str);
+  final String? decoded = des.decodeBase64(str);
   log('des解密完成==> $decoded');
 }
 
@@ -75,6 +76,7 @@ class _Home extends StatelessWidget {
         ElevatedText('EasyRefreshed', onTap: () => push(EasyRefreshPage())),
         ElevatedText('SimpleBuilder', onTap: () => push(SimpleBuilderPage())),
         ElevatedText('TextField', onTap: () => push(InputFieldPage())),
+        ElevatedText('Extension', onTap: () => push(const ExtensionPage())),
         ElevatedText('showSnackBar', onTap: () {
           showSnackBar(SnackBar(content: BText('Popup SnackBar')));
         }),
@@ -92,7 +94,7 @@ class _Home extends StatelessWidget {
 }
 
 class AppBarText extends AppBar {
-  AppBarText(String text, {Key key})
+  AppBarText(String text, {Key? key})
       : super(
             key: key,
             elevation: 0,
@@ -106,10 +108,10 @@ class AppBarText extends AppBar {
 const Color color = Colors.amber;
 
 class ElevatedText extends StatelessWidget {
-  const ElevatedText(this.text, {Key key, this.onTap}) : super(key: key);
+  const ElevatedText(this.text, {Key? key, this.onTap}) : super(key: key);
 
   final String text;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) => SimpleButton(
