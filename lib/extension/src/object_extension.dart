@@ -249,7 +249,6 @@ extension ExtensionFunction on Function() {
   /// 函数防抖
   Function() debounce([Duration delay = const Duration(seconds: 2)]) {
     Timer? timer;
-    log('timer start ');
     return () {
       if (timer?.isActive ?? false) timer?.cancel();
       timer = Timer(delay, () => this.call());
@@ -259,7 +258,6 @@ extension ExtensionFunction on Function() {
   /// 截流函数
   Function() throttle([Duration delay = const Duration(seconds: 2)]) {
     bool enable = true;
-    log('enable start $enable');
     return () {
       if (enable == true) {
         enable = false;
