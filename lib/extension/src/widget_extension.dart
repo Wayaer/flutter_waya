@@ -487,6 +487,7 @@ extension ExtensionWidget on Widget {
             fullscreenDialog: fullscreenDialog,
             builder: (_) => this);
       case WidgetMode.ripple:
+        assert(context != null);
         return RipplePageRoute<T>(
             builder: (_) => this,
             routeConfig: RouteConfig.fromContext(context!));
