@@ -1,3 +1,5 @@
+## [1.11.3]
+  * fix some bug
 ## [1.11.2]
   * DioTools add [useLog]
   * add [ExtensionFunction] including debounce function and throttle function

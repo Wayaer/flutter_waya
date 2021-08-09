@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -465,6 +466,38 @@ extension ExtensionWidget on Widget {
           excludeFromSemantics: excludeFromSemantics,
           dragStartBehavior: dragStartBehavior,
           child: this);
+
+  PageRoute<T> buildPageRoute<T>(
+      {bool maintainState = true,
+      bool fullscreenDialog = false,
+      required WidgetMode? widgetMode,
+      RouteSettings? settings,
+      BuildContext? context}) {
+    switch (widgetMode) {
+      case WidgetMode.cupertino:
+        return CupertinoPageRoute<T>(
+            settings: settings,
+            maintainState: maintainState,
+            fullscreenDialog: fullscreenDialog,
+            builder: (_) => this);
+      case WidgetMode.material:
+        return MaterialPageRoute<T>(
+            settings: settings,
+            maintainState: maintainState,
+            fullscreenDialog: fullscreenDialog,
+            builder: (_) => this);
+      case WidgetMode.ripple:
+        return RipplePageRoute<T>(
+            builder: (_) => this,
+            routeConfig: RouteConfig.fromContext(context!));
+      default:
+        return MaterialPageRoute<T>(
+            settings: settings,
+            maintainState: maintainState,
+            fullscreenDialog: fullscreenDialog,
+            builder: (_) => this);
+    }
+  }
 }
 
 extension ExtensionFlex on Flex {

@@ -7,25 +7,22 @@ class RouteConfig {
   RouteConfig.fromContext(BuildContext context) {
     final RenderBox renderBox = context.findRenderObject() as RenderBox;
     offset = renderBox.localToGlobal(renderBox.size.center(Offset.zero));
-    if (offset.dx > MediaQuery.of(context).size.width / 2) {
-      if (offset.dy > MediaQuery.of(context).size.height / 2) {
+    final Size size = MediaQuery.of(context).size;
+    if (offset.dx > size.width / 2) {
+      if (offset.dy > size.height / 2) {
         circleRadius = sqrt(pow(offset.dx, 2) + pow(offset.dy, 2)).toDouble();
       } else {
-        circleRadius = sqrt(pow(offset.dx, 2) +
-                pow(MediaQuery.of(context).size.height - offset.dy, 2))
+        circleRadius = sqrt(pow(offset.dx, 2) + pow(size.height - offset.dy, 2))
             .toDouble();
       }
     }
-    if (offset.dx <= MediaQuery.of(context).size.width / 2) {
-      if (offset.dy > MediaQuery.of(context).size.height / 2) {
-        circleRadius = sqrt(
-                pow(MediaQuery.of(context).size.width - offset.dx, 2) +
-                    pow(offset.dy, 2))
-            .toDouble();
+    if (offset.dx <= size.width / 2) {
+      if (offset.dy > size.height / 2) {
+        circleRadius =
+            sqrt(pow(size.width - offset.dx, 2) + pow(offset.dy, 2)).toDouble();
       } else {
-        circleRadius = sqrt(
-                pow(MediaQuery.of(context).size.width - offset.dx, 2) +
-                    pow(MediaQuery.of(context).size.height - offset.dy, 2))
+        circleRadius = sqrt(pow(size.width - offset.dx, 2) +
+                pow(size.height - offset.dy, 2))
             .toDouble();
       }
     }

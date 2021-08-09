@@ -510,47 +510,50 @@ class ExtendedScaffold extends StatelessWidget {
 ///  ************ 以下为 路由跳转 *****************  ///
 ///
 ///  打开新页面
-Future<T?> push<T extends Object?>(Widget widget,
-        {bool? maintainState,
-        bool? fullscreenDialog,
-        WidgetMode? widgetMode,
-        RouteSettings? settings,
-        BuildContext? context}) =>
-    _globalNavigatorKey.currentState!.push(_pageRoute(widget,
+Future<T?> push<T extends Object?>(
+  Widget widget, {
+  bool maintainState = true,
+  bool fullscreenDialog = false,
+  WidgetMode? widgetMode,
+  RouteSettings? settings,
+}) =>
+    _globalNavigatorKey.currentState!.push(widget.buildPageRoute(
         maintainState: maintainState,
         fullscreenDialog: fullscreenDialog,
-        context: context,
+        context: _globalNavigatorKey.currentState!.context,
         settings: settings,
-        widgetMode: widgetMode));
+        widgetMode: widgetMode ?? _widgetMode));
 
 /// 打开新页面替换当前页面
 Future<T?> pushReplacement<T extends Object?, TO extends Object?>(Widget widget,
-        {bool? maintainState,
-        bool? fullscreenDialog,
+        {bool maintainState = true,
+        bool fullscreenDialog = false,
         WidgetMode? widgetMode,
         RouteSettings? settings,
         TO? result}) =>
     _globalNavigatorKey.currentState!.pushReplacement(
-        _pageRoute(widget,
+        widget.buildPageRoute(
             settings: settings,
+            context: _globalNavigatorKey.currentState!.context,
             maintainState: maintainState,
             fullscreenDialog: fullscreenDialog,
-            widgetMode: widgetMode),
+            widgetMode: widgetMode ?? _widgetMode),
         result: result);
 
 /// 打开新页面 并移出堆栈所有页面
 Future<T?> pushAndRemoveUntil<T extends Object?>(Widget widget,
-        {bool? maintainState,
-        bool? fullscreenDialog,
+        {bool maintainState = true,
+        bool fullscreenDialog = false,
         WidgetMode? widgetMode,
         RouteSettings? settings,
         RoutePredicate? predicate}) =>
     _globalNavigatorKey.currentState!.pushAndRemoveUntil(
-        _pageRoute(widget,
+        widget.buildPageRoute(
             settings: settings,
             maintainState: maintainState,
             fullscreenDialog: fullscreenDialog,
-            widgetMode: widgetMode),
+            context: _globalNavigatorKey.currentState!.context,
+            widgetMode: widgetMode ?? _widgetMode),
         predicate ?? (_) => false);
 
 /// 可能返回到上一个页面
@@ -562,13 +565,14 @@ void pop<T extends Object>([T? result]) =>
     _globalNavigatorKey.currentState!.pop<T>(result);
 
 /// pop 返回简写 带参数  [nullBack] =true  navigator 返回为空 就继续返回上一页面
-void popBack(Future<dynamic> navigator, {bool nullBack = false}) {
+void popBack(Future<dynamic> navigator,
+    {bool nullBack = false, bool useMaybePop = false}) {
   final Future<dynamic> future = navigator;
   future.then((dynamic value) {
     if (nullBack) {
-      maybePop(value);
+      useMaybePop ? maybePop(value) : pop(value);
     } else {
-      if (value != null) pop(value);
+      if (value != null) useMaybePop ? maybePop(value) : pop(value);
     }
   });
 }
@@ -580,30 +584,3 @@ void popUntil(RoutePredicate predicate) =>
 WidgetMode _widgetMode = WidgetMode.cupertino;
 
 void setGlobalPushMode(WidgetMode widgetMode) => _widgetMode = widgetMode;
-
-PageRoute<T> _pageRoute<T>(Widget widget,
-    {bool? maintainState,
-    bool? fullscreenDialog,
-    WidgetMode? widgetMode,
-    RouteSettings? settings,
-    BuildContext? context}) {
-  switch (widgetMode ?? _widgetMode) {
-    case WidgetMode.cupertino:
-      return CupertinoPageRoute<T>(
-          settings: settings,
-          maintainState: maintainState ?? true,
-          fullscreenDialog: fullscreenDialog ?? false,
-          builder: (_) => widget);
-    case WidgetMode.material:
-      return MaterialPageRoute<T>(
-          settings: settings,
-          maintainState: maintainState ?? true,
-          fullscreenDialog: fullscreenDialog ?? false,
-          builder: (_) => widget);
-    case WidgetMode.ripple:
-      return RipplePageRoute<T>(
-          builder: (_) => widget,
-          routeConfig: RouteConfig.fromContext(
-              (context ?? _globalNavigatorKey.currentContext)!));
-  }
-}
