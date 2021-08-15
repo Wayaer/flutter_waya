@@ -7,13 +7,27 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 extension ExtensionWidget on Widget {
-  Widget backdropFilter({ImageFilter? filter, double fuzzyDegree = 4}) =>
+  BackdropFilter backdropFilter(
+          {Key? key, ImageFilter? filter, double fuzzyDegree = 4}) =>
       BackdropFilter(
+          key: key,
           filter: filter ??
               ImageFilter.blur(sigmaX: fuzzyDegree, sigmaY: fuzzyDegree),
           child: this);
 
-  Padding padding(EdgeInsetsGeometry padding, {Key? key}) =>
+  FittedBox fittedBox(
+          {Key? key,
+          BoxFit fit = BoxFit.contain,
+          AlignmentGeometry alignment = Alignment.center,
+          Clip clipBehavior = Clip.none}) =>
+      FittedBox(
+          key: key,
+          child: this,
+          fit: fit,
+          alignment: alignment,
+          clipBehavior: clipBehavior);
+
+  Padding padding(EdgeInsetsGeometry padding) =>
       Padding(key: key, padding: padding, child: this);
 
   Padding margin(EdgeInsetsGeometry margin, {Key? key}) =>
@@ -263,12 +277,6 @@ extension ExtensionWidget on Widget {
   SizedOverflowBox sizedOverflowBox(Size size,
           {Key? key, Alignment alignment = Alignment.center}) =>
       SizedOverflowBox(key: key, size: size, alignment: alignment, child: this);
-
-  FittedBox fittedBox(
-          {Key? key,
-          BoxFit fit = BoxFit.contain,
-          AlignmentGeometry alignment = Alignment.center}) =>
-      FittedBox(key: key, fit: fit, alignment: alignment, child: this);
 
   DecoratedBox decoratedBox(Decoration decoration,
           {Key? key,

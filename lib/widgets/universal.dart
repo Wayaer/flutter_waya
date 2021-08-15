@@ -152,6 +152,7 @@ class Universal extends StatelessWidget {
     this.heightFactor,
     this.filter,
     this.builder,
+    this.fit,
   })  : addCard = addCard ?? false,
         addInkWell = addInkWell ?? false,
         isScroll = isScroll ?? false,
@@ -277,6 +278,9 @@ class Universal extends StatelessWidget {
   final double? top;
   final double? right;
   final double? bottom;
+
+  ///  ****** [FittedBox] ******  ///
+  final BoxFit? fit;
 
   ///  ****** [Card] ******  ///
   final bool addCard;
@@ -629,6 +633,7 @@ class Universal extends StatelessWidget {
       current = Positioned(
           left: left, top: top, right: right, bottom: bottom, child: current);
     if (gaussian) backdropFilter(current);
+    if (fit != null) current = fittedBox(current);
     if (opacity != null && opacity! > 0)
       current = Opacity(opacity: opacity!, child: current);
 
@@ -637,6 +642,12 @@ class Universal extends StatelessWidget {
 
     return current;
   }
+
+  Widget fittedBox(Widget current) => FittedBox(
+      child: current,
+      fit: fit!,
+      alignment: alignment ?? Alignment.center,
+      clipBehavior: clipBehavior ?? Clip.none);
 
   Widget builderWidget(Widget current) {
     if (builder is StatefulWidgetBuilder) {
