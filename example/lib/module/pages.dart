@@ -130,9 +130,16 @@ class PinBoxPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             PinBox(
-                maxLength: 4,
+                maxLength: 5,
                 autoFocus: false,
-                boxSpacing: 10,
+                spaces: const <Widget?>[
+                  Icon(Icons.ac_unit, size: 12),
+                  Icon(Icons.ac_unit, size: 12),
+                  Icon(Icons.ac_unit, size: 12),
+                  Icon(Icons.ac_unit, size: 12),
+                  Icon(Icons.ac_unit, size: 12),
+                  Icon(Icons.ac_unit, size: 12),
+                ],
                 hasFocusPinDecoration: BoxDecoration(
                     color: Colors.purple,
                     border: Border.all(color: Colors.purple),

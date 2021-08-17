@@ -332,16 +332,15 @@ class PinBox extends StatefulWidget {
     this.controller,
     this.maxLength = 4,
     this.inputFormatter,
-    this.boxSpacing = 1,
     this.pinDecoration,
     this.hasFocusPinDecoration,
     this.pinTextStyle,
     this.decoration,
     this.boxSize = const Size(40, 40),
-    this.width,
     this.focusNode,
     this.onChanged,
     this.onDone,
+    this.spaces,
   })  : autoFocus = autoFocus ?? true,
         super(key: key);
 
@@ -366,9 +365,6 @@ class PinBox extends StatefulWidget {
   ///  输入框内容限制
   final List<TextInputFormatter>? inputFormatter;
 
-  ///  box 左右间距 设置 [width]后此参数失效
-  final double boxSpacing;
-
   ///  输入框焦点管理
   final FocusNode? focusNode;
 
@@ -387,8 +383,8 @@ class PinBox extends StatefulWidget {
   ///  box 方框的大小
   final Size boxSize;
 
-  ///  设置此参数后 [boxSize] 的宽度将失效
-  final double? width;
+  /// box 中间添加 东西
+  final List<Widget?>? spaces;
 
   @override
   _PinBoxState createState() => _PinBoxState();
@@ -397,25 +393,43 @@ class PinBox extends StatefulWidget {
 class _PinBoxState extends State<PinBox> {
   late FocusNode focusNode;
   late TextEditingController controller;
-  late List<String> texts = <String>[];
   late Size size;
+  List<Widget?> spaces = <Widget?>[];
+  List<String> texts = <String>[];
 
   @override
   void initState() {
     super.initState();
+    init();
+  }
+
+  void init() {
     size = widget.boxSize;
+    spaces = widget.spaces ?? <Widget?>[];
     controller = widget.controller ?? TextEditingController();
     focusNode = widget.focusNode ?? FocusNode();
   }
 
   @override
+  void didUpdateWidget(covariant PinBox oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.spaces != widget.spaces ||
+        oldWidget.maxLength != widget.maxLength ||
+        oldWidget.boxSize != widget.boxSize ||
+        oldWidget.decoration != widget.decoration ||
+        oldWidget.pinDecoration != widget.pinDecoration ||
+        oldWidget.controller != widget.controller ||
+        oldWidget.focusNode != widget.focusNode ||
+        oldWidget.hasFocusPinDecoration != widget.hasFocusPinDecoration) {
+      init();
+      setState(() {});
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final double width = size.width * widget.maxLength +
-        widget.boxSpacing * (widget.maxLength - 1);
     return Universal(
         isStack: true,
-        alignment: Alignment.center,
-        width: widget.width ?? width,
         height: size.height,
         decoration: widget.decoration,
         onTap: getFocus,
@@ -426,7 +440,7 @@ class _PinBoxState extends State<PinBox> {
   }
 
   Widget boxRow() {
-    final List<Widget> children = <Widget>[];
+    final List<Widget> box = <Widget>[];
     if (texts.length < widget.maxLength) {
       final int n = widget.maxLength - texts.length;
       for (int i = 0; i < n; i++) texts.add('');
@@ -434,7 +448,7 @@ class _PinBoxState extends State<PinBox> {
     bool hasFocus = false;
     for (int i = 0; i < widget.maxLength; i++) {
       if (texts[i].isEmpty) hasFocus = true;
-      children.add(Container(
+      box.add(Container(
           height: size.height,
           width: size.width,
           decoration:
@@ -442,11 +456,21 @@ class _PinBoxState extends State<PinBox> {
           alignment: Alignment.center,
           child: BText(texts[i], style: widget.pinTextStyle)));
     }
+    final List<Widget> children = <Widget>[];
+    if (spaces.isNotEmpty) {
+      (box.length + 1).generate((int index) {
+        if (index < spaces.length) {
+          final Widget? space = spaces[index];
+          if (space != null) children.add(space);
+        }
+        if (index < box.length) children.add(box[index]);
+      });
+    }
     return Universal(
         direction: Axis.horizontal,
         onTap: getFocus,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: children);
+        children: spaces.isNotEmpty ? children : box);
   }
 
   void getFocus() {
@@ -457,30 +481,29 @@ class _PinBoxState extends State<PinBox> {
   }
 
   Widget get pinTextInput => TextField(
-        focusNode: focusNode,
-        decoration: const InputDecoration(
-            contentPadding: EdgeInsets.zero,
-            isDense: false,
-            counter: null,
-            counterText: '',
-            border: InputBorder.none),
-        autofocus: widget.autoFocus,
-        maxLines: 1,
-        maxLength: widget.maxLength,
-        controller: controller,
-        style: const BTextStyle(color: Colors.transparent),
-        showCursor: false,
-        inputFormatters: widget.inputFormatter ??
-            inputTextTypeToTextInputFormatter(widget.inputTextType),
-        textAlign: TextAlign.center,
-        onChanged: (String text) {
-          texts = text.trim().split('');
-          if (widget.onChanged != null) widget.onChanged!(text);
-          if (widget.onDone != null && text.length == widget.maxLength)
-            widget.onDone!(text);
-          setState(() {});
-        },
-      );
+      focusNode: focusNode,
+      decoration: const InputDecoration(
+          contentPadding: EdgeInsets.zero,
+          isDense: false,
+          counter: null,
+          counterText: '',
+          border: InputBorder.none),
+      autofocus: widget.autoFocus,
+      maxLines: 1,
+      maxLength: widget.maxLength,
+      controller: controller,
+      style: const BTextStyle(color: Colors.transparent),
+      showCursor: false,
+      inputFormatters: widget.inputFormatter ??
+          inputTextTypeToTextInputFormatter(widget.inputTextType),
+      textAlign: TextAlign.center,
+      onChanged: (String text) {
+        texts = text.trim().split('');
+        if (widget.onChanged != null) widget.onChanged!(text);
+        if (widget.onDone != null && text.length == widget.maxLength)
+          widget.onDone!(text);
+        setState(() {});
+      });
 
   @override
   void dispose() {
