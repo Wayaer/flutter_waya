@@ -22,8 +22,6 @@ class Progress extends StatefulWidget {
     this.linearGradient,
     this.animation = false,
     this.animationDuration = const Duration(milliseconds: 500),
-    this.header,
-    this.footer,
     this.center,
     this.addAutomaticKeepAlive = true,
     this.circularStrokeCap = CircularStrokeCap.round,
@@ -40,8 +38,6 @@ class Progress extends StatefulWidget {
   })  : assert(startAngle! >= 0.0),
         assert(linearGradient != null || progressColor != null,
             'Cannot provide both linearGradient and progressColor'),
-        assert(percent > 0.0 || percent < 1.0,
-            'Percent value must be a double between 0.0 and 1.0'),
         assert(arcType == null || arcBackgroundColor != null,
             'arcType is required when you arcBackgroundColor'),
         backgroundColor = backgroundColor ?? ConstColors.black30,
@@ -49,11 +45,8 @@ class Progress extends StatefulWidget {
         state = _CircularState(),
         width = null,
         lineHeight = 0,
-        leading = null,
-        trailing = null,
         linearStrokeCap = LinearStrokeCap.butt,
         mainAxisAlignment = MainAxisAlignment.start,
-        padding = const EdgeInsets.symmetric(horizontal: 10.0),
         isRTL = false,
         clipLinearGradient = false,
         super(key: key);
@@ -70,12 +63,9 @@ class Progress extends StatefulWidget {
     this.animationDuration = const Duration(milliseconds: 500),
     this.animateFromLastPercent = true,
     this.isRTL = false,
-    this.leading,
-    this.trailing,
     this.center,
     this.addAutomaticKeepAlive = true,
     this.linearStrokeCap = LinearStrokeCap.butt,
-    this.padding = const EdgeInsets.symmetric(horizontal: 10.0),
     this.mainAxisAlignment = MainAxisAlignment.start,
     this.maskFilter,
     this.clipLinearGradient = false,
@@ -87,14 +77,10 @@ class Progress extends StatefulWidget {
         progressColor = progressColor ?? ConstColors.red,
         assert(linearGradient != null || progressColor != null,
             'Cannot provide both linearGradient and progressColor'),
-        assert(percent > 0.0 || percent < 1.0,
-            'Percent value must be a double between 0.0 and 1.0'),
         state = _LinearState(),
         radius = 0,
         lineWidth = 5.0,
         backgroundWidth = 1,
-        header = null,
-        footer = null,
         circularStrokeCap = CircularStrokeCap.round,
         startAngle = null,
         arcType = null,
@@ -151,7 +137,6 @@ class Progress extends StatefulWidget {
 
   //// circular
 
-  /// Percent value between 0.0 and 1.0
   final double radius;
 
   /// Width of the progress bar of the circle
@@ -159,12 +144,6 @@ class Progress extends StatefulWidget {
 
   /// Width of the unfilled background of the progress bar
   final double? backgroundWidth;
-
-  /// widget at the top of the circle
-  final Widget? header;
-
-  /// widget at the bottom of the circle
-  final Widget? footer;
 
   /// The kind of finish to place on the end of lines drawn, values
   /// supported: butt, round, square
@@ -194,21 +173,12 @@ class Progress extends StatefulWidget {
   /// Height of the line
   final double lineHeight;
 
-  /// widget at the left of the Line
-  final Widget? leading;
-
-  /// widget at the right of the Line
-  final Widget? trailing;
-
   /// The kind of finish to place on the end of lines drawn, values
   /// supported: butt, round, roundAll
   final LinearStrokeCap linearStrokeCap;
 
-  /// mainAxisAlignment of the Row (leading-widget-center-trailing)
+  /// mainAxisAlignment of the Row
   final MainAxisAlignment mainAxisAlignment;
-
-  /// padding to the LinearProgress
-  final EdgeInsets padding;
 
   /// set true if you want to animate the linear from the right to left (RTL)
   final bool isRTL;
@@ -232,7 +202,7 @@ abstract class _ProgressSubState extends State<Progress>
   @override
   void initState() {
     if (!widget.animation) percent = widget.percent;
-    if (widget.animation) {
+    if (widget.animation && widget.percent > 0) {
       animationController =
           AnimationController(vsync: this, duration: widget.animationDuration);
       animation = Tween<double>(begin: 0.0, end: widget.percent).animate(
@@ -256,7 +226,7 @@ abstract class _ProgressSubState extends State<Progress>
   void didUpdateWidget(Progress oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.percent != widget.percent) {
-      if (animationController != null) {
+      if (animationController != null && widget.percent > 0) {
         animationController!.duration = widget.animationDuration;
         animation = Tween<double>(
                 begin: widget.animateFromLastPercent ? oldWidget.percent : 0.0,
@@ -287,36 +257,32 @@ class _CircularState extends _ProgressSubState {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final List<Widget> items = <Widget>[];
-    if (widget.header != null) items.add(widget.header!);
-    items.add(Universal(
+    return Universal(
         isStack: true,
-        height: widget.radius + widget.lineWidth,
+        height: widget.radius,
         width: widget.radius,
         children: <Widget>[
           CustomPaint(
-            painter: _CirclePainter(
-                progress: percent * 360,
-                progressColor: widget.progressColor,
-                backgroundColor: widget.backgroundColor,
-                startAngle: widget.startAngle!,
-                circularStrokeCap: widget.circularStrokeCap,
-                radius: (widget.radius / 2) - widget.lineWidth / 2,
-                lineWidth: widget.lineWidth,
-                backgroundWidth: //negative values ignored, replaced with lineWidth
-                    widget.backgroundWidth! >= 0.0
-                        ? widget.backgroundWidth!
-                        : widget.lineWidth,
-                arcBackgroundColor: widget.arcBackgroundColor,
-                arcType: widget.arcType,
-                reverse: widget.reverse,
-                linearGradient: widget.linearGradient,
-                maskFilter: widget.maskFilter,
-                rotateLinearGradient: widget.rotateLinearGradient!),
-            child: (widget.center != null)
-                ? Center(child: widget.center)
-                : Container(),
-          ),
+              painter: _CirclePainter(
+                  progress: percent * 360,
+                  progressColor: widget.progressColor,
+                  backgroundColor: widget.backgroundColor,
+                  startAngle: widget.startAngle!,
+                  circularStrokeCap: widget.circularStrokeCap,
+                  radius: (widget.radius / 2) - widget.lineWidth / 2,
+                  lineWidth: widget.lineWidth,
+                  backgroundWidth: widget.backgroundWidth! >= 0.0
+                      ? widget.backgroundWidth!
+                      : widget.lineWidth,
+                  arcBackgroundColor: widget.arcBackgroundColor,
+                  arcType: widget.arcType,
+                  reverse: widget.reverse,
+                  linearGradient: widget.linearGradient,
+                  maskFilter: widget.maskFilter,
+                  rotateLinearGradient: widget.rotateLinearGradient!),
+              child: (widget.center != null)
+                  ? Center(child: widget.center)
+                  : Container()),
           if (widget.widgetIndicator != null && widget.animation)
             Positioned.fill(
                 child: Transform.rotate(
@@ -332,13 +298,10 @@ class _CircularState extends _ProgressSubState {
                           (widget.circularStrokeCap != CircularStrokeCap.butt)
                               ? widget.lineWidth / 2
                               : 0,
-                          -widget.radius / 2 + widget.lineWidth / 2),
+                          -(widget.radius / 2) + widget.lineWidth / 2),
                       child: widget.widgetIndicator)),
             ))
-        ]));
-
-    if (widget.footer != null) items.add(widget.footer!);
-    return Universal(mainAxisSize: MainAxisSize.min, children: items);
+        ]);
   }
 }
 
@@ -365,8 +328,6 @@ class _LinearState extends _ProgressSubState {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final List<Widget> items = <Widget>[];
-    if (widget.leading != null) items.add(widget.leading!);
     final double percentPositionedHorizontal =
         _containerWidth * percent - _indicatorWidth / 3;
     final Stack bar = Stack(children: <Widget>[
@@ -397,15 +358,10 @@ class _LinearState extends _ProgressSubState {
             top: 0,
             child: widget.widgetIndicator!),
     ]);
-    items.add(bar);
-    if (widget.trailing != null)
-      items.add(Align(alignment: Alignment.center, child: widget.trailing));
     return Universal(
         height: widget.lineHeight,
-        isStack: true,
-        padding: widget.padding,
         width: widget.width ?? double.infinity,
-        children: items);
+        child: bar);
   }
 }
 

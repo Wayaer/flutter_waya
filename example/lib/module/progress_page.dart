@@ -33,36 +33,41 @@ class _ProgressPageState extends State<ProgressPage>
           Progress.linear(
               width: 300,
               lineHeight: 20,
-              percent: 0.5,
+              percent: 1,
               animation: true,
-              isRTL: true,
-              animationDuration: const Duration(seconds: 5),
+              restartAnimation: true,
+              animationDuration: const Duration(seconds: 2),
               linearGradient:
                   const LinearGradient(colors: <Color>[Colors.red, color]),
               mainAxisAlignment: MainAxisAlignment.center,
-              trailing: const Text('LinearProgress',
-                  style: TextStyle(color: Colors.white)),
+              center: const Text('center'),
+              widgetIndicator: BText('0', color: Colors.red),
               progressColor: Colors.lightGreen,
-              backgroundColor: Colors.black12,
-              widgetIndicator:
-                  Container(width: 20, height: 20, color: Colors.amber)),
+              backgroundColor: Colors.black12),
           const SizedBox(height: 20),
-          Progress.circular(
-              radius: 120,
-              lineWidth: 15,
-              animation: true,
-              percent: 0.7,
-              arcType: ArcType.full,
-              arcBackgroundColor: Colors.cyan,
-              center: const Text('70.0%',
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0)),
-              footer: const Text('CircularProgress',
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0)),
-              circularStrokeCap: CircularStrokeCap.round,
-              linearGradient:
-                  const LinearGradient(colors: <Color>[Colors.red, color])),
+          Container(
+            color: Colors.blue.withOpacity(0.2),
+            child: Progress.circular(
+                radius: 120,
+                lineWidth: 15,
+                animation: true,
+                percent: 0,
+                restartAnimation: true,
+                animationDuration: const Duration(seconds: 10),
+                widgetIndicator: Container(
+                    width: 20,
+                    height: 20,
+                    alignment: Alignment.center,
+                    child: BText('0', color: Colors.black)),
+                arcType: ArcType.full,
+                arcBackgroundColor: Colors.cyan,
+                center: const Text('70.0%',
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0)),
+                circularStrokeCap: CircularStrokeCap.round,
+                linearGradient:
+                    const LinearGradient(colors: <Color>[Colors.red, color])),
+          ),
           const SizedBox(height: 20),
           SizedBox.fromSize(
               size: const Size(150, 30),
