@@ -538,23 +538,48 @@ class _DateTimePickerState extends State<DateTimePicker> {
   void sureTapVoid() {
     if (widget.options.sureTap == null) return;
     String dateTime = '';
-    if (unit.year != null) dateTime = yearData[yearIndex].toString() + '-';
-    if (unit.month != null)
-      dateTime += valuePadLeft(monthData[monthIndex] + 1) + '-';
-    if (unit.day != null) dateTime += valuePadLeft(dayData[dayIndex] + 1) + ' ';
+    if (unit.year != null) dateTime = yearData[yearIndex].toString();
+    if (unit.year != null && unit.month != null) dateTime += '-';
+    if (unit.month != null) dateTime += valuePadLeft(monthData[monthIndex] + 1);
+    if (unit.month != null && unit.day != null) dateTime += '-';
+    if (unit.day != null) dateTime += valuePadLeft(dayData[dayIndex] + 1);
+    if (unit.year != null || unit.day != null || unit.month != null)
+      dateTime += ' ';
     if (unit.hour != null) dateTime += valuePadLeft(hourData[hourIndex]);
-    if (unit.minute != null)
-      dateTime += ':' + valuePadLeft(minuteData[minuteIndex]);
-    if (unit.second != null)
-      dateTime += ':' + valuePadLeft(secondData[secondIndex]);
+    if (unit.hour != null && unit.minute != null) dateTime += ':';
+    if (unit.minute != null) dateTime += valuePadLeft(minuteData[minuteIndex]);
+    if (unit.minute != null && unit.second != null) dateTime += ':';
+    if (unit.second != null) dateTime += valuePadLeft(secondData[secondIndex]);
     widget.options.sureTap!(dateTime.trim());
   }
 
   void refreshPosition() {
     if (isScrolling) return;
     isScrolling = true;
-    final String currentStr =
-        '${padLeft(yearData[yearIndex])}-${padLeft(monthData[monthIndex] + 1)}-${padLeft(dayData[dayIndex] + 1)} ${padLeft(hourData[hourIndex])}:${padLeft(minuteData[minuteIndex])}:${padLeft(secondData[secondIndex])}';
+    String currentStr = '';
+    currentStr += dayData.isEmpty
+        ? defaultDate.year.toString()
+        : padLeft(yearData[yearIndex]);
+    currentStr += '-';
+    currentStr += monthData.isEmpty
+        ? (defaultDate.month + 1).toString()
+        : padLeft(monthData[monthIndex] + 1);
+    currentStr += '-';
+    currentStr += dayData.isEmpty
+        ? (defaultDate.day + 1).toString()
+        : padLeft(dayData[dayIndex] + 1);
+    currentStr += ' ';
+    currentStr += hourData.isEmpty
+        ? defaultDate.hour.toString()
+        : padLeft(hourData[hourIndex]);
+    currentStr += ':';
+    currentStr += minuteData.isEmpty
+        ? defaultDate.minute.toString()
+        : padLeft(minuteData[minuteIndex]);
+    currentStr += ':';
+    currentStr += secondData.isEmpty
+        ? defaultDate.second.toString()
+        : padLeft(secondData[secondIndex]);
     final DateTime currentDate = DateTime.parse(currentStr);
     if (currentDate.millisecondsSinceEpoch < startDate.millisecondsSinceEpoch) {
       if (currentDate.month < startDate.month)

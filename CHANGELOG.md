@@ -1,4 +1,4 @@
-## 1.11.5
+## 1.11.6
   * fix bug for `DateTimePicker`
   * `PinBox` add `spaces`,and remove `width` `boxSpacing`
 ## 1.11.3
