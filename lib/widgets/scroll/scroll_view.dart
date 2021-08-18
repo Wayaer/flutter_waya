@@ -627,7 +627,7 @@ class ScrollList extends RefreshScrollView {
   /// 滑动类型设置 [physics]
   /// AlwaysScrollableScrollPhysics() 总是可以滑动
   /// NeverScrollableScrollPhysics() 禁止滚动
-  /// BouncingScrollPhysics()  内容超过一屏 上拉有回弹效果
+  /// BouncingScrollPhysics()  内容超过一屏 有回弹效果
   /// ClampingScrollPhysics()  包裹内容 不会有回弹
 
   ScrollList({
