@@ -509,7 +509,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
 
   ///  显示双数还是单数
   String valuePadLeft(int value) =>
-      widget.dual ? padLeft(value) : value.toString();
+      widget.dual ? value.toString().padLeft(2, '0') : value.toString();
 
   ///  wheel数组添加数据
   List<int> addList(int maxNumber) => maxNumber.generate((int index) => index);
@@ -556,31 +556,13 @@ class _DateTimePickerState extends State<DateTimePicker> {
   void refreshPosition() {
     if (isScrolling) return;
     isScrolling = true;
-    String currentStr = '';
-    currentStr += dayData.isEmpty
-        ? defaultDate.year.toString()
-        : padLeft(yearData[yearIndex]);
-    currentStr += '-';
-    currentStr += monthData.isEmpty
-        ? (defaultDate.month + 1).toString()
-        : padLeft(monthData[monthIndex] + 1);
-    currentStr += '-';
-    currentStr += dayData.isEmpty
-        ? (defaultDate.day + 1).toString()
-        : padLeft(dayData[dayIndex] + 1);
-    currentStr += ' ';
-    currentStr += hourData.isEmpty
-        ? defaultDate.hour.toString()
-        : padLeft(hourData[hourIndex]);
-    currentStr += ':';
-    currentStr += minuteData.isEmpty
-        ? defaultDate.minute.toString()
-        : padLeft(minuteData[minuteIndex]);
-    currentStr += ':';
-    currentStr += secondData.isEmpty
-        ? defaultDate.second.toString()
-        : padLeft(secondData[secondIndex]);
-    final DateTime currentDate = DateTime.parse(currentStr);
+    final DateTime currentDate = DateTime(
+        yearData.isEmpty ? defaultDate.year : yearData[yearIndex],
+        monthData.isEmpty ? (defaultDate.month + 1) : monthData[monthIndex] + 1,
+        dayData.isEmpty ? (defaultDate.day + 1) : dayData[dayIndex] + 1,
+        hourData.isEmpty ? (defaultDate.hour) : hourData[hourIndex],
+        minuteData.isEmpty ? (defaultDate.minute) : minuteData[minuteIndex],
+        secondData.isEmpty ? (defaultDate.second) : secondData[secondIndex]);
     if (currentDate.millisecondsSinceEpoch < startDate.millisecondsSinceEpoch) {
       if (currentDate.month < startDate.month)
         jumpToIndex(startDate.month - 1, controllerMonth);
@@ -717,15 +699,13 @@ class _DateTimePickerState extends State<DateTimePicker> {
           itemBuilder: (_, int index) => Container(
                 alignment: Alignment.center,
                 child: BText(
-                    padLeft(startZero ? list![index] : list![index] + 1),
+                    valuePadLeft(startZero ? list![index] : list![index] + 1),
                     fontSize: 12,
                     style: contentStyle),
               ),
           itemCount: list!.length,
           onScrollEnd: onChanged,
           wheel: widget.wheel);
-
-  String padLeft(int value) => value.toString().padLeft(2, '0');
 
   void jumpToIndex(int index, FixedExtentScrollController? controller,
       {Duration? duration}) {

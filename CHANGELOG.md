@@ -1,6 +1,5 @@
-## 1.11.7
+## 1.11.8
   * fix buf for `Progress`
-## 1.11.6
   * fix bug for `DateTimePicker`
   * `PinBox` add `spaces`,and remove `width` `boxSpacing`
 ## 1.11.3
