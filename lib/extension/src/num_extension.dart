@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+import 'dart:math';
 
 import 'package:flutter/services.dart';
 
@@ -87,6 +88,24 @@ extension ExtensionNum on num {
       Duration(minutes: (this * Duration.minutesPerHour).round());
 
   Duration get days => Duration(hours: (this * Duration.hoursPerDay).round());
+
+  /// int 字节转 k MB GB
+  String getFileSize() {
+    num size = this;
+    if (size < 1024) {
+      return '$size字节';
+    } else if (size >= 1024 && size < pow(1024, 2)) {
+      size = (size / 10.24).round();
+      return '${size / 100}k';
+    } else if (size >= pow(1024, 2) && size < pow(1024, 3)) {
+      size = (size / (pow(1024, 2) * 0.01)).round();
+      return '${size / 100}MB';
+    } else if (size >= pow(1024, 3) && size < pow(1024, 4)) {
+      size = (size / (pow(1024, 3) * 0.01)).round();
+      return '${size / 100}GB';
+    }
+    return size.toString();
+  }
 }
 
 /// int 扩展

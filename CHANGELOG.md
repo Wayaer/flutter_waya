@@ -1,4 +1,4 @@
-## 1.12.0
+## 1.12.1
   * add `ExtendedDio` `ExtendedOptions` `LoggerInterceptor`
 ## 1.11.8
   * fix buf for `Progress`

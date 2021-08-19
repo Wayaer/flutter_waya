@@ -245,10 +245,8 @@ class LoggerInterceptor<T> extends InterceptorsWrapper {
     });
     print(
         '┌------------------------------------------------------------------------------');
-    print('''| [DIO] Request: ${options.method} ${options.uri}
-         | QueryParameters:${options.queryParameters.toString()}
-         | Data:${options.data.toString()}
-         | Headers:$headers''');
+    print(
+        '''| [DIO] Request: ${options.method} ${options.uri}\n| QueryParameters:${options.queryParameters.toString()}\n| Data:${options.data.toString()}\n| Headers:$headers''');
     print(
         '├------------------------------------------------------------------------------');
     handler.next(options); //continue
