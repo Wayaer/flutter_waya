@@ -1,3 +1,5 @@
+## 1.12.0
+  * add `ExtendedDio` `ExtendedOptions` `LoggerInterceptor`
 ## 1.11.8
   * fix buf for `Progress`
   * fix bug for `DateTimePicker`
