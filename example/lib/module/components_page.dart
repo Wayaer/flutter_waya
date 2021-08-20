@@ -53,7 +53,6 @@ class ComponentsPage extends StatelessWidget {
                     isDense: true,
                     suffix:
                         Container(color: Colors.green, width: 20, height: 20),
-                    // labelText: '22222',
                     helperText: '33333',
                     errorText: '5555',
                     counterText: '',
@@ -180,10 +179,10 @@ class ComponentsPage extends StatelessWidget {
                   }
                 }),
 
-            partition('ToggleRotate'),
+            partition('CountDown'),
             CountDown(
                 onChanged: (int i) {},
-                duration: const Duration(seconds: 5),
+                duration: const Duration(seconds: 100),
                 builder: (int i) {
                   return SimpleButton(
                       text: i.toString(),
@@ -198,13 +197,12 @@ class ComponentsPage extends StatelessWidget {
             Container(
                 width: double.infinity,
                 height: 40,
-                decoration: BoxDecoration(border: DottedLineBorder.all())),
-            Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10),
+                alignment: Alignment.center,
                 child: CustomPaint(
                     size: const Size(double.infinity, 1),
                     painter: DottedLinePainter(
-                        color: Colors.black, strokeWidth: 1, gap: 20))),
+                        color: Colors.black, strokeWidth: 1, gap: 20)),
+                decoration: BoxDecoration(border: DottedLineBorder.all())),
             partition('ValueBuilder'),
             ValueBuilder<int>(
                 initialValue: 0,
