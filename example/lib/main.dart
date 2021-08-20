@@ -14,6 +14,8 @@ import 'package:waya/module/refresh_page.dart';
 import 'package:waya/module/scroll_page.dart';
 import 'package:waya/module/universal_page.dart';
 
+import 'module/components_page.dart';
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   setGlobalPushMode(WidgetMode.ripple);
@@ -58,13 +60,11 @@ class _Home extends StatelessWidget {
       appBar: AppBarText('Flutter Waya Example'),
       padding: const EdgeInsets.all(10),
       body: Wrap(runSpacing: 10, spacing: 10, children: <Widget>[
+        ElevatedText('Components', onTap: () => push(ComponentsPage())),
         ElevatedText('Toast', onTap: () => push(ToastPage())),
         ElevatedText('Button', onTap: () => push(ButtonPage())),
-        ElevatedText('ToggleRotate', onTap: () => push(ToggleRotatePage())),
-        ElevatedText('Counter', onTap: () => push(CounterPage())),
         ElevatedText('Picker', onTap: () => push(PickerPage())),
         ElevatedText('Popup', onTap: () => push(PopupPage())),
-        ElevatedText('PinBox', onTap: () => push(PinBoxPage())),
         ElevatedText('Image', onTap: () => push(ImagePage())),
         ElevatedText('Carousel', onTap: () => push(CarouselPage())),
         ElevatedText('Progress', onTap: () => push(ProgressPage())),

@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
@@ -120,90 +118,6 @@ class ToastPage extends StatelessWidget {
                   showToast('添加await第一个Toast完了之后弹出第二个Toast');
                 })));
   }
-}
-
-class PinBoxPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) => ExtendedScaffold(
-          backgroundColor: Colors.white,
-          appBar: AppBarText('PinBox Demo'),
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            PinBox(
-                maxLength: 5,
-                autoFocus: false,
-                spaces: const <Widget?>[
-                  Icon(Icons.ac_unit, size: 12),
-                  Icon(Icons.ac_unit, size: 12),
-                  Icon(Icons.ac_unit, size: 12),
-                  Icon(Icons.ac_unit, size: 12),
-                  Icon(Icons.ac_unit, size: 12),
-                  Icon(Icons.ac_unit, size: 12),
-                ],
-                hasFocusPinDecoration: BoxDecoration(
-                    color: Colors.purple,
-                    border: Border.all(color: Colors.purple),
-                    borderRadius: BorderRadius.circular(4)),
-                pinDecoration: BoxDecoration(
-                    color: Colors.yellow,
-                    border: Border.all(color: Colors.yellow),
-                    borderRadius: BorderRadius.circular(4)),
-                pinTextStyle: const TextStyle(color: Colors.white)),
-          ]);
-}
-
-class CounterPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) => ExtendedScaffold(
-          backgroundColor: Colors.white,
-          appBar: AppBarText('Counter Demo'),
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            CounterAnimation(
-                animationType: CountAnimationType.part,
-                count: 100,
-                onTap: (int c) {
-                  showToast(c.toString());
-                },
-                countBuilder: (int count, String text) =>
-                    BText(text, fontSize: 30)).color(Colors.black12),
-            const SizedBox(height: 40),
-            CounterAnimation(
-                animationType: CountAnimationType.all,
-                count: 100,
-                onTap: (int c) {
-                  showToast(c.toString());
-                },
-                countBuilder: (int count, String text) =>
-                    BText(text, fontSize: 30)).color(Colors.black12),
-          ]);
-}
-
-class ToggleRotatePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) => ExtendedScaffold(
-          backgroundColor: Colors.white,
-          appBar: AppBarText('ToggleRotate Demo'),
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const ToggleRotate(
-                duration: Duration(milliseconds: 800),
-                rad: pi / 2,
-                child: Icon(Icons.chevron_left, size: 30)),
-            const SizedBox(height: 40),
-            ToggleRotate(
-                duration: const Duration(seconds: 2),
-                onTap: () {
-                  showToast('旋转');
-                },
-                rad: pi,
-                child: const Icon(Icons.chevron_left, size: 30)),
-            const SizedBox(height: 40),
-            const ToggleRotate(
-                duration: Duration(seconds: 3),
-                rad: pi * 1.5,
-                child: Icon(Icons.chevron_left, size: 30)),
-          ]);
 }
 
 class ExpansionTilesPage extends StatelessWidget {

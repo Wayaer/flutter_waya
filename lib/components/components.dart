@@ -39,47 +39,46 @@ class NoScrollBehavior extends ScrollBehavior {
 
 typedef SendSMSValueCallback = void Function(void Function(bool send));
 
+enum SendState {
+  /// 默认状态  获取验证码
+  none,
+
+  /// 发送中  调用接口的时候
+  sending,
+
+  /// 重新发送
+  resend,
+
+  /// 倒计时
+  countDown
+}
+
+typedef SendStateBuilder = Widget Function(SendState state, int i);
+
 ///  发送验证码
 class SendSMS extends StatefulWidget {
   const SendSMS(
       {Key? key,
-      this.defaultText = '获取验证码',
-      this.sendingText = '发送中',
-      this.sentText = '重新发送',
-      this.notTapText = '重新发送',
-      this.onTap,
+      required this.onTap,
       this.decoration,
-      this.borderRadius,
-      this.borderWidth,
-      this.defaultBorderColor,
-      this.notTapBorderColor,
-      this.width,
-      this.height,
-      this.defaultTextStyle,
-      this.notTapTextStyle,
-      this.background,
-      this.seconds,
+      this.duration = const Duration(seconds: 60),
       this.margin,
-      this.padding})
+      this.padding,
+      required this.stateBuilder})
       : super(key: key);
 
-  final String defaultText;
-  final String sendingText;
-  final String sentText;
-  final String notTapText;
+  /// 状态回调
+  final SendStateBuilder stateBuilder;
 
-  final SendSMSValueCallback? onTap;
+  /// 默认计时秒
+  final Duration duration;
+
+  /// 点击按钮
+  final SendSMSValueCallback onTap;
+
+  /// 装饰器
   final Decoration? decoration;
-  final BorderRadiusGeometry? borderRadius;
-  final double? borderWidth;
-  final double? width;
-  final double? height;
-  final Color? defaultBorderColor;
-  final Color? notTapBorderColor;
-  final Color? background;
-  final TextStyle? defaultTextStyle;
-  final TextStyle? notTapTextStyle;
-  final int? seconds;
+
   final EdgeInsetsGeometry? margin;
   final EdgeInsetsGeometry? padding;
 
@@ -88,71 +87,52 @@ class SendSMS extends StatefulWidget {
 }
 
 class _SendSMSState extends State<SendSMS> {
-  int seconds = 0;
-  late String verifyStr;
+  int seconds = -1;
   Timer? timer;
-
-  @override
-  void initState() {
-    super.initState();
-    verifyStr = widget.defaultText;
-  }
+  SendState sendState = SendState.none;
 
   @override
   Widget build(BuildContext context) => Universal(
-        margin: widget.margin,
-        padding: widget.padding,
-        onTap: (seconds == 0 && widget.onTap != null) ? onTap : null,
-        alignment: Alignment.center,
-        width: widget.width,
-        height: widget.height,
-        decoration: widget.decoration ??
-            BoxDecoration(
-                color: widget.background,
-                border: !(widget.defaultBorderColor != null ||
-                        widget.notTapBorderColor != null)
-                    ? null
-                    : Border.all(
-                        width: widget.borderWidth ?? 0,
-                        color: seconds == 0
-                            ? (widget.defaultBorderColor ?? ConstColors.blue)
-                            : (widget.notTapBorderColor ??
-                                ConstColors.black70)),
-                borderRadius: widget.borderRadius ?? BorderRadius.circular(20)),
-        child: BText(verifyStr,
-            style: seconds == 0
-                ? const BTextStyle(fontSize: 13, color: ConstColors.blue)
-                    .merge(widget.defaultTextStyle)
-                : const BTextStyle(fontSize: 13, color: ConstColors.black70)
-                    .merge(widget.notTapTextStyle)),
-      );
+      margin: widget.margin,
+      padding: widget.padding,
+      onTap: (seconds < 0) ? onTap : null,
+      decoration: widget.decoration,
+      child: widget.stateBuilder(sendState, seconds));
+
+  @override
+  void didUpdateWidget(covariant SendSMS oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.duration != widget.duration ||
+        oldWidget.onTap != widget.onTap ||
+        oldWidget.decoration != widget.decoration ||
+        oldWidget.stateBuilder != widget.stateBuilder) setState(() {});
+  }
 
   void onTap() {
-    verifyStr = widget.sendingText;
+    sendState = SendState.sending;
     setState(() {});
-    if (widget.onTap != null) widget.onTap!(send);
+    widget.onTap(send);
   }
 
   void send(bool sending) {
     if (sending) {
+      seconds = widget.duration.inSeconds;
       startTimer();
     } else {
-      verifyStr = widget.sentText;
+      sendState = SendState.resend;
       setState(() {});
     }
   }
 
   void startTimer() {
-    seconds = widget.seconds ?? 60;
     timer = 1.seconds.timerPeriodic((Timer time) {
-      if (seconds == 0) {
+      if (seconds < 0) {
         timer!.cancel();
         return;
       }
       seconds--;
-      verifyStr = '${seconds}s';
+      sendState = seconds < 0 ? SendState.resend : SendState.countDown;
       setState(() {});
-      if (seconds == 0) verifyStr = widget.sentText;
     });
   }
 
@@ -166,25 +146,24 @@ class _SendSMSState extends State<SendSMS> {
   }
 }
 
+typedef CountDownSkipBuilder = Widget Function(int i);
+
 ///  点击跳过
 class CountDownSkip extends StatefulWidget {
   const CountDownSkip({
     Key? key,
-    this.skipText = '',
-    this.seconds = 5,
-    this.textStyle,
-    this.onChange,
-    this.onTap,
-    this.decoration,
+    this.duration = const Duration(seconds: 5),
+    this.onChanged,
+    required this.builder,
   }) : super(key: key);
 
-  final String skipText;
-  final int seconds;
+  /// UI 回调
+  final CountDownSkipBuilder builder;
 
-  final TextStyle? textStyle;
-  final ValueChanged<int>? onChange;
-  final GestureTapCallback? onTap;
-  final Decoration? decoration;
+  /// 默认秒数
+  final Duration duration;
+
+  final ValueChanged<int>? onChanged;
 
   @override
   _CountDownSkipState createState() => _CountDownSkipState();
@@ -197,35 +176,44 @@ class _CountDownSkipState extends State<CountDownSkip> {
   @override
   void initState() {
     super.initState();
-    seconds = widget.seconds;
+    init();
+  }
+
+  void init() {
+    disposeTime();
+    seconds = widget.duration.inSeconds;
     addPostFrameCallback((Duration callback) {
       if (seconds > 0) {
-        timer = Timer.periodic(const Duration(seconds: 1), (Timer time) {
+        timer = 1.seconds.timerPeriodic((Timer time) {
           seconds -= 1;
           setState(() {});
-          if (widget.onChange != null) widget.onChange!(seconds);
-          if (seconds == 0) timer?.cancel();
+          if (widget.onChanged != null) widget.onChanged!(seconds);
+          if (seconds == 0) disposeTime();
         });
       }
     });
   }
 
+  void disposeTime() {
+    timer?.cancel();
+    timer = null;
+  }
+
   @override
-  Widget build(BuildContext context) => SimpleButton(
-      onTap: widget.onTap,
-      decoration: widget.decoration ??
-          BoxDecoration(
-              color: ConstColors.white50,
-              borderRadius: BorderRadius.circular(5)),
-      padding:
-          EdgeInsets.symmetric(horizontal: getHeight(5), vertical: getWidth(4)),
-      child: BText(seconds.toString() + 's' + widget.skipText, fontSize: 12));
+  void didUpdateWidget(covariant CountDownSkip oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.duration != widget.duration ||
+        oldWidget.onChanged != widget.onChanged ||
+        oldWidget.builder != widget.builder) init();
+  }
+
+  @override
+  Widget build(BuildContext context) => widget.builder(seconds);
 
   @override
   void dispose() {
     super.dispose();
-    timer?.cancel();
-    timer = null;
+    disposeTime();
   }
 }
 
