@@ -6,10 +6,10 @@ import 'package:flutter_waya/flutter_waya.dart';
 enum StretchyHeaderAlignment { bottom, center, top }
 
 class StretchyHeader extends StretchyHeaderBase {
-  StretchyHeader.singleChild({
+  const StretchyHeader({
     Key? key,
     required HeaderData headerData,
-    required Widget child,
+    required HeaderScrollBuilder builder,
     double? displacement,
     VoidCallback? onRefresh,
   }) : super(
@@ -17,62 +17,27 @@ class StretchyHeader extends StretchyHeaderBase {
             headerData: headerData,
             displacement: displacement,
             onRefresh: onRefresh,
-            listBuilder: (BuildContext context,
-                    ScrollController controller,
-                    EdgeInsets padding,
-                    ScrollPhysics physics,
-                    Widget topWidget) =>
-                ListView(
-                    controller: controller,
-                    padding: EdgeInsets.zero,
-                    physics: physics,
-                    children: <Widget>[topWidget, child]));
+            builder: builder);
 
-  StretchyHeader.listView({
-    Key? key,
-    required HeaderData headerData,
-    required List<Widget> children,
-    double? displacement,
-    VoidCallback? onRefresh,
-  }) : super(
-            key: key,
-            headerData: headerData,
-            displacement: displacement,
-            onRefresh: onRefresh,
-            listBuilder: (BuildContext context,
-                    ScrollController controller,
-                    EdgeInsets padding,
-                    ScrollPhysics physics,
-                    Widget topWidget) =>
-                ListView(
-                  controller: controller,
-                  padding: EdgeInsets.zero,
-                  physics: physics,
-                  children: <Widget>[topWidget].followedBy(children).toList(),
-                ));
-
-  StretchyHeader.listViewBuilder({
+  StretchyHeader.builder({
     Key? key,
     required HeaderData headerData,
     required IndexedWidgetBuilder itemBuilder,
     double? displacement,
     VoidCallback? onRefresh,
-    int? itemCount,
+    required int itemCount,
   }) : super(
             key: key,
             headerData: headerData,
             displacement: displacement,
             onRefresh: onRefresh,
-            listBuilder: (BuildContext context,
-                    ScrollController controller,
-                    EdgeInsets padding,
-                    ScrollPhysics physics,
-                    Widget topWidget) =>
+            builder: (BuildContext context, ScrollController controller,
+                    ScrollPhysics physics, Widget topWidget) =>
                 ListView.builder(
                     controller: controller,
-                    padding: EdgeInsets.zero,
                     physics: physics,
-                    itemCount: itemCount == null ? null : itemCount + 1,
+                    shrinkWrap: true,
+                    itemCount: itemCount + 1,
                     itemBuilder: (BuildContext context, int index) => index == 0
                         ? topWidget
                         : itemBuilder(context, index - 1)));
@@ -126,7 +91,7 @@ class StretchyHeaderBase extends StatefulWidget {
   const StretchyHeaderBase({
     Key? key,
     required this.headerData,
-    required this.listBuilder,
+    required this.builder,
     double? displacement,
     this.onRefresh,
   })  : displacement = displacement ?? 40.0,
@@ -142,7 +107,7 @@ class StretchyHeaderBase extends StatefulWidget {
   ///  这个函数应该建立一个ListView
   ///  传递给它的是控制器，填充物，物理
   ///  并将提供的topWidget作为其第一个子级
-  final HeaderListViewBuilder listBuilder;
+  final HeaderScrollBuilder builder;
 
   ///  The distance from the child's top or bottom edge to where the refresh
   ///  indicator will settle. During the drag that exposes the refresh indicator,
@@ -162,12 +127,8 @@ class StretchyHeaderBase extends StatefulWidget {
   _StretchyHeaderBaseState createState() => _StretchyHeaderBaseState();
 }
 
-typedef HeaderListViewBuilder = ListView Function(
-    BuildContext context,
-    ScrollController controller,
-    EdgeInsets padding,
-    ScrollPhysics physics,
-    Widget topWidget);
+typedef HeaderScrollBuilder = ScrollView Function(BuildContext context,
+    ScrollController controller, ScrollPhysics physics, Widget topWidget);
 
 class _StretchyHeaderBaseState extends State<StretchyHeaderBase> {
   late ScrollController _scrollController;
@@ -223,69 +184,67 @@ class _StretchyHeaderBaseState extends State<StretchyHeaderBase> {
         : const SizedBox.shrink();
 
     return Universal(
-      isStack: true,
-      color: widget.headerData.backgroundColor,
-      children: <Widget>[
-        SizedBox(
-            child: ClipRect(
-                clipper: HeaderClipper(_headerSize - _offset),
-                child: widget.headerData.header),
-            height: _scrollController.hasClients &&
-                    _scrollController.position.extentAfter == 0.0
-                ? _headerSize
-                : _offset <= _headerSize
-                    ? _headerSize - _offset
-                    : 0.0,
-            width: deviceWidth),
-        IgnorePointer(
-          child: widget.headerData.blurContent
-              ? ClipRect(
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(
-                        sigmaX: _offset < 0.0 ? _offset.abs() * 0.1 : 0.0,
-                        sigmaY: _offset < 0.0 ? _offset.abs() * 0.1 : 0.0),
-                    child: Container(
-                      height:
-                          _offset <= _headerSize ? _headerSize - _offset : 0.0,
-                      decoration: BoxDecoration(
-                          color: (widget.headerData.blurColor ??
-                                  Colors.grey.shade200)
-                              .withOpacity(_offset < 0.0 ? 0.15 : 0.0)),
-                    ),
-                  ),
-                )
-              : const SizedBox.shrink(),
-        ),
-        NotificationListener<ScrollNotification>(
-          onNotification: (ScrollNotification notification) {
-            if (widget.onRefresh != null) {
-              final double currentDisplacement = notification.metrics.pixels;
-              if (currentDisplacement >= 0) {
-                canTriggerRefresh = true;
-              } else if (currentDisplacement <= -widget.displacement &&
-                  canTriggerRefresh) {
-                widget.onRefresh!();
-                canTriggerRefresh = false;
-              }
-            }
-            if (notification is ScrollUpdateNotification &&
-                notification.metrics.axis == Axis.vertical) {
-              _offset = notification.metrics.pixels;
-              setState(() {});
-            }
-            return false;
-          },
-          child: widget.listBuilder(
-              context,
-              _scrollController,
-              EdgeInsets.zero,
-              const BouncingScrollPhysics(
-                  parent: AlwaysScrollableScrollPhysics()),
-              SizedBox(height: _headerSize, child: widget.headerData.overlay)),
-        ),
-        highlightHeader,
-      ],
-    );
+        isStack: true,
+        color: widget.headerData.backgroundColor,
+        children: <Widget>[
+          SizedBox(
+              child: ClipRect(
+                  clipper: HeaderClipper(_headerSize - _offset),
+                  child: widget.headerData.header),
+              height: _scrollController.hasClients &&
+                      _scrollController.position.extentAfter == 0.0
+                  ? _headerSize
+                  : _offset <= _headerSize
+                      ? _headerSize - _offset
+                      : 0.0,
+              width: deviceWidth),
+          IgnorePointer(
+              child: widget.headerData.blurContent
+                  ? ClipRect(
+                      child: BackdropFilter(
+                          filter: ImageFilter.blur(
+                              sigmaX: _offset < 0.0 ? _offset.abs() * 0.1 : 0.0,
+                              sigmaY:
+                                  _offset < 0.0 ? _offset.abs() * 0.1 : 0.0),
+                          child: Container(
+                            height: _offset <= _headerSize
+                                ? _headerSize - _offset
+                                : 0.0,
+                            decoration: BoxDecoration(
+                                color: (widget.headerData.blurColor ??
+                                        Colors.grey.shade200)
+                                    .withOpacity(_offset < 0.0 ? 0.15 : 0.0)),
+                          )))
+                  : const SizedBox.shrink()),
+          NotificationListener<ScrollNotification>(
+              onNotification: (ScrollNotification notification) {
+                if (widget.onRefresh != null) {
+                  final double currentDisplacement =
+                      notification.metrics.pixels;
+                  if (currentDisplacement >= 0) {
+                    canTriggerRefresh = true;
+                  } else if (currentDisplacement <= -widget.displacement &&
+                      canTriggerRefresh) {
+                    widget.onRefresh!();
+                    canTriggerRefresh = false;
+                  }
+                }
+                if (notification is ScrollUpdateNotification &&
+                    notification.metrics.axis == Axis.vertical) {
+                  _offset = notification.metrics.pixels;
+                  setState(() {});
+                }
+                return false;
+              },
+              child: widget.builder(
+                  context,
+                  _scrollController,
+                  const BouncingScrollPhysics(
+                      parent: AlwaysScrollableScrollPhysics()),
+                  SizedBox(
+                      height: _headerSize, child: widget.headerData.overlay))),
+          highlightHeader,
+        ]);
   }
 }
 

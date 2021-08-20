@@ -2,13 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_curiosity/flutter_curiosity.dart';
 import 'package:flutter_waya/flutter_waya.dart';
+import 'package:waya/module/alert_page.dart';
 import 'package:waya/module/button_page.dart';
 import 'package:waya/module/carousel_page.dart';
 import 'package:waya/module/extension_page.dart';
 import 'package:waya/module/json_parse_page.dart';
 import 'package:waya/module/pages.dart';
-import 'package:waya/module/picker_page.dart';
-import 'package:waya/module/popup_page.dart';
 import 'package:waya/module/progress_page.dart';
 import 'package:waya/module/refresh_page.dart';
 import 'package:waya/module/scroll_page.dart';
@@ -59,38 +58,28 @@ class _Home extends StatelessWidget {
       onWillPopOverlayClose: true,
       appBar: AppBarText('Flutter Waya Example'),
       padding: const EdgeInsets.all(10),
-      body: Wrap(runSpacing: 10, spacing: 10, children: <Widget>[
-        ElevatedText('Components', onTap: () => push(ComponentsPage())),
-        ElevatedText('Toast', onTap: () => push(ToastPage())),
-        ElevatedText('Button', onTap: () => push(ButtonPage())),
-        ElevatedText('Picker', onTap: () => push(PickerPage())),
-        ElevatedText('Popup', onTap: () => push(PopupPage())),
-        ElevatedText('Image', onTap: () => push(ImagePage())),
-        ElevatedText('Carousel', onTap: () => push(CarouselPage())),
-        ElevatedText('Progress', onTap: () => push(ProgressPage())),
-        ElevatedText('Universal', onTap: () => push(UniversalPage())),
-        ElevatedText('JsonParse', onTap: () => push(JsonParsePage())),
-        ElevatedText('ExpansionTiles', onTap: () => push(ExpansionTilesPage())),
-        ElevatedText('ScrollView', onTap: () => push(ScrollViewPage())),
-        ElevatedText('SimpleRefresh', onTap: () => push(RefreshPage())),
-        ElevatedText('EasyRefreshed', onTap: () => push(EasyRefreshPage())),
-        ElevatedText('SimpleBuilder', onTap: () => push(SimpleBuilderPage())),
-        ElevatedText('TextField', onTap: () => push(InputFieldPage())),
-        ElevatedText('Extension', onTap: () => push(const ExtensionPage())),
-        ElevatedText('showSnackBar', onTap: () {
-          showSnackBar(SnackBar(content: BText('Popup SnackBar')));
-        }),
-        ElevatedText('showOverlayLoading', onTap: () {
-          showOverlayLoading();
-        }),
-      ]),
+      body: Wrap(
+          alignment: WrapAlignment.center,
+          runSpacing: 10,
+          spacing: 10,
+          children: <Widget>[
+            ElevatedText('Components', onTap: () => push(ComponentsPage())),
+            ElevatedText('Button', onTap: () => push(ButtonPage())),
+            ElevatedText('Alert', onTap: () => push(AlertPage())),
+            ElevatedText('Image', onTap: () => push(ImagePage())),
+            ElevatedText('Carousel', onTap: () => push(CarouselPage())),
+            ElevatedText('Progress', onTap: () => push(ProgressPage())),
+            ElevatedText('Universal', onTap: () => push(UniversalPage())),
+            ElevatedText('JsonParse', onTap: () => push(JsonParsePage())),
+            ElevatedText('ScrollView', onTap: () => push(ScrollViewPage())),
+            ElevatedText('StretchyHeader',
+                onTap: () => push(const StretchyHeaderPage())),
+            // ElevatedText('SimpleRefresh', onTap: () => push(RefreshPage())),
+            ElevatedText('EasyRefreshed', onTap: () => push(EasyRefreshPage())),
+            ElevatedText('Extension', onTap: () => push(const ExtensionPage())),
+          ]),
     );
   }
-
-  void showOverlayLoading() => showLoading(
-      gaussian: true,
-      onTap: closeOverlay,
-      custom: const SpinKitWave(color: color));
 }
 
 class AppBarText extends AppBar {

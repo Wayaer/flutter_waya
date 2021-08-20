@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 import 'package:waya/main.dart';
@@ -9,11 +10,11 @@ class ComponentsPage extends StatelessWidget {
   Widget build(BuildContext context) => ExtendedScaffold(
           backgroundColor: Colors.white,
           isScroll: true,
-          appBar: AppBarText('PinBox Demo'),
-          padding: const EdgeInsets.all(20),
+          appBar: AppBarText('Components Demo'),
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
           children: <Widget>[
             //// PinBox
-            BText('PinBox', color: Colors.black),
+            partition('PinBox'),
             const SizedBox(height: 20),
             PinBox(
                 maxLength: 5,
@@ -35,9 +36,70 @@ class ComponentsPage extends StatelessWidget {
                     border: Border.all(color: Colors.yellow),
                     borderRadius: BorderRadius.circular(4)),
                 pinTextStyle: const TextStyle(color: Colors.white)),
-            const SizedBox(height: 20),
-            BText('CounterAnimation', color: Colors.black),
-            const SizedBox(height: 20),
+            partition('WidgetPendant'),
+            TextField(
+                decoration: InputDecoration(
+                    hintText: '11111',
+                    icon: const Icon(Icons.call),
+                    filled: true,
+                    fillColor: Colors.grey,
+                    contentPadding: const EdgeInsets.all(6),
+                    prefixIcon: Container(
+                        color: Colors.red.withOpacity(0.2), width: 20),
+                    suffixIcon: Container(
+                        color: Colors.red.withOpacity(0.2), width: 20),
+                    prefix:
+                        Container(color: Colors.green, width: 20, height: 20),
+                    isDense: true,
+                    suffix:
+                        Container(color: Colors.green, width: 20, height: 20),
+                    // labelText: '22222',
+                    helperText: '33333',
+                    errorText: '5555',
+                    counterText: '',
+                    border: const OutlineInputBorder()),
+                textInputAction: TextInputAction.done),
+            WidgetPendant(
+                borderType: BorderType.underline,
+                fillColor: Colors.amberAccent,
+                borderColor: Colors.greenAccent,
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                extraPrefix: const Text('前缀'),
+                extraSuffix: const Text('后缀'),
+                prefix: const Text('前缀'),
+                suffix: const Text('后缀'),
+                header: Row(children: const <Widget>[Text('头部')]),
+                footer: Row(children: const <Widget>[Text('底部')]),
+                child: CupertinoTextField.borderless(
+                    prefixMode: OverlayVisibilityMode.always,
+                    prefix:
+                        Container(color: Colors.green, width: 20, height: 20),
+                    suffixMode: OverlayVisibilityMode.editing,
+                    suffix:
+                        Container(color: Colors.green, width: 20, height: 20))),
+            partition('ExpansionTiles'),
+            ExpansionTiles(
+                title: BText('title', color: Colors.black),
+                children: 5.generate((int index) => Universal(
+                    margin: const EdgeInsets.all(12),
+                    alignment: Alignment.centerLeft,
+                    child: BText('item$index', color: Colors.black)))),
+            ExpansionTiles(
+                title: BText('title', color: Colors.black),
+                children: 5.generate((int index) => Universal(
+                    margin: const EdgeInsets.all(12),
+                    alignment: Alignment.centerLeft,
+                    child: BText('item$index', color: Colors.black)))),
+            partition('Toast'),
+            Wrap(
+                children: ToastType.values.builder((ToastType type) =>
+                    ElevatedText(type.toString(), onTap: () async {
+                      await showToast(type.toString(),
+                          toastType: type, customIcon: Icons.ac_unit_sharp);
+                      showToast('添加await第一个Toast完了之后弹出第二个Toast');
+                    }))),
+
+            partition('CounterAnimation'),
 
             /// CounterAnimation
             CounterAnimation(
@@ -57,31 +119,42 @@ class ComponentsPage extends StatelessWidget {
                 },
                 countBuilder: (int count, String text) =>
                     BText(text, fontSize: 30)).color(Colors.black12),
-            const SizedBox(height: 20),
-            BText('ToggleRotate', color: Colors.black),
-            const SizedBox(height: 20),
-
-            /// ToggleRotate
-            const ToggleRotate(
-                duration: Duration(milliseconds: 800),
-                rad: pi / 2,
-                child: Icon(Icons.chevron_left, size: 30)),
-            const SizedBox(height: 40),
-            ToggleRotate(
-                duration: const Duration(seconds: 2),
-                onTap: () {
-                  showToast('旋转');
-                },
-                rad: pi,
-                child: const Icon(Icons.chevron_left, size: 30)),
-            const SizedBox(height: 40),
-            const ToggleRotate(
-                duration: Duration(seconds: 3),
-                rad: pi * 1.5,
-                child: Icon(Icons.chevron_left, size: 30)),
-            const SizedBox(height: 20),
-            BText('SendSMS', color: Colors.black),
-            const SizedBox(height: 20),
+            partition('ToggleRotate'),
+            Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  ValueBuilder<bool>(
+                      initialValue: false,
+                      builder: (_, bool? value, ValueCallback<bool> updater) {
+                        return ToggleRotate(
+                            duration: const Duration(milliseconds: 800),
+                            rad: pi / 2,
+                            isRotate: value!,
+                            onTap: () => updater(!value),
+                            child: const Icon(Icons.chevron_left, size: 30));
+                      }),
+                  ValueBuilder<bool>(
+                      initialValue: false,
+                      builder: (_, bool? value, ValueCallback<bool> updater) {
+                        return ToggleRotate(
+                            duration: const Duration(milliseconds: 800),
+                            rad: pi,
+                            isRotate: value!,
+                            onTap: () => updater(!value),
+                            child: const Icon(Icons.chevron_left, size: 30));
+                      }),
+                  ValueBuilder<bool>(
+                      initialValue: false,
+                      builder: (_, bool? value, ValueCallback<bool> updater) {
+                        return ToggleRotate(
+                            duration: const Duration(milliseconds: 800),
+                            rad: pi * 2,
+                            isRotate: value!,
+                            onTap: () => updater(!value),
+                            child: const Icon(Icons.chevron_left, size: 30));
+                      }),
+                ]),
+            partition('SendSMS'),
             SendSMS(
                 duration: const Duration(seconds: 10),
                 padding:
@@ -107,23 +180,95 @@ class ComponentsPage extends StatelessWidget {
                   }
                 }),
 
-            const SizedBox(height: 20),
-            BText('ToggleRotate', color: Colors.black),
-            const SizedBox(height: 20),
-            CountDownSkip(
-                onChanged: (int i) {
-                  showToast(i.toString());
-                },
+            partition('ToggleRotate'),
+            CountDown(
+                onChanged: (int i) {},
                 duration: const Duration(seconds: 5),
                 builder: (int i) {
                   return SimpleButton(
-                    text: i.toString(),
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                    decoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(4)),
-                  );
+                      text: i.toString(),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 6, horizontal: 12),
+                      decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(4)));
                 }),
+
+            partition('DottedLine'),
+            Container(
+                width: double.infinity,
+                height: 40,
+                decoration: BoxDecoration(border: DottedLineBorder.all())),
+            Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: CustomPaint(
+                    size: const Size(double.infinity, 1),
+                    painter: DottedLinePainter(
+                        color: Colors.black, strokeWidth: 1, gap: 20))),
+            partition('ValueBuilder'),
+            ValueBuilder<int>(
+                initialValue: 0,
+                builder: (_, int? value, ValueCallback<int> updater) {
+                  return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        IconBox(
+                            icon: Icons.remove_circle_outline,
+                            onTap: () {
+                              int v = value ?? 0;
+                              v -= 1;
+                              updater(v);
+                            }),
+                        Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(value.toString())),
+                        IconBox(
+                            icon: Icons.add_circle_outline,
+                            onTap: () {
+                              int v = value ?? 0;
+                              v += 1;
+                              updater(v);
+                            })
+                      ]);
+                }),
+            partition('ValueListenBuilder'),
+            ValueListenBuilder<int>(
+                initialValue: 1,
+                builder: (_, ValueNotifier<int?> valueListenable) {
+                  return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        IconBox(
+                            icon: Icons.remove_circle_outline,
+                            onTap: () {
+                              int num = valueListenable.value ?? 0;
+                              num -= 1;
+                              valueListenable.value = num;
+                            }),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(valueListenable.value.toString()),
+                        ),
+                        IconBox(
+                            icon: Icons.add_circle_outline,
+                            onTap: () {
+                              int num = valueListenable.value ?? 0;
+                              num += 1;
+                              valueListenable.value = num;
+                            })
+                      ]);
+                }),
+
+            const SizedBox(height: 100),
           ]);
+
+  Widget partition(String title) {
+    return Universal(
+        width: double.infinity,
+        color: Colors.grey.withOpacity(0.2),
+        alignment: Alignment.center,
+        padding: const EdgeInsets.symmetric(vertical: 15),
+        margin: const EdgeInsets.symmetric(vertical: 25),
+        child: BText(title, color: Colors.black));
+  }
 }

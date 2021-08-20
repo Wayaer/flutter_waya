@@ -39,172 +39,26 @@ class _ImagePageState extends State<ImagePage> with TickerProviderStateMixin {
   }
 }
 
-class InputFieldPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return ExtendedScaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBarText('TextField Demo'),
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          TextField(
-              decoration: InputDecoration(
-                  hintText: '11111',
-                  icon: const Icon(Icons.call),
-                  filled: true,
-                  fillColor: Colors.grey,
-                  contentPadding: const EdgeInsets.all(6),
-                  prefixIcon: Container(
-                    color: Colors.red.withOpacity(0.2),
-                    width: 20,
-                  ),
-                  suffixIcon:
-                      Container(color: Colors.red.withOpacity(0.2), width: 20),
-                  prefix: Container(
-                    color: Colors.green,
-                    width: 20,
-                    height: 20,
-                  ),
-                  isDense: true,
-                  suffix: Container(
-                    color: Colors.green,
-                    width: 20,
-                    height: 20,
-                  ),
-                  // labelText: '22222',
-                  helperText: '33333',
-                  errorText: '5555',
-                  counterText: '',
-                  border: const OutlineInputBorder()),
-              textInputAction: TextInputAction.done),
-          WidgetPendant(
-            borderType: BorderType.underline,
-            fillColor: Colors.amberAccent,
-            borderColor: Colors.greenAccent,
-            // borderRadius: BorderRadius.circular(30),
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            extraPrefix: const Text('前缀'),
-            extraSuffix: const Text('后缀'),
-            prefix: const Text('前缀'),
-            suffix: const Text('后缀'),
-            header: Row(children: const <Widget>[Text('头部')]),
-            footer: Row(children: const <Widget>[Text('底部')]),
-            child: CupertinoTextField.borderless(
-                prefixMode: OverlayVisibilityMode.always,
-                prefix: Container(color: Colors.green, width: 20, height: 20),
-                suffixMode: OverlayVisibilityMode.editing,
-                suffix: Container(
-                  color: Colors.green,
-                  width: 20,
-                  height: 20,
-                )),
-          ),
-        ]);
-  }
-}
+class StretchyHeaderPage extends StatelessWidget {
+  const StretchyHeaderPage({Key? key}) : super(key: key);
 
-class ToastPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    const List<ToastType> toastList = ToastType.values;
-    return ExtendedScaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBarText('Toast Demo'),
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: toastList.builder(
-            (ToastType e) => ElevatedText(e.toString(), onTap: () async {
-                  await showToast(e.toString(), toastType: e);
-                  log('开始弹第二个');
-                  showToast('添加await第一个Toast完了之后弹出第二个Toast');
-                })));
-  }
-}
-
-class ExpansionTilesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ExtendedScaffold(
         backgroundColor: Colors.white,
-        appBar: AppBarText('ExpansionTiles Demo'),
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          ExpansionTiles(
-              title: BText('title', color: Colors.black),
-              children: 5.generate((int index) => Universal(
-                  margin: const EdgeInsets.all(12),
-                  alignment: Alignment.centerLeft,
-                  child: BText('item$index', color: Colors.black)))),
-          ExpansionTiles(
-              title: BText('title', color: Colors.black),
-              children: 5.generate((int index) => Universal(
-                  margin: const EdgeInsets.all(12),
-                  alignment: Alignment.centerLeft,
-                  child: BText('item$index', color: Colors.black)))),
-        ]);
-  }
-}
-
-class SimpleBuilderPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    const int i = 0;
-    return ExtendedScaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBarText('SimpleBuilder Demo'),
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          ValueBuilder<int>(
-              initialValue: i,
-              builder: (_, int? value, ValueCallback<int> updater) {
-                return Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      IconBox(
-                          icon: Icons.remove_circle_outline,
-                          onTap: () {
-                            int v = value ?? 0;
-                            v -= 1;
-                            updater(v);
-                          }),
-                      Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(value.toString())),
-                      IconBox(
-                          icon: Icons.add_circle_outline,
-                          onTap: () {
-                            int v = value ?? 0;
-                            v += 1;
-                            updater(v);
-                          })
-                    ]);
-              }),
-          const Center(child: SizedBox(height: 30)),
-          ValueListenBuilder<int>(
-              initialValue: 1,
-              builder: (_, ValueNotifier<int?> valueListenable) {
-                return Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      IconBox(
-                          icon: Icons.remove_circle_outline,
-                          onTap: () {
-                            int num = valueListenable.value ?? 0;
-                            num -= 1;
-                            valueListenable.value = num;
-                          }),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(valueListenable.value.toString()),
-                      ),
-                      IconBox(
-                          icon: Icons.add_circle_outline,
-                          onTap: () {
-                            int num = valueListenable.value ?? 0;
-                            num += 1;
-                            valueListenable.value = num;
-                          })
-                    ]);
-              }),
-        ]);
+        isScroll: true,
+        appBar: AppBarText('StretchyHeader Demo'),
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+        body: StretchyHeader.builder(
+            headerData: HeaderData(
+                overlay: const Icon(Icons.add),
+                highlightHeaderAlignment: StretchyHeaderAlignment.bottom,
+                header: Container(color: Colors.blue),
+                headerHeight: 150),
+            itemBuilder: (_, int index) => Universal(
+                width: double.infinity,
+                height: 30,
+                color: index.isEven ? Colors.cyan : Colors.amber),
+            itemCount: 100));
   }
 }

@@ -32,7 +32,7 @@ class CounterAnimation extends StatefulWidget {
 }
 
 class _CounterAnimationState extends State<CounterAnimation>
-    with TickerProviderStateMixin {
+    with SingleTickerProviderStateMixin {
   late Animation<double> _opacityAnimation;
   late Animation<Offset> _slidePreValueAnimation;
   late Animation<Offset> _slideCurrentValueAnimation;

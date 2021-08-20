@@ -13,10 +13,9 @@ class _RefreshPageState extends State<RefreshPage> {
 
   @override
   Widget build(BuildContext context) {
-    // colors.addAll(Colors.accents);
     return ExtendedScaffold(
         backgroundColor: Colors.white,
-        appBar: AppBarText('RefreshPage Demo'),
+        appBar: AppBarText('SimpleRefresh Demo'),
         body: SimpleRefresh(
           controller: controller,
           onRefresh: () {

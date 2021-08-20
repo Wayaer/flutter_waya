@@ -6,12 +6,17 @@ import 'package:flutter/material.dart';
 /// 虚线
 class DottedLinePainter extends CustomPainter {
   DottedLinePainter(
-      {this.strokeWidth = 5.0,
+      {this.strokeWidth = 1.0,
       this.color = Colors.greenAccent,
       this.gap = 5.0});
 
+  /// 宽度
   double strokeWidth;
+
+  /// 颜色
   Color color;
+
+  /// 间距
   double gap;
 
   @override
@@ -40,11 +45,10 @@ class DottedLinePainter extends CustomPainter {
     canvas.drawPath(_leftPath, dashedPaint);
   }
 
-  Path getDashedPath({
-    required math.Point<double> a,
-    required math.Point<double> b,
-    required double gap,
-  }) {
+  Path getDashedPath(
+      {required math.Point<double> a,
+      required math.Point<double> b,
+      required double gap}) {
     final Size size = Size(b.x - a.x, b.y - a.y);
     final Path path = Path();
     path.moveTo(a.x, a.y);

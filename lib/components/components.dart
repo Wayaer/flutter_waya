@@ -146,11 +146,11 @@ class _SendSMSState extends State<SendSMS> {
   }
 }
 
-typedef CountDownSkipBuilder = Widget Function(int i);
+typedef CountDownBuilder = Widget Function(int i);
 
 ///  点击跳过
-class CountDownSkip extends StatefulWidget {
-  const CountDownSkip({
+class CountDown extends StatefulWidget {
+  const CountDown({
     Key? key,
     this.duration = const Duration(seconds: 5),
     this.onChanged,
@@ -158,7 +158,7 @@ class CountDownSkip extends StatefulWidget {
   }) : super(key: key);
 
   /// UI 回调
-  final CountDownSkipBuilder builder;
+  final CountDownBuilder builder;
 
   /// 默认秒数
   final Duration duration;
@@ -166,10 +166,10 @@ class CountDownSkip extends StatefulWidget {
   final ValueChanged<int>? onChanged;
 
   @override
-  _CountDownSkipState createState() => _CountDownSkipState();
+  _CountDownState createState() => _CountDownState();
 }
 
-class _CountDownSkipState extends State<CountDownSkip> {
+class _CountDownState extends State<CountDown> {
   late int seconds;
   Timer? timer;
 
@@ -200,7 +200,7 @@ class _CountDownSkipState extends State<CountDownSkip> {
   }
 
   @override
-  void didUpdateWidget(covariant CountDownSkip oldWidget) {
+  void didUpdateWidget(covariant CountDown oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.duration != widget.duration ||
         oldWidget.onChanged != widget.onChanged ||

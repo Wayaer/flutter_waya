@@ -26,7 +26,7 @@ class _ProgressPageState extends State<ProgressPage>
     return ExtendedScaffold(
         isScroll: true,
         backgroundColor: Colors.white,
-        appBar: AppBarText('PinBox Demo'),
+        appBar: AppBarText('Progress Demo'),
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           const SizedBox(height: 20),
