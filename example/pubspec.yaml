@@ -19,6 +19,3 @@ dependencies:
 
 flutter:
   uses-material-design: true
-
-  assets:
-    - lib/res/banner/

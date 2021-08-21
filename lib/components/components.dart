@@ -28,7 +28,6 @@ export 'refresh/easy_refresh.dart';
 export 'refresh/scroll_physics.dart';
 export 'refresh/simple_refresh.dart';
 export 'simple_builder.dart';
-export 'stretchy_header.dart';
 
 class NoScrollBehavior extends ScrollBehavior {
   @override

@@ -72,8 +72,6 @@ class _Home extends StatelessWidget {
             ElevatedText('Universal', onTap: () => push(UniversalPage())),
             ElevatedText('JsonParse', onTap: () => push(JsonParsePage())),
             ElevatedText('ScrollView', onTap: () => push(ScrollViewPage())),
-            ElevatedText('StretchyHeader',
-                onTap: () => push(const StretchyHeaderPage())),
             // ElevatedText('SimpleRefresh', onTap: () => push(RefreshPage())),
             ElevatedText('EasyRefreshed', onTap: () => push(EasyRefreshPage())),
             ElevatedText('Extension', onTap: () => push(const ExtensionPage())),

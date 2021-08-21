@@ -19,7 +19,7 @@ void logDebug(dynamic msg) => debugPrint(msg.toString());
 
 void log(dynamic msg) {
   if (!kDebugMode) return;
-  String message = msg.toString();
+  final String message = msg.toString();
   print(
       '┌------------------------------------------------------------------------------');
   if (!kDebugMode) return;

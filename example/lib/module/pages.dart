@@ -38,27 +38,3 @@ class _ImagePageState extends State<ImagePage> with TickerProviderStateMixin {
     super.dispose();
   }
 }
-
-class StretchyHeaderPage extends StatelessWidget {
-  const StretchyHeaderPage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ExtendedScaffold(
-        backgroundColor: Colors.white,
-        isScroll: true,
-        appBar: AppBarText('StretchyHeader Demo'),
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-        body: StretchyHeader.builder(
-            headerData: HeaderData(
-                overlay: const Icon(Icons.add),
-                highlightHeaderAlignment: StretchyHeaderAlignment.bottom,
-                header: Container(color: Colors.blue),
-                headerHeight: 150),
-            itemBuilder: (_, int index) => Universal(
-                width: double.infinity,
-                height: 30,
-                color: index.isEven ? Colors.cyan : Colors.amber),
-            itemCount: 100));
-  }
-}
