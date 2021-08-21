@@ -12,14 +12,15 @@ class ButtonPage extends StatelessWidget {
           isScroll: true,
           appBar: AppBarText('Button Demo'),
           children: <Widget>[
-            const DropdownMenu(
-              value: <List<String>>[
-                <String>['男', '女'],
-                <String>['12岁', '13岁', '14岁'],
-                <String>['湖北', '四川', '重庆']
-              ],
-              title: <String>['性别', '年龄', '地区'],
-            ),
+            const DropdownMenu(value: <List<String>>[
+              <String>['男', '女'],
+              <String>['12岁', '13岁', '14岁'],
+              <String>['湖北', '四川', '重庆']
+            ], title: <String>[
+              '性别',
+              '年龄',
+              '地区'
+            ]),
             const SizedBox(height: 20),
             ElevatedText('ElasticButton',
                 onTap: () => showToast('ElasticButton')),

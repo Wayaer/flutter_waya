@@ -29,12 +29,12 @@ class DropdownMenuButton extends StatefulWidget {
 
   DropdownMenuButton.material({
     Key? key,
-    required IndexedBuilder itemBuilder,
     Color? iconColor,
     double iconSize = 24,
     IconData? iconData,
     required this.itemCount,
     required this.defaultBuilder,
+    required IndexedBuilder itemBuilder,
     this.onChanged,
     this.backgroundColor,
     this.onTap,
