@@ -178,9 +178,7 @@ class IconBox extends StatelessWidget {
           size: size,
           textDirection: textDirection,
           semanticLabel: semanticLabel));
-
     if (image != null) listWidget.add(image!);
-
     if (imageProvider != null)
       listWidget.add(Image(
           image: imageProvider!,
@@ -193,128 +191,89 @@ class IconBox extends StatelessWidget {
           semanticLabel: semanticLabel));
 
     if (widget != null) listWidget.add(widget!);
-
     return listWidget;
   }
 }
 
+typedef CheckBoxStateBuilder = Widget Function(bool? value);
+
 class CheckBox extends StatefulWidget {
   const CheckBox({
     Key? key,
-    this.size = 17,
-    this.uncheckColor = ConstColors.black70,
-    this.checkColor = ConstColors.white,
-    this.mainAxisAlignment = MainAxisAlignment.center,
-    this.crossAxisAlignment = CrossAxisAlignment.center,
-    this.onChange,
-    this.checkWidget,
-    this.checkIcon,
-    this.uncheckIcon,
-    this.uncheckWidget,
-    this.background,
-    this.padding,
-    this.margin,
-    this.titleStyle,
-    this.titleText,
-    this.title,
-    this.visible = true,
-    this.activeColor,
     this.value = false,
-    this.shape,
+    required this.stateBuilder,
+    this.useNull = false,
+    this.onChanged,
+    this.decoration,
+    this.margin,
+    this.padding,
   }) : super(key: key);
 
-  final ValueCallback<bool>? onChange;
-  final Color checkColor;
+  /// 不同状态时 显示的组件
+  final CheckBoxStateBuilder stateBuilder;
 
-  final Color? background;
-  final Color uncheckColor;
-  final TextStyle? titleStyle;
-  final String? titleText;
-  final Widget? title;
-  final double size;
+  /// bool 类型是否使用后null
+  final bool useNull;
+
+  /// 初始化值 默认为 false
+  final bool? value;
+
+  /// bool 值改变回调
+  final ValueCallback<bool?>? onChanged;
+
+  /// decoration
+  final Decoration? decoration;
+
+  /// margin
   final EdgeInsetsGeometry? margin;
-  final EdgeInsetsGeometry? padding;
-  final Widget? checkWidget;
-  final Widget? uncheckWidget;
-  final IconData? checkIcon;
-  final IconData? uncheckIcon;
-  final bool value;
-  final bool visible;
-  final MainAxisAlignment mainAxisAlignment;
-  final CrossAxisAlignment crossAxisAlignment;
 
-  /// [Checkbox]
-  final OutlinedBorder? shape;
-  final Color? activeColor;
+  /// padding
+  final EdgeInsetsGeometry? padding;
 
   @override
   _CheckBoxState createState() => _CheckBoxState();
 }
 
 class _CheckBoxState extends State<CheckBox> {
-  bool value = false;
-  IconData? icon;
-  Widget? check;
+  bool? value = false;
 
   @override
   void initState() {
-    value = widget.value;
     super.initState();
+    value = widget.value;
   }
 
   @override
   void didUpdateWidget(covariant CheckBox oldWidget) {
-    if (oldWidget.value != widget.value)
-      setState(() {
-        value = widget.value;
-      });
     super.didUpdateWidget(oldWidget);
+    if (oldWidget.value != widget.value ||
+        oldWidget.stateBuilder != widget.stateBuilder) {
+      value = widget.value;
+      setState(() {});
+    }
+  }
+
+  void changeState() {
+    if (widget.useNull) {
+      if (value == null) {
+        value = true;
+      } else {
+        value = value! ? false : null;
+      }
+    } else {
+      value = !value!;
+    }
+    setState(() {});
+    if (widget.onChanged != null) widget.onChanged!(value);
   }
 
   @override
   Widget build(BuildContext context) {
-    if (widget.checkWidget != null && widget.uncheckWidget != null) {
-      check = value ? widget.checkWidget : widget.uncheckWidget;
-    } else {
-      if (widget.checkIcon != null && widget.uncheckIcon != null) {
-        icon = value ? widget.checkIcon : widget.uncheckIcon;
-      } else {
-        check = checkBoxWidget;
-      }
-    }
-    return IconBox(
-        visible: widget.visible,
-        icon: icon,
-        size: widget.size,
-        widget: check,
-        color: value ? widget.checkColor : widget.uncheckColor,
-        background: widget.background,
+    return Universal(
+        decoration: widget.decoration,
         margin: widget.margin,
         padding: widget.padding,
-        mainAxisAlignment: widget.mainAxisAlignment,
-        crossAxisAlignment: widget.crossAxisAlignment,
-        titleStyle: widget.titleStyle,
-        titleText: widget.titleText,
-        title: widget.title,
-        onTap: () {
-          value = !value;
-          setState(() {});
-          if (widget.onChange is ValueChanged<bool>) widget.onChange!(value);
-        });
+        onTap: changeState,
+        child: widget.stateBuilder(value));
   }
-
-  Widget get checkBoxWidget => Checkbox(
-      tristate: false,
-      activeColor: widget.activeColor,
-      checkColor: widget.checkColor,
-      shape: widget.shape,
-      value: value,
-      onChanged: (bool? v) {
-        if (value != v) {
-          value = v ?? false;
-          setState(() {});
-          if (widget.onChange != null && widget.onChange is ValueCallback<bool>)
-            widget.onChange!(value);
-        }
-      });
 }

@@ -1,3 +1,5 @@
+## 1.13.1
+ * restructured `DropdownMenu` and `CheckBox`
 ## 1.13.0
  * add `CountDown` and remove `CountDownSkip`
  * restructured `SendSMS` 

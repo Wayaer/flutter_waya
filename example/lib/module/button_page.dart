@@ -5,6 +5,12 @@ import 'package:waya/main.dart';
 
 const List<String> _colors = <String>['红色', '黄色', '蓝色'];
 
+const Map<String, List<String>> _dropdownValue = <String, List<String>>{
+  '性别': <String>['男', '女'],
+  '年龄': <String>['12岁', '13岁', '14岁'],
+  '地区': <String>['湖北', '四川', '重庆']
+};
+
 class ButtonPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ExtendedScaffold(
@@ -12,42 +18,82 @@ class ButtonPage extends StatelessWidget {
           isScroll: true,
           appBar: AppBarText('Button Demo'),
           children: <Widget>[
-            const DropdownMenu(value: <List<String>>[
-              <String>['男', '女'],
-              <String>['12岁', '13岁', '14岁'],
-              <String>['湖北', '四川', '重庆']
-            ], title: <String>[
-              '性别',
-              '年龄',
-              '地区'
-            ]),
+            DropdownMenu(
+                isModal: true,
+                onTap: (int title, int? value) {
+                  if (value == null) {
+                    showToast(
+                        '点击了title：${_dropdownValue.keys.elementAt(title)}');
+                  } else {
+                    showToast(
+                        '点击了title：${_dropdownValue.keys.elementAt(title)} value: ${_dropdownValue.values.elementAt(title)[value]}');
+                  }
+                },
+                decoration: BoxDecoration(
+                    color: Colors.black26,
+                    borderRadius: BorderRadius.circular(10)),
+                margin:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                value:
+                    _dropdownValue.values.builder((List<String> item) => item),
+                title: _dropdownValue.keys.toList()),
+            DropdownMenu.custom(
+                margin:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                decoration: BoxDecoration(
+                    color: Colors.black26,
+                    borderRadius: BorderRadius.circular(10)),
+                titleCount: _dropdownValue.keys.length,
+                titleBuilder: (int index, bool visible) {
+                  return Padding(
+                      padding: const EdgeInsets.only(right: 8),
+                      child: BText(_dropdownValue.keys.elementAt(index),
+                          color: visible ? Colors.red : Colors.black));
+                },
+                valueCount: _dropdownValue.values
+                    .builder((List<String> item) => item.length),
+                label: (bool visible) => Icon(Icons.arrow_circle_up,
+                    size: 16, color: visible ? Colors.red : Colors.black),
+                valueBuilder: (int titleIndex, int valueIndex) {
+                  return Container(
+                      alignment: Alignment.center,
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(vertical: 6),
+                      decoration: const BoxDecoration(
+                          color: Colors.white,
+                          border:
+                              Border(top: BorderSide(color: Colors.black12))),
+                      child: BText(
+                          _dropdownValue.values
+                              .elementAt(titleIndex)[valueIndex],
+                          color: Colors.black));
+                }),
             const SizedBox(height: 20),
             ElevatedText('ElasticButton',
                 onTap: () => showToast('ElasticButton')),
             const SizedBox(height: 20),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
               DropdownMenuButton(
-                defaultBuilder: (int? index) {
-                  return BText(index == null ? '请选择' : _colors[index],
-                      color: Colors.black);
-                },
-                decoration: BoxDecoration(
-                    color: color, borderRadius: BorderRadius.circular(4)),
-                margin: const EdgeInsets.only(top: 2),
-                itemCount: _colors.length,
-                onChanged: (int index) {
-                  showToast('点击了${_colors[index]}');
-                },
-                toggle:
-                    const Icon(Icons.arrow_right_rounded, color: Colors.black),
-                itemBuilder: (int index) => Container(
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.symmetric(vertical: 6),
-                    decoration: const BoxDecoration(
-                        border:
-                            Border(bottom: BorderSide(color: Colors.white))),
-                    child: BText(_colors[index])),
-              ),
+                  defaultBuilder: (int? index) {
+                    return BText(index == null ? '请选择' : _colors[index],
+                        color: Colors.black);
+                  },
+                  decoration: BoxDecoration(
+                      color: color, borderRadius: BorderRadius.circular(4)),
+                  margin: const EdgeInsets.only(top: 2),
+                  itemCount: _colors.length,
+                  onChanged: (int index) {
+                    showToast('点击了${_colors[index]}');
+                  },
+                  toggle: const Icon(Icons.arrow_right_rounded,
+                      color: Colors.black),
+                  itemBuilder: (int index) => Container(
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.symmetric(vertical: 6),
+                      decoration: const BoxDecoration(
+                          border:
+                              Border(bottom: BorderSide(color: Colors.white))),
+                      child: BText(_colors[index]))),
               const SizedBox(width: 30),
               DropdownButton<String>(
                   value: _colors[0],

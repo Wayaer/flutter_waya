@@ -100,6 +100,12 @@ extension ExtensionList<T> on List<T> {
   }
 }
 
+extension ExtensionIterable<V> on Iterable<V> {
+  /// Iterable.map.toList()
+  List<E> builder<E>(E Function(V) builder) =>
+      map<E>((V e) => builder(e)).toList();
+}
+
 extension ExtensionMap<K, V> on Map<K, V> {
   List<K> keysList({bool growable = true}) => keys.toList(growable: growable);
 

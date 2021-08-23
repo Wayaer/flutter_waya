@@ -5,7 +5,7 @@ import 'package:flutter_waya/constant/src/way.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 /// 弹出组件每个item样式
-typedef IndexedBuilder = Widget Function(int index);
+typedef IndexBuilder = Widget Function(int index);
 
 /// 初始化 默认显示的Widget
 typedef DefaultBuilder = Widget Function(int? index);
@@ -34,7 +34,7 @@ class DropdownMenuButton extends StatefulWidget {
     IconData? iconData,
     required this.itemCount,
     required this.defaultBuilder,
-    required IndexedBuilder itemBuilder,
+    required IndexBuilder itemBuilder,
     this.onChanged,
     this.backgroundColor,
     this.onTap,
@@ -52,7 +52,7 @@ class DropdownMenuButton extends StatefulWidget {
   final DefaultBuilder defaultBuilder;
 
   final int itemCount;
-  final IndexedBuilder itemBuilder;
+  final IndexBuilder itemBuilder;
   final ValueCallback<int>? onChanged;
 
   /// menu 属性
@@ -123,59 +123,123 @@ class _DropdownMenuButtonState extends State<DropdownMenuButton> {
   }
 }
 
+typedef DropdownMenuTitleBuilder = Widget Function(int index, bool visible);
+
+typedef DropdownMenuLabelBuilder = Widget Function(bool visible);
+
+typedef DropdownMenuValueCallback = void Function(
+    int titleIndex, int? valueIndex);
+
+typedef DropdownMenuValueBuilder = Widget Function(
+    int titleIndex, int valueIndex);
+
 class DropdownMenu extends StatefulWidget {
-  const DropdownMenu({
+  DropdownMenu({
     Key? key,
-    Color? itemBackground,
-    Color? titleBackground,
     TextStyle? titleStyle,
-    required this.title,
-    required this.value,
-    this.titleTap,
-    this.valueTap,
-    this.valueStyle,
+    TextStyle? valueStyle,
+    Color? background,
+    required List<String> title,
+    required List<List<String>> value,
     this.width,
-    this.alertMargin,
-    this.iconColor,
-    this.itemPadding,
     this.decoration,
-    this.itemDecoration,
-    this.background,
-  })  : titleStyle = titleStyle ?? const TextStyle(color: Colors.black),
-        itemBackground = itemBackground ?? Colors.white,
-        titleBackground = titleBackground ?? Colors.white,
+    this.hasRotateLabel = true,
+    DropdownMenuLabelBuilder? label,
+    this.mainAxisAlignment = MainAxisAlignment.spaceAround,
+    this.margin,
+    this.padding = const EdgeInsets.symmetric(vertical: 10),
+    this.isModal = false,
+    this.onTap,
+  })  : assert(title.isNotEmpty, 'title cannot be empty'),
+        assert(title.length == value.length,
+            'the length of title and value must be consistent'),
+        background = background ?? ConstColors.black70.withOpacity(0.2),
+        titleCount = title.length,
+        valueCount = value.builder((List<String> item) => item.length),
+        label = label ??
+            ((bool isSelect) => const Icon(Icons.keyboard_arrow_up,
+                color: ConstColors.black, size: 20)),
+        titleBuilder = ((int index, bool isSelect) => Padding(
+            padding: const EdgeInsets.only(right: 6),
+            child: BText(title[index],
+                style:
+                    titleStyle ?? const BTextStyle(color: ConstColors.black)))),
+        valueBuilder = ((int titleIndex, int valueIndex) => Container(
+            alignment: Alignment.center,
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            decoration: const BoxDecoration(
+                color: Colors.white,
+                border: Border(top: BorderSide(color: Colors.black12))),
+            child: BText(value[titleIndex][valueIndex],
+                style:
+                    valueStyle ?? const BTextStyle(color: ConstColors.black)))),
         super(key: key);
 
-  /// 头部数组
-  final List<String> title;
+  DropdownMenu.custom({
+    Key? key,
+    required this.titleCount,
+    required this.titleBuilder,
+    required this.valueCount,
+    required this.valueBuilder,
+    this.width,
+    this.decoration,
+    this.hasRotateLabel = true,
+    Color? background,
+    DropdownMenuLabelBuilder? label,
+    this.mainAxisAlignment = MainAxisAlignment.spaceAround,
+    this.margin,
+    this.padding = const EdgeInsets.symmetric(vertical: 10),
+    this.isModal = false,
+    this.onTap,
+  })  : assert(titleCount == valueCount.length),
+        background = background ?? ConstColors.black70.withOpacity(0.2),
+        label = label ??
+            ((bool isSelect) => const Icon(Icons.keyboard_arrow_up,
+                color: ConstColors.black, size: 20)),
+        super(key: key);
 
-  /// 每个头部弹出菜单数组， 必须和title长度一样
-  final List<List<String>> value;
+  /// title 长度
+  final int titleCount;
 
-  /// 点击头部item回调
-  final ValueCallback<int>? titleTap;
+  /// title 每个item
+  final DropdownMenuTitleBuilder titleBuilder;
 
-  /// 点击菜单的回调
-  final ValueTwoCallback<int, int>? valueTap;
-  final Color? iconColor;
-  final Color itemBackground;
+  /// value 长度
+  final List<int> valueCount;
+
+  /// value 每个item
+  final DropdownMenuValueBuilder valueBuilder;
+
+  /// 是否在title 右边添加 label 默认添加箭头
+  final bool hasRotateLabel;
+
+  /// 自定义label
+  late final DropdownMenuLabelBuilder label;
+
+  /// 点击回调 valueIndex == null 表示 只是点击了title
+  final DropdownMenuValueCallback? onTap;
+
+  /// value 显示时 的背景色
   final Color? background;
-  final Color? titleBackground;
-  final TextStyle? titleStyle;
-  final TextStyle? valueStyle;
+
+  /// title 和 value 宽
   final double? width;
-  final EdgeInsetsGeometry? alertMargin;
-  final EdgeInsetsGeometry? itemPadding;
+
+  /// 是否模态 [isModal]=true,背景点击无响应
+  final bool isModal;
+
+  /// 以下属性作用于 title
   final Decoration? decoration;
-  final Decoration? itemDecoration;
+  final MainAxisAlignment mainAxisAlignment;
+  final EdgeInsetsGeometry? margin;
+  final EdgeInsetsGeometry? padding;
 
   @override
   _DropdownMenuState createState() => _DropdownMenuState();
 }
 
 class _DropdownMenuState extends State<DropdownMenu> {
-  List<String> title = <String>[];
-  List<List<String>> value = <List<String>>[];
   List<bool> titleState = <bool>[];
   late GlobalKey titleKey = GlobalKey();
 
@@ -189,85 +253,71 @@ class _DropdownMenuState extends State<DropdownMenu> {
     final Offset local = title.localToGlobal(Offset.zero);
     final double titleHeight = context.size!.height;
     final ScrollList listBuilder = ScrollList.builder(
-        itemCount: value[index].length,
-        itemBuilder: (_, int i) => SimpleButton(
-              text: value[index][i],
-              width: double.infinity,
-              textStyle:
-                  widget.valueStyle ?? const BTextStyle(color: Colors.black),
-              onTap: () {
-                if (widget.valueTap != null) widget.valueTap!(index, i);
-                changeState(index);
-              },
-              alignment: Alignment.center,
-              decoration: widget.itemDecoration ??
-                  BoxDecoration(
-                      color: widget.itemBackground,
-                      border: const Border(
-                          top: BorderSide(color: ConstColors.background))),
-              padding: widget.itemPadding,
-              height: titleHeight,
-            ));
+        itemCount: widget.valueCount[index],
+        physics: const ClampingScrollPhysics(),
+        itemBuilder: (_, int i) => Universal(
+            alignment: Alignment.center,
+            child: widget.valueBuilder(index, i),
+            width: double.infinity,
+            onTap: () {
+              changeState(index);
+              pop();
+              if (widget.onTap != null) widget.onTap!(index, i);
+            }));
     final Widget popup = PopupOptions(
-      top: local.dy + titleHeight,
-      alignment: Alignment.center,
-      onTap: () {
-        changeState(index);
-        pop();
-      },
-      child: Universal(
-          width: widget.width ?? double.infinity,
-          margin: widget.alertMargin,
-          height: double.infinity,
-          color: widget.background ?? ConstColors.black70.withOpacity(0.2),
-          child: listBuilder),
-    );
+        top: local.dy + titleHeight,
+        alignment: Alignment.center,
+        onTap: widget.isModal
+            ? null
+            : () {
+                changeState(index);
+                pop();
+              },
+        child: Universal(
+            width: widget.width, color: widget.background, child: listBuilder));
     showDialogPopup<dynamic>(widget: popup);
   }
 
   @override
   Widget build(BuildContext context) {
-    title = widget.title;
-    value = widget.value;
-    if (title.isEmpty) return Container();
-    if (title.length != value.length) return Container();
     return Universal(
         key: titleKey,
         width: widget.width,
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        padding: widget.padding,
+        margin: widget.margin,
+        mainAxisAlignment: widget.mainAxisAlignment,
         direction: Axis.horizontal,
-        color: widget.titleBackground ?? ConstColors.white,
         decoration: widget.decoration,
-        children: title.length.generate((int index) {
+        children: widget.titleCount.generate((int index) {
           titleState.add(false);
-          return ToggleRotate(
-              rad: pi,
-              isRotate: titleState[index],
-              toggleBuilder: (Widget child) => Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        BText(title[index], style: widget.titleStyle),
-                        child
-                      ]),
-              child: Icon(Icons.keyboard_arrow_up,
-                  color: widget.iconColor ?? ConstColors.black, size: 20),
-              onTap: () => onTap(index));
+          if (widget.hasRotateLabel) {
+            return ToggleRotate(
+                rad: pi,
+                isRotate: titleState[index],
+                toggleBuilder: (Widget child) => Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          widget.titleBuilder(index, titleState[index]),
+                          child
+                        ]),
+                child: widget.label(titleState[index]),
+                onTap: () => onTap(index));
+          } else {
+            return widget
+                .titleBuilder(index, titleState[index])
+                .onTap(() => onTap(index));
+          }
         }));
   }
 
-  void onTap(int index) {
-    if (widget.titleTap != null) widget.titleTap!(index);
+  Future<void> onTap(int index) async {
+    if (widget.onTap != null) widget.onTap!(index, null);
     final double keyboardHeight = getViewInsets.bottom;
     if (keyboardHeight > 0) {
       context.focusNode();
-      const Duration(milliseconds: 300).timer(() {
-        changeState(index);
-        popupWidget(index);
-      });
-    } else {
-      changeState(index);
-      popupWidget(index);
+      await 300.milliseconds.delayed(() {});
     }
+    changeState(index);
+    popupWidget(index);
   }
 }
