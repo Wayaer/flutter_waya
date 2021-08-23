@@ -40,8 +40,12 @@ class _AppState extends State<_App> {
   @override
   void initState() {
     super.initState();
-    addPostFrameCallback((Duration duration) {
-      if (isDebug && isDesktop) setDesktopSizeTo5P8();
+    addPostFrameCallback((Duration duration) async {
+      if (isDebug && isDesktop) {
+        final bool data =
+            await Curiosity.instance.desktop.setDesktopSizeToIPad9P7(p: 1.5);
+        log('桌面端限制宽高:$data');
+      }
     });
   }
 

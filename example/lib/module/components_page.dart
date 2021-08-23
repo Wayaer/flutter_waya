@@ -166,7 +166,6 @@ class ComponentsPage extends StatelessWidget {
                   });
                 },
                 stateBuilder: (SendState state, int i) {
-                  log(state.toString() + i.toString());
                   switch (state) {
                     case SendState.none:
                       return BText('发送验证码');

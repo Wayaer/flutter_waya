@@ -73,7 +73,7 @@ class SendSMS extends StatefulWidget {
   final Duration duration;
 
   /// 点击按钮
-  final SendSMSValueCallback onTap;
+  final SendSMSValueCallback? onTap;
 
   /// 装饰器
   final Decoration? decoration;
@@ -110,7 +110,7 @@ class _SendSMSState extends State<SendSMS> {
   void onTap() {
     sendState = SendState.sending;
     setState(() {});
-    widget.onTap(send);
+    if (widget.onTap != null) widget.onTap!(send);
   }
 
   void send(bool sending) {
