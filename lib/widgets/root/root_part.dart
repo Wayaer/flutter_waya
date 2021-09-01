@@ -423,7 +423,7 @@ Future<bool> closePopup([dynamic value]) => maybePop(value);
 
 ///  日期选择器
 ///  关闭 closePopup()
-Future<String?> showDateTimePicker<T>({
+Future<DateTime?> showDateTimePicker<T>({
   ///  选择框内单位文字样式
   TextStyle? unitStyle,
 
@@ -446,26 +446,23 @@ Future<String?> showDateTimePicker<T>({
   DateTimePickerUnit? unit,
 
   /// 头部和背景色配置
-  PickerOptions? options,
+  PickerOptions<DateTime>? options,
 
   /// Wheel配置信息
   PickerWheel? wheel,
 }) {
   _globalNavigatorKey.currentContext!.focusNode();
-  wheel ??= PickerWheel();
-  options ??= PickerOptions();
-  options.cancelTap ??= () => closePopup();
-  options.sureTap ??= (String text) => closePopup(text);
   final Widget widget = DateTimePicker(
       options: options,
       wheel: wheel,
+      unitStyle: unitStyle,
       startDate: startDate,
       endDate: endDate,
       defaultDate: defaultDate,
       dual: dual,
       showUnit: showUnit,
       unit: unit);
-  return showBottomPopup<String?>(widget: widget);
+  return showBottomPopup<DateTime?>(widget: widget);
 }
 
 ///  地区选择器
@@ -481,16 +478,15 @@ Future<String?> showAreaPicker<T>({
   String? defaultDistrict,
 
   /// 头部和背景色配置
-  PickerOptions? options,
+  PickerOptions<String>? options,
 
   /// Wheel配置信息
   PickerWheel? wheel,
 }) {
   _globalNavigatorKey.currentContext!.focusNode();
-  wheel ??= PickerWheel();
-  options ??= PickerOptions();
-  options.cancelTap ??= () => closePopup();
-  options.sureTap ??= (String text) => closePopup(text);
+  // wheel ??= PickerWheel();
+  // options ??= PickerOptions<String>();
+  // options.sureTap ??= (String text) => closePopup(text);
   final Widget widget = AreaPicker(
       defaultProvince: defaultProvince,
       defaultCity: defaultCity,
@@ -502,7 +498,7 @@ Future<String?> showAreaPicker<T>({
 
 ///  wheel 单列 取消确认 选择
 ///  关闭 closePopup()
-Future<T?> showMultipleChoicePicker<T>({
+Future<int?> showMultipleChoicePicker<T>({
   ///  默认选中
   int? initialIndex,
   ScrollPhysics? physics,
@@ -510,15 +506,12 @@ Future<T?> showMultipleChoicePicker<T>({
   required IndexedWidgetBuilder itemBuilder,
 
   /// 头部和背景色配置
-  PickerOptions? options,
+  PickerOptions<int>? options,
 
   /// Wheel配置信息
   PickerWheel? wheel,
 }) {
   _globalNavigatorKey.currentContext!.focusNode();
-  options ??= PickerOptions();
-  options.cancelTap ??= () => closePopup();
-  options.sureIndexTap ??= (int index) => closePopup(index);
   final Widget widget = MultipleChoicePicker(
       itemCount: itemCount,
       itemBuilder: itemBuilder,
@@ -526,6 +519,34 @@ Future<T?> showMultipleChoicePicker<T>({
       wheel: wheel,
       initialIndex: initialIndex);
   return showBottomPopup(widget: widget);
+}
+
+///  取消 确认 选择
+///  关闭 closePopup()
+Future<T?> showCustomPicker<T>({
+  required Widget content,
+  PickerSubjectTapCallback<T>? sureTap,
+  PickerSubjectTapCallback<T?>? cancelTap,
+
+  /// 头部和背景色配置
+  PickerOptions<T?>? options,
+}) {
+  _globalNavigatorKey.currentContext!.focusNode();
+  options ??= PickerOptions<T?>();
+  return showBottomPopup(
+      widget: PickerSubject<T?>(
+          sureTap: () {
+            final T? value = sureTap?.call();
+            options!.sureTap.call(value);
+            return value;
+          },
+          cancelTap: () {
+            final T? value = cancelTap?.call();
+            options!.cancelTap.call(value);
+            return value;
+          },
+          options: options,
+          child: content));
 }
 
 ///  showCupertinoDialog
@@ -581,15 +602,14 @@ Future<T?> showMenuPopup<T>({
   ShapeBorder? shape,
   Color? color,
   bool useRootNavigator = false,
-}) {
-  return showMenu(
-      context: _globalNavigatorKey.currentContext!,
-      items: items,
-      initialValue: initialValue,
-      elevation: elevation,
-      semanticLabel: semanticLabel,
-      shape: shape,
-      color: color,
-      useRootNavigator: useRootNavigator,
-      position: position);
-}
+}) =>
+    showMenu(
+        context: _globalNavigatorKey.currentContext!,
+        items: items,
+        initialValue: initialValue,
+        elevation: elevation,
+        semanticLabel: semanticLabel,
+        shape: shape,
+        color: color,
+        useRootNavigator: useRootNavigator,
+        position: position);

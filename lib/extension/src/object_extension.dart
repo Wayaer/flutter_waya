@@ -148,6 +148,9 @@ enum DateTimeDist {
   /// 2020-01-01
   yearDay,
 
+  /// 2020-01
+  yearMonth,
+
   /// 01-01 00:00:00
   monthSecond,
 
@@ -178,19 +181,18 @@ enum DateTimeDist {
 
 /// DateTime 扩展
 extension ExtensionDateTime on DateTime {
-  String format([DateTimeDist? dateType, bool padLeft = true]) {
+  String format([DateTimeDist? dateType, bool dual = true]) {
     final DateTime date = this;
     dateType ??= DateTimeDist.yearSecond;
     final String year = date.year.toString();
     final String month =
-        padLeft ? date.month.padLeft(2, '0') : date.month.toString();
-    final String day = padLeft ? date.day.padLeft(2, '0') : date.day.toString();
-    final String hour =
-        padLeft ? date.hour.padLeft(2, '0') : date.hour.toString();
+        dual ? date.month.padLeft(2, '0') : date.month.toString();
+    final String day = dual ? date.day.padLeft(2, '0') : date.day.toString();
+    final String hour = dual ? date.hour.padLeft(2, '0') : date.hour.toString();
     final String minute =
-        padLeft ? date.minute.padLeft(2, '0') : date.minute.toString();
+        dual ? date.minute.padLeft(2, '0') : date.minute.toString();
     final String second =
-        padLeft ? date.second.padLeft(2, '0') : date.second.toString();
+        dual ? date.second.padLeft(2, '0') : date.second.toString();
     switch (dateType) {
       case DateTimeDist.yearSecond:
         return '$year-$month-$day $hour:$minute:$second';
@@ -200,6 +202,8 @@ extension ExtensionDateTime on DateTime {
         return '$year-$month-$day $hour';
       case DateTimeDist.yearDay:
         return '$year-$month-$day';
+      case DateTimeDist.yearMonth:
+        return '$year-$month';
       case DateTimeDist.monthSecond:
         return '$month-$day $hour:$minute:$second';
       case DateTimeDist.monthMinute:

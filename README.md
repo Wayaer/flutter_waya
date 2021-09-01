@@ -21,7 +21,7 @@
    - [event](https://github.com/Wayaer/flutter_waya/tree/main/lib/utils/src/event.dart) event bus
    - [screen_fit](https://github.com/Wayaer/flutter_waya/tree/main/lib/utils/src/screen_fit.dart) MediaQueryData
 
-## 多个UI组件
+## UI组件
 
    - [button](https://github.com/Wayaer/flutter_waya/tree/main/lib/components/button)
 
@@ -41,7 +41,7 @@
       - [EasyRefreshed](https://github.com/Wayaer/flutter_waya/tree/main/lib/components/refresh/easy_refresh.dart) 封装 flutter_easyrefresh
 
    - [root](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root)
-      - 根组件使用[ExtendedWidgetsApp](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root.dart) 可直接使用[push()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root.dart) [pop()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root.dart) 等多个路由方法和[showDialogPopup()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root.dart),[showBottomPopup()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root.dart),[showBottomPagePopup()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root_part.dart),[showCupertinoBottomPagePopup()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root_part.dart),[dialogSureCancel()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root_part.dart),无需传 context ,随处打开,关闭 以上弹窗或页面 必须使用 [closePopup()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root_part.dart)或直接[pop()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root_part.dart),
+      - 根组件使用[ExtendedWidgetsApp](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root.dart) 可直接使用[push()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root.dart#L513) [pop()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root.dart#L564) 等多个路由方法和[showDialogPopup()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root.dart),[showBottomPopup()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root.dart),[showBottomPagePopup()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root_part.dart),[showCupertinoBottomPagePopup()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root_part.dart),[dialogSureCancel()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root_part.dart),无需传 context ,随处打开,关闭 以上弹窗或页面 必须使用 [closePopup()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root_part.dart)或直接[pop()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root_part.dart),
     
       - [Scaffold] 使用 [ExtendedScaffold](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root_part.dart) 可以任意处使用 [showOverlay()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root_part.dart), [showLoading()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root_part.dart), [showToast()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root_part.dart),关闭Overlay 必须使用 [closeOverlay()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root_part.dart) 或关闭全部 [closeAllOverlay()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root_part.dart), 
 

@@ -1,4 +1,9 @@
 ## 1.13.1
+ * modify `showDateTimePicker` to return `DateTime`
+ * modify the initialization method of `DateTimePickerUnit`
+ * fix bug for `DateTimePicker`
+ * add `showCustomPicker`  
+ * remove the `sureIndexTap` parameter in `PickerOptions`,
  * restructured `DropdownMenu` and `CheckBox`
 ## 1.13.0
  * add `CountDown` and remove `CountDownSkip`

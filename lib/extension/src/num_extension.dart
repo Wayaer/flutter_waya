@@ -37,7 +37,7 @@ extension ExtensionNum on num {
           growable: growable);
 
   String padLeft(int width, [String padding = ' ']) =>
-      toString().padLeft(width);
+      toString().padLeft(width, padding);
 
   /// num 长
   int get length => toString().length;

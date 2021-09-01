@@ -383,7 +383,7 @@ extension ExtensionWidget on Widget {
           dragStartBehavior: dragStartBehavior,
           child: this);
 
-  GestureDetector onTap(GestureTapCallback onTap, {Key? key}) =>
+  GestureDetector onTap(GestureTapCallback? onTap, {Key? key}) =>
       gestureDetector(onTap: onTap, key: key);
 
   GestureDetector onDoubleTap(GestureTapCallback onDoubleTap, {Key? key}) =>

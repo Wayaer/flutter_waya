@@ -187,7 +187,12 @@ class AppConfig {
 
 class DateTimePickerUnit {
   DateTimePickerUnit(
-      {this.year, this.month, this.day, this.hour, this.minute, this.second});
+      {this.year = 'Y',
+      this.month = 'M',
+      this.day = 'D',
+      this.hour = 'H',
+      this.minute = 'M',
+      this.second = 'S'});
 
   final String? year;
   final String? month;
@@ -206,7 +211,4 @@ class DateTimePickerUnit {
     if (second != null) i += 1;
     return i;
   }
-
-  DateTimePickerUnit get getDefaultUnit => DateTimePickerUnit(
-      year: 'Y', month: 'M', day: 'D', hour: 'H', minute: 'M', second: 'S');
 }
