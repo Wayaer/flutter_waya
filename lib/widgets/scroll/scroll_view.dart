@@ -3,29 +3,32 @@ import 'dart:math' as math;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 /// 配合 sliver 家族组件 无需设置高度  自适应高度
 class ExtendedScrollView extends StatefulWidget {
-  const ExtendedScrollView(
-      {Key? key,
-      this.expanded = false,
-      this.flex = 1,
-      this.clipBehavior = Clip.hardEdge,
-      this.reverse = false,
-      this.physics,
-      this.scrollDirection = Axis.vertical,
-      this.dragStartBehavior = DragStartBehavior.start,
-      this.controller,
-      this.restorationId,
-      this.slivers = const <Widget>[],
-      this.primary,
-      this.shrinkWrap = false,
-      this.center,
-      this.anchor = 0.0,
-      this.cacheExtent,
-      this.semanticChildCount})
-      : isNestedScrollView = false,
+  const ExtendedScrollView({
+    Key? key,
+    this.expanded = false,
+    this.flex = 1,
+    this.clipBehavior = Clip.hardEdge,
+    this.reverse = false,
+    this.physics,
+    this.scrollDirection = Axis.vertical,
+    this.dragStartBehavior = DragStartBehavior.start,
+    this.controller,
+    this.restorationId,
+    this.slivers = const <Widget>[],
+    this.primary,
+    this.shrinkWrap = false,
+    this.center,
+    this.anchor = 0.0,
+    this.cacheExtent,
+    this.semanticChildCount,
+    this.scrollBehavior,
+    this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
+  })  : isNestedScrollView = false,
         floatHeaderSlivers = true,
         body = null,
         headerSliverBuilder = null,
@@ -46,6 +49,7 @@ class ExtendedScrollView extends StatefulWidget {
     this.controller,
     this.restorationId,
     this.slivers = const <Widget>[],
+    this.scrollBehavior,
   })  : isNestedScrollView = true,
         primary = null,
         shrinkWrap = false,
@@ -53,6 +57,7 @@ class ExtendedScrollView extends StatefulWidget {
         anchor = 0.0,
         cacheExtent = null,
         semanticChildCount = null,
+        keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
         super(key: key);
 
   /// 是否使用 [NestedScrollView]
@@ -84,6 +89,8 @@ class ExtendedScrollView extends StatefulWidget {
   final double anchor;
   final double? cacheExtent;
   final int? semanticChildCount;
+  final ScrollBehavior? scrollBehavior;
+  final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
 
   @override
   _ExtendedScrollViewState createState() => _ExtendedScrollViewState();
@@ -147,6 +154,7 @@ class _ExtendedScrollViewState extends State<ExtendedScrollView> {
       body: widget.body!,
       restorationId: widget.restorationId,
       controller: widget.controller,
+      scrollBehavior: widget.scrollBehavior,
       headerSliverBuilder: widget.headerSliverBuilder ??
           (BuildContext context, bool innerBoxIsScrolled) =>
               _sliverBuilder(slivers, sliverModel));
@@ -165,6 +173,8 @@ class _ExtendedScrollViewState extends State<ExtendedScrollView> {
       semanticChildCount: widget.semanticChildCount,
       dragStartBehavior: widget.dragStartBehavior,
       restorationId: widget.restorationId,
+      scrollBehavior: widget.scrollBehavior,
+      keyboardDismissBehavior: widget.keyboardDismissBehavior,
       clipBehavior: widget.clipBehavior);
 
   List<Widget> _sliverBuilder(
@@ -268,9 +278,8 @@ class ExtendedSliverAppBar extends SliverAppBar {
 
     /// SliverAppBar图标主题
     IconThemeData? iconTheme,
-
-    /// 文字主题
-    TextTheme? textTheme,
+    TextStyle? titleTextStyle,
+    TextStyle? toolbarTextStyle,
 
     /// action图标主题
     IconThemeData? actionsIconTheme,
@@ -281,8 +290,8 @@ class ExtendedSliverAppBar extends SliverAppBar {
     /// 是否显示在状态栏的下面,false就会占领状态栏的高度
     bool primary = true,
 
-    /// 状态栏主题，默认Brightness.dark
-    Brightness? brightness,
+    /// 状态栏主题
+    SystemUiOverlayStyle? systemOverlayStyle,
     AsyncCallback? onStretchTrigger,
 
     /// [pinned]=true AppBar[title]不消失
@@ -298,6 +307,10 @@ class ExtendedSliverAppBar extends SliverAppBar {
     ShapeBorder? shape,
     double toolbarHeight = kToolbarHeight,
     double? collapsedHeight,
+    bool? backwardsCompatibility,
+    Color? foregroundColor,
+    Color? shadowColor,
+    bool excludeHeaderSemantics = false,
   }) : super(
             key: key,
             title: title,
@@ -305,14 +318,15 @@ class ExtendedSliverAppBar extends SliverAppBar {
             forceElevated: forceElevated,
             backgroundColor: backgroundColor,
             iconTheme: iconTheme,
-            textTheme: textTheme,
+            toolbarTextStyle: toolbarTextStyle,
+            titleTextStyle: titleTextStyle,
             actionsIconTheme: actionsIconTheme,
             titleSpacing: titleSpacing,
             primary: primary,
             centerTitle: centerTitle,
             stretch: stretch,
             stretchTriggerOffset: stretchTriggerOffset,
-            brightness: brightness,
+            systemOverlayStyle: systemOverlayStyle,
             onStretchTrigger: onStretchTrigger,
             elevation: elevation,
             leading: leading,
@@ -324,7 +338,11 @@ class ExtendedSliverAppBar extends SliverAppBar {
             expandedHeight: expandedHeight,
             toolbarHeight: toolbarHeight,
             collapsedHeight: collapsedHeight,
+            backwardsCompatibility: backwardsCompatibility,
             automaticallyImplyLeading: automaticallyImplyLeading,
+            foregroundColor: foregroundColor,
+            excludeHeaderSemantics: excludeHeaderSemantics,
+            shadowColor: shadowColor,
             bottom: bottom == null
                 ? null
                 : PreferredSize(child: bottom, preferredSize: bottomSize!),
@@ -512,7 +530,8 @@ class _SliverAppBar extends SliverAppBar {
             backgroundColor: sliverAppBar.backgroundColor,
             iconTheme: sliverAppBar.iconTheme,
             actionsIconTheme: sliverAppBar.actionsIconTheme,
-            textTheme: sliverAppBar.textTheme,
+            toolbarTextStyle: sliverAppBar.toolbarTextStyle,
+            titleTextStyle: sliverAppBar.titleTextStyle,
             primary: sliverAppBar.primary,
             centerTitle: sliverAppBar.centerTitle,
             titleSpacing: sliverAppBar.titleSpacing,
@@ -521,7 +540,7 @@ class _SliverAppBar extends SliverAppBar {
             stretchTriggerOffset: sliverAppBar.stretchTriggerOffset,
             onStretchTrigger: sliverAppBar.onStretchTrigger,
             elevation: sliverAppBar.elevation,
-            brightness: sliverAppBar.brightness,
+            systemOverlayStyle: sliverAppBar.systemOverlayStyle,
             leading: sliverAppBar.leading,
             pinned: sliverAppBar.pinned,
             floating: sliverAppBar.floating,
@@ -529,6 +548,11 @@ class _SliverAppBar extends SliverAppBar {
             shape: sliverAppBar.shape,
             toolbarHeight: sliverAppBar.toolbarHeight,
             leadingWidth: sliverAppBar.leadingWidth,
+            backwardsCompatibility: sliverAppBar.backwardsCompatibility,
+            collapsedHeight: sliverAppBar.collapsedHeight,
+            foregroundColor: sliverAppBar.foregroundColor,
+            excludeHeaderSemantics: sliverAppBar.excludeHeaderSemantics,
+            shadowColor: sliverAppBar.shadowColor,
             bottom: sliverAppBar.bottom == null
                 ? null
                 : PreferredSize(
@@ -566,6 +590,7 @@ class RefreshScrollView extends ScrollView {
         ScrollViewKeyboardDismissBehavior.manual,
     String? restorationId,
     Clip? clipBehavior = Clip.hardEdge,
+    ScrollBehavior? scrollBehavior,
   })  : noScrollBehavior = noScrollBehavior ?? false,
         super(
             key: key,
@@ -581,6 +606,7 @@ class RefreshScrollView extends ScrollView {
             primary: primary,
             center: center,
             anchor: anchor,
+            scrollBehavior: scrollBehavior,
             semanticChildCount: semanticChildCount,
             keyboardDismissBehavior: keyboardDismissBehavior ??
                 ScrollViewKeyboardDismissBehavior.manual);

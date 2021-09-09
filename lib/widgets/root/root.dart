@@ -65,6 +65,7 @@ class ExtendedWidgetsApp extends StatelessWidget {
     this.scrollBehavior,
     this.restorationScopeId,
     this.textStyle,
+    this.useInheritedMediaQuery = false,
   })  : debugShowMaterialGrid = debugShowMaterialGrid ?? false,
         debugShowWidgetInspector = debugShowWidgetInspector ?? false,
         showPerformanceOverlay = showPerformanceOverlay ?? false,
@@ -175,6 +176,7 @@ class ExtendedWidgetsApp extends StatelessWidget {
   final String? restorationScopeId;
   final bool debugShowWidgetInspector;
   final TextStyle? textStyle;
+  final bool useInheritedMediaQuery;
 
   @override
   Widget build(BuildContext context) {
@@ -225,6 +227,7 @@ class ExtendedWidgetsApp extends StatelessWidget {
         inspectorSelectButtonBuilder: inspectorSelectButtonBuilder,
         shortcuts: shortcuts,
         actions: actions,
+        useInheritedMediaQuery: useInheritedMediaQuery,
         restorationScopeId: restorationScopeId);
   }
 
@@ -265,6 +268,7 @@ class ExtendedWidgetsApp extends StatelessWidget {
         shortcuts: shortcuts,
         actions: actions,
         restorationScopeId: restorationScopeId,
+        useInheritedMediaQuery: useInheritedMediaQuery,
         scrollBehavior: scrollBehavior);
   }
 
@@ -296,6 +300,7 @@ class ExtendedWidgetsApp extends StatelessWidget {
       shortcuts: shortcuts,
       actions: actions,
       restorationScopeId: restorationScopeId,
+      useInheritedMediaQuery: useInheritedMediaQuery,
       scrollBehavior: scrollBehavior);
 }
 
@@ -360,6 +365,7 @@ class ExtendedScaffold extends StatelessWidget {
     this.margin,
     this.decoration,
     this.refreshConfig,
+    this.restorationId,
   })  : onWillPopOverlayClose = onWillPopOverlayClose ?? false,
         paddingStatusBar = paddingStatusBar ?? false,
         useSingleChildScrollView = useSingleChildScrollView ?? true,
@@ -438,6 +444,7 @@ class ExtendedScaffold extends StatelessWidget {
   final List<Widget>? persistentFooterButtons;
   final bool? resizeToAvoidBottomInset;
   final bool primary;
+  final String? restorationId;
 
   @override
   Widget build(BuildContext context) {
@@ -464,6 +471,7 @@ class ExtendedScaffold extends StatelessWidget {
         appBar: appBarFun,
         bottomNavigationBar: bottomNavigationBar,
         bottomSheet: bottomSheet,
+        restorationId: restorationId,
         body: universal);
     if (onWillPop != null || onWillPopOverlayClose)
       return WillPopScope(
