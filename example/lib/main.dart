@@ -89,6 +89,7 @@ class AppBarText extends AppBar {
       : super(
             key: key,
             elevation: 0,
+            systemOverlayStyle: const SystemUiOverlayStyleDark(),
             iconTheme: const IconThemeData.fallback(),
             title: BText(text,
                 color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),

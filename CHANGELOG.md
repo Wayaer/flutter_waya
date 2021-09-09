@@ -1,3 +1,6 @@
+## 1.13.2
+ * remove `setStatusBarLight()`
+ * add `SystemUiOverlayStyleDark()` and `SystemUiOverlayStyleLight()`
 ## 1.13.1
  * modify `showDateTimePicker` to return `DateTime`
  * modify the initialization method of `DateTimePickerUnit`

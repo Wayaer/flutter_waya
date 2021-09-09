@@ -4,8 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_waya/constant/constant.dart';
 
 export 'src/ali_oss.dart';
 export 'src/des/des.dart';
@@ -64,22 +62,3 @@ void addPersistentFrameCallback(FrameCallback duration) =>
 
 void addTimingsCallback(TimingsCallback callback) =>
     widgetsBinding?.addTimingsCallback(callback);
-
-void setStatusBarLight(bool isLight) {
-  const Color color = ConstColors.transparent;
-  SystemChrome.setSystemUIOverlayStyle(isLight
-      ? const SystemUiOverlayStyle(
-          systemNavigationBarColor: ConstColors.black70,
-          systemNavigationBarDividerColor: color,
-          statusBarColor: color,
-          systemNavigationBarIconBrightness: Brightness.light,
-          statusBarIconBrightness: Brightness.light,
-          statusBarBrightness: Brightness.dark)
-      : const SystemUiOverlayStyle(
-          systemNavigationBarColor: ConstColors.black70,
-          systemNavigationBarDividerColor: color,
-          statusBarColor: color,
-          systemNavigationBarIconBrightness: Brightness.light,
-          statusBarIconBrightness: Brightness.dark,
-          statusBarBrightness: Brightness.light));
-}
