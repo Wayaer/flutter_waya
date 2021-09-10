@@ -118,21 +118,20 @@ class CustomSliverAppBar extends StatelessWidget {
     final Widget toolbar = SizedBox(height: toolbarHeight + height);
     return SliverPinnedPersistentHeader(
         delegate: _CustomSliverAppbarDelegate(
-      minExtentProtoType: toolbar,
-      maxExtentProtoType: background ?? toolbar,
-      title: title,
-      leading: leading,
-      actions: actions,
-      background: background,
-      statusBarHeight: height,
-      toolbarHeight: toolbarHeight,
-      toolBarColor: toolBarColor,
-      onBuild: onBuild,
-      isOpacityFadeWithToolbar: isOpacityFadeWithToolbar,
-      isOpacityFadeWithTitle: isOpacityFadeWithTitle,
-      mainAxisAlignment: mainAxisAlignment,
-      crossAxisAlignment: crossAxisAlignment,
-    ));
+            minExtentProtoType: toolbar,
+            maxExtentProtoType: background ?? toolbar,
+            title: title,
+            leading: leading,
+            actions: actions,
+            background: background,
+            statusBarHeight: height,
+            toolbarHeight: toolbarHeight,
+            toolBarColor: toolBarColor,
+            onBuild: onBuild,
+            isOpacityFadeWithToolbar: isOpacityFadeWithToolbar,
+            isOpacityFadeWithTitle: isOpacityFadeWithTitle,
+            mainAxisAlignment: mainAxisAlignment,
+            crossAxisAlignment: crossAxisAlignment));
   }
 }
 

@@ -25,7 +25,6 @@ export 'progress/liquid_progress.dart';
 export 'progress/progress.dart';
 export 'progress/wave.dart';
 export 'refresh/easy_refresh.dart';
-export 'refresh/scroll_physics.dart';
 export 'refresh/simple_refresh.dart';
 export 'simple_builder.dart';
 

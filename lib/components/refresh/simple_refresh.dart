@@ -2,31 +2,36 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-void sendSimpleRefreshType(RefreshType refresh) =>
-    eventBus.emit(refreshEvent, refresh);
+// void sendSimpleRefreshType(RefreshType refresh) =>
+//     eventBus.emit(refreshEvent, refresh);
 
-enum RefreshType {
-  /// 开始刷新  显示刷新动画
-  startRefresh,
+// enum RefreshType {
+//   /// 下拉可以刷新
+//   pullDown,
+//
+//   /// 上拉加载更多
+//   pullUp,
+//
+//   /// 释放立即刷新
+//   release,
+//
+//   /// 正在刷新
+//   refreshing,
+//
+//   /// 正在加载
+//   loading,
+//
+//   /// 完成
+//   finish,
+//
+//   /// 失败
+//   failed,
+// }
 
-  /// 刷新完成
-  refreshCompleted,
+typedef HeaderCallback = Widget Function(RefreshState refreshStatus);
+typedef FooterCallback = Widget Function(LoadingState loadStatus);
 
-  /// 刷新失败
-  refreshFailed,
-
-  /// 开始加载  显示加载动画
-  startLoading,
-
-  /// 加载完成后 显示没有更多
-  loadNoMore,
-
-  /// 加载失败
-  loadFailed,
-}
-
-typedef HeaderCallback = Widget Function(RefreshStatus refreshStatus);
-typedef FooterCallback = Widget Function(LoadStatus loadStatus);
+typedef RefreshLoadingCallback = Future<bool> Function();
 
 class SimpleRefresh extends StatefulWidget {
   const SimpleRefresh(
@@ -40,8 +45,8 @@ class SimpleRefresh extends StatefulWidget {
       : super(key: key);
 
   final Widget child;
-  final Function? onRefresh;
-  final Function? onLoading;
+  final RefreshLoadingCallback? onRefresh;
+  final RefreshLoadingCallback? onLoading;
   final HeaderCallback? header;
   final FooterCallback? footer;
   final RefreshController? controller;
@@ -53,39 +58,10 @@ class SimpleRefresh extends StatefulWidget {
 class _RefreshState extends State<SimpleRefresh> {
   late RefreshController controller;
 
-  void addEvent() {
-    eventBus.add(refreshEvent, (dynamic data) {
-      if (data != null && data is RefreshType) {
-        switch (data) {
-          case RefreshType.startRefresh:
-            controller.startRefresh();
-            break;
-          case RefreshType.refreshCompleted:
-            controller.refreshCompleted;
-            break;
-          case RefreshType.refreshFailed:
-            controller.refreshFailed;
-            break;
-          case RefreshType.startLoading:
-            controller.startLoading();
-            break;
-          case RefreshType.loadNoMore:
-            controller.loadNoMore;
-            break;
-          case RefreshType.loadFailed:
-            controller.loadFailed;
-            break;
-        }
-      }
-    });
-  }
-
   @override
   void initState() {
     super.initState();
     initController();
-    controller.addListener(listener);
-    addPostFrameCallback((Duration callback) => addEvent());
   }
 
   void initController() {
@@ -96,21 +72,10 @@ class _RefreshState extends State<SimpleRefresh> {
       initialScrollOffset += widgetInitialScrollOffset;
     }
     controller = RefreshController(
+        onRefresh: widget.onRefresh,
+        onLoading: widget.onLoading,
         initialScrollOffset: initialScrollOffset,
         keepScrollOffset: widget.controller?.keepScrollOffset ?? true);
-  }
-
-  void listener() {
-    if (controller.header.value != RefreshStatus.defaultStatus) {
-      if (controller.header.value == RefreshStatus.refreshing) {
-        if (widget.onRefresh != null) widget.onRefresh!.call();
-      }
-    }
-    if (controller.footer.value != LoadStatus.defaultStatus) {
-      if (controller.footer.value == LoadStatus.loading) {
-        if (widget.onLoading != null) widget.onLoading!.call();
-      }
-    }
   }
 
   @override
@@ -122,33 +87,42 @@ class _RefreshState extends State<SimpleRefresh> {
       slivers.add(SliverToBoxAdapter(child: _footer));
     Widget scrollView = ScrollNotificationListener(
         onNotification: (ScrollNotification notification, bool focus) {
-          if (notification is ScrollUpdateNotification && focus) {
-            if (controller.offset < 10) {
-              controller.canRefresh;
-            } else if (controller.header.value != RefreshStatus.defaultStatus) {
-              controller.resetRefresh(resetStart: false);
+          if (notification is ScrollStartNotification && focus) {
+            if (controller.offset < 1) {
+              controller.refreshPullDown();
+            } else if (controller.offset > controller.scrollHeight + 1) {
+              controller.loadingPullUp();
             }
-            if (controller.offset > controller.scrollHeight + 10) {
-              controller.canLoading;
-            } else if (controller.footer.value != LoadStatus.defaultStatus) {
-              controller.resetLoad(resetEnd: false);
+          } else if (notification is ScrollUpdateNotification && focus) {
+            if (controller.offset < 10 &&
+                controller.header.value != RefreshState.release) {
+              controller.refreshRelease();
             }
-          }
-          return true;
-        },
-        onFocus: (bool focus) {
-          if (!focus) {
-            if (controller.offset < 100 && controller.offset > 10) {
-              controller.resetRefresh(hasJump: true);
-            } else if (controller.offset <= 10) {
-              controller.startRefresh();
+            if (controller.offset > controller.scrollHeight + 10 &&
+                controller.footer.value != LoadingState.release) {
+              controller.loadingRelease();
+            }
+          } else if (notification is ScrollEndNotification && !focus) {
+            if (controller.offset < 100 &&
+                controller.header.value != RefreshState.release) {
+              controller.refreshPullDown();
+            } else if (controller.offset < 10) {
+              controller.refreshing();
+            } else if (controller.header.value == RefreshState.refreshing) {
             } else if (controller.offset > (controller.scrollHeight - 100) &&
                 controller.offset < (controller.scrollHeight - 10)) {
-              controller.resetLoad(hasJump: true);
+              controller.loadingPullUp();
             } else if (controller.offset >= (controller.scrollHeight - 10)) {
-              controller.startLoading();
+              controller.loading();
+            }
+          } else if (notification is ScrollStartNotification && !focus) {
+            if (controller.offset < 90) {
+              controller.refreshPullDown();
+            } else if (controller.offset > controller.scrollHeight - 90) {
+              controller.loadingPullUp();
             }
           }
+          return false;
         },
         child: CustomScrollView(
             controller: controller,
@@ -166,63 +140,66 @@ class _RefreshState extends State<SimpleRefresh> {
     return null;
   }
 
-  Widget get _header => ValueListenableBuilder<RefreshStatus>(
+  Widget get _header => ValueListenableBuilder<RefreshState>(
       valueListenable: controller.header,
-      builder: (_, RefreshStatus status, __) {
+      builder: (_, RefreshState status, __) {
         Widget? child;
         if (widget.header != null) {
           child = widget.header!(status);
         } else {
           switch (status) {
-            case RefreshStatus.defaultStatus:
+            case RefreshState.pullDown:
               child = const Text('请尽情拉我');
               break;
-            case RefreshStatus.canRefresh:
-              child = const Text('麻烦松手了');
+            case RefreshState.release:
+              child = const Text('松手刷新');
               break;
-            case RefreshStatus.refreshing:
+            case RefreshState.refreshing:
               child =
                   const SpinKit(SpinKitStyle.squareCircle, color: Colors.blue);
               break;
-            case RefreshStatus.completed:
-              child = const Text('刷新完了');
+            case RefreshState.finish:
+              child = const Text('刷新完成了');
               break;
-            case RefreshStatus.failed:
+            case RefreshState.failed:
               child = const Text('刷新失败了');
               break;
           }
         }
         return Universal(
-            alignment: Alignment.center, height: 100, child: child);
+            color: Colors.red.withOpacity(0.3),
+            alignment: Alignment.center,
+            height: 100,
+            child: child);
       });
 
-  Widget get _footer => ValueListenableBuilder<LoadStatus>(
+  Widget get _footer => ValueListenableBuilder<LoadingState>(
       valueListenable: controller.footer,
-      builder: (_, LoadStatus status, __) {
+      builder: (_, LoadingState status, __) {
         Widget? child;
         if (widget.footer != null) {
           child = widget.footer!(status);
         } else {
           switch (status) {
-            case LoadStatus.defaultStatus:
-              child = const Text('请尽情拉我');
+            case LoadingState.pullUp:
+              child = const Text('请尽情上拉');
               break;
-            case LoadStatus.canLoading:
-              child = const Text('麻烦松手了');
+            case LoadingState.release:
+              child = const Text('松手加载更多');
               break;
-            case LoadStatus.loading:
+            case LoadingState.loading:
               child = const SpinKitSquareCircle(color: Colors.blue);
               break;
-            case LoadStatus.noMore:
-              child = const Text('没有更多数据了');
+            case LoadingState.finish:
+              child = const Text('加载成功了');
               break;
-            case LoadStatus.failed:
+            case LoadingState.failed:
               child = const Text('加载失败了');
               break;
           }
         }
         return Universal(
-            color: Colors.red,
+            color: Colors.red.withOpacity(0.3),
             alignment: Alignment.center,
             height: 100,
             child: child);
@@ -245,7 +222,7 @@ class _RefreshState extends State<SimpleRefresh> {
     } else if (child is! Scrollable) {
       slivers = <Widget>[SliverToBoxAdapter(child: child)];
     }
-    slivers.add(_SliverFillViewport());
+    // slivers.add(_SliverFillViewport());
     return slivers;
   }
 
@@ -254,180 +231,183 @@ class _RefreshState extends State<SimpleRefresh> {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.controller != widget.controller) {
       initController();
-      controller.removeListener(listener);
-      controller.addListener(listener);
     }
   }
 
   @override
   void dispose() {
     super.dispose();
-    eventBus.remove(refreshEvent);
-    controller.removeListener(listener);
     controller.dispose();
   }
 }
 
-class _SliverFillViewport extends SliverFillViewport {
-  _SliverFillViewport()
-      : super(
-            viewportFraction: 1,
-            delegate: SliverChildBuilderDelegate(
-                (_, int index) => const SizedBox(height: 1),
-                childCount: 1));
-}
+// class _SliverFillViewport extends SliverFillViewport {
+//   _SliverFillViewport()
+//       : super(
+//             viewportFraction: 1,
+//             delegate: SliverChildBuilderDelegate(
+//                 (_, int index) => const SizedBox(height: 1),
+//                 childCount: 1));
+// }
 
 class RefreshController extends ScrollController {
-  RefreshController({double? initialScrollOffset, bool keepScrollOffset = true})
+  RefreshController(
+      {this.onRefresh,
+      this.onLoading,
+      double? initialScrollOffset,
+      bool keepScrollOffset = true})
       : super(
             initialScrollOffset: initialScrollOffset ?? 0,
             keepScrollOffset: keepScrollOffset);
 
-  ValueNotifier<RefreshStatus> header =
-      ValueNotifier<RefreshStatus>(RefreshStatus.defaultStatus);
+  RefreshLoadingCallback? onRefresh;
 
-  ValueNotifier<LoadStatus> footer =
-      ValueNotifier<LoadStatus>(LoadStatus.defaultStatus);
+  RefreshLoadingCallback? onLoading;
+
+  ValueNotifier<RefreshState> header =
+      ValueNotifier<RefreshState>(RefreshState.pullDown);
+
+  ValueNotifier<LoadingState> footer =
+      ValueNotifier<LoadingState>(LoadingState.pullUp);
 
   /// 滚动高度
   double get scrollHeight => position.maxScrollExtent;
 
-  Duration animateDuration = const Duration(milliseconds: 500);
+  Duration animateDuration = const Duration(milliseconds: 100);
 
   set setAnimateDuration(Duration duration) => animateDuration = duration;
 
   /// 松手刷新
-  void get canRefresh {
-    if (header.value == RefreshStatus.canRefresh) return;
-    header.value = RefreshStatus.canRefresh;
-    notify();
+  void refreshRelease() {
+    if (header.value != RefreshState.pullDown && footerDefault) return;
+    header.value = RefreshState.release;
   }
 
   /// 开始刷新
-  void startRefresh() {
-    if (header.value == RefreshStatus.refreshing) return;
-    header.value = RefreshStatus.refreshing;
-    notify();
+  void refreshing() {
+    if (header.value != RefreshState.release && footerDefault) return;
+    header.value = RefreshState.refreshing;
+    if (onRefresh != null)
+      onRefresh!.call().then((bool value) {
+        if (value) {
+          refreshFinish();
+        } else {
+          refreshFailed();
+        }
+      });
   }
 
   /// 刷新完成
-  void get refreshCompleted {
-    if (header.value == RefreshStatus.completed) return;
-    header.value = RefreshStatus.completed;
-    animateDuration.delayed(() => resetRefresh());
-    notify();
+  void refreshFinish() {
+    if (header.value != RefreshState.refreshing && footerDefault) return;
+    header.value = RefreshState.finish;
+    animateDuration.delayed(() => refreshPullDown());
   }
 
   /// 刷新失败
-  void get refreshFailed {
-    if (header.value == RefreshStatus.failed) return;
-    header.value = RefreshStatus.failed;
-    animateDuration.delayed(() => resetRefresh());
-    notify();
+  void refreshFailed() {
+    if (header.value != RefreshState.refreshing && footerDefault) return;
+    header.value = RefreshState.failed;
+    animateDuration.delayed(() => refreshPullDown());
   }
 
   /// 重置刷新 至默认状态
-  void resetRefresh({bool resetStart = true, bool hasJump = false}) {
-    if (resetStart) {
-      if (hasJump)
-        jumpToOffset(100);
-      else
-        animateToOffset(100);
-    }
-    header.value = RefreshStatus.defaultStatus;
-    notify();
+  Future<void> refreshPullDown() async {
+    if (!footerDefault) return;
+    await animateToOffset(100);
+    header.value = RefreshState.pullDown;
   }
 
   /// 松手加载
-  void get canLoading {
-    if (footer.value == LoadStatus.canLoading) return;
-    footer.value = LoadStatus.canLoading;
-    notify();
+  void loadingRelease() {
+    if (footer.value == LoadingState.pullUp && headerDefault) return;
+    footer.value = LoadingState.release;
   }
 
   /// 加载中
-  void startLoading() {
-    if (footer.value == LoadStatus.loading) return;
-    footer.value = LoadStatus.loading;
-    notify();
+  void loading() {
+    if (footer.value == LoadingState.loading && headerDefault) return;
+    footer.value = LoadingState.loading;
+    if (onLoading != null)
+      onLoading!.call().then((bool value) {
+        if (value) {
+          loadingFinish();
+        } else {
+          loadingFailed();
+        }
+      });
   }
 
-  /// 加载完成 没有更多
-  void get loadNoMore {
-    if (footer.value == LoadStatus.noMore) return;
-    footer.value = LoadStatus.noMore;
-    animateDuration.delayed(() => resetLoad());
-    notify();
+  /// 加载完成
+  void loadingFinish() {
+    if (footer.value == LoadingState.finish && headerDefault) return;
+    footer.value = LoadingState.finish;
+    animateDuration.delayed(() => loadingPullUp());
   }
 
   /// 加载失败
-  void get loadFailed {
-    if (footer.value == LoadStatus.failed) return;
-    footer.value = LoadStatus.failed;
-    animateDuration.delayed(() => resetLoad());
-    notify();
+  void loadingFailed() {
+    if (footer.value == LoadingState.failed && headerDefault) return;
+    footer.value = LoadingState.failed;
+    animateDuration.delayed(() => loadingPullUp());
   }
 
   /// 重置加载 至默认状态
-  void resetLoad({bool resetEnd = true, bool hasJump = false}) {
-    if (footer.value == LoadStatus.defaultStatus) return;
-    if (resetEnd) {
-      if (hasJump) {
-        jumpToOffset(scrollHeight);
-      } else
-        animateToOffset(scrollHeight - 100);
-    }
-    footer.value = LoadStatus.defaultStatus;
-    notify();
+  Future<void> loadingPullUp() async {
+    if (!headerDefault) return;
+    await animateToOffset(scrollHeight - 100);
+    footer.value = LoadingState.pullUp;
   }
 
-  void notify() {
-    notifyListeners();
-  }
+  bool get headerDefault => header.value == RefreshState.pullDown;
+
+  bool get footerDefault => footer.value == LoadingState.pullUp;
 
   void jumpToOffset(double offset) => jumpTo(offset);
 
-  Future<void> animateToOffset(double offset) => position.animateTo(offset,
-      duration: animateDuration, curve: Curves.linear);
+  Future<void> animateToOffset(double offset) async {
+    await 100.milliseconds.delayed(() {});
+    await position.animateTo(offset,
+        duration: animateDuration, curve: Curves.linear);
+  }
 
   @override
   void dispose() {
     super.dispose();
-    footer.value = LoadStatus.defaultStatus;
-    header.value = RefreshStatus.defaultStatus;
     header.dispose();
     footer.dispose();
   }
 }
 
-enum RefreshStatus {
+enum RefreshState {
   /// 默认状态
-  defaultStatus,
+  pullDown,
 
-  /// 可以刷新 松手后 刷新
-  canRefresh,
+  /// 松手后 刷新
+  release,
 
   /// 刷新中
   refreshing,
 
   /// 刷新完成
-  completed,
+  finish,
 
   /// 刷新失败
   failed,
 }
-enum LoadStatus {
+
+enum LoadingState {
   /// 默认状态
-  defaultStatus,
+  pullUp,
 
-  /// 可以加载 松手后 加载
-  canLoading,
+  /// 松手后 加载
+  release,
 
-  /// 加载更多
+  /// 加载中
   loading,
 
-  /// 加载完成 没有更多数据
-  noMore,
+  /// 加载完成
+  finish,
 
   /// 加载失败
   failed,
@@ -446,7 +426,7 @@ class ScrollNotificationListener extends StatefulWidget {
     Key? key,
     required this.child,
     required this.onNotification,
-    required this.onFocus,
+    this.onFocus,
   }) : super(key: key);
 
   final Widget child;
@@ -455,7 +435,7 @@ class ScrollNotificationListener extends StatefulWidget {
   final NotificationListenerScrollCallback onNotification;
 
   /// 滚动焦点回调
-  final ScrollFocusCallback onFocus;
+  final ScrollFocusCallback? onFocus;
 
   @override
   _ScrollNotificationListenerState createState() =>
@@ -469,7 +449,7 @@ class _ScrollNotificationListenerState
 
   set _focus(bool focus) {
     _focusState = focus;
-    widget.onFocus(_focusState);
+    if (widget.onFocus != null) widget.onFocus!(_focusState);
   }
 
   /// 处理滚动通知

@@ -317,41 +317,39 @@ class _ScrollListCountPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ExtendedScaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBarText('ScrollList.count Demo'),
-      body: ScrollList.count(
-        header: SliverToBoxAdapter(
-            child: Container(
-          margin: const EdgeInsets.only(bottom: 10),
-          height: 100,
-          alignment: Alignment.center,
-          child: const Text('Header'),
-          color: Colors.grey.withOpacity(0.3),
-        )),
-        footer: SliverToBoxAdapter(
-            child: Container(
-          margin: const EdgeInsets.only(top: 10),
-          height: 100,
-          alignment: Alignment.center,
-          child: const Text('Footer'),
-          color: Colors.grey.withOpacity(0.3),
-        )),
-        padding: const EdgeInsets.all(10),
-        refreshConfig: RefreshConfig(onRefresh: () async {
-          await showToast('onRefresh');
-          await 2.seconds.delayed(() {
-            sendRefreshType(EasyRefreshType.refreshSuccess);
-          });
-        }, onLoading: () async {
-          await showToast('onLoading');
-          await 2.seconds.delayed(() {
-            sendRefreshType(EasyRefreshType.loadingSuccess);
-          });
-        }),
-        children: _colors.builderEntry(
-            (MapEntry<int, Color> entry) => _Item(entry.key, entry.value)),
-      ),
-    );
+        backgroundColor: Colors.white,
+        appBar: AppBarText('ScrollList.count Demo'),
+        body: ScrollList.count(
+            header: SliverToBoxAdapter(
+                child: Container(
+              margin: const EdgeInsets.only(bottom: 10),
+              height: 100,
+              alignment: Alignment.center,
+              child: const Text('Header'),
+              color: Colors.grey.withOpacity(0.3),
+            )),
+            footer: SliverToBoxAdapter(
+                child: Container(
+              margin: const EdgeInsets.only(top: 10),
+              height: 100,
+              alignment: Alignment.center,
+              child: const Text('Footer'),
+              color: Colors.grey.withOpacity(0.3),
+            )),
+            padding: const EdgeInsets.all(10),
+            refreshConfig: RefreshConfig(onRefresh: () async {
+              await showToast('onRefresh');
+              await 2.seconds.delayed(() {
+                sendRefreshType(EasyRefreshType.refreshSuccess);
+              });
+            }, onLoading: () async {
+              await showToast('onLoading');
+              await 2.seconds.delayed(() {
+                sendRefreshType(EasyRefreshType.loadingSuccess);
+              });
+            }),
+            children: _colors.builderEntry((MapEntry<int, Color> entry) =>
+                _Item(entry.key, entry.value))));
   }
 }
 
@@ -401,12 +399,12 @@ class _CustomScrollViewPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ExtendedScaffold(
           body: CustomScrollView(slivers: <Widget>[
-        CustomSliverAppBar(title: BText('title', color: Colors.white)),
+        CustomSliverAppBar(
+            title: BText('CustomScrollViewPage', color: Colors.white)),
         SliverPinnedToBoxAdapter(
-          child: Column(
-              children: 4.generate(
-                  (int index) => Text('SliverPinnedToBoxAdapter -- $index'))),
-        ),
+            child: Column(
+                children: 4.generate((int index) =>
+                    Text('SliverPinnedToBoxAdapter -- $index')))),
         SliverList(
             delegate: SliverChildListDelegate(_colors.builderEntry(
                 (MapEntry<int, Color> entry) => _Item(entry.key, entry.value))))
@@ -471,7 +469,8 @@ class _Item extends StatelessWidget {
 }
 
 class _DraggableScrollbar extends StatelessWidget {
-  const _DraggableScrollbar(this.scrollController, {Key? key}) : super(key: key);
+  const _DraggableScrollbar(this.scrollController, {Key? key})
+      : super(key: key);
 
   final ScrollController scrollController;
 

@@ -8,8 +8,9 @@ class RefreshPage extends StatefulWidget {
 }
 
 class _RefreshPageState extends State<RefreshPage> {
-  List<Color> colors = <Color>[];
-  final RefreshController controller = RefreshController();
+  List<Color> colors = <Color>[
+    ...Colors.accents,
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -17,18 +18,15 @@ class _RefreshPageState extends State<RefreshPage> {
         backgroundColor: Colors.white,
         appBar: AppBarText('SimpleRefresh Demo'),
         body: SimpleRefresh(
-          controller: controller,
-          onRefresh: () {
-            3.seconds.delayed(() {
-              sendSimpleRefreshType(RefreshType.refreshCompleted);
-              showToast('刷新完成');
-            });
+          onRefresh: () async {
+            await 2.seconds.delayed(() {});
+            showToast('刷新完成');
+            return true;
           },
-          onLoading: () {
-            3.seconds.delayed(() {
-              showToast('加载失败');
-              sendSimpleRefreshType(RefreshType.loadFailed);
-            });
+          onLoading: () async {
+            await 2.seconds.delayed(() {});
+            showToast('加载完成');
+            return true;
           },
           child: ScrollList.builder(
               padding: const EdgeInsets.all(10),
