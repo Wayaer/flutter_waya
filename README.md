@@ -91,7 +91,7 @@ class _AppState extends State<_App> {
 
 - `Universal()`中合多个官方组件功能 减少嵌套
 
-## 快捷打包命令 [builds](https://github.com/Wayaer/flutter_waya/tree/main/builds)
+### 快捷打包命令 [builds](https://github.com/Wayaer/flutter_waya/tree/main/builds)
 
 - sh android.sh //即可打包命令 可拷贝builds至自己的项目目录 并修改
 
