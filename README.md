@@ -1,6 +1,6 @@
 # flutter_waya
 
-## [Example](example)
+## [Example](example) 运行 Example 查看使用
 
 ### 初始化 globalNavigatorKey 两种方式
 
@@ -30,7 +30,7 @@ class _AppState extends State<_App> {
 
 - Scaffold 使用 `ExtendedScaffold` 可自动管理 android 物理返回键 关闭 toast loading 等各种弹窗，以及多种功能
 
-### 运行example 查看 例子
+### extension 扩展方法
 
 - [extension](https://github.com/Wayaer/flutter_waya/tree/main/lib/extension)
     - [context_extension](https://github.com/Wayaer/flutter_waya/tree/main/lib/extension/src/context_extension.dart)
@@ -48,7 +48,7 @@ class _AppState extends State<_App> {
     - [string_extension](https://github.com/Wayaer/flutter_waya/tree/main/lib/extension/src/string_extension.dart)
       string 扩展
 
-## 工具类
+### utils 工具类
 
 - [utils](https://github.com/Wayaer/flutter_waya/tree/main/lib/utils)
 
@@ -58,7 +58,7 @@ class _AppState extends State<_App> {
     - [screen_fit](https://github.com/Wayaer/flutter_waya/tree/main/lib/utils/src/screen_fit.dart)
       MediaQueryData
 
-## UI组件
+### UI组件
 
 - [button](https://github.com/Wayaer/flutter_waya/tree/main/lib/components/button)
 
@@ -75,7 +75,8 @@ class _AppState extends State<_App> {
     - `Progress()` 普通动画progress
 
 - `ExtendedWidgetsApp()`
-    - 根组件使用 `ExtendedWidgetsApp()`可直接使用`push()` `pop()`等多个路由方法和`showDialogPopup()`,`showBottomPopup()`,`showCupertinoBottomPopup()`,`showDialogSureCancel()`,`showOverlay()`,`showLoading()`,`showToast()`,无需传 context
+    - 根组件使用 `ExtendedWidgetsApp()`可直接使用`push()` `pop()`等多个路由方法和`showDialogPopup()`,`showBottomPopup()`
+      ,`showCupertinoBottomPopup()`,`showDialogSureCancel()`,`showOverlay()`,`showLoading()`,`showToast()`,无需传 context
       ,随处打开,关闭 以上弹窗或页面 必须使用 `closePopup()`或直接 `pop()`,
 
 - `ExtendedScaffold()` 添加 `onWillPop()` `RefreshConfig` `padding` `margin` `decoration` `isStack` `isScroll` `children`
