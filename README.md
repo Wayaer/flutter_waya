@@ -74,8 +74,7 @@ class _AppState extends State<_App> {
     - `LiquidProgress()` 流体progress
     - `Progress()` 普通动画progress
 
-- `ExtendedWidgetsApp()`
-    - 根组件使用 `ExtendedWidgetsApp()`可直接使用`push()` `pop()`等多个路由方法和`showDialogPopup()`,`showBottomPopup()`
+- `ExtendedWidgetsApp()` 根组件使用 `ExtendedWidgetsApp()`可直接使用`push()` `pop()`等多个路由方法和`showDialogPopup()`,`showBottomPopup()`
       ,`showCupertinoBottomPopup()`,`showDialogSureCancel()`,`showOverlay()`,`showLoading()`,`showToast()`,无需传 context
       ,随处打开,关闭 以上弹窗或页面 必须使用 `closePopup()`或直接 `pop()`,
 
