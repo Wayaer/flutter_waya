@@ -267,6 +267,7 @@ class _DropdownMenuState extends State<DropdownMenu> {
     final Widget popup = PopupOptions(
         top: local.dy + titleHeight,
         alignment: Alignment.center,
+        color: ConstColors.transparent,
         onTap: widget.isModal
             ? null
             : () {

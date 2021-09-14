@@ -43,7 +43,7 @@ class _AppState extends State<_App> {
     addPostFrameCallback((Duration duration) async {
       if (isDebug && isDesktop) {
         final bool data =
-            await Curiosity.instance.desktop.setDesktopSizeToIPad9P7(p: 1.5);
+            await Curiosity().desktop.setDesktopSizeToIPad9P7(p: 1.5);
         log('桌面端限制宽高:$data');
       }
     });
@@ -51,7 +51,7 @@ class _AppState extends State<_App> {
 
   @override
   Widget build(BuildContext context) => ExtendedWidgetsApp(
-      title: 'Waya Demo', home: _Home(), widgetMode: WidgetMode.material);
+      title: 'Waya UI', home: _Home(), widgetMode: WidgetMode.material);
 }
 
 class _Home extends StatelessWidget {

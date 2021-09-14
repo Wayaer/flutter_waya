@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
@@ -26,6 +27,11 @@ extension ExtensionWidget on Widget {
           fit: fit,
           alignment: alignment,
           clipBehavior: clipBehavior);
+
+  AnnotatedRegion<SystemUiOverlayStyle> statusBarStyle(
+          SystemUiOverlayStyle style) =>
+      AnnotatedRegion<SystemUiOverlayStyle>(
+          key: key, value: style, child: this);
 
   Padding padding(EdgeInsetsGeometry padding) =>
       Padding(key: key, padding: padding, child: this);

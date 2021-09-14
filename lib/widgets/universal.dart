@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 class Universal extends StatelessWidget {
@@ -39,6 +40,7 @@ class Universal extends StatelessWidget {
     bool? maintainInteractivity,
     bool? transitionOnUserGestures,
     bool? noScrollBehavior,
+    bool? sized,
     double? fuzzyDegree,
     DragStartBehavior? dragStartBehavior,
     Color? shadowColor,
@@ -153,6 +155,7 @@ class Universal extends StatelessWidget {
     this.filter,
     this.builder,
     this.fit,
+    this.systemOverlayStyle,
   })  : addCard = addCard ?? false,
         addInkWell = addInkWell ?? false,
         isScroll = isScroll ?? false,
@@ -183,6 +186,7 @@ class Universal extends StatelessWidget {
         enableFeedback = enableFeedback ?? true,
         canRequestFocus = canRequestFocus ?? true,
         noScrollBehavior = noScrollBehavior ?? true,
+        sized = sized ?? true,
         gaussian = gaussian ?? false,
         fuzzyDegree = fuzzyDegree ?? 4,
         wrapSpacing = wrapSpacing ?? 0.0,
@@ -204,6 +208,10 @@ class Universal extends StatelessWidget {
         borderRadius = borderRadius ?? BorderRadius.zero,
         assert(!((addCard ?? false) && (addInkWell ?? false))),
         super(key: key);
+
+  ///  ****** [AnnotatedRegion]  ******  ///
+  final SystemUiOverlayStyle? systemOverlayStyle;
+  final bool sized;
 
   ///  [GestureDetector]、[SingleChildScrollView] 使用
   final DragStartBehavior dragStartBehavior;
@@ -637,11 +645,16 @@ class Universal extends StatelessWidget {
     if (opacity != null && opacity! > 0)
       current = Opacity(opacity: opacity!, child: current);
 
+    if (systemOverlayStyle != null) current = annotatedRegionWidget(current);
     if (offstage) current = offstageWidget(current);
     if (!visible) current = visibilityWidget(current);
 
     return current;
   }
+
+  Widget annotatedRegionWidget(Widget current) =>
+      AnnotatedRegion<SystemUiOverlayStyle>(
+          sized: sized, value: systemOverlayStyle!, child: current);
 
   Widget fittedBox(Widget current) => FittedBox(
       child: current,
