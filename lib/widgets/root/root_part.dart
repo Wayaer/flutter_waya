@@ -34,7 +34,7 @@ class ExtendedOverlayEntry extends OverlayEntry {
 
 ///  自定义Overlay
 ExtendedOverlayEntry? showOverlay(Widget widget, {bool autoOff = false}) {
-  final OverlayState? _overlay = _globalNavigatorKey.currentState!.overlay;
+  final OverlayState? _overlay = globalNavigatorKey.currentState!.overlay;
   if (_overlay == null) return null;
   final ExtendedOverlayEntry entryAuto =
       ExtendedOverlayEntry(autoOff: autoOff, widget: widget);
@@ -275,7 +275,7 @@ Future<T?> showDialogPopup<T>({
     };
   }
   return showGeneralDialog(
-      context: _globalNavigatorKey.currentContext!,
+      context: globalNavigatorKey.currentContext!,
       pageBuilder: pageBuilder ??
           (BuildContext context, Animation<double> animation, _) => widget!,
       barrierDismissible: barrierDismissible ?? true,
@@ -304,7 +304,7 @@ Future<T?> showBottomPopup<T>({
 }) {
   assert(builder != null || widget != null);
   return showModalBottomSheet(
-      context: _globalNavigatorKey.currentContext!,
+      context: globalNavigatorKey.currentContext!,
       builder: builder ?? (BuildContext context) => widget!,
       backgroundColor: backgroundColor ?? ConstColors.transparent,
       elevation: elevation,
@@ -334,7 +334,7 @@ Future<T?> showBottomPagePopup<T>({
 }) {
   assert(builder != null || widget != null);
   return showModalBottomSheet(
-      context: _globalNavigatorKey.currentContext!,
+      context: globalNavigatorKey.currentContext!,
       builder: builder ?? (BuildContext context) => widget!,
       backgroundColor: backgroundColor ?? ConstColors.transparent,
       elevation: elevation,
@@ -357,7 +357,7 @@ Future<T?> showCupertinoBottomPagePopup<T>(
     ImageFilter? filter}) {
   assert(builder != null || widget != null);
   return showCupertinoModalPopup(
-      context: _globalNavigatorKey.currentContext!,
+      context: globalNavigatorKey.currentContext!,
       builder: builder ?? (BuildContext context) => widget!,
       filter: filter,
       useRootNavigator: useRootNavigator);
@@ -451,7 +451,7 @@ Future<DateTime?> showDateTimePicker<T>({
   /// Wheel配置信息
   PickerWheel? wheel,
 }) {
-  _globalNavigatorKey.currentContext!.focusNode();
+  globalNavigatorKey.currentContext!.focusNode();
   final Widget widget = DateTimePicker(
       options: options,
       wheel: wheel,
@@ -483,7 +483,7 @@ Future<String?> showAreaPicker<T>({
   /// Wheel配置信息
   PickerWheel? wheel,
 }) {
-  _globalNavigatorKey.currentContext!.focusNode();
+  globalNavigatorKey.currentContext!.focusNode();
   // wheel ??= PickerWheel();
   // options ??= PickerOptions<String>();
   // options.sureTap ??= (String text) => closePopup(text);
@@ -511,7 +511,7 @@ Future<int?> showMultipleChoicePicker<T>({
   /// Wheel配置信息
   PickerWheel? wheel,
 }) {
-  _globalNavigatorKey.currentContext!.focusNode();
+  globalNavigatorKey.currentContext!.focusNode();
   final Widget widget = MultipleChoicePicker(
       itemCount: itemCount,
       itemBuilder: itemBuilder,
@@ -531,7 +531,7 @@ Future<T?> showCustomPicker<T>({
   /// 头部和背景色配置
   PickerOptions<T?>? options,
 }) {
-  _globalNavigatorKey.currentContext!.focusNode();
+  globalNavigatorKey.currentContext!.focusNode();
   options ??= PickerOptions<T?>();
   return showBottomPopup(
       widget: PickerSubject<T?>(
@@ -561,7 +561,7 @@ Future<T?> showSimpleCupertinoDialog<T>({
 }) {
   assert(builder != null || widget != null);
   return showCupertinoDialog(
-      context: _globalNavigatorKey.currentContext!,
+      context: globalNavigatorKey.currentContext!,
       builder: builder ?? (BuildContext context) => widget!,
       useRootNavigator: useRootNavigator,
       barrierDismissible: barrierDismissible,
@@ -582,7 +582,7 @@ Future<T?> showSimpleDialog<T>({
 }) {
   assert(builder != null || widget != null);
   return showDialog(
-      context: _globalNavigatorKey.currentContext!,
+      context: globalNavigatorKey.currentContext!,
       builder: builder ?? (BuildContext context) => widget!,
       barrierDismissible: barrierDismissible,
       barrierColor: barrierColor,
@@ -604,7 +604,7 @@ Future<T?> showMenuPopup<T>({
   bool useRootNavigator = false,
 }) =>
     showMenu(
-        context: _globalNavigatorKey.currentContext!,
+        context: globalNavigatorKey.currentContext!,
         items: items,
         initialValue: initialValue,
         elevation: elevation,

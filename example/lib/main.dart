@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_curiosity/flutter_curiosity.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 import 'package:waya/module/alert_page.dart';
@@ -15,25 +16,50 @@ import 'package:waya/module/universal_page.dart';
 
 import 'module/components_page.dart';
 
+bool isCustomApp = false;
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   setGlobalPushMode(WidgetMode.ripple);
-  _des();
-  runApp(_App());
-}
+  void des() {
+    const String str =
+        'CfAmqOiIYz6NkH0Te32Uz6obXELPspz1pDj+oOUNNbsmptHP0Jwvdg==';
+    const String key = 'a51d3484ad8445df9d9e7aa5e8';
+    log('des解密==>\n key = $key \n String = $str');
+    final DES des = DES(DESEngine(), 'a51d3484ad8445df9d9e7aa5e8');
+    final String? decoded = des.decodeBase64(str);
+    log('des解密完成==> $decoded');
+  }
 
-void _des() {
-  const String str = 'CfAmqOiIYz6NkH0Te32Uz6obXELPspz1pDj+oOUNNbsmptHP0Jwvdg==';
-  const String key = 'a51d3484ad8445df9d9e7aa5e8';
-  log('des解密==>\n key = $key \n String = $str');
-  final DES des = DES(DESEngine(), 'a51d3484ad8445df9d9e7aa5e8');
-  final String? decoded = des.decodeBase64(str);
-  log('des解密完成==> $decoded');
+  des();
+  runApp(_App());
 }
 
 class _App extends StatefulWidget {
   @override
-  _AppState createState() => _AppState();
+  State<_App> createState() => isCustomApp ? _CustomAppState() : _AppState();
+}
+
+class _CustomAppState extends State<_App> {
+  GlobalKey<NavigatorState> navigatorKey = GlobalKey();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback((Duration time) {
+      log('设置globalNavigatorKey');
+      globalNavigatorKey = navigatorKey;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        navigatorKey: navigatorKey,
+        title: 'Waya UI',
+        home: _Home());
+  }
 }
 
 class _AppState extends State<_App> {
@@ -50,8 +76,10 @@ class _AppState extends State<_App> {
   }
 
   @override
-  Widget build(BuildContext context) => ExtendedWidgetsApp(
-      title: 'Waya UI', home: _Home(), widgetMode: WidgetMode.material);
+  Widget build(BuildContext context) {
+    return ExtendedWidgetsApp(
+        title: 'Waya UI', home: _Home(), widgetMode: WidgetMode.material);
+  }
 }
 
 class _Home extends StatelessWidget {

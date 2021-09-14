@@ -2,8 +2,48 @@
 
 ## [Example](example)
 
-- package 中的 toast loading 各种弹窗 以及路由跳转 都基于 ExtendedWidgetsApp ，根组件务必使用 ExtendedWidgetsApp ， Scaffold
-  使用 ExtendedScaffold 可自动管理android 物理返回键 关闭 toast loading 等各种弹窗
+- 初始化 globalNavigatorKey 两种方式
+
+```dart
+/// 使用自己的 MaterialApp
+class _CustomAppState extends State<_App> {
+  GlobalKey<NavigatorState> navigatorKey = GlobalKey();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback((Duration time) {
+      log('设置globalNavigatorKey');
+      globalNavigatorKey = navigatorKey;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        navigatorKey: navigatorKey,
+        title: 'Waya UI',
+        home: _Home());
+  }
+}
+
+
+/// 根组件使用  ExtendedWidgetsApp
+class _AppState extends State<_App> {
+
+  @override
+  Widget build(BuildContext context) {
+    return ExtendedWidgetsApp(
+        title: 'Waya UI', home: _Home(), widgetMode: WidgetMode.material);
+  }
+}
+
+```
+
+
+
+- Scaffold 使用 `ExtendedScaffold` 可自动管理 android 物理返回键 关闭 toast loading 等各种弹窗
 
 ### 运行example 查看 例子
 
@@ -62,18 +102,20 @@
 
 - [root](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root)
 
-    -
-  根组件使用[ExtendedWidgetsApp](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root.dart)
-  可直接使用[push()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root.dart#L513) [pop()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root.dart#L564)
-  等多个路由方法和[showDialogPopup()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root.dart)
-  ,[showBottomPopup()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root.dart)
-  ,[showBottomPagePopup()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root_part.dart)
-  ,[showCupertinoBottomPagePopup()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root_part.dart)
-  ,[dialogSureCancel()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root_part.dart)
-  ,无需传 context ,随处打开,关闭 以上弹窗或页面
-  必须使用 [closePopup()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root_part.dart)
-  或直接 [pop()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root_part.dart)
-  ,
+
+-
+
+根组件使用[ExtendedWidgetsApp](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root.dart)
+可直接使用[push()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root.dart#L513) [pop()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root.dart#L564)
+等多个路由方法和[showDialogPopup()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root.dart)
+,[showBottomPopup()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root.dart)
+,[showBottomPagePopup()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root_part.dart)
+,[showCupertinoBottomPagePopup()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root_part.dart)
+,[dialogSureCancel()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root_part.dart)
+,无需传 context ,随处打开,关闭 以上弹窗或页面
+必须使用 [closePopup()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root_part.dart)
+或直接 [pop()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root_part.dart)
+,
 
     - [Scaffold]
       使用 [ExtendedScaffold](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root_part.dart)

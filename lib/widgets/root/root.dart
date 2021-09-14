@@ -7,7 +7,7 @@ import 'package:flutter_waya/flutter_waya.dart';
 
 part 'root_part.dart';
 
-GlobalKey<NavigatorState> _globalNavigatorKey = GlobalKey();
+GlobalKey<NavigatorState> globalNavigatorKey = GlobalKey();
 GlobalKey<ScaffoldMessengerState>? _scaffoldMessengerKey;
 List<ExtendedOverlayEntry> _overlayEntryList = <ExtendedOverlayEntry>[];
 EventBus eventBus = EventBus();
@@ -180,14 +180,14 @@ class ExtendedWidgetsApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (navigatorKey != null) _globalNavigatorKey = navigatorKey!;
+    if (navigatorKey != null) globalNavigatorKey = navigatorKey!;
     if (theme != null || darkTheme != null || widgetMode == WidgetMode.material)
       return materialApp;
     if (cupertinoTheme != null || widgetMode == WidgetMode.cupertino)
       return cupertinoApp;
     return WidgetsApp(
         key: key,
-        navigatorKey: _globalNavigatorKey,
+        navigatorKey: globalNavigatorKey,
         onGenerateRoute: onGenerateRoute,
         onGenerateInitialRoutes: onGenerateInitialRoutes,
         onUnknownRoute: onUnknownRoute,
@@ -236,7 +236,7 @@ class ExtendedWidgetsApp extends StatelessWidget {
         scaffoldMessengerKey ?? GlobalKey<ScaffoldMessengerState>();
     return MaterialApp(
         key: key,
-        navigatorKey: _globalNavigatorKey,
+        navigatorKey: globalNavigatorKey,
         scaffoldMessengerKey: _scaffoldMessengerKey,
         home: home,
         routes: routes,
@@ -274,7 +274,7 @@ class ExtendedWidgetsApp extends StatelessWidget {
 
   Widget get cupertinoApp => CupertinoApp(
       key: key,
-      navigatorKey: _globalNavigatorKey,
+      navigatorKey: globalNavigatorKey,
       home: home,
       theme: cupertinoTheme,
       routes: routes,
@@ -525,10 +525,10 @@ Future<T?> push<T extends Object?>(
   WidgetMode? widgetMode,
   RouteSettings? settings,
 }) =>
-    _globalNavigatorKey.currentState!.push(widget.buildPageRoute(
+    globalNavigatorKey.currentState!.push(widget.buildPageRoute(
         maintainState: maintainState,
         fullscreenDialog: fullscreenDialog,
-        context: _globalNavigatorKey.currentState!.context,
+        context: globalNavigatorKey.currentState!.context,
         settings: settings,
         widgetMode: widgetMode ?? _widgetMode));
 
@@ -539,10 +539,10 @@ Future<T?> pushReplacement<T extends Object?, TO extends Object?>(Widget widget,
         WidgetMode? widgetMode,
         RouteSettings? settings,
         TO? result}) =>
-    _globalNavigatorKey.currentState!.pushReplacement(
+    globalNavigatorKey.currentState!.pushReplacement(
         widget.buildPageRoute(
             settings: settings,
-            context: _globalNavigatorKey.currentState!.context,
+            context: globalNavigatorKey.currentState!.context,
             maintainState: maintainState,
             fullscreenDialog: fullscreenDialog,
             widgetMode: widgetMode ?? _widgetMode),
@@ -555,22 +555,22 @@ Future<T?> pushAndRemoveUntil<T extends Object?>(Widget widget,
         WidgetMode? widgetMode,
         RouteSettings? settings,
         RoutePredicate? predicate}) =>
-    _globalNavigatorKey.currentState!.pushAndRemoveUntil(
+    globalNavigatorKey.currentState!.pushAndRemoveUntil(
         widget.buildPageRoute(
             settings: settings,
             maintainState: maintainState,
             fullscreenDialog: fullscreenDialog,
-            context: _globalNavigatorKey.currentState!.context,
+            context: globalNavigatorKey.currentState!.context,
             widgetMode: widgetMode ?? _widgetMode),
         predicate ?? (_) => false);
 
 /// 可能返回到上一个页面
 Future<bool> maybePop<T extends Object>([T? result]) =>
-    _globalNavigatorKey.currentState!.maybePop<T>(result);
+    globalNavigatorKey.currentState!.maybePop<T>(result);
 
 /// 返回上一个页面
 void pop<T extends Object>([T? result]) =>
-    _globalNavigatorKey.currentState!.pop<T>(result);
+    globalNavigatorKey.currentState!.pop<T>(result);
 
 /// pop 返回简写 带参数  [nullBack] =true  navigator 返回为空 就继续返回上一页面
 void popBack(Future<dynamic> navigator,
@@ -587,7 +587,7 @@ void popBack(Future<dynamic> navigator,
 
 /// 循环pop 直到pop至指定页面
 void popUntil(RoutePredicate predicate) =>
-    _globalNavigatorKey.currentState!.popUntil(predicate);
+    globalNavigatorKey.currentState!.popUntil(predicate);
 
 WidgetMode _widgetMode = WidgetMode.cupertino;
 
