@@ -2,36 +2,23 @@
 
 ## [Example](example)
 
-- 初始化 globalNavigatorKey 两种方式
+### 初始化 globalNavigatorKey 两种方式
 
 ```dart
 /// 使用自己的 MaterialApp
 class _CustomAppState extends State<_App> {
-  GlobalKey<NavigatorState> navigatorKey = GlobalKey();
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((Duration time) {
-      log('设置globalNavigatorKey');
-      globalNavigatorKey = navigatorKey;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
-        navigatorKey: navigatorKey,
+        navigatorKey: globalNavigatorKey,
         title: 'Waya UI',
         home: _Home());
   }
 }
 
-
-/// 根组件使用  ExtendedWidgetsApp
+/// 根组件使用  ExtendedWidgetsApp , 默认 移出 banner
 class _AppState extends State<_App> {
-
   @override
   Widget build(BuildContext context) {
     return ExtendedWidgetsApp(
@@ -41,9 +28,7 @@ class _AppState extends State<_App> {
 
 ```
 
-
-
-- Scaffold 使用 `ExtendedScaffold` 可自动管理 android 物理返回键 关闭 toast loading 等各种弹窗
+- Scaffold 使用 `ExtendedScaffold` 可自动管理 android 物理返回键 关闭 toast loading 等各种弹窗，以及多种功能
 
 ### 运行example 查看 例子
 
@@ -67,8 +52,8 @@ class _AppState extends State<_App> {
 
 - [utils](https://github.com/Wayaer/flutter_waya/tree/main/lib/utils)
 
-    - [dio](https://github.com/Wayaer/flutter_waya/tree/main/lib/utils/src/dio.dart) dio
-      网络请求封装，统一error 返回[ResponseModel]
+    - [dio](https://github.com/Wayaer/flutter_waya/tree/main/lib/utils/src/dio.dart) dio 网络请求封装，统一error
+      返回[ResponseModel]
     - [event](https://github.com/Wayaer/flutter_waya/tree/main/lib/utils/src/event.dart) event bus
     - [screen_fit](https://github.com/Wayaer/flutter_waya/tree/main/lib/utils/src/screen_fit.dart)
       MediaQueryData
@@ -77,69 +62,34 @@ class _AppState extends State<_App> {
 
 - [button](https://github.com/Wayaer/flutter_waya/tree/main/lib/components/button)
 
-    - [DropdownMenuButton](https://github.com/Wayaer/flutter_waya/tree/main/lib/components/button/dropdown_button.dart)
-      仿官方 [DropdownButton] 不遮挡默认
-    - [LiquidButton](https://github.com/Wayaer/flutter_waya/tree/main/lib/components/button/liquid_button.dart)
-      流体按钮
-    - [ElasticButton](https://github.com/Wayaer/flutter_waya/tree/main/lib/components/button/elastic_button.dart)
-      弹性按钮
+    - `DropdownMenuButton()` 仿官方 `DropdownButton` 不遮挡默认
+    - `LiquidButton()` 流体按钮
+    - `ElasticButton()` 弹性按钮
 
 - [carousel](https://github.com/Wayaer/flutter_waya/tree/main/lib/components/carousel)
-    - [indicator](https://github.com/Wayaer/flutter_waya/tree/main/lib/components/carousel/indicator.dart)
-      指示器
-    - [carousel](https://github.com/Wayaer/flutter_waya/tree/main/lib/components/carousel/carousel.dart)
-      轮播图
+    - `Indicator()` 指示器
+    - `Carousel()` 轮播图
 
 - [progress](https://github.com/Wayaer/flutter_waya/tree/main/lib/components/progress)
-    - [LiquidProgress](https://github.com/Wayaer/flutter_waya/tree/main/lib/components/progress/liquid_progress.dart)
-      流体progress
-    - [Progress](https://github.com/Wayaer/flutter_waya/tree/main/lib/components/progress/progress.dart)
-      普通动画progress
+    - `LiquidProgress()` 流体progress
+    - `Progress()` 普通动画progress
 
-- [refresh](https://github.com/Wayaer/flutter_waya/tree/main/lib/components/refresh)
-    - [EasyRefreshed](https://github.com/Wayaer/flutter_waya/tree/main/lib/components/refresh/easy_refresh.dart)
-      封装 flutter_easyrefresh
+- ExtendedWidgetsApp
+    - 根组件使用 `ExtendedWidgetsApp`可直接使用`push()` `pop()`等多个路由方法和`showDialogPopup() `,`showBottomPopup()`
+      ,`showCupertinoBottomPopup()`,`showDialogSureCancel()`,`showOverlay()`,`showLoading()`,`showToast()`,无需传 context
+      ,随处打开,关闭 以上弹窗或页面 必须使用 `closePopup()`或直接 `pop()`,
 
-- [root](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root)
+- `ExtendedScaffold` 添加 `onWillPop()` `RefreshConfig` `padding` `margin` `decoration` `isStack` `isScroll` `children`
+  等多个参数
 
+- `ListWheel()` 实现 picker 功能的滚动组件
 
--
+- `ExtendedScrollView()` 实现 自适应高度的 `ExtendedSliverPersistentHeader()`
+  和 `ExtendedSliverAppBar()` `ExtendedFlexibleSpaceBar()` 无需设置 expandedHeight
 
-根组件使用[ExtendedWidgetsApp](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root.dart)
-可直接使用[push()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root.dart#L513) [pop()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root.dart#L564)
-等多个路由方法和[showDialogPopup()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root.dart)
-,[showBottomPopup()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root.dart)
-,[showBottomPagePopup()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root_part.dart)
-,[showCupertinoBottomPagePopup()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root_part.dart)
-,[dialogSureCancel()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root_part.dart)
-,无需传 context ,随处打开,关闭 以上弹窗或页面
-必须使用 [closePopup()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root_part.dart)
-或直接 [pop()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root_part.dart)
-,
+- `ScrollList()` 合并 `ListView()` 和 `GridView()` 并添加 下拉刷新 和 上拉加载 功能
 
-    - [Scaffold]
-      使用 [ExtendedScaffold](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root_part.dart)
-      可以任意处使用 [showOverlay()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root_part.dart)
-      , [showLoading()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root_part.dart)
-      , [showToast()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root_part.dart)
-      ,关闭Overlay
-      必须使用 [closeOverlay()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root_part.dart)
-      或关闭全部 [closeAllOverlay()](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/root/root_part.dart)
-      ,
-
-- [list_wheel](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/list_wheel.dart) 实现
-  picker 功能的滚动组件
-
-- [scroll_view](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/scroll/scroll_view.dart)  [ExtendedScrollView]
-  实现 自适应高度的 [ExtendedSliverPersistentHeader](lib/widgets/scroll/scroll_view.dart)
-  和 [ExtendedSliverAppBar](lib/widgets/scroll/scroll_view.dart) [ExtendedFlexibleSpaceBar] 无需设置
-  expandedHeight
-
-- [ScrollList](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/scroll/scroll_view.dart)
-  合并[ListView] 和 [GridView] 并添加 下拉刷新 和 上拉加载 功能
-
-- [universal](https://github.com/Wayaer/flutter_waya/tree/main/lib/widgets/universal.dart)
-  中合多个官方组件功能 减少嵌套
+- `Universal()`中合多个官方组件功能 减少嵌套
 
 ## 快捷打包命令 [builds](https://github.com/Wayaer/flutter_waya/tree/main/builds)
 

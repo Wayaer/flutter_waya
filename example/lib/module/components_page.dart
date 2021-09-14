@@ -14,7 +14,7 @@ class ComponentsPage extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
           children: <Widget>[
             //// PinBox
-            partition('PinBox'),
+            const Partition('PinBox'),
             const SizedBox(height: 20),
             PinBox(
                 maxLength: 5,
@@ -36,7 +36,7 @@ class ComponentsPage extends StatelessWidget {
                     border: Border.all(color: Colors.yellow),
                     borderRadius: BorderRadius.circular(4)),
                 pinTextStyle: const TextStyle(color: Colors.white)),
-            partition('WidgetPendant'),
+            const Partition('WidgetPendant'),
             TextField(
                 decoration: InputDecoration(
                     hintText: '11111',
@@ -76,7 +76,7 @@ class ComponentsPage extends StatelessWidget {
                     suffixMode: OverlayVisibilityMode.editing,
                     suffix:
                         Container(color: Colors.green, width: 20, height: 20))),
-            partition('ExpansionTiles'),
+            const Partition('ExpansionTiles'),
             ExpansionTiles(
                 title: BText('title', color: Colors.black),
                 children: 5.generate((int index) => Universal(
@@ -89,7 +89,7 @@ class ComponentsPage extends StatelessWidget {
                     margin: const EdgeInsets.all(12),
                     alignment: Alignment.centerLeft,
                     child: BText('item$index', color: Colors.black)))),
-            partition('Toast'),
+            const Partition('Toast'),
             Wrap(
                 children: ToastType.values.builder((ToastType type) =>
                     ElevatedText(type.toString(), onTap: () async {
@@ -98,7 +98,7 @@ class ComponentsPage extends StatelessWidget {
                       showToast('添加await第一个Toast完了之后弹出第二个Toast');
                     }))),
 
-            partition('CounterAnimation'),
+            const Partition('CounterAnimation'),
 
             /// CounterAnimation
             CounterAnimation(
@@ -118,7 +118,7 @@ class ComponentsPage extends StatelessWidget {
                 },
                 countBuilder: (int count, String text) =>
                     BText(text, fontSize: 30)).color(Colors.black12),
-            partition('ToggleRotate'),
+            const Partition('ToggleRotate'),
             Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
@@ -153,7 +153,7 @@ class ComponentsPage extends StatelessWidget {
                             child: const Icon(Icons.chevron_left, size: 30));
                       }),
                 ]),
-            partition('SendSMS'),
+            const Partition('SendSMS'),
             SendSMS(
                 duration: const Duration(seconds: 10),
                 padding:
@@ -178,7 +178,7 @@ class ComponentsPage extends StatelessWidget {
                   }
                 }),
 
-            partition('CountDown'),
+            const Partition('CountDown'),
             CountDown(
                 onChanged: (int i) {},
                 duration: const Duration(seconds: 100),
@@ -192,7 +192,7 @@ class ComponentsPage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(4)));
                 }),
 
-            partition('DottedLine'),
+            const Partition('DottedLine'),
             Container(
                 width: double.infinity,
                 height: 40,
@@ -202,7 +202,7 @@ class ComponentsPage extends StatelessWidget {
                     painter: DottedLinePainter(
                         color: Colors.black, strokeWidth: 1, gap: 20)),
                 decoration: BoxDecoration(border: DottedLineBorder.all())),
-            partition('ValueBuilder'),
+            const Partition('ValueBuilder'),
             ValueBuilder<int>(
                 initialValue: 0,
                 builder: (_, int? value, ValueCallback<int> updater) {
@@ -228,7 +228,7 @@ class ComponentsPage extends StatelessWidget {
                             })
                       ]);
                 }),
-            partition('ValueListenBuilder'),
+            const Partition('ValueListenBuilder'),
             ValueListenBuilder<int>(
                 initialValue: 1,
                 builder: (_, ValueNotifier<int?> valueListenable) {
@@ -255,7 +255,7 @@ class ComponentsPage extends StatelessWidget {
                             })
                       ]);
                 }),
-            partition('CheckBox'),
+            const Partition('CheckBox'),
             Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
@@ -289,14 +289,4 @@ class ComponentsPage extends StatelessWidget {
 
             const SizedBox(height: 100),
           ]);
-
-  Widget partition(String title) {
-    return Universal(
-        width: double.infinity,
-        color: Colors.grey.withOpacity(0.2),
-        alignment: Alignment.center,
-        padding: const EdgeInsets.symmetric(vertical: 15),
-        margin: const EdgeInsets.symmetric(vertical: 25),
-        child: BText(title, color: Colors.black));
-  }
 }

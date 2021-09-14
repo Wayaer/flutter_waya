@@ -140,7 +140,7 @@ class PopupSureCancel extends StatelessWidget {
     this.sure,
     this.cancel,
     this.backsideTap,
-    this.alignment,
+    this.alignment = Alignment.center,
     this.decoration,
     this.gaussian,
     this.addMaterial,
@@ -166,14 +166,14 @@ class PopupSureCancel extends StatelessWidget {
   /// 取消按钮
   final Widget? cancel;
 
-  /// 背景是否可点击
+  /// 背景点击事件
   final GestureTapCallback? backsideTap;
   final double width;
   final double? height;
   final Decoration? decoration;
 
   /// 弹窗位置
-  final AlignmentGeometry? alignment;
+  final AlignmentGeometry alignment;
 
   /// 背景是否模糊
   final bool? gaussian;
@@ -191,7 +191,7 @@ class PopupSureCancel extends StatelessWidget {
         gaussian: gaussian,
         onTap: backsideTap,
         color: barrierColor,
-        alignment: alignment ?? Alignment.center,
+        alignment: alignment,
         child: Universal(
             onTap: () {},
             width: width,

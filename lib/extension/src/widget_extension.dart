@@ -8,6 +8,51 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 extension ExtensionWidget on Widget {
+  WidgetBuilder get toWidgetBuilder => (_) => this;
+
+  RoutePageBuilder get toRoutePageBuilder =>
+      (_, Animation<double> animation, Animation<double> secondaryAnimation) =>
+          this;
+
+  RouteTransitionsBuilder get toRouteTransitionsBuilder => (_,
+          Animation<double> animation,
+          Animation<double> secondaryAnimation,
+          Widget child) =>
+      this;
+
+  PageRoute<T> buildPageRoute<T>(
+      {bool maintainState = true,
+      bool fullscreenDialog = false,
+      required WidgetMode? widgetMode,
+      RouteSettings? settings,
+      BuildContext? context}) {
+    switch (widgetMode) {
+      case WidgetMode.cupertino:
+        return CupertinoPageRoute<T>(
+            settings: settings,
+            maintainState: maintainState,
+            fullscreenDialog: fullscreenDialog,
+            builder: (_) => this);
+      case WidgetMode.material:
+        return MaterialPageRoute<T>(
+            settings: settings,
+            maintainState: maintainState,
+            fullscreenDialog: fullscreenDialog,
+            builder: (_) => this);
+      case WidgetMode.ripple:
+        assert(context != null);
+        return RipplePageRoute<T>(
+            builder: (_) => this,
+            routeConfig: RouteConfig.fromContext(context!));
+      default:
+        return MaterialPageRoute<T>(
+            settings: settings,
+            maintainState: maintainState,
+            fullscreenDialog: fullscreenDialog,
+            builder: (_) => this);
+    }
+  }
+
   BackdropFilter backdropFilter(
           {Key? key, ImageFilter? filter, double fuzzyDegree = 4}) =>
       BackdropFilter(
@@ -293,10 +338,7 @@ extension ExtensionWidget on Widget {
   RotatedBox rotatedBox(int quarterTurns, {Key? key}) =>
       RotatedBox(key: key, quarterTurns: quarterTurns, child: this);
 
-  ConstrainedBox intoConstrainedBox(
-    BoxConstraints constraints, {
-    Key? key,
-  }) =>
+  ConstrainedBox intoConstrainedBox(BoxConstraints constraints, {Key? key}) =>
       ConstrainedBox(key: key, constraints: constraints, child: this);
 
   UnconstrainedBox unconstrainedBox(
@@ -480,39 +522,6 @@ extension ExtensionWidget on Widget {
           excludeFromSemantics: excludeFromSemantics,
           dragStartBehavior: dragStartBehavior,
           child: this);
-
-  PageRoute<T> buildPageRoute<T>(
-      {bool maintainState = true,
-      bool fullscreenDialog = false,
-      required WidgetMode? widgetMode,
-      RouteSettings? settings,
-      BuildContext? context}) {
-    switch (widgetMode) {
-      case WidgetMode.cupertino:
-        return CupertinoPageRoute<T>(
-            settings: settings,
-            maintainState: maintainState,
-            fullscreenDialog: fullscreenDialog,
-            builder: (_) => this);
-      case WidgetMode.material:
-        return MaterialPageRoute<T>(
-            settings: settings,
-            maintainState: maintainState,
-            fullscreenDialog: fullscreenDialog,
-            builder: (_) => this);
-      case WidgetMode.ripple:
-        assert(context != null);
-        return RipplePageRoute<T>(
-            builder: (_) => this,
-            routeConfig: RouteConfig.fromContext(context!));
-      default:
-        return MaterialPageRoute<T>(
-            settings: settings,
-            maintainState: maintainState,
-            fullscreenDialog: fullscreenDialog,
-            builder: (_) => this);
-    }
-  }
 }
 
 extension ExtensionFlex on Flex {

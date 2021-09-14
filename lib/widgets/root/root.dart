@@ -8,7 +8,7 @@ import 'package:flutter_waya/flutter_waya.dart';
 part 'root_part.dart';
 
 GlobalKey<NavigatorState> globalNavigatorKey = GlobalKey();
-GlobalKey<ScaffoldMessengerState>? _scaffoldMessengerKey;
+GlobalKey<ScaffoldMessengerState>? globalScaffoldMessengerKey;
 List<ExtendedOverlayEntry> _overlayEntryList = <ExtendedOverlayEntry>[];
 EventBus eventBus = EventBus();
 
@@ -232,12 +232,12 @@ class ExtendedWidgetsApp extends StatelessWidget {
   }
 
   Widget get materialApp {
-    _scaffoldMessengerKey =
+    globalScaffoldMessengerKey =
         scaffoldMessengerKey ?? GlobalKey<ScaffoldMessengerState>();
     return MaterialApp(
         key: key,
         navigatorKey: globalNavigatorKey,
-        scaffoldMessengerKey: _scaffoldMessengerKey,
+        scaffoldMessengerKey: globalScaffoldMessengerKey,
         home: home,
         routes: routes,
         initialRoute: initialRoute,

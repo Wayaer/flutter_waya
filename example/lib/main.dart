@@ -41,22 +41,11 @@ class _App extends StatefulWidget {
 }
 
 class _CustomAppState extends State<_App> {
-  GlobalKey<NavigatorState> navigatorKey = GlobalKey();
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((Duration time) {
-      log('设置globalNavigatorKey');
-      globalNavigatorKey = navigatorKey;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
-        navigatorKey: navigatorKey,
+        navigatorKey: globalNavigatorKey,
         title: 'Waya UI',
         home: _Home());
   }
@@ -148,4 +137,20 @@ class ElevatedText extends StatelessWidget {
         ], color: color, borderRadius: BorderRadius.circular(4)),
         child: BText(text, color: Colors.black),
       );
+}
+
+class Partition extends StatelessWidget {
+  const Partition(this.title, {Key? key}) : super(key: key);
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Universal(
+        width: double.infinity,
+        color: Colors.grey.withOpacity(0.2),
+        alignment: Alignment.center,
+        padding: const EdgeInsets.symmetric(vertical: 15),
+        margin: const EdgeInsets.symmetric(vertical: 25),
+        child: BText(title, color: Colors.black));
+  }
 }

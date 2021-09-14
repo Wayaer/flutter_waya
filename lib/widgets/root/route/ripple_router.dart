@@ -65,6 +65,8 @@ class RipplePageRoute<T> extends PageRouteBuilder<T> {
                         children: widget.asList())),
               ]);
             });
+
   final WidgetBuilder builder;
+
   final RouteConfig routeConfig;
 }

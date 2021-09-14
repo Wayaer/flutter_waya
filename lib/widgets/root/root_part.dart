@@ -62,12 +62,11 @@ void closeAllOverlay() {
 
 ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? showSnackBar(
     SnackBar snackBar) {
-  if (_scaffoldMessengerKey != null) {
-    return _scaffoldMessengerKey!.currentState!.showSnackBar(snackBar);
-  } else {
-    log('ExtendedWidgetsApp widgetMode must be WidgetMode.material');
+  if (globalScaffoldMessengerKey == null) {
+    log('Please initialize globalScaffoldMessengerKey or ExtendedWidgetsApp widgetMode must be WidgetMode.material');
+    return null;
   }
-  return null;
+  return globalScaffoldMessengerKey!.currentState?.showSnackBar(snackBar);
 }
 
 ///  loading 加载框
@@ -202,33 +201,56 @@ Future<void> showToast(String message,
   _haveToast = false;
 }
 
-///  ************ 以下为push Popup *****************///
+///  ************ 以下为 Popup *****************///
 
 ///  showGeneralDialog 去除context
 ///  添加popup进入方向属性
 ///  关闭 [closePopup]
 ///  Dialog
-///
 enum PopupFromType {
-  ///  从左边进入
+  /// 从左边进入
   fromLeft,
 
-  ///  从右边进入
+  /// 从右边进入
   fromRight,
 
-  ///  从头部进入
+  /// 从头部进入
   fromTop,
 
-  ///  从底部进入
+  /// 从底部进入
   fromBottom,
+
+  /// 默认渐变显示
+  fromCenter,
 }
+
+Future<T?> showMenuPopup<T>({
+  required RelativeRect position,
+  required List<PopupMenuEntry<T>> items,
+  T? initialValue,
+  double? elevation,
+  String? semanticLabel,
+  ShapeBorder? shape,
+  Color? color,
+  bool useRootNavigator = false,
+}) =>
+    showMenu(
+        context: globalNavigatorKey.currentContext!,
+        position: position,
+        useRootNavigator: useRootNavigator,
+        initialValue: initialValue,
+        elevation: elevation,
+        semanticLabel: semanticLabel,
+        shape: shape,
+        color: color,
+        items: items);
 
 Future<T?> showDialogPopup<T>({
   ///  进入方向的距离
   double? startOffset,
 
   ///  popup 进入的方向
-  PopupFromType? popupFromType,
+  PopupFromType popupFromType = PopupFromType.fromBottom,
 
   ///  这个参数是一个方法,入参是 context,animation,secondaryAnimation,返回一个 Widget
   ///  这个 Widget 就是显示在页面上的 dialog
@@ -236,112 +258,90 @@ Future<T?> showDialogPopup<T>({
   Widget? widget,
 
   ///  是否可以点击背景关闭
-  bool? barrierDismissible,
+  bool barrierDismissible = true,
 
   ///  语义化
   String? barrierLabel,
 
   ///  背景颜色
-  Color? backgroundColor,
+  Color backgroundColor = ConstColors.transparent,
 
   ///  这个是从开始到完全显示的时间
-  Duration? transitionDuration,
+  Duration transitionDuration = const Duration(milliseconds: 300),
 
   ///  路由显示和隐藏的过程,这里入参是 animation,secondaryAnimation 和 child, 其中 child 是 是 pageBuilder 构建的 widget
   RouteTransitionsBuilder? transitionBuilder,
-  bool? useRootNavigator,
+  bool useRootNavigator = true,
   RouteSettings? routeSettings,
 }) {
   assert(pageBuilder != null || widget != null);
-  if (transitionBuilder == null && popupFromType != null) {
-    transitionBuilder =
-        (BuildContext context, Animation<double> animation, _, Widget child) {
-      Offset translation = Offset(0, 1 - animation.value);
-      switch (popupFromType) {
-        case PopupFromType.fromLeft:
-          translation = Offset(animation.value - 1, 0);
-          break;
-        case PopupFromType.fromRight:
-          translation = Offset(1 - animation.value, 0);
-          break;
-        case PopupFromType.fromTop:
-          translation = Offset(0, animation.value - 1);
-          break;
-        case PopupFromType.fromBottom:
-          translation = Offset(0, 1 - animation.value);
-          break;
-      }
-      return FractionalTranslation(translation: translation, child: child);
-    };
-  }
+  transitionBuilder ??= (__, Animation<double> animation, _, Widget child) {
+    late Offset translation;
+    switch (popupFromType) {
+      case PopupFromType.fromLeft:
+        translation = Offset(animation.value - 1, 0);
+        break;
+      case PopupFromType.fromRight:
+        translation = Offset(1 - animation.value, 0);
+        break;
+      case PopupFromType.fromTop:
+        translation = Offset(0, animation.value - 1);
+        break;
+      case PopupFromType.fromBottom:
+        translation = Offset(0, 1 - animation.value);
+        break;
+      case PopupFromType.fromCenter:
+        translation = Offset(0, 1 - animation.value);
+        break;
+    }
+    return FractionalTranslation(translation: translation, child: child);
+  };
   return showGeneralDialog(
       context: globalNavigatorKey.currentContext!,
-      pageBuilder: pageBuilder ??
-          (BuildContext context, Animation<double> animation, _) => widget!,
-      barrierDismissible: barrierDismissible ?? true,
-      barrierLabel: barrierLabel ?? '',
-      barrierColor: backgroundColor ?? ConstColors.transparent,
-      transitionDuration:
-          transitionDuration ?? const Duration(milliseconds: 80),
+      pageBuilder:
+          pageBuilder ?? (_, Animation<double> animation, __) => widget!,
+      barrierDismissible: barrierDismissible,
+      barrierLabel: barrierLabel ?? '111',
+      barrierColor: backgroundColor,
+      transitionDuration: transitionDuration,
       transitionBuilder: transitionBuilder,
-      useRootNavigator: useRootNavigator ?? true,
-      routeSettings: routeSettings);
-}
-
-///  showModalBottomSheet 去除context
-///  关闭 closePopup()
-Future<T?> showBottomPopup<T>({
-  WidgetBuilder? builder,
-  Widget? widget,
-  Color? backgroundColor,
-  double? elevation,
-  ShapeBorder? shape,
-  Clip? clipBehavior,
-  Color? barrierColor,
-  bool useRootNavigator = false,
-  bool isDismissible = true,
-  bool enableDrag = true,
-}) {
-  assert(builder != null || widget != null);
-  return showModalBottomSheet(
-      context: globalNavigatorKey.currentContext!,
-      builder: builder ?? (BuildContext context) => widget!,
-      backgroundColor: backgroundColor ?? ConstColors.transparent,
-      elevation: elevation,
-      shape: shape,
-      clipBehavior: clipBehavior,
-      barrierColor: barrierColor,
-      isScrollControlled: false,
       useRootNavigator: useRootNavigator,
-      isDismissible: isDismissible,
-      enableDrag: enableDrag);
+      routeSettings: routeSettings);
 }
 
 ///  showModalBottomSheet
 ///  关闭 closePopup()
-///  全屏显示
-Future<T?> showBottomPagePopup<T>({
+Future<T?> showBottomPopup<T>({
   WidgetBuilder? builder,
   Widget? widget,
-  Color? backgroundColor,
+  Color backgroundColor = ConstColors.transparent,
   double? elevation,
   ShapeBorder? shape,
   Clip? clipBehavior,
   Color? barrierColor,
   bool useRootNavigator = false,
+
+  /// [isDismissible] = true 全屏显示
   bool isDismissible = true,
+
+  /// 开启滑动
   bool enableDrag = true,
+  bool isScrollControlled = true,
+  RouteSettings? routeSettings,
+  AnimationController? transitionAnimationController,
 }) {
   assert(builder != null || widget != null);
   return showModalBottomSheet(
       context: globalNavigatorKey.currentContext!,
-      builder: builder ?? (BuildContext context) => widget!,
-      backgroundColor: backgroundColor ?? ConstColors.transparent,
+      builder: builder ?? widget!.toWidgetBuilder,
+      backgroundColor: backgroundColor,
       elevation: elevation,
       shape: shape,
       clipBehavior: clipBehavior,
       barrierColor: barrierColor,
-      isScrollControlled: true,
+      routeSettings: routeSettings,
+      transitionAnimationController: transitionAnimationController,
+      isScrollControlled: isScrollControlled,
       useRootNavigator: useRootNavigator,
       isDismissible: isDismissible,
       enableDrag: enableDrag);
@@ -350,16 +350,25 @@ Future<T?> showBottomPagePopup<T>({
 ///  showCupertinoModalPopup
 ///  关闭 closePopup()
 ///  全屏显示
-Future<T?> showCupertinoBottomPagePopup<T>(
-    {WidgetBuilder? builder,
-    Widget? widget,
-    bool useRootNavigator = false,
-    ImageFilter? filter}) {
+Future<T?> showCupertinoBottomPopup<T>({
+  WidgetBuilder? builder,
+  Widget? widget,
+  bool useRootNavigator = true,
+  ImageFilter? filter,
+  Color barrierColor = kCupertinoModalBarrierColor,
+  bool barrierDismissible = true,
+  bool? semanticsDismissible,
+  RouteSettings? routeSettings,
+}) {
   assert(builder != null || widget != null);
   return showCupertinoModalPopup(
       context: globalNavigatorKey.currentContext!,
       builder: builder ?? (BuildContext context) => widget!,
       filter: filter,
+      barrierColor: barrierColor,
+      barrierDismissible: barrierDismissible,
+      semanticsDismissible: semanticsDismissible,
+      routeSettings: routeSettings,
       useRootNavigator: useRootNavigator);
 }
 
@@ -381,7 +390,7 @@ Future<T?>? showDialogSureCancel<T>({
   EdgeInsetsGeometry? padding,
 
   ///  弹窗位置 默认居中
-  AlignmentGeometry? alignment,
+  AlignmentGeometry alignment = Alignment.center,
 
   ///  弹窗 decoration
   Decoration? decoration,
@@ -414,7 +423,8 @@ Future<T?>? showDialogSureCancel<T>({
     showOverlay(widget);
     return null;
   }
-  return showDialogPopup(widget: widget);
+  return showDialogPopup(
+      widget: widget, popupFromType: PopupFromType.fromCenter);
 }
 
 ///  关闭弹窗
@@ -548,68 +558,3 @@ Future<T?> showCustomPicker<T>({
           options: options,
           child: content));
 }
-
-///  showCupertinoDialog
-///  去除context 简化参数
-///  关闭 closePopup()
-Future<T?> showSimpleCupertinoDialog<T>({
-  WidgetBuilder? builder,
-  Widget? widget,
-  bool useRootNavigator = true,
-  bool barrierDismissible = false,
-  RouteSettings? routeSettings,
-}) {
-  assert(builder != null || widget != null);
-  return showCupertinoDialog(
-      context: globalNavigatorKey.currentContext!,
-      builder: builder ?? (BuildContext context) => widget!,
-      useRootNavigator: useRootNavigator,
-      barrierDismissible: barrierDismissible,
-      routeSettings: routeSettings);
-}
-
-///  showDialog 去除context
-///  关闭 closePopup()
-///  Dialog
-Future<T?> showSimpleDialog<T>({
-  WidgetBuilder? builder,
-  Widget? widget,
-  bool barrierDismissible = true,
-  Color? barrierColor,
-  bool useSafeArea = true,
-  bool useRootNavigator = true,
-  RouteSettings? routeSettings,
-}) {
-  assert(builder != null || widget != null);
-  return showDialog(
-      context: globalNavigatorKey.currentContext!,
-      builder: builder ?? (BuildContext context) => widget!,
-      barrierDismissible: barrierDismissible,
-      barrierColor: barrierColor,
-      useSafeArea: useSafeArea,
-      useRootNavigator: useRootNavigator,
-      routeSettings: routeSettings);
-}
-
-///  showMenu 去除context
-///  关闭 closePopup()
-Future<T?> showMenuPopup<T>({
-  required RelativeRect position,
-  required List<PopupMenuEntry<T>> items,
-  T? initialValue,
-  double? elevation,
-  String? semanticLabel,
-  ShapeBorder? shape,
-  Color? color,
-  bool useRootNavigator = false,
-}) =>
-    showMenu(
-        context: globalNavigatorKey.currentContext!,
-        items: items,
-        initialValue: initialValue,
-        elevation: elevation,
-        semanticLabel: semanticLabel,
-        shape: shape,
-        color: color,
-        useRootNavigator: useRootNavigator,
-        position: position);

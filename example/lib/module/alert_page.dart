@@ -4,95 +4,84 @@ import 'package:flutter_waya/extension/extension.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 import 'package:waya/main.dart';
 
+TapDownDetails? _details;
+
 class AlertPage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) => ExtendedScaffold(
-          backgroundColor: Colors.white,
-          appBar: AppBarText('Alert Demo'),
-          children: <Widget>[
-            ElevatedText('showCustomPicker', onTap: _showCustomPicker),
-            ElevatedText('showAreaPicker', onTap: selectCity),
-            ElevatedText('showChoicePicker', onTap: showChoicePicker),
-            ElevatedText('showDateTimePicker', onTap: selectTime),
-            ElevatedText('showBottomPopup', onTap: showBottom),
-            ElevatedText('showDialogSureCancel', onTap: sureCancel),
-            ElevatedText('showBottomPagePopup', onTap: showBottomPage),
-            ElevatedText('showSnackBar', onTap: () {
-              showSnackBar(SnackBar(content: BText('Popup SnackBar')));
-            }),
-            ElevatedText('showOverlayLoading', onTap: () {
-              showOverlayLoading();
-            }),
-          ]);
+  Widget build(BuildContext context) => GestureDetector(
+        onTapDown: (TapDownDetails details) {
+          _details = details;
+        },
+        child: ExtendedScaffold(
+            backgroundColor: Colors.white,
+            appBar: AppBarText('Alert Demo'),
+            isScroll: true,
+            children: <Widget>[
+              const Partition('Picker'),
+              ElevatedText('showCustomPicker', onTap: _showCustomPicker),
+              ElevatedText('showAreaPicker', onTap: selectCity),
+              ElevatedText('showChoicePicker', onTap: showChoicePicker),
+              ElevatedText('showDateTimePicker', onTap: selectTime),
+              const Partition('Popup'),
+              ElevatedText('showBottomPopup', onTap: () {
+                showBottomPopup<dynamic>(widget: const _AlertDemo());
+              }),
+              ElevatedText('showCupertinoBottomPopup', onTap: () {
+                showCupertinoBottomPopup<dynamic>(widget: const _AlertDemo());
+              }),
+              ElevatedText('showDialogPopup', onTap: () {
+                showDialogPopup<dynamic>(
+                    widget: const Center(child: _AlertDemo()));
+              }),
+              ElevatedText('showMenuPopup', onTap: () async {
+                final String? data = await showMenuPopup<String>(
+                    position: RelativeRect.fromLTRB(
+                        _details?.globalPosition.dx ?? 10,
+                        _details?.globalPosition.dy ?? 10,
+                        deviceWidth - (_details?.globalPosition.dx ?? 10),
+                        deviceHeight - (_details?.globalPosition.dy ?? 10)),
+                    items: const <PopupMenuEntry<String>>[
+                      CheckedPopupMenuItem<String>(
+                          value: '111', child: Text('111')),
+                      PopupMenuDivider(),
+                      CheckedPopupMenuItem<String>(
+                          value: '222', child: Text('222')),
+                    ]);
+                showToast(data.toString());
+              }),
+              const Partition('Other'),
+              ElevatedText('showDialogSureCancel', onTap: sureCancel),
+              ElevatedText('showSnackBar', onTap: () {
+                showSnackBar(SnackBar(content: BText('Popup SnackBar')));
+              }),
+              ElevatedText('showOverlayLoading', onTap: () {
+                showOverlayLoading();
+              }),
+            ]),
+      );
 
   void showOverlayLoading() => showLoading(
       gaussian: true,
       onTap: closeOverlay,
       custom: const SpinKitWave(color: color));
 
-  void showBottomPage() {
-    showBottomPagePopup<dynamic>(
-        widget: const CupertinoActionSheet(
-            title: Text('提示'),
-            message: Text('是否要删除当前项？'),
-            actions: <Widget>[
-          CupertinoActionSheetAction(
-              child: Text('删除'), onPressed: closePopup, isDefaultAction: true),
-          CupertinoActionSheetAction(
-              child: Text('暂时不删'),
-              onPressed: closePopup,
-              isDestructiveAction: true),
-        ]));
-  }
-
-  void showBottom() {
-    showBottomPopup<dynamic>(
-        widget: const CupertinoActionSheet(
-            title: Text('提示'),
-            message: Text('是否要删除当前项？'),
-            actions: <Widget>[
-          CupertinoActionSheetAction(
-            child: Text('删除'),
-            onPressed: closePopup,
-            isDefaultAction: true,
-          ),
-          CupertinoActionSheetAction(
-              child: Text('暂时不删'),
-              onPressed: closePopup,
-              isDestructiveAction: true),
-        ]));
-  }
-
   void sureCancel() {
-    const bool isOverlay = true;
+    const bool isOverlay = false;
     showDialogSureCancel<dynamic>(
         isOverlay: isOverlay,
         sure: SimpleButton(
-          alignment: Alignment.center,
-          child: Text('确定', style: _textStyle()),
-          onTap: () {
-            if (isOverlay) {
-              closeOverlay();
-            }
-            // else {
-            //   closePopup();
-            // }
-
-            ///如果isOverlay=true; 必须先closeOverlay() 再toast或者loading
-            showToast('确定');
-          },
-        ),
+            padding: const EdgeInsets.symmetric(vertical: 6),
+            alignment: Alignment.center,
+            child: Text('确定', style: _textStyle()),
+            onTap: () {
+              ///如果isOverlay=true; 必须先closeOverlay() 再toast或者loading
+              showToast('确定');
+            }),
         cancel: SimpleButton(
             alignment: Alignment.center,
+            padding: const EdgeInsets.symmetric(vertical: 6),
             child: Text('取消', style: _textStyle()),
             onTap: () {
-              if (isOverlay) {
-                closeOverlay();
-              }
-              // else {
-              //   closePopup();
-              // }
-
               ///如果isOverlay=true; 必须先closeOverlay() 再toast或者loading
               showToast('取消');
             }),
@@ -184,5 +173,24 @@ class AlertPage extends StatelessWidget {
         wheel: PickerWheel(itemHeight: 24, useMagnifier: false),
         itemCount: list.length);
     showToast(index == null ? 'null' : list[index].toString());
+  }
+}
+
+class _AlertDemo extends StatelessWidget {
+  const _AlertDemo({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const CupertinoActionSheet(
+        title: Text('提示'),
+        message: Text('是否要删除当前项？'),
+        actions: <Widget>[
+          CupertinoActionSheetAction(
+              child: Text('删除'), onPressed: closePopup, isDefaultAction: true),
+          CupertinoActionSheetAction(
+              child: Text('暂时不删'),
+              onPressed: closePopup,
+              isDestructiveAction: true),
+        ]);
   }
 }

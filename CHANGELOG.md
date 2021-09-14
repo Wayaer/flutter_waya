@@ -1,4 +1,7 @@
-## 1.13.3
+## 1.15.0
+ * remove `showSimpleDialog`,`showSimpleCupertinoDialog`
+ * remove `showBottomPagePopup` ，please use `showBottomPopup`
+ * modify `showCupertinoBottomPagePopup` to `showCupertinoBottomPopup`
  * fix bug on `modal` for `DropdownMenu`  
  * `Universal` add `systemOverlayStyle`,modify status bar color
  * add `statusBarStyle` for `ExtensionWidget`
