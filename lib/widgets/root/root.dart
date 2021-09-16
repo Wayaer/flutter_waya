@@ -181,10 +181,14 @@ class ExtendedWidgetsApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (navigatorKey != null) globalNavigatorKey = navigatorKey!;
-    if (theme != null || darkTheme != null || widgetMode == WidgetMode.material)
+    if (theme != null ||
+        darkTheme != null ||
+        widgetMode == WidgetMode.material) {
       return materialApp;
-    if (cupertinoTheme != null || widgetMode == WidgetMode.cupertino)
+    }
+    if (cupertinoTheme != null || widgetMode == WidgetMode.cupertino) {
       return cupertinoApp;
+    }
     return WidgetsApp(
         key: key,
         navigatorKey: globalNavigatorKey,
@@ -473,10 +477,9 @@ class ExtendedScaffold extends StatelessWidget {
         bottomSheet: bottomSheet,
         restorationId: restorationId,
         body: universal);
-    if (onWillPop != null || onWillPopOverlayClose)
-      return WillPopScope(
-          child: scaffold, onWillPop: onWillPop ?? onWillPopFun);
-    return scaffold;
+    return onWillPop != null || onWillPopOverlayClose
+        ? WillPopScope(child: scaffold, onWillPop: onWillPop ?? onWillPopFun)
+        : scaffold;
   }
 
   Future<bool> onWillPopFun() async {

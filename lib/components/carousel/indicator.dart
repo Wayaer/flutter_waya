@@ -70,13 +70,14 @@ class Indicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget child = SizedBox(
+    final Widget child = SizedBox(
         width: count * size + (count - 1) * space,
         height: size,
         child: CustomPaint(painter: createPainter()));
-    if (layout == IndicatorType.scale || layout == IndicatorType.color)
-      child = ClipRect(child: child);
-    return IgnorePointer(child: child);
+    return IgnorePointer(
+        child: layout == IndicatorType.scale || layout == IndicatorType.color
+            ? ClipRect(child: child)
+            : child);
   }
 }
 

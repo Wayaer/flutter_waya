@@ -79,7 +79,9 @@ abstract class BaseEngine implements Engine {
 
     ///  Create padding
     final List<int> paddingWords = <int>[];
-    for (int i = 0; i < nPaddingBytes; i += 4) paddingWords.add(paddingWord);
+    for (int i = 0; i < nPaddingBytes; i += 4) {
+      paddingWords.add(paddingWord);
+    }
     final List<int> padding = List<int>.generate(nPaddingBytes,
         (int i) => i < paddingWords.length ? paddingWords[i] : 0);
 
@@ -110,12 +112,12 @@ abstract class BaseEngine implements Engine {
         final int thatByte = (thatWords[i >> 2] >> (24 - (i % 4) * 8)) & 0xff;
         final int idx = (thisSigBytes + i) >> 2;
         final int newLength = idx + 1;
-        if (newLength <= thisWords.length)
+        if (newLength <= thisWords.length) {
           return;
-        else
+        } else {
           thisWords.addAll(List<int>.generate(
               newLength.length - thisWords.length, (int index) => 0));
-
+        }
         thisWords[idx] |= thatByte << (24 - ((thisSigBytes + i) % 4) * 8);
       }
     } else {

@@ -47,7 +47,7 @@ class RipplePageRoute<T> extends PageRouteBuilder<T> {
                       routeConfig.offset.dx,
                   child: Align(
                       alignment: Alignment.center,
-                      child: Container(
+                      child: SizedBox(
                           width: deviceWidth,
                           height: deviceHeight,
                           child: child)));

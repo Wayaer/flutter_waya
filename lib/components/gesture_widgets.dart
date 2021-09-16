@@ -59,8 +59,7 @@ class _GestureLockState extends State<GestureLock> {
 
   @override
   Widget build(BuildContext context) => Stack(children: <Widget>[
-        Container(
-            child: CustomPaint(
+        CustomPaint(
           size: Size(widget.size, widget.size),
           painter: _CanvasPoint(
               ringWidth: widget.ringWidth,
@@ -70,7 +69,7 @@ class _GestureLockState extends State<GestureLock> {
               selectColor: widget.selectColor,
               unSelectColor: widget.unSelectColor,
               points: points),
-        )),
+        ),
         Universal(
             child: CustomPaint(
                 size: Size(widget.size, widget.size),
@@ -134,7 +133,9 @@ class _GestureLockState extends State<GestureLock> {
   }
 
   void clearAllData() {
-    for (int i = 0; i < 9; i++) points[i].isSelect = false;
+    for (int i = 0; i < 9; i++) {
+      points[i].isSelect = false;
+    }
     pathPoints.clear();
     setState(() {});
   }

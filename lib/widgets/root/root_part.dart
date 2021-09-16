@@ -48,16 +48,18 @@ bool closeOverlay({ExtendedOverlayEntry? entry}) {
   if (entry != null) {
     return entry.removeEntry();
   } else {
-    if (_overlayEntryList.isNotEmpty)
+    if (_overlayEntryList.isNotEmpty) {
       return _overlayEntryList.last.removeEntry();
+    }
   }
   return false;
 }
 
 ///  关闭所有Overlay
 void closeAllOverlay() {
-  for (final ExtendedOverlayEntry element in _overlayEntryList)
+  for (final ExtendedOverlayEntry element in _overlayEntryList) {
     element.removeEntry();
+  }
 }
 
 ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? showSnackBar(

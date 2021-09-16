@@ -172,14 +172,15 @@ class IconBox extends StatelessWidget {
 
   List<Widget> get iconWidget {
     final List<Widget> listWidget = <Widget>[];
-    if (icon != null)
+    if (icon != null) {
       listWidget.add(Icon(icon,
           color: color,
           size: size,
           textDirection: textDirection,
           semanticLabel: semanticLabel));
+    }
     if (image != null) listWidget.add(image!);
-    if (imageProvider != null)
+    if (imageProvider != null) {
       listWidget.add(Image(
           image: imageProvider!,
           width: size,
@@ -189,6 +190,7 @@ class IconBox extends StatelessWidget {
           alignment: Alignment.center,
           excludeFromSemantics: true,
           semanticLabel: semanticLabel));
+    }
 
     if (widget != null) listWidget.add(widget!);
     return listWidget;

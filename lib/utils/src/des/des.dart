@@ -40,7 +40,9 @@ class DES {
     int base64StrLength = base64Str.length;
     if (reverseMap == null) {
       reverseMap = List<int>.filled(123, 0);
-      for (int j = 0; j < map.length; j++) reverseMap[map.codeUnits[j]] = j;
+      for (int j = 0; j < map.length; j++) {
+        reverseMap[map.codeUnits[j]] = j;
+      }
     }
 
     ///  Ignore padding
@@ -62,8 +64,9 @@ class DES {
             .rightShift32((6 - (i % 4) * 2).toInt())
             .toSigned(32);
         final int idx = nBytes.rightShift32(2);
-        if (words.length <= idx)
+        if (words.length <= idx) {
           words.addAll((idx + 1).generate((int index) => 0));
+        }
 
         words[idx] |= ((bits1 | bits2) << (24 - (nBytes % 4) * 8)).toSigned(32);
         nBytes++;

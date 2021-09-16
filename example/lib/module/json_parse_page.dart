@@ -5,6 +5,8 @@ import 'package:flutter_waya/flutter_waya.dart';
 import 'package:waya/main.dart';
 
 class JsonParsePage extends StatelessWidget {
+  const JsonParsePage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return ExtendedScaffold(

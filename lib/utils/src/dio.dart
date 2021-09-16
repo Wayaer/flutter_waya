@@ -1,8 +1,9 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 /// 请求数据类型 (4种): application/x-www-form-urlencoded 、multipart/form-data、application/json、text/xml
-const List<String> HTTP_CONTENT_TYPE = <String>[
+const List<String> httpContentType = <String>[
   'application/x-www-form-urlencoded',
   'multipart/form-data',
   'application/json',
@@ -46,14 +47,15 @@ class ExtendedDio {
             BaseOptions(
                 connectTimeout: 5000,
                 receiveTimeout: 10000,
-                contentType: HTTP_CONTENT_TYPE[2],
+                contentType: httpContentType[2],
                 responseType: ResponseType.json,
                 headers: <String, dynamic>{}));
     _dio.interceptors.add(ResponseModelInterceptorWrapper<dynamic>(
         requestCookie: options.requestCookie,
         saveCookies: options.saveCookies));
-    if (options.interceptors != null && options.interceptors!.isNotEmpty)
+    if (options.interceptors != null && options.interceptors!.isNotEmpty) {
       _dio.interceptors.addAll(options.interceptors!);
+    }
   }
 
   static ExtendedDio? _instance;
@@ -65,15 +67,19 @@ class ExtendedDio {
 
   void _initOptions(Dio dio, {BaseOptions? options}) {
     final BaseOptions _options = dio.options;
-    if (options?.connectTimeout != null)
+    if (options?.connectTimeout != null) {
       _options.connectTimeout = options!.connectTimeout;
-    if (options?.receiveTimeout != null)
+    }
+    if (options?.receiveTimeout != null) {
       _options.receiveTimeout = options!.receiveTimeout;
-    if (options?.contentType != null)
+    }
+    if (options?.contentType != null) {
       _options.contentType = options?.contentType ??
-          (dio == _dio ? HTTP_CONTENT_TYPE[2] : HTTP_CONTENT_TYPE[1]);
-    if (options?.responseType != null)
+          (dio == _dio ? httpContentType[2] : httpContentType[1]);
+    }
+    if (options?.responseType != null) {
       _options.responseType = options!.responseType;
+    }
     if (options?.headers != null) _options.headers = options!.headers;
   }
 
@@ -243,11 +249,12 @@ class LoggerInterceptor<T> extends InterceptorsWrapper {
     options.headers.forEach((String key, dynamic value) {
       headers += '| $key: $value';
     });
-    print(
+
+    debugPrint(
         '┌------------------------------------------------------------------------------');
-    print(
+    debugPrint(
         '''| [DIO] Request: ${options.method} ${options.uri}\n| QueryParameters:${options.queryParameters.toString()}\n| Data:${options.data.toString()}\n| Headers:$headers''');
-    print(
+    debugPrint(
         '├------------------------------------------------------------------------------');
     handler.next(options); //continue
   }
@@ -255,19 +262,19 @@ class LoggerInterceptor<T> extends InterceptorsWrapper {
   @override
   void onResponse(
       Response<dynamic> response, ResponseInterceptorHandler handler) {
-    print(
+    debugPrint(
         '| [DIO] Response [code ${response.statusCode}]: ${response.statusMessage.toString()}');
-    print('| [DIO] Response data: \n ${response.data.toString()}\n ');
-    print(
+    debugPrint('| [DIO] Response data: \n ${response.data.toString()}\n ');
+    debugPrint(
         '└------------------------------------------------------------------------------');
     handler.next(response);
   }
 
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) {
-    print('| [DIO] Error: ${err.error}: ${err.response?.toString()}');
-    print('|            : ${err.type}: ${err.message.toString()}');
-    print(
+    debugPrint('| [DIO] Error: ${err.error}: ${err.response?.toString()}');
+    debugPrint('|            : ${err.type}: ${err.message.toString()}');
+    debugPrint(
         '└------------------------------------------------------------------------------');
     handler.next(err); //continue
   }

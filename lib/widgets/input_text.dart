@@ -232,24 +232,24 @@ class WidgetPendant extends StatelessWidget {
         fillColor != null ||
         borderRadius != null ||
         boxShadow != null ||
-        gradient != null)
+        gradient != null) {
       decoration = BoxDecoration(
           border: border,
           color: fillColor,
           borderRadius: borderRadius,
           gradient: gradient,
           boxShadow: boxShadow);
+    }
     final List<Widget> children = <Widget>[current.expandedNull];
     if (prefix != null) children.insert(0, prefix!);
     if (suffix != null) children.add(suffix!);
     current = Universal(
-      decoration: decoration,
-      margin: margin,
-      padding: padding,
-      direction: Axis.horizontal,
-      child: children.length > 1 ? null : current,
-      children: children.length > 1 ? children : null,
-    );
+        decoration: decoration,
+        margin: margin,
+        padding: padding,
+        direction: Axis.horizontal,
+        child: children.length > 1 ? null : current,
+        children: children.length > 1 ? children : null);
     return current;
   }
 }
@@ -257,8 +257,9 @@ class WidgetPendant extends StatelessWidget {
 List<TextInputFormatter> inputTextTypeToTextInputFormatter(
     InputTextType inputTextType) {
   if (inputTextType == InputTextType.text) return <TextInputFormatter>[];
-  if (inputTextType == InputTextType.number)
+  if (inputTextType == InputTextType.number) {
     return <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly];
+  }
   const Map<InputTextType, String> regExpMap = ConstConstant.regExp;
   final RegExp regExp = RegExp(regExpMap[inputTextType]!);
   return <TextInputFormatter>[FilteringTextInputFormatter(regExp, allow: true)];
@@ -276,7 +277,7 @@ class NumberLimitFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {
-    const String POINTER = '.';
+    const String pointer = '.';
 
     ///  输入完全删除
     if (newValue.text.isEmpty) return const TextEditingValue();
@@ -285,16 +286,18 @@ class NumberLimitFormatter extends TextInputFormatter {
     if (!exp.hasMatch(newValue.text)) return oldValue;
 
     ///  包含小数点的情况
-    if (newValue.text.contains(POINTER)) {
+    if (newValue.text.contains(pointer)) {
       ///  精度为0，即不含小数
       if (decimalLength == 0) return oldValue;
 
       ///  包含多个小数
-      if (newValue.text.indexOf(POINTER) != newValue.text.lastIndexOf(POINTER))
+      if (newValue.text.indexOf(pointer) !=
+          newValue.text.lastIndexOf(pointer)) {
         return oldValue;
+      }
 
       final String input = newValue.text;
-      final int index = input.indexOf(POINTER);
+      final int index = input.indexOf(pointer);
 
       ///  小数点前位数
       final int lengthBeforePointer = input.substring(0, index).length;
@@ -311,7 +314,7 @@ class NumberLimitFormatter extends TextInputFormatter {
     } else if (
 
         /// 以点开头
-        newValue.text.startsWith(POINTER) ||
+        newValue.text.startsWith(pointer) ||
 
             /// 如果第1位为0，并且长度大于1，排除00,01-09所有非法输入
             (newValue.text.startsWith('0') && newValue.text.length > 1) ||
@@ -443,7 +446,9 @@ class _PinBoxState extends State<PinBox> {
     final List<Widget> box = <Widget>[];
     if (texts.length < widget.maxLength) {
       final int n = widget.maxLength - texts.length;
-      for (int i = 0; i < n; i++) texts.add('');
+      for (int i = 0; i < n; i++) {
+        texts.add('');
+      }
     }
     bool hasFocus = false;
     for (int i = 0; i < widget.maxLength; i++) {
@@ -500,8 +505,9 @@ class _PinBoxState extends State<PinBox> {
       onChanged: (String text) {
         texts = text.trim().split('');
         if (widget.onChanged != null) widget.onChanged!(text);
-        if (widget.onDone != null && text.length == widget.maxLength)
+        if (widget.onDone != null && text.length == widget.maxLength) {
           widget.onDone!(text);
+        }
         setState(() {});
       });
 

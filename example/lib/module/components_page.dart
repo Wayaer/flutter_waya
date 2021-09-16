@@ -6,6 +6,8 @@ import 'package:flutter_waya/flutter_waya.dart';
 import 'package:waya/main.dart';
 
 class ComponentsPage extends StatelessWidget {
+  const ComponentsPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => ExtendedScaffold(
           backgroundColor: Colors.white,

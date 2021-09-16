@@ -72,8 +72,9 @@ extension ExtensionString on String {
     final String text = this;
     if (isEmpty) return '';
     final StringBuffer sb = StringBuffer();
-    for (int i = text.length - 1; i >= 0; i--)
+    for (int i = text.length - 1; i >= 0; i--) {
       sb.writeCharCode(text.codeUnitAt(i));
+    }
     return sb.toString();
   }
 }

@@ -3,6 +3,8 @@ import 'package:flutter_waya/flutter_waya.dart';
 import 'package:waya/main.dart';
 
 class RefreshPage extends StatefulWidget {
+  const RefreshPage({Key? key}) : super(key: key);
+
   @override
   _RefreshPageState createState() => _RefreshPageState();
 }
@@ -48,6 +50,8 @@ class _Item extends StatelessWidget {
 }
 
 class EasyRefreshPage extends StatefulWidget {
+  const EasyRefreshPage({Key? key}) : super(key: key);
+
   @override
   _EasyRefreshPageState createState() => _EasyRefreshPageState();
 }
@@ -78,7 +82,7 @@ class _EasyRefreshPageState extends State<EasyRefreshPage> {
                 sendRefreshType(EasyRefreshType.refresh);
               }),
               ElevatedText('开启新的页面', onTap: () {
-                push(EasyRefreshPage());
+                push(const EasyRefreshPage());
               }),
               ElevatedText('Loading', onTap: () {
                 sendRefreshType(EasyRefreshType.loading);

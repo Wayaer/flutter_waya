@@ -59,12 +59,13 @@ class _WaveClipper extends CustomClipper<Path> {
 
   @override
   Path getClip(Size size) {
-    if (direction == Axis.horizontal)
+    if (direction == Axis.horizontal) {
       return Path()
         ..addPolygon(_generateHorizontalWavePath(size), false)
         ..lineTo(0.0, size.height)
         ..lineTo(0.0, 0.0)
         ..close();
+    }
     return Path()
       ..addPolygon(_generateVerticalWavePath(size), false)
       ..lineTo(size.width, size.height)

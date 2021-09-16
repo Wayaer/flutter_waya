@@ -18,30 +18,30 @@ void logDebug(dynamic msg) => debugPrint(msg.toString());
 void log(dynamic msg) {
   if (!kDebugMode) return;
   final String message = msg.toString();
-  print(
+  debugPrint(
       '┌------------------------------------------------------------------------------');
   if (!kDebugMode) return;
   const int _limitLength = 800;
   if (message.length < _limitLength) {
-    print('$msg');
+    debugPrint('$msg');
   } else {
     final StringBuffer outStr = StringBuffer();
     for (int index = 0; index < message.length; index++) {
       outStr.write(message[index]);
       if (index % _limitLength == 0 && index != 0) {
-        print(outStr);
+        debugPrint(outStr.toString());
         outStr.clear();
         final int lastIndex = index + 1;
         if (message.length - lastIndex < _limitLength) {
           final String remainderStr =
               message.substring(lastIndex, message.length);
-          print(remainderStr);
+          debugPrint(remainderStr);
           break;
         }
       }
     }
   }
-  print(
+  debugPrint(
       '└------------------------------------------------------------------------------');
 }
 

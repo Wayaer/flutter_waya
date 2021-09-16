@@ -582,17 +582,19 @@ class Universal extends StatelessWidget {
       current = paddingWidget(current);
     }
 
-    if (alignment != null || widthFactor != null || heightFactor != null)
+    if (alignment != null || widthFactor != null || heightFactor != null) {
       current = Align(
           alignment: alignment ?? Alignment.center,
           widthFactor: widthFactor,
           heightFactor: heightFactor,
           child: current);
+    }
     if (intrinsicWidth) current = IntrinsicWidth(child: current);
     if (intrinsicHeight) current = IntrinsicHeight(child: current);
 
-    if (color != null && decoration == null && !addInkWell && !addCard)
+    if (color != null && decoration == null && !addInkWell && !addCard) {
       current = ColoredBox(color: color!, child: current);
+    }
 
     if (decoration != null &&
         clipBehavior != null &&
@@ -602,17 +604,19 @@ class Universal extends StatelessWidget {
               textDirection: Directionality.of(context),
               decoration: decoration!));
     }
-    if (decoration != null && !addInkWell)
+    if (decoration != null && !addInkWell) {
       current = DecoratedBox(decoration: decoration!, child: current);
+    }
     if (foregroundDecoration != null) {
       current = DecoratedBox(
           decoration: foregroundDecoration!,
           position: DecorationPosition.foreground,
           child: current);
     }
-    if (transform != null)
+    if (transform != null) {
       current =
           Transform(transform: transform!, origin: origin, child: current);
+    }
     if (enabled ||
         onTap != null ||
         onDoubleTap != null ||
@@ -622,33 +626,37 @@ class Universal extends StatelessWidget {
     }
     if (shrink) current = SizedBox.shrink(child: current);
     if (expand) current = SizedBox.expand(child: current);
-    if (width != null || height != null)
+    if (width != null || height != null) {
       current = SizedBox(width: width, height: height, child: current);
+    }
     if (size != null) current = SizedBox.fromSize(size: size, child: current);
 
     if (heroTag != null) current = heroWidget(current);
     if (addCard) current = cardWidget(current, context);
     if (isCircleAvatar) current = circleAvatarWidget(current);
-    if (clipper != null || isOval || isClipRRect)
+    if (clipper != null || isOval || isClipRRect) {
       current = clipWidget(current, clipper: clipper);
+    }
 
-    if (constraints != null)
+    if (constraints != null) {
       current = ConstrainedBox(constraints: constraints!, child: current);
+    }
 
     if (margin != null) current = Padding(padding: margin!, child: current);
     if (expanded || flex != null) current = flexibleWidget(current);
-    if (left != null || top != null || right != null || bottom != null)
+    if (left != null || top != null || right != null || bottom != null) {
       current = Positioned(
           left: left, top: top, right: right, bottom: bottom, child: current);
+    }
     if (gaussian) backdropFilter(current);
     if (fit != null) current = fittedBox(current);
-    if (opacity != null && opacity! > 0)
+    if (opacity != null && opacity! > 0) {
       current = Opacity(opacity: opacity!, child: current);
+    }
 
     if (systemOverlayStyle != null) current = annotatedRegionWidget(current);
     if (offstage) current = offstageWidget(current);
     if (!visible) current = visibilityWidget(current);
-
     return current;
   }
 
@@ -687,25 +695,26 @@ class Universal extends StatelessWidget {
 
   /// 裁剪组件
   Widget clipWidget(Widget current, {CustomClipper<dynamic>? clipper}) {
-    if (isOval)
+    if (isOval) {
       return ClipOval(
           child: current, clipBehavior: clipBehavior ?? Clip.antiAlias);
-    if (clipper is CustomClipper<Rect> || isClipRect)
+    } else if (clipper is CustomClipper<Rect> || isClipRect) {
       return ClipRect(
           child: current,
           clipper: clipper is CustomClipper<Rect> ? clipper : null,
           clipBehavior: clipBehavior ?? Clip.hardEdge);
-    if (clipper is CustomClipper<Path>)
+    } else if (clipper is CustomClipper<Path>) {
       return ClipPath(
           child: current,
           clipper: clipper,
           clipBehavior: clipBehavior ?? Clip.antiAlias);
-    if (clipper is CustomClipper<RRect> || isClipRRect)
+    } else if (clipper is CustomClipper<RRect> || isClipRRect) {
       return ClipRRect(
           child: current,
           borderRadius: borderRadius,
           clipper: clipper is CustomClipper<RRect> ? clipper : null,
           clipBehavior: clipBehavior ?? Clip.antiAlias);
+    }
     return current;
   }
 
@@ -1004,13 +1013,14 @@ class SimpleButton extends StatelessWidget {
             style: textStyle,
             maxLines: maxLines,
             overflow: overflow);
-    if (isElastic && onTap != null)
+    if (isElastic && onTap != null) {
       return ElasticButton(
           child: universal(current),
           onTap: onTap,
           withOpacity: withOpacity,
           scaleCoefficient: scaleCoefficient,
           useCache: useCache);
+    }
     return universal(current, onTap: onTap);
   }
 

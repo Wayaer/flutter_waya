@@ -361,6 +361,7 @@ class ExtendedSliverAppBar extends SliverAppBar {
 /// 简化部分参数 [FlexibleSpaceBar]
 class ExtendedFlexibleSpaceBar extends FlexibleSpaceBar {
   const ExtendedFlexibleSpaceBar({
+    Key? key,
     Widget? title,
     Widget? background,
     bool centerTitle = true,
@@ -370,6 +371,7 @@ class ExtendedFlexibleSpaceBar extends FlexibleSpaceBar {
       StretchMode.zoomBackground
     ],
   }) : super(
+            key: key,
             title: title,
             centerTitle: centerTitle,
             titlePadding: titlePadding,
@@ -624,7 +626,7 @@ class RefreshScrollView extends ScrollView {
   @override
   Widget build(BuildContext context) {
     Widget widget = super.build(context);
-    if (refreshConfig != null)
+    if (refreshConfig != null) {
       widget = EasyRefreshed(
           slivers: buildSlivers(context),
           scrollDirection: scrollDirection,
@@ -639,9 +641,11 @@ class RefreshScrollView extends ScrollView {
           shrinkWrap: shrinkWrap,
           cacheExtent: cacheExtent,
           dragStartBehavior: dragStartBehavior);
+    }
     if (padding != null) widget = Padding(padding: padding!, child: widget);
-    if (noScrollBehavior)
+    if (noScrollBehavior) {
       widget = ScrollConfiguration(behavior: NoScrollBehavior(), child: widget);
+    }
     return widget;
   }
 

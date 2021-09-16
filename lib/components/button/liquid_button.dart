@@ -53,7 +53,7 @@ class _LiquidButtonState extends State<LiquidButton>
         AnimationController(duration: widget.duration, vsync: this);
     animation = Tween<double>(begin: 1.0, end: widget.expandFactor)
         .animate(animationController)
-          ..addListener(() => setState(() {}));
+      ..addListener(() => setState(() {}));
     animationController.forward(from: 0.0);
     super.initState();
   }
@@ -63,46 +63,45 @@ class _LiquidButtonState extends State<LiquidButton>
     final RenderObject? renderObject = context.findRenderObject();
     if (renderObject == null) return Container();
     renderBox = renderObject as RenderBox;
-
-    if (kIsWeb)
-      return MouseRegion(
-          onHover: onHover,
-          onExit: onExit,
-          onEnter: onEnter,
-          child: SizedBox(
-              width: widget.width,
-              height: widget.height,
-              child: CustomPaint(
-                  painter: _LiquidButtonCustomPainter(
-                      canvasColor: widget.backgroundColor,
-                      gap: widget.gap,
-                      retainGradient: widget.retainGradient,
-                      tension: widget.tension,
-                      gradientColor:
-                          widget.gradientColor ?? widget.backgroundColor,
-                      position: position,
-                      maxExpansion: widget.expandFactor,
-                      expandFactor: animation.value),
-                  child: Center(child: widget.child))));
-    else
-      return Universal(
-          enabled: true,
-          onPanUpdate: onHoverM,
-          onPanDown: (DragDownDetails details) => onEnter(null),
-          onPanEnd: (DragEndDetails details) => onExit(null),
-          width: widget.width,
-          height: widget.height,
-          child: CustomPaint(
-              painter: _LiquidButtonCustomPainter(
-                  canvasColor: widget.backgroundColor,
-                  gap: widget.gap,
-                  retainGradient: widget.retainGradient,
-                  tension: widget.tension,
-                  gradientColor: widget.gradientColor ?? widget.backgroundColor,
-                  position: position,
-                  maxExpansion: widget.expandFactor,
-                  expandFactor: animation.value),
-              child: Center(child: widget.child)));
+    return kIsWeb
+        ? MouseRegion(
+            onHover: onHover,
+            onExit: onExit,
+            onEnter: onEnter,
+            child: SizedBox(
+                width: widget.width,
+                height: widget.height,
+                child: CustomPaint(
+                    painter: _LiquidButtonCustomPainter(
+                        canvasColor: widget.backgroundColor,
+                        gap: widget.gap,
+                        retainGradient: widget.retainGradient,
+                        tension: widget.tension,
+                        gradientColor:
+                            widget.gradientColor ?? widget.backgroundColor,
+                        position: position,
+                        maxExpansion: widget.expandFactor,
+                        expandFactor: animation.value),
+                    child: Center(child: widget.child))))
+        : Universal(
+            enabled: true,
+            onPanUpdate: onHoverM,
+            onPanDown: (DragDownDetails details) => onEnter(null),
+            onPanEnd: (DragEndDetails details) => onExit(null),
+            width: widget.width,
+            height: widget.height,
+            child: CustomPaint(
+                painter: _LiquidButtonCustomPainter(
+                    canvasColor: widget.backgroundColor,
+                    gap: widget.gap,
+                    retainGradient: widget.retainGradient,
+                    tension: widget.tension,
+                    gradientColor:
+                        widget.gradientColor ?? widget.backgroundColor,
+                    position: position,
+                    maxExpansion: widget.expandFactor,
+                    expandFactor: animation.value),
+                child: Center(child: widget.child)));
   }
 
   void onHover(PointerHoverEvent event) {
@@ -146,8 +145,9 @@ class _LiquidButtonCustomPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final double midTop = (size.width - doubleTilde(size.height / 2)) / 2;
-    for (double x = doubleTilde(size.height / 2); x < midTop * 2; x += gap)
+    for (double x = doubleTilde(size.height / 2); x < midTop * 2; x += gap) {
       points.add(Offset(x, 0));
+    }
 
     for (double alpha = doubleTilde(size.height * 1.25);
         alpha >= 0;
@@ -159,7 +159,9 @@ class _LiquidButtonCustomPainter extends CustomPainter {
     }
     for (double x = size.width - doubleTilde(size.height / 2) - 1;
         x >= doubleTilde(size.height / 2);
-        x -= gap) points.add(Offset(x, -0 + size.height));
+        x -= gap) {
+      points.add(Offset(x, -0 + size.height));
+    }
 
     for (int alpha = 0;
         alpha <= doubleTilde(size.height * 1.25);

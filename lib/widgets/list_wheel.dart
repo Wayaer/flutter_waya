@@ -142,10 +142,12 @@ class _ListWheelState extends State<ListWheel> {
   }
 
   ListWheelChildDelegate getDelegate(ListWheelChildDelegateType type) {
-    if (type == ListWheelChildDelegateType.list)
+    if (type == ListWheelChildDelegateType.list) {
       return ListWheelChildListDelegate(children: widget.children!);
-    if (type == ListWheelChildDelegateType.looping)
+    }
+    if (type == ListWheelChildDelegateType.looping) {
       return ListWheelChildLoopingListDelegate(children: widget.children!);
+    }
     return ListWheelChildBuilderDelegate(
         builder: widget.itemBuilder!, childCount: widget.itemCount);
   }
@@ -153,8 +155,6 @@ class _ListWheelState extends State<ListWheel> {
   @override
   Widget build(BuildContext context) {
     Widget child;
-    final Function(int index) onSelectedItemChanged = (int index) =>
-        widget.onChanged != null ? widget.onChanged!(index) : null;
     if (widget.isCupertino) {
       child = widget.childDelegateType == ListWheelChildDelegateType.builder
           ? CupertinoPicker.builder(
@@ -164,7 +164,7 @@ class _ListWheelState extends State<ListWheel> {
               backgroundColor: widget.backgroundColor,
               itemExtent: widget.itemExtent,
               diameterRatio: widget.diameterRatio,
-              onSelectedItemChanged: onSelectedItemChanged,
+              onSelectedItemChanged: widget.onChanged,
               offAxisFraction: widget.offAxisFraction,
               useMagnifier: widget.useMagnifier,
               squeeze: widget.squeeze,
@@ -177,7 +177,7 @@ class _ListWheelState extends State<ListWheel> {
                   ListWheelChildDelegateType.looping,
               itemExtent: widget.itemExtent,
               diameterRatio: widget.diameterRatio,
-              onSelectedItemChanged: onSelectedItemChanged,
+              onSelectedItemChanged: widget.onChanged,
               offAxisFraction: widget.offAxisFraction,
               useMagnifier: widget.useMagnifier,
               squeeze: widget.squeeze,
@@ -188,7 +188,7 @@ class _ListWheelState extends State<ListWheel> {
           itemExtent: widget.itemExtent,
           physics: widget.physics,
           diameterRatio: widget.diameterRatio,
-          onSelectedItemChanged: onSelectedItemChanged,
+          onSelectedItemChanged: widget.onChanged,
           offAxisFraction: widget.offAxisFraction,
           perspective: widget.perspective,
           useMagnifier: widget.useMagnifier,
@@ -204,16 +204,15 @@ class _ListWheelState extends State<ListWheel> {
         onNotification: widget.onNotification ??
             (ScrollNotification notification) {
               if (notification is ScrollStartNotification &&
-                  widget.onScrollStart != null)
+                  widget.onScrollStart != null) {
                 widget.onScrollStart!(controller.selectedItem);
-
-              if (notification is ScrollUpdateNotification &&
-                  widget.onScrollUpdate != null)
+              } else if (notification is ScrollUpdateNotification &&
+                  widget.onScrollUpdate != null) {
                 widget.onScrollUpdate!(controller.selectedItem);
-
-              if (notification is ScrollEndNotification &&
-                  widget.onScrollEnd != null)
+              } else if (notification is ScrollEndNotification &&
+                  widget.onScrollEnd != null) {
                 widget.onScrollEnd!(controller.selectedItem);
+              }
               return true;
             });
   }
@@ -279,13 +278,15 @@ class _AutoScrollEntryState extends State<AutoScrollEntry> {
   @override
   void initState() {
     super.initState();
-    if (widget.initialIndex < widget.children.length)
+    if (widget.initialIndex < widget.children.length) {
       index = widget.initialIndex;
+    }
     if (widget.itemHeight != null) itemHeight = widget.itemHeight!;
     controller = FixedExtentScrollController(initialItem: widget.initialIndex);
     if (widget.maxItemCount == null) {
-      if (widget.children.length > maxItemCount)
+      if (widget.children.length > maxItemCount) {
         maxItemCount = widget.children.length;
+      }
     } else {
       maxItemCount = widget.maxItemCount!;
     }

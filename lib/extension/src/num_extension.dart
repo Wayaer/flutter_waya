@@ -32,7 +32,7 @@ extension ExtensionNum on num {
       await Clipboard.setData(ClipboardData(text: toString()));
 
   /// 创建指定长度的List
-  List<T> generate<T>(T generator(int index), {bool growable = true}) =>
+  List<T> generate<T>(T Function(int index) generator, {bool growable = true}) =>
       List<T>.generate(toInt(), (int index) => generator(index),
           growable: growable);
 

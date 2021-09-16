@@ -226,8 +226,7 @@ class DotCarouselPagination extends CarouselPlugin {
   @override
   Widget build(BuildContext context, CarouselPluginConfig config) {
     if (config.itemCount > 20) {
-      print(
-          'The itemCount is too big, we suggest use FractionPaginationBuilder instead of DotCarouselPaginationBuilder in this sitituation');
+      log('The itemCount is too big, we suggest use FractionPaginationBuilder instead of DotCarouselPaginationBuilder in this sitituation');
     }
     Color? activeColor = this.activeColor;
     Color? color = this.color;

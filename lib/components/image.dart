@@ -208,31 +208,36 @@ class ImageSequenceState extends State<ImageSequence>
   }
 
   void play({double from = -1.0}) {
-    if (!animationController.isAnimating && onStartPlaying != null)
+    if (!animationController.isAnimating && onStartPlaying != null) {
       onStartPlaying!(this);
-    if (from == -1.0)
+    }
+    if (from == -1.0) {
       animationController.forward();
-    else
+    } else {
       animationController.forward(from: from);
+    }
   }
 
   void rewind({double from = -1.0}) {
-    if (!animationController.isAnimating && onStartPlaying != null)
+    if (!animationController.isAnimating && onStartPlaying != null) {
       onStartPlaying!(this);
-    if (from == -1.0)
+    }
+    if (from == -1.0) {
       animationController.reverse();
-    else
+    } else {
       animationController.reverse(from: from);
+    }
   }
 
   void pause() => animationController.stop();
 
   ///  Only use either value or percentage.
   void skip(double value, {double percentage = -1.0}) {
-    if (percentage != -1.0)
+    if (percentage != -1.0) {
       animationController.value = totalTime * percentage;
-    else
+    } else {
       animationController.value = value;
+    }
   }
 
   void restart() {
@@ -250,7 +255,9 @@ class ImageSequenceState extends State<ImageSequence>
   }
 
   String getSuffix(String value) {
-    while (value.length < suffixCount) value = '0' + value;
+    while (value.length < suffixCount) {
+      value = '0' + value;
+    }
     return value;
   }
 
@@ -271,9 +278,10 @@ class ImageSequenceState extends State<ImageSequence>
               colorChanged) {
             colorChanged = false;
             previousFrame = animationController.value.floor();
-            if (previousFrame < frameCount)
+            if (previousFrame < frameCount) {
               currentFrame = Image.asset(getDirectory(),
                   color: color, gaplessPlayback: true);
+            }
           }
           return currentFrame!;
         },
@@ -292,7 +300,7 @@ class GifCache {
     try {
       pendingImage = caches.remove(key);
     } catch (e) {
-      print(e);
+      log(e);
     }
     if (pendingImage != null) return true;
     return false;
@@ -320,6 +328,7 @@ class GifController extends AnimationController {
 
 class GifImage extends StatefulWidget {
   const GifImage({
+    Key? key,
     required this.image,
     required this.controller,
     this.semanticLabel,
@@ -335,7 +344,7 @@ class GifImage extends StatefulWidget {
     this.centerSlice,
     this.matchTextDirection = false,
     this.gapLessPlayback = false,
-  });
+  }) : super(key: key);
 
   final VoidCallback? onFetchCompleted;
   final GifController controller;

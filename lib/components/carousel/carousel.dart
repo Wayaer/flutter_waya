@@ -169,8 +169,9 @@ class _CarouselState extends _CarouselTimerMixin {
   @override
   void didUpdateWidget(Carousel oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.index != null && widget.index != _activeIndex)
+    if (widget.index != null && widget.index != _activeIndex) {
       _activeIndex = widget.index!;
+    }
   }
 
   Widget get buildCarousel {
@@ -329,12 +330,10 @@ class _TinderState extends _LayoutState<_SubCarousel> {
 
 double _getValue(List<double> values, double animationValue, int index) {
   double s = values[index];
-  if (animationValue >= 0.5) {
-    if (index < values.length - 1)
-      s = s + (values[index + 1] - s) * (animationValue - 0.5) * 2.0;
-  } else {
-    if (index != 0)
-      s = s - (s - values[index - 1]) * (0.5 - animationValue) * 2.0;
+  if (animationValue >= 0.5 && index < values.length - 1) {
+    s = s + (values[index + 1] - s) * (animationValue - 0.5) * 2.0;
+  } else if (index != 0) {
+    s = s - (s - values[index - 1]) * (0.5 - animationValue) * 2.0;
   }
   return s;
 }
@@ -456,8 +455,9 @@ abstract class _LayoutState<T extends _SubCarousel> extends State<T>
       oldWidget.controller!.removeListener(_onController);
       widget.controller!.addListener(_onController);
     }
-    if (widget.loop != oldWidget.loop && !widget.loop)
+    if (widget.loop != oldWidget.loop && !widget.loop) {
       _currentIndex = _ensureIndex(_currentIndex);
+    }
     super.didUpdateWidget(oldWidget);
   }
 
@@ -514,13 +514,13 @@ abstract class _LayoutState<T extends _SubCarousel> extends State<T>
         widget.onChanged!(widget.getCorrectIndex(nextIndex));
       }
     } catch (e) {
-      print(e);
+      log(e);
     } finally {
       if (nextIndex != null) {
         try {
           _animationController.value = 0.5;
         } catch (e) {
-          print(e);
+          log(e);
         }
         _currentIndex = nextIndex;
       }
@@ -530,8 +530,9 @@ abstract class _LayoutState<T extends _SubCarousel> extends State<T>
 
   int _nextIndex() {
     final int index = _currentIndex + 1;
-    if (!widget.loop && index >= widget.itemCount - 1)
+    if (!widget.loop && index >= widget.itemCount - 1) {
       return widget.itemCount - 1;
+    }
     return index;
   }
 

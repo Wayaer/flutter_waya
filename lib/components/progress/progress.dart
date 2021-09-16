@@ -210,8 +210,9 @@ abstract class _ProgressSubState extends State<Progress>
       )..addListener(() {
           percent = animation!.value;
           setState(() {});
-          if (widget.restartAnimation && percent == 1.0)
+          if (widget.restartAnimation && percent == 1.0) {
             animationController!.repeat(min: 0, max: 1.0);
+          }
         });
       animationController!.addStatusListener((AnimationStatus status) {
         if (widget.onAnimationEnd != null &&
@@ -418,13 +419,15 @@ class _LinearPainter extends CustomPainter {
 
     if (isRTL) {
       final double xProgress = size.width - size.width * progress;
-      if (linearGradient != null)
+      if (linearGradient != null) {
         _paintLine.shader = _createGradientShaderRightToLeft(size, xProgress);
+      }
       canvas.drawLine(end, Offset(xProgress, size.height / 2), _paintLine);
     } else {
       final double xProgress = size.width * progress;
-      if (linearGradient != null)
+      if (linearGradient != null) {
         _paintLine.shader = _createGradientShaderLeftToRight(size, xProgress);
+      }
       canvas.drawLine(start, Offset(xProgress, size.height / 2), _paintLine);
     }
   }
@@ -543,8 +546,9 @@ class _CirclePainter extends CustomPainter {
       if (rotateLinearGradient && progress > 0) {
         double correction = 0;
         if (_paintLine.strokeCap == StrokeCap.round ||
-            _paintLine.strokeCap == StrokeCap.square)
+            _paintLine.strokeCap == StrokeCap.square) {
           correction = math.atan(_paintLine.strokeWidth / 2 / radius);
+        }
 
         _paintLine.shader = SweepGradient(
                 transform: reverse
@@ -578,13 +582,14 @@ class _CirclePainter extends CustomPainter {
       }
     }
 
-    if (arcBackgroundColor != null)
+    if (arcBackgroundColor != null) {
       canvas.drawArc(
           Rect.fromCircle(center: center, radius: radius),
           _radians(-90.0 + fixedStartAngle),
           _radians(360 * startAngleFixedMargin),
           false,
           _paintBackgroundStartAngle);
+    }
 
     if (reverse) {
       final double start =

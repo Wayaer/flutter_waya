@@ -72,8 +72,9 @@ class _JsonParseState extends State<JsonParse> {
                   setState(() {});
                 }));
       list.add(const SizedBox(height: 4));
-      if ((mapFlag[key.toString()]) ?? false)
+      if ((mapFlag[key.toString()]) ?? false) {
         list.add(getContentWidget(content));
+      }
     });
     return list;
   }
@@ -92,7 +93,7 @@ class _JsonParseState extends State<JsonParse> {
       text = content.toString();
       color = Colors.teal;
     } else if (content is String) {
-      text = '\"$content\"';
+      text = '"$content"';
       color = Colors.redAccent;
     } else if (content is bool) {
       text = content.toString();

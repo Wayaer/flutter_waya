@@ -12,6 +12,8 @@ const Map<String, List<String>> _dropdownValue = <String, List<String>>{
 };
 
 class ButtonPage extends StatelessWidget {
+  const ButtonPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => ExtendedScaffold(
           backgroundColor: Colors.white,

@@ -8,7 +8,7 @@ class Event<T> {
 
   StreamController<T> get streamController => _streamController;
 
-  Stream<dynamic> on<T>() => T == dynamic
+  Stream<dynamic> on<E>() => T == dynamic
       ? streamController.stream
       : streamController.stream.where((dynamic event) => event is T).cast<T>();
 
@@ -18,7 +18,7 @@ class Event<T> {
 
   void close() => _streamController.close();
 
-  void listen(void onData(dynamic event)) =>
+  void listen(void Function(dynamic event) onData) =>
       _streamController.stream.listen(onData);
 
   void error(Object error) => _streamController.addError(error);
@@ -49,7 +49,7 @@ void sendEvent(dynamic message) => EventFactory.instance!.event.send(message);
 
 void eventDestroy() => EventFactory.instance!.event.close();
 
-void eventListen(void onData(dynamic event)) =>
+void eventListen(void Function(dynamic event) onData) =>
     EventFactory.instance!.event.listen(onData);
 
 /// 订阅者回调签名
@@ -93,6 +93,8 @@ class EventBus {
     final int len = list.length - 1;
 
     ///  反向遍历，防止订阅者在回调中移除自身带来的下标错位
-    for (int i = len; i > -1; --i) list[i](data);
+    for (int i = len; i > -1; --i) {
+      list[i](data);
+    }
   }
 }

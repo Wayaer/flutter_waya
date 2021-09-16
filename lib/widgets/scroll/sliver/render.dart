@@ -133,10 +133,11 @@ class RenderSliverPinnedPersistentHeader extends RenderSliver
   bool hitTestChildren(SliverHitTestResult result,
       {required double mainAxisPosition, required double crossAxisPosition}) {
     assert(geometry!.hitTestExtent > 0.0);
-    if (child != null)
+    if (child != null) {
       return hitTestBoxChild(BoxHitTestResult.wrap(result), child!,
           mainAxisPosition: mainAxisPosition,
           crossAxisPosition: crossAxisPosition);
+    }
     return false;
   }
 
@@ -193,8 +194,9 @@ class RenderSliverPinnedPersistentHeader extends RenderSliver
   void describeSemanticsConfiguration(SemanticsConfiguration config) {
     super.describeSemanticsConfiguration(config);
 
-    if (_excludeFromSemanticsScrolling)
+    if (_excludeFromSemanticsScrolling) {
       config.addTagForChildren(RenderViewport.excludeFromScrolling);
+    }
   }
 
   @override

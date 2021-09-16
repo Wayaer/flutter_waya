@@ -60,7 +60,7 @@ class _ClothButtonState extends State<ClothButton>
         AnimationController(duration: widget.duration, vsync: this);
     animation = Tween<double>(begin: 1.0, end: widget.expandFactor)
         .animate(animationController)
-          ..addListener(() => setState(() {}));
+      ..addListener(() => setState(() {}));
     animationController.forward(from: 0.0);
     super.initState();
   }
@@ -90,15 +90,14 @@ class _ClothButtonState extends State<ClothButton>
         size: widget.size,
         child:
             CustomPaint(painter: painter, child: Center(child: widget.child)));
-    if (kIsWeb)
-      return MouseRegion(
-          onHover: onHover, onExit: onExit, onEnter: onEnter, child: size);
-    else
-      return GestureDetector(
-          onPanUpdate: onHoverM,
-          onPanDown: (DragDownDetails details) => onEnter(null),
-          onPanEnd: (DragEndDetails details) => onExit(null),
-          child: size);
+    return kIsWeb
+        ? MouseRegion(
+            onHover: onHover, onExit: onExit, onEnter: onEnter, child: size)
+        : GestureDetector(
+            onPanUpdate: onHoverM,
+            onPanDown: (DragDownDetails details) => onEnter(null),
+            onPanEnd: (DragEndDetails details) => onExit(null),
+            child: size);
   }
 
   void onHover(PointerHoverEvent event) {
@@ -238,7 +237,9 @@ class _RoundClothCustomPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     for (double x = doubleTilde(size.height / 2);
         x < size.width - doubleTilde(size.height / 2);
-        x += gap) points.add(Offset(expandFactor / 4 + x + margin, margin));
+        x += gap) {
+      points.add(Offset(expandFactor / 4 + x + margin, margin));
+    }
 
     for (double alpha = doubleTilde(size.height * 1.25);
         alpha >= 0;
@@ -253,8 +254,9 @@ class _RoundClothCustomPainter extends CustomPainter {
     }
     for (double x = size.width - doubleTilde(size.height / 2) - 1;
         x >= doubleTilde(size.height / 2);
-        x -= gap)
+        x -= gap) {
       points.add(Offset(x + margin + expandFactor / 4, margin + size.height));
+    }
 
     for (int alpha = 0;
         alpha <= doubleTilde(size.height * 1.25);

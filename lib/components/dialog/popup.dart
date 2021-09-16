@@ -97,11 +97,12 @@ class PopupOptions extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget child = childWidget;
     if (gaussian) child = backdropFilter(child);
-    if (addMaterial)
+    if (addMaterial) {
       child = Material(
           color: ConstColors.transparent,
           child: MediaQuery(
               data: MediaQueryData.fromWindow(window), child: child));
+    }
     if (ignoring) child = IgnorePointer(child: child);
     if (onWillPop != null) WillPopScope(child: child, onWillPop: onWillPop);
     return child;

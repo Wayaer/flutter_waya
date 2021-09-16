@@ -301,7 +301,6 @@ class Badge extends StatelessWidget {
 
   final bool hide;
   final Widget child;
-
   final Widget? pointChild;
   final double? width;
   final double? height;
@@ -322,9 +321,10 @@ class Badge extends StatelessWidget {
     final List<Widget> children = <Widget>[child];
     Widget dot = dotWidget;
     if (alignment != null) dot = Align(alignment: alignment!, child: dot);
-    if (right != null || top != null || bottom != null || left != null)
+    if (right != null || top != null || bottom != null || left != null) {
       dot = Positioned(
           right: right, top: top, bottom: bottom, left: left, child: dot);
+    }
     children.add(dot);
     return Universal(
         onTap: onTap,
@@ -537,8 +537,9 @@ class _ExpansionTilesState extends State<ExpansionTiles>
         });
       }
     });
-    if (widget.onExpansionChanged != null)
+    if (widget.onExpansionChanged != null) {
       widget.onExpansionChanged!(_isExpanded);
+    }
   }
 
   @override

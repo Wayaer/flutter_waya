@@ -7,6 +7,8 @@ import 'package:waya/main.dart';
 TapDownDetails? _details;
 
 class AlertPage extends StatelessWidget {
+  const AlertPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => GestureDetector(
         onTapDown: (TapDownDetails details) {

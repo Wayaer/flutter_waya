@@ -81,10 +81,12 @@ class _RefreshState extends State<SimpleRefresh> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> slivers = _buildSliversByChild();
-    if (widget.onRefresh != null)
+    if (widget.onRefresh != null) {
       slivers.insert(0, SliverToBoxAdapter(child: _header));
-    if (widget.onLoading != null)
+    }
+    if (widget.onLoading != null) {
       slivers.add(SliverToBoxAdapter(child: _footer));
+    }
     Widget scrollView = ScrollNotificationListener(
         onNotification: (ScrollNotification notification, bool focus) {
           if (notification is ScrollStartNotification && focus) {
@@ -128,8 +130,9 @@ class _RefreshState extends State<SimpleRefresh> {
             controller: controller,
             physics: const BouncingScrollPhysics(),
             slivers: slivers));
-    if (isScrollListPadding != null)
+    if (isScrollListPadding != null) {
       scrollView = Padding(child: scrollView, padding: isScrollListPadding!);
+    }
     return scrollView;
   }
 
@@ -217,8 +220,9 @@ class _RefreshState extends State<SimpleRefresh> {
         slivers = child.slivers;
       }
     } else if (child is SingleChildScrollView) {
-      if (child.child != null)
+      if (child.child != null) {
         slivers = <Widget>[SliverToBoxAdapter(child: child.child!)];
+      }
     } else if (child is! Scrollable) {
       slivers = <Widget>[SliverToBoxAdapter(child: child)];
     }
@@ -287,7 +291,7 @@ class RefreshController extends ScrollController {
   void refreshing() {
     if (header.value != RefreshState.release && footerDefault) return;
     header.value = RefreshState.refreshing;
-    if (onRefresh != null)
+    if (onRefresh != null) {
       onRefresh!.call().then((bool value) {
         if (value) {
           refreshFinish();
@@ -295,6 +299,7 @@ class RefreshController extends ScrollController {
           refreshFailed();
         }
       });
+    }
   }
 
   /// 刷新完成
@@ -328,7 +333,7 @@ class RefreshController extends ScrollController {
   void loading() {
     if (footer.value == LoadingState.loading && headerDefault) return;
     footer.value = LoadingState.loading;
-    if (onLoading != null)
+    if (onLoading != null) {
       onLoading!.call().then((bool value) {
         if (value) {
           loadingFinish();
@@ -336,6 +341,7 @@ class RefreshController extends ScrollController {
           loadingFailed();
         }
       });
+    }
   }
 
   /// 加载完成

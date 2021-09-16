@@ -30,7 +30,8 @@ abstract class SliverPinnedPersistentHeaderDelegate {
 }
 
 class SliverPinnedPersistentHeader extends StatelessWidget {
-  const SliverPinnedPersistentHeader({required this.delegate});
+  const SliverPinnedPersistentHeader({Key? key, required this.delegate})
+      : super(key: key);
 
   final SliverPinnedPersistentHeaderDelegate delegate;
 
@@ -41,7 +42,9 @@ class SliverPinnedPersistentHeader extends StatelessWidget {
 
 class SliverPinnedPersistentHeaderRenderObjectWidget
     extends RenderObjectWidget {
-  const SliverPinnedPersistentHeaderRenderObjectWidget(this.delegate);
+  const SliverPinnedPersistentHeaderRenderObjectWidget(this.delegate,
+      {Key? key})
+      : super(key: key);
 
   final SliverPinnedPersistentHeaderDelegate delegate;
 
@@ -67,6 +70,7 @@ class SliverPinnedToBoxAdapter extends SingleChildRenderObjectWidget {
 
 class CustomSliverAppBar extends StatelessWidget {
   const CustomSliverAppBar({
+    Key? key,
     this.leading,
     this.title,
     this.actions,
@@ -79,7 +83,7 @@ class CustomSliverAppBar extends StatelessWidget {
     this.isOpacityFadeWithTitle = true,
     this.mainAxisAlignment = MainAxisAlignment.spaceBetween,
     this.crossAxisAlignment = CrossAxisAlignment.center,
-  });
+  }) : super(key: key);
 
   final Widget? leading;
 
@@ -337,8 +341,9 @@ class SliverListGrid extends StatelessWidget {
           } else {
             widget = separatorBuilder!(context, itemIndex);
             assert(() {
-              if (widget == null)
+              if (widget == null) {
                 throw FlutterError('separatorBuilder cannot return null.');
+              }
               return true;
             }());
           }

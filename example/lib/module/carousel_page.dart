@@ -3,6 +3,8 @@ import 'package:flutter_waya/flutter_waya.dart';
 import 'package:waya/main.dart';
 
 class CarouselPage extends StatefulWidget {
+  const CarouselPage({Key? key}) : super(key: key);
+
   @override
   _CarouselPageState createState() => _CarouselPageState();
 }
@@ -23,7 +25,7 @@ class _CarouselPageState extends State<CarouselPage> {
           backgroundColor: Colors.white,
           appBar: AppBarText('Carousel Demo'),
           children: <Widget>[
-            Container(
+            SizedBox(
                 height: 200,
                 width: double.infinity,
                 child: Carousel.builder(

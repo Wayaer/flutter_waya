@@ -1,4 +1,4 @@
-part of 'spinKit.dart';
+part of 'spin_kit.dart';
 
 class SpinKitCircle extends StatefulWidget {
   const SpinKitCircle({

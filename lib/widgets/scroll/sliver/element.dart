@@ -45,8 +45,9 @@ class SliverPinnedPersistentHeaderElement extends RenderObjectElement {
     final SliverPinnedPersistentHeaderDelegate oldDelegate = oldWidget.delegate;
     if (newDelegate != oldDelegate &&
         (newDelegate.runtimeType != oldDelegate.runtimeType ||
-            newDelegate.shouldRebuild(oldDelegate)))
+            newDelegate.shouldRebuild(oldDelegate))) {
       renderObject.triggerRebuild();
+    }
     _minExtentPrototype = updateChild(_minExtentPrototype,
         widget.delegate.minExtentProtoType, _minExtentPrototypeSlot);
     _maxExtentPrototype = updateChild(_maxExtentPrototype,

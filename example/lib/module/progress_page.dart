@@ -3,6 +3,8 @@ import 'package:flutter_waya/flutter_waya.dart';
 import 'package:waya/main.dart';
 
 class ProgressPage extends StatefulWidget {
+  const ProgressPage({Key? key}) : super(key: key);
+
   @override
   _ProgressPageState createState() => _ProgressPageState();
 }

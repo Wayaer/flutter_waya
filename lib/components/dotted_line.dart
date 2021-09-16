@@ -348,8 +348,9 @@ class DottedLineBorder extends BoxBorder {
         BorderSide.canMerge(top, other.top) &&
         BorderSide.canMerge(right, other.right) &&
         BorderSide.canMerge(bottom, other.bottom) &&
-        BorderSide.canMerge(left, other.left))
+        BorderSide.canMerge(left, other.left)) {
       return DottedLineBorder.merge(this, other);
+    }
     return null;
   }
 }

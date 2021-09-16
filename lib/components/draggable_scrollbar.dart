@@ -342,8 +342,9 @@ class _DraggableScrollbarState extends State<DraggableScrollbar>
   }
 
   void _onVerticalDragUpdate(DragUpdateDetails details) {
-    if (_thumbAnimationController.status != AnimationStatus.forward)
+    if (_thumbAnimationController.status != AnimationStatus.forward) {
       _thumbAnimationController.forward();
+    }
     if (_isDragInProcess) {
       _barOffset += details.delta.dy;
 

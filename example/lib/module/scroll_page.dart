@@ -8,6 +8,8 @@ final List<Color> _colors = <Color>[
 ];
 
 class ScrollViewPage extends StatelessWidget {
+  const ScrollViewPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final ScrollController scrollController = ScrollController();

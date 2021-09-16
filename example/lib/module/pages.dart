@@ -4,6 +4,8 @@ import 'package:flutter_waya/flutter_waya.dart';
 import 'package:waya/main.dart';
 
 class ImagePage extends StatefulWidget {
+  const ImagePage({Key? key}) : super(key: key);
+
   @override
   _ImagePageState createState() => _ImagePageState();
 }

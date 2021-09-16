@@ -17,7 +17,9 @@ extension ExtensionUint8List on Uint8List {
       final int bitShiftAmount = (3 - i % 4).toInt();
       result[resultIdx] |= bytes[i] << bitShiftAmount;
     }
-    for (int i = 0; i < result.length; i++) result[i] = result[i] << 24;
+    for (int i = 0; i < result.length; i++) {
+      result[i] = result[i] << 24;
+    }
     return result;
   }
 }
@@ -38,7 +40,9 @@ extension ExtensionList<T> on List<T> {
     final List<int> bit32 = this as List<int>;
     final Uint8List result = Uint8List(bit32.length * 4);
     for (int i = 0; i < bit32.length; i++) {
-      for (int j = 0; j < 4; j++) result[i * 4 + j] = bit32[i] >> (j * 8);
+      for (int j = 0; j < 4; j++) {
+        result[i * 4 + j] = bit32[i] >> (j * 8);
+      }
     }
     return result;
   }
@@ -61,8 +65,9 @@ extension ExtensionList<T> on List<T> {
   List<E> builder<E>(E Function(T) builder) =>
       map<E>((T e) => builder(e)).toList();
 
-  List<T> generate<T>(T generator(int index), {bool growable = true}) =>
-      length.generate<T>((int index) => generator(index), growable: growable);
+  List<E> generate<E>(E Function(int index) generator,
+          {bool growable = true}) =>
+      length.generate<E>((int index) => generator(index), growable: growable);
 
   /// list.asMap().entries.map.toList()
   List<E> builderEntry<E>(E Function(MapEntry<int, T>) builder) =>
@@ -122,14 +127,15 @@ extension ExtensionMap<K, V> on Map<K, V> {
   }
 
   /// update map 并返回 新map
-  Map<K, V> updateAllT(V update(K key, V value), {bool isUpdate = true}) {
+  Map<K, V> updateAllT(V Function(K key, V value) update,
+      {bool isUpdate = true}) {
     if (isUpdate) updateAll(update);
     return this;
   }
 
   /// update map 并返回 新map
-  Map<K, V> updateT(K key, V update(V value),
-      {V ifAbsent()?, bool isUpdate = true}) {
+  Map<K, V> updateT(K key, V Function(V value) update,
+      {V Function()? ifAbsent, bool isUpdate = true}) {
     if (isUpdate) this.update(key, update, ifAbsent: ifAbsent);
     return this;
   }
@@ -237,7 +243,7 @@ extension DurationExtension on Duration {
   ///   await _delay.delayed();
   ///   print('- finish wait $_delay');
   ///   print('+ callback in 700ms');
-  Future<T> delayed<T>([FutureOr<T> callback()?]) =>
+  Future<T> delayed<T>([FutureOr<T> Function()? callback]) =>
       Future<T>.delayed(this, callback);
 
   /// 时间工具
@@ -251,7 +257,7 @@ extension DurationExtension on Duration {
   }
 
   /// 需要手动释放timer
-  Timer timerPeriodic(void callback(Timer timer)) =>
+  Timer timerPeriodic(void Function(Timer timer) callback) =>
       Timer.periodic(this, (Timer time) => callback(time));
 }
 

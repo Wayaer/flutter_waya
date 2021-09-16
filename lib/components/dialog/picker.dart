@@ -240,22 +240,25 @@ class _AreaPickerState extends State<AreaPicker> {
 
     ///  省
     province = areaData.keys.toList();
-    if (province.contains(widget.defaultProvince))
+    if (province.contains(widget.defaultProvince)) {
       provinceIndex = province.indexOf(widget.defaultProvince!);
+    }
     final Map<dynamic, dynamic> provinceData =
         areaData[province[provinceIndex]] as Map<dynamic, dynamic>;
 
     ///  市
     city = provinceData.keys.toList() as List<String>;
-    if (city.contains(widget.defaultCity))
+    if (city.contains(widget.defaultCity)) {
       cityIndex = city.indexOf(widget.defaultCity!);
+    }
     final Map<dynamic, dynamic> cityData =
         provinceData[city[cityIndex]] as Map<dynamic, dynamic>;
 
     ///  区
     district = cityData.keys.toList() as List<String>;
-    if (district.contains(widget.defaultDistrict))
+    if (district.contains(widget.defaultDistrict)) {
       districtIndex = district.indexOf(widget.defaultDistrict!);
+    }
 
     ///    var districtData = cityData[districtIndex];
 
@@ -560,28 +563,38 @@ class _DateTimePickerState extends State<DateTimePicker> {
         minuteData.isEmpty ? (defaultDate.minute) : minuteData[minuteIndex],
         secondData.isEmpty ? (defaultDate.second) : secondData[secondIndex]);
     if (currentDate.millisecondsSinceEpoch < startDate.millisecondsSinceEpoch) {
-      if (currentDate.month < startDate.month)
+      if (currentDate.month < startDate.month) {
         jumpToIndex(startDate.month - 1, controllerMonth);
-      if (currentDate.day < startDate.day)
+      }
+      if (currentDate.day < startDate.day) {
         jumpToIndex(startDate.day - 1, controllerDay);
-      if (currentDate.hour < startDate.hour)
+      }
+      if (currentDate.hour < startDate.hour) {
         jumpToIndex(startDate.hour, controllerHour);
-      if (currentDate.minute < startDate.minute)
+      }
+      if (currentDate.minute < startDate.minute) {
         jumpToIndex(startDate.minute, controllerMinute);
-      if (currentDate.second < startDate.second)
+      }
+      if (currentDate.second < startDate.second) {
         jumpToIndex(startDate.second, controllerSecond);
+      }
     } else if (currentDate.millisecondsSinceEpoch >
         endDate.millisecondsSinceEpoch) {
-      if (currentDate.month > endDate.month)
+      if (currentDate.month > endDate.month) {
         jumpToIndex(endDate.month - 1, controllerMonth);
-      if (currentDate.day > endDate.day)
+      }
+      if (currentDate.day > endDate.day) {
         jumpToIndex(endDate.day - 1, controllerDay);
-      if (currentDate.hour > endDate.hour)
+      }
+      if (currentDate.hour > endDate.hour) {
         jumpToIndex(endDate.hour, controllerHour);
-      if (currentDate.minute > endDate.minute)
+      }
+      if (currentDate.minute > endDate.minute) {
         jumpToIndex(endDate.minute, controllerMinute);
-      if (currentDate.second > endDate.second)
+      }
+      if (currentDate.second > endDate.second) {
         jumpToIndex(endDate.second, controllerSecond);
+      }
     }
     isScrolling = false;
   }
@@ -589,14 +602,15 @@ class _DateTimePickerState extends State<DateTimePicker> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> rowChildren = <Widget>[];
-    if (unit.year != null)
+    if (unit.year != null) {
       rowChildren.add(wheelItem(yearData,
           initialIndex: yearIndex, unit: unit.year, onChanged: (int newIndex) {
         yearIndex = newIndex;
         refreshPosition();
       }));
+    }
 
-    if (unit.month != null)
+    if (unit.month != null) {
       rowChildren.add(wheelItem(monthData,
           startZero: false,
           controller: controllerMonth,
@@ -604,8 +618,9 @@ class _DateTimePickerState extends State<DateTimePicker> {
         monthIndex = newIndex;
         refreshPosition();
       }));
+    }
 
-    if (unit.day != null)
+    if (unit.day != null) {
       rowChildren.add(wheelItem(dayData,
           startZero: false,
           controller: controllerDay,
@@ -613,8 +628,9 @@ class _DateTimePickerState extends State<DateTimePicker> {
         dayIndex = newIndex;
         refreshPosition();
       }));
+    }
 
-    if (unit.hour != null)
+    if (unit.hour != null) {
       rowChildren.add(wheelItem(hourData,
           unit: unit.hour,
           initialIndex: hourIndex,
@@ -622,8 +638,9 @@ class _DateTimePickerState extends State<DateTimePicker> {
         hourIndex = newIndex;
         refreshPosition();
       }));
+    }
 
-    if (unit.minute != null)
+    if (unit.minute != null) {
       rowChildren.add(wheelItem(minuteData,
           initialIndex: minuteIndex,
           unit: unit.minute,
@@ -631,8 +648,9 @@ class _DateTimePickerState extends State<DateTimePicker> {
         minuteIndex = newIndex;
         refreshPosition();
       }));
+    }
 
-    if (unit.second != null)
+    if (unit.second != null) {
       rowChildren.add(wheelItem(secondData,
           initialIndex: secondIndex,
           unit: unit.second,
@@ -640,6 +658,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
         secondIndex = newIndex;
         refreshPosition();
       }));
+    }
     return PickerSubject<DateTime>(
         options: widget.options,
         sureTap: sureTapVoid,

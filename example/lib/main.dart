@@ -32,15 +32,20 @@ void main() {
   }
 
   des();
-  runApp(_App());
+  runApp(isCustomApp ? _CustomApp() : _App());
 }
 
 class _App extends StatefulWidget {
   @override
-  State<_App> createState() => isCustomApp ? _CustomAppState() : _AppState();
+  State<_App> createState() => _AppState();
 }
 
-class _CustomAppState extends State<_App> {
+class _CustomApp extends StatefulWidget {
+  @override
+  State<_CustomApp> createState() => _CustomAppState();
+}
+
+class _CustomAppState extends State<_CustomApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -84,17 +89,21 @@ class _Home extends StatelessWidget {
           runSpacing: 10,
           spacing: 10,
           children: <Widget>[
-            ElevatedText('Components', onTap: () => push(ComponentsPage())),
-            ElevatedText('Button', onTap: () => push(ButtonPage())),
-            ElevatedText('Alert', onTap: () => push(AlertPage())),
-            ElevatedText('Image', onTap: () => push(ImagePage())),
-            ElevatedText('Carousel', onTap: () => push(CarouselPage())),
-            ElevatedText('Progress', onTap: () => push(ProgressPage())),
-            ElevatedText('Universal', onTap: () => push(UniversalPage())),
-            ElevatedText('JsonParse', onTap: () => push(JsonParsePage())),
-            ElevatedText('ScrollView', onTap: () => push(ScrollViewPage())),
-            ElevatedText('SimpleRefresh', onTap: () => push(RefreshPage())),
-            ElevatedText('EasyRefreshed', onTap: () => push(EasyRefreshPage())),
+            ElevatedText('Components',
+                onTap: () => push(const ComponentsPage())),
+            ElevatedText('Button', onTap: () => push(const ButtonPage())),
+            ElevatedText('Alert', onTap: () => push(const AlertPage())),
+            ElevatedText('Image', onTap: () => push(const ImagePage())),
+            ElevatedText('Carousel', onTap: () => push(const CarouselPage())),
+            ElevatedText('Progress', onTap: () => push(const ProgressPage())),
+            ElevatedText('Universal', onTap: () => push(const UniversalPage())),
+            ElevatedText('JsonParse', onTap: () => push(const JsonParsePage())),
+            ElevatedText('ScrollView',
+                onTap: () => push(const ScrollViewPage())),
+            ElevatedText('SimpleRefresh',
+                onTap: () => push(const RefreshPage())),
+            ElevatedText('EasyRefreshed',
+                onTap: () => push(const EasyRefreshPage())),
             ElevatedText('Extension', onTap: () => push(const ExtensionPage())),
           ]),
     );
