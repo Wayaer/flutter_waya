@@ -247,7 +247,7 @@ class LoggerInterceptor<T> extends InterceptorsWrapper {
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     String headers = '';
     options.headers.forEach((String key, dynamic value) {
-      headers += '| $key: $value';
+      headers += ' | $key: $value';
     });
 
     debugPrint(
