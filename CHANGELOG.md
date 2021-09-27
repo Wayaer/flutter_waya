@@ -1,3 +1,5 @@
+## 1.15.1
+ * fix bug for `showDialogPopup`
 ## 1.15.0
  * remove `showSimpleDialog`,`showSimpleCupertinoDialog`
  * remove `showBottomPagePopup` ，please use `showBottomPopup`

@@ -252,7 +252,7 @@ Future<T?> showDialogPopup<T>({
   double? startOffset,
 
   ///  popup 进入的方向
-  PopupFromType popupFromType = PopupFromType.fromBottom,
+  PopupFromType popupFromType = PopupFromType.fromCenter,
 
   ///  这个参数是一个方法,入参是 context,animation,secondaryAnimation,返回一个 Widget
   ///  这个 Widget 就是显示在页面上的 dialog
@@ -277,27 +277,29 @@ Future<T?> showDialogPopup<T>({
   RouteSettings? routeSettings,
 }) {
   assert(pageBuilder != null || widget != null);
-  transitionBuilder ??= (__, Animation<double> animation, _, Widget child) {
-    late Offset translation;
-    switch (popupFromType) {
-      case PopupFromType.fromLeft:
-        translation = Offset(animation.value - 1, 0);
-        break;
-      case PopupFromType.fromRight:
-        translation = Offset(1 - animation.value, 0);
-        break;
-      case PopupFromType.fromTop:
-        translation = Offset(0, animation.value - 1);
-        break;
-      case PopupFromType.fromBottom:
-        translation = Offset(0, 1 - animation.value);
-        break;
-      case PopupFromType.fromCenter:
-        translation = Offset(0, 1 - animation.value);
-        break;
-    }
-    return FractionalTranslation(translation: translation, child: child);
-  };
+  if (popupFromType != PopupFromType.fromCenter) {
+    transitionBuilder ??= (__, Animation<double> animation, _, Widget child) {
+      late Offset translation;
+      switch (popupFromType) {
+        case PopupFromType.fromLeft:
+          translation = Offset(animation.value - 1, 0);
+          break;
+        case PopupFromType.fromRight:
+          translation = Offset(1 - animation.value, 0);
+          break;
+        case PopupFromType.fromTop:
+          translation = Offset(0, animation.value - 1);
+          break;
+        case PopupFromType.fromBottom:
+          translation = Offset(0, 1 - animation.value);
+          break;
+        case PopupFromType.fromCenter:
+          translation = const Offset(0, 0);
+          break;
+      }
+      return FractionalTranslation(translation: translation, child: child);
+    };
+  }
   return showGeneralDialog(
       context: globalNavigatorKey.currentContext!,
       pageBuilder:

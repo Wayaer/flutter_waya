@@ -23,7 +23,7 @@ class DropdownMenuButton extends StatefulWidget {
       this.onTap,
       this.decoration,
       this.margin,
-      this.padding,
+      this.padding = const EdgeInsets.symmetric(horizontal: 4),
       this.toggle})
       : super(key: key);
 
@@ -39,7 +39,7 @@ class DropdownMenuButton extends StatefulWidget {
     this.backgroundColor,
     this.onTap,
     this.margin,
-    this.padding,
+    this.padding = const EdgeInsets.symmetric(horizontal: 4),
   })  : toggle = Icon(iconData ?? Icons.arrow_right_rounded,
             color: iconColor ?? Colors.black, size: iconSize),
         decoration = BoxDecoration(
@@ -48,11 +48,19 @@ class DropdownMenuButton extends StatefulWidget {
             itemBuilder(index).paddingSymmetric(vertical: 8, horizontal: 4)),
         super(key: key);
 
+  /// 旋转组件
   final Widget? toggle;
+
+  /// 当前选中显示的 内容 [index]== null  可显示 请选择
   final DefaultBuilder defaultBuilder;
 
+  /// item
   final int itemCount;
+
+  /// item UI
   final IndexBuilder itemBuilder;
+
+  /// index 改变
   final ValueCallback<int>? onChanged;
 
   /// menu 属性
@@ -92,24 +100,26 @@ class _DropdownMenuButtonState extends State<DropdownMenuButton> {
     final Offset offset = context.getWidgetLocalToGlobal;
     final Size size = context.size!;
     showDialogPopup<dynamic>(
+        popupFromType: PopupFromType.fromCenter,
         widget: PopupOptions(
-      top: offset.dy + size.height,
-      left: offset.dx,
-      onTap: () {
-        isShow = false;
-        maybePop();
-        setState(() {});
-      },
-      child: Universal(
-          width: size.width,
-          margin: widget.margin,
-          padding: widget.padding,
-          decoration: widget.decoration,
-          color: widget.backgroundColor,
-          mainAxisSize: MainAxisSize.min,
-          children: widget.itemCount.generate((int index) => Universal(
-              onTap: () => tapItem(index), child: widget.itemBuilder(index)))),
-    ));
+          top: offset.dy + size.height,
+          left: offset.dx,
+          onTap: () {
+            isShow = false;
+            maybePop();
+            setState(() {});
+          },
+          child: Universal(
+              margin: widget.margin,
+              padding: widget.padding,
+              decoration: widget.decoration,
+              color: widget.backgroundColor,
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: widget.itemCount.generate((int index) => Universal(
+                  onTap: () => tapItem(index),
+                  child: widget.itemBuilder(index)))),
+        ));
     isShow = true;
     setState(() {});
   }
@@ -276,7 +286,8 @@ class _DropdownMenuState extends State<DropdownMenu> {
               },
         child: Universal(
             width: widget.width, color: widget.background, child: listBuilder));
-    showDialogPopup<dynamic>(widget: popup);
+    showDialogPopup<dynamic>(
+        widget: popup, popupFromType: PopupFromType.fromCenter);
   }
 
   @override
