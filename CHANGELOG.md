@@ -1,3 +1,4 @@
+## 1.15.2
 ## 1.15.1
  * fix bug for `showDialogPopup`
 ## 1.15.0

@@ -75,6 +75,8 @@ class PickerWheel {
   ///  以下为ListWheel属性
   ///  高度
   final double? itemHeight;
+
+  /// 不设置 [itemWidth] 默认均分
   final double? itemWidth;
 
   ///  半径大小,越大则越平面,越小则间距越大

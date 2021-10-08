@@ -498,9 +498,6 @@ Future<String?> showAreaPicker<T>({
   PickerWheel? wheel,
 }) {
   globalNavigatorKey.currentContext!.focusNode();
-  // wheel ??= PickerWheel();
-  // options ??= PickerOptions<String>();
-  // options.sureTap ??= (String text) => closePopup(text);
   final Widget widget = AreaPicker(
       defaultProvince: defaultProvince,
       defaultCity: defaultCity,

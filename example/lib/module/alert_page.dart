@@ -107,11 +107,11 @@ class AlertPage extends StatelessWidget {
         options: PickerOptions<DateTime>(
           sureTap: (DateTime dateTime) {
             showToast(dateTime.format(DateTimeDist.yearSecond));
-            return false;
+            return true;
           },
           cancelTap: (DateTime? dateTime) {
             showToast(dateTime?.format(DateTimeDist.yearSecond) ?? 'cancel');
-            return false;
+            return true;
           },
         ),
         unit: DateTimePickerUnit(second: null),
