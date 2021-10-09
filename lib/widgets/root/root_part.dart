@@ -371,7 +371,7 @@ class BottomSheetOptions {
     this.useRootNavigator = false,
     this.isDismissible = true,
     this.enableDrag = true,
-    this.isScrollControlled = false,
+    this.isScrollControlled = true,
   });
 
   /// 内容背景色
@@ -386,12 +386,13 @@ class BottomSheetOptions {
   /// 整个背景弹窗背景色 默认半透明灰
   Color? barrierColor;
 
-  /// [isDismissible] = true 全屏显示
+  /// [isDismissible] = true 背景点击可关闭弹窗 默认 [true]
   bool isDismissible;
 
   /// 开启滑动关闭 默认[true]
   bool enableDrag;
 
+  /// [isScrollControlled] = true 可全屏显示 默认 [true]
   bool isScrollControlled;
 
   RouteSettings? routeSettings;

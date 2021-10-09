@@ -331,7 +331,8 @@ class PinBox extends StatefulWidget {
   const PinBox({
     Key? key,
     this.inputTextType = InputTextType.text,
-    bool? autoFocus = true,
+    this.autoFocus = true,
+    this.enabled = true,
     this.controller,
     this.maxLength = 4,
     this.inputFormatter,
@@ -344,8 +345,7 @@ class PinBox extends StatefulWidget {
     this.onChanged,
     this.onDone,
     this.spaces,
-  })  : autoFocus = autoFocus ?? true,
-        super(key: key);
+  }) : super(key: key);
 
   ///  输入内容监听
   final ValueCallback<String>? onChanged;
@@ -356,34 +356,37 @@ class PinBox extends StatefulWidget {
   ///  输入文字类型限制
   final InputTextType inputTextType;
 
-  ///  是否自动获取焦点
+  /// 是否自动获取焦点
   final bool autoFocus;
 
-  ///  输入框控制器
+  /// 开启输入
+  final bool enabled;
+
+  /// 输入框控制器
   final TextEditingController? controller;
 
-  ///  输入框数量
+  /// 输入框数量
   final int maxLength;
 
-  ///  输入框内容限制
+  /// 输入框内容限制
   final List<TextInputFormatter>? inputFormatter;
 
-  ///  输入框焦点管理
+  /// 输入框焦点管理
   final FocusNode? focusNode;
 
-  ///  默认输入框装饰器
+  /// 默认输入框装饰器
   final Decoration? pinDecoration;
 
-  ///  整个组件装饰器
+  /// 整个组件装饰器
   final Decoration? decoration;
 
-  ///  有文字后的输入框装饰器
+  /// 有文字后的输入框装饰器
   final Decoration? hasFocusPinDecoration;
 
-  ///  box 内文字样式
+  /// box 内文字样式
   final TextStyle? pinTextStyle;
 
-  ///  box 方框的大小
+  /// box 方框的大小
   final Size boxSize;
 
   /// box 中间添加 东西
@@ -417,7 +420,6 @@ class _PinBoxState extends State<PinBox> {
   void didUpdateWidget(covariant PinBox oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.spaces != widget.spaces ||
-        oldWidget.maxLength != widget.maxLength ||
         oldWidget.boxSize != widget.boxSize ||
         oldWidget.decoration != widget.decoration ||
         oldWidget.pinDecoration != widget.pinDecoration ||
@@ -495,6 +497,7 @@ class _PinBoxState extends State<PinBox> {
           border: InputBorder.none),
       autofocus: widget.autoFocus,
       maxLines: 1,
+      enabled: widget.enabled,
       maxLength: widget.maxLength,
       controller: controller,
       style: const BTextStyle(color: Colors.transparent),

@@ -1,4 +1,5 @@
-## 1.15.2
+## 1.15.3
+ * add `enabled` for `PinBox`
  * add `BottomSheetOptions` for `showBottomPopup`
  * add `GeneralDialogOptions` for `showDialogPopup`
 ## 1.15.1

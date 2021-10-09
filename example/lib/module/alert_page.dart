@@ -28,6 +28,10 @@ class AlertPage extends StatelessWidget {
               ElevatedText('showBottomPopup', onTap: () {
                 showBottomPopup<dynamic>(widget: const _AlertDemo());
               }),
+              ElevatedText('showBottomPopup - Full screen', onTap: () {
+                showBottomPopup<dynamic>(
+                    widget: Container(color: Colors.red.withOpacity(0.3)));
+              }),
               ElevatedText('showCupertinoBottomPopup', onTap: () {
                 showCupertinoBottomPopup<dynamic>(widget: const _AlertDemo());
               }),
