@@ -140,6 +140,7 @@ class AlertPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(6)))),
           backgroundColor: Colors.red),
       content: Container(
+          height: 300,
           alignment: Alignment.center,
           color: Colors.blue.withOpacity(0.2),
           child: BText('showCustomPicker', color: Colors.black)),
@@ -173,7 +174,7 @@ class AlertPage extends StatelessWidget {
     final int? index = await showMultipleChoicePicker<int>(
         itemBuilder: (_, int index) =>
             Container(alignment: Alignment.center, child: Text(list[index])),
-        wheel: PickerWheel(itemHeight: 24, useMagnifier: false),
+        wheel: PickerWheel(itemHeight: 25, useMagnifier: true),
         itemCount: list.length);
     showToast(index == null ? 'null' : list[index].toString());
   }

@@ -14,8 +14,6 @@ class ConstConstant {
   /// 导航栏高度
   static const double appBarHeight = 43;
 
-  /// picker 高
-  static const double pickerHeight = 200;
 
   static const String success = 'success';
 

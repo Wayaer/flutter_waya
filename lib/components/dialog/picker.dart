@@ -5,6 +5,8 @@ import 'package:flutter_waya/flutter_waya.dart';
 typedef PickerTapSureCallback<T> = bool Function(T? value);
 typedef PickerTapCancelCallback<T> = bool Function(T? value);
 
+const double kPickerDefaultHeight = 180;
+
 class PickerOptions<T> {
   PickerOptions({
     EdgeInsetsGeometry? titlePadding,
@@ -19,7 +21,6 @@ class PickerOptions<T> {
     this.title,
   })  : sure = sure ?? BText('sure', color: Colors.black),
         cancel = cancel ?? BText('cancel', color: Colors.black),
-        height = height ?? ConstConstant.pickerHeight,
         backgroundColor = backgroundColor ?? ConstColors.white,
         sureTap = sureTap ?? ((T? value) => true),
         cancelTap = cancelTap ?? ((T? value) => true),
@@ -32,9 +33,6 @@ class PickerOptions<T> {
   ///  容器属性
   ///  整个Picker的背景色
   final Color backgroundColor;
-
-  ///  整个Picker的高度
-  final double height;
 
   ///  [title]底部内容
   final Widget? titleBottom;
@@ -64,13 +62,13 @@ class PickerOptions<T> {
 class PickerWheel {
   PickerWheel(
       {this.itemHeight = 22,
-      this.isCupertino = false,
+      this.isCupertino = true,
       this.itemWidth,
-      this.diameterRatio = 1,
+      this.diameterRatio = 1.3,
       this.offAxisFraction = 0,
       this.perspective = 0.01,
       this.magnification = 1.1,
-      this.useMagnifier = false,
+      this.useMagnifier = true,
       this.squeeze = 1,
       this.physics = const FixedExtentScrollPhysics()});
 
@@ -90,14 +88,14 @@ class PickerWheel {
   ///  表示ListWheel水平偏离中心的程度  范围[0,0.01]
   final double? perspective;
 
+  ///  是否启用放大
+  final bool? useMagnifier;
+
   ///  放大倍率
   final double? magnification;
 
   /// 使用ios Cupertino 风格
   final bool? isCupertino;
-
-  ///  是否启用放大镜
-  final bool? useMagnifier;
 
   /// 上下间距默认为1 数越小 间距越大
   final double? squeeze;
@@ -150,11 +148,10 @@ class PickerSubject<T> extends StatelessWidget {
           }),
         ]));
     if (options.titleBottom != null) columnChildren.add(options.titleBottom!);
-    columnChildren.add(Expanded(child: child.expand));
+    columnChildren.add(child);
     return Universal(
         onTap: () {},
         mainAxisSize: MainAxisSize.min,
-        height: options.height,
         color: options.backgroundColor,
         children: columnChildren);
   }
@@ -330,7 +327,10 @@ class _AreaPickerState extends State<AreaPicker> {
       })),
     ]);
     return PickerSubject<String>(
-        options: widget.options, child: row, sureTap: sureTapVoid);
+        options: widget.options,
+        child: SizedBox(
+            width: double.infinity, height: kPickerDefaultHeight, child: row),
+        sureTap: sureTapVoid);
   }
 
   Widget wheelItem(List<String> list,
@@ -388,11 +388,15 @@ class MultipleChoicePicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) => PickerSubject<int>(
       options: options,
-      child: _PickerListWheel(
-          wheel: wheel,
-          controller: controller,
-          itemBuilder: itemBuilder,
-          itemCount: itemCount),
+      child: SizedBox(
+        width: double.infinity,
+        height: kPickerDefaultHeight,
+        child: _PickerListWheel(
+            wheel: wheel,
+            controller: controller,
+            itemBuilder: itemBuilder,
+            itemCount: itemCount),
+      ),
       sureTap: () => controller?.selectedItem ?? 0);
 }
 
@@ -667,9 +671,13 @@ class _DateTimePickerState extends State<DateTimePicker> {
     return PickerSubject<DateTime>(
         options: widget.options,
         sureTap: sureTapVoid,
-        child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: rowChildren));
+        child: SizedBox(
+          width: double.infinity,
+          height: kPickerDefaultHeight,
+          child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: rowChildren),
+        ));
   }
 
   Widget wheelItem(List<int> list,
