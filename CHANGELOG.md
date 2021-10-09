@@ -1,5 +1,7 @@
-## 1.15.3
+## 1.15.5
  * add `enabled` for `PinBox`
+ * add `needKeyBoard` for `PinBox`
+ * add `onTap` for `PinBox`
  * add `BottomSheetOptions` for `showBottomPopup`
  * add `GeneralDialogOptions` for `showDialogPopup`
 ## 1.15.1

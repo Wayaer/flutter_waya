@@ -331,7 +331,8 @@ class PinBox extends StatefulWidget {
   const PinBox({
     Key? key,
     this.inputTextType = InputTextType.text,
-    this.autoFocus = true,
+    this.autoFocus = false,
+    this.needKeyBoard = true,
     this.enabled = true,
     this.controller,
     this.maxLength = 4,
@@ -345,7 +346,9 @@ class PinBox extends StatefulWidget {
     this.onChanged,
     this.onDone,
     this.spaces,
+    this.onTap,
   }) : super(key: key);
+  final GestureTapCallback? onTap;
 
   ///  输入内容监听
   final ValueCallback<String>? onChanged;
@@ -361,6 +364,9 @@ class PinBox extends StatefulWidget {
 
   /// 开启输入
   final bool enabled;
+
+  /// 是否需要自动弹出键盘
+  final bool needKeyBoard;
 
   /// 输入框控制器
   final TextEditingController? controller;
@@ -402,6 +408,7 @@ class _PinBoxState extends State<PinBox> {
   late Size size;
   List<Widget?> spaces = <Widget?>[];
   List<String> texts = <String>[];
+  String text = '';
 
   @override
   void initState() {
@@ -414,6 +421,22 @@ class _PinBoxState extends State<PinBox> {
     spaces = widget.spaces ?? <Widget?>[];
     controller = widget.controller ?? TextEditingController();
     focusNode = widget.focusNode ?? FocusNode();
+    controller.removeListener(listener);
+    controller.addListener(listener);
+  }
+
+  void listener() {
+    if (controller.text.length > widget.maxLength) {
+      controller.text = controller.text.substring(0, widget.maxLength);
+    }
+    if (text != controller.text) {
+      text = controller.text;
+      texts = text.trim().split('');
+      if (widget.onDone != null && text.length == widget.maxLength) {
+        widget.onDone!(text);
+      }
+      setState(() {});
+    }
   }
 
   @override
@@ -481,10 +504,15 @@ class _PinBoxState extends State<PinBox> {
   }
 
   void getFocus() {
-    if (focusNode.hasFocus) focusNode.unfocus();
-    100.milliseconds.delayed(() {
-      context.focusNode(focusNode);
-    });
+    if (widget.needKeyBoard) {
+      if (focusNode.hasFocus) focusNode.unfocus();
+      100.milliseconds.delayed(() {
+        context.focusNode(focusNode);
+      });
+    }
+    if (widget.onTap != null) {
+      widget.onTap!();
+    }
   }
 
   Widget get pinTextInput => TextField(
@@ -497,6 +525,8 @@ class _PinBoxState extends State<PinBox> {
           border: InputBorder.none),
       autofocus: widget.autoFocus,
       maxLines: 1,
+      // onTap: widget.onTap,
+      onChanged: widget.onChanged,
       enabled: widget.enabled,
       maxLength: widget.maxLength,
       controller: controller,
@@ -504,18 +534,11 @@ class _PinBoxState extends State<PinBox> {
       showCursor: false,
       inputFormatters: widget.inputFormatter ??
           inputTextTypeToTextInputFormatter(widget.inputTextType),
-      textAlign: TextAlign.center,
-      onChanged: (String text) {
-        texts = text.trim().split('');
-        if (widget.onChanged != null) widget.onChanged!(text);
-        if (widget.onDone != null && text.length == widget.maxLength) {
-          widget.onDone!(text);
-        }
-        setState(() {});
-      });
+      textAlign: TextAlign.center);
 
   @override
   void dispose() {
+    controller.removeListener(listener);
     if (widget.focusNode == null) focusNode.dispose();
     if (widget.controller == null) controller.dispose();
     super.dispose();
