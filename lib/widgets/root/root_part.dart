@@ -601,7 +601,11 @@ Future<int?> showMultipleChoicePicker<T>({
 ///  关闭 closePopup()
 Future<T?> showCustomPicker<T>({
   required Widget content,
+
+  /// 自定义 确定 按钮 返回参数
   PickerSubjectTapCallback<T>? sureTap,
+
+  /// 自定义 取消 按钮 返回参数
   PickerSubjectTapCallback<T?>? cancelTap,
 
   /// 头部和背景色配置
@@ -615,16 +619,8 @@ Future<T?> showCustomPicker<T>({
   return showBottomPopup(
       options: bottomSheetOptions,
       widget: PickerSubject<T?>(
-          sureTap: () {
-            final T? value = sureTap?.call();
-            options!.sureTap.call(value);
-            return value;
-          },
-          cancelTap: () {
-            final T? value = cancelTap?.call();
-            options!.cancelTap.call(value);
-            return value;
-          },
+          sureTap: sureTap,
+          cancelTap: cancelTap,
           options: options,
           child: content));
 }

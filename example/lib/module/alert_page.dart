@@ -93,10 +93,7 @@ class AlertPage extends StatelessWidget {
             }),
         content: Container(
             padding: const EdgeInsets.symmetric(vertical: 40),
-            child: Text(
-              '内容',
-              style: _textStyle(),
-            )));
+            child: Text('内容', style: _textStyle())));
   }
 
   TextStyle _textStyle() => const TextStyle(
@@ -108,16 +105,13 @@ class AlertPage extends StatelessWidget {
   Future<void> selectTime() async {
     final DateTime? dateTime = await showDateTimePicker<DateTime?>(
         dual: true,
-        options: PickerOptions<DateTime>(
-          sureTap: (DateTime dateTime) {
-            showToast(dateTime.format(DateTimeDist.yearSecond));
-            return true;
-          },
-          cancelTap: (DateTime? dateTime) {
-            showToast(dateTime?.format(DateTimeDist.yearSecond) ?? 'cancel');
-            return true;
-          },
-        ),
+        options: PickerOptions<DateTime>(sureTap: (DateTime? dateTime) {
+          showToast(dateTime!.format(DateTimeDist.yearSecond));
+          return true;
+        }, cancelTap: (DateTime? dateTime) {
+          showToast(dateTime?.format(DateTimeDist.yearSecond) ?? 'cancel');
+          return true;
+        }),
         unit: DateTimePickerUnit(second: null),
         startDate: DateTime(2020, 8, 9, 9, 9, 9),
         defaultDate: DateTime(2021, 9, 21, 8, 8, 8),
@@ -127,34 +121,35 @@ class AlertPage extends StatelessWidget {
 
   Future<void> _showCustomPicker() async {
     final String? data = await showCustomPicker<String?>(
-        bottomSheetOptions:
-            BottomSheetOptions(barrierColor: Colors.red.withOpacity(0.3)),
-        options: PickerOptions<String?>(
-            sureTap: (String? value) {
-              return true;
-            },
-            cancelTap: (String? value) {
-              return true;
-            },
-            title: Center(
-                child: Container(
-                    child: BText('Title'),
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-                    decoration: BoxDecoration(
-                        color: Colors.lightBlue,
-                        borderRadius: BorderRadius.circular(6)))),
-            backgroundColor: Colors.red),
-        content: Container(
-            alignment: Alignment.center,
-            color: Colors.blue.withOpacity(0.2),
-            child: BText('showCustomPicker', color: Colors.black)),
-        cancelTap: () {
-          return 'Cancel';
-        },
-        sureTap: () {
-          return 'CustomPicker';
-        });
+      bottomSheetOptions:
+          BottomSheetOptions(barrierColor: Colors.red.withOpacity(0.3)),
+      options: PickerOptions<String?>(
+          sureTap: (String? value) {
+            return true;
+          },
+          cancelTap: (String? value) {
+            return true;
+          },
+          title: Center(
+              child: Container(
+                  child: BText('Title'),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+                  decoration: BoxDecoration(
+                      color: Colors.lightBlue,
+                      borderRadius: BorderRadius.circular(6)))),
+          backgroundColor: Colors.red),
+      content: Container(
+          alignment: Alignment.center,
+          color: Colors.blue.withOpacity(0.2),
+          child: BText('showCustomPicker', color: Colors.black)),
+      cancelTap: () {
+        return 'Cancel';
+      },
+      // sureTap: () {
+      //   return 'CustomPicker';
+      // },
+    );
     showToast(data.toString());
   }
 

@@ -1,3 +1,5 @@
+## 1.15.6
+ * fix bug for `showCustomPicker`
 ## 1.15.5
  * add `enabled` for `PinBox`
  * add `needKeyBoard` for `PinBox`

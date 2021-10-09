@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 /// 返回 false 不关闭弹窗;
-typedef PickerTapSureCallback<T> = bool Function(T value);
+typedef PickerTapSureCallback<T> = bool Function(T? value);
 typedef PickerTapCancelCallback<T> = bool Function(T? value);
 
 class PickerOptions<T> {
@@ -21,7 +21,7 @@ class PickerOptions<T> {
         cancel = cancel ?? BText('cancel', color: Colors.black),
         height = height ?? ConstConstant.pickerHeight,
         backgroundColor = backgroundColor ?? ConstColors.white,
-        sureTap = sureTap ?? ((T value) => true),
+        sureTap = sureTap ?? ((T? value) => true),
         cancelTap = cancelTap ?? ((T? value) => true),
         contentStyle = contentStyle ??
             const BTextStyle(
@@ -53,9 +53,11 @@ class PickerOptions<T> {
   final TextStyle contentStyle;
 
   /// 确定点击事件 picker 关闭前，返回 false 不关闭弹窗
+  /// 默认 为 true;
   PickerTapSureCallback<T> sureTap;
 
   /// 取消点击事件 picker 关闭前，返回 false 不关闭弹窗
+  /// 默认 为 true;
   PickerTapCancelCallback<T> cancelTap;
 }
 
@@ -124,7 +126,7 @@ class PickerSubject<T> extends StatelessWidget {
 
   final PickerOptions<T> options;
   final Widget child;
-  final PickerSubjectTapCallback<T> sureTap;
+  final PickerSubjectTapCallback<T>? sureTap;
   final PickerSubjectTapCallback<T>? cancelTap;
 
   @override
@@ -142,8 +144,8 @@ class PickerSubject<T> extends StatelessWidget {
           }),
           if (options.title != null) options.title!.expandedNull,
           options.sure.onTap(() {
-            final T value = sureTap.call();
-            final bool isPop = options.sureTap.call(value!);
+            final T? value = sureTap?.call();
+            final bool isPop = options.sureTap.call(value);
             if (isPop) closePopup(value);
           }),
         ]));
