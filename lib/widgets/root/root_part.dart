@@ -248,39 +248,22 @@ Future<T?> showMenuPopup<T>({
         items: items);
 
 Future<T?> showDialogPopup<T>({
-  ///  进入方向的距离
-  double? startOffset,
+  /// 这个参数是一个方法,入参是 context,animation,secondaryAnimation,返回一个 Widget
+  RoutePageBuilder? builder,
 
-  ///  popup 进入的方向
-  PopupFromType popupFromType = PopupFromType.fromCenter,
-
-  ///  这个参数是一个方法,入参是 context,animation,secondaryAnimation,返回一个 Widget
-  ///  这个 Widget 就是显示在页面上的 dialog
-  RoutePageBuilder? pageBuilder,
+  /// 这个 [widget] 就是显示在页面上的 dialog
   Widget? widget,
 
-  ///  是否可以点击背景关闭
-  bool barrierDismissible = true,
-
-  ///  语义化
-  String? barrierLabel,
-
-  ///  背景颜色
-  Color backgroundColor = ConstColors.transparent,
-
-  ///  这个是从开始到完全显示的时间
-  Duration transitionDuration = const Duration(milliseconds: 300),
-
-  ///  路由显示和隐藏的过程,这里入参是 animation,secondaryAnimation 和 child, 其中 child 是 是 pageBuilder 构建的 widget
-  RouteTransitionsBuilder? transitionBuilder,
-  bool useRootNavigator = true,
-  RouteSettings? routeSettings,
+  /// GeneralDialog 配置
+  GeneralDialogOptions? options,
 }) {
-  assert(pageBuilder != null || widget != null);
-  if (popupFromType != PopupFromType.fromCenter) {
-    transitionBuilder ??= (__, Animation<double> animation, _, Widget child) {
+  assert(builder != null || widget != null);
+  options ??= GeneralDialogOptions();
+  if (options.popupFromType != PopupFromType.fromCenter) {
+    options.transitionBuilder ??=
+        (__, Animation<double> animation, _, Widget child) {
       late Offset translation;
-      switch (popupFromType) {
+      switch (options!.popupFromType) {
         case PopupFromType.fromLeft:
           translation = Offset(animation.value - 1, 0);
           break;
@@ -302,15 +285,53 @@ Future<T?> showDialogPopup<T>({
   }
   return showGeneralDialog(
       context: globalNavigatorKey.currentContext!,
-      pageBuilder:
-          pageBuilder ?? (_, Animation<double> animation, __) => widget!,
-      barrierDismissible: barrierDismissible,
-      barrierLabel: barrierLabel ?? '111',
-      barrierColor: backgroundColor,
-      transitionDuration: transitionDuration,
-      transitionBuilder: transitionBuilder,
-      useRootNavigator: useRootNavigator,
-      routeSettings: routeSettings);
+      pageBuilder: builder ?? (_, Animation<double> animation, __) => widget!,
+      barrierDismissible: options.barrierDismissible,
+      barrierLabel: options.barrierLabel,
+      barrierColor: options.backgroundColor,
+      transitionDuration: options.transitionDuration,
+      transitionBuilder: options.transitionBuilder,
+      useRootNavigator: options.useRootNavigator,
+      routeSettings: options.routeSettings);
+}
+
+class GeneralDialogOptions {
+  GeneralDialogOptions({
+    this.startOffset,
+    this.barrierLabel,
+    this.transitionBuilder,
+    this.routeSettings,
+    this.backgroundColor = ConstColors.transparent,
+    this.transitionDuration = const Duration(milliseconds: 300),
+    this.useRootNavigator = true,
+    this.barrierDismissible = true,
+    this.popupFromType = PopupFromType.fromCenter,
+  });
+
+  ///  进入方向的距离
+  double? startOffset;
+
+  ///  popup 进入的方向
+  PopupFromType popupFromType;
+
+  ///  是否可以点击背景关闭
+  bool barrierDismissible;
+
+  ///  语义化
+  String? barrierLabel;
+
+  ///  背景颜色
+  Color backgroundColor;
+
+  ///  这个是从开始到完全显示的时间
+  Duration transitionDuration;
+
+  ///  路由显示和隐藏的过程 这里入参是 animation,secondaryAnimation 和 child, 其中 child 是 是 pageBuilder 构建的 widget
+  RouteTransitionsBuilder? transitionBuilder;
+
+  bool useRootNavigator;
+
+  RouteSettings? routeSettings;
 }
 
 ///  showModalBottomSheet
@@ -318,37 +339,66 @@ Future<T?> showDialogPopup<T>({
 Future<T?> showBottomPopup<T>({
   WidgetBuilder? builder,
   Widget? widget,
-  Color backgroundColor = ConstColors.transparent,
-  double? elevation,
-  ShapeBorder? shape,
-  Clip? clipBehavior,
-  Color? barrierColor,
-  bool useRootNavigator = false,
-
-  /// [isDismissible] = true 全屏显示
-  bool isDismissible = true,
-
-  /// 开启滑动
-  bool enableDrag = true,
-  bool isScrollControlled = true,
-  RouteSettings? routeSettings,
-  AnimationController? transitionAnimationController,
+  BottomSheetOptions? options,
 }) {
   assert(builder != null || widget != null);
+  options ??= BottomSheetOptions();
   return showModalBottomSheet(
       context: globalNavigatorKey.currentContext!,
       builder: builder ?? widget!.toWidgetBuilder,
-      backgroundColor: backgroundColor,
-      elevation: elevation,
-      shape: shape,
-      clipBehavior: clipBehavior,
-      barrierColor: barrierColor,
-      routeSettings: routeSettings,
-      transitionAnimationController: transitionAnimationController,
-      isScrollControlled: isScrollControlled,
-      useRootNavigator: useRootNavigator,
-      isDismissible: isDismissible,
-      enableDrag: enableDrag);
+      backgroundColor: options.backgroundColor,
+      elevation: options.elevation,
+      shape: options.shape,
+      clipBehavior: options.clipBehavior,
+      barrierColor: options.barrierColor,
+      routeSettings: options.routeSettings,
+      transitionAnimationController: options.transitionAnimationController,
+      isScrollControlled: options.isScrollControlled,
+      useRootNavigator: options.useRootNavigator,
+      isDismissible: options.isDismissible,
+      enableDrag: options.enableDrag);
+}
+
+class BottomSheetOptions {
+  BottomSheetOptions({
+    this.backgroundColor = Colors.transparent,
+    this.elevation,
+    this.shape,
+    this.clipBehavior,
+    this.barrierColor,
+    this.routeSettings,
+    this.transitionAnimationController,
+    this.useRootNavigator = false,
+    this.isDismissible = true,
+    this.enableDrag = true,
+    this.isScrollControlled = false,
+  });
+
+  /// 内容背景色
+  Color backgroundColor;
+
+  double? elevation;
+
+  ShapeBorder? shape;
+
+  Clip? clipBehavior;
+
+  /// 整个背景弹窗背景色 默认半透明灰
+  Color? barrierColor;
+
+  /// [isDismissible] = true 全屏显示
+  bool isDismissible;
+
+  /// 开启滑动关闭 默认[true]
+  bool enableDrag;
+
+  bool isScrollControlled;
+
+  RouteSettings? routeSettings;
+
+  bool useRootNavigator;
+
+  AnimationController? transitionAnimationController;
 }
 
 ///  showCupertinoModalPopup
@@ -407,6 +457,9 @@ Future<T?>? showDialogSureCancel<T>({
 
   ///  是否添加Material Widget 部分组件需要基于Material
   bool? addMaterial,
+
+  /// GeneralDialog 配置
+  GeneralDialogOptions? options,
 }) {
   final PopupSureCancel widget = PopupSureCancel(
       backsideTap: () {
@@ -428,7 +481,9 @@ Future<T?>? showDialogSureCancel<T>({
     return null;
   }
   return showDialogPopup(
-      widget: widget, popupFromType: PopupFromType.fromCenter);
+      widget: widget,
+      options: options ??
+          GeneralDialogOptions(popupFromType: PopupFromType.fromCenter));
 }
 
 ///  关闭弹窗
@@ -464,6 +519,9 @@ Future<DateTime?> showDateTimePicker<T>({
 
   /// Wheel配置信息
   PickerWheel? wheel,
+
+  /// BottomSheet 配置
+  BottomSheetOptions? bottomSheetOptions,
 }) {
   globalNavigatorKey.currentContext!.focusNode();
   final Widget widget = DateTimePicker(
@@ -476,7 +534,8 @@ Future<DateTime?> showDateTimePicker<T>({
       dual: dual,
       showUnit: showUnit,
       unit: unit);
-  return showBottomPopup<DateTime?>(widget: widget);
+  return showBottomPopup<DateTime?>(
+      widget: widget, options: bottomSheetOptions);
 }
 
 ///  地区选择器
@@ -496,6 +555,9 @@ Future<String?> showAreaPicker<T>({
 
   /// Wheel配置信息
   PickerWheel? wheel,
+
+  /// BottomSheet 配置
+  BottomSheetOptions? bottomSheetOptions,
 }) {
   globalNavigatorKey.currentContext!.focusNode();
   final Widget widget = AreaPicker(
@@ -504,7 +566,7 @@ Future<String?> showAreaPicker<T>({
       defaultDistrict: defaultDistrict,
       options: options,
       wheel: wheel);
-  return showBottomPopup<String?>(widget: widget);
+  return showBottomPopup<String?>(widget: widget, options: bottomSheetOptions);
 }
 
 ///  wheel 单列 取消确认 选择
@@ -512,7 +574,6 @@ Future<String?> showAreaPicker<T>({
 Future<int?> showMultipleChoicePicker<T>({
   ///  默认选中
   int? initialIndex,
-  ScrollPhysics? physics,
   required int itemCount,
   required IndexedWidgetBuilder itemBuilder,
 
@@ -521,6 +582,9 @@ Future<int?> showMultipleChoicePicker<T>({
 
   /// Wheel配置信息
   PickerWheel? wheel,
+
+  /// BottomSheet 配置
+  BottomSheetOptions? bottomSheetOptions,
 }) {
   globalNavigatorKey.currentContext!.focusNode();
   final Widget widget = MultipleChoicePicker(
@@ -529,7 +593,7 @@ Future<int?> showMultipleChoicePicker<T>({
       options: options,
       wheel: wheel,
       initialIndex: initialIndex);
-  return showBottomPopup(widget: widget);
+  return showBottomPopup(widget: widget, options: bottomSheetOptions);
 }
 
 ///  取消 确认 选择
@@ -541,10 +605,14 @@ Future<T?> showCustomPicker<T>({
 
   /// 头部和背景色配置
   PickerOptions<T?>? options,
+
+  /// BottomSheet 配置
+  BottomSheetOptions? bottomSheetOptions,
 }) {
   globalNavigatorKey.currentContext!.focusNode();
   options ??= PickerOptions<T?>();
   return showBottomPopup(
+      options: bottomSheetOptions,
       widget: PickerSubject<T?>(
           sureTap: () {
             final T? value = sureTap?.call();

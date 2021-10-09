@@ -99,6 +99,7 @@ class PickerWheel {
 
   /// 上下间距默认为1 数越小 间距越大
   final double? squeeze;
+
   final ScrollPhysics? physics;
 }
 

@@ -123,6 +123,8 @@ class AlertPage extends StatelessWidget {
 
   Future<void> _showCustomPicker() async {
     final String? data = await showCustomPicker<String?>(
+        bottomSheetOptions:
+            BottomSheetOptions(barrierColor: Colors.red.withOpacity(0.3)),
         options: PickerOptions<String?>(
             sureTap: (String? value) {
               return true;

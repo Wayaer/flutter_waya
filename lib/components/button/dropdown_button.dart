@@ -100,7 +100,7 @@ class _DropdownMenuButtonState extends State<DropdownMenuButton> {
     final Offset offset = context.getWidgetLocalToGlobal;
     final Size size = context.size!;
     showDialogPopup<dynamic>(
-        popupFromType: PopupFromType.fromCenter,
+        options: GeneralDialogOptions(popupFromType: PopupFromType.fromCenter),
         widget: PopupOptions(
           top: offset.dy + size.height,
           left: offset.dx,
@@ -287,7 +287,8 @@ class _DropdownMenuState extends State<DropdownMenu> {
         child: Universal(
             width: widget.width, color: widget.background, child: listBuilder));
     showDialogPopup<dynamic>(
-        widget: popup, popupFromType: PopupFromType.fromCenter);
+        widget: popup,
+        options: GeneralDialogOptions(popupFromType: PopupFromType.fromCenter));
   }
 
   @override

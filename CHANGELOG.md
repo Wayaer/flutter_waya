@@ -1,4 +1,6 @@
 ## 1.15.2
+ * add `BottomSheetOptions` for `showBottomPopup`
+ * add `GeneralDialogOptions` for `showDialogPopup`
 ## 1.15.1
  * fix bug for `showDialogPopup`
 ## 1.15.0
