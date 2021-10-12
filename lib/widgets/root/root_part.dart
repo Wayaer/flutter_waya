@@ -298,13 +298,13 @@ Future<T?> showDialogPopup<T>({
 class GeneralDialogOptions {
   GeneralDialogOptions({
     this.startOffset,
-    this.barrierLabel,
+    this.barrierLabel = '',
+    this.barrierDismissible = true,
     this.transitionBuilder,
     this.routeSettings,
     this.backgroundColor = ConstColors.transparent,
     this.transitionDuration = const Duration(milliseconds: 300),
     this.useRootNavigator = true,
-    this.barrierDismissible = true,
     this.popupFromType = PopupFromType.fromCenter,
   });
 
@@ -318,7 +318,7 @@ class GeneralDialogOptions {
   bool barrierDismissible;
 
   ///  语义化
-  String? barrierLabel;
+  String barrierLabel;
 
   ///  背景颜色
   Color backgroundColor;
@@ -481,10 +481,8 @@ Future<T?>? showDialogSureCancel<T>({
     showOverlay(widget);
     return null;
   }
-  return showDialogPopup(
-      widget: widget,
-      options: options ??
-          GeneralDialogOptions(popupFromType: PopupFromType.fromCenter));
+  options ??= GeneralDialogOptions(popupFromType: PopupFromType.fromCenter);
+  return showDialogPopup(widget: widget, options: options);
 }
 
 ///  关闭弹窗
