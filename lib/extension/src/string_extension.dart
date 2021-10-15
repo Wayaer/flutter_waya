@@ -77,4 +77,22 @@ extension ExtensionString on String {
     }
     return sb.toString();
   }
+
+  /// 移出头部指定 [prefix] 不包含不移出
+  String removePrefix(String prefix) {
+    if (!startsWith(prefix)) return this;
+    return substring(prefix.length);
+  }
+
+  /// 移出尾部指定 [suffix] 不包含不移出
+  String removeSuffix(String suffix) {
+    if (!endsWith(suffix)) return this;
+    return substring(0, length - suffix.length);
+  }
+
+  /// 移出头部指定长度
+  String removePrefixLength(int l) => substring(l, length);
+
+  /// 移出尾部指定长度
+  String removeSuffixLength(int l) => substring(0, l);
 }
