@@ -1,6 +1,7 @@
 ## 1.15.7
  * fix bug for `showCustomPicker`
  * remove `height` for `PickerOptions`
+ * fix bug for `GeneralDialogOptions`
 ## 1.15.5
  * add `enabled` for `PinBox`
  * add `needKeyBoard` for `PinBox`

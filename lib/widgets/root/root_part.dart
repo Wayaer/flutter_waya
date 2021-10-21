@@ -314,7 +314,7 @@ class GeneralDialogOptions {
   ///  popup 进入的方向
   PopupFromType popupFromType;
 
-  ///  是否可以点击背景关闭
+  ///  是否可以点击背景关闭 默认为 true 可关闭
   bool barrierDismissible;
 
   ///  语义化
