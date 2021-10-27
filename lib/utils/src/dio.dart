@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 /// 请求数据类型 (4种): application/x-www-form-urlencoded 、multipart/form-data、application/json、text/xml
@@ -250,32 +249,35 @@ class LoggerInterceptor<T> extends InterceptorsWrapper {
       headers += ' | $key: $value';
     });
 
-    debugPrint(
-        '┌------------------------------------------------------------------------------');
-    debugPrint(
-        '''| [DIO] Request: ${options.method} ${options.uri}\n| QueryParameters:${options.queryParameters.toString()}\n| Data:${options.data.toString()}\n| Headers:$headers''');
-    debugPrint(
-        '├------------------------------------------------------------------------------');
+    log('┌------------------------------------------------------------------------------',
+        hasDottedLine: false);
+    log('''| [DIO] Request: ${options.method} ${options.uri}\n| QueryParameters:${options.queryParameters.toString()}\n| Data:${options.data.toString()}\n| Headers:$headers''',
+        hasDottedLine: false);
+    log('├------------------------------------------------------------------------------',
+        hasDottedLine: false);
     handler.next(options); //continue
   }
 
   @override
   void onResponse(
       Response<dynamic> response, ResponseInterceptorHandler handler) {
-    debugPrint(
-        '| [DIO] Response [code ${response.statusCode}]: ${response.statusMessage.toString()}');
-    debugPrint('| [DIO] Response data: \n ${response.data.toString()}\n ');
-    debugPrint(
-        '└------------------------------------------------------------------------------');
+    log('| [DIO] Response [code ${response.statusCode}]: ${response.statusMessage.toString()}',
+        hasDottedLine: false);
+    log('| [DIO] Response data: \n ${response.data.toString()}\n ',
+        hasDottedLine: false);
+    log('└------------------------------------------------------------------------------',
+        hasDottedLine: false);
     handler.next(response);
   }
 
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) {
-    debugPrint('| [DIO] Error: ${err.error}: ${err.response?.toString()}');
-    debugPrint('|            : ${err.type}: ${err.message.toString()}');
-    debugPrint(
-        '└------------------------------------------------------------------------------');
+    log('| [DIO] Error: ${err.error}: ${err.response?.toString()}',
+        hasDottedLine: false);
+    log('|            : ${err.type}: ${err.message.toString()}',
+        hasDottedLine: false);
+    log('└------------------------------------------------------------------------------',
+        hasDottedLine: false);
     handler.next(err); //continue
   }
 }

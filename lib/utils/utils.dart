@@ -15,11 +15,13 @@ export 'src/screen_fit.dart';
 
 void logDebug(dynamic msg) => debugPrint(msg.toString());
 
-void log(dynamic msg) {
+void log(dynamic msg, {bool hasDottedLine = true}) {
   if (!kDebugMode) return;
   final String message = msg.toString();
-  debugPrint(
-      '┌------------------------------------------------------------------------------');
+  if (hasDottedLine) {
+    debugPrint(
+        '┌------------------------------------------------------------------------------');
+  }
   if (!kDebugMode) return;
   const int _limitLength = 800;
   if (message.length < _limitLength) {
@@ -41,8 +43,10 @@ void log(dynamic msg) {
       }
     }
   }
-  debugPrint(
-      '└------------------------------------------------------------------------------');
+  if (hasDottedLine) {
+    debugPrint(
+        '└------------------------------------------------------------------------------');
+  }
 }
 
 WidgetsBinding? widgetsBinding = WidgetsBinding.instance;
