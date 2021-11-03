@@ -23,7 +23,7 @@ class CounterAnimation extends StatefulWidget {
   /// animation type to change count(part,all)
   final CountAnimationType animationType;
 
-  final CountBuilder? countBuilder;
+  final CountBuilder countBuilder;
 
   final ValueCallback<int>? onTap;
 
@@ -141,7 +141,7 @@ class _CounterAnimationState extends State<CounterAnimation>
   }
 
   Widget _createCount(int count, String text) =>
-      widget.countBuilder!.call(count, text);
+      widget.countBuilder.call(count, text);
 
   void animation() {
     _preCount = _count;
@@ -151,7 +151,7 @@ class _CounterAnimationState extends State<CounterAnimation>
       _controller.forward();
       setState(() {});
     }
-    if (widget.onTap != null) widget.onTap!(_count);
+    widget.onTap?.call(_count);
   }
 
   @override

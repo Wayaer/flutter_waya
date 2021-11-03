@@ -194,7 +194,7 @@ class _CarouselState extends _CarouselTimerMixin {
         onChanged: (int index) {
           _activeIndex = index;
           setState(() {});
-          if (widget.onChanged != null) widget.onChanged!(index);
+          widget.onChanged?.call(index);
         },
         controller: _controller,
         scrollDirection: widget.scrollDirection);
@@ -375,8 +375,6 @@ class _StackState extends _LayoutState<_SubCarousel> {
   void afterRender() {
     super.afterRender();
     _animationCount = 5;
-
-    /// Array below this line, '0' index is 1.0 ,witch is the first item show in carousel.
     _startIndex = -3;
     scales = <double>[0.7, 0.8, 0.9, 1.0, 1.0];
     opacity = <double>[0.0, 0.5, 1.0, 1.0, 1.0];

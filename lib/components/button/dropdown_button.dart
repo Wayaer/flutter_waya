@@ -96,7 +96,7 @@ class _DropdownMenuButtonState extends State<DropdownMenuButton> {
   }
 
   void showItem() {
-    if (widget.onTap != null) widget.onTap!.call();
+    widget.onTap?.call();
     final Offset offset = context.getWidgetLocalToGlobal;
     final Size size = context.size!;
     showDialogPopup<dynamic>(
@@ -127,7 +127,7 @@ class _DropdownMenuButtonState extends State<DropdownMenuButton> {
   void tapItem(int index) {
     maybePop();
     isShow = false;
-    if (widget.onChanged != null) widget.onChanged!(index);
+    widget.onChanged?.call(index);
     selectIndex = index;
     setState(() {});
   }
@@ -324,7 +324,7 @@ class _DropdownMenuState extends State<DropdownMenu> {
   }
 
   Future<void> onTap(int index) async {
-    if (widget.onTap != null) widget.onTap!(index, null);
+    widget.onTap?.call(index, null);
     final double keyboardHeight = getViewInsets.bottom;
     if (keyboardHeight > 0) {
       context.focusNode();

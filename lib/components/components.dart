@@ -109,7 +109,7 @@ class _SendSMSState extends State<SendSMS> {
   void onTap() {
     sendState = SendState.sending;
     setState(() {});
-    if (widget.onTap != null) widget.onTap!(send);
+    widget.onTap?.call(send);
   }
 
   void send(bool sending) {
@@ -185,7 +185,7 @@ class _CountDownState extends State<CountDown> {
         timer = 1.seconds.timerPeriodic((Timer time) {
           seconds -= 1;
           setState(() {});
-          if (widget.onChanged != null) widget.onChanged!(seconds);
+          widget.onChanged?.call(seconds);
           if (seconds == 0) disposeTime();
         });
       }
@@ -260,22 +260,21 @@ class CustomDismissible extends Dismissible {
     ///  默认DragStartBehavior.start
     DragStartBehavior? dragStartBehavior,
   }) : super(
-          key: key,
-          child: child,
-          background: background,
-          secondaryBackground: secondaryBackground,
-          confirmDismiss: confirmDismiss,
-          onResize: onResize,
-          onDismissed: onDismissed,
-          direction: direction ?? DismissDirection.horizontal,
-          resizeDuration: resizeDuration ?? const Duration(milliseconds: 300),
-          dismissThresholds:
-              dismissThresholds ?? const <DismissDirection, double>{},
-          movementDuration:
-              movementDuration ?? const Duration(milliseconds: 200),
-          crossAxisEndOffset: crossAxisEndOffset ?? 0.0,
-          dragStartBehavior: dragStartBehavior ?? DragStartBehavior.start,
-        );
+            key: key,
+            child: child,
+            background: background,
+            secondaryBackground: secondaryBackground,
+            confirmDismiss: confirmDismiss,
+            onResize: onResize,
+            onDismissed: onDismissed,
+            direction: direction ?? DismissDirection.horizontal,
+            resizeDuration: resizeDuration ?? const Duration(milliseconds: 300),
+            dismissThresholds:
+                dismissThresholds ?? const <DismissDirection, double>{},
+            movementDuration:
+                movementDuration ?? const Duration(milliseconds: 200),
+            crossAxisEndOffset: crossAxisEndOffset ?? 0.0,
+            dragStartBehavior: dragStartBehavior ?? DragStartBehavior.start);
 }
 
 ///  组件右上角加红点
@@ -429,13 +428,7 @@ class _ToggleRotateState extends State<ToggleRotate>
         alignment: Alignment.center,
         child: widget.child);
     if (widget.toggleBuilder != null) current = widget.toggleBuilder!(current);
-    if (widget.onTap != null) {
-      current = current.onTap(() {
-        /// _controller.reset();
-        /// _controller.forward();
-        if (widget.onTap != null) widget.onTap!();
-      });
-    }
+    if (widget.onTap != null) current = current.onTap(widget.onTap!);
     return current;
   }
 }
@@ -537,9 +530,7 @@ class _ExpansionTilesState extends State<ExpansionTiles>
         });
       }
     });
-    if (widget.onExpansionChanged != null) {
-      widget.onExpansionChanged!(_isExpanded);
-    }
+    widget.onExpansionChanged?.call(_isExpanded);
   }
 
   @override
@@ -596,13 +587,13 @@ class CustomDrawer extends StatefulWidget {
 class _CustomDrawerState extends State<CustomDrawer> {
   @override
   void initState() {
-    if (widget.callback != null) widget.callback!(true);
+    widget.callback?.call(true);
     super.initState();
   }
 
   @override
   void dispose() {
-    if (widget.callback != null) widget.callback!(false);
+    widget.callback?.call(false);
     super.dispose();
   }
 

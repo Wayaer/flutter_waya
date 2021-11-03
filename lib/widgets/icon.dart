@@ -266,7 +266,7 @@ class _CheckBoxState extends State<CheckBox> {
       value = !value!;
     }
     setState(() {});
-    if (widget.onChanged != null) widget.onChanged!(value);
+    widget.onChanged?.call(value);
   }
 
   @override

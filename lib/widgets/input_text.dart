@@ -510,9 +510,7 @@ class _PinBoxState extends State<PinBox> {
         context.focusNode(focusNode);
       });
     }
-    if (widget.onTap != null) {
-      widget.onTap!();
-    }
+    widget.onTap?.call();
   }
 
   Widget get pinTextInput => TextField(
@@ -525,7 +523,6 @@ class _PinBoxState extends State<PinBox> {
           border: InputBorder.none),
       autofocus: widget.autoFocus,
       maxLines: 1,
-      // onTap: widget.onTap,
       onChanged: widget.onChanged,
       enabled: widget.enabled,
       maxLength: widget.maxLength,

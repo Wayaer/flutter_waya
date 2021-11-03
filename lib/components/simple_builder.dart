@@ -49,7 +49,7 @@ class _ValueBuilderState<T> extends State<ValueBuilder<T>> {
   Widget build(BuildContext context) => widget.builder(context, value, updater);
 
   void updater(T? newValue) {
-    if (widget.onUpdate != null) widget.onUpdate!(newValue);
+    widget.onUpdate?.call(newValue);
     value = newValue;
     setState(() {});
   }
@@ -67,7 +67,7 @@ class _ValueBuilderState<T> extends State<ValueBuilder<T>> {
   @override
   void dispose() {
     super.dispose();
-    if (widget.onDispose != null) widget.onDispose!.call();
+    widget.onDispose?.call();
     if (value is ChangeNotifier) {
       (value as ChangeNotifier).dispose();
     } else if (value is StreamController) {
@@ -131,7 +131,7 @@ class _ValueListenBuilderState<T> extends State<ValueListenBuilder<T>> {
 
   void _valueChanged() {
     value = valueListenable.value;
-    if (widget.onUpdate != null) widget.onUpdate!(value);
+    widget.onUpdate?.call(value);
     setState(() {});
   }
 
@@ -143,7 +143,7 @@ class _ValueListenBuilderState<T> extends State<ValueListenBuilder<T>> {
   void dispose() {
     valueListenable.removeListener(_valueChanged);
     super.dispose();
-    if (widget.onDispose != null) widget.onDispose!.call();
+    widget.onDispose?.call();
     if (value is ChangeNotifier) {
       (value as ChangeNotifier).dispose();
     } else if (value is StreamController) {

@@ -60,16 +60,15 @@ class _GestureLockState extends State<GestureLock> {
   @override
   Widget build(BuildContext context) => Stack(children: <Widget>[
         CustomPaint(
-          size: Size(widget.size, widget.size),
-          painter: _CanvasPoint(
-              ringWidth: widget.ringWidth,
-              ringRadius: widget.ringRadius,
-              showUnSelectRing: widget.showUnSelectRing,
-              circleRadius: widget.circleRadius,
-              selectColor: widget.selectColor,
-              unSelectColor: widget.unSelectColor,
-              points: points),
-        ),
+            size: Size(widget.size, widget.size),
+            painter: _CanvasPoint(
+                ringWidth: widget.ringWidth,
+                ringRadius: widget.ringRadius,
+                showUnSelectRing: widget.showUnSelectRing,
+                circleRadius: widget.circleRadius,
+                selectColor: widget.selectColor,
+                unSelectColor: widget.unSelectColor,
+                points: points)),
         Universal(
             child: CustomPaint(
                 size: Size(widget.size, widget.size),
@@ -85,7 +84,7 @@ class _GestureLockState extends State<GestureLock> {
 
   void onPanDownVoid(DragDownDetails e) {
     clearAllData();
-    if (widget.onPanDown != null) widget.onPanDown!();
+    widget.onPanDown?.call();
   }
 
   void onPanUpdate(DragUpdateDetails e, BuildContext context) {

@@ -246,15 +246,10 @@ class _CirclePainter extends CustomPainter {
       required this.innerCircleRadiusProgress,
       this.circleColor = const CircleColor(
           start: Color(0xFFFF5722), end: Color(0xFFFFC107))}) {
-    /// circlePaint..style = PaintingStyle.fill;
     _circlePaint.style = PaintingStyle.stroke;
-
-    /// maskPaint..blendMode = BlendMode.clear;
   }
 
   final Paint _circlePaint = Paint();
-
-  /// Paint maskPaint = new Paint();
 
   final double outerCircleRadiusProgress;
   final double innerCircleRadiusProgress;
@@ -265,12 +260,6 @@ class _CirclePainter extends CustomPainter {
     final double center = size.width * 0.5;
     _updateCircleColor();
 
-    /// canvas.saveLayer(Offset.zero & size, Paint());
-    /// canvas.drawCircle(Offset(center, center),
-    ///     outerCircleRadiusProgress * center, circlePaint);
-    /// canvas.drawCircle(Offset(center, center),
-    ///     innerCircleRadiusProgress * center + 1, maskPaint);
-    /// canvas.restore();
     final double strokeWidth = outerCircleRadiusProgress * center -
         (innerCircleRadiusProgress * center);
     if (strokeWidth > 0.0) {
