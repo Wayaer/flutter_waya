@@ -14,7 +14,6 @@ class ConstConstant {
   /// 导航栏高度
   static const double appBarHeight = 43;
 
-
   static const String success = 'success';
 
   static const Map<int, HttpStatus> httpStatus = <int, HttpStatus>{
