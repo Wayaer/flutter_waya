@@ -1,84 +1,84 @@
 ## 1.15.7
- * fix bug for `showCustomPicker`
- * remove `height` for `PickerOptions`
- * fix bug for `GeneralDialogOptions`
+ * Fix bug for `showCustomPicker`
+ * Remove `height` for `PickerOptions`
+ * Fix bug for `GeneralDialogOptions`
 ## 1.15.5
- * add `enabled` for `PinBox`
- * add `needKeyBoard` for `PinBox`
- * add `onTap` for `PinBox`
- * add `BottomSheetOptions` for `showBottomPopup`
- * add `GeneralDialogOptions` for `showDialogPopup`
+ * Add `enabled` for `PinBox`
+ * Add `needKeyBoard` for `PinBox`
+ * Add `onTap` for `PinBox`
+ * Add `BottomSheetOptions` for `showBottomPopup`
+ * Add `GeneralDialogOptions` for `showDialogPopup`
 ## 1.15.1
- * fix bug for `showDialogPopup`
+ * Fix bug for `showDialogPopup`
 ## 1.15.0
- * remove `showSimpleDialog`,`showSimpleCupertinoDialog`
- * remove `showBottomPagePopup` ，please use `showBottomPopup`
- * modify `showCupertinoBottomPagePopup` to `showCupertinoBottomPopup`
- * fix bug on `modal` for `DropdownMenu`  
+ * Remove `showSimpleDialog`,`showSimpleCupertinoDialog`
+ * Remove `showBottomPagePopup` ，please use `showBottomPopup`
+ * Modify `showCupertinoBottomPagePopup` to `showCupertinoBottomPopup`
+ * Fix bug on `modal` for `DropdownMenu`  
  * `Universal` add `systemOverlayStyle`,modify status bar color
- * add `statusBarStyle` for `ExtensionWidget`
+ * Add `statusBarStyle` for `ExtensionWidget`
 ## 1.13.2
- * remove `setStatusBarLight()`
- * add `SystemUiOverlayStyleDark()` and `SystemUiOverlayStyleLight()`
+ * Remove `setStatusBarLight()`
+ * Add `SystemUiOverlayStyleDark()` and `SystemUiOverlayStyleLight()`
 ## 1.13.1
- * modify `showDateTimePicker` to return `DateTime`
- * modify the initialization method of `DateTimePickerUnit`
- * fix bug for `DateTimePicker`
- * add `showCustomPicker`  
- * remove the `sureIndexTap` parameter in `PickerOptions`,
- * restructured `DropdownMenu` and `CheckBox`
+ * Modify `showDateTimePicker` to return `DateTime`
+ * Modify the initialization method of `DateTimePickerUnit`
+ * Fix bug for `DateTimePicker`
+ * Add `showCustomPicker`  
+ * Remove the `sureIndexTap` parameter in `PickerOptions`,
+ * Restructured `DropdownMenu` and `CheckBox`
 ## 1.13.0
- * add `CountDown` and remove `CountDownSkip`
- * restructured `SendSMS` 
- * restructured example
+ * Add `CountDown` and remove `CountDownSkip`
+ * Restructured `SendSMS` 
+ * Restructured example
 ## 1.12.1
- * add `ExtendedDio` `ExtendedOptions` `LoggerInterceptor`
+ * Add `ExtendedDio` `ExtendedOptions` `LoggerInterceptor`
 ## 1.11.8
- * fix buf for `Progress`
- * fix bug for `DateTimePicker`
+ * Fix buf for `Progress`
+ * Fix bug for `DateTimePicker`
  * `PinBox` add `spaces`,and remove `width` `boxSpacing`
 ## 1.11.3
- * fix some bug
+ * Fix some bug
 ## 1.11.2
  * DioTools add `useLog`
- * add `ExtensionFunction` including debounce function and throttle function
+ * Add `ExtensionFunction` including debounce function and throttle function
 ## 1.11.1
- * remove `DottedLine`
- * add `DottedLinePainter`
+ * Remove `DottedLine`
+ * Add `DottedLinePainter`
 ## 1.11.0
- * change `PopupBase` to `PopupOptions` 
- * change `GlobalWidgetsApp` to `ExtendedWidgetsApp` 
- * change `OverlayScaffold` to `ExtendedScaffold` 
- * change `SliverAutoAppBar` to `ExtendedSliverAppBar` 
- * change `PickerSub` to `PickerOptions` and change pickerSub to options
+ * Change `PopupBase` to `PopupOptions` 
+ * Change `GlobalWidgetsApp` to `ExtendedWidgetsApp` 
+ * Change `OverlayScaffold` to `ExtendedScaffold` 
+ * Change `SliverAutoAppBar` to `ExtendedSliverAppBar` 
+ * Change `PickerSub` to `PickerOptions` and change pickerSub to options
   , change pickerWheel to wheel
- * change `FlexibleSpaceAutoBar` to `ExtendedFlexibleSpaceBar` 
- * change `SliverAutoPersistentHeader` to `ExtendedSliverPersistentHeader` 
- * change `ScrollViewAuto` to `ExtendedScrollView` 
- * change `OverlayEntryAuto` to `ExtendedOverlayEntry` 
- * add `onDispose` and `onUpdate` on `ValueListenBuilder`
- * add `didUpdateWidget` on `ValueBuilder`
+ * Change `FlexibleSpaceAutoBar` to `ExtendedFlexibleSpaceBar` 
+ * Change `SliverAutoPersistentHeader` to `ExtendedSliverPersistentHeader` 
+ * Change `ScrollViewAuto` to `ExtendedScrollView` 
+ * Change `OverlayEntryAuto` to `ExtendedOverlayEntry` 
+ * Add `onDispose` and `onUpdate` on `ValueListenBuilder`
+ * Add `didUpdateWidget` on `ValueBuilder`
 ## 1.10.5
- * change `RichTextSpan` to `RText`
- * change `BasisText` to `BText`
- * change `BasisTextStyle` to `BTextStyle`
- * remove `InputField`
- * add `WidgetPendant` for all widgets, add header, footer, extraPrefix
+ * Change `RichTextSpan` to `RText`
+ * Change `BasisText` to `BText`
+ * Change `BasisTextStyle` to `BTextStyle`
+ * Remove `InputField`
+ * Add `WidgetPendant` for all widgets, add header, footer, extraPrefix
   , extraSuffix, prefix, suffix. you can use it with `CupertinoTextField` or `TextField`
- * add `inputTextTypeToTextInputFormatter()`  
+ * Add `inputTextTypeToTextInputFormatter()`  
 ## 1.10.3
- * optimize import
+ * Optimize import
  * `OverlayEntryAuto` add `removeEntry()`,When autoOff is true, the `ExtendedScaffold` call `onWillPop` will filter the
    `OverlayEntryAuto`
 ## 1.10.1
- * fix the `remove` error of `Eventbus` when the project supports null-safety
+ * Fix the `remove` error of `Eventbus` when the project supports null-safety
 ## 1.10.0
- * optimize the return data of network request error
- * fix the cancel network request bug and return the error message
+ * Optimize the return data of network request error
+ * Fix the cancel network request bug and return the error message
 ## 1.9.17
- * fix `PinBox` bugs
- * showToast add `ignoring`
- * add `setAllToastIgnoringBackground()`,if it is true, the background
+ * Fix `PinBox` bugs
+ * ShowToast add `ignoring`
+ * Add `setAllToastIgnoringBackground()`,if it is true, the background
    responds to the click event
 ## 1.9.15
  * `PopupOptions` add onWillPop and filter for `WillPopScope` And `BackdropFilter`
@@ -87,96 +87,96 @@
    useSingleChildScrollView is false, the scrolling component will be created using `Scrollview`
  * `Universal` add `Wrap`,
  * `Universal` adds `StatefulBuilder`、`Builder` and `LayoutBuilder`，and uses them through builder properties
- * fix bugs for `TabBarMerge`
- * fix `ListWheel` controller auto destroy problem
+ * Fix bugs for `TabBarMerge`
+ * Fix `ListWheel` controller auto destroy problem
 ## 1.9.12
- * fix bug for popBack
- * logTools add `RequestOptions`
- * add example for `ScrollViewAuto.nested`
+ * Fix bug for popBack
+ * LogTools add `RequestOptions`
+ * Add example for `ScrollViewAuto.nested`
 ## 1.9.11
  * `Universal` add `ImageFilter`
- * split `ScrollList`
- * add `RefreshScrollView`
- * add `SliverListGrid`
+ * Split `ScrollList`
+ * Add `RefreshScrollView`
+ * Add `SliverListGrid`
 ## 1.9.10
- * add `ValueListenBuilder` and Example
+ * Add `ValueListenBuilder` and Example
  * `ValueBuilder` add BuildContext for builder and add Example
  * `ScrollList` add `Header` and `Footer`
 ## 1.9.9
- * fix bug
+ * Fix bug
 ## 1.9.7
  * Modify the method of obtaining the OverlayState
 ## 1.9.6
- * add `EasyRefreshType`
+ * Add `EasyRefreshType`
 ## 1.9.5
- * fix bugs 
- * add doc
+ * Fix bugs 
+ * Add doc
 ## 1.9.3
- * fix bugs for `des`
+ * Fix bugs for `des`
 ## 1.9.2
- * change `HintDot` to `Badge` 
- * add `DropdownMenuButton.material`
+ * Change `HintDot` to `Badge` 
+ * Add `DropdownMenuButton.material`
 ## 1.9.1
- * remove `DropdownMenuButton` constraints.
+ * Remove `DropdownMenuButton` constraints.
 ## 1.9.0
- * update `dio` to 4.0.0
- * fix bugs
+ * Update `dio` to 4.0.0
+ * Fix bugs
 ## 1.8.7
- * add `DropdownMenuButton`
- * add example
- * add scaffoldMessengerKey for `MaterialApp`
- * add showSnackBar
+ * Add `DropdownMenuButton`
+ * Add example
+ * Add scaffoldMessengerKey for `MaterialApp`
+ * Add showSnackBar
 ## 1.8.6
- * optimization is not an `http-200` state return parameter
+ * Optimization is not an `http-200` state return parameter
 ## 1.8.5
  * Repair `ScrollList.separated` bug
 ## 1.8.3
- * global optimization refresh
+ * Global optimization refresh
 ## 1.8.0
  * Replace refresh component
 ## 1.7.5
- * add ExpansionTiles example and fix bug
+ * Add ExpansionTiles example and fix bug
 ## 1.7.2
- * update flutter 2.0
+ * Update flutter 2.0
 ## 1.6.0
- * add `Progress.circular` `Progress.linear`
+ * Add `Progress.circular` `Progress.linear`
  * ExtensionString add insert void
- * add `BasisText`  `BasisTextStyle` 
- * modify `RichSpan` to `RichTextSpan`
- * modify `sendMessage(RefreshCompletedType.refresh)` to `sendRefreshType(RefreshCompletedType.refresh)`
- * remove Ts 
- * remove `Carousel.pageView`
- * showToast add async callback
+ * Add `BasisText`  `BasisTextStyle` 
+ * Modify `RichSpan` to `RichTextSpan`
+ * Modify `sendMessage(RefreshCompletedType.refresh)` to `sendRefreshType(RefreshCompletedType.refresh)`
+ * Remove Ts 
+ * Remove `Carousel.pageView`
+ * ShowToast add async callback
 ## 1.5.0
- * change Tools to Ts.
- * change GlobalMaterial to ExtendedWidgetsApp.
- * modify push and pop
- * add Universal tagging
- * fix ExtendedWidgetsApp did not return MaterialApp
- * modify styles.dart
+ * Change Tools to Ts.
+ * Change GlobalMaterial to ExtendedWidgetsApp.
+ * Modify push and pop
+ * Add Universal tagging
+ * Fix ExtendedWidgetsApp did not return MaterialApp
+ * Modify styles.dart
  * Universal add Refreshed
- * add des encode and decode
- * remove `NestedScroll`
- * add `ScrollViewAuto` `SliverAutoPersistentHeader` `SliverAutoAppBar`
+ * Add des encode and decode
+ * Remove `NestedScroll`
+ * Add `ScrollViewAuto` `SliverAutoPersistentHeader` `SliverAutoAppBar`
  * Universal add`StatefulWidgetBuilder` `SizedBox`
- * picker add `PickerTitle` `PickerWheel`
+ * Picker add `PickerTitle` `PickerWheel`
  * DateTimePicker add Start end range
- * add ScrollConfiguration
- * add extension
+ * Add ScrollConfiguration
+ * Add extension
  * `push` `pushReplacement` `pushAndRemoveUntil`remove widget , push(Widget())
 ## 1.3.10
- * fix `ListWheel` The method 'call' was called on null.
- * remove `ListWheel` dispose().
+ * Fix `ListWheel` The method 'call' was called on null.
+ * Remove `ListWheel` dispose().
 ## 1.3.9
- * remove Overflow for Universal
+ * Remove Overflow for Universal
 ## 1.3.7
- * simplifying some component parameters 【PopupSureCancel，PopupOptions】
- * modify utils partial method name
+ * Simplifying some component parameters 【PopupSureCancel，PopupOptions】
+ * Modify utils partial method name
 ## 1.3.3
- * add showCupertinoBottomPagePopup
+ * Add showCupertinoBottomPagePopup
 ## 1.3.2
- * remove some widget
- * format code
+ * Remove some widget
+ * Format code
 ## 1.2.1
  * Refactoring all file names and classes
  * Optimize overlay `toast loading`
@@ -201,4 +201,4 @@
 ## 1.0.0
  * Release of official version
 ## 0.0.1
- *  create lib
+ * Initialize the package
