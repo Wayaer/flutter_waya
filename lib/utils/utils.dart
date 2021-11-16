@@ -16,13 +16,12 @@ export 'src/screen_fit.dart';
 void logDebug(dynamic msg) => debugPrint(msg.toString());
 
 void log(dynamic msg, {bool hasDottedLine = true}) {
-  if (!kDebugMode) return;
+  if (!(kDebugMode || kProfileMode)) return;
   final String message = msg.toString();
   if (hasDottedLine) {
     debugPrint(
         '┌------------------------------------------------------------------------------');
   }
-  if (!kDebugMode) return;
   const int _limitLength = 800;
   if (message.length < _limitLength) {
     debugPrint('$msg');
