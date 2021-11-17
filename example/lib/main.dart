@@ -80,33 +80,37 @@ class _Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ExtendedScaffold(
-      backgroundColor: Colors.white,
-      onWillPopOverlayClose: true,
-      appBar: AppBarText('Flutter Waya Example'),
-      padding: const EdgeInsets.all(10),
-      body: Wrap(
-          alignment: WrapAlignment.center,
-          runSpacing: 10,
-          spacing: 10,
-          children: <Widget>[
-            ElevatedText('Components',
-                onTap: () => push(const ComponentsPage())),
-            ElevatedText('Button', onTap: () => push(const ButtonPage())),
-            ElevatedText('Alert', onTap: () => push(const AlertPage())),
-            ElevatedText('Image', onTap: () => push(const ImagePage())),
-            ElevatedText('Carousel', onTap: () => push(const CarouselPage())),
-            ElevatedText('Progress', onTap: () => push(const ProgressPage())),
-            ElevatedText('Universal', onTap: () => push(const UniversalPage())),
-            ElevatedText('JsonParse', onTap: () => push(const JsonParsePage())),
-            ElevatedText('ScrollView',
-                onTap: () => push(const ScrollViewPage())),
-            ElevatedText('SimpleRefresh',
-                onTap: () => push(const RefreshPage())),
-            ElevatedText('EasyRefreshed',
-                onTap: () => push(const EasyRefreshPage())),
-            ElevatedText('Extension', onTap: () => push(const ExtensionPage())),
-          ]),
-    );
+        backgroundColor: Colors.white,
+        onWillPopOverlayClose: true,
+        appBar: AppBarText('Flutter Waya Example'),
+        padding: const EdgeInsets.all(10),
+        body: Wrap(
+            alignment: WrapAlignment.center,
+            runSpacing: 10,
+            spacing: 10,
+            children: <Widget>[
+              ElevatedText('Components',
+                  onTap: () => push(const ComponentsPage())),
+              ElevatedText('Button', onTap: () => push(const ButtonPage())),
+              ElevatedText('Alert', onTap: () => push(const AlertPage())),
+              ElevatedText('Image', onTap: () => push(const ImagePage())),
+              ElevatedText('Carousel', onTap: () => push(const CarouselPage())),
+              ElevatedText('Progress', onTap: () => push(const ProgressPage())),
+              ElevatedText('Universal',
+                  onTap: () => push(const UniversalPage())),
+              ElevatedText('JsonParse',
+                  onTap: () => push(const JsonParsePage())),
+              ElevatedText('ScrollView',
+                  onTap: () => push(const ScrollViewPage())),
+              ElevatedText('SimpleRefresh',
+                  onTap: () => push(const RefreshPage())),
+              ElevatedText('EasyRefreshed',
+                  onTap: () => push(const EasyRefreshPage())),
+              ElevatedText('Extension',
+                  onTap: () => push(const ExtensionPage())),
+              ElevatedText('ExtendedFutureBuilder',
+                  onTap: () => push(const ExtendedFutureBuilderPage())),
+            ]));
   }
 }
 

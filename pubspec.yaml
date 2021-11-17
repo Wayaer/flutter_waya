@@ -1,6 +1,6 @@
 name: flutter_waya
 description: The Flutter UI library contains multiple custom components,compatible with android,web,ios and MAC.
-version: 1.15.7
+version: 1.15.8
 repository: https://github.com/Wayaer/flutter_waya
 
 environment:
@@ -8,7 +8,7 @@ environment:
 
 dependencies:
   crypto: ^3.0.1
-  dio: ^4.0.0
+  dio: ^4.0.3
   flutter:
     sdk: flutter
   flutter_easyrefresh: ^2.2.1

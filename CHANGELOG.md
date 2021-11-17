@@ -1,3 +1,6 @@
+## 1.15.8
+ * Add `ExtendedFutureBuilder`
+ * Fixed some bugs
 ## 1.15.7
  * Fix bug for `showCustomPicker`
  * Remove `height` for `PickerOptions`

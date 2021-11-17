@@ -151,3 +151,133 @@ class _ValueListenBuilderState<T> extends State<ValueListenBuilder<T>> {
     }
   }
 }
+
+class ExtendedFutureBuilder<T> extends StatefulWidget {
+  const ExtendedFutureBuilder(
+      {Key? key,
+      this.future,
+      this.initialData,
+      this.onNone,
+      this.onWaiting,
+      this.onError,
+      this.onDone,
+      this.didUpdateReset = false,
+      this.hasInitialReset = false})
+      : super(key: key);
+
+  /// 异步方法
+  final Future<T> Function()? future;
+
+  /// 初始化数据
+  final T? initialData;
+
+  /// 没有数据时 UI回调
+  final Widget Function(BuildContext context, Function() reset)? onNone;
+
+  /// 等待异步执行 UI回调
+  final Widget Function(BuildContext context)? onWaiting;
+
+  /// 异步错误时 UI回调
+  final ExtendedAsyncErrorWidgetBuilder? onError;
+
+  /// 完成时 UI回调
+  final ExtendedAsyncWidgetBuilder<T>? onDone;
+
+  /// 父组件update时 是否重新执行异步请求 默认为false
+  final bool didUpdateReset;
+
+  /// 当 [initialData] !=null 时第一次渲染是否执行异步请求  默认为false
+  final bool hasInitialReset;
+
+  @override
+  _ExtendedFutureBuilderState<T> createState() =>
+      _ExtendedFutureBuilderState<T>();
+}
+
+typedef ExtendedAsyncWidgetBuilder<T> = Widget Function(
+    BuildContext context, T data, Function() reset);
+
+typedef ExtendedAsyncErrorWidgetBuilder = Widget Function(
+    BuildContext context, Object error, Function() reset);
+
+enum BuilderState {
+  /// 默认状态
+  none,
+
+  /// 等待中
+  waiting,
+
+  /// 异步错误
+  error,
+
+  /// 异步完成
+  done,
+}
+
+class _ExtendedFutureBuilderState<T> extends State<ExtendedFutureBuilder<T>> {
+  BuilderState state = BuilderState.none;
+  T? data;
+  Object? _error;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialData != null) {
+      state = BuilderState.done;
+      data = widget.initialData!;
+    }
+    if (widget.initialData == null || widget.hasInitialReset) {
+      addPostFrameCallback((duration) => _subscribe());
+    }
+  }
+
+  void _subscribe() {
+    if (widget.future != null) {
+      state = BuilderState.waiting;
+      setState(() {});
+      widget.future!.call().then((value) {
+        if (value != null) {
+          state = BuilderState.done;
+          data = value;
+        } else {
+          state = BuilderState.error;
+        }
+        setState(() {});
+      }, onError: (Object error, StackTrace stackTrace) {
+        state = BuilderState.error;
+        _error = error;
+        setState(() {});
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    switch (state) {
+      case BuilderState.none:
+        if (widget.onNone != null) {
+          return widget.onNone!.call(context, _subscribe);
+        }
+        break;
+      case BuilderState.waiting:
+        if (widget.onWaiting != null) {
+          return widget.onWaiting!.call(context);
+        }
+        break;
+      case BuilderState.error:
+        if (widget.onError != null) {
+          return widget.onError!.call(context, _error!, _subscribe);
+        }
+        break;
+      case BuilderState.done:
+        return widget.onDone!.call(context, data!, _subscribe);
+    }
+    return const SizedBox();
+  }
+
+  @override
+  void didUpdateWidget(covariant ExtendedFutureBuilder<T> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.didUpdateReset) _subscribe();
+  }
+}
