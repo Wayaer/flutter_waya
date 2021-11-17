@@ -153,17 +153,18 @@ class _ValueListenBuilderState<T> extends State<ValueListenBuilder<T>> {
 }
 
 class ExtendedFutureBuilder<T> extends StatefulWidget {
-  const ExtendedFutureBuilder(
-      {Key? key,
-      this.future,
-      this.initialData,
-      this.onNone,
-      this.onWaiting,
-      this.onError,
-      this.onDone,
-      this.didUpdateReset = false,
-      this.hasInitialReset = false})
-      : super(key: key);
+  const ExtendedFutureBuilder({
+    Key? key,
+    this.future,
+    this.initialData,
+    this.onNone,
+    this.onWaiting,
+    this.onError,
+    this.onNull,
+    this.onDone,
+    this.didUpdateReset = false,
+    this.hasInitialReset = false,
+  }) : super(key: key);
 
   /// 异步方法
   final Future<T> Function()? future;
@@ -177,10 +178,13 @@ class ExtendedFutureBuilder<T> extends StatefulWidget {
   /// 等待异步执行 UI回调
   final Widget Function(BuildContext context)? onWaiting;
 
+  /// 异步执行返回null UI回调
+  final Widget Function(BuildContext context, Function() reset)? onNull;
+
   /// 异步错误时或者返回值为null时 UI回调
   final ExtendedAsyncErrorWidgetBuilder? onError;
 
-  /// 完成时 UI回调
+  /// 完成时 UI回调 异步返回的数据一定不为null
   final ExtendedAsyncWidgetBuilder<T>? onDone;
 
   /// 父组件update时 是否重新执行异步请求 默认为false
@@ -207,8 +211,11 @@ enum BuilderState {
   /// 等待中
   waiting,
 
-  /// 异步错误 或 为 null
+  /// 异步错误
   error,
+
+  /// 异步返回数据 为 null
+  isNull,
 
   /// 异步完成
   done,
@@ -240,7 +247,7 @@ class _ExtendedFutureBuilderState<T> extends State<ExtendedFutureBuilder<T>> {
           state = BuilderState.done;
           data = value;
         } else {
-          state = BuilderState.error;
+          state = BuilderState.isNull;
         }
         setState(() {});
       }, onError: (Object error, StackTrace stackTrace) {
@@ -267,6 +274,11 @@ class _ExtendedFutureBuilderState<T> extends State<ExtendedFutureBuilder<T>> {
       case BuilderState.error:
         if (widget.onError != null) {
           return widget.onError!.call(context, _error, _subscribe);
+        }
+        break;
+      case BuilderState.isNull:
+        if (widget.onNull != null) {
+          return widget.onNull!.call(context, _subscribe);
         }
         break;
       case BuilderState.done:
