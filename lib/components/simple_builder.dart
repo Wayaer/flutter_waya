@@ -177,7 +177,7 @@ class ExtendedFutureBuilder<T> extends StatefulWidget {
   /// 等待异步执行 UI回调
   final Widget Function(BuildContext context)? onWaiting;
 
-  /// 异步错误时 UI回调
+  /// 异步错误时或者返回值为null时 UI回调
   final ExtendedAsyncErrorWidgetBuilder? onError;
 
   /// 完成时 UI回调
@@ -198,7 +198,7 @@ typedef ExtendedAsyncWidgetBuilder<T> = Widget Function(
     BuildContext context, T data, Function() reset);
 
 typedef ExtendedAsyncErrorWidgetBuilder = Widget Function(
-    BuildContext context, Object error, Function() reset);
+    BuildContext context, Object? error, Function() reset);
 
 enum BuilderState {
   /// 默认状态
@@ -207,7 +207,7 @@ enum BuilderState {
   /// 等待中
   waiting,
 
-  /// 异步错误
+  /// 异步错误 或 为 null
   error,
 
   /// 异步完成
@@ -266,7 +266,7 @@ class _ExtendedFutureBuilderState<T> extends State<ExtendedFutureBuilder<T>> {
         break;
       case BuilderState.error:
         if (widget.onError != null) {
-          return widget.onError!.call(context, _error!, _subscribe);
+          return widget.onError!.call(context, _error, _subscribe);
         }
         break;
       case BuilderState.done:
