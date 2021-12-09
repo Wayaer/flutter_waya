@@ -133,9 +133,16 @@ extension ExtensionContext on BuildContext {
 
   /// Get the coordinates of the widget on the screen.Widgets must be rendered completely.
   /// 获取widget在屏幕上的坐标,widget必须渲染完成
-  Offset get getWidgetLocalToGlobal {
+  Offset getWidgetLocalToGlobal([Offset point = Offset.zero]) {
     final RenderBox? box = getRenderBox;
-    return box == null ? Offset.zero : box.localToGlobal(Offset.zero);
+    return box == null ? Offset.zero : box.localToGlobal(point);
+  }
+
+  /// Get the coordinates of the widget on the screen.Widgets must be rendered completely.
+  /// 获取widget在屏幕上的坐标,widget必须渲染完成
+  Offset getWidgetGlobalToLocal([Offset point = Offset.zero]) {
+    final RenderBox? box = getRenderBox;
+    return box == null ? Offset.zero : box.globalToLocal(point);
   }
 }
 

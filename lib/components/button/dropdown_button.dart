@@ -95,7 +95,7 @@ class _DropdownMenuButtonState extends State<DropdownMenuButton> {
 
   void showItem() {
     widget.onTap?.call();
-    final Offset offset = context.getWidgetLocalToGlobal;
+    final Offset offset = context.getWidgetLocalToGlobal();
     final Size size = context.size!;
     showDialogPopup<dynamic>(
         options: GeneralDialogOptions(

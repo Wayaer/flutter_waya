@@ -5,11 +5,11 @@ import 'package:flutter_waya/flutter_waya.dart';
 class GestureLock extends StatefulWidget {
   const GestureLock(
       {Key? key,
-      this.selectColor,
+      this.selectColor = Colors.red,
       this.unSelectColor,
       required this.size,
       this.ringWidth = 2,
-      this.ringRadius = 35,
+      this.ringRadius = 20,
       this.showUnSelectRing = false,
       this.circleRadius = 10,
       this.lineWidth = 3,
@@ -18,16 +18,33 @@ class GestureLock extends StatefulWidget {
       this.immediatelyClear = true})
       : super(key: key);
 
+  /// 整个九宫格宽高
   final double size;
+
+  /// 选中的颜色
   final Color? selectColor;
+
+  /// 未选中的颜色
   final Color? unSelectColor;
+
+  /// 外边线宽度
   final double ringWidth;
+
+  /// 内圆直径
   final double ringRadius;
+
+  /// 内环宽度
   final double circleRadius;
+
+  /// 连接线的宽度
   final double lineWidth;
+
+  /// 是否显示外边线
   final bool showUnSelectRing;
+
+  /// 松手后立即清楚
   final bool immediatelyClear;
-  final Function? onPanDown;
+  final GestureDragDownCallback? onPanDown;
   final ValueChanged<List<int>>? onPanUp;
 
   @override
@@ -35,16 +52,15 @@ class GestureLock extends StatefulWidget {
 }
 
 class _GestureLockState extends State<GestureLock> {
-  late List<_Point> points;
+  List<_Point> points = [];
   List<_Point> pathPoints = <_Point>[];
   double realRadius = 0;
-  late _Point curPoint;
+  _Point? curPoint;
 
   @override
   void initState() {
     super.initState();
     realRadius = widget.ringRadius + widget.ringWidth / 2;
-    points = <_Point>[];
     final double realRingSize = widget.ringRadius + widget.ringWidth / 2;
     final double gapWidth = widget.size / 6 - realRingSize;
     points = 9.generate((int i) {
@@ -56,50 +72,54 @@ class _GestureLockState extends State<GestureLock> {
   }
 
   @override
-  Widget build(BuildContext context) => Stack(children: <Widget>[
-        CustomPaint(
-            size: Size(widget.size, widget.size),
-            painter: _CanvasPoint(
-                ringWidth: widget.ringWidth,
-                ringRadius: widget.ringRadius,
-                showUnSelectRing: widget.showUnSelectRing,
-                circleRadius: widget.circleRadius,
-                selectColor:
-                    widget.selectColor ?? context.theme.colorScheme.secondary,
-                unSelectColor:
-                    widget.unSelectColor ?? context.theme.unselectedWidgetColor,
-                points: points)),
-        Universal(
-            child: CustomPaint(
-                size: Size(widget.size, widget.size),
-                painter: _CanvasLine(
-                    pathPoints: pathPoints,
-                    selectColor: widget.selectColor ??
-                        context.theme.colorScheme.secondary,
-                    lineWidth: widget.lineWidth,
-                    curPoint: curPoint)),
-            onPanDown: onPanDownVoid,
-            onPanUpdate: (DragUpdateDetails e) => onPanUpdate(e, context),
-            onPanEnd: (DragEndDetails e) => onPanEnd(e, context))
-      ]);
+  Widget build(BuildContext context) => Universal(
+          isStack: true,
+          size: Size(widget.size, widget.size),
+          children: <Widget>[
+            CustomPaint(
+                size: Size.infinite,
+                painter: _CanvasPoint(
+                    ringWidth: widget.ringWidth,
+                    ringRadius: widget.ringRadius,
+                    showUnSelectRing: widget.showUnSelectRing,
+                    circleRadius: widget.circleRadius,
+                    selectColor:
+                        widget.selectColor ?? context.theme.selectedRowColor,
+                    unSelectColor: widget.unSelectColor ??
+                        context.theme.unselectedWidgetColor,
+                    points: points)),
+            GestureDetector(
+                child: curPoint == null
+                    ? null
+                    : CustomPaint(
+                        size: Size.infinite,
+                        painter: _CanvasLine(
+                            pathPoints: pathPoints,
+                            selectColor: widget.selectColor ??
+                                context.theme.selectedRowColor,
+                            lineWidth: widget.lineWidth,
+                            curPoint: curPoint!)),
+                onPanDown: onPanDown,
+                onPanUpdate: onPanUpdate,
+                onPanEnd: onPanEnd)
+          ]);
 
-  void onPanDownVoid(DragDownDetails e) {
+  void onPanDown(DragDownDetails e) {
     clearAllData();
-    widget.onPanDown?.call();
+    widget.onPanDown?.call(e);
   }
 
-  void onPanUpdate(DragUpdateDetails e, BuildContext context) {
-    final RenderBox box = context.findRenderObject() as RenderBox;
-    final Offset offset = box.globalToLocal(e.globalPosition);
+  void onPanUpdate(DragUpdateDetails e) {
+    final Offset offset = context.getWidgetGlobalToLocal(e.globalPosition);
     slideDealt(offset);
     curPoint = _Point(x: offset.dx, y: offset.dy, position: -1);
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
-  void onPanEnd(DragEndDetails e, BuildContext context) {
+  void onPanEnd(DragEndDetails e) {
     if (pathPoints.isNotEmpty) {
       curPoint = pathPoints[pathPoints.length - 1];
-      setState(() {});
+      if (mounted) setState(() {});
       if (widget.onPanUp != null) {
         final List<int> items =
             pathPoints.builder((_Point item) => item.position);
@@ -137,7 +157,7 @@ class _GestureLockState extends State<GestureLock> {
       points[i].isSelect = false;
     }
     pathPoints.clear();
-    setState(() {});
+    if (mounted) setState(() {});
   }
 }
 
@@ -254,16 +274,23 @@ class GestureZoom extends StatefulWidget {
     this.doubleTapScale = 2.0,
     required this.child,
     this.onPressed,
-    this.duration = const Duration(milliseconds: 20),
+    this.duration = const Duration(milliseconds: 300),
   })  : assert(maxScale >= 1.0),
         assert(doubleTapScale >= 1.0 && doubleTapScale <= maxScale),
         super(key: key);
 
-  ///  通过最大缩放比例 [maxScale]、双击缩放比例 [doubleTapScale]、子部件 [child]、点击事件 [onPressed] 创建小部件
+  /// 通过最大缩放比例 [maxScale]、双击缩放比例 [doubleTapScale]、子部件 [child]、点击事件 [onPressed] 创建小部件
   final double maxScale;
+
+  /// 双击放大比例
   final double doubleTapScale;
+
+  /// 要缩放的组件
   final Widget child;
+
   final VoidCallback? onPressed;
+
+  /// 动画延迟时间
   final Duration duration;
 
   @override
@@ -272,28 +299,28 @@ class GestureZoom extends StatefulWidget {
 
 class _GestureZoomState extends State<GestureZoom>
     with TickerProviderStateMixin {
-  ///  缩放动画控制器
+  /// 缩放动画控制器
   AnimationController? _scaleAnimController;
 
-  ///  偏移动画控制器
+  /// 偏移动画控制器
   AnimationController? _offsetAnimController;
 
-  ///  上次缩放变化数据
+  /// 上次缩放变化数据
   ScaleUpdateDetails? _latestScaleUpdateDetails;
 
-  ///  当前缩放值
+  /// 当前缩放值
   double _scale = 1.0;
 
-  ///  当前偏移值
+  /// 当前偏移值
   Offset _offset = Offset.zero;
 
-  ///  双击缩放的点击位置
+  /// 双击缩放的点击位置
   late Offset _doubleTapPosition;
 
   bool _isScaling = false;
   bool _isDragging = false;
 
-  ///  拖动超出边界的最大值
+  /// 拖动超出边界的最大值
   final double _maxDragOver = 100;
 
   @override
@@ -319,11 +346,11 @@ class _GestureZoomState extends State<GestureZoom>
     super.dispose();
   }
 
-  ///  处理手指抬起事件 [event]
+  /// 处理手指抬起事件 [event]
   void _onPointerUp(PointerUpEvent event) =>
       _doubleTapPosition = event.localPosition;
 
-  ///  处理双击
+  /// 处理双击
   void _onDoubleTap() {
     final double targetScale = _scale == 1.0 ? widget.doubleTapScale : 1.0;
     _animationScale(targetScale);
@@ -335,12 +362,15 @@ class _GestureZoomState extends State<GestureZoom>
     _offsetAnimController?.stop();
   }
 
-  ///  处理缩放变化 [details]
-  void _onScaleUpdate(ScaleUpdateDetails details) => setState(() {
-        details.scale != 1.0 ? _scaling(details) : _dragging(details);
-      });
+  /// 处理缩放变化 [details]
+  void _onScaleUpdate(ScaleUpdateDetails details) {
+    if (mounted) {
+      details.scale != 1.0 ? _scaling(details) : _dragging(details);
+      setState(() {});
+    }
+  }
 
-  ///  执行缩放
+  /// 执行缩放
   void _scaling(ScaleUpdateDetails details) {
     if (_isDragging) return;
     _isScaling = true;
@@ -349,7 +379,7 @@ class _GestureZoomState extends State<GestureZoom>
       return;
     }
 
-    ///  计算缩放比例
+    /// 计算缩放比例
     double scaleIncrement = details.scale - _latestScaleUpdateDetails!.scale;
     if (details.scale < 1.0 && _scale > 1.0) scaleIncrement *= _scale;
 
@@ -360,17 +390,17 @@ class _GestureZoomState extends State<GestureZoom>
     }
     _scale += scaleIncrement;
 
-    ///  计算缩放后偏移前（缩放前后的内容中心对齐）的左上角坐标变化
+    /// 计算缩放后偏移前（缩放前后的内容中心对齐）的左上角坐标变化
     final double scaleOffsetX = context.size!.width * (_scale - 1.0) / 2;
     final double scaleOffsetY = context.size!.height * (_scale - 1.0) / 2;
 
-    ///  将缩放前的触摸点映射到缩放后的内容上
+    /// 将缩放前的触摸点映射到缩放后的内容上
     final double scalePointDX =
         (details.localFocalPoint.dx + scaleOffsetX - _offset.dx) / _scale;
     final double scalePointDY =
         (details.localFocalPoint.dy + scaleOffsetY - _offset.dy) / _scale;
 
-    ///  计算偏移，使缩放中心在屏幕上的位置保持不变
+    /// 计算偏移，使缩放中心在屏幕上的位置保持不变
     _offset += Offset(
       (context.size!.width / 2 - scalePointDX) * scaleIncrement,
       (context.size!.height / 2 - scalePointDY) * scaleIncrement,
@@ -379,7 +409,7 @@ class _GestureZoomState extends State<GestureZoom>
     _latestScaleUpdateDetails = details;
   }
 
-  ///  执行拖动
+  /// 执行拖动
   void _dragging(ScaleUpdateDetails details) {
     if (_isScaling) return;
 
@@ -389,7 +419,7 @@ class _GestureZoomState extends State<GestureZoom>
       return;
     }
 
-    ///  计算本次拖动增量
+    /// 计算本次拖动增量
     double offsetXIncrement = (details.localFocalPoint.dx -
             _latestScaleUpdateDetails!.localFocalPoint.dx) *
         _scale;
@@ -397,7 +427,7 @@ class _GestureZoomState extends State<GestureZoom>
             _latestScaleUpdateDetails!.localFocalPoint.dy) *
         _scale;
 
-    ///  处理 X 轴边界
+    /// 处理 X 轴边界
     final double scaleOffsetX = context.size!.width * (_scale - 1.0) / 2;
     if (scaleOffsetX <= 0) {
       offsetXIncrement = 0;
@@ -409,7 +439,7 @@ class _GestureZoomState extends State<GestureZoom>
           (_maxDragOver - (-scaleOffsetX - _offset.dx)) / _maxDragOver;
     }
 
-    ///  处理 Y 轴边界
+    /// 处理 Y 轴边界
     final double scaleOffsetY =
         (context.size!.height * _scale - deviceHeight) / 2;
     if (scaleOffsetY <= 0) {
@@ -427,25 +457,25 @@ class _GestureZoomState extends State<GestureZoom>
     _latestScaleUpdateDetails = details;
   }
 
-  ///  缩放/拖动结束
+  /// 缩放/拖动结束
   void _onScaleEnd(ScaleEndDetails details) {
     if (_scale < 1.0) {
-      ///  缩放值过小，恢复到 1.0
+      /// 缩放值过小，恢复到 1.0
       _animationScale(1.0);
     } else if (_scale > widget.maxScale) {
-      ///  缩放值过大，恢复到最大值
+      /// 缩放值过大，恢复到最大值
       _animationScale(widget.maxScale);
     }
     if (_scale <= 1.0) {
-      ///  缩放值过小，修改偏移值，使内容居中
+      /// 缩放值过小，修改偏移值，使内容居中
       _animationOffset(Offset.zero);
     } else if (_isDragging) {
-      ///  处理拖动超过边界的情况（自动回弹到边界）
+      /// 处理拖动超过边界的情况（自动回弹到边界）
       final double realScale =
           _scale > widget.maxScale ? widget.maxScale : _scale;
       double targetOffsetX = _offset.dx, targetOffsetY = _offset.dy;
 
-      ///  处理 X 轴边界
+      /// 处理 X 轴边界
       final double scaleOffsetX = context.size!.width * (realScale - 1.0) / 2;
       if (scaleOffsetX <= 0) {
         targetOffsetX = 0;
@@ -455,7 +485,7 @@ class _GestureZoomState extends State<GestureZoom>
         targetOffsetX = -scaleOffsetX;
       }
 
-      ///  处理 Y 轴边界
+      /// 处理 Y 轴边界
       final double scaleOffsetY =
           (context.size!.height * realScale - deviceHeight) / 2;
       if (scaleOffsetY < 0) {
@@ -466,10 +496,10 @@ class _GestureZoomState extends State<GestureZoom>
         targetOffsetY = -scaleOffsetY;
       }
       if (_offset.dx != targetOffsetX || _offset.dy != targetOffsetY) {
-        ///  启动越界回弹
+        /// 启动越界回弹
         _animationOffset(Offset(targetOffsetX, targetOffsetY));
       } else {
-        ///  处理 X 轴边界
+        /// 处理 X 轴边界
         final double duration =
             widget.duration.inSeconds + widget.duration.inMilliseconds / 1000;
         final Offset targetOffset =
@@ -481,7 +511,7 @@ class _GestureZoomState extends State<GestureZoom>
           targetOffsetX = -scaleOffsetX;
         }
 
-        ///  处理 X 轴边界
+        /// 处理 X 轴边界
         targetOffsetY = targetOffset.dy;
         if (targetOffsetY > scaleOffsetY) {
           targetOffsetY = scaleOffsetY;
@@ -489,7 +519,7 @@ class _GestureZoomState extends State<GestureZoom>
           targetOffsetY = -scaleOffsetY;
         }
 
-        ///  启动惯性滚动
+        /// 启动惯性滚动
         _animationOffset(Offset(targetOffsetX, targetOffsetY));
       }
     }
@@ -499,7 +529,7 @@ class _GestureZoomState extends State<GestureZoom>
     _latestScaleUpdateDetails = null;
   }
 
-  ///  执行动画缩放内容到 [targetScale]
+  /// 执行动画缩放内容到 [targetScale]
   void _animationScale(double targetScale) {
     _scaleAnimController?.dispose();
     _scaleAnimController =
@@ -507,7 +537,9 @@ class _GestureZoomState extends State<GestureZoom>
     final Animation<dynamic> anim =
         Tween<double>(begin: _scale, end: targetScale)
             .animate(_scaleAnimController!);
-    anim.addListener(() => setState(() {
+    anim.addListener(() {
+      if (mounted) {
+        setState(() {
           _scaling(ScaleUpdateDetails(
             focalPoint: _doubleTapPosition,
             localFocalPoint: _doubleTapPosition,
@@ -515,23 +547,29 @@ class _GestureZoomState extends State<GestureZoom>
             horizontalScale: anim.value as double,
             verticalScale: anim.value as double,
           ));
-        }));
+        });
+      }
+    });
     anim.addStatusListener((AnimationStatus status) {
       if (status == AnimationStatus.completed) _onScaleEnd(ScaleEndDetails());
     });
     _scaleAnimController?.forward();
   }
 
-  ///  执行动画偏移内容到 [targetOffset]
+  /// 执行动画偏移内容到 [targetOffset]
   void _animationOffset(Offset targetOffset) {
     _offsetAnimController?.dispose();
     _offsetAnimController =
         AnimationController(vsync: this, duration: widget.duration);
     final Animation<dynamic> anim = _offsetAnimController!
         .drive<dynamic>(Tween<Offset>(begin: _offset, end: targetOffset));
-    anim.addListener(() => setState(() {
+    anim.addListener(() {
+      if (mounted) {
+        setState(() {
           _offset = anim.value as Offset;
-        }));
+        });
+      }
+    });
     _offsetAnimController?.fling();
   }
 }

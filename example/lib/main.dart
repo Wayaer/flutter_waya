@@ -6,15 +6,15 @@ import 'package:flutter_waya/flutter_waya.dart';
 import 'package:waya/module/alert_page.dart';
 import 'package:waya/module/button_page.dart';
 import 'package:waya/module/carousel_page.dart';
+import 'package:waya/module/components_page.dart';
 import 'package:waya/module/extension_page.dart';
+import 'package:waya/module/gesture_page.dart';
 import 'package:waya/module/json_parse_page.dart';
 import 'package:waya/module/pages.dart';
 import 'package:waya/module/progress_page.dart';
 import 'package:waya/module/refresh_page.dart';
 import 'package:waya/module/scroll_page.dart';
 import 'package:waya/module/universal_page.dart';
-
-import 'module/components_page.dart';
 
 bool isCustomApp = false;
 
@@ -100,6 +100,10 @@ class _Home extends StatelessWidget {
               ElevatedText('Image', onTap: () => push(const ImagePage())),
               ElevatedText('Carousel', onTap: () => push(const CarouselPage())),
               ElevatedText('Progress', onTap: () => push(const ProgressPage())),
+              ElevatedText('GestureLock',
+                  onTap: () => push(const GestureLockPage())),
+              ElevatedText('GestureZoom',
+                  onTap: () => push(const GestureZoomPage())),
               ElevatedText('Universal',
                   onTap: () => push(const UniversalPage())),
               ElevatedText('JsonParse',

@@ -103,12 +103,14 @@ class _SendSMSState extends State<SendSMS> {
     if (oldWidget.duration != widget.duration ||
         oldWidget.onTap != widget.onTap ||
         oldWidget.decoration != widget.decoration ||
-        oldWidget.stateBuilder != widget.stateBuilder) setState(() {});
+        oldWidget.stateBuilder != widget.stateBuilder) {
+      if (mounted) setState(() {});
+    }
   }
 
   void onTap() {
     sendState = SendState.sending;
-    setState(() {});
+    if (mounted) setState(() {});
     widget.onTap?.call(send);
   }
 
@@ -118,7 +120,7 @@ class _SendSMSState extends State<SendSMS> {
       startTimer();
     } else {
       sendState = SendState.resend;
-      setState(() {});
+      if (mounted) setState(() {});
     }
   }
 
@@ -130,7 +132,7 @@ class _SendSMSState extends State<SendSMS> {
       }
       seconds--;
       sendState = seconds < 0 ? SendState.resend : SendState.countDown;
-      setState(() {});
+      if (mounted) setState(() {});
     });
   }
 
@@ -184,7 +186,7 @@ class _CountDownState extends State<CountDown> {
       if (seconds > 0) {
         timer = 1.seconds.timerPeriodic((Timer time) {
           seconds -= 1;
-          setState(() {});
+          if (mounted) setState(() {});
           widget.onChanged?.call(seconds);
           if (seconds == 0) disposeTime();
         });
@@ -398,17 +400,27 @@ class _ToggleRotateState extends State<ToggleRotate>
   @override
   void initState() {
     _controller = AnimationController(duration: widget.duration, vsync: this)
-      ..addListener(() => setState(() =>
-          _rad = (_rotated ? (1 - _rotate.value) : _rotate.value) * widget.rad))
-      ..addStatusListener((AnimationStatus status) {
-        if (status == AnimationStatus.completed) _rotated = !_rotated;
-      });
+      ..addListener(listener)
+      ..addStatusListener(statusListener);
     _rotate = CurvedAnimation(parent: _controller, curve: widget.curve);
     super.initState();
   }
 
+  void statusListener(AnimationStatus status) {
+    if (status == AnimationStatus.completed) _rotated = !_rotated;
+  }
+
+  void listener() {
+    if (mounted) {
+      setState(() =>
+          _rad = (_rotated ? (1 - _rotate.value) : _rotate.value) * widget.rad);
+    }
+  }
+
   @override
   void dispose() {
+    _controller.removeListener(listener);
+    _controller.removeStatusListener(statusListener);
     _controller.dispose();
     super.dispose();
   }
@@ -520,18 +532,19 @@ class _ExpansionTilesState extends State<ExpansionTiles>
   }
 
   void _handleTap() {
-    setState(() {
-      _isExpanded = !_isExpanded;
-      if (_isExpanded) {
-        _controller.forward();
-      } else {
-        _controller.reverse().then<void>((void value) {
-          if (!mounted) return;
-          setState(() {});
-        });
-      }
-    });
-    widget.onExpansionChanged?.call(_isExpanded);
+    if (mounted) {
+      setState(() {
+        _isExpanded = !_isExpanded;
+        if (_isExpanded) {
+          _controller.forward();
+        } else {
+          _controller.reverse().then<void>((void value) {
+            if (mounted) setState(() {});
+          });
+        }
+      });
+      widget.onExpansionChanged?.call(_isExpanded);
+    }
   }
 
   @override

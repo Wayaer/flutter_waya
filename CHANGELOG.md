@@ -5,6 +5,7 @@
 * Fix some bugs
 * Split out `WheelOptions` in `ListWheel`
 * `PickerWheel` changed to `PickerWheelOptions`
+* `Universal` add `SafeArea`
 
 ## 1.15.10
 

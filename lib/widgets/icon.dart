@@ -4,14 +4,14 @@ import 'package:flutter_waya/flutter_waya.dart';
 class IconBox extends StatelessWidget {
   const IconBox({
     Key? key,
-    Axis? direction,
-    MainAxisAlignment? mainAxisAlignment,
-    CrossAxisAlignment? crossAxisAlignment,
-    int? maxLines,
-    bool? reversal,
-    TextOverflow? overflow,
-    double? spacing,
-    TextAlign? textAlign,
+    this.maxLines = 1,
+    this.overflow = TextOverflow.ellipsis,
+    this.textAlign = TextAlign.start,
+    this.reversal = false,
+    this.direction = Axis.horizontal,
+    this.spacing = 4,
+    this.crossAxisAlignment = CrossAxisAlignment.center,
+    this.mainAxisAlignment = MainAxisAlignment.center,
     this.size,
     this.heroTag,
     this.icon,
@@ -34,15 +34,7 @@ class IconBox extends StatelessWidget {
     this.title,
     this.visible = true,
     this.widget,
-  })  : maxLines = maxLines ?? 1,
-        overflow = overflow ?? TextOverflow.ellipsis,
-        textAlign = textAlign ?? TextAlign.start,
-        reversal = reversal ?? false,
-        direction = direction ?? Axis.horizontal,
-        spacing = spacing ?? 4,
-        crossAxisAlignment = crossAxisAlignment ?? CrossAxisAlignment.center,
-        mainAxisAlignment = mainAxisAlignment ?? MainAxisAlignment.center,
-        super(key: key);
+  }) : super(key: key);
 
   ///  icon > image > imageProvider > widget
   final Widget? widget;
@@ -142,7 +134,8 @@ class IconBox extends StatelessWidget {
       height: height,
       onTap: onTap,
       margin: margin,
-      decoration: decoration ?? BoxDecoration(color: background),
+      color: background,
+      decoration: decoration,
       padding: padding,
       alignment: alignment);
 
@@ -249,7 +242,7 @@ class _CheckBoxState extends State<CheckBox> {
     if (oldWidget.value != widget.value ||
         oldWidget.stateBuilder != widget.stateBuilder) {
       value = widget.value;
-      setState(() {});
+      if (mounted) setState(() {});
     }
   }
 
@@ -268,12 +261,10 @@ class _CheckBoxState extends State<CheckBox> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Universal(
-        decoration: widget.decoration,
-        margin: widget.margin,
-        padding: widget.padding,
-        onTap: changeState,
-        child: widget.stateBuilder(value));
-  }
+  Widget build(BuildContext context) => Universal(
+      decoration: widget.decoration,
+      margin: widget.margin,
+      padding: widget.padding,
+      onTap: changeState,
+      child: widget.stateBuilder(value));
 }
