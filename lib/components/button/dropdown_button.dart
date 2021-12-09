@@ -115,8 +115,9 @@ class _DropdownMenuButtonState extends State<DropdownMenuButton> {
               decoration: widget.decoration ??
                   BoxDecoration(
                       color:
-                          widget.backgroundColor ?? context.theme.primaryColor,
-                      boxShadow: getBaseBoxShadow(context.theme.canvasColor)),
+                          widget.backgroundColor ?? context.theme.canvasColor,
+                      boxShadow: getBaseBoxShadow(context.theme.dividerColor,
+                          radius: 2)),
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: widget.itemCount.generate((int index) => Universal(
@@ -183,7 +184,7 @@ class DropdownMenu extends StatefulWidget {
                 width: double.infinity,
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 decoration: BoxDecoration(
-                    color: context.theme.dialogBackgroundColor,
+                    color: context.theme.canvasColor,
                     border: Border(
                         top: BorderSide(color: context.theme.dividerColor))),
                 child: BText(value[titleIndex][valueIndex],

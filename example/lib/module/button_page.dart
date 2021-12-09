@@ -49,7 +49,7 @@ class ButtonPage extends StatelessWidget {
                   return Padding(
                       padding: const EdgeInsets.only(right: 8),
                       child: BText(_dropdownValue.keys.elementAt(index),
-                          style: context.textTheme.subtitle2));
+                          style: context.textTheme.subtitle1));
                 },
                 valueCount: _dropdownValue.values
                     .builder((List<String> item) => item.length),
@@ -78,7 +78,8 @@ class ButtonPage extends StatelessWidget {
                 children: <Widget>[
                   DropdownMenuButton(
                       defaultBuilder: (int? index) {
-                        return BText(index == null ? '请选择' : _colors[index]);
+                        return BText(index == null ? '请选择' : _colors[index],
+                            style: context.textTheme.bodyText1);
                       },
                       margin: const EdgeInsets.only(top: 2),
                       itemCount: _colors.length,
@@ -89,11 +90,9 @@ class ButtonPage extends StatelessWidget {
                       itemBuilder: (int index) => Padding(
                           padding: const EdgeInsets.symmetric(
                               vertical: 10, horizontal: 4),
-                          child: BText(
-                            _colors[index],
-                            fontSize: 14,
-                            color: Colors.black,
-                          ))),
+                          child: BText(_colors[index],
+                              fontSize: 14,
+                              style: context.textTheme.bodyText1))),
                   DropdownButton<String>(
                       value: _colors[0],
                       onChanged: (String? value) {},
@@ -101,10 +100,12 @@ class ButtonPage extends StatelessWidget {
                           DropdownMenuItem<String>(
                               value: item, child: Text(item)))),
                   DropdownMenuButton.material(
-                      itemBuilder: (int index) => BText(_colors[index]),
+                      itemBuilder: (int index) => BText(_colors[index],
+                          style: context.textTheme.bodyText1),
                       itemCount: _colors.length,
                       defaultBuilder: (int? index) {
-                        return BText(index == null ? '请选择' : _colors[index])
+                        return BText(index == null ? '请选择' : _colors[index],
+                                style: context.textTheme.bodyText1)
                             .paddingSymmetric(vertical: 10);
                       })
                 ]),

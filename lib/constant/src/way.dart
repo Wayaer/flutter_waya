@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-List<BoxShadow> getBaseBoxShadow(Color color) => <BoxShadow>[
+List<BoxShadow> getBaseBoxShadow(Color color, {double radius = 0.05}) =>
+    <BoxShadow>[
       BoxShadow(
           color: color,
-          blurRadius: 0.05,
-          spreadRadius: 0.05,
+          blurRadius: radius,
+          spreadRadius: radius,
           offset: const Offset(0, 0))
     ];
 
