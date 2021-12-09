@@ -75,10 +75,9 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? showSnackBar(
 /// 关闭 closeOverlay();
 ExtendedOverlayEntry? showLoading({
   Widget? custom,
-  String? text,
+  String text = '',
   TextStyle? textStyle,
   double? value,
-  bool? gaussian,
   Color? backgroundColor,
   Animation<Color>? valueColor,
   double? strokeWidth,
@@ -90,8 +89,11 @@ ExtendedOverlayEntry? showLoading({
   GestureTapCallback? onTap,
   HitTestBehavior? behavior,
 
+  /// 开启背景模糊
+  bool gaussian = false,
+
   /// 背景模糊模糊程度 0-100 [gaussian]=true 有效
-  double? fuzzyDegree,
+  double fuzzyDegree = 4,
 }) =>
     showOverlay(Loading(
         custom: custom,
@@ -441,7 +443,7 @@ Future<T?>? showDialogSureCancel<T>({
 
   /// 高度不建议设置
   double? height,
-  double? width,
+  double width = 300,
   bool isDismissible = true,
   EdgeInsetsGeometry? padding,
 
@@ -452,13 +454,13 @@ Future<T?>? showDialogSureCancel<T>({
   Decoration? decoration,
 
   /// 背景是否模糊
-  bool? gaussian,
+  bool gaussian = false,
 
   /// 是否使用Overlay
   bool isOverlay = false,
 
   /// 是否添加Material Widget 部分组件需要基于Material
-  bool? addMaterial,
+  bool addMaterial = false,
 
   /// GeneralDialog 配置
   GeneralDialogOptions? options,
@@ -506,19 +508,19 @@ Future<DateTime?> showDateTimePicker<T>({
   DateTime? endDate,
 
   /// 补全双位数
-  bool? dual,
+  bool dual = true,
 
   /// 是否显示单位
-  bool? showUnit,
+  bool showUnit = true,
 
   /// 单位设置
-  DateTimePickerUnit? unit,
+  DateTimePickerUnit unit = const DateTimePickerUnit(),
 
   /// 头部和背景色配置
   PickerOptions<DateTime>? options,
 
   /// Wheel配置信息
-  PickerWheel? wheel,
+  PickerWheelOptions wheel = const PickerWheelOptions(),
 
   /// BottomSheet 配置
   BottomSheetOptions? bottomSheetOptions,
@@ -554,7 +556,7 @@ Future<String?> showAreaPicker<T>({
   PickerOptions<String>? options,
 
   /// Wheel配置信息
-  PickerWheel? wheel,
+  PickerWheelOptions wheel = const PickerWheelOptions(),
 
   /// BottomSheet 配置
   BottomSheetOptions? bottomSheetOptions,
@@ -581,7 +583,7 @@ Future<int?> showMultipleChoicePicker<T>({
   PickerOptions<int>? options,
 
   /// Wheel配置信息
-  PickerWheel? wheel,
+  PickerWheelOptions wheel = const PickerWheelOptions(),
 
   /// BottomSheet 配置
   BottomSheetOptions? bottomSheetOptions,

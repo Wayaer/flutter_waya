@@ -9,22 +9,17 @@ const double kPickerDefaultHeight = 180;
 
 class PickerOptions<T> {
   PickerOptions({
-    EdgeInsetsGeometry? titlePadding,
-    Widget? sure,
-    Widget? cancel,
-    double? height,
+    this.titlePadding = const EdgeInsets.symmetric(horizontal: 10),
+    this.sure = const BText('sure'),
+    this.cancel = const BText('cancel'),
     this.backgroundColor,
     this.contentStyle,
     PickerTapSureCallback<T>? sureTap,
     PickerTapCancelCallback<T>? cancelTap,
     this.titleBottom,
     this.title,
-  })  : sure = sure ?? const BText('sure'),
-        cancel = cancel ?? const BText('cancel'),
-        sureTap = sureTap ?? ((T? value) => true),
-        cancelTap = cancelTap ?? ((T? value) => true),
-        titlePadding =
-            titlePadding ?? const EdgeInsets.symmetric(horizontal: 10);
+  })  : sureTap = sureTap ?? ((T? value) => true),
+        cancelTap = cancelTap ?? ((T? value) => true);
 
   /// 容器属性
   /// 整个Picker的背景色
@@ -55,48 +50,49 @@ class PickerOptions<T> {
   PickerTapCancelCallback<T> cancelTap;
 }
 
-class PickerWheel {
-  PickerWheel(
-      {this.itemHeight = 22,
-      this.isCupertino = true,
-      this.itemWidth,
-      this.diameterRatio = 1.3,
-      this.offAxisFraction = 0,
-      this.perspective = 0.01,
-      this.magnification = 1.1,
-      this.useMagnifier = true,
-      this.squeeze = 1,
-      this.physics = const FixedExtentScrollPhysics()});
+class PickerWheelOptions extends WheelOptions {
+  const PickerWheelOptions({
+    /// 高度
+    double itemHeight = 22,
 
-  /// 以下为ListWheel属性
-  /// 高度
-  final double? itemHeight;
+    /// 半径大小,越大则越平面,越小则间距越大
+    double diameterRatio = 1.3,
+
+    /// 选中item偏移
+    double offAxisFraction = 0,
+
+    /// 表示ListWheel水平偏离中心的程度  范围[0,0.01]
+    double perspective = 0.01,
+
+    /// 是否启用放大
+    bool useMagnifier = true,
+
+    /// 放大倍率
+    double magnification = 1.1,
+
+    /// 上下间距默认为1 数越小 间距越大
+    double squeeze = 1,
+
+    /// 使用ios Cupertino 风格
+    bool isCupertino = true,
+
+    /// [isCupertino]=true生效
+    Color? backgroundColor,
+    ScrollPhysics physics = const FixedExtentScrollPhysics(),
+    this.itemWidth,
+  }) : super(
+            backgroundColor: backgroundColor,
+            itemExtent: itemHeight,
+            isCupertino: isCupertino,
+            diameterRatio: diameterRatio,
+            offAxisFraction: offAxisFraction,
+            perspective: perspective,
+            magnification: magnification,
+            useMagnifier: useMagnifier,
+            squeeze: squeeze);
 
   /// 不设置 [itemWidth] 默认均分
   final double? itemWidth;
-
-  /// 半径大小,越大则越平面,越小则间距越大
-  final double? diameterRatio;
-
-  /// 选中item偏移
-  final double? offAxisFraction;
-
-  /// 表示ListWheel水平偏离中心的程度  范围[0,0.01]
-  final double? perspective;
-
-  /// 是否启用放大
-  final bool? useMagnifier;
-
-  /// 放大倍率
-  final double? magnification;
-
-  /// 使用ios Cupertino 风格
-  final bool? isCupertino;
-
-  /// 上下间距默认为1 数越小 间距越大
-  final double? squeeze;
-
-  final ScrollPhysics? physics;
 }
 
 abstract class _PickerConfig<T> extends StatefulWidget {
@@ -104,7 +100,7 @@ abstract class _PickerConfig<T> extends StatefulWidget {
       : super(key: key);
 
   final PickerOptions<T> options;
-  final PickerWheel wheel;
+  final PickerWheelOptions wheel;
 }
 
 typedef PickerSubjectTapCallback<T> = T Function();
@@ -147,6 +143,7 @@ class PickerSubject<T> extends StatelessWidget {
     columnChildren.add(child);
     return Universal(
         onTap: () {},
+        safeBottom: true,
         mainAxisSize: MainAxisSize.min,
         color: options.backgroundColor,
         children: columnChildren);
@@ -156,7 +153,7 @@ class PickerSubject<T> extends StatelessWidget {
 class _PickerListWheel extends ListWheel {
   _PickerListWheel({
     Key? key,
-    PickerWheel? wheel,
+    required PickerWheelOptions wheel,
     FixedExtentScrollController? controller,
     int? initialIndex,
     ListWheelChildDelegateType childDelegateType =
@@ -170,21 +167,23 @@ class _PickerListWheel extends ListWheel {
             key: key,
             controller: controller,
             initialIndex: initialIndex ?? 0,
-            isCupertino: wheel?.isCupertino,
-            itemExtent: wheel?.itemHeight,
-            diameterRatio: wheel?.diameterRatio,
-            offAxisFraction: wheel?.offAxisFraction,
-            perspective: wheel?.perspective,
-            magnification: wheel?.magnification,
-            useMagnifier: wheel?.useMagnifier,
-            squeeze: wheel?.squeeze,
-            physics: wheel?.physics,
+            options: WheelOptions(
+                backgroundColor: wheel.backgroundColor,
+                isCupertino: wheel.isCupertino,
+                itemExtent: wheel.itemExtent,
+                diameterRatio: wheel.diameterRatio,
+                offAxisFraction: wheel.offAxisFraction,
+                perspective: wheel.perspective,
+                magnification: wheel.magnification,
+                useMagnifier: wheel.useMagnifier,
+                squeeze: wheel.squeeze,
+                physics: wheel.physics,
+                onChanged: onChanged),
             childDelegateType: childDelegateType,
             children: children,
             itemBuilder: itemBuilder,
             itemCount: itemCount,
-            onScrollEnd: onScrollEnd,
-            onChanged: onChanged);
+            onScrollEnd: onScrollEnd);
 }
 
 /// 省市区三级联动
@@ -195,11 +194,11 @@ class AreaPicker extends _PickerConfig<String> {
     this.defaultCity,
     this.defaultDistrict,
     PickerOptions<String>? options,
-    PickerWheel? wheel,
+    PickerWheelOptions wheel = const PickerWheelOptions(),
   }) : super(
             key: key,
             options: options ?? PickerOptions<String>(),
-            wheel: wheel ?? PickerWheel());
+            wheel: wheel);
 
   /// 默认选择的省
   final String? defaultProvince;
@@ -364,7 +363,7 @@ class MultipleChoicePicker extends StatelessWidget {
     required this.itemCount,
     required this.itemBuilder,
     PickerOptions<int>? options,
-    this.wheel,
+    this.wheel = const PickerWheelOptions(),
     FixedExtentScrollController? controller,
   })  : controller = controller ??
             FixedExtentScrollController(initialItem: initialIndex ?? 0),
@@ -372,7 +371,7 @@ class MultipleChoicePicker extends StatelessWidget {
         super(key: key);
   final PickerOptions<int> options;
 
-  final PickerWheel? wheel;
+  final PickerWheelOptions wheel;
 
   final int? initialIndex;
   final int itemCount;
@@ -398,22 +397,19 @@ class MultipleChoicePicker extends StatelessWidget {
 class DateTimePicker extends _PickerConfig<DateTime> {
   DateTimePicker({
     Key? key,
-    bool? dual,
-    bool? showUnit,
-    DateTimePickerUnit? unit,
+    this.unit = const DateTimePickerUnit(),
+    this.showUnit = true,
+    this.dual = true,
     this.unitStyle,
     this.startDate,
     this.defaultDate,
     this.endDate,
     PickerOptions<DateTime>? options,
-    PickerWheel? wheel,
-  })  : unit = unit ?? DateTimePickerUnit(),
-        showUnit = showUnit ?? true,
-        dual = dual ?? true,
-        super(
+    PickerWheelOptions wheel = const PickerWheelOptions(),
+  }) : super(
             key: key,
             options: options ?? PickerOptions<DateTime>(),
-            wheel: wheel ?? PickerWheel());
+            wheel: wheel);
 
   /// 补全双位数
   final bool dual;

@@ -95,10 +95,9 @@ class _SpinKitCubeGridState extends State<SpinKitCubeGrid>
   }
 
   Widget _square(Animation<double> animation, int index) => ScaleTransition(
-        scale: animation,
-        child: SizedBox.fromSize(
-            size: Size.square(widget.size / 3), child: _itemBuilder(index)),
-      );
+      scale: animation,
+      child: SizedBox.fromSize(
+          size: Size.square(widget.size / 3), child: _itemBuilder(index)));
 
   Widget _itemBuilder(int index) => widget.itemBuilder != null
       ? widget.itemBuilder!(context, index)
@@ -165,19 +164,16 @@ class _SpinKitFoldingCubeState extends State<SpinKitFoldingCube>
   @override
   Widget build(BuildContext context) {
     return Center(
-        child: SizedBox.fromSize(
+        child: Universal(
             size: Size.square(widget.size),
-            child: Center(
-                child: Transform.rotate(
-                    angle: -45.0 * 0.0174533,
-                    child: Stack(
-                      children: <Widget>[
-                        _cube(1, animation: _rotate2),
-                        _cube(2, animation: _rotate3),
-                        _cube(3, animation: _rotate4),
-                        _cube(4, animation: _rotate1),
-                      ],
-                    )))));
+            child: Transform.rotate(
+                angle: -45.0 * 0.0174533,
+                child: Stack(children: <Widget>[
+                  _cube(1, animation: _rotate2),
+                  _cube(2, animation: _rotate3),
+                  _cube(3, animation: _rotate4),
+                  _cube(4, animation: _rotate1),
+                ]))));
   }
 
   Widget _cube(int i, {required Animation<double> animation}) {

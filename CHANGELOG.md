@@ -3,6 +3,8 @@
 * Support the theme
 * Add an example of an extension
 * Fix some bugs
+* Split out `WheelOptions` in `ListWheel`
+* `PickerWheel` changed to `PickerWheelOptions`
 
 ## 1.15.10
 

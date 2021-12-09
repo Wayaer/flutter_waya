@@ -328,17 +328,20 @@ bool scaffoldWillPop = true;
 class ExtendedScaffold extends StatelessWidget {
   const ExtendedScaffold({
     Key? key,
-    bool? paddingStatusBar,
-    bool? primary,
-    bool? extendBody,
-    bool? extendBodyBehindAppBar,
-    bool? isStack,
-    bool? isScroll,
-    DragStartBehavior? drawerDragStartBehavior,
-    bool? onWillPopOverlayClose,
-    bool? useSingleChildScrollView,
-    bool? drawerEnableOpenDragGesture,
-    bool? endDrawerEnableOpenDragGesture,
+    this.safeLeft = false,
+    this.safeTop = false,
+    this.safeRight = false,
+    this.safeBottom = true,
+    this.isStack = false,
+    this.isScroll = false,
+    this.onWillPopOverlayClose = false,
+    this.useSingleChildScrollView = true,
+    this.extendBody = false,
+    this.extendBodyBehindAppBar = false,
+    this.primary = true,
+    this.drawerDragStartBehavior = DragStartBehavior.start,
+    this.drawerEnableOpenDragGesture = true,
+    this.endDrawerEnableOpenDragGesture = true,
     this.appBar,
     this.body,
     this.padding,
@@ -376,49 +379,35 @@ class ExtendedScaffold extends StatelessWidget {
     this.onWillPop,
     this.appBarHeight,
     this.children,
-    this.mainAxisAlignment,
-    this.crossAxisAlignment,
-    this.direction,
+    this.mainAxisAlignment = MainAxisAlignment.start,
+    this.crossAxisAlignment = CrossAxisAlignment.center,
+    this.direction = Axis.vertical,
     this.margin,
     this.decoration,
     this.refreshConfig,
     this.restorationId,
     this.backgroundColor,
-  })  : onWillPopOverlayClose = onWillPopOverlayClose ?? false,
-        paddingStatusBar = paddingStatusBar ?? false,
-        useSingleChildScrollView = useSingleChildScrollView ?? true,
-        primary = primary ?? true,
-        drawerEnableOpenDragGesture = drawerEnableOpenDragGesture ?? true,
-        endDrawerEnableOpenDragGesture = endDrawerEnableOpenDragGesture ?? true,
-        extendBody = extendBody ?? false,
-        extendBodyBehindAppBar = extendBodyBehindAppBar ?? false,
-        isStack = isStack ?? false,
-        isScroll = isScroll ?? false,
-        drawerDragStartBehavior =
-            drawerDragStartBehavior ?? DragStartBehavior.start,
-        super(key: key);
+  }) : super(key: key);
 
   /// 相当于给[body] 套用 [Column]、[Row]、[Stack]
   final List<Widget>? children;
 
   /// [children].length > 0 && [isStack]=false 有效;
-  final MainAxisAlignment? mainAxisAlignment;
+  final MainAxisAlignment mainAxisAlignment;
 
   /// [children].length > 0 && [isStack]=false 有效;
-  final CrossAxisAlignment? crossAxisAlignment;
+  final CrossAxisAlignment crossAxisAlignment;
 
   /// [children].length > 0 && [isStack]=false 有效;
-  final Axis? direction;
+  final Axis direction;
 
   /// [children].length > 0有效;
   /// 添加 [Stack]组件
-  final bool? isStack;
+  final bool isStack;
 
   /// 是否添加滚动组件
-  final bool? isScroll;
+  final bool isScroll;
 
-  /// [body]top padding 出状态栏高度 [padding]!=null 时此参数无效
-  final bool paddingStatusBar;
   final EdgeInsetsGeometry? padding;
   final EdgeInsetsGeometry? margin;
   final Decoration? decoration;
@@ -462,6 +451,10 @@ class ExtendedScaffold extends StatelessWidget {
   final bool? resizeToAvoidBottomInset;
   final bool primary;
   final String? restorationId;
+  final bool safeLeft;
+  final bool safeTop;
+  final bool safeRight;
+  final bool safeBottom;
 
   @override
   Widget build(BuildContext context) {
@@ -519,9 +512,12 @@ class ExtendedScaffold extends StatelessWidget {
       refreshConfig: refreshConfig,
       margin: margin,
       useSingleChildScrollView: useSingleChildScrollView,
-      padding:
-          paddingStatusBar ? EdgeInsets.only(top: getStatusBarHeight) : padding,
+      padding: padding,
       isScroll: isScroll,
+      safeLeft: safeLeft,
+      safeTop: safeTop,
+      safeRight: safeRight,
+      safeBottom: safeBottom,
       isStack: isStack,
       direction: direction,
       decoration: decoration,

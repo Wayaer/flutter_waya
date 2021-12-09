@@ -279,7 +279,9 @@ class _SpinKitWaveState extends State<SpinKitWave>
       ? widget.itemBuilder!(context, index)
       : DecoratedBox(
           decoration: BoxDecoration(
-              color: widget.color ?? context.theme.progressIndicatorTheme.color,
+              color: widget.color ??
+                  context.theme.progressIndicatorTheme.color ??
+                  context.theme.primaryColor,
               borderRadius: BorderRadius.circular(4)));
 }
 

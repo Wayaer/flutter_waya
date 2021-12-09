@@ -188,7 +188,7 @@ class AppConfig {
 class DateTimePickerUnit {
   /// 设置 null 不显示
   /// [year] == null 不显示年
-  DateTimePickerUnit(
+  const DateTimePickerUnit(
       {this.year = 'Y',
       this.month = 'M',
       this.day = 'D',

@@ -110,14 +110,14 @@ class _SpinKitRingCurve extends Curve {
 class SpinKitDualRing extends StatefulWidget {
   const SpinKitDualRing({
     Key? key,
-    required this.color,
+    this.color,
     this.lineWidth = 7.0,
     this.size = 50.0,
     this.duration = const Duration(milliseconds: 1200),
     this.controller,
   }) : super(key: key);
 
-  final Color color;
+  final Color? color;
   final double lineWidth;
   final double size;
   final Duration duration;
@@ -153,16 +153,17 @@ class _SpinKitDualRingState extends State<SpinKitDualRing>
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Transform(
-        transform: Matrix4.identity()..rotateZ((_animation.value) * pi * 2),
-        alignment: FractionalOffset.center,
-        child: CustomPaint(
-          child: SizedBox.fromSize(size: Size.square(widget.size)),
-          painter: _DualRingPainter(
-              paintWidth: widget.lineWidth, color: widget.color),
-        ),
-      ),
-    );
+        child: Transform(
+            transform: Matrix4.identity()..rotateZ((_animation.value) * pi * 2),
+            alignment: FractionalOffset.center,
+            child: CustomPaint(
+              child: SizedBox.fromSize(size: Size.square(widget.size)),
+              painter: _DualRingPainter(
+                  paintWidth: widget.lineWidth,
+                  color: widget.color ??
+                      context.theme.progressIndicatorTheme.color ??
+                      context.theme.primaryColor),
+            )));
   }
 }
 

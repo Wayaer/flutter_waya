@@ -5,53 +5,83 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 enum ListWheelChildDelegateType {
-  ///  有大量子控件时使用 子组件不会全部渲染
+  /// 有大量子控件时使用 子组件不会全部渲染
   builder,
 
-  ///  不推荐使用 子组件会全部渲染
+  /// 不推荐使用 子组件会全部渲染
   list,
 
-  ///  一个提供无限通过循环显式列表的子级
+  /// 一个提供无限通过循环显式列表的子级
   looping
+}
+
+class WheelOptions {
+  const WheelOptions({
+    this.backgroundColor,
+    this.looping = false,
+    this.diameterRatio = 1,
+    this.offAxisFraction = 0,
+    this.perspective = 0.01,
+    this.magnification = 1.1,
+    this.useMagnifier = false,
+    this.squeeze = 1,
+    this.isCupertino = true,
+    this.itemExtent = 22,
+    this.physics = const FixedExtentScrollPhysics(),
+    this.onChanged,
+  });
+
+  /// 每个Item的高度,固定的
+  final double itemExtent;
+
+  /// 半径大小,越大则越平面,越小则间距越大
+  final double diameterRatio;
+
+  /// 选中item偏移
+  final double offAxisFraction;
+
+  /// 表示车轮水平偏离中心的程度  范围[0,0.01]
+  final double perspective;
+
+  /// 放大倍率
+  final double magnification;
+
+  /// 是否启用放大镜
+  final bool useMagnifier;
+
+  /// 上下间距默认为1 数越小 间距越大
+  final double squeeze;
+
+  /// 是否使用ios 样式
+  final bool isCupertino;
+
+  /// ScrollPhysics
+  final ScrollPhysics physics;
+
+  final bool looping;
+
+  /// 回调监听
+  final ValueChanged<int>? onChanged;
+
+  /// [isCupertino]=true生效
+  final Color? backgroundColor;
 }
 
 class ListWheel extends StatefulWidget {
   ListWheel({
     Key? key,
-    bool? looping,
-    double? itemExtent,
-    double? diameterRatio,
-    double? offAxisFraction,
-    double? perspective,
-    int? initialIndex,
-    double? magnification,
-    bool? useMagnifier,
-    double? squeeze,
-    bool? isCupertino,
-    ScrollPhysics? physics,
+    this.initialIndex = 0,
     this.controller,
     this.itemBuilder,
     this.itemCount,
     this.childDelegateType = ListWheelChildDelegateType.looping,
-    this.onChanged,
     this.onScrollEnd,
     this.children,
     this.onNotification,
     this.onScrollStart,
     this.onScrollUpdate,
-    this.backgroundColor,
-  })  : diameterRatio = diameterRatio ?? 1,
-        offAxisFraction = offAxisFraction ?? 0,
-        initialIndex = initialIndex ?? 0,
-        perspective = perspective ?? 0.01,
-        magnification = magnification ?? 1.1,
-        useMagnifier = useMagnifier ?? false,
-        looping = looping ?? false,
-        squeeze = squeeze ?? 1,
-        isCupertino = isCupertino ?? true,
-        itemExtent = itemExtent ?? 22,
-        physics = physics ?? const FixedExtentScrollPhysics(),
-        super(key: key) {
+    this.options = const WheelOptions(),
+  }) : super(key: key) {
     if (childDelegateType == ListWheelChildDelegateType.list ||
         childDelegateType == ListWheelChildDelegateType.looping) {
       assert(children != null);
@@ -62,70 +92,37 @@ class ListWheel extends StatefulWidget {
     }
   }
 
-  ///  每个Item的高度,固定的
-  final double itemExtent;
-
-  ///  子组件
-  final List<Widget>? children;
-
-  ///  条目构造器
-  final IndexedWidgetBuilder? itemBuilder;
-
-  ///  条目数量
-  final int? itemCount;
-
-  ///  半径大小,越大则越平面,越小则间距越大
-  final double diameterRatio;
-
-  ///  选中item偏移
-  final double offAxisFraction;
-
-  ///  表示车轮水平偏离中心的程度  范围[0,0.01]
-  final double perspective;
-
-  ///  初始选中的Item
+  /// 初始选中的Item
   final int initialIndex;
 
-  ///  回调监听
-  final ValueChanged<int>? onChanged;
+  final WheelOptions options;
 
-  ///  放大倍率
-  final double magnification;
+  /// 子组件
+  final List<Widget>? children;
 
-  ///  是否启用放大镜
-  final bool useMagnifier;
+  /// 条目构造器
+  final IndexedWidgetBuilder? itemBuilder;
 
-  /// 上下间距默认为1 数越小 间距越大
-  final double squeeze;
+  /// 条目数量
+  final int? itemCount;
 
-  ///
-  final ScrollPhysics physics;
-
-  ///  滚轮类型
+  /// 滚轮类型
   final ListWheelChildDelegateType childDelegateType;
 
-  ///  控制器
+  /// 控制器
   final FixedExtentScrollController? controller;
 
-  ///  滚动监听 添加此方法  [onScrollStart],[onScrollUpdate],[onScrollEnd] 无效
+  /// 滚动监听 添加此方法  [onScrollStart],[onScrollUpdate],[onScrollEnd] 无效
   final NotificationListenerCallback<ScrollNotification>? onNotification;
 
-  ///  动开始回调
+  /// 动开始回调
   final ValueChanged<int>? onScrollStart;
 
-  ///  滚动中回调
+  /// 滚动中回调
   final ValueChanged<int>? onScrollUpdate;
 
-  ///  动结束回调
+  /// 动结束回调
   final ValueChanged<int>? onScrollEnd;
-
-  final bool looping;
-
-  ///  是否使用ios 样式
-  final bool isCupertino;
-
-  ///  [isCupertino]=true生效
-  final Color? backgroundColor;
 
   @override
   _ListWheelState createState() => _ListWheelState();
@@ -155,45 +152,45 @@ class _ListWheelState extends State<ListWheel> {
   @override
   Widget build(BuildContext context) {
     Widget child;
-    if (widget.isCupertino) {
+    if (widget.options.isCupertino) {
       child = widget.childDelegateType == ListWheelChildDelegateType.builder
           ? CupertinoPicker.builder(
               scrollController: controller,
               childCount: widget.itemCount,
               itemBuilder: widget.itemBuilder!,
-              backgroundColor: widget.backgroundColor,
-              itemExtent: widget.itemExtent,
-              diameterRatio: widget.diameterRatio,
-              onSelectedItemChanged: widget.onChanged,
-              offAxisFraction: widget.offAxisFraction,
-              useMagnifier: widget.useMagnifier,
-              squeeze: widget.squeeze,
-              magnification: widget.magnification)
+              backgroundColor: widget.options.backgroundColor,
+              itemExtent: widget.options.itemExtent,
+              diameterRatio: widget.options.diameterRatio,
+              onSelectedItemChanged: widget.options.onChanged,
+              offAxisFraction: widget.options.offAxisFraction,
+              useMagnifier: widget.options.useMagnifier,
+              squeeze: widget.options.squeeze,
+              magnification: widget.options.magnification)
           : CupertinoPicker(
               scrollController: controller,
               children: widget.children!,
-              backgroundColor: widget.backgroundColor,
+              backgroundColor: widget.options.backgroundColor,
               looping: widget.childDelegateType ==
                   ListWheelChildDelegateType.looping,
-              itemExtent: widget.itemExtent,
-              diameterRatio: widget.diameterRatio,
-              onSelectedItemChanged: widget.onChanged,
-              offAxisFraction: widget.offAxisFraction,
-              useMagnifier: widget.useMagnifier,
-              squeeze: widget.squeeze,
-              magnification: widget.magnification);
+              itemExtent: widget.options.itemExtent,
+              diameterRatio: widget.options.diameterRatio,
+              onSelectedItemChanged: widget.options.onChanged,
+              offAxisFraction: widget.options.offAxisFraction,
+              useMagnifier: widget.options.useMagnifier,
+              squeeze: widget.options.squeeze,
+              magnification: widget.options.magnification);
     } else {
       child = ListWheelScrollView.useDelegate(
           controller: controller,
-          itemExtent: widget.itemExtent,
-          physics: widget.physics,
-          diameterRatio: widget.diameterRatio,
-          onSelectedItemChanged: widget.onChanged,
-          offAxisFraction: widget.offAxisFraction,
-          perspective: widget.perspective,
-          useMagnifier: widget.useMagnifier,
-          squeeze: widget.squeeze,
-          magnification: widget.magnification,
+          itemExtent: widget.options.itemExtent,
+          physics: widget.options.physics,
+          diameterRatio: widget.options.diameterRatio,
+          onSelectedItemChanged: widget.options.onChanged,
+          offAxisFraction: widget.options.offAxisFraction,
+          perspective: widget.options.perspective,
+          useMagnifier: widget.options.useMagnifier,
+          squeeze: widget.options.squeeze,
+          magnification: widget.options.magnification,
           childDelegate: getDelegate(widget.childDelegateType));
     }
     if (widget.onScrollStart == null &&
@@ -227,20 +224,17 @@ class _ListWheelState extends State<ListWheel> {
 class AutoScrollEntry extends StatefulWidget {
   const AutoScrollEntry(
       {Key? key,
-      int? initialIndex,
+      this.duration = const Duration(seconds: 3),
+      this.animateDuration = const Duration(milliseconds: 500),
+      this.initialIndex = 0,
       this.itemHeight,
       this.maxItemCount,
       this.itemWidth,
       required this.children,
       this.onChanged,
       this.margin,
-      this.padding,
-      Duration? duration,
-      Duration? animateDuration})
-      : duration = duration ?? const Duration(seconds: 3),
-        animateDuration = animateDuration ?? const Duration(milliseconds: 500),
-        initialIndex = initialIndex ?? 0,
-        super(key: key);
+      this.padding})
+      : super(key: key);
 
   final int initialIndex;
   final List<Widget> children;
@@ -256,11 +250,11 @@ class AutoScrollEntry extends StatefulWidget {
   /// 滚动最大数量
   final int? maxItemCount;
 
-  ///  回调监听
+  /// 回调监听
   final ValueChanged<int>? onChanged;
 
-  ///  以下为滚轮属性
-  ///  高度
+  /// 以下为滚轮属性
+  /// 高度
   final double? itemHeight;
   final double? itemWidth;
 
@@ -312,18 +306,20 @@ class _AutoScrollEntryState extends State<AutoScrollEntry> {
         width: widget.itemWidth,
         height: itemHeight,
         child: ListWheel(
-            controller: controller,
-            initialIndex: widget.initialIndex,
-            itemExtent: itemHeight,
-            magnification: 1,
-            useMagnifier: false,
-            squeeze: 2,
-            isCupertino: false,
-            perspective: 0.00001,
-            childDelegateType: ListWheelChildDelegateType.looping,
-            children: widget.children,
-            physics: const NeverScrollableScrollPhysics(),
-            onChanged: widget.onChanged ?? (int index) {}));
+          controller: controller,
+          initialIndex: widget.initialIndex,
+          options: WheelOptions(
+              physics: const NeverScrollableScrollPhysics(),
+              onChanged: widget.onChanged ?? (int index) {},
+              itemExtent: itemHeight,
+              magnification: 1,
+              useMagnifier: false,
+              squeeze: 2,
+              isCupertino: false,
+              perspective: 0.00001),
+          childDelegateType: ListWheelChildDelegateType.looping,
+          children: widget.children,
+        ));
   }
 
   @override
@@ -366,52 +362,52 @@ class ListEntry extends StatelessWidget {
       this.arrowIcon})
       : super(key: key);
 
-  ///  单击事件
+  /// 单击事件
   final GestureTapCallback? onTap;
 
-  ///  双击事件
+  /// 双击事件
   final GestureTapCallback? onDoubleTap;
 
-  ///  长按事件
+  /// 长按事件
   final GestureLongPressCallback? onLongPress;
 
-  ///  显示三行
+  /// 显示三行
   final bool isThreeLine;
 
-  ///  是否默认3行高度，subtitle不为空时才能使用
+  /// 是否默认3行高度，subtitle不为空时才能使用
   final bool? selected;
 
-  ///  设置为true后 高度变小 默认为true
+  /// 设置为true后 高度变小 默认为true
   final bool dense;
 
-  ///  内边距
+  /// 内边距
   final EdgeInsetsGeometry? contentPadding;
 
-  ///  左侧widget
+  /// 左侧widget
   final Widget? leading;
 
-  ///  副标题
+  /// 副标题
   final Widget? subtitle;
 
-  ///  右侧widget
+  /// 右侧widget
   final Widget? child;
 
-  ///  右边是否有箭头
+  /// 右边是否有箭头
   final bool arrow;
   final Widget? arrowIcon;
   final double arrowSize;
   final Color? arrowColor;
 
-  ///  中间内容
+  /// 中间内容
   final Widget? title;
   final String titleText;
   final TextStyle? titleStyle;
   final String? heroTag;
 
-  ///  高
+  /// 高
   final double? height;
 
-  ///  前缀
+  /// 前缀
   final Widget? prefix;
 
   final EdgeInsetsGeometry? padding;
@@ -420,10 +416,10 @@ class ListEntry extends StatelessWidget {
   final Color? underlineColor;
   final Color? color;
 
-  ///  是否可点击
+  /// 是否可点击
   final bool enabled;
 
-  ///  整个ListEntry装饰器
+  /// 整个ListEntry装饰器
   final BoxDecoration? decoration;
 
   @override

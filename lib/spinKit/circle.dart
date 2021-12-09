@@ -82,8 +82,11 @@ class _SpinKitCircleState extends State<SpinKitCircle>
   Widget _itemBuilder(int index) => widget.itemBuilder != null
       ? widget.itemBuilder!(context, index)
       : DecoratedBox(
-          decoration:
-              BoxDecoration(color: widget.color, shape: BoxShape.circle));
+          decoration: BoxDecoration(
+              color: widget.color ??
+                  context.theme.progressIndicatorTheme.color ??
+                  context.theme.primaryColor,
+              shape: BoxShape.circle));
 }
 
 class SpinKitFadingCircle extends StatefulWidget {
@@ -172,8 +175,11 @@ class _SpinKitFadingCircleState extends State<SpinKitFadingCircle>
   Widget _itemBuilder(int index) => widget.itemBuilder != null
       ? widget.itemBuilder!(context, index)
       : DecoratedBox(
-          decoration:
-              BoxDecoration(color: widget.color, shape: BoxShape.circle));
+          decoration: BoxDecoration(
+              color: widget.color ??
+                  context.theme.progressIndicatorTheme.color ??
+                  context.theme.primaryColor,
+              shape: BoxShape.circle));
 }
 
 class SpinKitSquareCircle extends StatefulWidget {
@@ -243,7 +249,9 @@ class _SpinKitSquareCircleState extends State<SpinKitSquareCircle>
           ? widget.itemBuilder!(context, index)
           : DecoratedBox(
               decoration: BoxDecoration(
-                  color: widget.color,
+                  color: widget.color ??
+                      context.theme.progressIndicatorTheme.color ??
+                      context.theme.primaryColor,
                   borderRadius: BorderRadius.all(Radius.circular(curveValue))),
             );
 }

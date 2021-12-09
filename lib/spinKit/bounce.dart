@@ -60,7 +60,10 @@ class _SpinKitDoubleBounceState extends State<SpinKitDoubleBounce>
       ? widget.itemBuilder!(context, index)
       : DecoratedBox(
           decoration: BoxDecoration(
-              shape: BoxShape.circle, color: widget.color!.withOpacity(0.6)));
+              shape: BoxShape.circle,
+              color: widget.color ??
+                  context.theme.progressIndicatorTheme.color ??
+                  context.theme.primaryColor));
 }
 
 class SpinKitThreeBounce extends StatefulWidget {
@@ -107,17 +110,17 @@ class _SpinKitThreeBounceState extends State<SpinKitThreeBounce>
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox.fromSize(
+    return Universal(
+        direction: Axis.horizontal,
+        alignment: Alignment.center,
         size: Size(widget.size * 2, widget.size),
-        child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: 3.generate((int i) => ScaleTransition(
-                  scale: _DelayTween(begin: 0.0, end: 1.0, delay: i * .2)
-                      .animate(_controller),
-                  child: SizedBox.fromSize(
-                      size: Size.square(widget.size * 0.5),
-                      child: _itemBuilder(i)),
-                )))).center();
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: 3.generate((int i) => ScaleTransition(
+              scale: _DelayTween(begin: 0.0, end: 1.0, delay: i * .2)
+                  .animate(_controller),
+              child: SizedBox.fromSize(
+                  size: Size.square(widget.size * 0.5), child: _itemBuilder(i)),
+            )));
   }
 
   Widget _itemBuilder(int index) => widget.itemBuilder != null
@@ -176,15 +179,12 @@ class _SpinKitPulseState extends State<SpinKitPulse>
   @override
   Widget build(BuildContext context) {
     return Opacity(
-      opacity: 1.0 - _animation.value,
-      child: Transform.scale(
-        scale: _animation.value,
-        child: SizedBox.fromSize(
-          size: Size.square(widget.size),
-          child: _itemBuilder(0),
-        ),
-      ),
-    ).center();
+            opacity: 1.0 - _animation.value,
+            child: Transform.scale(
+                scale: _animation.value,
+                child: SizedBox.fromSize(
+                    size: Size.square(widget.size), child: _itemBuilder(0))))
+        .center();
   }
 
   Widget _itemBuilder(int index) => widget.itemBuilder != null
@@ -251,28 +251,24 @@ class _SpinKitRippleState extends State<SpinKitRipple>
     return Center(
         child: Stack(children: <Widget>[
       Opacity(
-        opacity: 1.0 - _animation1.value,
-        child:
-            Transform.scale(scale: _animation1.value, child: _itemBuilder(0)),
-      ),
+          opacity: 1.0 - _animation1.value,
+          child: Transform.scale(
+              scale: _animation1.value, child: _itemBuilder(0))),
       Opacity(
-        opacity: 1.0 - _animation2.value,
-        child:
-            Transform.scale(scale: _animation2.value, child: _itemBuilder(1)),
-      )
+          opacity: 1.0 - _animation2.value,
+          child:
+              Transform.scale(scale: _animation2.value, child: _itemBuilder(1)))
     ]));
   }
 
-  Widget _itemBuilder(int index) {
-    return SizedBox.fromSize(
-      size: Size.square(widget.size),
-      child: widget.itemBuilder != null
-          ? widget.itemBuilder!(context, index)
-          : DecoratedBox(
-              decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                      color: widget.color!, width: widget.borderWidth))),
-    );
-  }
+  Widget _itemBuilder(int index) => SizedBox.fromSize(
+        size: Size.square(widget.size),
+        child: widget.itemBuilder != null
+            ? widget.itemBuilder!(context, index)
+            : DecoratedBox(
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                        color: widget.color!, width: widget.borderWidth))),
+      );
 }

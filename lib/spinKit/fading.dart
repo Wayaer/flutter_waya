@@ -71,7 +71,11 @@ class _SpinKitFadingFourState extends State<SpinKitFadingFour>
   Widget _itemBuilder(int index) => widget.itemBuilder != null
       ? widget.itemBuilder!(context, index)
       : DecoratedBox(
-          decoration: BoxDecoration(color: widget.color, shape: widget.shape));
+          decoration: BoxDecoration(
+              color: widget.color ??
+                  context.theme.progressIndicatorTheme.color ??
+                  context.theme.primaryColor,
+              shape: widget.shape));
 }
 
 class SpinKitWanderingCubes extends StatefulWidget {
@@ -199,5 +203,9 @@ class _SpinKitWanderingCubesState extends State<SpinKitWanderingCubes>
   Widget _itemBuilder(int index) => widget.itemBuilder != null
       ? widget.itemBuilder!(context, index)
       : DecoratedBox(
-          decoration: BoxDecoration(color: widget.color, shape: widget.shape));
+          decoration: BoxDecoration(
+              color: widget.color ??
+                  context.theme.progressIndicatorTheme.color ??
+                  context.theme.primaryColor,
+              shape: widget.shape));
 }

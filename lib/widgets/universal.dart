@@ -9,56 +9,59 @@ import 'package:flutter_waya/flutter_waya.dart';
 class Universal extends StatelessWidget {
   const Universal({
     Key? key,
-    bool? isScroll = false,
-    bool? useSingleChildScrollView = true,
-    bool? isStack = false,
-    bool? isWrap = false,
-    bool? enabled = false,
-    bool? addInkWell = false,
-    bool? addCard = false,
-    bool? expanded = false,
-    bool? expand = false,
-    bool? shrink = false,
-    bool? visible = true,
-    bool? offstage = false,
-    bool? reverse = false,
-    bool? isOval = false,
-    bool? isClipRRect = false,
-    bool? isClipRect = false,
-    bool? isCircleAvatar = false,
-    bool? intrinsicHeight = false,
-    bool? intrinsicWidth = false,
-    bool? gaussian = false,
-    bool? canRequestFocus,
-    bool? enableFeedback,
-    bool? excludeFromSemantics,
-    bool? autoFocus,
-    bool? maintainState,
-    bool? maintainAnimation,
-    bool? maintainSize,
-    bool? maintainSemantics,
-    bool? maintainInteractivity,
-    bool? transitionOnUserGestures,
-    bool? noScrollBehavior,
-    bool? sized,
-    double? fuzzyDegree,
-    DragStartBehavior? dragStartBehavior,
-    Color? shadowColor,
-    Widget? replacement,
-    StackFit? stackFit,
-    MainAxisAlignment? mainAxisAlignment,
-    CrossAxisAlignment? crossAxisAlignment,
-    WrapAlignment? wrapAlignment,
-    WrapAlignment? runAlignment,
-    WrapCrossAlignment? wrapCrossAlignment,
-    Axis? direction,
-    Axis? scrollDirection,
-    VerticalDirection? verticalDirection,
-    MainAxisSize? mainAxisSize,
-    HitTestBehavior? behavior,
-    BorderRadius? borderRadius,
-    double? wrapSpacing = 0.0,
-    double? runSpacing = 0.0,
+    this.addCard = false,
+    this.addInkWell = false,
+    this.isScroll = false,
+    this.useSingleChildScrollView = true,
+    this.isStack = false,
+    this.isWrap = false,
+    this.expanded = false,
+    this.expand = false,
+    this.shrink = false,
+    this.intrinsicHeight = false,
+    this.intrinsicWidth = false,
+    this.isOval = false,
+    this.isClipRRect = false,
+    this.isClipRect = false,
+    this.visible = true,
+    this.offstage = false,
+    this.enabled = false,
+    this.reverse = false,
+    this.autoFocus = false,
+    this.maintainState = false,
+    this.transitionOnUserGestures = false,
+    this.isCircleAvatar = false,
+    this.maintainAnimation = false,
+    this.maintainSize = false,
+    this.maintainSemantics = false,
+    this.maintainInteractivity = false,
+    this.excludeFromSemantics = false,
+    this.enableFeedback = true,
+    this.canRequestFocus = true,
+    this.noScrollBehavior = true,
+    this.sized = true,
+    this.gaussian = false,
+    this.safeLeft = false,
+    this.safeTop = false,
+    this.safeRight = false,
+    this.safeBottom = false,
+    this.fuzzyDegree = 4,
+    this.wrapSpacing = 0.0,
+    this.runSpacing = 0.0,
+    this.dragStartBehavior = DragStartBehavior.start,
+    this.shadowColor = Colors.transparent,
+    this.replacement = const SizedBox.shrink(),
+    this.stackFit = StackFit.loose,
+    this.mainAxisSize = MainAxisSize.max,
+    this.mainAxisAlignment = MainAxisAlignment.start,
+    this.crossAxisAlignment = CrossAxisAlignment.center,
+    this.wrapAlignment = WrapAlignment.start,
+    this.runAlignment = WrapAlignment.start,
+    this.wrapCrossAlignment = WrapCrossAlignment.start,
+    this.verticalDirection = VerticalDirection.down,
+    this.direction = Axis.vertical,
+    this.behavior = HitTestBehavior.opaque,
+    this.borderRadius = BorderRadius.zero,
     this.color,
     this.alignment,
     this.child,
@@ -156,57 +159,7 @@ class Universal extends StatelessWidget {
     this.builder,
     this.fit,
     this.systemOverlayStyle,
-  })  : addCard = addCard ?? false,
-        addInkWell = addInkWell ?? false,
-        isScroll = isScroll ?? false,
-        useSingleChildScrollView = useSingleChildScrollView ?? true,
-        isStack = isStack ?? false,
-        isWrap = isWrap ?? false,
-        expanded = expanded ?? false,
-        expand = expand ?? false,
-        shrink = shrink ?? false,
-        intrinsicHeight = intrinsicHeight ?? false,
-        intrinsicWidth = intrinsicWidth ?? false,
-        isOval = isOval ?? false,
-        isClipRRect = isClipRRect ?? false,
-        isClipRect = isClipRect ?? false,
-        visible = visible ?? true,
-        offstage = offstage ?? false,
-        enabled = enabled ?? false,
-        reverse = reverse ?? false,
-        autoFocus = autoFocus ?? false,
-        maintainState = maintainState ?? false,
-        transitionOnUserGestures = transitionOnUserGestures ?? false,
-        isCircleAvatar = isCircleAvatar ?? false,
-        maintainAnimation = maintainAnimation ?? false,
-        maintainSize = maintainSize ?? false,
-        maintainSemantics = maintainSemantics ?? false,
-        maintainInteractivity = maintainInteractivity ?? false,
-        excludeFromSemantics = excludeFromSemantics ?? false,
-        enableFeedback = enableFeedback ?? true,
-        canRequestFocus = canRequestFocus ?? true,
-        noScrollBehavior = noScrollBehavior ?? true,
-        sized = sized ?? true,
-        gaussian = gaussian ?? false,
-        fuzzyDegree = fuzzyDegree ?? 4,
-        wrapSpacing = wrapSpacing ?? 0.0,
-        runSpacing = runSpacing ?? 0.0,
-        dragStartBehavior = dragStartBehavior ?? DragStartBehavior.start,
-        shadowColor = shadowColor ?? Colors.transparent,
-        replacement = replacement ?? const SizedBox.shrink(),
-        stackFit = stackFit ?? StackFit.loose,
-        mainAxisSize = mainAxisSize ?? MainAxisSize.max,
-        mainAxisAlignment = mainAxisAlignment ?? MainAxisAlignment.start,
-        wrapAlignment = wrapAlignment ?? WrapAlignment.start,
-        runAlignment = runAlignment ?? WrapAlignment.start,
-        wrapCrossAlignment = wrapCrossAlignment ?? WrapCrossAlignment.start,
-        crossAxisAlignment = crossAxisAlignment ?? CrossAxisAlignment.center,
-        verticalDirection = verticalDirection ?? VerticalDirection.down,
-        direction = direction ?? Axis.vertical,
-        scrollDirection = scrollDirection ?? Axis.vertical,
-        behavior = behavior ?? HitTestBehavior.opaque,
-        borderRadius = borderRadius ?? BorderRadius.zero,
-        assert(!((addCard ?? false) && (addInkWell ?? false))),
+  })  : assert(!(addCard && addInkWell), 'One of them must be true'),
         super(key: key);
 
   ///  ****** [AnnotatedRegion]  ******  ///
@@ -322,7 +275,6 @@ class Universal extends StatelessWidget {
 
   ///  ****** 开始滚动 ******  ///
   final bool isScroll;
-  final Axis scrollDirection;
 
   /// 是否使用 [SingleChildScrollView]创建滚动组件
   /// 页面逻辑复杂时 设置为 false 以提高滑动性能
@@ -538,6 +490,12 @@ class Universal extends StatelessWidget {
   /// 是否开始背景模糊 [ImageFilter]
   final bool gaussian;
 
+  ///  ****** [SafeArea] ******  ///
+  final bool safeLeft;
+  final bool safeTop;
+  final bool safeRight;
+  final bool safeBottom;
+
   EdgeInsetsGeometry? get _paddingIncludingDecoration {
     if (decoration == null || decoration!.padding == null) return padding;
     final EdgeInsetsGeometry decorationPadding = decoration!.padding!;
@@ -657,6 +615,10 @@ class Universal extends StatelessWidget {
     if (systemOverlayStyle != null) current = annotatedRegionWidget(current);
     if (offstage) current = offstageWidget(current);
     if (!visible) current = visibilityWidget(current);
+    if (safeLeft == true ||
+        safeTop == true ||
+        safeRight == true ||
+        safeBottom == true) current = SafeArea(child: current);
     return current;
   }
 
@@ -823,7 +785,7 @@ class Universal extends StatelessWidget {
       primary: primary,
       dragStartBehavior: dragStartBehavior,
       controller: scrollController,
-      scrollDirection: scrollDirection,
+      scrollDirection: direction,
       clipBehavior: clipBehavior ?? Clip.hardEdge,
       child: current);
 
@@ -834,7 +796,7 @@ class Universal extends StatelessWidget {
       noScrollBehavior: noScrollBehavior,
       reverse: reverse,
       primary: primary,
-      scrollDirection: scrollDirection,
+      scrollDirection: direction,
       refreshConfig: refreshConfig);
 
   Widget flexWidget(List<Widget> children) => Flex(
@@ -935,19 +897,19 @@ class _DecorationClipper extends CustomClipper<Path> {
 class SimpleButton extends StatelessWidget {
   const SimpleButton({
     Key? key,
-    String? text,
-    bool? isElastic,
-    bool? addInkWell,
-    TextOverflow? overflow,
+    this.text = 'Button',
+    this.isElastic = false,
+    this.addInkWell = false,
+    this.overflow = TextOverflow.ellipsis,
     this.textStyle,
-    this.visible,
+    this.visible = true,
     this.constraints,
     this.onTap,
     this.heroTag,
     this.padding,
     this.margin,
-    this.width,
     this.color,
+    this.width,
     this.height,
     this.decoration,
     this.alignment,
@@ -960,12 +922,8 @@ class SimpleButton extends StatelessWidget {
     this.hoverColor,
     this.highlightColor,
     this.splashColor,
-    this.borderRadius,
-  })  : text = text ?? 'Button',
-        isElastic = isElastic ?? false,
-        addInkWell = addInkWell ?? false,
-        overflow = overflow ?? TextOverflow.ellipsis,
-        super(key: key);
+    this.borderRadius = BorderRadius.zero,
+  }) : super(key: key);
 
   final Widget? child;
   final TextStyle? textStyle;
@@ -981,7 +939,7 @@ class SimpleButton extends StatelessWidget {
   final TextOverflow overflow;
   final String text;
 
-  final bool? visible;
+  final bool visible;
   final String? heroTag;
   final BoxConstraints? constraints;
   final bool? withOpacity;
@@ -1003,7 +961,7 @@ class SimpleButton extends StatelessWidget {
 
   ///  水波纹颜色 [addInkWell] = true
   final Color? splashColor;
-  final BorderRadius? borderRadius;
+  final BorderRadius borderRadius;
 
   @override
   Widget build(BuildContext context) {
@@ -1040,7 +998,8 @@ class SimpleButton extends StatelessWidget {
       width: width,
       height: height,
       margin: margin,
-      decoration: decoration ?? BoxDecoration(color: color),
+      color: color,
+      decoration: decoration,
       padding: padding,
       alignment: alignment);
 }

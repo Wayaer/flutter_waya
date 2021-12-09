@@ -70,7 +70,9 @@ class AlertPage extends StatelessWidget {
       );
 
   void showOverlayLoading() => showLoading(
-      gaussian: true, onTap: closeOverlay, custom: const SpinKitWave());
+      gaussian: true,
+      onTap: closeOverlay,
+      custom: const SpinKitThreeBounce(color: Colors.red));
 
   void sureCancel(BuildContext context) {
     const bool isOverlay = false;
@@ -107,7 +109,7 @@ class AlertPage extends StatelessWidget {
           showToast(dateTime?.format(DateTimeDist.yearSecond) ?? 'cancel');
           return true;
         }),
-        unit: DateTimePickerUnit(second: null),
+        unit: const DateTimePickerUnit(second: null),
         startDate: DateTime(2020, 8, 9, 9, 9, 9),
         defaultDate: DateTime(2021, 9, 21, 8, 8, 8),
         endDate: DateTime(2022, 10, 20, 10, 10, 10));
@@ -169,7 +171,7 @@ class AlertPage extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) => Container(
             alignment: Alignment.center,
             child: Text(list[index], style: context.textTheme.bodyText1)),
-        wheel: PickerWheel(itemHeight: 25, useMagnifier: true),
+        wheel: const PickerWheelOptions(itemHeight: 25, useMagnifier: true),
         itemCount: list.length);
     showToast(index == null ? 'null' : list[index].toString());
   }

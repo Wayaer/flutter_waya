@@ -6,39 +6,29 @@ import 'package:flutter_waya/flutter_waya.dart';
 class PopupOptions extends StatelessWidget {
   const PopupOptions(
       {Key? key,
-      double? fuzzyDegree,
-      bool? gaussian,
-      bool? addMaterial,
-      bool? ignoring,
-      double? left,
-      double? top,
-      double? right,
-      double? bottom,
-      AlignmentGeometry? alignment,
-      MainAxisSize? mainAxisSize,
+      this.top = 0,
+      this.left = 0,
+      this.right = 0,
+      this.bottom = 0,
+      this.alignment = Alignment.topLeft,
+      this.gaussian = false,
+      this.addMaterial = false,
+      this.ignoring = false,
+      this.fuzzyDegree = 4,
+      this.mainAxisSize = MainAxisSize.min,
       this.color,
-      this.behavior,
+      this.behavior = HitTestBehavior.opaque,
       this.child,
       this.onTap,
       this.children,
-      this.mainAxisAlignment,
-      this.crossAxisAlignment,
-      this.direction,
-      this.isScroll,
-      this.isStack,
+      this.mainAxisAlignment = MainAxisAlignment.start,
+      this.crossAxisAlignment = CrossAxisAlignment.center,
+      this.direction = Axis.horizontal,
+      this.isScroll = false,
+      this.isStack = false,
       this.onWillPop,
       this.filter})
-      : top = top ?? 0,
-        left = left ?? 0,
-        right = right ?? 0,
-        bottom = bottom ?? 0,
-        alignment = alignment ?? Alignment.topLeft,
-        gaussian = gaussian ?? false,
-        addMaterial = addMaterial ?? false,
-        ignoring = ignoring ?? false,
-        fuzzyDegree = fuzzyDegree ?? 4,
-        mainAxisSize = mainAxisSize ?? MainAxisSize.min,
-        super(key: key);
+      : super(key: key);
 
   /// 顶层组件
   final Widget? child;
@@ -46,7 +36,7 @@ class PopupOptions extends StatelessWidget {
 
   /// 背景事件
   final GestureTapCallback? onTap;
-  final HitTestBehavior? behavior;
+  final HitTestBehavior behavior;
 
   /// 背景色
   final Color? color;
@@ -79,16 +69,16 @@ class PopupOptions extends StatelessWidget {
 
   //// [children] 不为null 时以下参数有效
   ///  ****** Flex ******  ///
-  final MainAxisAlignment? mainAxisAlignment;
-  final CrossAxisAlignment? crossAxisAlignment;
-  final Axis? direction;
+  final MainAxisAlignment mainAxisAlignment;
+  final CrossAxisAlignment crossAxisAlignment;
+  final Axis direction;
   final MainAxisSize mainAxisSize;
 
   ///  ****** SingleChildScrollView ******  ///
-  final bool? isScroll;
+  final bool isScroll;
 
   ///  ****** Stack ******  ///
-  final bool? isStack;
+  final bool isStack;
 
   /// Android 监听物理返回按键
   final WillPopCallback? onWillPop;
@@ -134,7 +124,7 @@ class PopupSureCancel extends StatelessWidget {
     Key? key,
     this.backgroundColor,
     this.barrierColor,
-    double? width,
+    this.width = 300,
     this.height,
     required this.content,
     this.padding,
@@ -143,10 +133,9 @@ class PopupSureCancel extends StatelessWidget {
     this.backsideTap,
     this.alignment = Alignment.center,
     this.decoration,
-    this.gaussian,
-    this.addMaterial,
-  })  : width = width ?? 300,
-        super(key: key);
+    this.gaussian = false,
+    this.addMaterial = false,
+  }) : super(key: key);
 
   final Widget content;
 
@@ -175,10 +164,10 @@ class PopupSureCancel extends StatelessWidget {
   final AlignmentGeometry alignment;
 
   /// 背景是否模糊
-  final bool? gaussian;
+  final bool gaussian;
 
   /// 是否添加Material Widget 部分组件需要基于Material
-  final bool? addMaterial;
+  final bool addMaterial;
 
   @override
   Widget build(BuildContext context) {
@@ -225,25 +214,22 @@ enum LoadingType {
 class Loading extends StatelessWidget {
   const Loading({
     Key? key,
-    LoadingType? loadingType,
-    double? strokeWidth,
-    String? text,
+    this.text = '加载中...',
+    this.strokeWidth = 4.0,
+    this.loadingType = LoadingType.circular,
     this.textStyle,
     this.custom,
-    this.ignoring,
-    this.gaussian,
+    this.ignoring = false,
+    this.gaussian = false,
     this.value,
     this.valueColor,
     this.semanticsLabel,
     this.semanticsValue,
     this.onTap,
     this.behavior,
-    this.fuzzyDegree,
+    this.fuzzyDegree = 4,
     this.backgroundColor,
-  })  : text = text ?? '加载中...',
-        strokeWidth = strokeWidth ?? 4.0,
-        loadingType = loadingType ?? LoadingType.circular,
-        super(key: key);
+  }) : super(key: key);
 
   final double? value;
   final Animation<Color>? valueColor;
@@ -257,13 +243,13 @@ class Loading extends StatelessWidget {
   final String text;
 
   /// 模糊程度 0-100
-  final double? fuzzyDegree;
+  final double fuzzyDegree;
 
   /// 是否开始背景模糊
-  final bool? gaussian;
+  final bool gaussian;
 
   /// 是否可以操作背景 默认false 不可操作
-  final bool? ignoring;
+  final bool ignoring;
 
   /// 背景事件
   final GestureTapCallback? onTap;
