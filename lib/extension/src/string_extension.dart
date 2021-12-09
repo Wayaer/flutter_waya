@@ -14,13 +14,13 @@ extension ExtensionString on String {
 
   double get parseDouble => double.parse(this);
 
-  ///  md5 加密
+  /// md5 加密
   String get toMd5 => md5.convert(utf8.encode(this)).toString();
 
-  ///  Base64加密
+  /// Base64加密
   String get toEncodeBase64 => base64Encode(utf8.encode(this));
 
-  ///  Base64解密
+  /// Base64解密
   String get toDecodeBase64 => String.fromCharCodes(base64Decode(this));
 
   /// 复制到粘贴板
@@ -36,7 +36,7 @@ extension ExtensionString on String {
       RegExp(r'^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$')
           .hasMatch(this);
 
-  ///  utf8ToList
+  /// utf8ToList
   List<int> get utf8ToList {
     final List<int> words = length.generate((_) => 0);
     for (int i = 0; i < length; i++) {

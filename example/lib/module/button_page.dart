@@ -16,7 +16,6 @@ class ButtonPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ExtendedScaffold(
-          backgroundColor: Colors.white,
           isScroll: true,
           appBar: AppBarText('Button Demo'),
           children: <Widget>[
@@ -32,7 +31,7 @@ class ButtonPage extends StatelessWidget {
                   }
                 },
                 decoration: BoxDecoration(
-                    color: Colors.black26,
+                    color: context.theme.backgroundColor,
                     borderRadius: BorderRadius.circular(10)),
                 margin:
                     const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
@@ -43,32 +42,32 @@ class ButtonPage extends StatelessWidget {
                 margin:
                     const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                 decoration: BoxDecoration(
-                    color: Colors.black26,
+                    color: context.theme.backgroundColor,
                     borderRadius: BorderRadius.circular(10)),
                 titleCount: _dropdownValue.keys.length,
-                titleBuilder: (int index, bool visible) {
+                titleBuilder: (_, int index, bool visible) {
                   return Padding(
                       padding: const EdgeInsets.only(right: 8),
                       child: BText(_dropdownValue.keys.elementAt(index),
-                          color: visible ? Colors.red : Colors.black));
+                          style: context.textTheme.subtitle2));
                 },
                 valueCount: _dropdownValue.values
                     .builder((List<String> item) => item.length),
-                label: (bool visible) => Icon(Icons.arrow_circle_up,
-                    size: 16, color: visible ? Colors.red : Colors.black),
-                valueBuilder: (int titleIndex, int valueIndex) {
+                label: (bool visible) =>
+                    const Icon(Icons.arrow_circle_up, size: 16),
+                valueBuilder: (_, int titleIndex, int valueIndex) {
                   return Container(
                       alignment: Alignment.center,
                       width: double.infinity,
                       padding: const EdgeInsets.symmetric(vertical: 6),
-                      decoration: const BoxDecoration(
-                          color: Colors.white,
-                          border:
-                              Border(top: BorderSide(color: Colors.black12))),
+                      decoration: BoxDecoration(
+                          color: context.theme.dialogBackgroundColor,
+                          border: const Border(
+                              top: BorderSide(color: Colors.black12))),
                       child: BText(
                           _dropdownValue.values
                               .elementAt(titleIndex)[valueIndex],
-                          color: Colors.black));
+                          style: context.textTheme.bodyText1));
                 }),
             const SizedBox(height: 20),
             ElevatedText('ElasticButton',
@@ -79,24 +78,22 @@ class ButtonPage extends StatelessWidget {
                 children: <Widget>[
                   DropdownMenuButton(
                       defaultBuilder: (int? index) {
-                        return BText(index == null ? '请选择' : _colors[index],
-                            color: Colors.black);
+                        return BText(index == null ? '请选择' : _colors[index]);
                       },
-                      decoration: BoxDecoration(
-                          color: color, borderRadius: BorderRadius.circular(4)),
                       margin: const EdgeInsets.only(top: 2),
                       itemCount: _colors.length,
                       onChanged: (int index) {
                         showToast('点击了${_colors[index]}');
                       },
-                      toggle: const Icon(Icons.arrow_right_rounded,
-                          color: Colors.black),
-                      itemBuilder: (int index) => Container(
-                          padding: const EdgeInsets.symmetric(vertical: 6),
-                          decoration: const BoxDecoration(
-                              border: Border(
-                                  bottom: BorderSide(color: Colors.white))),
-                          child: BText(_colors[index]))),
+                      toggle: const Icon(Icons.arrow_right_rounded),
+                      itemBuilder: (int index) => Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 4),
+                          child: BText(
+                            _colors[index],
+                            fontSize: 14,
+                            color: Colors.black,
+                          ))),
                   DropdownButton<String>(
                       value: _colors[0],
                       onChanged: (String? value) {},
@@ -104,12 +101,10 @@ class ButtonPage extends StatelessWidget {
                           DropdownMenuItem<String>(
                               value: item, child: Text(item)))),
                   DropdownMenuButton.material(
-                      itemBuilder: (int index) =>
-                          BText(_colors[index], color: Colors.black),
+                      itemBuilder: (int index) => BText(_colors[index]),
                       itemCount: _colors.length,
                       defaultBuilder: (int? index) {
-                        return BText(index == null ? '请选择' : _colors[index],
-                                color: Colors.black)
+                        return BText(index == null ? '请选择' : _colors[index])
                             .paddingSymmetric(vertical: 10);
                       })
                 ]),
@@ -119,20 +114,18 @@ class ButtonPage extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
                 text: 'SimpleButton',
-                textStyle: const TextStyle(color: color),
+                textStyle: const BTextStyle(),
                 borderRadius: BorderRadius.circular(4),
                 onTap: () {}),
             const SizedBox(height: 20),
             ElevatedText('BubbleButton',
                 onTap: () => push(_BubbleButtonPage())),
             const SizedBox(height: 40),
-            const ClothButton.rectangle(
-                size: Size(200, 60), backgroundColor: color),
+            const ClothButton.rectangle(size: Size(200, 60)),
             const SizedBox(height: 20),
-            const ClothButton.round(
-                size: Size(200, 60), backgroundColor: color),
+            const ClothButton.round(size: Size(200, 60)),
             const SizedBox(height: 40),
-            const LiquidButton(width: 200, height: 60, backgroundColor: color),
+            const LiquidButton(width: 200, height: 60),
             const SizedBox(height: 40),
           ]);
 }
@@ -153,8 +146,8 @@ class _BubbleButtonPage extends StatelessWidget {
               bubbleBuilder: (bool value) => Universal(
                   isOval: true,
                   alignment: Alignment.center,
-                  color: value ? color : Colors.grey,
-                  child: BText('点击', color: Colors.white))),
+                  color: value ? context.theme.primaryColor : Colors.grey,
+                  child: const BText('点击', color: Colors.white))),
           BubbleButton(
               size: size,
               onTap: (bool isBubbled) async => !isBubbled,

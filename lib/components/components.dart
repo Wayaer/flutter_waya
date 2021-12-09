@@ -318,7 +318,7 @@ class Badge extends StatelessWidget {
   Widget build(BuildContext context) {
     if (hide) return child;
     final List<Widget> children = <Widget>[child];
-    Widget dot = dotWidget;
+    Widget dot = dotWidget(context);
     if (alignment != null) dot = Align(alignment: alignment!, child: dot);
     if (right != null || top != null || bottom != null || left != null) {
       dot = Positioned(
@@ -334,13 +334,14 @@ class Badge extends StatelessWidget {
         children: children);
   }
 
-  Widget get dotWidget => Container(
+  Widget dotWidget(BuildContext context) => Container(
       child: pointChild,
       padding: pointPadding,
       width: pointChild == null ? (pointSize ?? 4) : null,
       height: pointChild == null ? (pointSize ?? 4) : null,
       decoration: BoxDecoration(
-          color: pointColor ?? ConstColors.red, shape: BoxShape.circle));
+          color: pointColor ?? context.theme.primaryColor,
+          shape: BoxShape.circle));
 }
 
 typedef ToggleBuilder = Widget Function(Widget child);

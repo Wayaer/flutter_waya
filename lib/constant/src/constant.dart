@@ -71,24 +71,6 @@ class ConstConstant {
   };
 }
 
-/// Colors
-class ConstColors {
-  static const Color transparent = Colors.transparent;
-  static const Color white50 = Color(0x50FFFFFF);
-  static const Color white = Colors.white;
-  static const Color background = Color(0xFFF5F5F5);
-  static const Color blue = Color(0xFF349DFF);
-  static const Color boxShadowColor = Color(0xFFE0E0E0);
-  static const Color greenAccent = Colors.greenAccent;
-  static const Color red = Colors.red;
-  static const Color gray = Colors.grey;
-  static const Color black = Colors.black;
-  static const Color black30 = Color(0x30000000);
-  static const Color black50 = Color(0x50000000);
-  static const Color black70 = Color(0x70000000);
-  static const Color black90 = Color(0x90000000);
-}
-
 ///  icons
 class ConstIcon {
   /// 箭头右

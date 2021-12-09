@@ -10,7 +10,6 @@ class JsonParsePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ExtendedScaffold(
-        backgroundColor: Colors.white,
         appBar: AppBarText('JsonParse Demo'),
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -33,7 +32,6 @@ class _JsonParsePage extends StatelessWidget {
                 '{"name":"SoSo","url":"http://www.SoSo.com"}]}')
             as Map<dynamic, dynamic>;
     return ExtendedScaffold(
-        backgroundColor: Colors.white,
         appBar: AppBarText('JsonParse'),
         mainAxisAlignment: MainAxisAlignment.center,
         body: JsonParse(json));
@@ -48,7 +46,6 @@ class _JsonParseListPage extends StatelessWidget {
             '"url":"http://www.baidu.com"},{"name":"SoSo","url":"http://www.SoSo.com"}]')
         as List<dynamic>;
     return ExtendedScaffold(
-        backgroundColor: Colors.white,
         appBar: AppBarText('JsonParse.list'),
         mainAxisAlignment: MainAxisAlignment.center,
         body: JsonParse.list(json));

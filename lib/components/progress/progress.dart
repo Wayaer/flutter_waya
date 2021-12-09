@@ -16,8 +16,8 @@ class Progress extends StatefulWidget {
     this.lineWidth = 5.0,
     this.startAngle = 0.0,
     required this.radius,
-    Color? backgroundColor,
-    Color? progressColor,
+    this.backgroundColor,
+    this.progressColor,
     this.backgroundWidth = -1,
     this.linearGradient,
     this.animation = false,
@@ -40,8 +40,6 @@ class Progress extends StatefulWidget {
             'Cannot provide both linearGradient and progressColor'),
         assert(arcType == null || arcBackgroundColor != null,
             'arcType is required when you arcBackgroundColor'),
-        backgroundColor = backgroundColor ?? ConstColors.black30,
-        progressColor = progressColor ?? ConstColors.red,
         state = _CircularState(),
         width = null,
         lineHeight = 0,
@@ -56,8 +54,8 @@ class Progress extends StatefulWidget {
     this.percent = 0.0,
     this.lineHeight = 5.0,
     this.width,
-    Color? backgroundColor,
-    Color? progressColor,
+    this.backgroundColor,
+    this.progressColor,
     this.linearGradient,
     this.animation = false,
     this.animationDuration = const Duration(milliseconds: 500),
@@ -73,9 +71,7 @@ class Progress extends StatefulWidget {
     this.restartAnimation = false,
     this.onAnimationEnd,
     this.widgetIndicator,
-  })  : backgroundColor = backgroundColor ?? ConstColors.black30,
-        progressColor = progressColor ?? ConstColors.red,
-        assert(linearGradient != null || progressColor != null,
+  })  : assert(linearGradient != null || progressColor != null,
             'Cannot provide both linearGradient and progressColor'),
         state = _LinearState(),
         radius = 0,
@@ -93,10 +89,10 @@ class Progress extends StatefulWidget {
   final double percent;
 
   /// First color applied to the complete line
-  final Color backgroundColor;
+  final Color? backgroundColor;
 
   /// progressColor
-  final Color progressColor;
+  final Color? progressColor;
 
   /// true if you want the Line to have animation
   final bool animation;
@@ -266,8 +262,11 @@ class _CircularState extends _ProgressSubState {
           CustomPaint(
               painter: _CirclePainter(
                   progress: percent * 360,
-                  progressColor: widget.progressColor,
-                  backgroundColor: widget.backgroundColor,
+                  progressColor: widget.progressColor ??
+                      context.theme.progressIndicatorTheme.color ??
+                      context.theme.primaryColor,
+                  backgroundColor:
+                      widget.backgroundColor ?? context.theme.backgroundColor,
                   startAngle: widget.startAngle!,
                   circularStrokeCap: widget.circularStrokeCap,
                   radius: (widget.radius / 2) - widget.lineWidth / 2,
@@ -337,9 +336,12 @@ class _LinearState extends _ProgressSubState {
           painter: _LinearPainter(
               isRTL: widget.isRTL,
               progress: percent,
-              progressColor: widget.progressColor,
+              progressColor: widget.progressColor ??
+                  context.theme.progressIndicatorTheme.color ??
+                  context.theme.primaryColor,
               linearGradient: widget.linearGradient,
-              backgroundColor: widget.backgroundColor,
+              backgroundColor:
+                  widget.backgroundColor ?? context.theme.backgroundColor,
               linearStrokeCap: widget.linearStrokeCap,
               lineWidth: widget.lineHeight,
               maskFilter: widget.maskFilter,

@@ -15,7 +15,6 @@ class ScrollViewPage extends StatelessWidget {
     final ScrollController scrollController = ScrollController();
     return ExtendedScaffold(
         isScroll: true,
-        backgroundColor: Colors.white,
         appBar: AppBarText('ScrollView Demo'),
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -89,7 +88,6 @@ class _ScrollListSeparatedPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ExtendedScaffold(
-        backgroundColor: Colors.white,
         appBar: AppBarText('ScrollList.separated Demo'),
         body: ScrollList.separated(
           header: SliverToBoxAdapter(
@@ -141,7 +139,6 @@ class _ScrollListPlaceholderPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ExtendedScaffold(
-        backgroundColor: Colors.white,
         appBar: AppBarText('ScrollList.builder Demo'),
         body: ScrollList.builder(
             header: SliverToBoxAdapter(
@@ -172,12 +169,10 @@ class _ScrollListPlaceholderPage extends StatelessWidget {
                 sendRefreshType(EasyRefreshType.loadingSuccess);
               });
             }),
-            placeholder:
-                BText('没有数据', style: const TextStyle(color: Colors.white))
-                    .container(
-                        alignment: Alignment.center,
-                        color: _colors.last,
-                        padding: const EdgeInsets.symmetric(vertical: 10)),
+            placeholder: const BText('没有数据', color: Colors.white).container(
+                alignment: Alignment.center,
+                color: _colors.last,
+                padding: const EdgeInsets.symmetric(vertical: 10)),
             itemCount: 0,
             itemBuilder: (_, int index) =>
                 _Item(index, _colors[index]).paddingOnly(bottom: 10)));
@@ -193,14 +188,13 @@ class _ScrollListBuilderPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ExtendedScaffold(
-        backgroundColor: Colors.white,
         appBar: AppBarText('ScrollList.builder Demo'),
         body: Column(children: <Widget>[
           Container(
               height: 100,
-              color: color,
+              color: context.theme.primaryColor,
               alignment: Alignment.center,
-              child: BText('这里是头部',
+              child: const BText('这里是头部',
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
                   fontSize: 20)),
@@ -252,7 +246,6 @@ class _ScrollListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ExtendedScaffold(
-        backgroundColor: Colors.white,
         appBar: AppBarText('ScrollList Demo'),
         body: ScrollList(
           padding: const EdgeInsets.all(10),
@@ -319,7 +312,6 @@ class _ScrollListCountPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ExtendedScaffold(
-        backgroundColor: Colors.white,
         appBar: AppBarText('ScrollList.count Demo'),
         body: ScrollList.count(
             header: SliverToBoxAdapter(
@@ -372,7 +364,7 @@ class _RefreshScrollViewPage extends StatelessWidget {
                 });
               }),
               slivers: <Widget>[
-            SliverAppBar(
+            const SliverAppBar(
                 title: BText('RefreshScrollView', color: Colors.white)),
             SliverListGrid(
               itemCount: _colors.length,
@@ -401,7 +393,7 @@ class _CustomScrollViewPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ExtendedScaffold(
           body: CustomScrollView(slivers: <Widget>[
-        CustomSliverAppBar(
+        const CustomSliverAppBar(
             title: BText('CustomScrollViewPage', color: Colors.white)),
         SliverPinnedToBoxAdapter(
             child: Column(
@@ -488,12 +480,23 @@ class _DraggableScrollbar extends StatelessWidget {
             width: double.infinity,
             height: 40));
 
-    final DraggableScrollbar scrollbar =
-        DraggableScrollbar(controller: scrollController, child: list);
+    Widget scrollbar = DraggableScrollbar(
+        controller: scrollController,
+        child: list,
+        backgroundColor: context.theme.dialogBackgroundColor,
+        scrollbarStyle: ScrollbarStyle.semicircle);
+    // scrollbar = DraggableScrollbar(
+    //     controller: scrollController,
+    //     child: list,
+    //     backgroundColor: context.theme.dialogBackgroundColor,
+    //     scrollbarStyle: ScrollbarStyle.rect);
+    // scrollbar = DraggableScrollbar(
+    //     controller: scrollController,
+    //     child: list,
+    //     backgroundColor: context.theme.dialogBackgroundColor,
+    //     scrollbarStyle: ScrollbarStyle.arrows);
 
     return ExtendedScaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBarText('DraggableScrollbar Demo'),
-        body: scrollbar);
+        appBar: AppBarText('DraggableScrollbar Demo'), body: scrollbar);
   }
 }

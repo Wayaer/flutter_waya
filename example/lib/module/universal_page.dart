@@ -23,6 +23,7 @@ class _UniversalPageState extends State<UniversalPage>
 
   @override
   Widget build(BuildContext context) {
+    Color color = context.theme.primaryColor;
     List<Widget> children = <Widget>[
       Universal(
           width: 200,
@@ -32,18 +33,19 @@ class _UniversalPageState extends State<UniversalPage>
           isClipRRect: true,
           borderRadius: BorderRadius.circular(10),
           alignment: Alignment.center,
-          child: BText('ScrollUniversal', color: Colors.white),
+          child: const BText('ScrollUniversal', color: Colors.white),
           onTap: () => push(_ScrollUniversalPage())),
-      const Universal(width: 50, height: 50, color: color),
+      Universal(width: 50, height: 50, color: color),
       const SizedBox(height: 10),
-      const Universal(width: 50, height: 50, color: color, size: Size(60, 60)),
+      Universal(width: 50, height: 50, color: color, size: const Size(60, 60)),
       const SizedBox(height: 10),
       Universal(
           color: color.withOpacity(0.2),
           isStack: true,
           size: const Size(100, 100),
-          children: const <Widget>[
-            Universal(left: 10, top: 10, color: color, size: Size(50, 50)),
+          children: <Widget>[
+            Universal(
+                left: 10, top: 10, color: color, size: const Size(50, 50)),
           ]),
       const SizedBox(height: 10),
       Universal(
@@ -69,7 +71,7 @@ class _UniversalPageState extends State<UniversalPage>
         highlightColor: Colors.red,
         hoverColor: Colors.black,
         elevation: 5,
-        child: BText('InkWell', color: color),
+        child: const BText('InkWell'),
         onLongPress: () => showToast('InkWell onLongPress'),
         onDoubleTap: () => showToast('InkWell onDoubleTap'),
         onTap: () => showToast('InkWell onTap'),
@@ -93,8 +95,7 @@ class _UniversalPageState extends State<UniversalPage>
             sendRefreshType(EasyRefreshType.refresh);
           },
           size: const Size(200, 50)),
-      const SizedBox(height: 10),
-      const SizedBox(height: 10),
+      const SizedBox(height: 20),
       ValueBuilder<bool>(
           initialValue: false,
           builder: (_, bool? value, Function update) {
@@ -107,7 +108,6 @@ class _UniversalPageState extends State<UniversalPage>
     children = children.builder((Widget item) => SizeTransition(
         sizeFactor: controller, axis: Axis.horizontal, child: item));
     return ExtendedScaffold(
-      backgroundColor: Colors.white,
       appBar: AppBarText('Universal Demo'),
       mainAxisAlignment: MainAxisAlignment.center,
       isScroll: true,
@@ -124,13 +124,13 @@ class _ScrollUniversalPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ExtendedScaffold(
-        backgroundColor: Colors.white,
         appBar: AppBarText('ScrollUniversal Demo'),
         mainAxisAlignment: MainAxisAlignment.center,
-        body: scrollUniversal());
+        body: scrollUniversal(context));
   }
 
-  Widget scrollUniversal() {
+  Widget scrollUniversal(BuildContext context) {
+    Color color = context.theme.primaryColor;
     return Universal(
         isScroll: true,
         direction: Axis.horizontal,
@@ -138,7 +138,7 @@ class _ScrollUniversalPage extends StatelessWidget {
         margin: const EdgeInsets.all(30),
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-            color: Colors.white,
+            color: context.theme.backgroundColor,
             borderRadius: BorderRadius.circular(20),
             boxShadow: const <BoxShadow>[
               BoxShadow(color: Colors.red, blurRadius: 20),

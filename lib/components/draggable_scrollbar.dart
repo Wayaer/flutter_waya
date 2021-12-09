@@ -240,7 +240,9 @@ class _DraggableScrollbarState extends State<DraggableScrollbar>
   @override
   void dispose() {
     _thumbAnimationController.dispose();
+    _labelAnimationController.dispose();
     _fadeoutTimer?.cancel();
+    _fadeoutTimer = null;
     super.dispose();
   }
 
@@ -270,21 +272,20 @@ class _DraggableScrollbarState extends State<DraggableScrollbar>
           child: Stack(children: <Widget>[
             RepaintBoundary(child: widget.child),
             RepaintBoundary(
-                child: GestureDetector(
+                child: Universal(
                     onVerticalDragStart: _onVerticalDragStart,
                     onVerticalDragUpdate: _onVerticalDragUpdate,
                     onVerticalDragEnd: _onVerticalDragEnd,
-                    child: Container(
-                        alignment: Alignment.topRight,
-                        margin: EdgeInsets.only(top: _barOffset),
-                        padding: widget.padding,
-                        child: widget.scrollThumbBuilder(
-                            widget.backgroundColor,
-                            _thumbAnimation,
-                            _labelAnimation,
-                            widget.heightScrollThumb,
-                            labelText: label,
-                            labelConstraints: widget.labelConstraints)))),
+                    alignment: Alignment.topRight,
+                    margin: EdgeInsets.only(top: _barOffset),
+                    padding: widget.padding,
+                    child: widget.scrollThumbBuilder(
+                        widget.backgroundColor,
+                        _thumbAnimation,
+                        _labelAnimation,
+                        widget.heightScrollThumb,
+                        labelText: label,
+                        labelConstraints: widget.labelConstraints))),
           ]));
     });
   }

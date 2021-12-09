@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/constant/src/way.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 /// 弹出组件每个item样式
@@ -19,7 +18,7 @@ class DropdownMenuButton extends StatefulWidget {
       required this.itemBuilder,
       required this.itemCount,
       this.onChanged,
-      this.backgroundColor = Colors.black12,
+      this.backgroundColor,
       this.onTap,
       this.decoration,
       this.margin,
@@ -37,13 +36,12 @@ class DropdownMenuButton extends StatefulWidget {
     required IndexBuilder itemBuilder,
     this.onChanged,
     this.backgroundColor,
+    this.decoration,
     this.onTap,
     this.margin,
     this.padding = const EdgeInsets.symmetric(horizontal: 4),
   })  : toggle = Icon(iconData ?? Icons.arrow_right_rounded,
-            color: iconColor ?? Colors.black, size: iconSize),
-        decoration = BoxDecoration(
-            color: backgroundColor ?? Colors.white, boxShadow: baseBoxShadow),
+            color: iconColor, size: iconSize),
         itemBuilder = ((int index) =>
             itemBuilder(index).paddingSymmetric(vertical: 8, horizontal: 4)),
         super(key: key);
@@ -100,7 +98,9 @@ class _DropdownMenuButtonState extends State<DropdownMenuButton> {
     final Offset offset = context.getWidgetLocalToGlobal;
     final Size size = context.size!;
     showDialogPopup<dynamic>(
-        options: GeneralDialogOptions(popupFromType: PopupFromType.fromCenter),
+        options: GeneralDialogOptions(
+            popupFromType: PopupFromType.fromCenter,
+            barrierColor: Colors.transparent),
         widget: PopupOptions(
           top: offset.dy + size.height,
           left: offset.dx,
@@ -112,8 +112,11 @@ class _DropdownMenuButtonState extends State<DropdownMenuButton> {
           child: Universal(
               margin: widget.margin,
               padding: widget.padding,
-              decoration: widget.decoration,
-              color: widget.backgroundColor,
+              decoration: widget.decoration ??
+                  BoxDecoration(
+                      color:
+                          widget.backgroundColor ?? context.theme.primaryColor,
+                      boxShadow: getBaseBoxShadow(context.theme.canvasColor)),
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: widget.itemCount.generate((int index) => Universal(
@@ -133,7 +136,8 @@ class _DropdownMenuButtonState extends State<DropdownMenuButton> {
   }
 }
 
-typedef DropdownMenuTitleBuilder = Widget Function(int index, bool visible);
+typedef DropdownMenuTitleBuilder = Widget Function(
+    BuildContext context, int index, bool visible);
 
 typedef DropdownMenuLabelBuilder = Widget Function(bool visible);
 
@@ -141,14 +145,14 @@ typedef DropdownMenuValueCallback = void Function(
     int titleIndex, int? valueIndex);
 
 typedef DropdownMenuValueBuilder = Widget Function(
-    int titleIndex, int valueIndex);
+    BuildContext context, int titleIndex, int valueIndex);
 
 class DropdownMenu extends StatefulWidget {
   DropdownMenu({
     Key? key,
     TextStyle? titleStyle,
     TextStyle? valueStyle,
-    Color? background,
+    this.backgroundColor = const Color(0x80000000),
     required List<String> title,
     required List<List<String>> value,
     this.width,
@@ -163,27 +167,27 @@ class DropdownMenu extends StatefulWidget {
   })  : assert(title.isNotEmpty, 'title cannot be empty'),
         assert(title.length == value.length,
             'the length of title and value must be consistent'),
-        background = background ?? ConstColors.black70.withOpacity(0.2),
         titleCount = title.length,
         valueCount = value.builder((List<String> item) => item.length),
         label = label ??
-            ((bool isSelect) => const Icon(Icons.keyboard_arrow_up,
-                color: ConstColors.black, size: 20)),
-        titleBuilder = ((int index, bool isSelect) => Padding(
-            padding: const EdgeInsets.only(right: 6),
-            child: BText(title[index],
-                style:
-                    titleStyle ?? const BTextStyle(color: ConstColors.black)))),
-        valueBuilder = ((int titleIndex, int valueIndex) => Container(
-            alignment: Alignment.center,
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            decoration: const BoxDecoration(
-                color: Colors.white,
-                border: Border(top: BorderSide(color: Colors.black12))),
-            child: BText(value[titleIndex][valueIndex],
-                style:
-                    valueStyle ?? const BTextStyle(color: ConstColors.black)))),
+            ((bool isSelect) => const Icon(Icons.keyboard_arrow_up, size: 20)),
+        titleBuilder = ((BuildContext context, int index, bool isSelect) =>
+            Padding(
+                padding: const EdgeInsets.only(right: 6),
+                child: BText(title[index],
+                    style: titleStyle ?? context.textTheme.subtitle2))),
+        valueBuilder = ((BuildContext context, int titleIndex,
+                int valueIndex) =>
+            Container(
+                alignment: Alignment.center,
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                decoration: BoxDecoration(
+                    color: context.theme.dialogBackgroundColor,
+                    border: Border(
+                        top: BorderSide(color: context.theme.dividerColor))),
+                child: BText(value[titleIndex][valueIndex],
+                    style: valueStyle ?? context.textTheme.bodyText1))),
         super(key: key);
 
   DropdownMenu.custom({
@@ -195,7 +199,7 @@ class DropdownMenu extends StatefulWidget {
     this.width,
     this.decoration,
     this.hasRotateLabel = true,
-    Color? background,
+    this.backgroundColor = const Color(0x80000000),
     DropdownMenuLabelBuilder? label,
     this.mainAxisAlignment = MainAxisAlignment.spaceAround,
     this.margin,
@@ -203,10 +207,8 @@ class DropdownMenu extends StatefulWidget {
     this.isModal = false,
     this.onTap,
   })  : assert(titleCount == valueCount.length),
-        background = background ?? ConstColors.black70.withOpacity(0.2),
         label = label ??
-            ((bool isSelect) => const Icon(Icons.keyboard_arrow_up,
-                color: ConstColors.black, size: 20)),
+            ((bool isSelect) => const Icon(Icons.keyboard_arrow_up, size: 20)),
         super(key: key);
 
   /// title 长度
@@ -231,7 +233,7 @@ class DropdownMenu extends StatefulWidget {
   final DropdownMenuValueCallback? onTap;
 
   /// value 显示时 的背景色
-  final Color? background;
+  final Color backgroundColor;
 
   /// title 和 value 宽
   final double? width;
@@ -262,12 +264,13 @@ class _DropdownMenuState extends State<DropdownMenu> {
         titleKey.currentContext!.findRenderObject() as RenderBox;
     final Offset local = title.localToGlobal(Offset.zero);
     final double titleHeight = context.size!.height;
+
     final ScrollList listBuilder = ScrollList.builder(
         itemCount: widget.valueCount[index],
         physics: const ClampingScrollPhysics(),
         itemBuilder: (_, int i) => Universal(
             alignment: Alignment.center,
-            child: widget.valueBuilder(index, i),
+            child: widget.valueBuilder(context, index, i),
             width: double.infinity,
             onTap: () {
               changeState(index);
@@ -276,8 +279,7 @@ class _DropdownMenuState extends State<DropdownMenu> {
             }));
     final Widget popup = PopupOptions(
         top: local.dy + titleHeight,
-        alignment: Alignment.center,
-        color: ConstColors.transparent,
+        color: Colors.transparent,
         onTap: widget.isModal
             ? null
             : () {
@@ -285,10 +287,14 @@ class _DropdownMenuState extends State<DropdownMenu> {
                 pop();
               },
         child: Universal(
-            width: widget.width, color: widget.background, child: listBuilder));
+            width: widget.width,
+            color: widget.backgroundColor,
+            child: listBuilder));
     showDialogPopup<dynamic>(
         widget: popup,
-        options: GeneralDialogOptions(popupFromType: PopupFromType.fromCenter));
+        options: GeneralDialogOptions(
+            popupFromType: PopupFromType.fromCenter,
+            barrierColor: Colors.transparent));
   }
 
   @override
@@ -307,17 +313,16 @@ class _DropdownMenuState extends State<DropdownMenu> {
             return ToggleRotate(
                 rad: pi,
                 isRotate: titleState[index],
-                toggleBuilder: (Widget child) => Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          widget.titleBuilder(index, titleState[index]),
-                          child
-                        ]),
+                toggleBuilder: (Widget child) =>
+                    Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                      widget.titleBuilder(context, index, titleState[index]),
+                      child
+                    ]),
                 child: widget.label(titleState[index]),
                 onTap: () => onTap(index));
           } else {
             return widget
-                .titleBuilder(index, titleState[index])
+                .titleBuilder(context, index, titleState[index])
                 .onTap(() => onTap(index));
           }
         }));

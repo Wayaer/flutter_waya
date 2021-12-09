@@ -46,9 +46,9 @@ class CarouselController extends ChangeNotifier {
     return _completer.future;
   }
 
-  void complete() {
-    if (!_completer.isCompleted) _completer.complete();
-  }
+// void complete() {
+//   if (!_completer.isCompleted) _completer.complete();
+// }
 }
 
 class CarouselPluginConfig {
@@ -128,7 +128,8 @@ class ArrowPagination extends CarouselPlugin {
   @override
   Widget build(BuildContext context, CarouselPluginConfig config) {
     final ThemeData themeData = Theme.of(context);
-    final Color color = this.color ?? themeData.primaryColor;
+    final Color color =
+        this.color ?? themeData.iconTheme.color ?? themeData.primaryColor;
     final Color disableColor = this.disableColor ?? themeData.disabledColor;
     Color prevColor;
     Color nextColor;
@@ -233,8 +234,8 @@ class DotCarouselPagination extends CarouselPlugin {
 
     if (activeColor == null || color == null) {
       final ThemeData themeData = Theme.of(context);
-      activeColor = this.activeColor ?? themeData.primaryColor;
-      color = this.color ?? themeData.scaffoldBackgroundColor;
+      activeColor = this.activeColor ?? themeData.selectedRowColor;
+      color = this.color ?? themeData.unselectedWidgetColor;
     }
 
     return Flex(

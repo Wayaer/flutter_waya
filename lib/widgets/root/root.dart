@@ -13,17 +13,17 @@ List<ExtendedOverlayEntry> _overlayEntryList = <ExtendedOverlayEntry>[];
 EventBus eventBus = EventBus();
 
 enum WidgetMode {
-  ///  Cupertino风格
+  /// Cupertino风格
   cupertino,
 
-  ///  Material风格
+  /// Material风格
   material,
 
   ///
   ripple,
 }
 
-///  ExtendedWidgetsApp
+/// ExtendedWidgetsApp
 class ExtendedWidgetsApp extends StatelessWidget {
   ExtendedWidgetsApp({
     Key? key,
@@ -32,7 +32,6 @@ class ExtendedWidgetsApp extends StatelessWidget {
     ThemeMode? themeMode = ThemeMode.system,
     WidgetMode? widgetMode = WidgetMode.material,
     Locale? locale,
-    Color? color,
     Iterable<LocalizationsDelegate<dynamic>>? localizationsDelegates,
     Iterable<Locale>? supportedLocales,
     bool? debugShowMaterialGrid = false,
@@ -43,6 +42,7 @@ class ExtendedWidgetsApp extends StatelessWidget {
     bool? checkerboardOffscreenLayers,
     bool? showSemanticsDebugger,
     List<NavigatorObserver>? navigatorObservers,
+    this.color,
     this.navigatorKey,
     this.home,
     this.initialRoute,
@@ -76,7 +76,6 @@ class ExtendedWidgetsApp extends StatelessWidget {
         themeMode = themeMode ?? ThemeMode.system,
         widgetMode = widgetMode ?? WidgetMode.material,
         title = title ?? '',
-        color = color ?? ConstColors.white,
         routes = routes ?? const <String, WidgetBuilder>{},
         navigatorObservers = navigatorObservers ?? <NavigatorObserver>[],
         locale = locale ?? const Locale('zh'),
@@ -91,81 +90,81 @@ class ExtendedWidgetsApp extends StatelessWidget {
             ],
         super(key: key);
 
-  ///  风格
+  /// 风格
   final WidgetMode widgetMode;
 
   final GlobalKey<ScaffoldMessengerState>? scaffoldMessengerKey;
 
-  ///  导航键
+  /// 导航键
   final GlobalKey<NavigatorState>? navigatorKey;
 
-  ///  主页
+  /// 主页
   final Widget? home;
 
-  ///  初始路由
+  /// 初始路由
   final String? initialRoute;
 
-  ///  生成路由
+  /// 生成路由
   final RouteFactory? onGenerateRoute;
 
-  ///  未知路由
+  /// 未知路由
   final RouteFactory? onUnknownRoute;
 
-  ///  建造者
+  /// 建造者
   final TransitionBuilder? builder;
 
-  ///  区域分辨回调
+  /// 区域分辨回调
   final LocaleListResolutionCallback? localeListResolutionCallback;
 
   final LocaleResolutionCallback? localeResolutionCallback;
 
-  ///  生成标题
+  /// 生成标题
   final GenerateAppTitle? onGenerateTitle;
 
-  ///  Cupertino主题
+  /// Cupertino主题
   final CupertinoThemeData? cupertinoTheme;
 
-  ///  Material主题
+  /// Material主题
   final ThemeData? theme;
   final ThemeData? darkTheme;
   final ThemeData? highContrastTheme;
   final ThemeData? highContrastDarkTheme;
 
-  ///  颜色
-  final Color color;
+  /// 颜色
+  final Color? color;
 
-  ///  路由
+  /// 路由
   final Map<String, WidgetBuilder> routes;
 
-  ///  导航观察器
+  /// 导航观察器
   final List<NavigatorObserver> navigatorObservers;
 
-  ///  本地化委托
+  /// 本地化委托
   final Iterable<LocalizationsDelegate<dynamic>> localizationsDelegates;
 
-  ///  标题
+  /// 标题
   final String title;
 
   final ThemeMode themeMode;
 
-  ///  地点
+  /// 地点
   final Locale locale;
 
-  ///  支持区域
+  /// 支持区域
   final Iterable<Locale> supportedLocales;
 
-  ///  显示性能叠加
+  /// 显示性能叠加
   final bool showPerformanceOverlay;
 
-  ///  棋盘格光栅缓存图像
+  /// 棋盘格光栅缓存图像
   final bool checkerboardRasterCacheImages;
 
   final bool checkerboardOffscreenLayers;
 
-  ///  显示语义调试器
+  /// 显示语义调试器
   final bool showSemanticsDebugger;
 
-  ///  调试显示检查模式横幅
+  /// 调试显示检查模式横幅
   final bool debugShowCheckedModeBanner;
   final ScrollBehavior? scrollBehavior;
   final bool debugShowMaterialGrid;
@@ -188,6 +187,21 @@ class ExtendedWidgetsApp extends StatelessWidget {
     }
     if (cupertinoTheme != null || widgetMode == WidgetMode.cupertino) {
       return cupertinoApp;
+    }
+    late Color _color;
+    switch (widgetMode) {
+      case WidgetMode.cupertino:
+        final CupertinoThemeData effectiveThemeData =
+            CupertinoTheme.of(context);
+        _color = CupertinoDynamicColor.resolve(
+            color ?? effectiveThemeData.primaryColor, context);
+        break;
+      case WidgetMode.material:
+        _color = color ?? theme?.primaryColor ?? Colors.blue;
+        break;
+      case WidgetMode.ripple:
+        _color = color ?? theme?.primaryColor ?? Colors.blue;
+        break;
     }
     return WidgetsApp(
         key: key,
@@ -216,7 +230,7 @@ class ExtendedWidgetsApp extends StatelessWidget {
         title: title,
         onGenerateTitle: onGenerateTitle,
         textStyle: textStyle,
-        color: color,
+        color: _color,
         locale: locale,
         localizationsDelegates: localizationsDelegates,
         localeListResolutionCallback: localeListResolutionCallback,
@@ -235,7 +249,7 @@ class ExtendedWidgetsApp extends StatelessWidget {
         restorationScopeId: restorationScopeId);
   }
 
-  Widget get materialApp {
+  MaterialApp get materialApp {
     globalScaffoldMessengerKey =
         scaffoldMessengerKey ?? GlobalKey<ScaffoldMessengerState>();
     return MaterialApp(
@@ -276,7 +290,7 @@ class ExtendedWidgetsApp extends StatelessWidget {
         scrollBehavior: scrollBehavior);
   }
 
-  Widget get cupertinoApp => CupertinoApp(
+  CupertinoApp get cupertinoApp => CupertinoApp(
       key: key,
       navigatorKey: globalNavigatorKey,
       home: home,
@@ -310,7 +324,7 @@ class ExtendedWidgetsApp extends StatelessWidget {
 
 bool scaffoldWillPop = true;
 
-///  ExtendedScaffold
+/// ExtendedScaffold
 class ExtendedScaffold extends StatelessWidget {
   const ExtendedScaffold({
     Key? key,
@@ -325,7 +339,6 @@ class ExtendedScaffold extends StatelessWidget {
     bool? useSingleChildScrollView,
     bool? drawerEnableOpenDragGesture,
     bool? endDrawerEnableOpenDragGesture,
-    Color? backgroundColor,
     this.appBar,
     this.body,
     this.padding,
@@ -370,6 +383,7 @@ class ExtendedScaffold extends StatelessWidget {
     this.decoration,
     this.refreshConfig,
     this.restorationId,
+    this.backgroundColor,
   })  : onWillPopOverlayClose = onWillPopOverlayClose ?? false,
         paddingStatusBar = paddingStatusBar ?? false,
         useSingleChildScrollView = useSingleChildScrollView ?? true,
@@ -380,7 +394,6 @@ class ExtendedScaffold extends StatelessWidget {
         extendBodyBehindAppBar = extendBodyBehindAppBar ?? false,
         isStack = isStack ?? false,
         isScroll = isScroll ?? false,
-        backgroundColor = backgroundColor ?? ConstColors.background,
         drawerDragStartBehavior =
             drawerDragStartBehavior ?? DragStartBehavior.start,
         super(key: key);
@@ -410,21 +423,21 @@ class ExtendedScaffold extends StatelessWidget {
   final EdgeInsetsGeometry? margin;
   final Decoration? decoration;
 
-  ///  true 点击android实体返回按键先关闭Overlay【toast loading ...】但不pop 当前页面
-  ///  false 点击android实体返回按键先关闭Overlay【toast loading ...】并pop 当前页面
+  /// true 点击android实体返回按键先关闭Overlay【toast loading ...】但不pop 当前页面
+  /// false 点击android实体返回按键先关闭Overlay【toast loading ...】并pop 当前页面
   final bool onWillPopOverlayClose;
 
-  ///  返回按键监听
+  /// 返回按键监听
   final WillPopCallback? onWillPop;
 
-  ///  ****** 刷新组件相关 ******  ///
+  /// ****** 刷新组件相关 ******  ///
   final RefreshConfig? refreshConfig;
 
   final bool useSingleChildScrollView;
 
-  ///  Scaffold相关属性
+  /// Scaffold相关属性
   final Widget? body;
-  final Color backgroundColor;
+  final Color? backgroundColor;
 
   final bool extendBody;
   final bool extendBodyBehindAppBar;
@@ -518,9 +531,9 @@ class ExtendedScaffold extends StatelessWidget {
       child: body);
 }
 
-///  ************ 以下为 路由跳转 *****************  ///
+/// ************ 以下为 路由跳转 *****************  ///
 ///
-///  打开新页面
+/// 打开新页面
 Future<T?> push<T extends Object?>(
   Widget widget, {
   bool maintainState = true,

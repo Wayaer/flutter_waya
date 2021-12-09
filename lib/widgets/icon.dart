@@ -11,8 +11,8 @@ class IconBox extends StatelessWidget {
     bool? reversal,
     TextOverflow? overflow,
     double? spacing,
-    double? size,
     TextAlign? textAlign,
+    this.size,
     this.heroTag,
     this.icon,
     this.background,
@@ -37,7 +37,6 @@ class IconBox extends StatelessWidget {
   })  : maxLines = maxLines ?? 1,
         overflow = overflow ?? TextOverflow.ellipsis,
         textAlign = textAlign ?? TextAlign.start,
-        size = size ?? 16,
         reversal = reversal ?? false,
         direction = direction ?? Axis.horizontal,
         spacing = spacing ?? 4,
@@ -153,8 +152,7 @@ class IconBox extends StatelessWidget {
 
   Widget get titleWidget {
     if (title != null) return title!;
-    final TextStyle style =
-        BTextStyle(color: color ?? ConstColors.black70).merge(titleStyle);
+    final TextStyle style = BTextStyle(color: color).merge(titleStyle);
     return BText(titleText ?? '',
         style: style,
         textAlign: textAlign,

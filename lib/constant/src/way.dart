@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-const List<BoxShadow> baseBoxShadow = <BoxShadow>[
-  BoxShadow(
-      color: ConstColors.boxShadowColor,
-      blurRadius: ConstConstant.radius,
-      spreadRadius: 1,
-      offset: Offset(0, 3))
-];
+List<BoxShadow> getBaseBoxShadow(Color color) => <BoxShadow>[
+      BoxShadow(
+          color: color,
+          blurRadius: 0.05,
+          spreadRadius: 0.05,
+          offset: const Offset(0, 0))
+    ];
 
 ///  暂无数据
 class PlaceholderChild extends StatelessWidget {
@@ -18,5 +18,5 @@ class PlaceholderChild extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) =>
-      Container(margin: margin, child: Center(child: BText('暂无数据')));
+      Container(margin: margin, child: const Center(child: BText('暂无数据')));
 }

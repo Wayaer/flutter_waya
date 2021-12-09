@@ -5,8 +5,8 @@ import 'package:flutter_waya/flutter_waya.dart';
 class GestureLock extends StatefulWidget {
   const GestureLock(
       {Key? key,
-      Color? selectColor,
-      Color? unSelectColor,
+      this.selectColor,
+      this.unSelectColor,
       required this.size,
       this.ringWidth = 2,
       this.ringRadius = 35,
@@ -16,13 +16,11 @@ class GestureLock extends StatefulWidget {
       this.onPanUp,
       this.onPanDown,
       this.immediatelyClear = true})
-      : selectColor = selectColor ?? ConstColors.greenAccent,
-        unSelectColor = unSelectColor ?? ConstColors.black30,
-        super(key: key);
+      : super(key: key);
 
   final double size;
-  final Color selectColor;
-  final Color unSelectColor;
+  final Color? selectColor;
+  final Color? unSelectColor;
   final double ringWidth;
   final double ringRadius;
   final double circleRadius;
@@ -66,15 +64,18 @@ class _GestureLockState extends State<GestureLock> {
                 ringRadius: widget.ringRadius,
                 showUnSelectRing: widget.showUnSelectRing,
                 circleRadius: widget.circleRadius,
-                selectColor: widget.selectColor,
-                unSelectColor: widget.unSelectColor,
+                selectColor:
+                    widget.selectColor ?? context.theme.colorScheme.secondary,
+                unSelectColor:
+                    widget.unSelectColor ?? context.theme.unselectedWidgetColor,
                 points: points)),
         Universal(
             child: CustomPaint(
                 size: Size(widget.size, widget.size),
                 painter: _CanvasLine(
                     pathPoints: pathPoints,
-                    selectColor: widget.selectColor,
+                    selectColor: widget.selectColor ??
+                        context.theme.colorScheme.secondary,
                     lineWidth: widget.lineWidth,
                     curPoint: curPoint)),
             onPanDown: onPanDownVoid,

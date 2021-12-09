@@ -99,7 +99,7 @@ class PopupOptions extends StatelessWidget {
     if (gaussian) child = backdropFilter(child);
     if (addMaterial) {
       child = Material(
-          color: ConstColors.transparent,
+          color: Colors.transparent,
           child: MediaQuery(
               data: MediaQueryData.fromWindow(window), child: child));
     }
@@ -132,8 +132,8 @@ class PopupOptions extends StatelessWidget {
 class PopupSureCancel extends StatelessWidget {
   const PopupSureCancel({
     Key? key,
-    Color? backgroundColor,
-    Color? barrierColor,
+    this.backgroundColor,
+    this.barrierColor,
     double? width,
     this.height,
     required this.content,
@@ -146,17 +146,15 @@ class PopupSureCancel extends StatelessWidget {
     this.gaussian,
     this.addMaterial,
   })  : width = width ?? 300,
-        backgroundColor = backgroundColor ?? ConstColors.white,
-        barrierColor = barrierColor ?? ConstColors.black50,
         super(key: key);
 
   final Widget content;
 
   /// 弹框背景色
-  final Color backgroundColor;
+  final Color? backgroundColor;
 
   /// 弹框底部 背景色
-  final Color barrierColor;
+  final Color? barrierColor;
 
   /// 弹框
   final EdgeInsetsGeometry? padding;
@@ -197,7 +195,10 @@ class PopupSureCancel extends StatelessWidget {
             onTap: () {},
             width: width,
             height: height,
-            decoration: decoration ?? BoxDecoration(color: backgroundColor),
+            decoration: decoration ??
+                BoxDecoration(
+                    color:
+                        backgroundColor ?? context.theme.dialogBackgroundColor),
             padding: padding,
             mainAxisSize: MainAxisSize.min,
             children: widgets));
@@ -227,7 +228,6 @@ class Loading extends StatelessWidget {
     LoadingType? loadingType,
     double? strokeWidth,
     String? text,
-    Color? backgroundColor,
     this.textStyle,
     this.custom,
     this.ignoring,
@@ -239,9 +239,9 @@ class Loading extends StatelessWidget {
     this.onTap,
     this.behavior,
     this.fuzzyDegree,
+    this.backgroundColor,
   })  : text = text ?? '加载中...',
         strokeWidth = strokeWidth ?? 4.0,
-        color = backgroundColor ?? ConstColors.white,
         loadingType = loadingType ?? LoadingType.circular,
         super(key: key);
 
@@ -252,7 +252,7 @@ class Loading extends StatelessWidget {
   final TextStyle? textStyle;
   final Widget? custom;
   final LoadingType loadingType;
-  final Color color;
+  final Color? backgroundColor;
   final double strokeWidth;
   final String text;
 
@@ -276,7 +276,7 @@ class Loading extends StatelessWidget {
       case LoadingType.circular:
         children.add(CircularProgressIndicator(
             value: value,
-            backgroundColor: color,
+            backgroundColor: backgroundColor,
             valueColor: valueColor,
             strokeWidth: strokeWidth,
             semanticsLabel: semanticsLabel,
@@ -285,7 +285,7 @@ class Loading extends StatelessWidget {
       case LoadingType.linear:
         children.add(LinearProgressIndicator(
             value: value,
-            backgroundColor: color,
+            backgroundColor: backgroundColor,
             valueColor: valueColor,
             semanticsLabel: semanticsLabel,
             semanticsValue: semanticsValue));
@@ -293,7 +293,7 @@ class Loading extends StatelessWidget {
       case LoadingType.refresh:
         children.add(RefreshProgressIndicator(
             value: value,
-            backgroundColor: color,
+            backgroundColor: backgroundColor,
             valueColor: valueColor,
             strokeWidth: strokeWidth,
             semanticsLabel: semanticsLabel,
@@ -314,7 +314,8 @@ class Loading extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
                 decoration: BoxDecoration(
-                    color: color, borderRadius: BorderRadius.circular(8.0)),
+                    color: backgroundColor,
+                    borderRadius: BorderRadius.circular(8.0)),
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,

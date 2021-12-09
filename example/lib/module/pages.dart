@@ -27,12 +27,10 @@ class _ImagePageState extends State<ImagePage> with TickerProviderStateMixin {
   }
 
   @override
-  Widget build(BuildContext context) => ExtendedScaffold(
-          backgroundColor: Colors.white,
-          appBar: AppBarText('GifImage Demo'),
-          children: <Widget>[
-            GifImage(image: NetworkImage(uri), controller: controller),
-          ]);
+  Widget build(BuildContext context) =>
+      ExtendedScaffold(appBar: AppBarText('GifImage Demo'), children: <Widget>[
+        GifImage(image: NetworkImage(uri), controller: controller),
+      ]);
 
   @override
   void dispose() {
@@ -48,7 +46,6 @@ class ExtendedFutureBuilderPage extends StatelessWidget {
   Widget build(BuildContext context) {
     bool? showError = true;
     return ExtendedScaffold(
-        backgroundColor: Colors.white,
         padding: const EdgeInsets.all(20),
         appBar: AppBarText('ExtendedFutureBuilder '),
         children: <Widget>[

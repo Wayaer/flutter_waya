@@ -10,7 +10,6 @@ class ComponentsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ExtendedScaffold(
-          backgroundColor: Colors.white,
           isScroll: true,
           appBar: AppBarText('Components Demo'),
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
@@ -80,17 +79,17 @@ class ComponentsPage extends StatelessWidget {
                         Container(color: Colors.green, width: 20, height: 20))),
             const Partition('ExpansionTiles'),
             ExpansionTiles(
-                title: BText('title', color: Colors.black),
+                title: const BText('title'),
                 children: 5.generate((int index) => Universal(
                     margin: const EdgeInsets.all(12),
                     alignment: Alignment.centerLeft,
-                    child: BText('item$index', color: Colors.black)))),
+                    child: BText('item$index')))),
             ExpansionTiles(
-                title: BText('title', color: Colors.black),
+                title: const BText('title'),
                 children: 5.generate((int index) => Universal(
                     margin: const EdgeInsets.all(12),
                     alignment: Alignment.centerLeft,
-                    child: BText('item$index', color: Colors.black)))),
+                    child: BText('item$index')))),
             const Partition('Toast'),
             Wrap(
                 children: ToastType.values.builder((ToastType type) =>
@@ -170,11 +169,11 @@ class ComponentsPage extends StatelessWidget {
                 stateBuilder: (SendState state, int i) {
                   switch (state) {
                     case SendState.none:
-                      return BText('发送验证码');
+                      return const BText('发送验证码');
                     case SendState.sending:
-                      return BText('发送中');
+                      return const BText('发送中');
                     case SendState.resend:
-                      return BText('重新发送');
+                      return const BText('重新发送');
                     case SendState.countDown:
                       return BText('等待 $i s');
                   }
@@ -202,8 +201,12 @@ class ComponentsPage extends StatelessWidget {
                 child: CustomPaint(
                     size: const Size(double.infinity, 1),
                     painter: DottedLinePainter(
-                        color: Colors.black, strokeWidth: 1, gap: 20)),
-                decoration: BoxDecoration(border: DottedLineBorder.all())),
+                        color: context.theme.dividerColor,
+                        strokeWidth: 1,
+                        gap: 20)),
+                decoration: BoxDecoration(
+                    border: DottedLineBorder.all(
+                        color: context.theme.dividerColor))),
             const Partition('ValueBuilder'),
             ValueBuilder<int>(
                 initialValue: 0,

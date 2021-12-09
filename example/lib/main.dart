@@ -35,11 +35,6 @@ void main() {
   runApp(isCustomApp ? _CustomApp() : _App());
 }
 
-class _App extends StatefulWidget {
-  @override
-  State<_App> createState() => _AppState();
-}
-
 class _CustomApp extends StatefulWidget {
   @override
   State<_CustomApp> createState() => _CustomAppState();
@@ -56,12 +51,18 @@ class _CustomAppState extends State<_CustomApp> {
   }
 }
 
+class _App extends StatefulWidget {
+  @override
+  State<_App> createState() => _AppState();
+}
+
 class _AppState extends State<_App> {
   @override
   void initState() {
     super.initState();
     addPostFrameCallback((Duration duration) async {
       if (isDebug && isDesktop) {
+        await Curiosity().desktop.focusDesktop();
         final bool data =
             await Curiosity().desktop.setDesktopSizeToIPad9P7(p: 1.5);
         log('桌面端限制宽高:$data');
@@ -72,7 +73,11 @@ class _AppState extends State<_App> {
   @override
   Widget build(BuildContext context) {
     return ExtendedWidgetsApp(
-        title: 'Waya UI', home: _Home(), widgetMode: WidgetMode.material);
+        theme: ThemeData.light(),
+        darkTheme: ThemeData.dark(),
+        title: 'Waya UI',
+        home: _Home(),
+        widgetMode: WidgetMode.material);
   }
 }
 
@@ -80,7 +85,6 @@ class _Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ExtendedScaffold(
-        backgroundColor: Colors.white,
         onWillPopOverlayClose: true,
         appBar: AppBarText('Flutter Waya Example'),
         padding: const EdgeInsets.all(10),
@@ -120,14 +124,9 @@ class AppBarText extends AppBar {
             key: key,
             elevation: 0,
             systemOverlayStyle: const SystemUiOverlayStyleDark(),
-            iconTheme: const IconThemeData.fallback(),
-            title: BText(text,
-                color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
-            centerTitle: true,
-            backgroundColor: color);
+            title: BText(text, fontSize: 18, fontWeight: FontWeight.bold),
+            centerTitle: true);
 }
-
-const Color color = Colors.amber;
 
 class ElevatedText extends StatelessWidget {
   const ElevatedText(this.text, {Key? key, this.onTap}) : super(key: key);
@@ -137,19 +136,15 @@ class ElevatedText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SimpleButton(
-        isElastic: true,
-        onTap: onTap,
-        margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 6),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-        decoration: BoxDecoration(boxShadow: const <BoxShadow>[
-          BoxShadow(
-              color: color,
-              offset: Offset(0, 0),
-              blurRadius: 1.0,
-              spreadRadius: 1.0)
-        ], color: color, borderRadius: BorderRadius.circular(4)),
-        child: BText(text, color: Colors.black),
-      );
+      isElastic: true,
+      onTap: onTap,
+      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+          boxShadow: getBaseBoxShadow(context.theme.canvasColor),
+          color: context.theme.primaryColor,
+          borderRadius: BorderRadius.circular(4)),
+      child: BText(text, color: Colors.white));
 }
 
 class Partition extends StatelessWidget {
@@ -164,6 +159,6 @@ class Partition extends StatelessWidget {
         alignment: Alignment.center,
         padding: const EdgeInsets.symmetric(vertical: 15),
         margin: const EdgeInsets.symmetric(vertical: 25),
-        child: BText(title, color: Colors.black));
+        child: BText(title));
   }
 }

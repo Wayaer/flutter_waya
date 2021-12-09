@@ -44,15 +44,14 @@ class _JsonParseState extends State<JsonParse> {
             rad: pi / 2,
             clockwise: true,
             isRotate: (mapFlag[key.toString()]) ?? false,
-            child: Icon(Icons.arrow_right_rounded,
-                size: 18, color: Colors.grey[700])));
+            child: const Icon(Icons.arrow_right_rounded, size: 18)));
       } else {
         row.add(const SizedBox(width: 14));
       }
       row.addAll(<Widget>[
         BText(widget.isList || isTap(content) ? '[$key]:' : ' $key :',
                 fontWeight: FontWeight.w400,
-                color: content == null ? Colors.grey : Colors.purple[800])
+                color: content == null ? Colors.grey : Colors.purple)
             .onDoubleTap(() {
           key.toString().toClipboard;
           showToast('已经复制$key');
@@ -190,8 +189,9 @@ class _HttpDataPageState extends State<_HttpDataPage> {
                         updatePositioned(details.globalPosition),
                     onPanUpdate: (DragUpdateDetails details) =>
                         updatePositioned(details.globalPosition),
-                    decoration: const BoxDecoration(
-                        color: ConstColors.blue, shape: BoxShape.circle),
+                    decoration: BoxDecoration(
+                        color: context.theme.primaryColor,
+                        shape: BoxShape.circle),
                     padding: const EdgeInsets.all(4),
                     child: const Icon(Icons.bug_report_rounded,
                         size: 16, color: Colors.white))),
@@ -227,8 +227,9 @@ class _HttpDataPageState extends State<_HttpDataPage> {
               bool showJson = false;
               return Universal(
                 margin: const EdgeInsets.only(top: 10),
-                decoration: const BoxDecoration(
-                    color: ConstColors.white, boxShadow: baseBoxShadow),
+                decoration: BoxDecoration(
+                    color: context.theme.cardColor,
+                    boxShadow: getBaseBoxShadow(context.theme.shadowColor)),
                 addCard: true,
                 child: StatefulBuilder(
                     builder: (_, StateSetter state) => !showJson

@@ -15,7 +15,6 @@ class AlertPage extends StatelessWidget {
           _details = details;
         },
         child: ExtendedScaffold(
-            backgroundColor: Colors.white,
             appBar: AppBarText('Alert Demo'),
             isScroll: true,
             children: <Widget>[
@@ -26,7 +25,10 @@ class AlertPage extends StatelessWidget {
               ElevatedText('showDateTimePicker', onTap: selectTime),
               const Partition('Popup'),
               ElevatedText('showBottomPopup', onTap: () {
-                showBottomPopup<dynamic>(widget: const _AlertDemo());
+                showBottomPopup<dynamic>(
+                    widget: const _AlertDemo(),
+                    options: BottomSheetOptions(
+                        backgroundColor: Colors.transparent));
               }),
               ElevatedText('showBottomPopup - Full screen', onTap: () {
                 showBottomPopup<dynamic>(
@@ -56,9 +58,10 @@ class AlertPage extends StatelessWidget {
                 showToast(data.toString());
               }),
               const Partition('Other'),
-              ElevatedText('showDialogSureCancel', onTap: sureCancel),
+              ElevatedText('showDialogSureCancel',
+                  onTap: () => sureCancel(context)),
               ElevatedText('showSnackBar', onTap: () {
-                showSnackBar(SnackBar(content: BText('Popup SnackBar')));
+                showSnackBar(const SnackBar(content: BText('Popup SnackBar')));
               }),
               ElevatedText('showOverlayLoading', onTap: () {
                 showOverlayLoading();
@@ -67,18 +70,16 @@ class AlertPage extends StatelessWidget {
       );
 
   void showOverlayLoading() => showLoading(
-      gaussian: true,
-      onTap: closeOverlay,
-      custom: const SpinKitWave(color: color));
+      gaussian: true, onTap: closeOverlay, custom: const SpinKitWave());
 
-  void sureCancel() {
+  void sureCancel(BuildContext context) {
     const bool isOverlay = false;
     showDialogSureCancel<dynamic>(
         isOverlay: isOverlay,
         sure: SimpleButton(
             padding: const EdgeInsets.symmetric(vertical: 6),
             alignment: Alignment.center,
-            child: Text('确定', style: _textStyle()),
+            child: Text('确定', style: context.textTheme.subtitle1),
             onTap: () {
               ///如果isOverlay=true; 必须先closeOverlay() 再toast或者loading
               showToast('确定');
@@ -86,21 +87,15 @@ class AlertPage extends StatelessWidget {
         cancel: SimpleButton(
             alignment: Alignment.center,
             padding: const EdgeInsets.symmetric(vertical: 6),
-            child: Text('取消', style: _textStyle()),
+            child: Text('取消', style: context.textTheme.subtitle1),
             onTap: () {
               ///如果isOverlay=true; 必须先closeOverlay() 再toast或者loading
               showToast('取消');
             }),
         content: Container(
             padding: const EdgeInsets.symmetric(vertical: 40),
-            child: Text('内容', style: _textStyle())));
+            child: Text('内容', style: context.textTheme.bodyText1)));
   }
-
-  TextStyle _textStyle() => const TextStyle(
-      color: Colors.blueAccent,
-      decoration: TextDecoration.none,
-      fontWeight: FontWeight.w500,
-      fontSize: 14);
 
   Future<void> selectTime() async {
     final DateTime? dateTime = await showDateTimePicker<DateTime?>(
@@ -130,20 +125,19 @@ class AlertPage extends StatelessWidget {
           cancelTap: (String? value) {
             return true;
           },
-          title: Center(
-              child: Container(
-                  child: BText('Title'),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-                  decoration: BoxDecoration(
-                      color: Colors.lightBlue,
-                      borderRadius: BorderRadius.circular(6)))),
+          title: Container(
+              child: const BText('Title'),
+              alignment: Alignment.center,
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+              decoration: BoxDecoration(
+                  color: Colors.lightBlue,
+                  borderRadius: BorderRadius.circular(6))),
           backgroundColor: Colors.red),
       content: Container(
           height: 300,
           alignment: Alignment.center,
           color: Colors.blue.withOpacity(0.2),
-          child: BText('showCustomPicker', color: Colors.black)),
+          child: const BText('showCustomPicker', color: Colors.black)),
       cancelTap: () {
         return 'Cancel';
       },
@@ -172,8 +166,9 @@ class AlertPage extends StatelessWidget {
       '十'
     ];
     final int? index = await showMultipleChoicePicker<int>(
-        itemBuilder: (_, int index) =>
-            Container(alignment: Alignment.center, child: Text(list[index])),
+        itemBuilder: (BuildContext context, int index) => Container(
+            alignment: Alignment.center,
+            child: Text(list[index], style: context.textTheme.bodyText1)),
         wheel: PickerWheel(itemHeight: 25, useMagnifier: true),
         itemCount: list.length);
     showToast(index == null ? 'null' : list[index].toString());

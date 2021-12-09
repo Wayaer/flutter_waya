@@ -10,7 +10,7 @@ class ClothButton extends StatefulWidget {
   const ClothButton.round(
       {Key? key,
       required this.size,
-      required this.backgroundColor,
+      this.backgroundColor,
       this.child,
       this.retainGradient = false,
       this.gap = 1,
@@ -23,7 +23,7 @@ class ClothButton extends StatefulWidget {
   const ClothButton.rectangle(
       {Key? key,
       required this.size,
-      required this.backgroundColor,
+      this.backgroundColor,
       this.duration = const Duration(milliseconds: 500),
       this.child,
       this.expandFactor = 10.0,
@@ -35,7 +35,7 @@ class ClothButton extends StatefulWidget {
 
   final Size size;
   final Widget? child;
-  final Color backgroundColor;
+  final Color? backgroundColor;
   final Color? gradientColor;
   final Duration duration;
   final double expandFactor;
@@ -74,18 +74,24 @@ class _ClothButtonState extends State<ClothButton>
         ? _ClothCustomPainter(
             relativePosition: position,
             expandFactor: animation.value,
-            backgroundColor: widget.backgroundColor,
+            backgroundColor:
+                widget.backgroundColor ?? context.theme.backgroundColor,
             maxExpand: widget.expandFactor,
             retainGradient: widget.retainGradient,
-            gradientColor: widget.gradientColor ?? widget.backgroundColor)
+            gradientColor: widget.gradientColor ??
+                widget.backgroundColor ??
+                context.theme.backgroundColor)
         : _RoundClothCustomPainter(
             gap: widget.gap!,
             relativePosition: position,
             expandFactor: animation.value,
-            backgroundColor: widget.backgroundColor,
+            backgroundColor:
+                widget.backgroundColor ?? context.theme.backgroundColor,
             maxExpand: widget.expandFactor,
             retainGradient: widget.retainGradient,
-            gradientColor: widget.gradientColor ?? widget.backgroundColor);
+            gradientColor: widget.gradientColor ??
+                widget.backgroundColor ??
+                context.theme.backgroundColor);
     final SizedBox size = SizedBox.fromSize(
         size: widget.size,
         child:

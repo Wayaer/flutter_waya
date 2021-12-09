@@ -17,7 +17,6 @@ class _RefreshPageState extends State<RefreshPage> {
   @override
   Widget build(BuildContext context) {
     return ExtendedScaffold(
-        backgroundColor: Colors.white,
         appBar: AppBarText('SimpleRefresh Demo'),
         body: SimpleRefresh(
           onRefresh: () async {
@@ -69,7 +68,6 @@ class _EasyRefreshPageState extends State<EasyRefreshPage> {
   @override
   Widget build(BuildContext context) {
     return ExtendedScaffold(
-        backgroundColor: Colors.white,
         appBar: AppBarText('EasyRefreshPage Demo'),
         bottomNavigationBar: Universal(
             direction: Axis.horizontal,

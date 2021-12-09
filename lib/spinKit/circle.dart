@@ -229,14 +229,13 @@ class _SpinKitSquareCircleState extends State<SpinKitSquareCircle>
   Widget build(BuildContext context) {
     final double sizeValue = widget.size * animationSize.value;
     return Center(
-      child: Transform(
-        transform: Matrix4.identity()..rotateZ(animationCurve.value * pi),
-        alignment: FractionalOffset.center,
-        child: SizedBox.fromSize(
-            size: Size.square(sizeValue),
-            child: _itemBuilder(0, 0.5 * sizeValue * animationCurve.value)),
-      ),
-    );
+        child: Transform(
+            transform: Matrix4.identity()..rotateZ(animationCurve.value * pi),
+            alignment: FractionalOffset.center,
+            child: SizedBox.fromSize(
+                size: Size.square(sizeValue),
+                child:
+                    _itemBuilder(0, 0.5 * sizeValue * animationCurve.value))));
   }
 
   Widget _itemBuilder(int index, double curveValue) =>
@@ -244,8 +243,7 @@ class _SpinKitSquareCircleState extends State<SpinKitSquareCircle>
           ? widget.itemBuilder!(context, index)
           : DecoratedBox(
               decoration: BoxDecoration(
-                color: widget.color,
-                borderRadius: BorderRadius.all(Radius.circular(curveValue)),
-              ),
+                  color: widget.color,
+                  borderRadius: BorderRadius.all(Radius.circular(curveValue))),
             );
 }

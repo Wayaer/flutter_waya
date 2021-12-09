@@ -27,7 +27,6 @@ class _ProgressPageState extends State<ProgressPage>
     final double percentage = _animationController.value * 100;
     return ExtendedScaffold(
         isScroll: true,
-        backgroundColor: Colors.white,
         appBar: AppBarText('Progress Demo'),
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -39,11 +38,14 @@ class _ProgressPageState extends State<ProgressPage>
               animation: true,
               restartAnimation: true,
               animationDuration: const Duration(seconds: 2),
-              linearGradient:
-                  const LinearGradient(colors: <Color>[Colors.red, color]),
+              linearGradient: LinearGradient(colors: <Color>[
+                Colors.red,
+                context.theme.progressIndicatorTheme.color ??
+                    context.theme.primaryColor
+              ]),
               mainAxisAlignment: MainAxisAlignment.center,
               center: const Text('center'),
-              widgetIndicator: BText('0', color: Colors.red),
+              widgetIndicator: const BText('0', color: Colors.red),
               progressColor: Colors.lightGreen,
               backgroundColor: Colors.black12),
           const SizedBox(height: 20),
@@ -60,33 +62,27 @@ class _ProgressPageState extends State<ProgressPage>
                     width: 20,
                     height: 20,
                     alignment: Alignment.center,
-                    child: BText('0', color: Colors.black)),
+                    child: const BText('0', color: Colors.black)),
                 arcType: ArcType.full,
                 arcBackgroundColor: Colors.cyan,
-                center: const Text('70.0%',
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0)),
+                center: const BText('70.0%',
+                    fontWeight: FontWeight.bold, fontSize: 20.0),
                 circularStrokeCap: CircularStrokeCap.round,
-                linearGradient:
-                    const LinearGradient(colors: <Color>[Colors.red, color])),
+                linearGradient: LinearGradient(colors: <Color>[
+                  Colors.red,
+                  context.theme.progressIndicatorTheme.color ??
+                      context.theme.primaryColor
+                ])),
           ),
           const SizedBox(height: 20),
           SizedBox.fromSize(
               size: const Size(150, 30),
-              child: const LiquidProgress.linear(
-                  value: 0.4,
-                  backgroundColor: Colors.white,
-                  valueColor: AlwaysStoppedAnimation<Color>(color),
-                  borderColor: color,
-                  borderWidth: 1.0)),
+              child: const LiquidProgress.linear(value: 0.4, borderWidth: 1.0)),
           const SizedBox(height: 20),
           SizedBox.fromSize(
               size: const Size(150, 30),
               child: LiquidProgress.linear(
                   value: _animationController.value,
-                  backgroundColor: Colors.white,
-                  borderColor: color,
-                  valueColor: const AlwaysStoppedAnimation<Color>(color),
                   center: BText('${percentage.toStringAsFixed(0)}%',
                       style: const BTextStyle(
                           color: Colors.lightBlueAccent,
@@ -97,9 +93,6 @@ class _ProgressPageState extends State<ProgressPage>
             size: const Size(80, 80),
             child: LiquidProgress.circular(
                 value: _animationController.value,
-                backgroundColor: Colors.white,
-                borderColor: color,
-                valueColor: const AlwaysStoppedAnimation<Color>(color),
                 center: BText('${percentage.toStringAsFixed(0)}%',
                     style: const BTextStyle(
                         color: Colors.lightBlueAccent,
@@ -111,9 +104,6 @@ class _ProgressPageState extends State<ProgressPage>
               size: const Size(150, 150),
               child: LiquidProgress.circular(
                   value: _animationController.value,
-                  backgroundColor: Colors.white,
-                  borderColor: color,
-                  valueColor: const AlwaysStoppedAnimation<Color>(color),
                   center: BText('${percentage.toStringAsFixed(0)}%',
                       style: const BTextStyle(
                           color: Colors.lightBlueAccent,
@@ -128,14 +118,11 @@ class _ProgressPageState extends State<ProgressPage>
           LiquidProgress.custom(
               direction: Axis.horizontal,
               backgroundColor: Colors.grey[300],
-              valueColor: const AlwaysStoppedAnimation<Color>(color),
               shapePath: _buildSpeechBubblePath()),
           const SizedBox(height: 20),
           LiquidProgress.custom(
               value: _animationController.value,
               direction: Axis.vertical,
-              backgroundColor: Colors.white,
-              valueColor: const AlwaysStoppedAnimation<Color>(color),
               shapePath: _buildHeartPath(),
               center: BText('${percentage.toStringAsFixed(0)}%',
                   style: const BTextStyle(

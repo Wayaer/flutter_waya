@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 
 enum IndicatorType { none, slide, warm, color, scale, drop }
 
@@ -10,9 +11,9 @@ class Indicator extends StatelessWidget {
       this.size = 20.0,
       this.space = 5.0,
       this.activeSize = 20.0,
-      this.color = Colors.white30,
+      this.color,
       this.layout = IndicatorType.slide,
-      this.activeColor = Colors.white,
+      this.activeColor,
       this.scale = 0.6,
       this.dropHeight = 20.0,
       required this.index,
@@ -20,6 +21,8 @@ class Indicator extends StatelessWidget {
       : super(key: key);
 
   final int index;
+
+  /// usually use `pageController.page`
   final double position;
 
   ///  size of the dots
@@ -32,10 +35,10 @@ class Indicator extends StatelessWidget {
   final int count;
 
   ///  active color
-  final Color activeColor;
+  final Color? activeColor;
 
   ///  normal color
-  final Color color;
+  final Color? color;
 
   ///  layout of the dots,default is [IndicatorType.slide]
   final IndicatorType layout;
@@ -48,21 +51,21 @@ class Indicator extends StatelessWidget {
 
   final double activeSize;
 
-  _IndicatorPainter createPainter() {
+  _IndicatorPainter createPainter(Color activeColor, Color color) {
     final Paint _paint = Paint();
     switch (layout) {
       case IndicatorType.none:
-        return _NonePainter(this, position, index, _paint);
+        return _NonePainter(this, position, index, _paint, activeColor, color);
       case IndicatorType.slide:
-        return _SlidePainter(this, position, index, _paint);
+        return _SlidePainter(this, position, index, _paint, activeColor, color);
       case IndicatorType.warm:
-        return _WarmPainter(this, position, index, _paint);
+        return _WarmPainter(this, position, index, _paint, activeColor, color);
       case IndicatorType.color:
-        return _ColorPainter(this, position, index, _paint);
+        return _ColorPainter(this, position, index, _paint, activeColor, color);
       case IndicatorType.scale:
-        return _ScalePainter(this, position, index, _paint);
+        return _ScalePainter(this, position, index, _paint, activeColor, color);
       case IndicatorType.drop:
-        return _DropPainter(this, position, index, _paint);
+        return _DropPainter(this, position, index, _paint, activeColor, color);
       default:
         throw Exception('Not a valid layout');
     }
@@ -73,7 +76,10 @@ class Indicator extends StatelessWidget {
     final Widget child = SizedBox(
         width: count * size + (count - 1) * space,
         height: size,
-        child: CustomPaint(painter: createPainter()));
+        child: CustomPaint(
+            painter: createPainter(
+                activeColor ?? context.theme.selectedRowColor,
+                color ?? context.theme.unselectedWidgetColor)));
     return IgnorePointer(
         child: layout == IndicatorType.scale || layout == IndicatorType.color
             ? ClipRect(child: child)
@@ -82,8 +88,9 @@ class Indicator extends StatelessWidget {
 }
 
 class _WarmPainter extends _IndicatorPainter {
-  _WarmPainter(Indicator widget, double page, int index, Paint paint)
-      : super(widget, page, index, paint);
+  _WarmPainter(Indicator widget, double page, int index, Paint paint,
+      Color activeColor, Color color)
+      : super(widget, page, index, paint, activeColor, color);
 
   @override
   void draw(Canvas canvas, double space, double size, double radius) {
@@ -108,8 +115,9 @@ class _WarmPainter extends _IndicatorPainter {
 }
 
 class _DropPainter extends _IndicatorPainter {
-  _DropPainter(Indicator widget, double page, int index, Paint paint)
-      : super(widget, page, index, paint);
+  _DropPainter(Indicator widget, double page, int index, Paint paint,
+      Color activeColor, Color color)
+      : super(widget, page, index, paint, activeColor, color);
 
   @override
   void draw(Canvas canvas, double space, double size, double radius) {
@@ -126,8 +134,9 @@ class _DropPainter extends _IndicatorPainter {
 }
 
 class _NonePainter extends _IndicatorPainter {
-  _NonePainter(Indicator widget, double page, int index, Paint paint)
-      : super(widget, page, index, paint);
+  _NonePainter(Indicator widget, double page, int index, Paint paint,
+      Color activeColor, Color color)
+      : super(widget, page, index, paint, activeColor, color);
 
   @override
   void draw(Canvas canvas, double space, double size, double radius) {
@@ -145,8 +154,9 @@ class _NonePainter extends _IndicatorPainter {
 }
 
 class _SlidePainter extends _IndicatorPainter {
-  _SlidePainter(Indicator widget, double page, int index, Paint paint)
-      : super(widget, page, index, paint);
+  _SlidePainter(Indicator widget, double page, int index, Paint paint,
+      Color activeColor, Color color)
+      : super(widget, page, index, paint, activeColor, color);
 
   @override
   void draw(Canvas canvas, double space, double size, double radius) =>
@@ -155,8 +165,14 @@ class _SlidePainter extends _IndicatorPainter {
 }
 
 class _ScalePainter extends _IndicatorPainter {
-  _ScalePainter(Indicator widget, double page, int index, Paint paint)
-      : super(widget, page, index, paint);
+  _ScalePainter(
+    Indicator widget,
+    double page,
+    int index,
+    Paint paint,
+    Color activeColor,
+    Color color,
+  ) : super(widget, page, index, paint, activeColor, color);
 
   @override
   bool _shouldSkip(int i) {
@@ -166,7 +182,7 @@ class _ScalePainter extends _IndicatorPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    _paint.color = widget.color;
+    _paint.color = _color;
     final double space = widget.space;
     final double size = widget.size;
     final double radius = size / 2;
@@ -175,7 +191,7 @@ class _ScalePainter extends _IndicatorPainter {
       canvas.drawCircle(Offset(i * (size + space) + radius, radius),
           radius * widget.scale, _paint);
     }
-    _paint.color = widget.activeColor;
+    _paint.color = _activeColor;
     draw(canvas, space, size, radius);
   }
 
@@ -186,22 +202,23 @@ class _ScalePainter extends _IndicatorPainter {
         : radius + ((index + 1) * (size + space));
 
     final double progress = page - index;
-    _paint.color = Color.lerp(widget.activeColor, widget.color, progress)!;
+    _paint.color = Color.lerp(_activeColor, _color, progress)!;
 
     /// last
     canvas.drawCircle(Offset(radius + (index * (size + space)), radius),
         lerp(radius, radius * widget.scale, progress), _paint);
 
     /// first
-    _paint.color = Color.lerp(widget.color, widget.activeColor, progress)!;
+    _paint.color = Color.lerp(_color, _activeColor, progress)!;
     canvas.drawCircle(Offset(secondOffset, radius),
         lerp(radius * widget.scale, radius, progress), _paint);
   }
 }
 
 class _ColorPainter extends _IndicatorPainter {
-  _ColorPainter(Indicator widget, double page, int index, Paint paint)
-      : super(widget, page, index, paint);
+  _ColorPainter(Indicator widget, double page, int index, Paint paint,
+      Color activeColor, Color color)
+      : super(widget, page, index, paint, activeColor, color);
 
   @override
   bool _shouldSkip(int i) {
@@ -215,25 +232,28 @@ class _ColorPainter extends _IndicatorPainter {
     final double secondOffset = index == widget.count - 1
         ? radius
         : radius + ((index + 1) * (size + space));
-    _paint.color = Color.lerp(widget.activeColor, widget.color, progress)!;
+    _paint.color = Color.lerp(_activeColor, _color, progress)!;
 
     /// left
     canvas.drawCircle(
         Offset(radius + (index * (size + space)), radius), radius, _paint);
 
     /// right
-    _paint.color = Color.lerp(widget.color, widget.activeColor, progress)!;
+    _paint.color = Color.lerp(_color, _activeColor, progress)!;
     canvas.drawCircle(Offset(secondOffset, radius), radius, _paint);
   }
 }
 
 abstract class _IndicatorPainter extends CustomPainter {
-  _IndicatorPainter(this.widget, this.page, this.index, this._paint);
+  _IndicatorPainter(this.widget, this.page, this.index, this._paint,
+      this._activeColor, this._color);
 
   final Indicator widget;
   final double page;
   final int index;
   final Paint _paint;
+  final Color _activeColor;
+  final Color _color;
 
   double lerp(double begin, double end, double progress) =>
       begin + (end - begin) * progress;
@@ -244,7 +264,7 @@ abstract class _IndicatorPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    _paint.color = widget.color;
+    _paint.color = _color;
     final double space = widget.space;
     final double size = widget.size;
     final double radius = size / 2;
@@ -256,7 +276,7 @@ abstract class _IndicatorPainter extends CustomPainter {
 
     double page = this.page;
     if (page < index) page = 0.0;
-    _paint.color = widget.activeColor;
+    _paint.color = _activeColor;
     draw(canvas, space, size, radius);
   }
 

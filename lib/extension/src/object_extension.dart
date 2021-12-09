@@ -187,6 +187,7 @@ enum DateTimeDist {
 
 /// DateTime 扩展
 extension ExtensionDateTime on DateTime {
+  /// 转换指定长度的字符串
   String format([DateTimeDist? dateType, bool dual = true]) {
     final DateTime date = this;
     dateType ??= DateTimeDist.yearSecond;
@@ -238,15 +239,15 @@ extension ExtensionDateTime on DateTime {
 }
 
 extension DurationExtension on Duration {
-  ///   final _delay = 3.seconds;
-  ///   print('+ wait $_delay');
-  ///   await _delay.delayed();
-  ///   print('- finish wait $_delay');
-  ///   print('+ callback in 700ms');
+  /// final _delay = 3.seconds;
+  /// print('+ wait $_delay');
+  /// await _delay.delayed();
+  /// print('- finish wait $_delay');
+  /// print('+ callback in 700ms');
   Future<T> delayed<T>([FutureOr<T> Function()? callback]) =>
       Future<T>.delayed(this, callback);
 
-  /// 时间工具
+  /// Timer
   Timer timer([Function? function]) {
     late Timer timer;
     timer = Timer(this, () {

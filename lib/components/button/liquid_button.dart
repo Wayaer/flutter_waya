@@ -13,7 +13,7 @@ class LiquidButton extends StatefulWidget {
       {Key? key,
       required this.height,
       required this.width,
-      required this.backgroundColor,
+      this.backgroundColor,
       this.gradientColor,
       this.gap = 1,
       this.duration = const Duration(milliseconds: 500),
@@ -28,7 +28,7 @@ class LiquidButton extends StatefulWidget {
   final Widget? child;
   final double height;
   final double width;
-  final Color backgroundColor;
+  final Color? backgroundColor;
   final Color? gradientColor;
   final int gap;
   final Duration duration;
@@ -73,12 +73,14 @@ class _LiquidButtonState extends State<LiquidButton>
                 height: widget.height,
                 child: CustomPaint(
                     painter: _LiquidButtonCustomPainter(
-                        canvasColor: widget.backgroundColor,
+                        canvasColor: widget.backgroundColor ??
+                            context.theme.backgroundColor,
                         gap: widget.gap,
                         retainGradient: widget.retainGradient,
                         tension: widget.tension,
-                        gradientColor:
-                            widget.gradientColor ?? widget.backgroundColor,
+                        gradientColor: widget.gradientColor ??
+                            widget.backgroundColor ??
+                            context.theme.backgroundColor,
                         position: position,
                         maxExpansion: widget.expandFactor,
                         expandFactor: animation.value),
@@ -92,12 +94,14 @@ class _LiquidButtonState extends State<LiquidButton>
             height: widget.height,
             child: CustomPaint(
                 painter: _LiquidButtonCustomPainter(
-                    canvasColor: widget.backgroundColor,
+                    canvasColor:
+                        widget.backgroundColor ?? context.theme.backgroundColor,
                     gap: widget.gap,
                     retainGradient: widget.retainGradient,
                     tension: widget.tension,
-                    gradientColor:
-                        widget.gradientColor ?? widget.backgroundColor,
+                    gradientColor: widget.gradientColor ??
+                        widget.backgroundColor ??
+                        context.theme.backgroundColor,
                     position: position,
                     maxExpansion: widget.expandFactor,
                     expandFactor: animation.value),

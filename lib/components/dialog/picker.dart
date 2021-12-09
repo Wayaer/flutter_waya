@@ -13,28 +13,24 @@ class PickerOptions<T> {
     Widget? sure,
     Widget? cancel,
     double? height,
-    Color? backgroundColor,
-    TextStyle? contentStyle,
+    this.backgroundColor,
+    this.contentStyle,
     PickerTapSureCallback<T>? sureTap,
     PickerTapCancelCallback<T>? cancelTap,
     this.titleBottom,
     this.title,
-  })  : sure = sure ?? BText('sure', color: Colors.black),
-        cancel = cancel ?? BText('cancel', color: Colors.black),
-        backgroundColor = backgroundColor ?? ConstColors.white,
+  })  : sure = sure ?? const BText('sure'),
+        cancel = cancel ?? const BText('cancel'),
         sureTap = sureTap ?? ((T? value) => true),
         cancelTap = cancelTap ?? ((T? value) => true),
-        contentStyle = contentStyle ??
-            const BTextStyle(
-                backgroundColor: Colors.transparent, color: Colors.black),
         titlePadding =
             titlePadding ?? const EdgeInsets.symmetric(horizontal: 10);
 
-  ///  容器属性
-  ///  整个Picker的背景色
-  final Color backgroundColor;
+  /// 容器属性
+  /// 整个Picker的背景色
+  final Color? backgroundColor;
 
-  ///  [title]底部内容
+  /// [title]底部内容
   final Widget? titleBottom;
   final EdgeInsetsGeometry titlePadding;
 
@@ -48,7 +44,7 @@ class PickerOptions<T> {
   final Widget? title;
 
   /// 字体样式
-  final TextStyle contentStyle;
+  final TextStyle? contentStyle;
 
   /// 确定点击事件 picker 关闭前，返回 false 不关闭弹窗
   /// 默认 为 true;
@@ -72,26 +68,26 @@ class PickerWheel {
       this.squeeze = 1,
       this.physics = const FixedExtentScrollPhysics()});
 
-  ///  以下为ListWheel属性
-  ///  高度
+  /// 以下为ListWheel属性
+  /// 高度
   final double? itemHeight;
 
   /// 不设置 [itemWidth] 默认均分
   final double? itemWidth;
 
-  ///  半径大小,越大则越平面,越小则间距越大
+  /// 半径大小,越大则越平面,越小则间距越大
   final double? diameterRatio;
 
-  ///  选中item偏移
+  /// 选中item偏移
   final double? offAxisFraction;
 
-  ///  表示ListWheel水平偏离中心的程度  范围[0,0.01]
+  /// 表示ListWheel水平偏离中心的程度  范围[0,0.01]
   final double? perspective;
 
-  ///  是否启用放大
+  /// 是否启用放大
   final bool? useMagnifier;
 
-  ///  放大倍率
+  /// 放大倍率
   final double? magnification;
 
   /// 使用ios Cupertino 风格
@@ -191,7 +187,7 @@ class _PickerListWheel extends ListWheel {
             onChanged: onChanged);
 }
 
-///  省市区三级联动
+/// 省市区三级联动
 class AreaPicker extends _PickerConfig<String> {
   AreaPicker({
     Key? key,
@@ -223,7 +219,7 @@ class _AreaPickerState extends State<AreaPicker> {
   List<String> city = <String>[];
   List<String> district = <String>[];
 
-  ///  List<String> street = <String>[];
+  /// List<String> street = <String>[];
   late Map<String, dynamic> areaData = area;
 
   int provinceIndex = 0;
@@ -240,7 +236,7 @@ class _AreaPickerState extends State<AreaPicker> {
   void initState() {
     super.initState();
 
-    ///  省
+    /// 省
     province = areaData.keys.toList();
     if (province.contains(widget.defaultProvince)) {
       provinceIndex = province.indexOf(widget.defaultProvince!);
@@ -248,7 +244,7 @@ class _AreaPickerState extends State<AreaPicker> {
     final Map<dynamic, dynamic> provinceData =
         areaData[province[provinceIndex]] as Map<dynamic, dynamic>;
 
-    ///  市
+    /// 市
     city = provinceData.keys.toList() as List<String>;
     if (city.contains(widget.defaultCity)) {
       cityIndex = city.indexOf(widget.defaultCity!);
@@ -256,23 +252,23 @@ class _AreaPickerState extends State<AreaPicker> {
     final Map<dynamic, dynamic> cityData =
         provinceData[city[cityIndex]] as Map<dynamic, dynamic>;
 
-    ///  区
+    /// 区
     district = cityData.keys.toList() as List<String>;
     if (district.contains(widget.defaultDistrict)) {
       districtIndex = district.indexOf(widget.defaultDistrict!);
     }
 
-    ///    var districtData = cityData[districtIndex];
+    ///   var districtData = cityData[districtIndex];
 
-    ///  街道
-    ///    street = districtData[districtIndex];
+    /// 街道
+    ///   street = districtData[districtIndex];
 
     controllerCity = FixedExtentScrollController(initialItem: cityIndex);
     controllerDistrict =
         FixedExtentScrollController(initialItem: districtIndex);
   }
 
-  ///  点击确定返回选择的地区
+  /// 点击确定返回选择的地区
   String sureTapVoid() =>
       '${province[provinceIndex]} ${city[cityIndex]} ${district[districtIndex]}';
 
@@ -349,19 +345,18 @@ class _AreaPickerState extends State<AreaPicker> {
           onChanged: onChanged,
           itemCount: list.length);
 
-  Widget item(String value) => Container(
-      alignment: Alignment.center,
+  Widget item(String value) => Center(
       child: BText(value,
           fontSize: 12,
           overflow: TextOverflow.ellipsis,
-          style: widget.options.contentStyle));
+          style: widget.options.contentStyle ?? context.textTheme.bodyText1));
 
   void jumpToIndex(int index, FixedExtentScrollController controller,
           {Duration? duration}) =>
       controller.jumpToItem(index);
 }
 
-///  单列选择
+/// 单列选择
 class MultipleChoicePicker extends StatelessWidget {
   MultipleChoicePicker({
     Key? key,
@@ -389,18 +384,17 @@ class MultipleChoicePicker extends StatelessWidget {
   Widget build(BuildContext context) => PickerSubject<int>(
       options: options,
       child: SizedBox(
-        width: double.infinity,
-        height: kPickerDefaultHeight,
-        child: _PickerListWheel(
-            wheel: wheel,
-            controller: controller,
-            itemBuilder: itemBuilder,
-            itemCount: itemCount),
-      ),
+          width: double.infinity,
+          height: kPickerDefaultHeight,
+          child: _PickerListWheel(
+              wheel: wheel,
+              controller: controller,
+              itemBuilder: itemBuilder,
+              itemCount: itemCount)),
       sureTap: () => controller?.selectedItem ?? 0);
 }
 
-///  日期时间选择器
+/// 日期时间选择器
 class DateTimePicker extends _PickerConfig<DateTime> {
   DateTimePicker({
     Key? key,
@@ -421,20 +415,20 @@ class DateTimePicker extends _PickerConfig<DateTime> {
             options: options ?? PickerOptions<DateTime>(),
             wheel: wheel ?? PickerWheel());
 
-  ///  补全双位数
+  /// 补全双位数
   final bool dual;
 
-  ///  单位是否显示
+  /// 单位是否显示
   final bool showUnit;
 
-  ///  时间选择器单位
-  ///  通过单位参数确定是否显示对应的年月日时分秒
+  /// 时间选择器单位
+  /// 通过单位参数确定是否显示对应的年月日时分秒
   final DateTimePickerUnit unit;
 
-  ///  字体样式
+  /// 字体样式
   final TextStyle? unitStyle;
 
-  ///  时间
+  /// 时间
   final DateTime? startDate;
   final DateTime? defaultDate;
   final DateTime? endDate;
@@ -457,7 +451,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
       controllerMinute,
       controllerSecond;
 
-  ///  时间
+  /// 时间
   late DateTime startDate, defaultDate, endDate;
 
   late DateTimePickerUnit unit;
@@ -481,7 +475,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
     endDate = initEndDate;
     defaultDate = initDefaultDate();
     if (unit.year != null) {
-      ///  初始化每个Wheel数组
+      /// 初始化每个Wheel数组
       final int year = (endDate.year - startDate.year) + 1;
       yearData = year.generate((int index) => startDate.year + index);
       yearIndex = defaultDate.year - startDate.year;
@@ -525,14 +519,14 @@ class _DateTimePickerState extends State<DateTimePicker> {
           ? widget.endDate!
           : startDate.add(const Duration(days: 3650));
 
-  ///  显示双数还是单数
+  /// 显示双数还是单数
   String valuePadLeft(int value) =>
       widget.dual ? value.toString().padLeft(2, '0') : value.toString();
 
-  ///  wheel数组添加数据
+  /// wheel数组添加数据
   List<int> addList(int maxNumber) => maxNumber.generate((int index) => index);
 
-  ///  计算每月day的数量
+  /// 计算每月day的数量
   List<int> calculateDayNumber({bool isFirst = false}) {
     final int selectYearItem =
         isFirst ? (defaultDate.year - startDate.year) : yearIndex;
@@ -706,8 +700,9 @@ class _DateTimePickerState extends State<DateTimePicker> {
                       alignment: Alignment.center,
                       height: double.infinity,
                       child: BText(unit!,
-                          style:
-                              widget.unitStyle ?? widget.options.contentStyle))
+                          style: widget.unitStyle ??
+                              widget.options.contentStyle ??
+                              context.textTheme.bodyText1))
                 ],
           child: widget.showUnit
               ? null
@@ -728,12 +723,12 @@ class _DateTimePickerState extends State<DateTimePicker> {
           controller: controller,
           initialIndex: initialIndex,
           itemBuilder: (_, int index) => Container(
-                alignment: Alignment.center,
-                child: BText(
-                    valuePadLeft(startZero ? list![index] : list![index] + 1),
-                    fontSize: 12,
-                    style: widget.options.contentStyle),
-              ),
+              alignment: Alignment.center,
+              child: BText(
+                  valuePadLeft(startZero ? list![index] : list![index] + 1),
+                  fontSize: 12,
+                  style: widget.options.contentStyle ??
+                      context.textTheme.bodyText1)),
           itemCount: list!.length,
           onScrollEnd: onChanged,
           wheel: widget.wheel);

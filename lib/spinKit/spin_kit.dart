@@ -64,117 +64,105 @@ class SpinKit extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color _color = color ?? Colors.white;
+    final Color _color = color ??
+        context.theme.progressIndicatorTheme.color ??
+        context.theme.primaryColor;
     switch (style) {
       case SpinKitStyle.circle:
         return SpinKitCircle(
-          color: _color,
-          size: size,
-          duration: duration,
-          itemBuilder: itemBuilder,
-          controller: controller,
-        );
+            color: _color,
+            size: size,
+            duration: duration,
+            itemBuilder: itemBuilder,
+            controller: controller);
       case SpinKitStyle.fadingCircle:
         return SpinKitFadingCircle(
-          color: _color,
-          size: size,
-          duration: duration,
-          itemBuilder: itemBuilder,
-          controller: controller,
-        );
+            color: _color,
+            size: size,
+            duration: duration,
+            itemBuilder: itemBuilder,
+            controller: controller);
       case SpinKitStyle.squareCircle:
         return SpinKitFadingCircle(
-          color: _color,
-          size: size,
-          duration: duration,
-          itemBuilder: itemBuilder,
-          controller: controller,
-        );
+            color: _color,
+            size: size,
+            duration: duration,
+            itemBuilder: itemBuilder,
+            controller: controller);
       case SpinKitStyle.doubleBounce:
         return SpinKitDoubleBounce(
-          color: _color,
-          size: size,
-          duration: duration,
-          itemBuilder: itemBuilder,
-          controller: controller,
-        );
+            color: _color,
+            size: size,
+            duration: duration,
+            itemBuilder: itemBuilder,
+            controller: controller);
       case SpinKitStyle.threeBounce:
         return SpinKitThreeBounce(
-          color: _color,
-          size: size,
-          duration: duration,
-          itemBuilder: itemBuilder,
-          controller: controller,
-        );
+            color: _color,
+            size: size,
+            duration: duration,
+            itemBuilder: itemBuilder,
+            controller: controller);
       case SpinKitStyle.pulse:
         return SpinKitPulse(
-          color: _color,
-          size: size,
-          duration: duration,
-          itemBuilder: itemBuilder,
-          controller: controller,
-        );
+            color: _color,
+            size: size,
+            duration: duration,
+            itemBuilder: itemBuilder,
+            controller: controller);
       case SpinKitStyle.ripple:
         return SpinKitRipple(
-          color: _color,
-          size: size,
-          duration: duration,
-          itemBuilder: itemBuilder,
-          controller: controller,
-        );
+            color: _color,
+            size: size,
+            duration: duration,
+            itemBuilder: itemBuilder,
+            controller: controller);
       case SpinKitStyle.cubeGrid:
         return SpinKitCubeGrid(
-          color: _color,
-          size: size,
-          duration: duration,
-          itemBuilder: itemBuilder,
-          controller: controller,
-        );
+            color: _color,
+            size: size,
+            duration: duration,
+            itemBuilder: itemBuilder,
+            controller: controller);
       case SpinKitStyle.foldingCube:
         return SpinKitFoldingCube(
-          color: _color,
-          size: size,
-          duration: duration,
-          itemBuilder: itemBuilder,
-          controller: controller,
-        );
+            color: _color,
+            size: size,
+            duration: duration,
+            itemBuilder: itemBuilder,
+            controller: controller);
       case SpinKitStyle.fadingFour:
         return SpinKitFadingFour(
-          color: _color,
-          size: size,
-          duration: duration,
-          itemBuilder: itemBuilder,
-          controller: controller,
-        );
+            color: _color,
+            size: size,
+            duration: duration,
+            itemBuilder: itemBuilder,
+            controller: controller);
       case SpinKitStyle.wanderingCubes:
         return SpinKitWanderingCubes(
-          color: _color,
-          size: size,
-          duration: duration,
-          itemBuilder: itemBuilder,
-        );
+            color: _color,
+            size: size,
+            duration: duration,
+            itemBuilder: itemBuilder);
       case SpinKitStyle.ring:
         return SpinKitRing(
-          color: _color,
-          size: size,
-          duration: duration,
-          controller: controller,
-        );
+            color: _color,
+            size: size,
+            duration: duration,
+            controller: controller);
       case SpinKitStyle.dualRing:
         return SpinKitDualRing(
-          color: _color,
-          size: size,
-          duration: duration,
-          controller: controller,
-        );
+            color: _color,
+            size: size,
+            duration: duration,
+            controller: controller);
       case SpinKitStyle.wave:
         return SpinKitWave(
-          color: _color,
-          size: size,
-          duration: duration,
-          itemBuilder: itemBuilder,
-          controller: controller,
-        );
+            color: _color,
+            size: size,
+            duration: duration,
+            itemBuilder: itemBuilder,
+            controller: controller);
     }
   }
 }
@@ -184,7 +172,7 @@ enum SpinKitWaveType { start, end, center }
 class SpinKitWave extends StatefulWidget {
   const SpinKitWave({
     Key? key,
-    this.color = Colors.blue,
+    this.color,
     this.type = SpinKitWaveType.center,
     this.size = 50.0,
     this.itemBuilder,
@@ -291,7 +279,8 @@ class _SpinKitWaveState extends State<SpinKitWave>
       ? widget.itemBuilder!(context, index)
       : DecoratedBox(
           decoration: BoxDecoration(
-              color: widget.color, borderRadius: BorderRadius.circular(4)));
+              color: widget.color ?? context.theme.progressIndicatorTheme.color,
+              borderRadius: BorderRadius.circular(4)));
 }
 
 class _ScaleYWidget extends AnimatedWidget {

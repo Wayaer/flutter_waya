@@ -5,11 +5,11 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 
 extension ExtensionContext on BuildContext {
-  ///  移出焦点 focusNode==null  移出焦点 （可用于关闭键盘） focusNode！!= null 获取焦点
+  /// 移出焦点 focusNode==null  移出焦点 （可用于关闭键盘） focusNode！!= null 获取焦点
   void focusNode([FocusNode? focusNode]) =>
       FocusScope.of(this).requestFocus(focusNode ?? FocusNode());
 
-  ///  自动获取焦点
+  /// 自动获取焦点
   void autoFocus([FocusNode? focusNode]) =>
       FocusScope.of(this).autofocus(focusNode ?? FocusNode());
 
@@ -53,11 +53,10 @@ extension ExtensionContext on BuildContext {
       dividedBy;
 
   /// Divide the height proportionally by the given value
-  double ratio({
-    double dividedBy = 1,
-    double reducedByW = 0.0,
-    double reducedByH = 0.0,
-  }) =>
+  double ratio(
+          {double dividedBy = 1,
+          double reducedByW = 0.0,
+          double reducedByH = 0.0}) =>
       heightTransformer(dividedBy: dividedBy, reducedBy: reducedByH) /
       widthTransformer(dividedBy: dividedBy, reducedBy: reducedByW);
 
@@ -118,8 +117,8 @@ extension ExtensionContext on BuildContext {
   /// True if the current device is Tablet
   bool get isTablet => isSmallTablet || isLargeTablet;
 
-  ///get Widget Bounds (width, height, left, top, right, bottom and so on).Widgets must be rendered completely.
-  ///获取widget Rect
+  /// get Widget Bounds (width, height, left, top, right, bottom and so on).Widgets must be rendered completely.
+  /// 获取widget Rect
   Rect get getWidgetBounds {
     final RenderBox? box = getRenderBox;
     return box?.semanticBounds ?? Rect.zero;
@@ -132,8 +131,8 @@ extension ExtensionContext on BuildContext {
     return box;
   }
 
-  ///Get the coordinates of the widget on the screen.Widgets must be rendered completely.
-  ///获取widget在屏幕上的坐标,widget必须渲染完成
+  /// Get the coordinates of the widget on the screen.Widgets must be rendered completely.
+  /// 获取widget在屏幕上的坐标,widget必须渲染完成
   Offset get getWidgetLocalToGlobal {
     final RenderBox? box = getRenderBox;
     return box == null ? Offset.zero : box.localToGlobal(Offset.zero);
@@ -141,9 +140,9 @@ extension ExtensionContext on BuildContext {
 }
 
 extension ExtensionGlobalKey on GlobalKey {
-  ///  截屏
-  ///  format 图片格式
-  ///  pixelRatio 截图分辨率比例
+  /// 截屏
+  /// format 图片格式
+  /// pixelRatio 截图分辨率比例
   Future<ByteData?> screenshots(
       {ui.ImageByteFormat? format, double? pixelRatio}) async {
     final RenderRepaintBoundary boundary =
@@ -153,7 +152,7 @@ extension ExtensionGlobalKey on GlobalKey {
     final ByteData? byteData =
         await image.toByteData(format: format ?? ui.ImageByteFormat.rawRgba);
 
-    ///  Uint8List uint8list = byteData.buffer.asUint8List();
+    /// Uint8List uint8list = byteData.buffer.asUint8List();
     return byteData;
   }
 }

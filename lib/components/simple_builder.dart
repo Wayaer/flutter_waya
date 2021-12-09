@@ -51,7 +51,7 @@ class _ValueBuilderState<T> extends State<ValueBuilder<T>> {
   void updater(T? newValue) {
     widget.onUpdate?.call(newValue);
     value = newValue;
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   @override
@@ -60,7 +60,7 @@ class _ValueBuilderState<T> extends State<ValueBuilder<T>> {
     if (oldWidget.initialValue != widget.initialValue &&
         widget.initialValue != value) {
       value = widget.initialValue;
-      setState(() {});
+      if (mounted) setState(() {});
     }
   }
 
@@ -132,7 +132,7 @@ class _ValueListenBuilderState<T> extends State<ValueListenBuilder<T>> {
   void _valueChanged() {
     value = valueListenable.value;
     widget.onUpdate?.call(value);
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   @override
@@ -241,7 +241,7 @@ class _ExtendedFutureBuilderState<T> extends State<ExtendedFutureBuilder<T>> {
   void _subscribe() {
     if (widget.future != null) {
       state = BuilderState.waiting;
-      setState(() {});
+      if (mounted) setState(() {});
       widget.future!.call().then((value) {
         if (value != null) {
           state = BuilderState.done;
@@ -249,11 +249,11 @@ class _ExtendedFutureBuilderState<T> extends State<ExtendedFutureBuilder<T>> {
         } else {
           state = BuilderState.isNull;
         }
-        setState(() {});
+        if (mounted) setState(() {});
       }, onError: (Object error, StackTrace stackTrace) {
         state = BuilderState.error;
         _error = error;
-        setState(() {});
+        if (mounted) setState(() {});
       });
     }
   }

@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 
 import 'wave.dart';
 
@@ -36,7 +37,7 @@ class LiquidProgress extends ProgressIndicator {
       Color? backgroundColor,
       Animation<Color>? valueColor,
       this.borderWidth = 0,
-      this.borderColor = Colors.transparent,
+      this.borderColor,
       this.center,
       this.direction = Axis.vertical})
       : borderRadius = 0,
@@ -139,7 +140,10 @@ class _ProgressState extends State<LiquidProgress> {
         child: CustomPaint(
             painter: _CirclePainter(color: widget._getBackgroundColor(context)),
             foregroundPainter: _CircleBorderPainter(
-                color: widget.borderColor!, width: widget.borderWidth!),
+                color: widget.borderColor ??
+                    context.theme.progressIndicatorTheme.circularTrackColor ??
+                    context.theme.primaryColor,
+                width: widget.borderWidth!),
             child: Stack(children: <Widget>[
               Wave(
                   value: widget.value!,
