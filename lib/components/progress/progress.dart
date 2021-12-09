@@ -205,7 +205,7 @@ abstract class _ProgressSubState extends State<Progress>
         CurvedAnimation(parent: animationController!, curve: widget.curve),
       )..addListener(() {
           percent = animation!.value;
-          setState(() {});
+          if (mounted) setState(() {});
           if (widget.restartAnimation && percent == 1.0) {
             animationController!.repeat(min: 0, max: 1.0);
           }
@@ -228,13 +228,12 @@ abstract class _ProgressSubState extends State<Progress>
         animation = Tween<double>(
                 begin: widget.animateFromLastPercent ? oldWidget.percent : 0.0,
                 end: widget.percent)
-            .animate(
-          CurvedAnimation(parent: animationController!, curve: widget.curve),
-        );
+            .animate(CurvedAnimation(
+                parent: animationController!, curve: widget.curve));
         animationController!.forward(from: 0.0);
       } else {
         percent = widget.percent;
-        setState(() {});
+        if (mounted) setState(() {});
       }
     }
     if (oldWidget.animation && !widget.animation) animationController?.stop();
@@ -319,7 +318,7 @@ class _LinearState extends _ProgressSubState {
         if (_keyIndicator.currentContext != null) {
           _indicatorWidth = _keyIndicator.currentContext!.size!.width;
         }
-        setState(() {});
+        if (mounted) setState(() {});
       }
     });
     super.initState();

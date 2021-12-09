@@ -109,7 +109,7 @@ class _ElasticButtonState extends State<ElasticButton>
     with SingleTickerProviderStateMixin {
   Widget? uiChild;
   late double scaleCoefficient;
-  late AnimationController animationController;
+  late AnimationController controller;
   late Animation<double> animation;
   bool isSpringDown = false;
   bool isEnabled = true;
@@ -120,14 +120,14 @@ class _ElasticButtonState extends State<ElasticButton>
     scaleCoefficient = widget.scaleCoefficient;
     if (scaleCoefficient > 1.0) scaleCoefficient = 1;
     if (widget.useCache) uiChild = wrapper;
-    animationController = AnimationController(
+    controller = AnimationController(
         vsync: this,
         lowerBound: 0.0,
         upperBound: 1.0,
         duration: const Duration(milliseconds: 1000));
-    animationController.value = 1;
-    animation = Tween<double>(begin: scaleCoefficient, end: 1.0).animate(
-        CurvedAnimation(parent: animationController, curve: Curves.elasticOut));
+    controller.value = 1;
+    animation = Tween<double>(begin: scaleCoefficient, end: 1.0)
+        .animate(CurvedAnimation(parent: controller, curve: Curves.elasticOut));
   }
 
   bool get hasMultiple {
@@ -198,7 +198,7 @@ class _ElasticButtonState extends State<ElasticButton>
 
   void enable() {
     if (!isEnabled) {
-      animationController.value = 1.0;
+      controller.value = 1.0;
       isSpringDown = false;
       isEnabled = true;
     }
@@ -206,7 +206,7 @@ class _ElasticButtonState extends State<ElasticButton>
 
   void disable() {
     if (isEnabled) {
-      animationController.value = 1.0;
+      controller.value = 1.0;
       isSpringDown = false;
       isEnabled = false;
     }
@@ -215,7 +215,7 @@ class _ElasticButtonState extends State<ElasticButton>
   void elasticDown() {
     if (!isEnabled) return;
     isSpringDown = true;
-    animationController.value = 0;
+    controller.value = 0;
   }
 
   Future<void> elastic() async {
@@ -224,7 +224,7 @@ class _ElasticButtonState extends State<ElasticButton>
     if (hasMultiple) {
       await Future<dynamic>.delayed(const Duration(milliseconds: 5));
     }
-    if (!isSpringDown) animationController.forward();
+    if (!isSpringDown) controller.forward();
   }
 
   Future<void> elasticUp() async {
@@ -233,7 +233,7 @@ class _ElasticButtonState extends State<ElasticButton>
     if (hasMultiple) {
       await Future<dynamic>.delayed(const Duration(milliseconds: 500));
     }
-    if (!isSpringDown) animationController.value = 1;
+    if (!isSpringDown) controller.value = 1;
   }
 
   @override
@@ -254,7 +254,7 @@ class _ElasticButtonState extends State<ElasticButton>
 
   @override
   void dispose() {
-    animationController.dispose();
+    controller.dispose();
     super.dispose();
   }
 

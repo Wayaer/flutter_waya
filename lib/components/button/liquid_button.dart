@@ -25,6 +25,7 @@ class LiquidButton extends StatefulWidget {
         assert(gap >= 1 && gap <= height / 2),
         assert(tension >= 0.01 && tension <= 1.0),
         super(key: key);
+
   final Widget? child;
   final double height;
   final double width;
@@ -44,85 +45,71 @@ class _LiquidButtonState extends State<LiquidButton>
     with TickerProviderStateMixin {
   late Offset position = const Offset(0, 0);
   late Animation<double> animation;
-  late AnimationController animationController;
-  late RenderBox renderBox;
+  late AnimationController controller;
 
   @override
   void initState() {
-    animationController =
-        AnimationController(duration: widget.duration, vsync: this);
+    controller = AnimationController(duration: widget.duration, vsync: this);
     animation = Tween<double>(begin: 1.0, end: widget.expandFactor)
-        .animate(animationController)
-      ..addListener(() => setState(() {}));
-    animationController.forward(from: 0.0);
+        .animate(controller)
+      ..addListener(listener);
+    controller.forward(from: 0.0);
     super.initState();
+  }
+
+  void listener() {
+    if (mounted) setState(() {});
+  }
+
+  @override
+  void dispose() {
+    animation.removeListener(listener);
+    controller.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final RenderObject? renderObject = context.findRenderObject();
-    if (renderObject == null) return Container();
-    renderBox = renderObject as RenderBox;
+    final CustomPaint painter = CustomPaint(
+        painter: _LiquidButtonCustomPainter(
+            canvasColor:
+                widget.backgroundColor ?? context.theme.backgroundColor,
+            gap: widget.gap,
+            retainGradient: widget.retainGradient,
+            tension: widget.tension,
+            gradientColor: widget.gradientColor ??
+                widget.backgroundColor ??
+                context.theme.backgroundColor,
+            position: position,
+            maxExpansion: widget.expandFactor,
+            expandFactor: animation.value),
+        child: Center(child: widget.child));
+    final paint = SizedBox.fromSize(
+        size: Size(widget.width, widget.height), child: painter);
     return kIsWeb
         ? MouseRegion(
-            onHover: onHover,
-            onExit: onExit,
-            onEnter: onEnter,
-            child: SizedBox(
-                width: widget.width,
-                height: widget.height,
-                child: CustomPaint(
-                    painter: _LiquidButtonCustomPainter(
-                        canvasColor: widget.backgroundColor ??
-                            context.theme.backgroundColor,
-                        gap: widget.gap,
-                        retainGradient: widget.retainGradient,
-                        tension: widget.tension,
-                        gradientColor: widget.gradientColor ??
-                            widget.backgroundColor ??
-                            context.theme.backgroundColor,
-                        position: position,
-                        maxExpansion: widget.expandFactor,
-                        expandFactor: animation.value),
-                    child: Center(child: widget.child))))
-        : Universal(
-            enabled: true,
+            onHover: onHover, onExit: onExit, onEnter: onEnter, child: paint)
+        : GestureDetector(
             onPanUpdate: onHoverM,
             onPanDown: (DragDownDetails details) => onEnter(null),
             onPanEnd: (DragEndDetails details) => onExit(null),
-            width: widget.width,
-            height: widget.height,
-            child: CustomPaint(
-                painter: _LiquidButtonCustomPainter(
-                    canvasColor:
-                        widget.backgroundColor ?? context.theme.backgroundColor,
-                    gap: widget.gap,
-                    retainGradient: widget.retainGradient,
-                    tension: widget.tension,
-                    gradientColor: widget.gradientColor ??
-                        widget.backgroundColor ??
-                        context.theme.backgroundColor,
-                    position: position,
-                    maxExpansion: widget.expandFactor,
-                    expandFactor: animation.value),
-                child: Center(child: widget.child)));
+            child: paint);
   }
 
   void onHover(PointerHoverEvent event) {
-    position = renderBox.globalToLocal(event.position);
-    setState(() {});
+    position = context.getWidgetGlobalToLocal(event.position);
+    if (mounted) setState(() {});
   }
 
   void onHoverM(DragUpdateDetails event) {
     position = event.localPosition;
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   void onEnter(PointerEnterEvent? event) =>
-      animationController.reverse(from: widget.expandFactor);
+      controller.reverse(from: widget.expandFactor);
 
-  void onExit(PointerExitEvent? event) =>
-      animationController.forward(from: 0.0);
+  void onExit(PointerExitEvent? event) => controller.forward(from: 0.0);
 }
 
 class _LiquidButtonCustomPainter extends CustomPainter {

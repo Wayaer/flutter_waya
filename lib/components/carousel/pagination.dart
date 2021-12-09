@@ -14,21 +14,21 @@ class CarouselController extends ChangeNotifier {
 
   bool autoPlay = false;
 
-  ///  开始自动播放
+  /// 开始自动播放
   void startAutoPlay() {
     event = CarouselEvent.start;
     autoPlay = true;
     notifyListeners();
   }
 
-  ///  停止自动播放
+  /// 停止自动播放
   void stopAutoPlay() {
     event = CarouselEvent.stop;
     autoPlay = false;
     notifyListeners();
   }
 
-  ///  下一页
+  /// 下一页
   Future<void> next({bool animation = true}) {
     event = CarouselEvent.next;
     this.animation = animation;
@@ -37,7 +37,7 @@ class CarouselController extends ChangeNotifier {
     return _completer.future;
   }
 
-  ///  	上一页
+  /// 上一页
   Future<void> previous({bool animation = true}) {
     event = CarouselEvent.previous;
     this.animation = animation;
@@ -45,10 +45,6 @@ class CarouselController extends ChangeNotifier {
     notifyListeners();
     return _completer.future;
   }
-
-// void complete() {
-//   if (!_completer.isCompleted) _completer.complete();
-// }
 }
 
 class CarouselPluginConfig {
@@ -85,27 +81,27 @@ class ArrowPagination extends CarouselPlugin {
       this.size = 20.0,
       this.padding = const EdgeInsets.all(5.0)});
 
-  ///  IconData for previous
-  ///  上一页的IconData
+  /// IconData for previous
+  /// 上一页的IconData
   final IconData iconPrevious;
 
-  ///  iconData for next
-  ///  下一页的IconData
+  /// iconData for next
+  /// 下一页的IconData
   final IconData iconNext;
 
-  ///  icon size
-  ///  控制按钮的大小
+  /// icon size
+  /// 控制按钮的大小
   final double size;
 
-  ///  Icon normal color, The theme's [ThemeData.primaryColor] by default.
-  ///  控制按钮颜色
+  /// Icon normal color, The theme's [ThemeData.primaryColor] by default.
+  /// 控制按钮颜色
   final Color? color;
 
-  ///  if set loop=false on Carousel, this color will be used when carousel goto the last slide.
-  ///  The theme's [ThemeData.disabledColor] by default.
+  /// if set loop=false on Carousel, this color will be used when carousel goto the last slide.
+  /// The theme's [ThemeData.disabledColor] by default.
   final Color? disableColor;
 
-  ///  控制按钮与容器的距离
+  /// 控制按钮与容器的距离
   final EdgeInsetsGeometry padding;
 
   final Key? key;
@@ -155,7 +151,7 @@ class ArrowPagination extends CarouselPlugin {
   }
 }
 
-///  底部指示器
+/// 底部指示器
 class FractionPagination extends CarouselPlugin {
   const FractionPagination(
       {this.color,
@@ -164,16 +160,16 @@ class FractionPagination extends CarouselPlugin {
       this.activeColor,
       this.activeFontSize = 35.0});
 
-  ///  color ,if set null , will be Theme.of(context).scaffoldBackgroundColor
+  /// color ,if set null , will be Theme.of(context).scaffoldBackgroundColor
   final Color? color;
 
-  ///  color when active,if set null , will be Theme.of(context).primaryColor
+  /// color when active,if set null , will be Theme.of(context).primaryColor
   final Color? activeColor;
 
-  ///  font size
+  /// font size
   final double fontSize;
 
-  ///  font size when active
+  /// font size when active
   final double activeFontSize;
 
   final Key? key;
@@ -197,7 +193,7 @@ class FractionPagination extends CarouselPlugin {
   }
 }
 
-///  底部指示器
+/// 底部指示器
 class DotCarouselPagination extends CarouselPlugin {
   const DotCarouselPagination(
       {this.activeColor,
@@ -207,19 +203,19 @@ class DotCarouselPagination extends CarouselPlugin {
       this.activeSize = 10.0,
       this.space = 3.0});
 
-  ///  color when current index,if set null , will be Theme.of(context).primaryColor
+  /// color when current index,if set null , will be Theme.of(context).primaryColor
   final Color? activeColor;
 
-  ///  if set null , will be Theme.of(context).scaffoldBackgroundColor
+  /// if set null , will be Theme.of(context).scaffoldBackgroundColor
   final Color? color;
 
-  ///  Size of the dot when activate
+  /// Size of the dot when activate
   final double activeSize;
 
-  ///  Size of the dot
+  /// Size of the dot
   final double size;
 
-  ///  Space between dots
+  /// Space between dots
   final double space;
 
   final Key? key;
@@ -257,7 +253,7 @@ class DotCarouselPagination extends CarouselPlugin {
   }
 }
 
-///  底部指示器组件
+/// 底部指示器组件
 class CarouselPagination extends CarouselPlugin {
   const CarouselPagination(
       {this.alignment,
@@ -265,14 +261,14 @@ class CarouselPagination extends CarouselPlugin {
       this.margin = const EdgeInsets.all(10.0),
       this.builder = const DotCarouselPagination()});
 
-  ///  Alignment.bottomCenter by default when scrollDirection== Axis.horizontal
-  ///  Alignment.centerRight by default when scrollDirection== Axis.vertical
+  /// Alignment.bottomCenter by default when scrollDirection== Axis.horizontal
+  /// Alignment.centerRight by default when scrollDirection== Axis.vertical
   final Alignment? alignment;
 
-  ///  Distance between pagination and the container
+  /// Distance between pagination and the container
   final EdgeInsetsGeometry margin;
 
-  ///  Build the wide
+  /// Build the wide
   final CarouselPlugin builder;
 
   final Key? key;

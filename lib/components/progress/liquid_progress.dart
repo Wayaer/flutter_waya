@@ -154,23 +154,22 @@ class _ProgressState extends State<LiquidProgress> {
       );
 
   Widget get linear => ClipPath(
-        clipper: _LinearClipper(radius: widget.borderRadius),
-        child: CustomPaint(
-            painter: _LinearPainter(
-                color: widget._getBackgroundColor(context),
-                radius: widget.borderRadius),
-            foregroundPainter: _LinearBorderPainter(
-                color: widget.borderColor!,
-                width: widget.borderWidth!,
-                radius: widget.borderRadius),
-            child: Stack(children: <Widget>[
-              Wave(
-                  value: widget.value!,
-                  color: widget._getValueColor(context),
-                  direction: widget.direction),
-              if (widget.center != null) Center(child: widget.center),
-            ])),
-      );
+      clipper: _LinearClipper(radius: widget.borderRadius),
+      child: CustomPaint(
+          painter: _LinearPainter(
+              color: widget._getBackgroundColor(context),
+              radius: widget.borderRadius),
+          foregroundPainter: _LinearBorderPainter(
+              color: widget.borderColor!,
+              width: widget.borderWidth!,
+              radius: widget.borderRadius),
+          child: Stack(children: <Widget>[
+            Wave(
+                value: widget.value!,
+                color: widget._getValueColor(context),
+                direction: widget.direction),
+            if (widget.center != null) Center(child: widget.center),
+          ])));
 }
 
 class _LinearPainter extends CustomPainter {

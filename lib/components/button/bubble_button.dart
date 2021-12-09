@@ -94,7 +94,7 @@ class BubbleButton extends StatefulWidget {
 }
 
 class _BubbleButtonState extends State<BubbleButton>
-    with TickerProviderStateMixin {
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _outerCircleAnimation;
   late Animation<double> _innerCircleAnimation;

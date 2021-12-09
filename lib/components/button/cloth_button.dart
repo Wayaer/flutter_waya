@@ -50,26 +50,32 @@ class _ClothButtonState extends State<ClothButton>
     with TickerProviderStateMixin {
   late Offset position;
   late Animation<double> animation;
-  late AnimationController animationController;
-  late RenderBox renderBox;
+  late AnimationController controller;
 
   @override
   void initState() {
     position = Offset(widget.size.width / 2, widget.size.height / 2);
-    animationController =
-        AnimationController(duration: widget.duration, vsync: this);
+    controller = AnimationController(duration: widget.duration, vsync: this);
     animation = Tween<double>(begin: 1.0, end: widget.expandFactor)
-        .animate(animationController)
-      ..addListener(() => setState(() {}));
-    animationController.forward(from: 0.0);
+        .animate(controller)
+      ..addListener(listener);
+    controller.forward(from: 0.0);
     super.initState();
+  }
+
+  void listener() {
+    if (mounted) setState(() {});
+  }
+
+  @override
+  void dispose() {
+    animation.removeListener(listener);
+    controller.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final RenderObject? renderObject = context.findRenderObject();
-    if (renderObject == null) return Container();
-    renderBox = renderObject as RenderBox;
     final CustomPainter painter = widget.gap == null
         ? _ClothCustomPainter(
             relativePosition: position,
@@ -92,35 +98,33 @@ class _ClothButtonState extends State<ClothButton>
             gradientColor: widget.gradientColor ??
                 widget.backgroundColor ??
                 context.theme.backgroundColor);
-    final SizedBox size = SizedBox.fromSize(
+    final paint = SizedBox.fromSize(
         size: widget.size,
-        child:
-            CustomPaint(painter: painter, child: Center(child: widget.child)));
+        child: CustomPaint(painter: painter, child: widget.child));
     return kIsWeb
         ? MouseRegion(
-            onHover: onHover, onExit: onExit, onEnter: onEnter, child: size)
+            onHover: onHover, onExit: onExit, onEnter: onEnter, child: paint)
         : GestureDetector(
             onPanUpdate: onHoverM,
             onPanDown: (DragDownDetails details) => onEnter(null),
             onPanEnd: (DragEndDetails details) => onExit(null),
-            child: size);
+            child: paint);
   }
 
   void onHover(PointerHoverEvent event) {
-    position = renderBox.globalToLocal(event.position);
-    setState(() {});
+    position = context.getWidgetGlobalToLocal(event.position);
+    if (mounted) setState(() {});
   }
 
   void onHoverM(DragUpdateDetails event) {
     position = event.localPosition;
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   void onEnter(PointerEnterEvent? event) =>
-      animationController.reverse(from: widget.expandFactor);
+      controller.reverse(from: widget.expandFactor);
 
-  void onExit(PointerExitEvent? event) =>
-      animationController.forward(from: 0.0);
+  void onExit(PointerExitEvent? event) => controller.forward(from: 0.0);
 }
 
 class _ClothCustomPainter extends CustomPainter {

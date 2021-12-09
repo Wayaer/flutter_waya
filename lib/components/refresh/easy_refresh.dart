@@ -81,10 +81,10 @@ enum EasyRefreshType {
 class EasyRefreshed extends StatefulWidget {
   const EasyRefreshed({
     Key? key,
-    bool? reverse,
-    bool? shrinkWrap,
-    Axis? scrollDirection,
-    DragStartBehavior? dragStartBehavior,
+    this.scrollDirection = Axis.vertical,
+    this.shrinkWrap = false,
+    this.reverse = false,
+    this.dragStartBehavior = DragStartBehavior.start,
     this.controller,
     this.onRefresh,
     this.onLoading,
@@ -94,11 +94,7 @@ class EasyRefreshed extends StatefulWidget {
     this.cacheExtent,
     this.primary,
     this.scrollController,
-  })  : scrollDirection = scrollDirection ?? Axis.vertical,
-        shrinkWrap = shrinkWrap ?? false,
-        reverse = reverse ?? false,
-        dragStartBehavior = dragStartBehavior ?? DragStartBehavior.start,
-        super(key: key);
+  }) : super(key: key);
 
   ///  可不传controller，
   ///  若想关闭刷新组件可以通过发送消息
@@ -133,7 +129,7 @@ class EasyRefreshed extends StatefulWidget {
   /// 整个滚动控制器
   final ScrollController? scrollController;
 
-  /// 当嵌套在无限长的组件里时必须设置为true
+  /// 当嵌套在无限长的组件里时必须设置为 false
   final bool shrinkWrap;
 
   @override

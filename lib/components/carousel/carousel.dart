@@ -153,6 +153,7 @@ abstract class _CarouselTimerMixin extends State<Carousel> {
   @override
   void dispose() {
     _stopAutoPlay();
+    _controller.dispose();
     super.dispose();
   }
 }
@@ -444,7 +445,7 @@ abstract class _LayoutState<T extends _SubCarousel> extends State<T>
     final Size size = renderObject.paintBounds.size;
     _carouselWidth = size.width;
     _carouselHeight = size.height;
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   @override
