@@ -98,7 +98,23 @@ class ComponentsPage extends StatelessWidget {
                           toastType: type, customIcon: Icons.ac_unit_sharp);
                       showToast('添加await第一个Toast完了之后弹出第二个Toast');
                     }))),
-
+            Wrap(
+                children: [
+              Alignment.topCenter,
+              Alignment.topLeft,
+              Alignment.topRight,
+              Alignment.bottomCenter,
+              Alignment.bottomLeft,
+              Alignment.bottomRight,
+              Alignment.center,
+              Alignment.centerLeft,
+              Alignment.centerRight,
+            ].builder((alignment) => ElevatedText(
+                        alignment.toString().split('.')[1], onTap: () async {
+                      showToast(alignment.toString(),
+                          positioned: alignment,
+                          customIcon: Icons.ac_unit_sharp);
+                    }))),
             const Partition('CounterAnimation'),
 
             /// CounterAnimation

@@ -1,3 +1,8 @@
+## 1.16.1
+
+* Remove the default background color for `showBottomPopup`
+* Add positioned for `showToast` and Add the global `setToastPositioned()`
+
 ## 1.16.0
 
 * Support the theme

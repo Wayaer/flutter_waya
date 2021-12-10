@@ -125,6 +125,12 @@ enum ToastType { success, fail, info, warning, smile, custom }
 
 bool _allToastIgnoring = true;
 
+AlignmentGeometry _allToastPositioned = Alignment.center;
+
+/// 设置全局弹窗时间
+void setToastPositioned(AlignmentGeometry positioned) =>
+    _allToastPositioned = positioned;
+
 /// 设置全局Toast 忽略背景点击事件
 void setAllToastIgnoringBackground(bool value) => _allToastIgnoring = value;
 
@@ -138,6 +144,7 @@ Future<void> showToast(String message,
     GestureTapCallback? onTap,
     TextStyle? textStyle,
     Duration? closeDuration,
+    AlignmentGeometry? positioned,
 
     /// toast 是否忽略背景点击事件
     bool? ignoring,
@@ -186,11 +193,10 @@ Future<void> showToast(String message,
   final ExtendedOverlayEntry? entry = showOverlay(
       PopupOptions(
           ignoring: ignoring ?? _allToastIgnoring,
-          alignment: Alignment.center,
+          alignment: positioned ?? _allToastPositioned,
           onTap: () {},
           child: Container(
-              margin:
-                  const EdgeInsets.symmetric(horizontal: 100, vertical: 100),
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 100),
               decoration: boxDecoration ??
                   BoxDecoration(
                       color: backgroundColor,
@@ -347,9 +353,7 @@ Future<T?> showBottomPopup<T>({
   return showModalBottomSheet(
       context: globalNavigatorKey.currentContext!,
       builder: builder ?? widget!.toWidgetBuilder,
-      backgroundColor: options.backgroundColor ??
-          globalNavigatorKey
-              .currentContext?.theme.bottomSheetTheme.backgroundColor,
+      backgroundColor: options.backgroundColor,
       elevation: options.elevation,
       shape: options.shape,
       clipBehavior: options.clipBehavior,
