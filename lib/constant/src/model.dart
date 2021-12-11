@@ -27,10 +27,10 @@ class ResponseModel extends Response<dynamic> {
 
   BaseOptions? baseOptions;
 
-  ///  语言翻译版 状态消息
+  /// 语言翻译版 状态消息
   String? statusMessageT;
 
-  ///  请求返回类型 [DioErrorType].toString
+  /// 请求返回类型 [DioErrorType].toString
   String? type;
 
   /// dio response
@@ -39,7 +39,7 @@ class ResponseModel extends Response<dynamic> {
   /// error 信息
   dynamic error;
 
-  ///  保存的cookie
+  /// 保存的cookie
   List<String> cookie = <String>[];
 
   Map<String, dynamic> toMap() {

@@ -36,7 +36,7 @@ class IconBox extends StatelessWidget {
     this.widget,
   }) : super(key: key);
 
-  ///  icon > image > imageProvider > widget
+  /// icon > image > imageProvider > widget
   final Widget? widget;
   final IconData? icon;
   final Image? image;
@@ -65,7 +65,7 @@ class IconBox extends StatelessWidget {
   /// [icon]、[imageProvider]、[titleText] 颜色
   final Color? color;
 
-  ///  仅支持 [icon]、[imageProvider]
+  /// 仅支持 [icon]、[imageProvider]
   final String? semanticLabel;
 
   /// [icon]、[imageProvider] 大小

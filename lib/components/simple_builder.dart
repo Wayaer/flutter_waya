@@ -8,16 +8,16 @@ typedef ValueBuilderCallback<T> = Widget Function(
 
 /// Example:
 /// ```
-///  ValueBuilder<T>(
-///    initialValue: T,
-///    builder: (BuildContext context, bool value, ValueCallback<T> update) {
+/// ValueBuilder<T>(
+///   initialValue: T,
+///   builder: (BuildContext context, bool value, ValueCallback<T> update) {
 ///
-///    return (你需要局部刷新的组件)
+///   return (你需要局部刷新的组件)
 ///
-///    }),
-///    onUpdate: (value) => print("Value updated: $value"),
-///  ),
-///  ```
+///   }),
+///   onUpdate: (value) => print("Value updated: $value"),
+/// ),
+/// ```
 class ValueBuilder<T> extends StatefulWidget {
   const ValueBuilder({
     Key? key,
@@ -78,15 +78,15 @@ class _ValueBuilderState<T> extends State<ValueBuilder<T>> {
 
 /// Example:
 /// ```
-///       ValueListenBuilder<bool>(
-///          initialValue: false,
-///          builder: (BuildContext context,
-///              ValueNotifier<bool> valueListenable) {
-///              /// 赋值即刷新
-///              valueListenable.value = true;
-///              return (你需要局部刷新的组件)
-///           }),
-///  ```
+///      ValueListenBuilder<bool>(
+///         initialValue: false,
+///         builder: (BuildContext context,
+///             ValueNotifier<bool> valueListenable) {
+///             /// 赋值即刷新
+///             valueListenable.value = true;
+///             return (你需要局部刷新的组件)
+///          }),
+/// ```
 
 typedef ValueListenBuilderCallback<T> = Widget Function(
     BuildContext context, ValueNotifier<T?> valueListenable);

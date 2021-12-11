@@ -1,13 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/extension/extension.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 import 'package:waya/main.dart';
 
 TapDownDetails? _details;
 
-class AlertPage extends StatelessWidget {
-  const AlertPage({Key? key}) : super(key: key);
+class PopupWindowsPage extends StatelessWidget {
+  const PopupWindowsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => GestureDetector(
@@ -15,19 +14,19 @@ class AlertPage extends StatelessWidget {
           _details = details;
         },
         child: ExtendedScaffold(
-            appBar: AppBarText('Alert Demo'),
+            appBar: AppBarText('PopupWindows Demo'),
             isScroll: true,
             children: <Widget>[
               const Partition('Picker'),
               ElevatedText('showCustomPicker', onTap: _showCustomPicker),
               ElevatedText('showAreaPicker', onTap: selectCity),
-              ElevatedText('showChoicePicker', onTap: showChoicePicker),
+              ElevatedText('showMultipleChoicePicker', onTap: showChoicePicker),
               ElevatedText('showDateTimePicker', onTap: selectTime),
               const Partition('Popup'),
               ElevatedText('showBottomPopup', onTap: () {
                 showBottomPopup<dynamic>(
                     widget: const _AlertDemo(),
-                    options: BottomSheetOptions(
+                    options: const BottomSheetOptions(
                         backgroundColor: Colors.transparent));
               }),
               ElevatedText('showBottomPopup - Full screen', onTap: () {
@@ -58,8 +57,8 @@ class AlertPage extends StatelessWidget {
                 showToast(data.toString());
               }),
               const Partition('Other'),
-              ElevatedText('showDialogSureCancel',
-                  onTap: () => sureCancel(context)),
+              ElevatedText('showDoubleChooseWindows',
+                  onTap: () => showDoubleChoose(context)),
               ElevatedText('showSnackBar', onTap: () {
                 showSnackBar(const SnackBar(content: BText('Popup SnackBar')));
               }),
@@ -70,15 +69,15 @@ class AlertPage extends StatelessWidget {
       );
 
   void showOverlayLoading() => showLoading(
-      gaussian: true,
-      onTap: closeOverlay,
-      custom: const SpinKitThreeBounce(color: Colors.red));
+        options: const ModalWindowsOptions(gaussian: true, onTap: closeOverlay),
+        custom: const SpinKitThreeBounce(color: Colors.red),
+      );
 
-  void sureCancel(BuildContext context) {
+  void showDoubleChoose(BuildContext context) {
     const bool isOverlay = false;
-    showDialogSureCancel<dynamic>(
+    showDoubleChooseWindows<dynamic>(
         isOverlay: isOverlay,
-        sure: SimpleButton(
+        right: SimpleButton(
             padding: const EdgeInsets.symmetric(vertical: 6),
             alignment: Alignment.center,
             child: Text('确定', style: context.textTheme.subtitle1),
@@ -86,7 +85,7 @@ class AlertPage extends StatelessWidget {
               ///如果isOverlay=true; 必须先closeOverlay() 再toast或者loading
               showToast('确定');
             }),
-        cancel: SimpleButton(
+        left: SimpleButton(
             alignment: Alignment.center,
             padding: const EdgeInsets.symmetric(vertical: 6),
             child: Text('取消', style: context.textTheme.subtitle1),
@@ -94,7 +93,7 @@ class AlertPage extends StatelessWidget {
               ///如果isOverlay=true; 必须先closeOverlay() 再toast或者loading
               showToast('取消');
             }),
-        content: Container(
+        content: Padding(
             padding: const EdgeInsets.symmetric(vertical: 40),
             child: Text('内容', style: context.textTheme.bodyText1)));
   }
@@ -171,7 +170,6 @@ class AlertPage extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) => Container(
             alignment: Alignment.center,
             child: Text(list[index], style: context.textTheme.bodyText1)),
-        wheel: const PickerWheelOptions(itemHeight: 25, useMagnifier: true),
         itemCount: list.length);
     showToast(index == null ? 'null' : list[index].toString());
   }

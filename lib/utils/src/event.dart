@@ -4,7 +4,7 @@ class Event<T> {
   Event({bool sync = false})
       : _streamController = StreamController<T>.broadcast(sync: sync);
 
-  ///  EventBus.customController(StreamController<T> controller) : _streamController = controller;
+  /// EventBus.customController(StreamController<T> controller) : _streamController = controller;
 
   StreamController<T> get streamController => _streamController;
 
@@ -56,14 +56,11 @@ void eventListen(void Function(dynamic event) onData) =>
 typedef EventCallback = void Function(dynamic data);
 
 class EventBus {
-  /// 工厂构造函数
-  factory EventBus() => _singleton;
+  factory EventBus() => _singleton ??= EventBus._();
 
-  /// 私有构造函数
-  EventBus._internal();
+  EventBus._();
 
-  /// 保存单例
-  static final EventBus _singleton = EventBus._internal();
+  static EventBus? _singleton;
 
   /// 保存事件订阅者队列，key:事件名(id)，value: 对应事件的订阅者队列
   final Map<dynamic, List<EventCallback>?> _map =
@@ -92,7 +89,7 @@ class EventBus {
     if (list == null) return;
     final int len = list.length - 1;
 
-    ///  反向遍历，防止订阅者在回调中移除自身带来的下标错位
+    /// 反向遍历，防止订阅者在回调中移除自身带来的下标错位
     for (int i = len; i > -1; --i) {
       list[i](data);
     }

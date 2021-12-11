@@ -1,4 +1,4 @@
-///  Permuted Choice 1 constants
+/// Permuted Choice 1 constants
 List<int> pc1 = <int>[
   57,
   49,
@@ -58,7 +58,7 @@ List<int> pc1 = <int>[
   4
 ];
 
-///  Permuted Choice 2 constants
+/// Permuted Choice 2 constants
 List<int> pc2 = <int>[
   14,
   17,
@@ -110,7 +110,7 @@ List<int> pc2 = <int>[
   32
 ];
 
-///  Cumulative bit shift constants
+/// Cumulative bit shift constants
 List<int> bitShifts = <int>[
   1,
   2,
@@ -130,7 +130,7 @@ List<int> bitShifts = <int>[
   28
 ];
 
-///  sBoxP and round permutation constants
+/// sBoxP and round permutation constants
 List<Map<int, int>> sBoxP = <Map<int, int>>[
   <int, int>{
     0x0: 0x808200,
@@ -662,7 +662,7 @@ List<Map<int, int>> sBoxP = <Map<int, int>>[
   }
 ];
 
-///  Masks that select the sBox input
+/// Masks that select the sBox input
 List<int> sBoxMask = <int>[
   0xf8000001,
   0x1f800000,

@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 /// 请求数据类型 (4种): application/x-www-form-urlencoded 、multipart/form-data、application/json、text/xml
@@ -11,8 +10,8 @@ const List<String> httpContentType = <String>[
 
 enum HttpType { get, post, put, delete, patch }
 
-class ExtendedOptions {
-  ExtendedOptions(
+class ExtendedDioOptions {
+  ExtendedDioOptions(
       {this.options,
       this.interceptors,
       this.requestCookie,
@@ -37,8 +36,8 @@ class ExtendedOptions {
 class ExtendedDio {
   factory ExtendedDio() => getInstance();
 
-  ExtendedDio._internal({ExtendedOptions? options}) {
-    options ??= ExtendedOptions();
+  ExtendedDio._internal({ExtendedDioOptions? options}) {
+    options ??= ExtendedDioOptions();
     _dio = Dio();
     logTools = options.logTs;
     _initOptions(_dio,
@@ -61,7 +60,7 @@ class ExtendedDio {
 
   static ExtendedDio get instance => getInstance();
 
-  static ExtendedDio getInstance({ExtendedOptions? options}) =>
+  static ExtendedDio getInstance({ExtendedDioOptions? options}) =>
       _instance ??= ExtendedDio._internal(options: options);
 
   void _initOptions(Dio dio, {BaseOptions? options}) {
@@ -156,14 +155,13 @@ class ExtendedDio {
     } on DioError catch (e) {
       final DioError error = e;
       final ResponseModel responseModel = ResponseModel.mergeError(error);
-
       return responseModel;
     } catch (e) {
       return ResponseModel.constResponseModel();
     }
   }
 
-  ///  文件上传
+  /// 文件上传
   Future<ResponseModel> upload<T>(
     String url, {
     Map<String, dynamic>? params,

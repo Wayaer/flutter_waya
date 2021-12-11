@@ -37,25 +37,25 @@ abstract class BaseEngine implements Engine {
     const int blockSizeBytes = blockSize * 4;
     const int minBufferSize = 0;
 
-    ///  Count blocks ready
+    /// Count blocks ready
     int nBlocksReady = dataSigBytes ~/ blockSizeBytes;
     nBlocksReady = max((nBlocksReady | 0) - minBufferSize, 0);
 
-    ///  Count words ready
+    /// Count words ready
     final int nWordsReady = nBlocksReady * blockSize;
 
-    ///  Count bytes ready
+    /// Count bytes ready
     final int nBytesReady = min(nWordsReady * 4, dataSigBytes);
 
-    ///  Process blocks
+    /// Process blocks
     List<int>? processedWords;
     if (nWordsReady != 0) {
       for (int offset = 0; offset < nWordsReady; offset += blockSize) {
-        ///  Perform concrete-algorithm logic
+        /// Perform concrete-algorithm logic
         processBlock(dataWords, offset);
       }
 
-      ///  Remove processed words
+      /// Remove processed words
       processedWords = dataWords.getRange(0, nWordsReady).toList();
       dataWords.removeRange(0, nWordsReady);
     }
@@ -68,16 +68,16 @@ abstract class BaseEngine implements Engine {
   void _pkc7Pad(List<int> data, int blockSize) {
     final int blockSizeBytes = blockSize * 4;
 
-    ///  Count padding bytes
+    /// Count padding bytes
     final int nPaddingBytes = blockSizeBytes - data.length % blockSizeBytes;
 
-    ///  Create padding word
+    /// Create padding word
     final int paddingWord = (nPaddingBytes << 24) |
         (nPaddingBytes << 16) |
         (nPaddingBytes << 8) |
         nPaddingBytes;
 
-    ///  Create padding
+    /// Create padding
     final List<int> paddingWords = <int>[];
     for (int i = 0; i < nPaddingBytes; i += 4) {
       paddingWords.add(paddingWord);
@@ -85,7 +85,7 @@ abstract class BaseEngine implements Engine {
     final List<int> padding = List<int>.generate(nPaddingBytes,
         (int i) => i < paddingWords.length ? paddingWords[i] : 0);
 
-    ///  Add padding
+    /// Add padding
     _concat(data, padding);
   }
 
@@ -96,18 +96,18 @@ abstract class BaseEngine implements Engine {
   }
 
   void _concat(List<int> a, List<int> b) {
-    ///  Shortcuts
+    /// Shortcuts
     final List<int> thisWords = a;
     final List<int> thatWords = b;
     final int thisSigBytes = a.length;
     final int thatSigBytes = b.length;
 
-    ///  Clamp excess bits
+    /// Clamp excess bits
     _clamp(a);
 
-    ///  Concat
+    /// Concat
     if (thisSigBytes % 4 != 0) {
-      ///  Copy one byte at a time
+      /// Copy one byte at a time
       for (int i = 0; i < thatSigBytes; i++) {
         final int thatByte = (thatWords[i >> 2] >> (24 - (i % 4) * 8)) & 0xff;
         final int idx = (thisSigBytes + i) >> 2;
@@ -121,7 +121,7 @@ abstract class BaseEngine implements Engine {
         thisWords[idx] |= thatByte << (24 - ((thisSigBytes + i) % 4) * 8);
       }
     } else {
-      ///  Copy one word at a time
+      /// Copy one word at a time
       for (int i = 0; i < thatSigBytes; i += 4) {
         final int idx = (thisSigBytes + i) >> 2;
         if (idx >= thisWords.length) thisWords.length = idx + 1;
@@ -132,11 +132,11 @@ abstract class BaseEngine implements Engine {
   }
 
   void _clamp(List<int> data) {
-    ///  Shortcuts
+    /// Shortcuts
     final List<int> words = data;
     final int sigBytes = data.length;
 
-    ///  Clamp
+    /// Clamp
     words[sigBytes.rightShift32(2)] &=
         (0xffffffff << (32 - (sigBytes % 4) * 8)).toSigned(32);
     words.length = (sigBytes / 4).ceil();
@@ -158,7 +158,7 @@ class DESEngine extends BaseEngine {
     final List<List<int>> subKeys =
         _subKeys = List<List<int>>.generate(16, (_) => <int>[]);
 
-    ///  Select 56 bits according to pc1
+    /// Select 56 bits according to pc1
     final List<int> keyBits = <int>[];
     for (int i = 0; i < 56; i++) {
       final int keyBitPos = pc1[i] - 1;
@@ -168,30 +168,30 @@ class DESEngine extends BaseEngine {
           1);
     }
 
-    ///  Assemble 16 subKeys
+    /// Assemble 16 subKeys
     for (int nSubKey = 0; nSubKey < 16; nSubKey++) {
-      ///  Create subKey
+      /// Create subKey
       final List<int> subKey =
           subKeys[nSubKey] = List<int>.generate(24, (_) => 0);
 
-      ///  Shortcut
+      /// Shortcut
       final int bitShift = bitShifts[nSubKey];
 
-      ///  Select 48 bits according to pc2
+      /// Select 48 bits according to pc2
       for (int i = 0; i < 24; i++) {
-        ///  Select from the left 28 key bits
+        /// Select from the left 28 key bits
         subKey[(i ~/ 6) | 0] |= keyBits[((pc2[i] - 1) + bitShift) % 28]
             .leftShift32((31 - i % 6).toInt());
 
-        ///  Select from the right 28 key bits
+        /// Select from the right 28 key bits
         subKey[4 + ((i ~/ 6) | 0)] |=
             keyBits[28 + (((pc2[i + 24] - 1) + bitShift) % 28)]
                 .leftShift32((31 - i % 6).toInt());
       }
 
-      ///  Since each subKey is applied to an expanded 32-bit input,
-      ///  the subKey can be broken into 8 values scaled to 32-bits,
-      ///  which allows the key to be used without expansion
+      /// Since each subKey is applied to an expanded 32-bit input,
+      /// the subKey can be broken into 8 values scaled to 32-bits,
+      /// which allows the key to be used without expansion
       subKey[0] = (subKey[0] << 1).toSigned(32) | subKey[0].rightShift32(31);
       for (int i = 1; i < 7; i++) {
         subKey[i] = subKey[i].rightShift32(((i - 1) * 4 + 3).toInt());
@@ -208,21 +208,21 @@ class DESEngine extends BaseEngine {
     _lBlock = M[offset].toSigned(32);
     _rBlock = M[offset + 1].toSigned(32);
 
-    ///  Initial permutation
+    /// Initial permutation
     exchangeLR(4, 0x0f0f0f0f);
     exchangeLR(16, 0x0000ffff);
     exchangeRL(2, 0x33333333);
     exchangeRL(8, 0x00ff00ff);
     exchangeLR(1, 0x55555555);
 
-    ///  Rounds
+    /// Rounds
     for (int round = 0; round < 16; round++) {
-      ///  Shortcuts
+      /// Shortcuts
       final List<int> subKey = subKeys[round];
       final int lBlock = _lBlock;
       final int rBlock = _rBlock;
 
-      ///  Feistel function
+      /// Feistel function
       int f = 0.toSigned(32);
       for (int i = 0; i < 8; i++) {
         (f |= (sBoxP[i][((rBlock ^ subKey[i]).toSigned(32) & sBoxMask[i])
@@ -234,19 +234,19 @@ class DESEngine extends BaseEngine {
       _rBlock = (lBlock ^ f).toSigned(32);
     }
 
-    ///  Undo swap from last round
+    /// Undo swap from last round
     final int t = _lBlock;
     _lBlock = _rBlock;
     _rBlock = t;
 
-    ///  Final permutation
+    /// Final permutation
     exchangeLR(1, 0x55555555);
     exchangeRL(8, 0x00ff00ff);
     exchangeRL(2, 0x33333333);
     exchangeLR(16, 0x0000ffff);
     exchangeLR(4, 0x0f0f0f0f);
 
-    ///  Set output
+    /// Set output
     M[offset] = _lBlock;
     M[offset + 1] = _rBlock;
     return blockSize;
@@ -261,7 +261,7 @@ class DESEngine extends BaseEngine {
     _rBlock = 0;
   }
 
-  ///  Swap bits across the left and right words
+  /// Swap bits across the left and right words
   void exchangeLR(int offset, int mask) {
     final int t =
         (((_lBlock.rightShift32(offset)).toSigned(32) ^ _rBlock) & mask)

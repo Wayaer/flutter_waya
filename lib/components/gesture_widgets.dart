@@ -266,7 +266,7 @@ class _CanvasLine extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) => true;
 }
 
-///  可缩放/平移的盒子小部件
+/// 可缩放/平移的盒子小部件
 class GestureZoom extends StatefulWidget {
   const GestureZoom({
     Key? key,

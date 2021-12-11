@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/constant/src/way.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 class JsonParse extends StatefulWidget {
@@ -128,7 +127,7 @@ void setHttpData(ResponseModel res) {
   if (_httpDataOverlay == null) {
     _httpDataOverlay = showOverlay(_HttpDataPage(res), autoOff: true)!;
   } else {
-    eventBus.emit('httpData', res);
+    EventBus().emit('httpData', res);
   }
 }
 
@@ -153,7 +152,7 @@ class _HttpDataPageState extends State<_HttpDataPage> {
   void initState() {
     super.initState();
     httpDataList.add(widget.res);
-    eventBus.add(eventName, (dynamic data) {
+    EventBus().add(eventName, (dynamic data) {
       if (data is ResponseModel) {
         httpDataList.insert(0, data);
         if (httpDataList.length > 20) httpDataList.removeLast();
@@ -163,7 +162,7 @@ class _HttpDataPageState extends State<_HttpDataPage> {
 
   @override
   void dispose() {
-    eventBus.remove(eventName);
+    EventBus().remove(eventName);
     super.dispose();
   }
 

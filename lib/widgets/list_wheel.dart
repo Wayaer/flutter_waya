@@ -65,6 +65,34 @@ class WheelOptions {
 
   /// [isCupertino]=true生效
   final Color? backgroundColor;
+
+  WheelOptions copyWith({
+    double? itemExtent,
+    double? diameterRatio,
+    double? offAxisFraction,
+    double? perspective,
+    double? magnification,
+    bool? useMagnifier,
+    double? squeeze,
+    bool? isCupertino,
+    ScrollPhysics? physics,
+    bool? looping,
+    ValueChanged<int>? onChanged,
+    Color? backgroundColor,
+  }) =>
+      WheelOptions(
+          itemExtent: itemExtent ?? this.itemExtent,
+          diameterRatio: diameterRatio ?? this.diameterRatio,
+          offAxisFraction: offAxisFraction ?? this.offAxisFraction,
+          perspective: perspective ?? this.perspective,
+          magnification: magnification ?? this.magnification,
+          useMagnifier: useMagnifier ?? this.useMagnifier,
+          squeeze: squeeze ?? this.squeeze,
+          isCupertino: isCupertino ?? this.isCupertino,
+          physics: physics ?? this.physics,
+          looping: looping ?? this.looping,
+          onChanged: onChanged ?? this.onChanged,
+          backgroundColor: backgroundColor ?? this.backgroundColor);
 }
 
 class ListWheel extends StatefulWidget {
@@ -80,22 +108,80 @@ class ListWheel extends StatefulWidget {
     this.onNotification,
     this.onScrollStart,
     this.onScrollUpdate,
-    this.options = const WheelOptions(),
-  }) : super(key: key) {
+    this.options,
+  })  : assert(_checkType(childDelegateType, children, itemBuilder, itemCount)),
+        super(key: key) {
+    if (childDelegateType == ListWheelChildDelegateType.builder) {}
+  }
+
+  static bool _checkType(
+      ListWheelChildDelegateType childDelegateType,
+      List<Widget>? children,
+      IndexedWidgetBuilder? itemBuilder,
+      int? itemCount) {
     if (childDelegateType == ListWheelChildDelegateType.list ||
         childDelegateType == ListWheelChildDelegateType.looping) {
-      assert(children != null);
-    }
-    if (childDelegateType == ListWheelChildDelegateType.builder) {
+      assert(children != null, 'The list and Looping types must use children');
+      return children != null;
+    } else {
       assert(itemCount != null && itemBuilder != null,
           'childDelegateType default is "ListWheelChildDelegateType.builder", The necessary conditions must be passed');
+      return itemCount != null && itemBuilder != null;
     }
   }
+
+  const ListWheel.builder({
+    Key? key,
+    this.initialIndex = 0,
+    this.controller,
+    required this.itemBuilder,
+    required this.itemCount,
+    this.onScrollEnd,
+    this.onNotification,
+    this.onScrollStart,
+    this.onScrollUpdate,
+    this.options,
+  })  : assert(itemBuilder != null && itemCount != null),
+        childDelegateType = ListWheelChildDelegateType.builder,
+        children = null,
+        super(key: key);
+
+  const ListWheel.list({
+    Key? key,
+    this.initialIndex = 0,
+    this.controller,
+    this.onScrollEnd,
+    required this.children,
+    this.onNotification,
+    this.onScrollStart,
+    this.onScrollUpdate,
+    this.options,
+  })  : assert(children != null),
+        childDelegateType = ListWheelChildDelegateType.list,
+        itemBuilder = null,
+        itemCount = null,
+        super(key: key);
+
+  const ListWheel.looping({
+    Key? key,
+    this.initialIndex = 0,
+    this.controller,
+    this.onScrollEnd,
+    this.children,
+    this.onNotification,
+    this.onScrollStart,
+    this.onScrollUpdate,
+    this.options,
+  })  : assert(children != null),
+        childDelegateType = ListWheelChildDelegateType.looping,
+        itemBuilder = null,
+        itemCount = null,
+        super(key: key);
 
   /// 初始选中的Item
   final int initialIndex;
 
-  final WheelOptions options;
+  final WheelOptions? options;
 
   /// 子组件
   final List<Widget>? children;
@@ -130,12 +216,14 @@ class ListWheel extends StatefulWidget {
 
 class _ListWheelState extends State<ListWheel> {
   late FixedExtentScrollController controller;
+  late WheelOptions options;
 
   @override
   void initState() {
     super.initState();
     controller = widget.controller ??
         FixedExtentScrollController(initialItem: widget.initialIndex);
+    options = widget.options ?? GlobalOptions().wheelOptions;
   }
 
   ListWheelChildDelegate getDelegate(ListWheelChildDelegateType type) {
@@ -152,45 +240,46 @@ class _ListWheelState extends State<ListWheel> {
   @override
   Widget build(BuildContext context) {
     Widget child;
-    if (widget.options.isCupertino) {
+
+    if (options.isCupertino) {
       child = widget.childDelegateType == ListWheelChildDelegateType.builder
           ? CupertinoPicker.builder(
               scrollController: controller,
               childCount: widget.itemCount,
               itemBuilder: widget.itemBuilder!,
-              backgroundColor: widget.options.backgroundColor,
-              itemExtent: widget.options.itemExtent,
-              diameterRatio: widget.options.diameterRatio,
-              onSelectedItemChanged: widget.options.onChanged,
-              offAxisFraction: widget.options.offAxisFraction,
-              useMagnifier: widget.options.useMagnifier,
-              squeeze: widget.options.squeeze,
-              magnification: widget.options.magnification)
+              backgroundColor: options.backgroundColor,
+              itemExtent: options.itemExtent,
+              diameterRatio: options.diameterRatio,
+              onSelectedItemChanged: options.onChanged,
+              offAxisFraction: options.offAxisFraction,
+              useMagnifier: options.useMagnifier,
+              squeeze: options.squeeze,
+              magnification: options.magnification)
           : CupertinoPicker(
               scrollController: controller,
               children: widget.children!,
-              backgroundColor: widget.options.backgroundColor,
+              backgroundColor: options.backgroundColor,
               looping: widget.childDelegateType ==
                   ListWheelChildDelegateType.looping,
-              itemExtent: widget.options.itemExtent,
-              diameterRatio: widget.options.diameterRatio,
-              onSelectedItemChanged: widget.options.onChanged,
-              offAxisFraction: widget.options.offAxisFraction,
-              useMagnifier: widget.options.useMagnifier,
-              squeeze: widget.options.squeeze,
-              magnification: widget.options.magnification);
+              itemExtent: options.itemExtent,
+              diameterRatio: options.diameterRatio,
+              onSelectedItemChanged: options.onChanged,
+              offAxisFraction: options.offAxisFraction,
+              useMagnifier: options.useMagnifier,
+              squeeze: options.squeeze,
+              magnification: options.magnification);
     } else {
       child = ListWheelScrollView.useDelegate(
           controller: controller,
-          itemExtent: widget.options.itemExtent,
-          physics: widget.options.physics,
-          diameterRatio: widget.options.diameterRatio,
-          onSelectedItemChanged: widget.options.onChanged,
-          offAxisFraction: widget.options.offAxisFraction,
-          perspective: widget.options.perspective,
-          useMagnifier: widget.options.useMagnifier,
-          squeeze: widget.options.squeeze,
-          magnification: widget.options.magnification,
+          itemExtent: options.itemExtent,
+          physics: options.physics,
+          diameterRatio: options.diameterRatio,
+          onSelectedItemChanged: options.onChanged,
+          offAxisFraction: options.offAxisFraction,
+          perspective: options.perspective,
+          useMagnifier: options.useMagnifier,
+          squeeze: options.squeeze,
+          magnification: options.magnification,
           childDelegate: getDelegate(widget.childDelegateType));
     }
     if (widget.onScrollStart == null &&

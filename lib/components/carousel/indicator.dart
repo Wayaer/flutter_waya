@@ -25,28 +25,28 @@ class Indicator extends StatelessWidget {
   /// usually use `pageController.page`
   final double position;
 
-  ///  size of the dots
+  /// size of the dots
   final double size;
 
-  ///  space between dots.
+  /// space between dots.
   final double space;
 
-  ///  count of dots
+  /// count of dots
   final int count;
 
-  ///  active color
+  /// active color
   final Color? activeColor;
 
-  ///  normal color
+  /// normal color
   final Color? color;
 
-  ///  layout of the dots,default is [IndicatorType.slide]
+  /// layout of the dots,default is [IndicatorType.slide]
   final IndicatorType layout;
 
-  ///  Only valid when layout==IndicatorType.scale
+  /// Only valid when layout==IndicatorType.scale
   final double scale;
 
-  ///  Only valid when layout==IndicatorType.drop
+  /// Only valid when layout==IndicatorType.drop
   final double dropHeight;
 
   final double activeSize;

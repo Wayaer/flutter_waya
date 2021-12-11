@@ -2,16 +2,21 @@
 
 ## [Example](example) 运行 Example 查看使用
 
-### 初始化 globalNavigatorKey 两种方式
+### 初始化 navigatorKey 两种方式
 
 ```dart
+/// 设置你自己的 navigatorKey
+void setGlobalNavigatorKey() {
+  GlobalOptions().setGlobalNavigatorKey(navigatorKey);
+}
+
 /// 使用自己的 MaterialApp
 class _CustomAppState extends State<_App> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
-        navigatorKey: globalNavigatorKey,
+        navigatorKey: GlobalOptions().globalNavigatorKey,
         title: 'Waya UI',
         home: _Home());
   }
@@ -22,7 +27,7 @@ class _AppState extends State<_App> {
   @override
   Widget build(BuildContext context) {
     return ExtendedWidgetsApp(
-        title: 'Waya UI', home: _Home(), widgetMode: WidgetMode.material);
+        title: 'Waya UI', home: _Home(), pushStle: RoutePushStyle.material);
   }
 }
 
@@ -52,8 +57,8 @@ class _AppState extends State<_App> {
 
 - [utils](https://github.com/Wayaer/flutter_waya/tree/main/lib/utils)
 
-    - [dio](https://github.com/Wayaer/flutter_waya/tree/main/lib/utils/src/dio.dart) dio 网络请求封装，统一error
-      返回[ResponseModel]
+    - [dio](https://github.com/Wayaer/flutter_waya/tree/main/lib/utils/src/dio.dart) dio
+      网络请求封装，统一error 返回[ResponseModel]
     - [event](https://github.com/Wayaer/flutter_waya/tree/main/lib/utils/src/event.dart) event bus
     - [screen_fit](https://github.com/Wayaer/flutter_waya/tree/main/lib/utils/src/screen_fit.dart)
       MediaQueryData
@@ -74,10 +79,13 @@ class _AppState extends State<_App> {
     - `LiquidProgress()` 流体progress
     - `Progress()` 普通动画progress
 
-- `ExtendedWidgetsApp()` 根组件使用 `ExtendedWidgetsApp()`可直接使用`push()` `pop()`等多个路由方法和`showDialogPopup()`,`showBottomPopup()`,`showCupertinoBottomPopup()`,`showDialogSureCancel()`,`showOverlay()`,`showLoading()`,`showToast()`,无需传 context
-      ,随处打开,关闭 以上弹窗或页面 必须使用 `closePopup()`或直接 `pop()`,
+- `ExtendedWidgetsApp()` 根组件使用 `ExtendedWidgetsApp()`可直接使用`push()` `pop()`
+  等多个路由方法和`showDialogPopup()`,`showBottomPopup()`,`showCupertinoBottomPopup()`
+  ,`showDoubleChooseWindows()`,`showOverlay()`,`showLoading()`,`showToast()`,无需传 context ,随处打开,关闭
+  以上弹窗或页面 必须使用 `closePopup()`或直接 `pop()`,
 
-- `ExtendedScaffold()` 添加 `onWillPop()` `RefreshConfig` `padding` `margin` `decoration` `isStack` `isScroll` `children`
+- `ExtendedScaffold()`
+  添加 `onWillPop()` `RefreshConfig` `padding` `margin` `decoration` `isStack` `isScroll` `children`
   等多个参数
 
 - `ListWheel()` 实现 picker 功能的滚动组件
@@ -88,8 +96,3 @@ class _AppState extends State<_App> {
 - `ScrollList()` 合并 `ListView()` 和 `GridView()` 并添加 下拉刷新 和 上拉加载 功能
 
 - `Universal()`中合多个官方组件功能 减少嵌套
-
-### 快捷打包命令 [builds](https://github.com/Wayaer/flutter_waya/tree/main/builds)
-
-- sh android.sh //即可打包命令 可拷贝builds至自己的项目目录 并修改
-

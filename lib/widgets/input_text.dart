@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_waya/flutter_waya.dart';
@@ -49,48 +48,48 @@ enum InputTextType {
   negative,
 }
 
-///  按回车时调用 先调用此方法  然后调用onSubmitted方法
-///  final VoidCallback? onEditingComplete;
-///  final ValueCallback<String>? onSubmitted;
+/// 按回车时调用 先调用此方法  然后调用onSubmitted方法
+/// final VoidCallback? onEditingComplete;
+/// final ValueCallback<String>? onSubmitted;
 ///
 ///
-///   键盘颜色    Brightness.dark 深色模式
-///   final Brightness keyboardAppearance;
+/// 键盘颜色  Brightness.dark 深色模式
+/// final Brightness keyboardAppearance;
 ///
 ///
-///  长按输入的文字时，true显示系统的粘贴板  false不显示
-///  final bool enableInteractiveSelection;
+/// 长按输入的文字时，true显示系统的粘贴板  false不显示
+/// final bool enableInteractiveSelection;
 ///
 ///
-///       设置键盘上enter键的显示内容
-///       textInputAction: TextInputAction.search, ///  搜索
-///       textInputAction: TextInputAction.none,///  默认回车符号
-///       textInputAction: TextInputAction.done,///  安卓显示 回车符号
-///       textInputAction: TextInputAction.go,///  开始
-///       textInputAction: TextInputAction.next,///  下一步
-///       textInputAction: TextInputAction.send,///  发送
-///       textInputAction: TextInputAction.continueAction,///  android  不支持
-///       textInputAction: TextInputAction.emergencyCall,///  android  不支持
-///       textInputAction: TextInputAction.newline,///  安卓显示 回车符号
-///       textInputAction: TextInputAction.route,///  android  不支持
-///       textInputAction: TextInputAction.join,///  android  不支持
-///       textInputAction: TextInputAction.previous,///  安卓显示 回车符号
-///       textInputAction: TextInputAction.unspecified,///  安卓显示 回车符号
-///  final TextInputAction? textInputAction,
+///     设置键盘上enter键的显示内容
+///     textInputAction: TextInputAction.search, /// 搜索
+///     textInputAction: TextInputAction.none,/// 默认回车符号
+///     textInputAction: TextInputAction.done,/// 安卓显示 回车符号
+///     textInputAction: TextInputAction.go,/// 开始
+///     textInputAction: TextInputAction.next,/// 下一步
+///     textInputAction: TextInputAction.send,/// 发送
+///     textInputAction: TextInputAction.continueAction,/// android  不支持
+///     textInputAction: TextInputAction.emergencyCall,/// android  不支持
+///     textInputAction: TextInputAction.newline,/// 安卓显示 回车符号
+///     textInputAction: TextInputAction.route,/// android  不支持
+///     textInputAction: TextInputAction.join,/// android  不支持
+///     textInputAction: TextInputAction.previous,/// 安卓显示 回车符号
+///     textInputAction: TextInputAction.unspecified,/// 安卓显示 回车符号
+/// final TextInputAction? textInputAction,
 ///
 ///
-///     输入时键盘的英文都是大写
-///     textCapitalization: TextCapitalization.characters,
-///     键盘英文默认显示小写
-///     textCapitalization:  TextCapitalization.none,
-///     在输入每个句子的第一个字母时，键盘大写形式，输入后续字母时键盘小写形式
-///     textCapitalization:  TextCapitalization.sentences,
-///     在输入每个单词的第一个字母时，键盘大写形式，输入其他字母时键盘小写形式
-///     textCapitalization: TextCapitalization.words,
-///  final TextCapitalization textCapitalization;
+///   输入时键盘的英文都是大写
+///   textCapitalization: TextCapitalization.characters,
+///   键盘英文默认显示小写
+///   textCapitalization:  TextCapitalization.none,
+///   在输入每个句子的第一个字母时，键盘大写形式，输入后续字母时键盘小写形式
+///   textCapitalization:  TextCapitalization.sentences,
+///   在输入每个单词的第一个字母时，键盘大写形式，输入其他字母时键盘小写形式
+///   textCapitalization: TextCapitalization.words,
+/// final TextCapitalization textCapitalization;
 ///
-///  自定义数字显示   指定maxLength后 右下角会出现字数，flutter有默认实现  可以通过这个自定义
-///  final InputCounterWidgetBuilder? buildCounter;
+/// 自定义数字显示 指定maxLength后 右下角会出现字数，flutter有默认实现  可以通过这个自定义
+/// final InputCounterWidgetBuilder? buildCounter;
 
 /// [Widget] 挂件
 class WidgetPendant extends StatelessWidget {
@@ -265,7 +264,7 @@ List<TextInputFormatter> inputTextTypeToTextInputFormatter(
   return <TextInputFormatter>[FilteringTextInputFormatter(regExp, allow: true)];
 }
 
-///  数字输入的精确控制
+/// 数字输入的精确控制
 class NumberLimitFormatter extends TextInputFormatter {
   NumberLimitFormatter(this.numberLength, this.decimalLength);
 
@@ -279,18 +278,18 @@ class NumberLimitFormatter extends TextInputFormatter {
       TextEditingValue oldValue, TextEditingValue newValue) {
     const String pointer = '.';
 
-    ///  输入完全删除
+    /// 输入完全删除
     if (newValue.text.isEmpty) return const TextEditingValue();
 
-    ///  只允许输入数字和小数点
+    /// 只允许输入数字和小数点
     if (!exp.hasMatch(newValue.text)) return oldValue;
 
-    ///  包含小数点的情况
+    /// 包含小数点的情况
     if (newValue.text.contains(pointer)) {
-      ///  精度为0，即不含小数
+      /// 精度为0，即不含小数
       if (decimalLength == 0) return oldValue;
 
-      ///  包含多个小数
+      /// 包含多个小数
       if (newValue.text.indexOf(pointer) !=
           newValue.text.lastIndexOf(pointer)) {
         return oldValue;
@@ -299,17 +298,17 @@ class NumberLimitFormatter extends TextInputFormatter {
       final String input = newValue.text;
       final int index = input.indexOf(pointer);
 
-      ///  小数点前位数
+      /// 小数点前位数
       final int lengthBeforePointer = input.substring(0, index).length;
 
-      ///  整数部分大于约定长度
+      /// 整数部分大于约定长度
       if (lengthBeforePointer > numberLength) return oldValue;
 
-      ///  小数点后位数
+      /// 小数点后位数
       final int lengthAfterPointer =
           input.substring(index, input.length).length - 1;
 
-      ///  小数位大于精度
+      /// 小数位大于精度
       if (lengthAfterPointer > decimalLength) return oldValue;
     } else if (
 
@@ -350,13 +349,13 @@ class PinBox extends StatefulWidget {
   }) : super(key: key);
   final GestureTapCallback? onTap;
 
-  ///  输入内容监听
+  /// 输入内容监听
   final ValueCallback<String>? onChanged;
 
-  ///  输入完成后回调
+  /// 输入完成后回调
   final ValueCallback<String>? onDone;
 
-  ///  输入文字类型限制
+  /// 输入文字类型限制
   final InputTextType inputTextType;
 
   /// 是否自动获取焦点

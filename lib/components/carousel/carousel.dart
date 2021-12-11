@@ -1,15 +1,14 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 typedef CarouselOnTap = void Function(int index);
 
-///  Default auto play transition duration
+/// Default auto play transition duration
 const Duration kDefaultAutoPlayTransitionDuration = Duration(milliseconds: 400);
 
-///  default auto play Duration
+/// default auto play Duration
 const Duration kDefaultAutoPlayDelay = Duration(seconds: 3);
 
 enum CarouselLayout { stack, tinder }
@@ -35,58 +34,58 @@ class Carousel extends StatefulWidget {
     required this.itemWidth,
   }) : super(key: key);
 
-  ///  Inner item height, this property is valid if layout=stack or layout=tinder,
+  /// Inner item height, this property is valid if layout=stack or layout=tinder,
   final double itemHeight;
 
-  ///  Inner item width, this property is valid if layout=stack or layout=tinder,
+  /// Inner item width, this property is valid if layout=stack or layout=tinder,
   final double itemWidth;
 
-  ///  Build item on index
+  /// Build item on index
   final IndexedWidgetBuilder itemBuilder;
 
-  ///  count of the display items
+  /// count of the display items
   final int itemCount;
 
-  ///  当用户手动拖拽或者自动播放引起下标改变的时候调用
+  /// 当用户手动拖拽或者自动播放引起下标改变的时候调用
   final ValueChanged<int>? onChanged;
 
-  ///  auto play config
-  ///  自动播放开关.
+  /// auto play config
+  /// 自动播放开关.
   final bool autoPlay;
 
-  ///  Animation duration
+  /// Animation duration
   final Duration duration;
 
-  ///  play transition duration
+  /// play transition duration
   final Duration transitionDuration;
 
-  ///  horizontal/vertical
+  /// horizontal/vertical
   final Axis scrollDirection;
 
-  ///  transition curve
+  /// transition curve
   final Curve curve;
 
-  ///  Set to false to disable continuous loop mode.
-  ///  无限轮播模式开关
+  /// Set to false to disable continuous loop mode.
+  /// 无限轮播模式开关
   final bool loop;
 
-  ///  Index number of initial slide.
-  ///  If not set , the `Carousel` is 'uncontrolled', which means manage index by itself
-  ///  If set , the `Carousel` is 'controlled', which means the index is fully managed by parent widget.
-  ///  初始的时候下标位置
+  /// Index number of initial slide.
+  /// If not set , the `Carousel` is 'uncontrolled', which means manage index by itself
+  /// If set , the `Carousel` is 'controlled', which means the index is fully managed by parent widget.
+  /// 初始的时候下标位置
   final int? index;
 
-  ///  Called when tap
-  ///  当用户点击某个轮播的时候调用
+  /// Called when tap
+  /// 当用户点击某个轮播的时候调用
   final CarouselOnTap? onTap;
 
-  ///  other plugins, you can custom your own plugin
+  /// other plugins, you can custom your own plugin
   final List<CarouselPlugin> pagination;
 
-  ///  控制器
+  /// 控制器
   final CarouselController? controller;
 
-  ///  Build in layouts
+  /// Build in layouts
   final CarouselLayout layout;
 
   @override
@@ -412,7 +411,7 @@ class _StackState extends _LayoutState<_SubCarousel> {
   }
 }
 
-///  _LayoutState
+/// _LayoutState
 abstract class _LayoutState<T extends _SubCarousel> extends State<T>
     with SingleTickerProviderStateMixin {
   late double _carouselWidth;

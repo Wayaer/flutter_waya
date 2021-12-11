@@ -1,7 +1,6 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/constant/src/way.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 typedef OnSliverPinnedPersistentHeaderDelegateBuild = void Function(
@@ -275,7 +274,7 @@ class SliverListGrid extends StatelessWidget {
     /// [maxCrossAxisExtent]设置最大宽度
     bool? crossAxisFlex = false,
 
-    ///  [crossAxisFlex]=true 单个子Widget的水平最大宽度
+    /// [crossAxisFlex]=true 单个子Widget的水平最大宽度
     double? maxCrossAxisExtent,
     this.mainAxisExtent,
     this.itemBuilder,

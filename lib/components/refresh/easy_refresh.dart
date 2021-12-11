@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 void sendRefreshType([EasyRefreshType? refresh]) {
-  eventBus.emit(_eventName, refresh ?? EasyRefreshType.refreshSuccess);
+  EventBus().emit(_eventName, refresh ?? EasyRefreshType.refreshSuccess);
 }
 
 class RefreshConfig {
@@ -51,7 +51,7 @@ EasyRefreshController? _holdController;
 
 String get _eventName => refreshEvent + _holdController.hashCode.toString();
 
-///  刷新类型
+/// 刷新类型
 enum EasyRefreshType {
   /// 触发刷新
   refresh,
@@ -96,9 +96,9 @@ class EasyRefreshed extends StatefulWidget {
     this.scrollController,
   }) : super(key: key);
 
-  ///  可不传controller，
-  ///  若想关闭刷新组件可以通过发送消息
-  ///  sendRefreshType(RefreshCompletedType.refresh);
+  /// 可不传controller，
+  /// 若想关闭刷新组件可以通过发送消息
+  /// sendRefreshType(RefreshCompletedType.refresh);
   final EasyRefreshController? controller;
   final OnRefreshCallback? onRefresh;
   final OnLoadCallback? onLoading;
@@ -146,7 +146,7 @@ class _EasyRefreshedState extends State<EasyRefreshed> {
   }
 
   void initEventBus() {
-    eventBus.add(_eventName, (dynamic data) {
+    EventBus().add(_eventName, (dynamic data) {
       if (data != null && data is EasyRefreshType) {
         switch (data) {
           case EasyRefreshType.refresh:
@@ -175,7 +175,7 @@ class _EasyRefreshedState extends State<EasyRefreshed> {
             break;
         }
       }
-      eventBus.remove(_eventName);
+      EventBus().remove(_eventName);
     });
   }
 

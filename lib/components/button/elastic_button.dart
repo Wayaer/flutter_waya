@@ -53,16 +53,16 @@ class ElasticButton extends StatefulWidget {
 
   final bool withOpacity;
 
-  ///  The widget that is to be displayed on your regular UI.
+  /// The widget that is to be displayed on your regular UI.
   final Widget? child;
 
-  ///  Set this to true if your [child] doesn't change at runtime.
+  /// Set this to true if your [child] doesn't change at runtime.
   final bool useCache;
 
-  ///  Use this value to determine the alignment of the animation.
+  /// Use this value to determine the alignment of the animation.
   final Alignment alignment;
 
-  ///  Use this value to determine the scaling factor while the animation is being played. Choose a value between 0.0 and 1.0.
+  /// Use this value to determine the scaling factor while the animation is being played. Choose a value between 0.0 and 1.0.
   final double scaleCoefficient;
 
   final GestureTapDownCallback? onTapDown;

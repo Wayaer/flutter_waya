@@ -98,17 +98,19 @@ class _DropdownMenuButtonState extends State<DropdownMenuButton> {
     final Offset offset = context.getWidgetLocalToGlobal();
     final Size size = context.size!;
     showDialogPopup<dynamic>(
-        options: GeneralDialogOptions(
-            popupFromType: PopupFromType.fromCenter,
+        options: const GeneralDialogOptions(
+            fromStyle: PopupFromStyle.fromCenter,
             barrierColor: Colors.transparent),
-        widget: PopupOptions(
-          top: offset.dy + size.height,
-          left: offset.dx,
-          onTap: () {
-            isShow = false;
-            maybePop();
-            setState(() {});
-          },
+        widget: PopupModalWindows(
+          options: GlobalOptions().modalWindowsOptions.copyWith(
+              top: offset.dy + size.height,
+              alignment: Alignment.topLeft,
+              left: offset.dx,
+              onTap: () {
+                isShow = false;
+                maybePop();
+                setState(() {});
+              }),
           child: Universal(
               margin: widget.margin,
               padding: widget.padding,
@@ -278,23 +280,25 @@ class _DropdownMenuState extends State<DropdownMenu> {
               pop();
               if (widget.onTap != null) widget.onTap!(index, i);
             }));
-    final Widget popup = PopupOptions(
-        top: local.dy + titleHeight,
-        color: Colors.transparent,
-        onTap: widget.isModal
-            ? null
-            : () {
-                changeState(index);
-                pop();
-              },
+    final Widget popup = PopupModalWindows(
+        options: GlobalOptions().modalWindowsOptions.copyWith(
+            top: local.dy + titleHeight,
+            alignment: Alignment.topLeft,
+            color: Colors.transparent,
+            onTap: widget.isModal
+                ? null
+                : () {
+                    changeState(index);
+                    pop();
+                  }),
         child: Universal(
             width: widget.width,
             color: widget.backgroundColor,
             child: listBuilder));
     showDialogPopup<dynamic>(
         widget: popup,
-        options: GeneralDialogOptions(
-            popupFromType: PopupFromType.fromCenter,
+        options: const GeneralDialogOptions(
+            fromStyle: PopupFromStyle.fromCenter,
             barrierColor: Colors.transparent));
   }
 

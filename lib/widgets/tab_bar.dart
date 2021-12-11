@@ -1,6 +1,5 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 /// [TabBar]和[TabBarView]
@@ -25,26 +24,26 @@ class TabBarMerge extends StatelessWidget {
     this.dragStartBehavior = DragStartBehavior.start,
   }) : super(key: key);
 
-  ///  使用 [TabBarBox]
+  /// 使用 [TabBarBox]
   final Widget tabBar;
 
   final DragStartBehavior dragStartBehavior;
 
-  ///  头部
+  /// 头部
   final Widget? header;
 
-  ///  [tabBar]和[tabBarView]中间层
+  /// [tabBar]和[tabBarView]中间层
   final Widget? among;
 
-  ///  底部
+  /// 底部
   final Widget? footer;
 
-  ///  控制器
+  /// 控制器
   final TabController controller;
 
   final List<Widget>? tabView;
 
-  ///  作用于[tabView]
+  /// 作用于[tabView]
   final EdgeInsetsGeometry? margin;
   final EdgeInsetsGeometry? padding;
   final Decoration? decoration;
@@ -53,7 +52,7 @@ class TabBarMerge extends StatelessWidget {
   final double? height;
   final ScrollPhysics? physics;
 
-  ///  [tabBar],[tabView] 反转
+  /// [tabBar],[tabView] 反转
   final bool reverse;
 
   @override
@@ -119,13 +118,13 @@ class TabBarBox extends StatelessWidget {
     this.physics,
   }) : super(key: key);
 
-  ///  [TabBar] 位置
+  /// [TabBar] 位置
   final TabBarLevelPosition levelPosition;
 
-  ///  [TabBar] 水平左边或者右边的Widget 添加标签
+  /// [TabBar] 水平左边或者右边的Widget 添加标签
   final Widget? tabBarLevel;
 
-  ///  作用于整个[TabBar]
+  /// 作用于整个[TabBar]
   final AlignmentGeometry? alignment;
   final EdgeInsetsGeometry? margin;
   final EdgeInsetsGeometry? padding;
@@ -144,23 +143,23 @@ class TabBarBox extends StatelessWidget {
   final TabController controller;
   final List<Widget> tabs;
 
-  ///  作用于 label
+  /// 作用于 label
   final EdgeInsetsGeometry? labelPadding;
 
-  ///  作用于指示器
+  /// 作用于指示器
   final EdgeInsetsGeometry indicatorPadding;
 
-  ///  指示器高度
+  /// 指示器高度
   final double indicatorWeight;
   final TabBarIndicatorSize? indicatorSize;
 
-  ///  tabBar 指示器
+  /// tabBar 指示器
   final Decoration? indicator;
 
-  ///  true 最小宽度，false充满最大宽度
+  /// true 最小宽度，false充满最大宽度
   final bool isScrollable;
 
-  ///  选中与未选中的指示器和字体样式和颜色，
+  /// 选中与未选中的指示器和字体样式和颜色，
   final Color? indicatorColor;
   final Color? labelColor;
   final Color? unselectedLabelColor;

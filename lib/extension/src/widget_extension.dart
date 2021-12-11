@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 extension ExtensionWidget on Widget {
@@ -23,27 +22,27 @@ extension ExtensionWidget on Widget {
   PageRoute<T> buildPageRoute<T>(
       {bool maintainState = true,
       bool fullscreenDialog = false,
-      required WidgetMode? widgetMode,
+      required RoutePushStyle? pushStyle,
       RouteSettings? settings,
       BuildContext? context}) {
-    switch (widgetMode) {
-      case WidgetMode.cupertino:
+    switch (pushStyle) {
+      case RoutePushStyle.cupertino:
         return CupertinoPageRoute<T>(
             settings: settings,
             maintainState: maintainState,
             fullscreenDialog: fullscreenDialog,
             builder: (_) => this);
-      case WidgetMode.material:
+      case RoutePushStyle.material:
         return MaterialPageRoute<T>(
             settings: settings,
             maintainState: maintainState,
             fullscreenDialog: fullscreenDialog,
             builder: (_) => this);
-      case WidgetMode.ripple:
+      case RoutePushStyle.ripple:
         assert(context != null);
         return RipplePageRoute<T>(
             builder: (_) => this,
-            routeConfig: RouteConfig.fromContext(context!));
+            routeConfig: RippleRouteConfig.fromContext(context!));
       default:
         return MaterialPageRoute<T>(
             settings: settings,

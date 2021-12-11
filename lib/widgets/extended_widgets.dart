@@ -1,47 +1,48 @@
-import 'dart:ui';
+import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-part 'root_part.dart';
-
-GlobalKey<NavigatorState> globalNavigatorKey = GlobalKey();
-GlobalKey<ScaffoldMessengerState>? globalScaffoldMessengerKey;
-List<ExtendedOverlayEntry> _overlayEntryList = <ExtendedOverlayEntry>[];
-EventBus eventBus = EventBus();
-
-enum WidgetMode {
+enum RoutePushStyle {
   /// Cupertino风格
   cupertino,
 
   /// Material风格
   material,
 
-  ///
+  /// 圆形展开风格
   ripple,
 }
 
 /// ExtendedWidgetsApp
 class ExtendedWidgetsApp extends StatelessWidget {
-  ExtendedWidgetsApp({
+  const ExtendedWidgetsApp({
     Key? key,
-    Map<String, WidgetBuilder>? routes,
-    String? title,
-    ThemeMode? themeMode = ThemeMode.system,
-    WidgetMode? widgetMode = WidgetMode.material,
-    Locale? locale,
-    Iterable<LocalizationsDelegate<dynamic>>? localizationsDelegates,
-    Iterable<Locale>? supportedLocales,
-    bool? debugShowMaterialGrid = false,
-    bool? debugShowWidgetInspector = false,
-    bool? debugShowCheckedModeBanner = false,
-    bool? showPerformanceOverlay,
-    bool? checkerboardRasterCacheImages,
-    bool? checkerboardOffscreenLayers,
-    bool? showSemanticsDebugger,
-    List<NavigatorObserver>? navigatorObservers,
+    this.routes = const <String, WidgetBuilder>{},
+    this.title = '',
+    this.themeMode = ThemeMode.system,
+    this.pushStyle = RoutePushStyle.material,
+    this.locale = const Locale('zh'),
+    this.localizationsDelegates = const <LocalizationsDelegate<dynamic>>[
+      DefaultCupertinoLocalizations.delegate,
+      GlobalCupertinoLocalizations.delegate,
+      GlobalMaterialLocalizations.delegate,
+      GlobalWidgetsLocalizations.delegate,
+    ],
+    this.supportedLocales = const <Locale>[
+      Locale('zh', 'CH'),
+      Locale('en', 'US')
+    ],
+    this.debugShowMaterialGrid = false,
+    this.debugShowWidgetInspector = false,
+    this.debugShowCheckedModeBanner = false,
+    this.showPerformanceOverlay = false,
+    this.checkerboardRasterCacheImages = false,
+    this.checkerboardOffscreenLayers = false,
+    this.showSemanticsDebugger = false,
+    this.navigatorObservers = const <NavigatorObserver>[],
     this.color,
     this.navigatorKey,
     this.home,
@@ -66,32 +67,10 @@ class ExtendedWidgetsApp extends StatelessWidget {
     this.restorationScopeId,
     this.textStyle,
     this.useInheritedMediaQuery = false,
-  })  : debugShowMaterialGrid = debugShowMaterialGrid ?? false,
-        debugShowWidgetInspector = debugShowWidgetInspector ?? false,
-        showPerformanceOverlay = showPerformanceOverlay ?? false,
-        checkerboardRasterCacheImages = checkerboardRasterCacheImages ?? false,
-        checkerboardOffscreenLayers = checkerboardOffscreenLayers ?? false,
-        showSemanticsDebugger = showSemanticsDebugger ?? false,
-        debugShowCheckedModeBanner = debugShowCheckedModeBanner ?? false,
-        themeMode = themeMode ?? ThemeMode.system,
-        widgetMode = widgetMode ?? WidgetMode.material,
-        title = title ?? '',
-        routes = routes ?? const <String, WidgetBuilder>{},
-        navigatorObservers = navigatorObservers ?? <NavigatorObserver>[],
-        locale = locale ?? const Locale('zh'),
-        supportedLocales = supportedLocales ??
-            <Locale>[const Locale('zh', 'CH'), const Locale('en', 'US')],
-        localizationsDelegates = localizationsDelegates ??
-            <LocalizationsDelegate<dynamic>>[
-              DefaultCupertinoLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-            ],
-        super(key: key);
+  }) : super(key: key);
 
   /// 风格
-  final WidgetMode widgetMode;
+  final RoutePushStyle pushStyle;
 
   final GlobalKey<ScaffoldMessengerState>? scaffoldMessengerKey;
 
@@ -179,49 +158,51 @@ class ExtendedWidgetsApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (navigatorKey != null) globalNavigatorKey = navigatorKey!;
+    if (navigatorKey != null) {
+      GlobalOptions().setGlobalNavigatorKey(navigatorKey!);
+    }
     if (theme != null ||
         darkTheme != null ||
-        widgetMode == WidgetMode.material) {
+        pushStyle == RoutePushStyle.material) {
       return materialApp;
     }
-    if (cupertinoTheme != null || widgetMode == WidgetMode.cupertino) {
+    if (cupertinoTheme != null || pushStyle == RoutePushStyle.cupertino) {
       return cupertinoApp;
     }
     late Color _color;
-    switch (widgetMode) {
-      case WidgetMode.cupertino:
+    switch (pushStyle) {
+      case RoutePushStyle.cupertino:
         final CupertinoThemeData effectiveThemeData =
             CupertinoTheme.of(context);
         _color = CupertinoDynamicColor.resolve(
             color ?? effectiveThemeData.primaryColor, context);
         break;
-      case WidgetMode.material:
+      case RoutePushStyle.material:
         _color = color ?? theme?.primaryColor ?? Colors.blue;
         break;
-      case WidgetMode.ripple:
+      case RoutePushStyle.ripple:
         _color = color ?? theme?.primaryColor ?? Colors.blue;
         break;
     }
     return WidgetsApp(
         key: key,
-        navigatorKey: globalNavigatorKey,
+        navigatorKey: GlobalOptions().globalNavigatorKey,
         onGenerateRoute: onGenerateRoute,
         onGenerateInitialRoutes: onGenerateInitialRoutes,
         onUnknownRoute: onUnknownRoute,
         navigatorObservers: navigatorObservers,
         initialRoute: initialRoute,
         pageRouteBuilder: <T>(RouteSettings settings, WidgetBuilder builder) {
-          switch (widgetMode) {
-            case WidgetMode.cupertino:
+          switch (pushStyle) {
+            case RoutePushStyle.cupertino:
               return CupertinoPageRoute<T>(
                   settings: settings, builder: builder);
-            case WidgetMode.material:
+            case RoutePushStyle.material:
               return MaterialPageRoute<T>(settings: settings, builder: builder);
-            case WidgetMode.ripple:
+            case RoutePushStyle.ripple:
               return RipplePageRoute<T>(
                   builder: builder,
-                  routeConfig: RouteConfig.fromContext(context));
+                  routeConfig: RippleRouteConfig.fromContext(context));
           }
         },
         home: home,
@@ -250,12 +231,12 @@ class ExtendedWidgetsApp extends StatelessWidget {
   }
 
   MaterialApp get materialApp {
-    globalScaffoldMessengerKey =
-        scaffoldMessengerKey ?? GlobalKey<ScaffoldMessengerState>();
+    GlobalOptions().setGlobalScaffoldMessengerKey(
+        scaffoldMessengerKey ?? GlobalKey<ScaffoldMessengerState>());
     return MaterialApp(
         key: key,
-        navigatorKey: globalNavigatorKey,
-        scaffoldMessengerKey: globalScaffoldMessengerKey,
+        navigatorKey: GlobalOptions().globalNavigatorKey,
+        scaffoldMessengerKey: GlobalOptions().globalScaffoldMessengerKey,
         home: home,
         routes: routes,
         initialRoute: initialRoute,
@@ -292,7 +273,7 @@ class ExtendedWidgetsApp extends StatelessWidget {
 
   CupertinoApp get cupertinoApp => CupertinoApp(
       key: key,
-      navigatorKey: globalNavigatorKey,
+      navigatorKey: GlobalOptions().globalNavigatorKey,
       home: home,
       theme: cupertinoTheme,
       routes: routes,
@@ -490,7 +471,8 @@ class ExtendedScaffold extends StatelessWidget {
 
   Future<bool> onWillPopFun() async {
     if (!scaffoldWillPop) return scaffoldWillPop;
-    if (onWillPopOverlayClose && _overlayEntryList.isNotEmpty) {
+    if (onWillPopOverlayClose &&
+        ExtendedOverlay().overlayEntryList.isNotEmpty) {
       closeOverlay();
       return false;
     }
@@ -534,55 +516,55 @@ Future<T?> push<T extends Object?>(
   Widget widget, {
   bool maintainState = true,
   bool fullscreenDialog = false,
-  WidgetMode? widgetMode,
+  RoutePushStyle? pushStyle,
   RouteSettings? settings,
 }) =>
-    globalNavigatorKey.currentState!.push(widget.buildPageRoute(
+    GlobalOptions().globalNavigatorKey.currentState!.push(widget.buildPageRoute(
         maintainState: maintainState,
         fullscreenDialog: fullscreenDialog,
-        context: globalNavigatorKey.currentState!.context,
+        context: GlobalOptions().globalNavigatorKey.currentState!.context,
         settings: settings,
-        widgetMode: widgetMode ?? _widgetMode));
+        pushStyle: pushStyle ?? GlobalOptions().pushStyle));
 
 /// 打开新页面替换当前页面
 Future<T?> pushReplacement<T extends Object?, TO extends Object?>(Widget widget,
         {bool maintainState = true,
         bool fullscreenDialog = false,
-        WidgetMode? widgetMode,
+        RoutePushStyle? pushStyle,
         RouteSettings? settings,
         TO? result}) =>
-    globalNavigatorKey.currentState!.pushReplacement(
+    GlobalOptions().globalNavigatorKey.currentState!.pushReplacement(
         widget.buildPageRoute(
             settings: settings,
-            context: globalNavigatorKey.currentState!.context,
+            context: GlobalOptions().globalNavigatorKey.currentState!.context,
             maintainState: maintainState,
             fullscreenDialog: fullscreenDialog,
-            widgetMode: widgetMode ?? _widgetMode),
+            pushStyle: pushStyle ?? GlobalOptions().pushStyle),
         result: result);
 
 /// 打开新页面 并移出堆栈所有页面
 Future<T?> pushAndRemoveUntil<T extends Object?>(Widget widget,
         {bool maintainState = true,
         bool fullscreenDialog = false,
-        WidgetMode? widgetMode,
+        RoutePushStyle? pushStyle,
         RouteSettings? settings,
         RoutePredicate? predicate}) =>
-    globalNavigatorKey.currentState!.pushAndRemoveUntil(
+    GlobalOptions().globalNavigatorKey.currentState!.pushAndRemoveUntil(
         widget.buildPageRoute(
             settings: settings,
             maintainState: maintainState,
             fullscreenDialog: fullscreenDialog,
-            context: globalNavigatorKey.currentState!.context,
-            widgetMode: widgetMode ?? _widgetMode),
+            context: GlobalOptions().globalNavigatorKey.currentState!.context,
+            pushStyle: pushStyle ?? GlobalOptions().pushStyle),
         predicate ?? (_) => false);
 
 /// 可能返回到上一个页面
 Future<bool> maybePop<T extends Object>([T? result]) =>
-    globalNavigatorKey.currentState!.maybePop<T>(result);
+    GlobalOptions().globalNavigatorKey.currentState!.maybePop<T>(result);
 
 /// 返回上一个页面
 void pop<T extends Object>([T? result]) =>
-    globalNavigatorKey.currentState!.pop<T>(result);
+    GlobalOptions().globalNavigatorKey.currentState!.pop<T>(result);
 
 /// pop 返回简写 带参数  [nullBack] =true  navigator 返回为空 就继续返回上一页面
 void popBack(Future<dynamic> navigator,
@@ -599,8 +581,71 @@ void popBack(Future<dynamic> navigator,
 
 /// 循环pop 直到pop至指定页面
 void popUntil(RoutePredicate predicate) =>
-    globalNavigatorKey.currentState!.popUntil(predicate);
+    GlobalOptions().globalNavigatorKey.currentState!.popUntil(predicate);
 
-WidgetMode _widgetMode = WidgetMode.cupertino;
+class RippleRouteConfig {
+  RippleRouteConfig.fromContext(BuildContext context) {
+    final RenderBox renderBox = context.findRenderObject() as RenderBox;
+    offset = renderBox.localToGlobal(renderBox.size.center(Offset.zero));
+    final Size size = MediaQuery.of(context).size;
+    if (offset.dx > size.width / 2) {
+      if (offset.dy > size.height / 2) {
+        circleRadius = sqrt(pow(offset.dx, 2) + pow(offset.dy, 2)).toDouble();
+      } else {
+        circleRadius = sqrt(pow(offset.dx, 2) + pow(size.height - offset.dy, 2))
+            .toDouble();
+      }
+    }
+    if (offset.dx <= size.width / 2) {
+      if (offset.dy > size.height / 2) {
+        circleRadius =
+            sqrt(pow(size.width - offset.dx, 2) + pow(offset.dy, 2)).toDouble();
+      } else {
+        circleRadius = sqrt(pow(size.width - offset.dx, 2) +
+                pow(size.height - offset.dy, 2))
+            .toDouble();
+      }
+    }
+  }
 
-void setGlobalPushMode(WidgetMode widgetMode) => _widgetMode = widgetMode;
+  late Offset offset;
+  late double circleRadius;
+}
+
+class RipplePageRoute<T> extends PageRouteBuilder<T> {
+  RipplePageRoute({required this.builder, required this.routeConfig})
+      : super(
+            transitionDuration: const Duration(milliseconds: 300),
+            pageBuilder: (BuildContext context, _, __) => builder(context),
+            opaque: false,
+            transitionsBuilder: (_, Animation<double> animation,
+                Animation<double> __, Widget child) {
+              final Widget widget = Positioned(
+                  top: routeConfig.circleRadius * animation.value -
+                      routeConfig.offset.dy,
+                  left: routeConfig.circleRadius * animation.value -
+                      routeConfig.offset.dx,
+                  child: Align(
+                      alignment: Alignment.center,
+                      child: SizedBox(
+                          width: deviceWidth,
+                          height: deviceHeight,
+                          child: child)));
+              return Stack(alignment: Alignment.center, children: <Widget>[
+                Positioned(
+                    top: routeConfig.offset.dy -
+                        routeConfig.circleRadius * animation.value,
+                    left: routeConfig.offset.dx -
+                        routeConfig.circleRadius * animation.value,
+                    child: Universal(
+                        height: routeConfig.circleRadius * 2 * animation.value,
+                        width: routeConfig.circleRadius * 2 * animation.value,
+                        isOval: true,
+                        isStack: true,
+                        children: widget.asList())),
+              ]);
+            });
+
+  final WidgetBuilder builder;
+  final RippleRouteConfig routeConfig;
+}

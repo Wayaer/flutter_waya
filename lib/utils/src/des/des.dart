@@ -36,7 +36,7 @@ class DES {
         'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
     List<int>? reverseMap;
 
-    ///  Shortcuts
+    /// Shortcuts
     int base64StrLength = base64Str.length;
     if (reverseMap == null) {
       reverseMap = List<int>.filled(123, 0);
@@ -45,7 +45,7 @@ class DES {
       }
     }
 
-    ///  Ignore padding
+    /// Ignore padding
     final int paddingChar = map.codeUnits[64];
     final int paddingIndex = base64Str.codeUnits.indexOf(paddingChar);
     if (paddingIndex != -1) base64StrLength = paddingIndex;

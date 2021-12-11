@@ -1,9 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_curiosity/flutter_curiosity.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:waya/module/alert_page.dart';
+import 'package:waya/module/popup_windows_page.dart';
 import 'package:waya/module/button_page.dart';
 import 'package:waya/module/carousel_page.dart';
 import 'package:waya/module/components_page.dart';
@@ -20,7 +18,7 @@ bool isCustomApp = false;
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  setGlobalPushMode(WidgetMode.ripple);
+  GlobalOptions().setGlobalPushMode(RoutePushStyle.ripple);
   void des() {
     const String str =
         'CfAmqOiIYz6NkH0Te32Uz6obXELPspz1pDj+oOUNNbsmptHP0Jwvdg==';
@@ -31,6 +29,16 @@ void main() {
     log('des解密完成==> $decoded');
   }
 
+  GlobalOptions().setToastOptions(
+      ToastOptions(positioned: Alignment.topCenter, duration: 0.5.seconds));
+  GlobalOptions().setBottomSheetOptions(
+      const BottomSheetOptions(barrierColor: Colors.white10));
+  GlobalOptions().setGeneralDialogOptions(
+      const GeneralDialogOptions(fromStyle: PopupFromStyle.fromTop));
+  GlobalOptions().setWheelOptions(
+      const WheelOptions(useMagnifier: true, magnification: 1.5));
+  GlobalOptions().setPickerWheelOptions(
+      const PickerWheelOptions(useMagnifier: true, magnification: 1.5));
   des();
   runApp(isCustomApp ? _CustomApp() : _App());
 }
@@ -45,7 +53,7 @@ class _CustomAppState extends State<_CustomApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
-        navigatorKey: globalNavigatorKey,
+        navigatorKey: GlobalOptions().globalNavigatorKey,
         title: 'Waya UI',
         home: _Home());
   }
@@ -77,7 +85,7 @@ class _AppState extends State<_App> {
         darkTheme: ThemeData.dark(),
         title: 'Waya UI',
         home: _Home(),
-        widgetMode: WidgetMode.material);
+        pushStyle: RoutePushStyle.material);
   }
 }
 
@@ -96,7 +104,8 @@ class _Home extends StatelessWidget {
               ElevatedText('Components',
                   onTap: () => push(const ComponentsPage())),
               ElevatedText('Button', onTap: () => push(const ButtonPage())),
-              ElevatedText('Alert', onTap: () => push(const AlertPage())),
+              ElevatedText('PopupWindows',
+                  onTap: () => push(const PopupWindowsPage())),
               ElevatedText('Image', onTap: () => push(const ImagePage())),
               ElevatedText('Carousel', onTap: () => push(const CarouselPage())),
               ElevatedText('Progress', onTap: () => push(const ProgressPage())),

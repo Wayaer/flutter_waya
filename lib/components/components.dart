@@ -14,8 +14,8 @@ export 'carousel/carousel.dart';
 export 'carousel/indicator.dart';
 export 'carousel/pagination.dart';
 export 'counter.dart';
-export 'dialog/picker.dart';
-export 'dialog/popup.dart';
+export 'popup/picker.dart';
+export 'popup/popup.dart';
 export 'dotted_line.dart';
 export 'draggable_scrollbar.dart';
 export 'gesture_widgets.dart';
@@ -53,7 +53,7 @@ enum SendState {
 
 typedef SendStateBuilder = Widget Function(SendState state, int i);
 
-///  发送验证码
+/// 发送验证码
 class SendSMS extends StatefulWidget {
   const SendSMS(
       {Key? key,
@@ -148,7 +148,7 @@ class _SendSMSState extends State<SendSMS> {
 
 typedef CountDownBuilder = Widget Function(int i);
 
-///  点击跳过
+/// 点击跳过
 class CountDown extends StatefulWidget {
   const CountDown({
     Key? key,
@@ -217,49 +217,49 @@ class _CountDownState extends State<CountDown> {
   }
 }
 
-///  侧滑菜单
+/// 侧滑菜单
 class CustomDismissible extends Dismissible {
   const CustomDismissible({
     required Key key,
     required Widget child,
 
-    ///  滑动时组件下一层显示的内容
-    ///  没有设置secondaryBackground时，从右往左或者从左往右滑动都显示该内容
-    ///  设置了secondaryBackground后，从左往右滑动显示该内容，从右往左滑动显示secondaryBackground的内容
+    /// 滑动时组件下一层显示的内容
+    /// 没有设置secondaryBackground时，从右往左或者从左往右滑动都显示该内容
+    /// 设置了secondaryBackground后，从左往右滑动显示该内容，从右往左滑动显示secondaryBackground的内容
     Widget? background,
 
-    ///  不能单独设置，只能在已经设置了background后才能设置，从右往左滑动时显示
+    /// 不能单独设置，只能在已经设置了background后才能设置，从右往左滑动时显示
     Widget? secondaryBackground,
 
-    ///  组件消失前回调，可以弹出是否消失确认窗口。
+    /// 组件消失前回调，可以弹出是否消失确认窗口。
     ConfirmDismissCallback? confirmDismiss,
 
-    ///  组件大小改变时回调
+    /// 组件大小改变时回调
     VoidCallback? onResize,
 
-    ///  组件消失后回调
+    /// 组件消失后回调
     DismissDirectionCallback? onDismissed,
 
-    ///  滑动方向（水平、垂直）
-    ///  默认DismissDirection.horizontal 水平
+    /// 滑动方向（水平、垂直）
+    /// 默认DismissDirection.horizontal 水平
     DismissDirection? direction,
 
-    ///  组件大小改变的时长，默认300毫秒。Duration(milliseconds: 300)
+    /// 组件大小改变的时长，默认300毫秒。Duration(milliseconds: 300)
     Duration? resizeDuration,
 
-    ///  必须拖动项目的偏移阈值才能被视为已解除
+    /// 必须拖动项目的偏移阈值才能被视为已解除
     Map<DismissDirection, double>? dismissThresholds,
 
-    ///  组件消失的时长，默认200毫秒。Duration(milliseconds: 200)
+    /// 组件消失的时长，默认200毫秒。Duration(milliseconds: 200)
     Duration? movementDuration,
 
-    ///  滑动时偏移量，默认0.0，
+    /// 滑动时偏移量，默认0.0，
     double? crossAxisEndOffset,
 
-    ///  拖动消失后组件大小改变方式
-    ///  start：下面组件向上滑动
-    ///  down：上面组件向下滑动
-    ///  默认DragStartBehavior.start
+    /// 拖动消失后组件大小改变方式
+    /// start：下面组件向上滑动
+    /// down：上面组件向下滑动
+    /// 默认DragStartBehavior.start
     DragStartBehavior? dragStartBehavior,
   }) : super(
             key: key,
@@ -279,7 +279,7 @@ class CustomDismissible extends Dismissible {
             dragStartBehavior: dragStartBehavior ?? DragStartBehavior.start);
 }
 
-///  组件右上角加红点
+/// 组件右上角加红点
 class Badge extends StatelessWidget {
   const Badge(
       {Key? key,
@@ -476,10 +476,10 @@ class ExpansionTiles extends StatefulWidget {
   /// 子元素，
   final List<Widget> children;
 
-  ///  展开时的背景颜色，
+  /// 展开时的背景颜色，
   final Color? backgroundColor;
 
-  ///  右侧的箭头
+  /// 右侧的箭头
   final Widget? trailing;
 
   /// 初始状态是否展开，
@@ -581,18 +581,16 @@ class CustomDrawer extends StatefulWidget {
   CustomDrawer({
     Key? key,
     double? width,
-    this.elevation = 16.0,
     required this.child,
-    this.backgroundColor,
     this.callback,
+    this.options,
   })  : width = width ?? deviceWidth * 0.7,
         super(key: key);
 
-  final Color? backgroundColor;
   final Widget child;
   final DrawerCallback? callback;
   final double width;
-  final double elevation;
+  final ModalWindowsOptions? options;
 
   @override
   _CustomDrawerState createState() => _CustomDrawerState();
@@ -614,5 +612,5 @@ class _CustomDrawerState extends State<CustomDrawer> {
   @override
   Widget build(BuildContext context) => ConstrainedBox(
       constraints: BoxConstraints(maxWidth: widget.width),
-      child: PopupOptions(color: widget.backgroundColor, child: widget.child));
+      child: PopupModalWindows(options: widget.options, child: widget.child));
 }

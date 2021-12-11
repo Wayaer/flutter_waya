@@ -92,10 +92,10 @@ class ComponentsPage extends StatelessWidget {
                     child: BText('item$index')))),
             const Partition('Toast'),
             Wrap(
-                children: ToastType.values.builder((ToastType type) =>
-                    ElevatedText(type.toString(), onTap: () async {
-                      await showToast(type.toString(),
-                          toastType: type, customIcon: Icons.ac_unit_sharp);
+                children: ToastStyle.values.builder((ToastStyle style) =>
+                    ElevatedText(style.toString(), onTap: () async {
+                      await showToast(style.toString(),
+                          style: style, customIcon: Icons.ac_unit_sharp);
                       showToast('添加await第一个Toast完了之后弹出第二个Toast');
                     }))),
             Wrap(

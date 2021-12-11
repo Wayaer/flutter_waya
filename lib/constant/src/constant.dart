@@ -27,51 +27,51 @@ class ConstConstant {
   };
 
   static const Map<InputTextType, String> regExp = <InputTextType, String>{
-    ///  字母和数字
+    /// 字母和数字
     InputTextType.lettersNumbers: '[a-zA-Z0-9]',
 
-    ///  密码 字母和数字和.
+    /// 密码 字母和数字和.
     InputTextType.password: '[a-zA-Z0-9.]',
 
-    ///  整数
+    /// 整数
     InputTextType.number: '',
 
-    ///  文本
+    /// 文本
     InputTextType.text: '',
 
-    ///  小数
+    /// 小数
     InputTextType.decimal: '[0-9.]',
 
-    ///  字母
+    /// 字母
     InputTextType.letter: '[a-zA-Z]',
 
-    ///  中文
+    /// 中文
     InputTextType.chinese: '[\u4e00-\u9fa5]',
 
-    ///  邮箱
+    /// 邮箱
     InputTextType.email: '[a-zA-Z0-9.@]',
 
-    ///  手机号码
+    /// 手机号码
     InputTextType.mobilePhone: '[0-9]',
 
-    ///  电话号码
+    /// 电话号码
     InputTextType.phone: '[0-9-]',
 
-    ///  身份证
+    /// 身份证
     InputTextType.idCard: '[0-9Xx]',
 
-    ///  ip地址
+    /// ip地址
     InputTextType.ip: '[0-9:.]',
 
-    ///  正数
+    /// 正数
     InputTextType.positive: '[+0-9.]',
 
-    ///  负数
+    /// 负数
     InputTextType.negative: '[-0-9.]',
   };
 }
 
-///  icons
+/// icons
 class ConstIcon {
   /// 箭头右
   static const IconData arrowRight = _IconCode(0xe65b);

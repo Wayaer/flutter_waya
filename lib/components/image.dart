@@ -3,8 +3,6 @@ import 'dart:typed_data';
 import 'dart:ui' as ui show Codec;
 import 'dart:ui';
 
-import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
@@ -33,56 +31,56 @@ class ImageSequence extends StatefulWidget {
 
   final String folderName;
 
-  ///  The file name for each image in your image sequence excluding the suffix. For example, if the images in your image sequence are named as
-  ///  'Frame_00000.png', 'Frame_00001.png', 'Frame_00002.png', 'Frame_00003.png' ...
-  ///  then the [fileName] should be 'Frame_'. This should be the same for all the images in your image sequence.
+  /// The file name for each image in your image sequence excluding the suffix. For example, if the images in your image sequence are named as
+  /// 'Frame_00000.png', 'Frame_00001.png', 'Frame_00002.png', 'Frame_00003.png' ...
+  /// then the [fileName] should be 'Frame_'. This should be the same for all the images in your image sequence.
   final String fileName;
 
-  ///  The suffix for the first image in your image sequence. For example, if the first image in your image sequence is named as
-  ///  'Frame_00001.png'
-  ///  then [suffixStart] should be 1.
+  /// The suffix for the first image in your image sequence. For example, if the first image in your image sequence is named as
+  /// 'Frame_00001.png'
+  /// then [suffixStart] should be 1.
   final int suffixStart;
 
-  ///  The suffix length for each image in your image sequence. Most software such as Adobe After Effects export image sequences with a suffix. For
-  ///  example, if the images in your image sequence are named as
-  ///  'Frame_00000.png', 'Frame_00001.png', 'Frame_00002.png', 'Frame_00003.png' ...
-  ///  then the [suffixCount] should be 5. This should be the same for all the images in your image sequence.
+  /// The suffix length for each image in your image sequence. Most software such as Adobe After Effects export image sequences with a suffix. For
+  /// example, if the images in your image sequence are named as
+  /// 'Frame_00000.png', 'Frame_00001.png', 'Frame_00002.png', 'Frame_00003.png' ...
+  /// then the [suffixCount] should be 5. This should be the same for all the images in your image sequence.
   final int suffixCount;
 
-  ///  The file format for each image in your image sequence. For example, if the images in your image sequence are named as
-  ///  'Frame_00000.png', 'Frame_00001.png', 'Frame_00002.png', 'Frame_00003.png' ...
-  ///  then the [fileFormat] should be 'png'. This should be the same for all the images in your image sequence.
+  /// The file format for each image in your image sequence. For example, if the images in your image sequence are named as
+  /// 'Frame_00000.png', 'Frame_00001.png', 'Frame_00002.png', 'Frame_00003.png' ...
+  /// then the [fileFormat] should be 'png'. This should be the same for all the images in your image sequence.
   final String fileFormat;
 
-  ///  The total number of images in your image sequence.
+  /// The total number of images in your image sequence.
   final double frameCount;
 
-  ///  The FPS for your image sequence. For example, if your [frameCount] is 60 and the animation is meant to run in 1 second, then your [fps] should
-  ///  be 60.
+  /// The FPS for your image sequence. For example, if your [frameCount] is 60 and the animation is meant to run in 1 second, then your [fps] should
+  /// be 60.
   final double fps;
 
-  ///  Use this value to determine whether your image sequence should loop or not. This will override [isBoomerang] if both are set to true.
+  /// Use this value to determine whether your image sequence should loop or not. This will override [isBoomerang] if both are set to true.
   final bool isLooping;
 
-  ///  Use this value to determine whether your image sequence should boomerang or not.
+  /// Use this value to determine whether your image sequence should boomerang or not.
   final bool isBoomerang;
 
-  ///  Use this value to determine whether your image sequence should start playing immediately or not.
+  /// Use this value to determine whether your image sequence should start playing immediately or not.
   final bool isAutoPlay;
 
-  ///  Use this value to determine the color for your image sequence.
+  /// Use this value to determine the color for your image sequence.
   final Color color;
 
-  ///  The callback for when the [ImageSequenceState] is ready to start playing.
+  /// The callback for when the [ImageSequenceState] is ready to start playing.
   final ImageSequenceProcessCallback? onReadyToPlay;
 
-  ///  The callback for when the [ImageSequenceState] starts playing.
+  /// The callback for when the [ImageSequenceState] starts playing.
   final ImageSequenceProcessCallback? onStartPlaying;
 
-  ///  The callback for when the [ImageSequenceState] is playing. This callback is continuously through the entire process.
+  /// The callback for when the [ImageSequenceState] is playing. This callback is continuously through the entire process.
   final ImageSequenceProcessCallback? onPlaying;
 
-  ///  The callback for when the [ImageSequenceState] finishes playing.
+  /// The callback for when the [ImageSequenceState] finishes playing.
   final ImageSequenceProcessCallback? onFinishPlaying;
 
   @override
@@ -111,7 +109,7 @@ class ImageSequenceState extends State<ImageSequence>
   Color? color;
   bool colorChanged = false;
 
-  ///  The [AnimationController] used to control the image sequence.
+  /// The [AnimationController] used to control the image sequence.
   late AnimationController animationController;
   final ValueNotifier<int> changeNotifier = ValueNotifier<int>(0);
   int previousFrame = 0;
@@ -146,10 +144,10 @@ class ImageSequenceState extends State<ImageSequence>
 
   int get fpsInMilliseconds => (1.0 / fps * 1000.0).floor();
 
-  ///  Use this value to get the total time of the animation in milliseconds.
+  /// Use this value to get the total time of the animation in milliseconds.
   double get totalTime => animationController.upperBound * fpsInMilliseconds;
 
-  ///  Use this value to get the current time of the animation in milliseconds.
+  /// Use this value to get the current time of the animation in milliseconds.
   double get currentTime => animationController.value * fpsInMilliseconds;
 
   void animationListener() {
@@ -182,7 +180,7 @@ class ImageSequenceState extends State<ImageSequence>
     super.dispose();
   }
 
-  ///  Use this function to set the value for [ImageSequence.isLooping] at runtime.
+  /// Use this function to set the value for [ImageSequence.isLooping] at runtime.
   void setIsLooping(bool isLooping) {
     this.isLooping = isLooping;
     if (this.isLooping) {
@@ -191,7 +189,7 @@ class ImageSequenceState extends State<ImageSequence>
     }
   }
 
-  ///  Use this function to set the value for [ImageSequence.isBoomerang] at runtime.
+  /// Use this function to set the value for [ImageSequence.isBoomerang] at runtime.
   void setIsBoomerang(bool isBoomerang) {
     this.isBoomerang = isBoomerang;
     if (this.isBoomerang) {
@@ -200,7 +198,7 @@ class ImageSequenceState extends State<ImageSequence>
     }
   }
 
-  ///  Use this function to set the value for [ImageSequence.color] at runtime.
+  /// Use this function to set the value for [ImageSequence.color] at runtime.
   void changeColor(Color color) {
     this.color = color;
     colorChanged = true;
@@ -231,7 +229,7 @@ class ImageSequenceState extends State<ImageSequence>
 
   void pause() => animationController.stop();
 
-  ///  Only use either value or percentage.
+  /// Only use either value or percentage.
   void skip(double value, {double percentage = -1.0}) {
     if (percentage != -1.0) {
       animationController.value = totalTime * percentage;
@@ -289,7 +287,7 @@ class ImageSequenceState extends State<ImageSequence>
   }
 }
 
-///  cache gif fetched image
+/// cache gif fetched image
 class GifCache {
   final Map<String, List<ImageInfo>> caches = <String, List<ImageInfo>>{};
 
@@ -307,7 +305,7 @@ class GifCache {
   }
 }
 
-///  Controller gif
+/// Controller gif
 class GifController extends AnimationController {
   GifController(
       {required TickerProvider vsync,
@@ -475,7 +473,7 @@ class _GifImageState extends State<GifImage> {
       provider.headers?.forEach((String name, String value) =>
           options.headers.addAll(<String, String>{name: value}));
       final ResponseModel result = await ExtendedDio.getInstance(
-              options: ExtendedOptions(options: options))
+              options: ExtendedDioOptions(options: options))
           .getHttp(provider.url);
       if (result.statusCode != 200) {
         showToast(result.statusMessage!);

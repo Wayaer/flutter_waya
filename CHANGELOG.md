@@ -2,6 +2,12 @@
 
 * Remove the default background color for `showBottomPopup`
 * Add positioned for `showToast` and Add the global `setToastPositioned()`
+* Change all `widgetMode` to `pushStyle` and Change all `WidgetMode` to `RoutePushStyle`
+* Add the `GlobalOptions()` class to set
+  all `ToastOptions` `WheelOptions` `BottomSheetOptions` `GeneralDialogOptions` `PickerWheelOptions` `ModalWindowsOptions`
+  configuration information
+* After modifying `showToast`, you may need to modify some of your own code
+* Add `ExtendedOverlay`
 
 ## 1.16.0
 
@@ -88,7 +94,7 @@
 
 ## 1.11.0
 
-* Change `PopupBase` to `PopupOptions`
+* Change `PopupBase` to ` PopupModalWindows`
 * Change `GlobalWidgetsApp` to `ExtendedWidgetsApp`
 * Change `OverlayScaffold` to `ExtendedScaffold`
 * Change `SliverAutoAppBar` to `ExtendedSliverAppBar`
@@ -135,7 +141,7 @@
 
 ## 1.9.15
 
-* `PopupOptions` add onWillPop and filter for `WillPopScope` And `BackdropFilter`
+* ` PopupModalWindows` add onWillPop and filter for `WillPopScope` And `BackdropFilter`
 
 ## 1.9.13
 
@@ -274,7 +280,7 @@
 
 ## 1.3.7
 
-* Simplifying some component parameters 【PopupSureCancel，PopupOptions】
+* Simplifying some component parameters 【 PopupDoubleChooseWindows， PopupModalWindows】
 * Modify utils partial method name
 
 ## 1.3.3
