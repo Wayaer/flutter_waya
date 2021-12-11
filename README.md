@@ -27,7 +27,7 @@ class _AppState extends State<_App> {
   @override
   Widget build(BuildContext context) {
     return ExtendedWidgetsApp(
-        title: 'Waya UI', home: _Home(), pushStle: RoutePushStyle.material);
+        title: 'Waya UI', home: _Home(), pushStyle: RoutePushStyle.material);
   }
 }
 
