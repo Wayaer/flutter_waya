@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 
 export 'src/ali_oss.dart';
 export 'src/des/des.dart';
@@ -14,10 +15,11 @@ export 'src/screen_fit.dart';
 
 void logDebug(dynamic msg) => debugPrint(msg.toString());
 
-void log(dynamic msg, {bool hasDottedLine = true}) {
+void log(dynamic msg, {bool? hasDottedLine}) {
+  var _hasDottedLine = hasDottedLine ?? GlobalOptions().logHasDottedLine;
   if (!(kDebugMode || kProfileMode)) return;
   final String message = msg.toString();
-  if (hasDottedLine) {
+  if (_hasDottedLine) {
     debugPrint(
         '┌------------------------------------------------------------------------------');
   }
@@ -41,26 +43,8 @@ void log(dynamic msg, {bool hasDottedLine = true}) {
       }
     }
   }
-  if (hasDottedLine) {
+  if (_hasDottedLine) {
     debugPrint(
         '└------------------------------------------------------------------------------');
   }
 }
-
-WidgetsBinding? widgetsBinding = WidgetsBinding.instance;
-SchedulerBinding? schedulerBinding = SchedulerBinding.instance;
-
-void addPostFrameCallback(FrameCallback duration) =>
-    widgetsBinding?.addPostFrameCallback(duration);
-
-void addObserver(WidgetsBindingObserver observer) =>
-    widgetsBinding?.addObserver(observer);
-
-void removeObserver(WidgetsBindingObserver observer) =>
-    widgetsBinding?.removeObserver(observer);
-
-void addPersistentFrameCallback(FrameCallback duration) =>
-    widgetsBinding?.addPersistentFrameCallback(duration);
-
-void addTimingsCallback(TimingsCallback callback) =>
-    widgetsBinding?.addTimingsCallback(callback);

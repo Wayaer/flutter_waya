@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 class ToastOptions {
@@ -256,6 +259,9 @@ class GlobalOptions {
 
   static GlobalOptions? _singleton;
 
+  WidgetsBinding? widgetsBinding = WidgetsBinding.instance;
+  SchedulerBinding? schedulerBinding = SchedulerBinding.instance;
+
   GlobalKey<NavigatorState> _globalNavigatorKey = GlobalKey<NavigatorState>();
 
   GlobalKey<NavigatorState> get globalNavigatorKey => _globalNavigatorKey;
@@ -351,4 +357,25 @@ class GlobalOptions {
   void setPickerWheelOptions(PickerWheelOptions options) {
     _pickerWheelOptions = options;
   }
+
+  bool _logHasDottedLine = true;
+
+  bool get logHasDottedLine => _logHasDottedLine;
+
+  void setLogDottedLine(bool has) => _logHasDottedLine = has;
 }
+
+void addPostFrameCallback(FrameCallback duration) =>
+    GlobalOptions().widgetsBinding?.addPostFrameCallback(duration);
+
+void addObserver(WidgetsBindingObserver observer) =>
+    GlobalOptions().widgetsBinding?.addObserver(observer);
+
+void removeObserver(WidgetsBindingObserver observer) =>
+    GlobalOptions().widgetsBinding?.removeObserver(observer);
+
+void addPersistentFrameCallback(FrameCallback duration) =>
+    GlobalOptions().widgetsBinding?.addPersistentFrameCallback(duration);
+
+void addTimingsCallback(TimingsCallback callback) =>
+    GlobalOptions().widgetsBinding?.addTimingsCallback(callback);

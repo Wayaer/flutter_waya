@@ -18,27 +18,31 @@ bool isCustomApp = false;
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  GlobalOptions().setGlobalPushMode(RoutePushStyle.ripple);
+  GlobalOptions globalOptions = GlobalOptions();
+
   void des() {
     const String str =
         'CfAmqOiIYz6NkH0Te32Uz6obXELPspz1pDj+oOUNNbsmptHP0Jwvdg==';
     const String key = 'a51d3484ad8445df9d9e7aa5e8';
-    log('des解密==>\n key = $key \n String = $str');
+    log('des解密==>\nkey = $key \nString = $str');
     final DES des = DES(DESEngine(), 'a51d3484ad8445df9d9e7aa5e8');
     final String? decoded = des.decodeBase64(str);
     log('des解密完成==> $decoded');
   }
 
-  GlobalOptions().setToastOptions(
+  globalOptions.setGlobalPushMode(RoutePushStyle.ripple);
+  globalOptions.setToastOptions(
       ToastOptions(positioned: Alignment.topCenter, duration: 0.5.seconds));
-  GlobalOptions().setBottomSheetOptions(
+  globalOptions.setBottomSheetOptions(
       const BottomSheetOptions(barrierColor: Colors.white10));
-  GlobalOptions().setGeneralDialogOptions(
+  globalOptions.setGeneralDialogOptions(
       const GeneralDialogOptions(fromStyle: PopupFromStyle.fromTop));
-  GlobalOptions().setWheelOptions(
+  globalOptions.setWheelOptions(
       const WheelOptions(useMagnifier: true, magnification: 1.5));
-  GlobalOptions().setPickerWheelOptions(
+  globalOptions.setPickerWheelOptions(
       const PickerWheelOptions(useMagnifier: true, magnification: 1.5));
+  globalOptions.setLogDottedLine(false);
+
   des();
   runApp(isCustomApp ? _CustomApp() : _App());
 }
