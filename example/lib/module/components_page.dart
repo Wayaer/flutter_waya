@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:waya/main.dart';
+import 'package:app/main.dart';
 
 class ComponentsPage extends StatelessWidget {
   const ComponentsPage({Key? key}) : super(key: key);

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:waya/main.dart';
+import 'package:app/main.dart';
 
 const List<String> _colors = <String>['红色', '黄色黄色', '蓝色'];
 

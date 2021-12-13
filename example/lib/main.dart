@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_curiosity/flutter_curiosity.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:waya/module/popup_windows_page.dart';
-import 'package:waya/module/button_page.dart';
-import 'package:waya/module/carousel_page.dart';
-import 'package:waya/module/components_page.dart';
-import 'package:waya/module/extension_page.dart';
-import 'package:waya/module/gesture_page.dart';
-import 'package:waya/module/json_parse_page.dart';
-import 'package:waya/module/pages.dart';
-import 'package:waya/module/progress_page.dart';
-import 'package:waya/module/refresh_page.dart';
-import 'package:waya/module/scroll_page.dart';
-import 'package:waya/module/universal_page.dart';
+import 'package:app/module/popup_windows_page.dart';
+import 'package:app/module/button_page.dart';
+import 'package:app/module/carousel_page.dart';
+import 'package:app/module/components_page.dart';
+import 'package:app/module/extension_page.dart';
+import 'package:app/module/gesture_page.dart';
+import 'package:app/module/json_parse_page.dart';
+import 'package:app/module/pages.dart';
+import 'package:app/module/progress_page.dart';
+import 'package:app/module/refresh_page.dart';
+import 'package:app/module/scroll_page.dart';
+import 'package:app/module/universal_page.dart';
 
 bool isCustomApp = false;
 

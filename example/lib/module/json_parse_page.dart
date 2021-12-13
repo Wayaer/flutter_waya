@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:waya/main.dart';
+import 'package:app/main.dart';
 
 class JsonParsePage extends StatelessWidget {
   const JsonParsePage({Key? key}) : super(key: key);

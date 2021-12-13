@@ -1,8 +1,10 @@
 ## 1.16.1
-
+* Modify `ExtendedOptions()` to `ExtendedDioOptions()`
+* Modify `PopupOptions()` to `PopupModalWindows()`, add `options`, use `ModalWindowsOptions()`
+* Modify `ToastType` to `ToastStyle`, `toastType` to style, add `options` in `showToast()` method
 * Remove the default background color for `showBottomPopup`
 * Add positioned for `showToast` and Add the global `setToastPositioned()`
-* Change all `widgetMode` to `pushStyle` and Change all `WidgetMode` to `RoutePushStyle`
+* Modify all `widgetMode` to `pushStyle` and Change all `WidgetMode` to `RoutePushStyle`
 * Add the `GlobalOptions()` class to set
   all `ToastOptions` `WheelOptions` `BottomSheetOptions` `GeneralDialogOptions` `PickerWheelOptions` `ModalWindowsOptions`
   configuration information

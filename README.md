@@ -96,3 +96,5 @@ class _AppState extends State<_App> {
 - `ScrollList()` 合并 `ListView()` 和 `GridView()` 并添加 下拉刷新 和 上拉加载 功能
 
 - `Universal()`中合多个官方组件功能 减少嵌套
+
+## [1.6.1迁移指南](https://github.com/Wayaer/flutter_waya/blob/main/CHANGELOG.md)
