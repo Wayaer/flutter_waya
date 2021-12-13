@@ -97,4 +97,6 @@ class _AppState extends State<_App> {
 
 - `Universal()`中合多个官方组件功能 减少嵌套
 
-## [1.6.1迁移指南](https://github.com/Wayaer/flutter_waya/blob/main/CHANGELOG.md)
+## 更新指南
+
+- [1.6.1 修改指南](https://github.com/Wayaer/flutter_waya/blob/main/CHANGELOG.md)
