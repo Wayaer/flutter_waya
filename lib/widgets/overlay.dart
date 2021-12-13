@@ -48,10 +48,14 @@ class ExtendedOverlay {
   Future<void> showToast(String message,
       {ToastOptions? options,
       ToastStyle? style,
+      Duration? duration,
       AlignmentGeometry? positioned,
       IconData? customIcon}) async {
-    var _toastOptions = (options ?? GlobalOptions().toastOptions)
-        .copyWith(style: style, positioned: positioned, customIcon: customIcon);
+    var _toastOptions = (options ?? GlobalOptions().toastOptions).copyWith(
+        style: style,
+        positioned: positioned,
+        customIcon: customIcon,
+        duration: duration);
     if (_haveToast) return;
     Widget toast = BText(message,
         color: _toastOptions.iconColor, maxLines: 5, fontSize: 14);

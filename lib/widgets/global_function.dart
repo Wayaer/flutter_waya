@@ -22,9 +22,11 @@ Future<void> showToast(String message,
         {ToastStyle? style,
         AlignmentGeometry? positioned,
         IconData? customIcon,
+        Duration? duration,
         ToastOptions? options}) =>
     ExtendedOverlay().showToast(message,
         options: options,
+        duration: duration,
         positioned: positioned,
         customIcon: customIcon,
         style: style);

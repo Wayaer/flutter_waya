@@ -1,4 +1,7 @@
-## 1.16.1
+## 1.16.2
+
+* Remove `setToastDuration()` `setGlobalPushMode()` `setAllToastIgnoringBackground()` methods,
+  please use the `GlobalOptions()` set up some global properties
 * Modify `ExtendedOptions()` to `ExtendedDioOptions()`
 * Modify `PopupOptions()` to `PopupModalWindows()`, add `options`, use `ModalWindowsOptions()`
 * Modify `ToastType` to `ToastStyle`, `toastType` to style, add `options` in `showToast()` method

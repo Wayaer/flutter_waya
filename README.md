@@ -99,4 +99,4 @@ class _AppState extends State<_App> {
 
 ## 更新指南
 
-- [1.6.1 修改指南](https://github.com/Wayaer/flutter_waya/blob/main/CHANGELOG.md)
+- [1.16.2 修改指南](https://github.com/Wayaer/flutter_waya/blob/main/CHANGELOG.md)
