@@ -33,8 +33,7 @@ void main() {
   globalOptions.setGlobalPushMode(RoutePushStyle.ripple);
   globalOptions.setToastOptions(
       ToastOptions(positioned: Alignment.topCenter, duration: 0.5.seconds));
-  globalOptions.setBottomSheetOptions(
-      const BottomSheetOptions(barrierColor: Colors.white10));
+  globalOptions.setBottomSheetOptions(const BottomSheetOptions());
   globalOptions.setGeneralDialogOptions(
       const GeneralDialogOptions(fromStyle: PopupFromStyle.fromTop));
   globalOptions.setWheelOptions(
@@ -59,6 +58,7 @@ class _CustomAppState extends State<_CustomApp> {
         debugShowCheckedModeBanner: false,
         navigatorKey: GlobalOptions().globalNavigatorKey,
         title: 'Waya UI',
+        theme: ThemeData.light(),
         home: _Home());
   }
 }

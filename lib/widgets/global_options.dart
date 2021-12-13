@@ -196,7 +196,7 @@ class BottomSheetOptions {
     this.isScrollControlled = true,
   });
 
-  /// 内容背景色
+  /// BottomSheet 背景色
   final Color? backgroundColor;
 
   /// 底部阴影
@@ -206,7 +206,7 @@ class BottomSheetOptions {
 
   final Clip? clipBehavior;
 
-  /// 整个背景弹窗背景色 默认半透明灰
+  /// 整个背景弹窗背景色 默认[Colors.black54]
   final Color? barrierColor;
 
   /// [isDismissible] = true 背景点击可关闭弹窗 默认 [true]

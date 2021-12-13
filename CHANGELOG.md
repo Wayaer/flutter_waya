@@ -1,5 +1,9 @@
 ## 1.16.2
 
+* Add `ExtendedOverlay()`,
+* Modify `showDialogSureCancel()` to `showDoubleChooseWindows()`,
+* Modify `PopupFromType` to `PopupFromStyle`,
+* Modify `PopupSureCancel()` to `PopupDoubleChooseWindows()`,
 * Remove `setToastDuration()` `setGlobalPushMode()` `setAllToastIgnoringBackground()` methods,
   please use the `GlobalOptions()` set up some global properties
 * Modify `ExtendedOptions()` to `ExtendedDioOptions()`
