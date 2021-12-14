@@ -51,17 +51,17 @@ class ExtendedOverlay {
       Duration? duration,
       AlignmentGeometry? positioned,
       IconData? customIcon}) async {
-    var _toastOptions = (options ?? GlobalOptions().toastOptions).copyWith(
+    var _options = (options ?? GlobalOptions().toastOptions).copyWith(
         style: style,
         positioned: positioned,
         customIcon: customIcon,
         duration: duration);
     if (_haveToast) return;
-    Widget toast = BText(message,
-        color: _toastOptions.iconColor, maxLines: 5, fontSize: 14);
-    if (_toastOptions.style != null) {
+    Widget toast =
+        BText(message, color: _options.iconColor, maxLines: 5, fontSize: 14);
+    if (_options.style != null) {
       IconData icon;
-      switch (_toastOptions.style!) {
+      switch (_options.style!) {
         case ToastStyle.success:
           icon = ConstIcon.success;
           break;
@@ -78,36 +78,38 @@ class ExtendedOverlay {
           icon = ConstIcon.smile;
           break;
         case ToastStyle.custom:
-          assert(_toastOptions.customIcon != null);
-          icon = _toastOptions.customIcon ?? ConstIcon.success;
+          assert(_options.customIcon != null);
+          icon = _options.customIcon ?? ConstIcon.success;
           break;
       }
       toast = IconBox(
           icon: icon,
-          direction: _toastOptions.direction,
-          spacing: _toastOptions.spacing,
-          size: _toastOptions.iconSize,
-          color: _toastOptions.iconColor,
+          direction: _options.direction,
+          spacing: _options.spacing,
+          size: _options.iconSize,
+          color: _options.iconColor,
           title: toast);
     }
     final ExtendedOverlayEntry? entry = showOverlay(
         PopupModalWindows(
-            options: (_toastOptions.modalWindowsOptions ??
+            options: (_options.modalWindowsOptions ??
                     GlobalOptions().modalWindowsOptions)
                 .copyWith(
-                    ignoring: _toastOptions.ignoring,
-                    alignment: _toastOptions.positioned),
-            child: Container(
-                margin: _toastOptions.margin,
-                decoration: _toastOptions.decoration ??
+                    absorbing: _options.absorbing,
+                    ignoring: _options.ignoring,
+                    alignment: _options.positioned),
+            child: Universal(
+                onTap: _options.onTap,
+                margin: _options.margin,
+                decoration: _options.decoration ??
                     BoxDecoration(
-                        color: _toastOptions.backgroundColor,
+                        color: _options.backgroundColor,
                         borderRadius: BorderRadius.circular(5)),
-                padding: _toastOptions.padding,
+                padding: _options.padding,
                 child: toast)),
         autoOff: true);
     _haveToast = true;
-    await (_toastOptions.duration).delayed<dynamic>();
+    await (_options.duration).delayed<dynamic>();
     closeOverlay(entry: entry);
     _haveToast = false;
   }

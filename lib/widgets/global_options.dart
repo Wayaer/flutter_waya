@@ -5,23 +5,23 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 class ToastOptions {
-  const ToastOptions(
-      {this.backgroundColor = const Color(0xCC000000),
-      this.iconColor = const Color(0xFFFFFFFF),
-      this.decoration,
-      this.onTap,
-      this.textStyle,
-      this.duration = const Duration(milliseconds: 1500),
-      this.positioned = Alignment.center,
-      this.ignoring = true,
-      this.style,
-      this.customIcon,
-      this.iconSize = 30,
-      this.spacing = 10,
-      this.padding = const EdgeInsets.all(10),
-      this.margin = const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-      this.direction = Axis.vertical,
-      this.modalWindowsOptions});
+  const ToastOptions({this.backgroundColor = const Color(0xCC000000),
+    this.iconColor = const Color(0xFFFFFFFF),
+    this.decoration,
+    this.onTap,
+    this.textStyle,
+    this.duration = const Duration(milliseconds: 1500),
+    this.positioned = Alignment.center,
+    this.ignoring = false,
+    this.absorbing = false,
+    this.style,
+    this.customIcon,
+    this.iconSize = 30,
+    this.spacing = 10,
+    this.padding = const EdgeInsets.all(10),
+    this.margin = const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+    this.direction = Axis.vertical,
+    this.modalWindowsOptions});
 
   /// 背景色
   final Color? backgroundColor;
@@ -43,8 +43,13 @@ class ToastOptions {
   /// Toast 定位
   final AlignmentGeometry positioned;
 
-  /// toast 是否忽略背景点击事件
+  /// toast 是否忽略子组件点击事件响应背景点击事件 默认 false
+  /// true [onTap] 和 [modalWindowsOptions.onTap] 都会失效
   final bool ignoring;
+
+  /// 是否吸收子组件的点击事件且不响应背景点击事件 默认 false
+  /// [onTap] != null 时  无效
+  final bool absorbing;
 
   /// icon style
   /// 如果使用ToastStyle.custom  请设置 customIcon
@@ -70,6 +75,7 @@ class ToastOptions {
     ToastStyle? style,
     AlignmentGeometry? positioned,
     bool? ignoring,
+    bool? absorbing,
     IconData? customIcon,
     Color? backgroundColor,
     EdgeInsetsGeometry? margin,
@@ -90,6 +96,7 @@ class ToastOptions {
           positioned: positioned ?? this.positioned,
           customIcon: customIcon ?? this.customIcon,
           ignoring: ignoring ?? this.ignoring,
+          absorbing: ignoring ?? this.absorbing,
           backgroundColor: backgroundColor ?? this.backgroundColor,
           margin: margin ?? this.margin,
           padding: padding ?? this.padding,

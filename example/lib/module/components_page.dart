@@ -113,7 +113,14 @@ class ComponentsPage extends StatelessWidget {
                         alignment.toString().split('.')[1], onTap: () async {
                       showToast(alignment.toString(),
                           positioned: alignment,
-                          customIcon: Icons.ac_unit_sharp);
+                          customIcon: Icons.ac_unit_sharp,
+                          options: ToastOptions(onTap: () {
+                            log('点击了Toast');
+                          }, modalWindowsOptions: ModalWindowsOptions(
+                            onTap: () {
+                              log('点击了背景');
+                            },
+                          )));
                     }))),
             const Partition('CounterAnimation'),
 

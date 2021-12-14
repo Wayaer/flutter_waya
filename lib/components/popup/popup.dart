@@ -13,6 +13,7 @@ class ModalWindowsOptions {
       this.gaussian = false,
       this.addMaterial = false,
       this.ignoring = false,
+      this.absorbing = false,
       this.fuzzyDegree = 4,
       this.mainAxisSize = MainAxisSize.min,
       this.color,
@@ -28,13 +29,21 @@ class ModalWindowsOptions {
 
   /// 背景点击事件
   final GestureTapCallback? onTap;
+
+  /// HitTestBehavior.opaque 自己处理事件
+  /// HitTestBehavior.deferToChild child处理事件
+  /// HitTestBehavior.translucent 自己和child都可以接收事件
   final HitTestBehavior behavior;
 
   /// 背景色
   final Color? color;
 
-  /// 是否忽略点击子组件点击事件 默认 false
+  /// 是否忽略子组件点击事件响应背景点击事件 默认 false
   final bool ignoring;
+
+  /// 是否吸收子组件的点击事件且不响应背景点击事件 默认 false
+  /// [onTap] != null 时  无效
+  final bool absorbing;
 
   /// 是否添加Material Widget 部分组件需要基于Material
   final bool addMaterial;
@@ -76,6 +85,7 @@ class ModalWindowsOptions {
     HitTestBehavior? behavior,
     Color? color,
     bool? ignoring,
+    bool? absorbing,
     bool? addMaterial,
     ImageFilter? filter,
     bool? gaussian,
@@ -97,6 +107,7 @@ class ModalWindowsOptions {
           behavior: behavior ?? this.behavior,
           color: color ?? this.color,
           ignoring: ignoring ?? this.ignoring,
+          absorbing: absorbing ?? this.absorbing,
           addMaterial: addMaterial ?? this.addMaterial,
           filter: filter ?? this.filter,
           gaussian: gaussian ?? this.gaussian,
@@ -144,7 +155,11 @@ class PopupModalWindows extends StatelessWidget {
           child: MediaQuery(
               data: MediaQueryData.fromWindow(window), child: child));
     }
-    if (options.ignoring) child = IgnorePointer(child: child);
+    if (options.ignoring) {
+      child = IgnorePointer(child: child);
+    } else if (options.onTap == null && options.absorbing) {
+      child = AbsorbPointer(child: child);
+    }
     if (onWillPop != null) WillPopScope(child: child, onWillPop: onWillPop);
     return child;
   }
@@ -231,12 +246,9 @@ class PopupDoubleChooseWindows extends StatelessWidget {
     final List<Widget> widgets = <Widget>[];
     widgets.add(content);
     if (left != null && right != null) widgets.add(doubleChoose);
-    var _options = options;
-    if (_options == null) {
-      _options = GlobalOptions().modalWindowsOptions;
-      if (_options.left == null) _options.copyWith(left: 30);
-      if (_options.right == null) _options.copyWith(right: 30);
-    }
+    var _options = options ?? GlobalOptions().modalWindowsOptions;
+    if (_options.left == null) _options.copyWith(left: 30);
+    if (_options.right == null) _options.copyWith(right: 30);
     return PopupModalWindows(
         options: _options,
         child: Universal(
