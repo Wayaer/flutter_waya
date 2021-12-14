@@ -21,7 +21,7 @@ class ModalWindowsOptions {
       this.onTap,
       this.mainAxisAlignment = MainAxisAlignment.start,
       this.crossAxisAlignment = CrossAxisAlignment.center,
-      this.direction = Axis.horizontal,
+      this.direction = Axis.vertical,
       this.isScroll = false,
       this.isStack = false,
       this.blendMode = BlendMode.srcOver,
