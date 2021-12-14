@@ -1,4 +1,4 @@
-## 1.16.6
+## 1.16.7
 
 * Fix some bugs about `Toast` and `ModalWindowsOptions()`
 

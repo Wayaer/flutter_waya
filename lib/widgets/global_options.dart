@@ -5,23 +5,24 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 class ToastOptions {
-  const ToastOptions({this.backgroundColor = const Color(0xCC000000),
-    this.iconColor = const Color(0xFFFFFFFF),
-    this.decoration,
-    this.onTap,
-    this.textStyle,
-    this.duration = const Duration(milliseconds: 1500),
-    this.positioned = Alignment.center,
-    this.ignoring = false,
-    this.absorbing = false,
-    this.style,
-    this.customIcon,
-    this.iconSize = 30,
-    this.spacing = 10,
-    this.padding = const EdgeInsets.all(10),
-    this.margin = const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-    this.direction = Axis.vertical,
-    this.modalWindowsOptions});
+  const ToastOptions(
+      {this.backgroundColor = const Color(0xCC000000),
+      this.iconColor = const Color(0xFFFFFFFF),
+      this.decoration,
+      this.onTap,
+      this.textStyle,
+      this.duration = const Duration(milliseconds: 1500),
+      this.positioned = Alignment.center,
+      this.ignoring = false,
+      this.absorbing = false,
+      this.style,
+      this.customIcon,
+      this.iconSize = 30,
+      this.spacing = 10,
+      this.padding = const EdgeInsets.all(10),
+      this.margin = const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+      this.direction = Axis.vertical,
+      this.modalWindowsOptions});
 
   /// 背景色
   final Color? backgroundColor;

@@ -178,7 +178,6 @@ Future<T?>? showDoubleChooseWindows<T>({
 
   /// 默认距离left=30  right=30
   double? width,
-
   EdgeInsetsGeometry? padding,
 
   /// 弹窗 decoration
