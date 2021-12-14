@@ -247,8 +247,8 @@ class PopupDoubleChooseWindows extends StatelessWidget {
     widgets.add(content);
     if (left != null && right != null) widgets.add(doubleChoose);
     var _options = options ?? GlobalOptions().modalWindowsOptions;
-    if (_options.left == null) _options.copyWith(left: 30);
-    if (_options.right == null) _options.copyWith(right: 30);
+    _options = _options.copyWith(
+        left: _options.left ?? 30, right: _options.right ?? 30);
     return PopupModalWindows(
         options: _options,
         child: Universal(
