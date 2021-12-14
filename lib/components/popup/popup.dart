@@ -5,10 +5,10 @@ import 'package:flutter_waya/flutter_waya.dart';
 
 class ModalWindowsOptions {
   const ModalWindowsOptions(
-      {this.top = 0,
-      this.left = 0,
-      this.right = 0,
-      this.bottom = 0,
+      {this.top,
+      this.left,
+      this.right,
+      this.bottom,
       this.alignment = Alignment.center,
       this.gaussian = false,
       this.addMaterial = false,
@@ -23,16 +23,17 @@ class ModalWindowsOptions {
       this.direction = Axis.horizontal,
       this.isScroll = false,
       this.isStack = false,
+      this.blendMode = BlendMode.srcOver,
       this.filter});
 
-  /// 背景事件
+  /// 背景点击事件
   final GestureTapCallback? onTap;
   final HitTestBehavior behavior;
 
   /// 背景色
   final Color? color;
 
-  /// false 底层不响应事件  true 底层响应事件
+  /// 是否忽略点击子组件点击事件 默认 false
   final bool ignoring;
 
   /// 是否添加Material Widget 部分组件需要基于Material
@@ -48,13 +49,14 @@ class ModalWindowsOptions {
   /// 模糊程度 0-100
   /// [gaussian] 必须为 true
   final double fuzzyDegree;
+  final BlendMode blendMode;
 
-  /// 位置
-  final double left;
-  final double top;
-  final double right;
-  final double bottom;
-  final AlignmentGeometry alignment;
+  /// 底层子组件定位
+  final double? left;
+  final double? top;
+  final double? right;
+  final double? bottom;
+  final AlignmentGeometry? alignment;
 
   //// [children] 不为null 时以下参数有效
   /// ****** Flex ******  ///
@@ -129,7 +131,7 @@ class PopupModalWindows extends StatelessWidget {
   /// Android 监听物理返回按键
   final WillPopCallback? onWillPop;
 
-  /// 弹框最低层配置
+  /// 弹框最底层配置
   final ModalWindowsOptions options;
 
   @override
@@ -148,6 +150,7 @@ class PopupModalWindows extends StatelessWidget {
   }
 
   Widget backdropFilter(Widget child) => BackdropFilter(
+      blendMode: options.blendMode,
       filter: options.filter ??
           ImageFilter.blur(
               sigmaX: options.fuzzyDegree, sigmaY: options.fuzzyDegree),
@@ -158,8 +161,11 @@ class PopupModalWindows extends StatelessWidget {
       onTap: options.onTap,
       behavior: options.behavior,
       alignment: options.alignment,
-      padding: EdgeInsets.fromLTRB(
-          options.left, options.top, options.right, options.bottom),
+      left: options.isStack ? options.left : null,
+      top: options.isStack ? options.top : null,
+      right: options.isStack ? options.right : null,
+      bottom: options.isStack ? options.bottom : null,
+      padding: getEdgeInsets,
       child: child,
       direction: options.direction,
       isScroll: options.isScroll,
@@ -168,13 +174,25 @@ class PopupModalWindows extends StatelessWidget {
       mainAxisAlignment: options.mainAxisAlignment,
       crossAxisAlignment: options.crossAxisAlignment,
       children: children);
+
+  EdgeInsets? get getEdgeInsets {
+    if (options.isStack == false &&
+        (options.left != null ||
+            options.top != null ||
+            options.right != null ||
+            options.bottom != null)) {
+      return EdgeInsets.fromLTRB(options.left ?? 0, options.top ?? 0,
+          options.right ?? 0, options.bottom ?? 0);
+    }
+    return null;
+  }
 }
 
 class PopupDoubleChooseWindows extends StatelessWidget {
   const PopupDoubleChooseWindows({
     Key? key,
     this.backgroundColor,
-    this.width = 300,
+    this.width,
     this.height,
     required this.content,
     this.padding,
@@ -199,13 +217,13 @@ class PopupDoubleChooseWindows extends StatelessWidget {
   /// 右边按钮
   final Widget? right;
 
-  final double width;
+  final double? width;
   final double? height;
 
   /// 弹框样式
   final Decoration? decoration;
 
-  /// 低层模态框配置
+  /// 底层模态框配置
   final ModalWindowsOptions? options;
 
   @override
@@ -213,8 +231,14 @@ class PopupDoubleChooseWindows extends StatelessWidget {
     final List<Widget> widgets = <Widget>[];
     widgets.add(content);
     if (left != null && right != null) widgets.add(doubleChoose);
+    var _options = options;
+    if (_options == null) {
+      _options = GlobalOptions().modalWindowsOptions;
+      if (_options.left == null) _options.copyWith(left: 30);
+      if (_options.right == null) _options.copyWith(right: 30);
+    }
     return PopupModalWindows(
-        options: options,
+        options: _options,
         child: Universal(
             onTap: () {},
             width: width,
@@ -276,7 +300,7 @@ class PopupLoadingWindows extends StatelessWidget {
   /// 通常使用自定义的
   final Widget? custom;
 
-  /// 低层模态框配置
+  /// 底层模态框配置
   final ModalWindowsOptions? options;
 
   @override

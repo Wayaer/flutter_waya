@@ -92,10 +92,11 @@ class ExtendedOverlay {
     }
     final ExtendedOverlayEntry? entry = showOverlay(
         PopupModalWindows(
-            options: GlobalOptions().modalWindowsOptions.copyWith(
-                ignoring: _toastOptions.ignoring,
-                alignment: _toastOptions.positioned,
-                onTap: () {}),
+            options: (_toastOptions.modalWindowsOptions ??
+                    GlobalOptions().modalWindowsOptions)
+                .copyWith(
+                    ignoring: _toastOptions.ignoring,
+                    alignment: _toastOptions.positioned),
             child: Container(
                 margin: _toastOptions.margin,
                 decoration: _toastOptions.decoration ??
@@ -148,7 +149,7 @@ ExtendedOverlayEntry? showLoading({
   /// 通常使用自定义的
   Widget? custom,
 
-  /// 低层模态框配置
+  /// 底层模态框配置
   ModalWindowsOptions? options,
 
   /// 官方 ProgressIndicator 底部加个组件

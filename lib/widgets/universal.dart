@@ -538,9 +538,9 @@ class Universal extends StatelessWidget {
       current = paddingWidget(current);
     }
 
-    if (alignment != null || widthFactor != null || heightFactor != null) {
+    if (alignment != null) {
       current = Align(
-          alignment: alignment ?? Alignment.center,
+          alignment: alignment!,
           widthFactor: widthFactor,
           heightFactor: heightFactor,
           child: current);

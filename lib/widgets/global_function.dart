@@ -173,9 +173,12 @@ Future<T?>? showDoubleChooseWindows<T>({
   /// 弹窗背景色
   Color? backgroundColor,
 
-  /// 高度不建议设置
+  /// 不建议设置 高度
   double? height,
-  double width = 300,
+
+  /// 默认距离left=30  right=30
+  double? width,
+
   EdgeInsetsGeometry? padding,
 
   /// 弹窗 decoration
@@ -187,7 +190,7 @@ Future<T?>? showDoubleChooseWindows<T>({
   /// GeneralDialog 配置 [isOverlay]=false 有效
   GeneralDialogOptions? options,
 
-  /// 低层modal配置
+  /// 底层modal配置
   ModalWindowsOptions? modelOptions,
 }) {
   final PopupDoubleChooseWindows widget = PopupDoubleChooseWindows(

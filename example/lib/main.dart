@@ -140,7 +140,7 @@ class AppBarText extends AppBar {
       : super(
             key: key,
             elevation: 0,
-            systemOverlayStyle: const SystemUiOverlayStyleDark(),
+            systemOverlayStyle: const SystemUiOverlayStyleLight(),
             title: BText(text, fontSize: 18, fontWeight: FontWeight.bold),
             centerTitle: true);
 }

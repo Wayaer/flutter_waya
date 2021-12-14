@@ -3,7 +3,6 @@
 
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="Waya">
         <activity
@@ -25,7 +24,7 @@
 
             <meta-data
                 android:name="io.flutter.embedding.android.NormalTheme"
-                android:resource="@style/LaunchThemeBlack" />
+                android:resource="@style/NormalTheme" />
         </activity>
         <meta-data
             android:name="flutterEmbedding"

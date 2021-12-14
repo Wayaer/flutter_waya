@@ -1,3 +1,7 @@
+## 1.16.3
+
+* Fix some bugs about `ModalWindowsOptions()`
+
 ## 1.16.2
 
 * Add `ExtendedOverlay()`,

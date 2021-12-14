@@ -20,7 +20,8 @@ class ToastOptions {
       this.spacing = 10,
       this.padding = const EdgeInsets.all(10),
       this.margin = const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-      this.direction = Axis.vertical});
+      this.direction = Axis.vertical,
+      this.modalWindowsOptions});
 
   /// 背景色
   final Color? backgroundColor;
@@ -62,6 +63,9 @@ class ToastOptions {
 
   final Axis direction;
 
+  /// 全局Toast的 modalWindowsOptions
+  final ModalWindowsOptions? modalWindowsOptions;
+
   ToastOptions copyWith({
     ToastStyle? style,
     AlignmentGeometry? positioned,
@@ -78,8 +82,10 @@ class ToastOptions {
     double? iconSize,
     double? spacing,
     Axis? direction,
+    ModalWindowsOptions? modalWindowsOptions,
   }) =>
       ToastOptions(
+          modalWindowsOptions: modalWindowsOptions ?? this.modalWindowsOptions,
           style: style ?? this.style,
           positioned: positioned ?? this.positioned,
           customIcon: customIcon ?? this.customIcon,
