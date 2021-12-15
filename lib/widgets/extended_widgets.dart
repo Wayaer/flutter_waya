@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 enum RoutePushStyle {
@@ -368,6 +369,7 @@ class ExtendedScaffold extends StatelessWidget {
     this.refreshConfig,
     this.restorationId,
     this.backgroundColor,
+    this.systemOverlayStyle,
   }) : super(key: key);
 
   /// 相当于给[body] 套用 [Column]、[Row]、[Stack]
@@ -404,6 +406,9 @@ class ExtendedScaffold extends StatelessWidget {
   final RefreshConfig? refreshConfig;
 
   final bool useSingleChildScrollView;
+
+  /// 在不设置AppBar的时候 修改状态栏颜色
+  final SystemUiOverlayStyle? systemOverlayStyle;
 
   /// Scaffold相关属性
   final Widget? body;
@@ -493,6 +498,7 @@ class ExtendedScaffold extends StatelessWidget {
       expand: true,
       refreshConfig: refreshConfig,
       margin: margin,
+      systemOverlayStyle: systemOverlayStyle,
       useSingleChildScrollView: useSingleChildScrollView,
       padding: padding,
       isScroll: isScroll,

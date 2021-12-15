@@ -1,5 +1,6 @@
 ## 1.16.7
 
+* Add `systemOverlayStyle` for `ExtendedScaffold()`
 * Fix some bugs about `Toast` and `ModalWindowsOptions()`
 
 ## 1.16.2
