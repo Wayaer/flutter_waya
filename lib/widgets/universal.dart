@@ -59,6 +59,7 @@ class Universal extends StatelessWidget {
     this.wrapCrossAlignment = WrapCrossAlignment.start,
     this.verticalDirection = VerticalDirection.down,
     this.direction = Axis.vertical,
+    this.scrollDirection,
     this.behavior = HitTestBehavior.opaque,
     this.borderRadius = BorderRadius.zero,
     this.color,
@@ -284,6 +285,7 @@ class Universal extends StatelessWidget {
   /// ****** [SingleChildScrollView] ****** ///
   final ScrollPhysics? physics;
   final ScrollController? scrollController;
+  final Axis? scrollDirection;
   final bool reverse;
   final bool? primary;
 
@@ -783,7 +785,7 @@ class Universal extends StatelessWidget {
       primary: primary,
       dragStartBehavior: dragStartBehavior,
       controller: scrollController,
-      scrollDirection: direction,
+      scrollDirection: scrollDirection ?? direction,
       clipBehavior: clipBehavior ?? Clip.hardEdge,
       child: current);
 
@@ -794,7 +796,7 @@ class Universal extends StatelessWidget {
       noScrollBehavior: noScrollBehavior,
       reverse: reverse,
       primary: primary,
-      scrollDirection: direction,
+      scrollDirection: scrollDirection ?? direction,
       refreshConfig: refreshConfig);
 
   Widget flexWidget(List<Widget> children) => Flex(
