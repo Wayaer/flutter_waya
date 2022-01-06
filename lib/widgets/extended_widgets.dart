@@ -313,7 +313,7 @@ class ExtendedScaffold extends StatelessWidget {
     this.safeLeft = false,
     this.safeTop = false,
     this.safeRight = false,
-    this.safeBottom = true,
+    this.safeBottom = false,
     this.isStack = false,
     this.isScroll = false,
     this.onWillPopOverlayClose = false,

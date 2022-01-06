@@ -615,10 +615,14 @@ class Universal extends StatelessWidget {
     if (systemOverlayStyle != null) current = annotatedRegionWidget(current);
     if (offstage) current = offstageWidget(current);
     if (!visible) current = visibilityWidget(current);
-    if (safeLeft == true ||
-        safeTop == true ||
-        safeRight == true ||
-        safeBottom == true) current = SafeArea(child: current);
+    if (safeLeft || safeTop || safeRight || safeBottom) {
+      current = SafeArea(
+          left: safeLeft,
+          top: safeTop,
+          right: safeRight,
+          bottom: safeBottom,
+          child: current);
+    }
     return current;
   }
 
