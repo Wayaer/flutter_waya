@@ -531,11 +531,11 @@ class ListEntry extends StatelessWidget {
         children: children);
   }
 
-  Decoration? get defaultDecoration => color != null
+  Decoration? get defaultDecoration => color != null || underlineColor != null
       ? BoxDecoration(
           color: color,
           border: underlineColor != null
-              ? Border(bottom: BorderSide(color: underlineColor!))
+              ? Border(bottom: BorderSide(color: underlineColor!, width: 0.8))
               : null)
       : null;
 
