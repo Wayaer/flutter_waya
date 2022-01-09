@@ -12,12 +12,14 @@ List<BoxShadow> getBaseBoxShadow(Color color, {double radius = 0.05}) =>
 
 /// 暂无数据
 class PlaceholderChild extends StatelessWidget {
-  const PlaceholderChild({Key? key, this.margin = const EdgeInsets.all(100)})
+  const PlaceholderChild(
+      {Key? key, this.padding = const EdgeInsets.all(100), this.child})
       : super(key: key);
 
-  final EdgeInsetsGeometry margin;
+  final EdgeInsetsGeometry padding;
+  final Widget? child;
 
   @override
-  Widget build(BuildContext context) =>
-      Container(margin: margin, child: const Center(child: BText('暂无数据')));
+  Widget build(BuildContext context) => Padding(
+      padding: padding, child: Center(child: child ?? const BText('暂无数据')));
 }

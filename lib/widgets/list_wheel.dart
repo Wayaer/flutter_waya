@@ -109,13 +109,13 @@ class ListWheel extends StatefulWidget {
     this.onScrollStart,
     this.onScrollUpdate,
     this.options,
-  })  : assert(_checkType(childDelegateType, children, itemBuilder, itemCount)),
+  })
+      : assert(_checkType(childDelegateType, children, itemBuilder, itemCount)),
         super(key: key) {
     if (childDelegateType == ListWheelChildDelegateType.builder) {}
   }
 
-  static bool _checkType(
-      ListWheelChildDelegateType childDelegateType,
+  static bool _checkType(ListWheelChildDelegateType childDelegateType,
       List<Widget>? children,
       IndexedWidgetBuilder? itemBuilder,
       int? itemCount) {
@@ -125,7 +125,7 @@ class ListWheel extends StatefulWidget {
       return children != null;
     } else {
       assert(itemCount != null && itemBuilder != null,
-          'childDelegateType default is "ListWheelChildDelegateType.builder", The necessary conditions must be passed');
+      'childDelegateType default is "ListWheelChildDelegateType.builder", The necessary conditions must be passed');
       return itemCount != null && itemBuilder != null;
     }
   }
@@ -141,7 +141,8 @@ class ListWheel extends StatefulWidget {
     this.onScrollStart,
     this.onScrollUpdate,
     this.options,
-  })  : assert(itemBuilder != null && itemCount != null),
+  })
+      : assert(itemBuilder != null && itemCount != null),
         childDelegateType = ListWheelChildDelegateType.builder,
         children = null,
         super(key: key);
@@ -156,7 +157,8 @@ class ListWheel extends StatefulWidget {
     this.onScrollStart,
     this.onScrollUpdate,
     this.options,
-  })  : assert(children != null),
+  })
+      : assert(children != null),
         childDelegateType = ListWheelChildDelegateType.list,
         itemBuilder = null,
         itemCount = null,
@@ -172,7 +174,8 @@ class ListWheel extends StatefulWidget {
     this.onScrollStart,
     this.onScrollUpdate,
     this.options,
-  })  : assert(children != null),
+  })
+      : assert(children != null),
         childDelegateType = ListWheelChildDelegateType.looping,
         itemBuilder = null,
         itemCount = null,
@@ -244,30 +247,30 @@ class _ListWheelState extends State<ListWheel> {
     if (options.isCupertino) {
       child = widget.childDelegateType == ListWheelChildDelegateType.builder
           ? CupertinoPicker.builder(
-              scrollController: controller,
-              childCount: widget.itemCount,
-              itemBuilder: widget.itemBuilder!,
-              backgroundColor: options.backgroundColor,
-              itemExtent: options.itemExtent,
-              diameterRatio: options.diameterRatio,
-              onSelectedItemChanged: options.onChanged,
-              offAxisFraction: options.offAxisFraction,
-              useMagnifier: options.useMagnifier,
-              squeeze: options.squeeze,
-              magnification: options.magnification)
+          scrollController: controller,
+          childCount: widget.itemCount,
+          itemBuilder: widget.itemBuilder!,
+          backgroundColor: options.backgroundColor,
+          itemExtent: options.itemExtent,
+          diameterRatio: options.diameterRatio,
+          onSelectedItemChanged: options.onChanged,
+          offAxisFraction: options.offAxisFraction,
+          useMagnifier: options.useMagnifier,
+          squeeze: options.squeeze,
+          magnification: options.magnification)
           : CupertinoPicker(
-              scrollController: controller,
-              children: widget.children!,
-              backgroundColor: options.backgroundColor,
-              looping: widget.childDelegateType ==
-                  ListWheelChildDelegateType.looping,
-              itemExtent: options.itemExtent,
-              diameterRatio: options.diameterRatio,
-              onSelectedItemChanged: options.onChanged,
-              offAxisFraction: options.offAxisFraction,
-              useMagnifier: options.useMagnifier,
-              squeeze: options.squeeze,
-              magnification: options.magnification);
+          scrollController: controller,
+          children: widget.children!,
+          backgroundColor: options.backgroundColor,
+          looping: widget.childDelegateType ==
+              ListWheelChildDelegateType.looping,
+          itemExtent: options.itemExtent,
+          diameterRatio: options.diameterRatio,
+          onSelectedItemChanged: options.onChanged,
+          offAxisFraction: options.offAxisFraction,
+          useMagnifier: options.useMagnifier,
+          squeeze: options.squeeze,
+          magnification: options.magnification);
     } else {
       child = ListWheelScrollView.useDelegate(
           controller: controller,
@@ -288,7 +291,7 @@ class _ListWheelState extends State<ListWheel> {
     return NotificationListener<ScrollNotification>(
         child: child,
         onNotification: widget.onNotification ??
-            (ScrollNotification notification) {
+                (ScrollNotification notification) {
               if (notification is ScrollStartNotification &&
                   widget.onScrollStart != null) {
                 widget.onScrollStart!(controller.selectedItem);
@@ -311,18 +314,17 @@ class _ListWheelState extends State<ListWheel> {
 }
 
 class AutoScrollEntry extends StatefulWidget {
-  const AutoScrollEntry(
-      {Key? key,
-      this.duration = const Duration(seconds: 3),
-      this.animateDuration = const Duration(milliseconds: 500),
-      this.initialIndex = 0,
-      this.itemHeight,
-      this.maxItemCount,
-      this.itemWidth,
-      required this.children,
-      this.onChanged,
-      this.margin,
-      this.padding})
+  const AutoScrollEntry({Key? key,
+    this.duration = const Duration(seconds: 3),
+    this.animateDuration = const Duration(milliseconds: 500),
+    this.initialIndex = 0,
+    this.itemHeight,
+    this.maxItemCount,
+    this.itemWidth,
+    required this.children,
+    this.onChanged,
+    this.margin,
+    this.padding})
       : super(key: key);
 
   final int initialIndex;
@@ -420,35 +422,34 @@ class _AutoScrollEntryState extends State<AutoScrollEntry> {
 }
 
 class ListEntry extends StatelessWidget {
-  const ListEntry(
-      {Key? key,
-      this.isThreeLine = false,
-      this.enabled = true,
-      this.dense = true,
-      this.arrow = false,
-      this.inkWell = false,
-      this.titleText = '',
-      this.arrowSize = 15,
-      this.onTap,
-      this.heroTag,
-      this.onDoubleTap,
-      this.onLongPress,
-      this.title,
-      this.height,
-      this.padding,
-      this.margin,
-      this.decoration,
-      this.child,
-      this.color,
-      this.titleStyle,
-      this.underlineColor,
-      this.leading,
-      this.subtitle,
-      this.contentPadding,
-      this.selected,
-      this.prefix,
-      this.arrowColor,
-      this.arrowIcon})
+  const ListEntry({Key? key,
+    this.isThreeLine = false,
+    this.enabled = true,
+    this.dense = true,
+    this.arrow = false,
+    this.inkWell = false,
+    this.titleText = '',
+    this.arrowSize = 15,
+    this.onTap,
+    this.heroTag,
+    this.onDoubleTap,
+    this.onLongPress,
+    this.title,
+    this.height,
+    this.padding,
+    this.margin,
+    this.decoration,
+    this.child,
+    this.color,
+    this.titleStyle,
+    this.underlineColor,
+    this.leading,
+    this.subtitle,
+    this.contentPadding,
+    this.selected,
+    this.prefix,
+    this.arrowColor,
+    this.arrowIcon})
       : super(key: key);
 
   /// 单击事件
@@ -531,28 +532,30 @@ class ListEntry extends StatelessWidget {
         children: children);
   }
 
-  Decoration? get defaultDecoration => color != null || underlineColor != null
-      ? BoxDecoration(
+  Decoration? get defaultDecoration =>
+      color != null || underlineColor != null
+          ? BoxDecoration(
           color: color,
           border: underlineColor != null
               ? Border(bottom: BorderSide(color: underlineColor!, width: 0.8))
               : null)
-      : null;
+          : null;
 
   Widget get arrowWidget =>
       Icon(ConstIcon.arrowRight, size: arrowSize, color: arrowColor);
 
-  Widget get listTile => Expanded(
-      child: ListTile(
-          contentPadding: contentPadding,
-          title: hero(title ?? BText(titleText, style: titleStyle)),
-          subtitle: subtitle,
-          leading: leading,
-          trailing: child,
-          isThreeLine: isThreeLine,
-          dense: dense,
-          enabled: false,
-          selected: selected ?? false));
+  Widget get listTile =>
+      Expanded(
+          child: ListTile(
+              contentPadding: contentPadding,
+              title: hero(title ?? BText(titleText, style: titleStyle)),
+              subtitle: subtitle,
+              leading: leading,
+              trailing: child,
+              isThreeLine: isThreeLine,
+              dense: dense,
+              enabled: false,
+              selected: selected ?? false));
 
   Widget hero(Widget text) {
     if (heroTag != null) return Hero(tag: heroTag!, child: text);
