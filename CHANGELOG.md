@@ -1,3 +1,7 @@
+## 1.17.0
+
+* Add a waterfall flow function to the `ScrollList`
+
 ## 1.16.8
 
 * Fix some bugs

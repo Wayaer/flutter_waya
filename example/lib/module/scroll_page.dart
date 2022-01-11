@@ -1,6 +1,6 @@
+import 'package:app/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:app/main.dart';
 
 final List<Color> _colors = <Color>[
   ...Colors.accents,
@@ -15,7 +15,7 @@ class ScrollViewPage extends StatelessWidget {
     final ScrollController scrollController = ScrollController();
     return ExtendedScaffold(
         isScroll: true,
-        appBar: AppBarText('ScrollView Demo'),
+        appBar: AppBarText('ScrollView'),
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           const SizedBox(height: 20),
@@ -36,6 +36,9 @@ class ScrollViewPage extends StatelessWidget {
               onTap: () => push(_ScrollListBuilderPage(scrollController))),
           ElevatedText('ScrollList.separated',
               onTap: () => push(_ScrollListSeparatedPage(scrollController))),
+          ElevatedText('ScrollList.waterfallFlow',
+              onTap: () =>
+                  push(_ScrollListWaterfallFlowPage(scrollController))),
           ElevatedText('ScrollList.count',
               onTap: () => push(_ScrollListCountPage(scrollController))),
           ElevatedText('ScrollList.placeholder',
@@ -52,31 +55,80 @@ class ScrollViewPage extends StatelessWidget {
             flexibleSpaceTitle:
                 const Text('title', style: TextStyle(color: Colors.black)),
             background:
-                Container(height: kToolbarHeight * 2, color: Colors.green)),
+                Container(height: kToolbarHeight * 2, color: _colors[0])),
         ExtendedSliverAppBar(
             pinned: true,
             snap: true,
             floating: true,
-            backgroundColor: Colors.greenAccent,
+            backgroundColor: _colors[3],
             flexibleSpaceTitle:
                 const Text('第二个Title', style: TextStyle(color: Colors.black)),
-            background:
-                Container(height: kToolbarHeight, color: Colors.greenAccent)),
+            background: Container(height: kToolbarHeight, color: _colors[7])),
         ExtendedSliverPersistentHeader(
             pinned: true,
             floating: false,
             child: Container(
-                color: Colors.redAccent,
+                color: _colors[9],
                 alignment: Alignment.center,
                 child: const Text('ExtendedSliverPersistentHeader'))),
         ExtendedSliverPersistentHeader(
             pinned: true,
             floating: false,
             child: Container(
-                color: Colors.blueAccent,
+                color: _colors[13],
                 alignment: Alignment.center,
                 child: const Text('ExtendedSliverPersistentHeader'))),
       ];
+}
+
+class _ScrollListWaterfallFlowPage extends StatelessWidget {
+  const _ScrollListWaterfallFlowPage(this.scrollController, {Key? key})
+      : super(key: key);
+
+  final ScrollController scrollController;
+
+  @override
+  Widget build(BuildContext context) {
+    return ExtendedScaffold(
+        appBar: AppBarText('ScrollList.waterfall'),
+        body: ScrollList.waterfall(
+          mainAxisSpacing: 10,
+          crossAxisSpacing: 10,
+          maxCrossAxisExtent: 100,
+          header: SliverToBoxAdapter(
+              child: Container(
+            margin: const EdgeInsets.only(bottom: 10),
+            height: 100,
+            alignment: Alignment.center,
+            child: const Text('Header'),
+            color: Colors.grey.withOpacity(0.3),
+          )),
+          footer: SliverToBoxAdapter(
+              child: Container(
+            margin: const EdgeInsets.only(top: 10),
+            height: 100,
+            alignment: Alignment.center,
+            child: const Text('Footer'),
+            color: Colors.grey.withOpacity(0.3),
+          )),
+          padding: const EdgeInsets.all(10),
+          refreshConfig: RefreshConfig(onRefresh: () async {
+            await showToast('onRefresh');
+            await 2.seconds.delayed(() {
+              sendRefreshType(EasyRefreshType.refreshSuccess);
+            });
+          }, onLoading: () async {
+            await showToast('onLoading');
+            await 2.seconds.delayed(() {
+              sendRefreshType(EasyRefreshType.loadingSuccess);
+            });
+          }),
+          itemCount: [..._colors, ..._colors, ..._colors].length,
+          itemBuilder: (_, int index) => _Item(
+              index, [..._colors, ..._colors, ..._colors][index],
+              height: index.isEven ? 100 : 70, width: index.isEven ? 50 : 100),
+        ));
+  }
 }
 
 class _ScrollListSeparatedPage extends StatelessWidget {
@@ -88,7 +140,7 @@ class _ScrollListSeparatedPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ExtendedScaffold(
-        appBar: AppBarText('ScrollList.separated Demo'),
+        appBar: AppBarText('ScrollList.separated'),
         body: ScrollList.separated(
           header: SliverToBoxAdapter(
               child: Container(
@@ -139,7 +191,7 @@ class _ScrollListPlaceholderPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ExtendedScaffold(
-        appBar: AppBarText('ScrollList.builder Demo'),
+        appBar: AppBarText('ScrollList.builder'),
         body: ScrollList.builder(
             header: SliverToBoxAdapter(
                 child: Container(
@@ -171,7 +223,7 @@ class _ScrollListPlaceholderPage extends StatelessWidget {
             }),
             placeholder: const BText('没有数据', color: Colors.white).container(
                 alignment: Alignment.center,
-                color: _colors.last,
+                color: _colors[14],
                 padding: const EdgeInsets.symmetric(vertical: 10)),
             itemCount: 0,
             itemBuilder: (_, int index) =>
@@ -188,7 +240,7 @@ class _ScrollListBuilderPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ExtendedScaffold(
-        appBar: AppBarText('ScrollList.builder Demo'),
+        appBar: AppBarText('ScrollList.builder'),
         body: Column(children: <Widget>[
           Container(
               height: 100,
@@ -246,60 +298,144 @@ class _ScrollListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ExtendedScaffold(
-        appBar: AppBarText('ScrollList Demo'),
+        appBar: AppBarText('ScrollList'),
         body: ScrollList(
-          padding: const EdgeInsets.all(10),
-          header: SliverToBoxAdapter(
-              child: Container(
-            margin: const EdgeInsets.only(bottom: 10),
-            height: 100,
-            alignment: Alignment.center,
-            child: const Text('Header'),
-            color: Colors.grey.withOpacity(0.3),
-          )),
-          footer: SliverToBoxAdapter(
-              child: Container(
-            margin: const EdgeInsets.only(top: 10),
-            height: 100,
-            alignment: Alignment.center,
-            child: const Text('Footer'),
-            color: Colors.grey.withOpacity(0.3),
-          )),
-          refreshConfig: RefreshConfig(
-            onRefresh: () async {
-              showToast('onRefresh');
-              2.seconds.delayed(() {
-                sendRefreshType(EasyRefreshType.refreshSuccess);
-              });
-            },
-            onLoading: () async {
-              showToast('onLoading');
-              2.seconds.delayed(() {
-                sendRefreshType(EasyRefreshType.loadingSuccess);
-              });
-            },
-          ),
-          sliver: <SliverListGrid>[
-            SliverListGrid(
-                itemCount: _colors.length,
-                itemBuilder: (_, int index) =>
-                    _Item(index, _colors[index]).paddingOnly(bottom: 10)),
-            SliverListGrid(
-                itemCount: _colors.length,
-                maxCrossAxisExtent: 100,
-                mainAxisSpacing: 10,
-                crossAxisSpacing: 10,
-                itemBuilder: (_, int index) =>
-                    _Item(index, _colors[index]).paddingOnly(bottom: 10)),
-            SliverListGrid(
-                itemCount: _colors.length,
-                crossAxisCount: 6,
-                mainAxisSpacing: 10,
-                crossAxisSpacing: 10,
-                itemBuilder: (_, int index) =>
-                    _Item(index, _colors[index]).paddingOnly(bottom: 10)),
-          ],
-        ));
+            padding: const EdgeInsets.all(10),
+            header: SliverToBoxAdapter(
+                child: Container(
+              margin: const EdgeInsets.only(bottom: 10),
+              height: 100,
+              alignment: Alignment.center,
+              child: const Text('Header'),
+              color: Colors.grey.withOpacity(0.3),
+            )),
+            footer: SliverToBoxAdapter(
+                child: Container(
+              margin: const EdgeInsets.only(top: 10),
+              height: 100,
+              alignment: Alignment.center,
+              child: const Text('Footer'),
+              color: Colors.grey.withOpacity(0.3),
+            )),
+            refreshConfig: RefreshConfig(
+              onRefresh: () async {
+                showToast('onRefresh');
+                2.seconds.delayed(() {
+                  sendRefreshType(EasyRefreshType.refreshSuccess);
+                });
+              },
+              onLoading: () async {
+                showToast('onLoading');
+                2.seconds.delayed(() {
+                  sendRefreshType(EasyRefreshType.loadingSuccess);
+                });
+              },
+            ),
+            sliver: <Widget>[
+              SliverToBoxAdapter(
+                  child: Container(
+                      child: const BText('SliverListGrid builder',
+                          color: Colors.white),
+                      alignment: Alignment.center,
+                      color: _colors[14],
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      padding: const EdgeInsets.symmetric(vertical: 10))),
+              SliverListGrid(
+                  itemCount: _colors.length,
+                  itemBuilder: (_, int index) =>
+                      _Item(index, _colors[index]).paddingOnly(bottom: 10)),
+              SliverToBoxAdapter(
+                  child: Container(
+                      child: const BText('SliverWaterfallFlow.aligned',
+                          color: Colors.white),
+                      alignment: Alignment.center,
+                      color: _colors[14],
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      padding: const EdgeInsets.symmetric(vertical: 10))),
+              SliverWaterfallFlow.aligned(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 10,
+                  itemCount: _colors.length,
+                  itemBuilder: (_, int index) => _Item(index, _colors[index],
+                      height: index & 3 == 0 ? 200 : 40)),
+              SliverToBoxAdapter(
+                  child: Container(
+                      child: const BText('SliverListGrid Grid Builder',
+                          color: Colors.white),
+                      alignment: Alignment.center,
+                      color: _colors[14],
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      padding: const EdgeInsets.symmetric(vertical: 10))),
+              SliverListGrid(
+                  itemCount: _colors.length,
+                  crossAxisFlex: true,
+                  maxCrossAxisExtent: 100,
+                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 10,
+                  itemBuilder: (_, int index) =>
+                      _Item(index, _colors[index]).paddingOnly(bottom: 10)),
+              SliverToBoxAdapter(
+                  child: Container(
+                      child: const BText('SliverListGrid Grid Builder',
+                          color: Colors.white),
+                      alignment: Alignment.center,
+                      color: _colors[14],
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      padding: const EdgeInsets.symmetric(vertical: 10))),
+              SliverListGrid(
+                  itemCount: _colors.length,
+                  crossAxisCount: 6,
+                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 10,
+                  itemBuilder: (_, int index) =>
+                      _Item(index, _colors[index]).paddingOnly(bottom: 10)),
+              SliverToBoxAdapter(
+                  child: Container(
+                      child: const BText('SliverListGrid separatorBuilder',
+                          color: Colors.white),
+                      alignment: Alignment.center,
+                      color: _colors[14],
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      padding: const EdgeInsets.symmetric(vertical: 10))),
+              SliverListGrid(
+                  itemCount: _colors.length,
+                  separatorBuilder: (_, int index) =>
+                      Divider(color: _colors[index]),
+                  itemBuilder: (_, int index) => _Item(index, _colors[index])),
+              SliverToBoxAdapter(
+                  child: Container(
+                      child: const BText('SliverWaterfallFlow Children',
+                          color: Colors.white),
+                      alignment: Alignment.center,
+                      color: _colors[14],
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      padding: const EdgeInsets.symmetric(vertical: 10))),
+              SliverWaterfallFlow.count(
+                  crossAxisCount: 3,
+                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 10,
+                  children: _colors.builderEntry((entry) => _Item(
+                      entry.key, entry.value,
+                      height: entry.key.isEven ? 100 : 70,
+                      width: entry.key.isEven ? 50 : 100))),
+              SliverToBoxAdapter(
+                  child: Container(
+                      child: const BText('SliverWaterfallFlow Builder',
+                          color: Colors.white),
+                      alignment: Alignment.center,
+                      color: _colors[14],
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      padding: const EdgeInsets.symmetric(vertical: 10))),
+              SliverWaterfallFlow(
+                  crossAxisCount: 5,
+                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 10,
+                  itemCount: _colors.length,
+                  itemBuilder: (_, int index) => _Item(index, _colors[index],
+                      height: index.isEven ? 100 : 70,
+                      width: index.isEven ? 50 : 100)),
+            ]));
   }
 }
 
@@ -312,7 +448,7 @@ class _ScrollListCountPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ExtendedScaffold(
-        appBar: AppBarText('ScrollList.count Demo'),
+        appBar: AppBarText('ScrollList.count'),
         body: ScrollList.count(
             header: SliverToBoxAdapter(
                 child: Container(
@@ -367,23 +503,21 @@ class _RefreshScrollViewPage extends StatelessWidget {
             const SliverAppBar(
                 title: BText('RefreshScrollView', color: Colors.white)),
             SliverListGrid(
-              itemCount: _colors.length,
-              crossAxisFlex: true,
-              maxCrossAxisExtent: 30,
-              separatorBuilder: (_, int index) {
-                return Text('s' + index.toString());
-              },
-              itemBuilder: (_, int index) {
-                return _Item(index, _colors[index]);
-              },
-            ),
-            SliverListGrid(
-              crossAxisCount: 6,
-              mainAxisSpacing: 10,
-              crossAxisSpacing: 10,
-              children: _colors.builderEntry((MapEntry<int, Color> entry) =>
-                  _Item(entry.key, entry.value)),
-            ),
+                itemCount: _colors.length,
+                crossAxisFlex: true,
+                maxCrossAxisExtent: 30,
+                separatorBuilder: (_, int index) {
+                  return Text('s' + index.toString());
+                },
+                itemBuilder: (_, int index) {
+                  return _Item(index, _colors[index]);
+                }),
+            SliverListGrid.count(
+                crossAxisCount: 6,
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 10,
+                children: _colors.builderEntry((MapEntry<int, Color> entry) =>
+                    _Item(entry.key, entry.value))),
           ]));
 }
 
@@ -453,13 +587,16 @@ class _ExtendedScrollViewPage extends StatelessWidget {
 }
 
 class _Item extends StatelessWidget {
-  const _Item(this.index, this.color);
+  const _Item(this.index, this.color, {this.height = 80, this.width = 80});
 
   final int index;
   final Color color;
+  final double height;
+  final double width;
 
   @override
-  Widget build(BuildContext context) => Container(height: 80, color: color);
+  Widget build(BuildContext context) =>
+      Container(width: width, height: height, color: color);
 }
 
 class _DraggableScrollbar extends StatelessWidget {
@@ -497,6 +634,6 @@ class _DraggableScrollbar extends StatelessWidget {
     //     scrollbarStyle: ScrollbarStyle.arrows);
 
     return ExtendedScaffold(
-        appBar: AppBarText('DraggableScrollbar Demo'), body: scrollbar);
+        appBar: AppBarText('DraggableScrollbar'), body: scrollbar);
   }
 }

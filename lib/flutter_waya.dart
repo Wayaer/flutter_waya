@@ -4,6 +4,7 @@ export 'package:crypto/crypto.dart';
 export 'package:dio/dio.dart';
 export 'package:flutter_easyrefresh/easy_refresh.dart';
 export 'package:flutter_localizations/flutter_localizations.dart';
+export 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 export 'package:http_parser/http_parser.dart';
 
 export 'components/components.dart';

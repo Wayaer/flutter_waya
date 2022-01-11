@@ -2,6 +2,95 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
+export 'extended_scroll_view.dart';
+export 'list_view.dart';
+export 'sliver/sliver.dart';
+
+/// 可刷新的滚动组件
+/// 嵌套 sliver 家族组件
+class RefreshScrollView extends ScrollView {
+  RefreshScrollView({
+    this.refreshConfig,
+    bool? noScrollBehavior = false,
+    this.padding,
+    Key? key,
+    Axis? scrollDirection = Axis.vertical,
+    bool? reverse = false,
+    ScrollController? controller,
+    bool? primary,
+    ScrollPhysics? physics,
+    bool? shrinkWrap = false,
+    Key? center,
+    double anchor = 0.0,
+    double? cacheExtent,
+    this.slivers = const <Widget>[],
+    int? semanticChildCount,
+    DragStartBehavior? dragStartBehavior = DragStartBehavior.start,
+    ScrollViewKeyboardDismissBehavior? keyboardDismissBehavior =
+        ScrollViewKeyboardDismissBehavior.manual,
+    String? restorationId,
+    Clip? clipBehavior = Clip.hardEdge,
+    ScrollBehavior? scrollBehavior,
+  })  : noScrollBehavior = noScrollBehavior ?? false,
+        super(
+            key: key,
+            controller: controller,
+            scrollDirection: scrollDirection ?? Axis.vertical,
+            shrinkWrap: _shrinkWrap(shrinkWrap, physics),
+            reverse: reverse ?? false,
+            clipBehavior: clipBehavior ?? Clip.hardEdge,
+            dragStartBehavior: dragStartBehavior ?? DragStartBehavior.start,
+            cacheExtent: cacheExtent,
+            restorationId: restorationId,
+            physics: physics,
+            primary: primary,
+            center: center,
+            anchor: anchor,
+            scrollBehavior: scrollBehavior,
+            semanticChildCount: semanticChildCount,
+            keyboardDismissBehavior: keyboardDismissBehavior ??
+                ScrollViewKeyboardDismissBehavior.manual);
+
+  static bool _shrinkWrap(bool? shrinkWrap, ScrollPhysics? physics) {
+    if (physics == const NeverScrollableScrollPhysics()) return true;
+    return shrinkWrap ?? false;
+  }
+
+  final List<Widget> slivers;
+  final bool noScrollBehavior;
+  final EdgeInsetsGeometry? padding;
+  final RefreshConfig? refreshConfig;
+
+  @override
+  Widget build(BuildContext context) {
+    Widget widget = super.build(context);
+    if (refreshConfig != null) {
+      widget = EasyRefreshed(
+          slivers: buildSlivers(context),
+          scrollDirection: scrollDirection,
+          reverse: reverse,
+          scrollController: controller,
+          controller: refreshConfig!.controller,
+          onLoading: refreshConfig!.onLoading,
+          onRefresh: refreshConfig!.onRefresh,
+          header: refreshConfig!.header,
+          footer: refreshConfig!.footer,
+          primary: primary,
+          shrinkWrap: shrinkWrap,
+          cacheExtent: cacheExtent,
+          dragStartBehavior: dragStartBehavior);
+    }
+    if (padding != null) widget = Padding(padding: padding!, child: widget);
+    if (noScrollBehavior) {
+      widget = ScrollConfiguration(behavior: NoScrollBehavior(), child: widget);
+    }
+    return widget;
+  }
+
+  @override
+  List<Widget> buildSlivers(BuildContext context) => slivers;
+}
+
 void sendRefreshType([EasyRefreshType? refresh]) {
   EventBus().emit(_eventName, refresh ?? EasyRefreshType.refreshSuccess);
 }
@@ -28,24 +117,6 @@ class RefreshConfig {
   /// CustomFooter
   Footer? footer;
 }
-
-Header globalRefreshHeader = ClassicalHeader(
-    refreshText: '请尽情拉我',
-    refreshReadyText: '我要开始刷新了',
-    refreshingText: '我在拼命刷新中',
-    refreshedText: '我已经刷新完成了',
-    refreshFailedText: '我刷新失败了唉',
-    noMoreText: '没有更多了',
-    infoText: '现在时刻 : ' + DateTime.now().format(DateTimeDist.hourMinute));
-
-Footer globalRefreshFooter = ClassicalFooter(
-    loadText: '请尽情拉我',
-    loadReadyText: '我要准备加载了',
-    loadingText: '我在拼命加载中',
-    loadedText: '我已经加载完成了',
-    loadFailedText: '我加载失败了唉',
-    noMoreText: '没有更多了哦',
-    infoText: '现在时刻 : ' + DateTime.now().format(DateTimeDist.hourMinute));
 
 EasyRefreshController? _holdController;
 
@@ -185,8 +256,8 @@ class _EasyRefreshedState extends State<EasyRefreshed> {
         enableControlFinishRefresh: true,
         enableControlFinishLoad: true,
         controller: controller,
-        header: widget.header ?? globalRefreshHeader,
-        footer: widget.footer ?? globalRefreshFooter,
+        header: widget.header ?? GlobalOptions().globalRefreshHeader,
+        footer: widget.footer ?? GlobalOptions().globalRefreshFooter,
         onLoad: widget.onLoading == null
             ? null
             : () async {

@@ -5,6 +5,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_waya/flutter_waya.dart';
+import 'package:flutter_waya/widgets/scroll_view/sliver/element.dart';
+import 'package:flutter_waya/widgets/scroll_view/sliver/render.dart';
 
 /// 配合 sliver 家族组件 无需设置高度  自适应高度
 class ExtendedScrollView extends StatefulWidget {
@@ -565,355 +567,247 @@ class _SliverAppBar extends SliverAppBar {
   final SliverAppBar sliverAppBar;
 }
 
-/// 可刷新的滚动组件
-/// 嵌套 sliver 家族组件
-class RefreshScrollView extends ScrollView {
-  RefreshScrollView({
-    this.refreshConfig,
-    bool? noScrollBehavior = false,
-    this.padding,
+typedef OnSliverPinnedPersistentHeaderDelegateBuild = void Function(
+  BuildContext context,
+  double shrinkOffset,
+  double? minExtent,
+  double maxExtent,
+  bool overlapsContent,
+);
+
+abstract class SliverPinnedPersistentHeaderDelegate {
+  SliverPinnedPersistentHeaderDelegate({
+    required this.minExtentProtoType,
+    required this.maxExtentProtoType,
+  });
+
+  final Widget minExtentProtoType;
+
+  final Widget maxExtentProtoType;
+
+  Widget build(BuildContext context, double shrinkOffset, double? minExtent,
+      double maxExtent, bool overlapsContent);
+
+  bool shouldRebuild(
+      covariant SliverPinnedPersistentHeaderDelegate oldDelegate);
+}
+
+class SliverPinnedPersistentHeader extends StatelessWidget {
+  const SliverPinnedPersistentHeader({Key? key, required this.delegate})
+      : super(key: key);
+
+  final SliverPinnedPersistentHeaderDelegate delegate;
+
+  @override
+  Widget build(BuildContext context) =>
+      SliverPinnedPersistentHeaderRenderObjectWidget(delegate);
+}
+
+class SliverPinnedPersistentHeaderRenderObjectWidget
+    extends RenderObjectWidget {
+  const SliverPinnedPersistentHeaderRenderObjectWidget(this.delegate,
+      {Key? key})
+      : super(key: key);
+
+  final SliverPinnedPersistentHeaderDelegate delegate;
+
+  @override
+  RenderObjectElement createElement() =>
+      SliverPinnedPersistentHeaderElement(this);
+
+  @override
+  RenderObject createRenderObject(BuildContext context) =>
+      RenderSliverPinnedPersistentHeader();
+}
+
+class SliverPinnedToBoxAdapter extends SingleChildRenderObjectWidget {
+  const SliverPinnedToBoxAdapter({Key? key, Widget? child})
+      : super(key: key, child: child);
+
+  @override
+  RenderSliverPinnedToBoxAdapter createRenderObject(BuildContext context) =>
+      RenderSliverPinnedToBoxAdapter();
+}
+
+class CustomSliverAppBar extends StatelessWidget {
+  const CustomSliverAppBar({
     Key? key,
-    Axis? scrollDirection = Axis.vertical,
-    bool? reverse = false,
-    ScrollController? controller,
-    bool? primary,
-    ScrollPhysics? physics,
-    bool? shrinkWrap = false,
-    Key? center,
-    double anchor = 0.0,
-    double? cacheExtent,
-    this.slivers = const <Widget>[],
-    int? semanticChildCount,
-    DragStartBehavior? dragStartBehavior = DragStartBehavior.start,
-    ScrollViewKeyboardDismissBehavior? keyboardDismissBehavior =
-        ScrollViewKeyboardDismissBehavior.manual,
-    String? restorationId,
-    Clip? clipBehavior = Clip.hardEdge,
-    ScrollBehavior? scrollBehavior,
-  })  : noScrollBehavior = noScrollBehavior ?? false,
-        super(
-            key: key,
-            controller: controller,
-            scrollDirection: scrollDirection ?? Axis.vertical,
-            shrinkWrap: _shrinkWrap(shrinkWrap, physics),
-            reverse: reverse ?? false,
-            clipBehavior: clipBehavior ?? Clip.hardEdge,
-            dragStartBehavior: dragStartBehavior ?? DragStartBehavior.start,
-            cacheExtent: cacheExtent,
-            restorationId: restorationId,
-            physics: physics,
-            primary: primary,
-            center: center,
-            anchor: anchor,
-            scrollBehavior: scrollBehavior,
-            semanticChildCount: semanticChildCount,
-            keyboardDismissBehavior: keyboardDismissBehavior ??
-                ScrollViewKeyboardDismissBehavior.manual);
+    this.leading,
+    this.title,
+    this.actions,
+    this.background,
+    this.toolBarColor,
+    this.onBuild,
+    this.statusBarHeight,
+    this.toolbarHeight,
+    this.isOpacityFadeWithToolbar = true,
+    this.isOpacityFadeWithTitle = true,
+    this.mainAxisAlignment = MainAxisAlignment.spaceBetween,
+    this.crossAxisAlignment = CrossAxisAlignment.center,
+  }) : super(key: key);
 
-  static bool _shrinkWrap(bool? shrinkWrap, ScrollPhysics? physics) {
-    if (physics == const NeverScrollableScrollPhysics()) return true;
-    return shrinkWrap ?? false;
-  }
+  final Widget? leading;
 
-  final List<Widget> slivers;
-  final bool noScrollBehavior;
-  final EdgeInsetsGeometry? padding;
-  final RefreshConfig? refreshConfig;
+  final Widget? title;
+
+  final Widget? actions;
+
+  final Widget? background;
+
+  final Color? toolBarColor;
+
+  final OnSliverPinnedPersistentHeaderDelegateBuild? onBuild;
+
+  final double? toolbarHeight;
+
+  final double? statusBarHeight;
+
+  final bool isOpacityFadeWithToolbar;
+
+  final bool isOpacityFadeWithTitle;
+
+  final MainAxisAlignment mainAxisAlignment;
+
+  final CrossAxisAlignment crossAxisAlignment;
 
   @override
   Widget build(BuildContext context) {
-    Widget widget = super.build(context);
-    if (refreshConfig != null) {
-      widget = EasyRefreshed(
-          slivers: buildSlivers(context),
-          scrollDirection: scrollDirection,
-          reverse: reverse,
-          scrollController: controller,
-          controller: refreshConfig!.controller,
-          onLoading: refreshConfig!.onLoading,
-          onRefresh: refreshConfig!.onRefresh,
-          header: refreshConfig!.header,
-          footer: refreshConfig!.footer,
-          primary: primary,
-          shrinkWrap: shrinkWrap,
-          cacheExtent: cacheExtent,
-          dragStartBehavior: dragStartBehavior);
+    final SafeArea? safeArea =
+        context.findAncestorWidgetOfExactType<SafeArea>();
+    double? height = statusBarHeight;
+    final double toolbarHeight = this.toolbarHeight ?? kToolbarHeight;
+    if (height == null && (safeArea == null || !safeArea.top)) {
+      height = MediaQuery.of(context).padding.top;
     }
-    if (padding != null) widget = Padding(padding: padding!, child: widget);
-    if (noScrollBehavior) {
-      widget = ScrollConfiguration(behavior: NoScrollBehavior(), child: widget);
+    height ??= 0;
+    final Widget toolbar = SizedBox(height: toolbarHeight + height);
+    return SliverPinnedPersistentHeader(
+        delegate: _CustomSliverAppbarDelegate(
+            minExtentProtoType: toolbar,
+            maxExtentProtoType: background ?? toolbar,
+            title: title,
+            leading: leading,
+            actions: actions,
+            background: background,
+            statusBarHeight: height,
+            toolbarHeight: toolbarHeight,
+            toolBarColor: toolBarColor,
+            onBuild: onBuild,
+            isOpacityFadeWithToolbar: isOpacityFadeWithToolbar,
+            isOpacityFadeWithTitle: isOpacityFadeWithTitle,
+            mainAxisAlignment: mainAxisAlignment,
+            crossAxisAlignment: crossAxisAlignment));
+  }
+}
+
+class _CustomSliverAppbarDelegate extends SliverPinnedPersistentHeaderDelegate {
+  _CustomSliverAppbarDelegate({
+    required Widget minExtentProtoType,
+    required Widget maxExtentProtoType,
+    this.leading,
+    this.title,
+    this.actions,
+    this.background,
+    this.toolBarColor,
+    this.onBuild,
+    this.statusBarHeight,
+    this.toolbarHeight,
+    this.isOpacityFadeWithToolbar = true,
+    this.isOpacityFadeWithTitle = true,
+    this.mainAxisAlignment = MainAxisAlignment.spaceBetween,
+    this.crossAxisAlignment = CrossAxisAlignment.center,
+  }) : super(
+            minExtentProtoType: minExtentProtoType,
+            maxExtentProtoType: maxExtentProtoType);
+
+  final Widget? leading;
+
+  final Widget? title;
+
+  final Widget? actions;
+
+  final Widget? background;
+
+  final Color? toolBarColor;
+
+  final OnSliverPinnedPersistentHeaderDelegateBuild? onBuild;
+
+  final double? toolbarHeight;
+
+  final double? statusBarHeight;
+
+  final bool isOpacityFadeWithToolbar;
+
+  final bool isOpacityFadeWithTitle;
+
+  final MainAxisAlignment mainAxisAlignment;
+
+  final CrossAxisAlignment crossAxisAlignment;
+
+  @override
+  Widget build(BuildContext context, double shrinkOffset, double? minExtent,
+      double maxExtent, bool overlapsContent) {
+    onBuild?.call(context, shrinkOffset, minExtent, maxExtent, overlapsContent);
+    final double opacity =
+        (shrinkOffset / (maxExtent - minExtent!)).clamp(0.0, 1.0);
+    Widget? titleWidget = title;
+    if (titleWidget != null) {
+      if (isOpacityFadeWithTitle) {
+        titleWidget = Opacity(opacity: opacity, child: titleWidget);
+      }
+    } else {
+      titleWidget = Container();
     }
-    return widget;
+    final ThemeData theme = Theme.of(context);
+
+    Color toolBarColor = this.toolBarColor ?? theme.primaryColor;
+    if (isOpacityFadeWithToolbar) {
+      toolBarColor = toolBarColor.withOpacity(opacity);
+    }
+
+    final Widget toolbar = Universal(
+        height: toolbarHeight! + statusBarHeight!,
+        padding: EdgeInsets.only(top: statusBarHeight!),
+        color: toolBarColor,
+        direction: Axis.horizontal,
+        mainAxisAlignment: mainAxisAlignment,
+        crossAxisAlignment: crossAxisAlignment,
+        children: <Widget>[
+          leading ?? const BackButton(onPressed: null),
+          titleWidget,
+          actions ?? Container(width: 100)
+        ]);
+
+    return Material(
+        child: Universal(isClipRect: true, isStack: true, children: <Widget>[
+      Positioned(
+          child: maxExtentProtoType,
+          top: -shrinkOffset,
+          bottom: 0,
+          left: 0,
+          right: 0),
+      Positioned(child: toolbar, top: 0, left: 0, right: 0),
+    ]));
   }
 
   @override
-  List<Widget> buildSlivers(BuildContext context) => slivers;
-}
+  bool shouldRebuild(SliverPinnedPersistentHeaderDelegate oldDelegate) {
+    if (oldDelegate.runtimeType != runtimeType) return true;
 
-class ScrollList extends RefreshScrollView {
-  /// 滑动类型设置 [physics]
-  /// AlwaysScrollableScrollPhysics() 总是可以滑动
-  /// NeverScrollableScrollPhysics() 禁止滚动
-  /// BouncingScrollPhysics()  内容超过一屏 有回弹效果
-  /// ClampingScrollPhysics()  包裹内容 不会有回弹
-
-  ScrollList({
-    Key? key,
-    Clip? clipBehavior,
-    bool? reverse,
-    double? cacheExtent,
-    bool? primary,
-    ScrollPhysics? physics,
-    Axis? scrollDirection,
-    DragStartBehavior? dragStartBehavior,
-    ScrollController? controller,
-    String? restorationId,
-    bool? shrinkWrap = false,
-    RefreshConfig? refreshConfig,
-    bool? noScrollBehavior = false,
-    EdgeInsetsGeometry? padding,
-    required this.sliver,
-    this.header,
-    this.footer,
-  }) : super(
-            key: key,
-            padding: padding,
-            refreshConfig: refreshConfig,
-            noScrollBehavior: noScrollBehavior,
-            controller: controller,
-            scrollDirection: scrollDirection ?? Axis.vertical,
-            shrinkWrap: shrinkWrap,
-            reverse: reverse ?? false,
-            clipBehavior: clipBehavior ?? Clip.hardEdge,
-            dragStartBehavior: dragStartBehavior ?? DragStartBehavior.start,
-            cacheExtent: cacheExtent,
-            restorationId: restorationId,
-            physics: physics,
-            primary: primary);
-
-  ScrollList.builder({
-    Key? key,
-    Clip? clipBehavior,
-    bool? reverse,
-    double? cacheExtent,
-    bool? primary,
-    ScrollPhysics? physics,
-    Axis? scrollDirection,
-    DragStartBehavior? dragStartBehavior,
-    ScrollController? controller,
-    String? restorationId,
-    bool? shrinkWrap = false,
-    double? itemExtent,
-    required IndexedWidgetBuilder itemBuilder,
-    required int itemCount,
-    ChildIndexGetter? findChildIndexCallback,
-    bool addAutomaticKeepALives = true,
-    bool addRepaintBoundaries = true,
-    bool addSemanticIndexes = true,
-    RefreshConfig? refreshConfig,
-    bool? noScrollBehavior = false,
-    EdgeInsetsGeometry? padding,
-
-    /// 多列最大列数 [crossAxisCount]>1 固定列
-    int? crossAxisCount = 1,
-
-    /// 水平子Widget之间间距
-    double? mainAxisSpacing = 0,
-
-    /// 垂直子Widget之间间距
-    double? crossAxisSpacing = 0,
-
-    /// 子 Widget 宽高比例 [crossAxisCount]>1是 有效
-    double? childAspectRatio = 1,
-
-    /// 是否开启列数自适应
-    /// [crossAxisFlex]=true 为多列 且宽度自适应
-    /// [maxCrossAxisExtent]设置最大宽度
-    bool? crossAxisFlex = false,
-
-    /// 单个子Widget的水平最大宽度
-    double? maxCrossAxisExtent,
-    double? mainAxisExtent,
-    Widget? placeholder,
-    this.header,
-    this.footer,
-  })  : sliver = <SliverListGrid>[
-          SliverListGrid(
-              placeholder: placeholder,
-              mainAxisExtent: mainAxisExtent,
-              maxCrossAxisExtent: maxCrossAxisExtent,
-              crossAxisFlex: crossAxisFlex,
-              childAspectRatio: childAspectRatio,
-              crossAxisCount: crossAxisCount,
-              mainAxisSpacing: mainAxisSpacing,
-              crossAxisSpacing: crossAxisSpacing,
-              addSemanticIndexes: addSemanticIndexes,
-              addRepaintBoundaries: addRepaintBoundaries,
-              addAutomaticKeepALives: addAutomaticKeepALives,
-              findChildIndexCallback: findChildIndexCallback,
-              itemBuilder: itemBuilder,
-              itemCount: itemCount,
-              itemExtent: itemExtent)
-        ],
-        super(
-            key: key,
-            padding: padding,
-            refreshConfig: refreshConfig,
-            noScrollBehavior: noScrollBehavior,
-            controller: controller,
-            scrollDirection: scrollDirection,
-            shrinkWrap: shrinkWrap,
-            reverse: reverse,
-            clipBehavior: clipBehavior,
-            dragStartBehavior: dragStartBehavior,
-            cacheExtent: cacheExtent,
-            restorationId: restorationId,
-            physics: physics,
-            primary: primary);
-
-  ScrollList.separated({
-    Key? key,
-    Clip? clipBehavior,
-    bool? reverse,
-    double? cacheExtent,
-    bool? primary,
-    ScrollPhysics? physics,
-    Axis? scrollDirection,
-    DragStartBehavior? dragStartBehavior,
-    ScrollController? controller,
-    String? restorationId,
-    bool? shrinkWrap = false,
-    double? itemExtent,
-    required IndexedWidgetBuilder itemBuilder,
-    required int itemCount,
-    required IndexedWidgetBuilder separatorBuilder,
-    bool addAutomaticKeepALives = true,
-    bool addRepaintBoundaries = true,
-    bool addSemanticIndexes = true,
-    RefreshConfig? refreshConfig,
-    bool? noScrollBehavior = false,
-    EdgeInsetsGeometry? padding,
-    Widget? placeholder,
-    this.header,
-    this.footer,
-  })  : sliver = <SliverListGrid>[
-          SliverListGrid(
-              placeholder: placeholder,
-              addSemanticIndexes: addSemanticIndexes,
-              addRepaintBoundaries: addRepaintBoundaries,
-              addAutomaticKeepALives: addAutomaticKeepALives,
-              itemBuilder: itemBuilder,
-              separatorBuilder: separatorBuilder,
-              itemCount: itemCount,
-              itemExtent: itemExtent)
-        ],
-        super(
-            key: key,
-            padding: padding,
-            refreshConfig: refreshConfig,
-            noScrollBehavior: noScrollBehavior,
-            controller: controller,
-            scrollDirection: scrollDirection,
-            shrinkWrap: shrinkWrap,
-            reverse: reverse,
-            clipBehavior: clipBehavior,
-            dragStartBehavior: dragStartBehavior,
-            cacheExtent: cacheExtent,
-            restorationId: restorationId,
-            physics: physics,
-            primary: primary);
-
-  ScrollList.count({
-    Key? key,
-    Clip? clipBehavior,
-    bool? reverse,
-    double? cacheExtent,
-    bool? primary,
-    ScrollPhysics? physics,
-    Axis? scrollDirection,
-    DragStartBehavior? dragStartBehavior,
-    ScrollController? controller,
-    String? restorationId,
-    bool? shrinkWrap = false,
-    double? itemExtent,
-    required List<Widget> children,
-    bool addAutomaticKeepALives = true,
-    bool addRepaintBoundaries = true,
-    bool addSemanticIndexes = true,
-    RefreshConfig? refreshConfig,
-    bool? noScrollBehavior = false,
-    EdgeInsetsGeometry? padding,
-
-    /// 多列最大列数 [crossAxisCount]>1 固定列
-    int? crossAxisCount = 1,
-
-    /// 水平子Widget之间间距
-    double? mainAxisSpacing = 0,
-
-    /// 垂直子Widget之间间距
-    double? crossAxisSpacing = 0,
-
-    /// 子 Widget 宽高比例 [crossAxisCount]>1是 有效
-    double? childAspectRatio = 1,
-
-    /// 是否开启列数自适应
-    /// [crossAxisFlex]=true 为多列 且宽度自适应
-    /// [maxCrossAxisExtent]设置最大宽度
-    bool? crossAxisFlex = false,
-
-    /// 单个子Widget的水平最大宽度
-    double? maxCrossAxisExtent,
-    double? mainAxisExtent,
-    Widget? placeholder,
-    this.header,
-    this.footer,
-  })  : sliver = <SliverListGrid>[
-          SliverListGrid(
-              placeholder: placeholder,
-              mainAxisExtent: mainAxisExtent,
-              maxCrossAxisExtent: maxCrossAxisExtent,
-              crossAxisFlex: crossAxisFlex,
-              childAspectRatio: childAspectRatio,
-              crossAxisCount: crossAxisCount,
-              mainAxisSpacing: mainAxisSpacing,
-              crossAxisSpacing: crossAxisSpacing,
-              addSemanticIndexes: addSemanticIndexes,
-              addRepaintBoundaries: addRepaintBoundaries,
-              addAutomaticKeepALives: addAutomaticKeepALives,
-              children: children,
-              itemExtent: itemExtent)
-        ],
-        super(
-            key: key,
-            padding: padding,
-            refreshConfig: refreshConfig,
-            noScrollBehavior: noScrollBehavior,
-            controller: controller,
-            scrollDirection: scrollDirection,
-            shrinkWrap: shrinkWrap,
-            reverse: reverse,
-            clipBehavior: clipBehavior,
-            dragStartBehavior: dragStartBehavior,
-            cacheExtent: cacheExtent,
-            restorationId: restorationId,
-            physics: physics,
-            primary: primary);
-
-  /// 添加多个 [SliverListGrid]
-  final List<SliverListGrid> sliver;
-
-  /// 添加头部 Sliver 组件
-  final Widget? header;
-
-  /// 添加底部 Sliver 组件
-  final Widget? footer;
-
-  @override
-  List<Widget> buildSlivers(BuildContext context) {
-    final List<Widget> slivers = <Widget>[];
-    if (sliver.isNotEmpty) slivers.addAll(sliver);
-    if (header != null) slivers.insert(0, header!);
-    if (footer != null) slivers.add(footer!);
-    return slivers;
+    return oldDelegate is _CustomSliverAppbarDelegate &&
+        (oldDelegate.minExtentProtoType != minExtentProtoType ||
+            oldDelegate.maxExtentProtoType != maxExtentProtoType ||
+            oldDelegate.leading != leading ||
+            oldDelegate.title != title ||
+            oldDelegate.actions != actions ||
+            oldDelegate.background != background ||
+            oldDelegate.statusBarHeight != statusBarHeight ||
+            oldDelegate.toolBarColor != toolBarColor ||
+            oldDelegate.toolbarHeight != toolbarHeight ||
+            oldDelegate.onBuild != onBuild ||
+            oldDelegate.isOpacityFadeWithTitle != isOpacityFadeWithTitle ||
+            oldDelegate.isOpacityFadeWithToolbar != isOpacityFadeWithToolbar ||
+            oldDelegate.mainAxisAlignment != mainAxisAlignment ||
+            oldDelegate.crossAxisAlignment != crossAxisAlignment);
   }
 }
