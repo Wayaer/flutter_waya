@@ -235,6 +235,8 @@ class SliverListGrid extends StatelessWidget {
   /// 横轴元素之间的距离
   final double crossAxisSpacing;
   final double childAspectRatio;
+
+  /// 开启宽度自适应 需设置 [maxCrossAxisExtent]
   final bool crossAxisFlex;
 
   /// 横轴元素最大的大小
