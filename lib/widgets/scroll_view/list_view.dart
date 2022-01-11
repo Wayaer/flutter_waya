@@ -148,21 +148,22 @@ class ScrollList extends RefreshScrollView {
     bool? noScrollBehavior = false,
     EdgeInsetsGeometry? padding,
 
-    /// 多列最大列数 [crossAxisCount]>1 固定列
-    int crossAxisCount = 1,
+    /// 最大列数 [crossAxisCount]>1 固定列
+    int? crossAxisCount,
+
+    /// 单个子Widget的水平最大宽度 宽度自适应列数
+    double? maxCrossAxisExtent,
 
     /// 水平子Widget之间间距
     double mainAxisSpacing = 0,
 
     /// 垂直子Widget之间间距
     double crossAxisSpacing = 0,
-
-    /// 单个子Widget的水平最大宽度
-    double maxCrossAxisExtent = 10,
     Widget placeholder = const PlaceholderChild(),
     this.header,
     this.footer,
-  })  : sliver = <SliverWaterfallFlow>[
+  })  : assert(crossAxisCount != null || maxCrossAxisExtent != null),
+        sliver = <SliverWaterfallFlow>[
           SliverWaterfallFlow(
               placeholder: placeholder,
               maxCrossAxisExtent: maxCrossAxisExtent,

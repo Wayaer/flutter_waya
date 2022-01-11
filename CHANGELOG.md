@@ -1,4 +1,4 @@
-## 1.17.0
+## 1.17.1
 
 * Add a waterfall flow function to the `ScrollList`
 

@@ -15,8 +15,8 @@ class SliverWaterfallFlow extends StatelessWidget {
       this.addRepaintBoundaries = true,
       this.addSemanticIndexes = true,
       this.mainAxisSpacing = 0,
-      this.maxCrossAxisExtent,
       this.crossAxisSpacing = 0,
+      this.maxCrossAxisExtent,
       this.crossAxisCount,
       this.placeholder = const PlaceholderChild()})
       : assert(maxCrossAxisExtent != null || crossAxisCount != null),
@@ -32,8 +32,8 @@ class SliverWaterfallFlow extends StatelessWidget {
       this.addRepaintBoundaries = true,
       this.addSemanticIndexes = true,
       this.mainAxisSpacing = 0,
-      this.maxCrossAxisExtent,
       this.crossAxisSpacing = 0,
+      this.maxCrossAxisExtent,
       this.crossAxisCount,
       this.placeholder = const PlaceholderChild()})
       : assert(maxCrossAxisExtent != null || crossAxisCount != null),
@@ -53,8 +53,8 @@ class SliverWaterfallFlow extends StatelessWidget {
       this.addRepaintBoundaries = true,
       this.addSemanticIndexes = true,
       this.mainAxisSpacing = 0,
-      this.crossAxisSpacing = 0,
       this.maxCrossAxisExtent,
+      this.crossAxisSpacing = 0,
       this.crossAxisCount,
       this.placeholder = const PlaceholderChild()})
       : assert(maxCrossAxisExtent != null || crossAxisCount != null),
@@ -75,8 +75,6 @@ class SliverWaterfallFlow extends StatelessWidget {
 
   /// 少量子组件可使用 children
   final List<Widget>? children;
-
-  /// SliverAlignedGrid
 
   /// 主轴元素之间的距离
   final double mainAxisSpacing;
@@ -221,7 +219,8 @@ class SliverListGrid extends StatelessWidget {
     this.placeholder = const PlaceholderChild(),
     this.prototypeItem,
     this.itemExtent,
-  })  : itemBuilder = null,
+  })  : assert(children != null),
+        itemBuilder = null,
         itemCount = null,
         separatorBuilder = null,
         findChildIndexCallback = null,
