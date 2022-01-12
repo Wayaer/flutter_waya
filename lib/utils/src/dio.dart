@@ -252,7 +252,12 @@ class LoggerInterceptor<T> extends InterceptorsWrapper {
     options.headers.forEach((String key, dynamic value) {
       headers += ' | $key: $value';
     });
-    _forbidPrint = forbidPrintUrl.contains(options.uri.toString());
+    for (var element in forbidPrintUrl) {
+      if (element.contains(options.uri.toString())) {
+        _forbidPrint = true;
+        break;
+      }
+    }
     log('┌------------------------------------------------------------------------------',
         hasDottedLine: false);
     log('''| [DIO] Request: ${options.method} ${options.uri}\n| QueryParameters:${options.queryParameters}\n| Data:${options.data}\n| Headers:$headers''',
