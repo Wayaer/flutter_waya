@@ -1,4 +1,4 @@
-## 1.17.3
+## 1.17.5
 
 * `LoggerInterceptor` adds `forbidPrintUrl`, which specifies that part of the URL is not logged
 

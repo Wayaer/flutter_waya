@@ -244,7 +244,7 @@ class LoggerInterceptor<T> extends InterceptorsWrapper {
 
   final List<String> forbidPrintUrl;
 
-  bool _forbidPrint = true;
+  bool _forbidPrint = false;
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
@@ -253,7 +253,7 @@ class LoggerInterceptor<T> extends InterceptorsWrapper {
       headers += ' | $key: $value';
     });
     for (var element in forbidPrintUrl) {
-      if (element.contains(options.uri.toString())) {
+      if (options.uri.toString().contains(element)) {
         _forbidPrint = true;
         break;
       }
