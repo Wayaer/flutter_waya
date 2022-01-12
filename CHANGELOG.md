@@ -1,3 +1,7 @@
+## 1.17.2
+
+* `LoggerInterceptor` adds `forbidPrintUrl`, which specifies that part of the URL is not logged
+
 ## 1.17.1
 
 * Add a waterfall flow function to the `ScrollList`

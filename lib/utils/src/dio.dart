@@ -240,28 +240,34 @@ class ResponseModelInterceptorWrapper<T> extends InterceptorsWrapper {
 }
 
 class LoggerInterceptor<T> extends InterceptorsWrapper {
+  LoggerInterceptor({this.forbidPrintUrl = const []});
+
+  final List<String> forbidPrintUrl;
+
+  bool _forbidPrint = true;
+
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     String headers = '';
     options.headers.forEach((String key, dynamic value) {
       headers += ' | $key: $value';
     });
-
+    _forbidPrint = forbidPrintUrl.contains(options.uri.toString());
     log('┌------------------------------------------------------------------------------',
         hasDottedLine: false);
-    log('''| [DIO] Request: ${options.method} ${options.uri}\n| QueryParameters:${options.queryParameters.toString()}\n| Data:${options.data.toString()}\n| Headers:$headers''',
+    log('''| [DIO] Request: ${options.method} ${options.uri}\n| QueryParameters:${options.queryParameters}\n| Data:${options.data}\n| Headers:$headers''',
         hasDottedLine: false);
     log('├------------------------------------------------------------------------------',
         hasDottedLine: false);
-    handler.next(options); //continue
+    handler.next(options);
   }
 
   @override
   void onResponse(
       Response<dynamic> response, ResponseInterceptorHandler handler) {
-    log('| [DIO] Response [code ${response.statusCode}]: ${response.statusMessage.toString()}',
+    log('| [DIO] Response [code ${response.statusCode}]: ${response.statusMessage}',
         hasDottedLine: false);
-    log('| [DIO] Response data: \n ${response.data.toString()}\n ',
+    log('| [DIO] Response data:  ${_forbidPrint ? 'This data is not printed' : '\n${response.data}\n'}',
         hasDottedLine: false);
     log('└------------------------------------------------------------------------------',
         hasDottedLine: false);
