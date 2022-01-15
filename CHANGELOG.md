@@ -1,3 +1,7 @@
+## 1.18.0
+
+* Refactoring `ExtendedDio` initialization
+
 ## 1.17.5
 
 * `LoggerInterceptor` adds `forbidPrintUrl`, which specifies that part of the URL is not logged

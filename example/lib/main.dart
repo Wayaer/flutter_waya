@@ -30,6 +30,8 @@ void main() {
     log('des解密完成==> $decoded');
   }
 
+  ExtendedDio().initialize();
+
   globalOptions.setGlobalPushMode(RoutePushStyle.ripple);
   globalOptions.setToastOptions(
       ToastOptions(positioned: Alignment.topCenter, duration: 0.5.seconds));

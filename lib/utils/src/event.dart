@@ -39,10 +39,7 @@ class EventFactory {
 
   late Event<dynamic> event;
 
-  static EventFactory _getInstance() {
-    _instance ??= EventFactory._internal();
-    return _instance!;
-  }
+  static EventFactory _getInstance() => _instance ??= EventFactory._internal();
 }
 
 void sendEvent(dynamic message) => EventFactory.instance!.event.send(message);

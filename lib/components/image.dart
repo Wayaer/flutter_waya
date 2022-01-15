@@ -472,9 +472,8 @@ class _GifImageState extends State<GifImage> {
       final BaseOptions options = BaseOptions(responseType: ResponseType.bytes);
       provider.headers?.forEach((String name, String value) =>
           options.headers.addAll(<String, String>{name: value}));
-      final ResponseModel result = await ExtendedDio.getInstance(
-              options: ExtendedDioOptions(options: options))
-          .getHttp(provider.url);
+      final ResponseModel result =
+          await ExtendedDio().getHttp(provider.url, options: options);
       if (result.statusCode != 200) {
         showToast(result.statusMessage!);
         return null;
