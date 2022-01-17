@@ -1,5 +1,6 @@
-## 1.18.0
+## 1.18.1
 
+* Delete useless parameters
 * Refactoring `ExtendedDio` initialization
 
 ## 1.17.5

@@ -5,7 +5,6 @@ import 'constant.dart';
 class ResponseModel extends Response<dynamic> {
   ResponseModel({
     this.type,
-    this.statusMessageT,
     dynamic data,
     this.response,
     int? statusCode,
@@ -27,9 +26,6 @@ class ResponseModel extends Response<dynamic> {
 
   BaseOptions? baseOptions;
 
-  /// 语言翻译版 状态消息
-  String? statusMessageT;
-
   /// 请求返回类型 [DioErrorType].toString
   String? type;
 
@@ -49,7 +45,6 @@ class ResponseModel extends Response<dynamic> {
     map['cookie'] = cookie;
     map['statusCode'] = statusCode;
     map['statusMessage'] = statusMessage;
-    map['statusMessageT'] = statusMessageT;
     map['extra'] = extra;
     map['error'] = error;
     return map;
@@ -63,7 +58,6 @@ class ResponseModel extends Response<dynamic> {
           type: type.toString(),
           statusCode: response.statusCode,
           statusMessage: response.statusMessage,
-          statusMessageT: response.statusMessage,
           data: response.data,
           extra: response.extra,
           headers: response.headers,
@@ -76,47 +70,14 @@ class ResponseModel extends Response<dynamic> {
     responseModel.type = err.type.toString();
     final Response<dynamic>? errResponse = err.response;
     responseModel.requestOptions = err.requestOptions;
+    responseModel.error = err.error;
     if (errResponse != null) {
       responseModel.headers = errResponse.headers;
       responseModel.redirects = errResponse.redirects;
       responseModel.extra = errResponse.extra;
       responseModel.statusCode = errResponse.statusCode;
       responseModel.statusMessage = errResponse.statusMessage;
-      responseModel.statusMessageT = errResponse.statusMessage;
       responseModel.data = errResponse.data;
-    }
-    responseModel.error = err.error;
-    if (err.type == DioErrorType.other) {
-      final HttpStatus status = ConstConstant.httpStatus[404]!;
-      responseModel.statusCode = status.code;
-      responseModel.statusMessage = status.message;
-      responseModel.statusMessageT = status.messageT;
-    } else if (err.type == DioErrorType.cancel) {
-      final HttpStatus status = ConstConstant.httpStatus[420]!;
-      responseModel.statusCode = status.code;
-      responseModel.statusMessage = status.message;
-      responseModel.statusMessageT = status.messageT;
-    } else if (err.type == DioErrorType.connectTimeout) {
-      final HttpStatus status = ConstConstant.httpStatus[408]!;
-      responseModel.statusCode = status.code;
-      responseModel.statusMessage = status.message;
-      responseModel.statusMessageT = status.messageT;
-    } else if (err.type == DioErrorType.receiveTimeout) {
-      final HttpStatus status = ConstConstant.httpStatus[502]!;
-      responseModel.statusCode = status.code;
-      responseModel.statusMessage = status.message;
-      responseModel.statusMessageT = status.messageT;
-    } else if (err.type == DioErrorType.sendTimeout) {
-      final HttpStatus status = ConstConstant.httpStatus[450]!;
-      responseModel.statusCode = status.code;
-      responseModel.statusMessage = status.message;
-      responseModel.statusMessageT = status.messageT;
-    } else if (err.type == DioErrorType.response) {
-      final HttpStatus status = ConstConstant.httpStatus[500]!;
-      responseModel.statusCode = errResponse?.statusCode;
-      responseModel.statusMessage =
-          errResponse!.statusCode.toString() + ':' + status.message;
-      responseModel.statusMessageT = status.messageT;
     }
     responseModel.cookie = <String>[];
     return responseModel;
@@ -128,13 +89,12 @@ class ResponseModel extends Response<dynamic> {
         requestOptions: RequestOptions(path: ''),
         statusCode: status.code,
         statusMessage: status.message,
-        statusMessageT: status.messageT,
         type: DioErrorType.other.toString());
   }
 
   String toJson() =>
       '{"type":"${type.toString()}","data":$data,"cookie":$cookie,"statusCode'
-      '":$statusCode,"statusMessage":"$statusMessage","statusMessageT":"$statusMessageT","extra":$extra"}';
+      '":$statusCode,"statusMessage":"$statusMessage","extra":$extra"}';
 
   Map<String, dynamic> requestOptionsToMap() {
     return <String, dynamic>{

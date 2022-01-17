@@ -254,10 +254,6 @@ class ResponseModelInterceptorWrapper<T> extends InterceptorsWrapper {
     responseModel.response = response;
     if (saveCookies != null) responseModel.cookie = saveCookies!(response);
     responseModel = ResponseModel.formResponse(response);
-    if (response.statusCode == 200) {
-      responseModel.statusMessage = ConstConstant.success;
-      responseModel.statusMessageT = ConstConstant.success;
-    }
     super.onResponse(responseModel, handler);
   }
 
@@ -302,7 +298,7 @@ class LoggerInterceptor<T> extends InterceptorsWrapper {
         break;
       }
     }
-    log('| [DIO] Response [code ${response.statusCode}]: ${response.statusMessage}',
+    log('| [DIO] Response [statusCode : ${response.statusCode}] [statusMessage : ${response.statusMessage}]',
         hasDottedLine: false);
     log('| [DIO] Request uri ($requestUri)', hasDottedLine: false);
     log('| [DIO] Response data: ${_forbidPrint ? 'This data is not printed' : '\n${response.data}'}',
@@ -314,12 +310,14 @@ class LoggerInterceptor<T> extends InterceptorsWrapper {
 
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) {
+    log('| [DIO] Response [statusCode : ${err.response?.statusCode}] [statusMessage : ${err.response?.statusMessage}]',
+        hasDottedLine: false);
     log('| [DIO] Error: ${err.error}: ${err.response?.toString()}',
         hasDottedLine: false);
     log('|            : ${err.type}: ${err.message.toString()}',
         hasDottedLine: false);
     log('└------------------------------------------------------------------------------',
         hasDottedLine: false);
-    handler.next(err); //continue
+    handler.next(err);
   }
 }

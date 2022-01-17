@@ -5,17 +5,6 @@ const String refreshEvent = 'refreshEvent';
 
 /// Constant
 class ConstConstant {
-  /// 全局圆角大小
-  static const double radius = 5;
-
-  /// 全局默认字体大小
-  static const double fontSize = 14;
-
-  /// 导航栏高度
-  static const double appBarHeight = 43;
-
-  static const String success = 'success';
-
   static const Map<int, HttpStatus> httpStatus = <int, HttpStatus>{
     100: HttpStatus(100, '未知异常', 'unknown exception'),
     404: HttpStatus(404, '网络请求失败', 'failed'),
