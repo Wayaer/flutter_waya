@@ -108,7 +108,12 @@ class _JsonParseState extends State<JsonParse> {
       text = 'Object';
       color = Colors.grey;
     }
-    return Expanded(
+    return Universal(
+        expanded: true,
+        onLongPress: () {
+          text.toClipboard;
+          showToast('已复制');
+        },
         child: BText(text,
             color: color,
             fontWeight: FontWeight.w400,
@@ -193,7 +198,7 @@ class _HttpDataPageState extends State<_HttpDataPage> {
                         shape: BoxShape.circle),
                     padding: const EdgeInsets.all(4),
                     child: const Icon(Icons.bug_report_rounded,
-                        size: 16, color: Colors.white))),
+                        size: 20, color: Colors.white))),
       )
     ];
     if (showData) children.insert(0, showUrl);
@@ -225,6 +230,10 @@ class _HttpDataPageState extends State<_HttpDataPage> {
               final ResponseModel res = httpDataList[index];
               bool showJson = false;
               return Universal(
+                onLongPress: () {
+                  res.toMap().toString().toClipboard;
+                  showToast('已复制');
+                },
                 margin: const EdgeInsets.only(top: 10),
                 decoration: BoxDecoration(
                     color: context.theme.cardColor,
