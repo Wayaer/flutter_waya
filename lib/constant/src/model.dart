@@ -38,17 +38,17 @@ class ResponseModel extends Response<dynamic> {
   /// 保存的cookie
   List<String> cookie = <String>[];
 
-  Map<String, dynamic> toMap() {
-    final Map<String, dynamic> map = <String, dynamic>{};
-    map['type'] = type;
-    map['data'] = data;
-    map['cookie'] = cookie;
-    map['statusCode'] = statusCode;
-    map['statusMessage'] = statusMessage;
-    map['extra'] = extra;
-    map['error'] = error;
-    return map;
-  }
+  Map<String, dynamic> toMap() => {
+        'headers': headers.map,
+        'requestOptions': requestOptionsToMap(),
+        'type': type,
+        'data': data,
+        'cookie': cookie,
+        'statusCode': statusCode,
+        'statusMessage': statusMessage,
+        'extra': extra,
+        'error': error,
+      };
 
   static ResponseModel formResponse(Response<dynamic> response,
           {DioErrorType? type, BaseOptions? baseOptions}) =>
@@ -96,24 +96,22 @@ class ResponseModel extends Response<dynamic> {
       '{"type":"${type.toString()}","data":$data,"cookie":$cookie,"statusCode'
       '":$statusCode,"statusMessage":"$statusMessage","extra":$extra"}';
 
-  Map<String, dynamic> requestOptionsToMap() {
-    return <String, dynamic>{
-      'uri': requestOptions.uri.path,
-      'method': requestOptions.method,
-      'baseUrl': requestOptions.baseUrl,
-      'path': requestOptions.path,
-      'requestHeaders': baseOptions?.headers,
-      'responseHeaders': response?.headers.map,
-      'body': requestOptions.data,
-      'params': requestOptions.queryParameters,
-      'contentType': requestOptions.contentType,
-      'receiveTimeout': requestOptions.receiveTimeout,
-      'sendTimeout': requestOptions.sendTimeout,
-      'connectTimeout': requestOptions.connectTimeout,
-      'extra': requestOptions.extra,
-      'responseType': requestOptions.responseType.toString(),
-    };
-  }
+  Map<String, dynamic> requestOptionsToMap() => <String, dynamic>{
+        'uri': requestOptions.uri.path,
+        'method': requestOptions.method,
+        'baseUrl': requestOptions.baseUrl,
+        'path': requestOptions.path,
+        'requestHeaders': baseOptions?.headers,
+        'responseHeaders': response?.headers.map,
+        'body': requestOptions.data,
+        'params': requestOptions.queryParameters,
+        'contentType': requestOptions.contentType,
+        'receiveTimeout': requestOptions.receiveTimeout,
+        'sendTimeout': requestOptions.sendTimeout,
+        'connectTimeout': requestOptions.connectTimeout,
+        'extra': requestOptions.extra,
+        'responseType': requestOptions.responseType.toString(),
+      };
 }
 
 class HttpStatus {

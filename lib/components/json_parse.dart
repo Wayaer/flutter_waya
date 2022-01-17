@@ -110,6 +110,10 @@ class _JsonParseState extends State<JsonParse> {
     }
     return Universal(
         expanded: true,
+        onTap: () {
+          text.toClipboard;
+          showToast('已复制');
+        },
         onLongPress: () {
           text.toClipboard;
           showToast('已复制');
@@ -149,7 +153,7 @@ class _HttpDataPage extends StatefulWidget {
 class _HttpDataPageState extends State<_HttpDataPage> {
   final List<ResponseModel> httpDataList = <ResponseModel>[];
   final String eventName = 'httpData';
-  bool showData = false;
+  bool hasWindows = false;
   ValueNotifier<Offset> iconOffSet =
       ValueNotifier<Offset>(Offset(50, getStatusBarHeight + 20));
 
@@ -160,7 +164,7 @@ class _HttpDataPageState extends State<_HttpDataPage> {
     EventBus().add(eventName, (dynamic data) {
       if (data is ResponseModel) {
         httpDataList.insert(0, data);
-        if (httpDataList.length > 20) httpDataList.removeLast();
+        if (httpDataList.length > 30) httpDataList.removeLast();
       }
     });
   }
@@ -173,36 +177,40 @@ class _HttpDataPageState extends State<_HttpDataPage> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> children = <Widget>[
+    return Stack(children: [
       ValueListenableBuilder<Offset>(
         valueListenable: iconOffSet,
-        builder: (BuildContext context, Offset value, Widget? child) =>
-            Positioned(
-                left: value.dx,
-                top: value.dy,
-                child: Universal(
-                    enabled: true,
-                    onTap: () => setState(() {
-                          showData = !showData;
-                        }),
-                    onDoubleTap: () {
-                      _httpDataOverlay?.remove();
-                      _httpDataOverlay = null;
-                    },
-                    onPanStart: (DragStartDetails details) =>
-                        updatePositioned(details.globalPosition),
-                    onPanUpdate: (DragUpdateDetails details) =>
-                        updatePositioned(details.globalPosition),
-                    decoration: BoxDecoration(
-                        color: context.theme.primaryColor,
-                        shape: BoxShape.circle),
-                    padding: const EdgeInsets.all(4),
-                    child: const Icon(Icons.bug_report_rounded,
-                        size: 20, color: Colors.white))),
+        builder: (_, Offset value, __) => Positioned(
+            left: value.dx,
+            top: value.dy,
+            child: Universal(
+                enabled: true,
+                onTap: showData,
+                onDoubleTap: () {
+                  _httpDataOverlay?.remove();
+                  _httpDataOverlay = null;
+                },
+                onPanStart: (DragStartDetails details) =>
+                    updatePositioned(details.globalPosition),
+                onPanUpdate: (DragUpdateDetails details) =>
+                    updatePositioned(details.globalPosition),
+                decoration: BoxDecoration(
+                    color: context.theme.primaryColor, shape: BoxShape.circle),
+                padding: const EdgeInsets.all(4),
+                child: const Icon(Icons.bug_report_rounded,
+                    size: 20, color: Colors.white))),
       )
-    ];
-    if (showData) children.insert(0, showUrl);
-    return Stack(children: children);
+    ]);
+  }
+
+  Future<void> showData() async {
+    if (hasWindows) {
+      pop();
+    } else {
+      hasWindows = true;
+      await showBottomPopup(widget: httpDataWidget);
+      hasWindows = false;
+    }
   }
 
   void updatePositioned(Offset offset) {
@@ -216,58 +224,58 @@ class _HttpDataPageState extends State<_HttpDataPage> {
     }
   }
 
-  Widget get showUrl => Universal(
-        addCard: true,
-        margin: EdgeInsets.fromLTRB(10, getStatusBarHeight + 30, 10, 10),
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: Colors.grey.withOpacity(0.3))),
-        child: ScrollList.builder(
-            itemCount: httpDataList.length,
-            padding: const EdgeInsets.all(10),
-            itemBuilder: (_, int index) {
-              final ResponseModel res = httpDataList[index];
-              bool showJson = false;
-              return Universal(
+  Widget get httpDataWidget => Universal(
+      width: double.infinity,
+      margin: EdgeInsets.only(top: context.mediaQueryPadding.top + 100),
+      decoration: BoxDecoration(
+          color: context.theme.cardColor,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(10))),
+      child: ScrollList.builder(
+          itemCount: httpDataList.length,
+          padding: const EdgeInsets.all(10),
+          itemBuilder: (_, int index) {
+            final ResponseModel res = httpDataList[index];
+            return Universal(
                 onLongPress: () {
                   res.toMap().toString().toClipboard;
                   showToast('已复制');
                 },
                 margin: const EdgeInsets.only(top: 10),
                 decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(6),
                     color: context.theme.cardColor,
-                    boxShadow: getBaseBoxShadow(context.theme.shadowColor)),
-                addCard: true,
-                child: StatefulBuilder(
-                    builder: (_, StateSetter state) => !showJson
-                        ? title(res.requestOptions.uri.path, onTap: () {
-                            showJson = !showJson;
-                            state(() {});
-                          })
-                        : Column(children: <Widget>[
-                            title(res.requestOptions.uri.path, onTap: () {
-                              showJson = !showJson;
-                              state(() {});
-                            }),
-                            JsonParse(<String, dynamic>{
-                              'requestOptions': res.requestOptionsToMap(),
-                              'responseData': res.data is Map
-                                  ? res.data
-                                  : <String, dynamic>{
-                                      'data': res.data.toString()
-                                    },
-                            }),
-                          ])),
-              );
-            }),
-      );
+                    boxShadow: getBoxShadow(
+                        color: context.theme.shadowColor.withOpacity(0.1),
+                        radius: 2)),
+                child: ValueBuilder<bool>(
+                    initialValue: false,
+                    builder: (_, bool? show, updater) {
+                      show ??= false;
+                      return !show
+                          ? title(res.requestOptions.uri.path, onTap: () {
+                              updater(true);
+                            })
+                          : Column(children: <Widget>[
+                              title(res.requestOptions.uri.path, onTap: () {
+                                updater(false);
+                              }),
+                              JsonParse(<String, dynamic>{
+                                'requestOptions': res.requestOptionsToMap(),
+                                'response': res.data is Map
+                                    ? res.data
+                                    : <String, dynamic>{
+                                        'data': res.data.toString()
+                                      },
+                              }),
+                            ]);
+                    }));
+          }));
 
   Widget title(String url, {GestureTapCallback? onTap}) => SimpleButton(
       padding: const EdgeInsets.all(10),
+      width: double.infinity,
       text: url,
       maxLines: 2,
-      child: BText(url,
-          textAlign: TextAlign.start, color: Colors.black, fontSize: 13),
+      child: BText(url, textAlign: TextAlign.start, fontSize: 13),
       onTap: onTap);
 }

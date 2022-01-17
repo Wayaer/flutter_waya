@@ -1,7 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_curiosity/flutter_curiosity.dart';
-import 'package:flutter_waya/flutter_waya.dart';
-import 'package:app/module/popup_windows_page.dart';
 import 'package:app/module/button_page.dart';
 import 'package:app/module/carousel_page.dart';
 import 'package:app/module/components_page.dart';
@@ -9,10 +5,14 @@ import 'package:app/module/extension_page.dart';
 import 'package:app/module/gesture_page.dart';
 import 'package:app/module/json_parse_page.dart';
 import 'package:app/module/pages.dart';
+import 'package:app/module/popup_windows_page.dart';
 import 'package:app/module/progress_page.dart';
 import 'package:app/module/refresh_page.dart';
 import 'package:app/module/scroll_page.dart';
 import 'package:app/module/universal_page.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_curiosity/flutter_curiosity.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 
 bool isCustomApp = false;
 
@@ -160,7 +160,7 @@ class ElevatedText extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 6),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
-          boxShadow: getBaseBoxShadow(context.theme.canvasColor),
+          boxShadow: getBoxShadow(color: context.theme.canvasColor),
           color: context.theme.primaryColor,
           borderRadius: BorderRadius.circular(4)),
       child: BText(text, color: Colors.white));

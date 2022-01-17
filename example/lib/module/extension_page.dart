@@ -1,6 +1,6 @@
+import 'package:app/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:app/main.dart';
 
 class ExtensionPage extends StatelessWidget {
   const ExtensionPage({Key? key}) : super(key: key);
@@ -316,7 +316,7 @@ class _Item extends StatelessWidget {
         decoration: BoxDecoration(
             color: context.theme.cardColor,
             borderRadius: BorderRadius.circular(6),
-            boxShadow: getBaseBoxShadow(context.theme.shadowColor)),
+            boxShadow: getBoxShadow(color: context.theme.shadowColor)),
         children: [
           RText(textAlign: TextAlign.start, texts: [
             'use :   ',

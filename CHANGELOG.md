@@ -1,3 +1,9 @@
+## 1.18.2
+
+* Refactoring log tool
+* Add `getBoxShadow()`
+* `JsonParse` adds long-press replication
+
 ## 1.18.1
 
 * Delete useless parameters
