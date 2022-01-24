@@ -453,6 +453,7 @@ class ExpansionTiles extends StatefulWidget {
     this.leading,
     required this.title,
     this.children = const <Widget>[],
+    this.child,
     this.initiallyExpanded = false,
     this.subtitle,
     this.backgroundColor,
@@ -474,6 +475,9 @@ class ExpansionTiles extends StatefulWidget {
 
   /// 子元素，
   final List<Widget> children;
+
+  /// 自定义子元素
+  final Widget? child;
 
   /// 展开时的背景颜色，
   final Color? backgroundColor;
@@ -551,7 +555,7 @@ class _ExpansionTilesState extends State<ExpansionTiles>
     final bool closed = !_isExpanded && _controller.isDismissed;
     return AnimatedBuilder(
         animation: _controller.view,
-        builder: (BuildContext context, Widget? child) => Universal(
+        builder: (_, Widget? child) => Universal(
                 color: _backgroundColor.value ?? Colors.transparent,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
@@ -572,7 +576,8 @@ class _ExpansionTilesState extends State<ExpansionTiles>
                       child: Align(
                           heightFactor: _heightFactor.value, child: child))
                 ]),
-        child: closed ? null : Column(children: widget.children));
+        child:
+            closed ? null : widget.child ?? Column(children: widget.children));
   }
 }
 

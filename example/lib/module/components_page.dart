@@ -1,9 +1,9 @@
 import 'dart:math';
 
+import 'package:app/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:app/main.dart';
 
 class ComponentsPage extends StatelessWidget {
   const ComponentsPage({Key? key}) : super(key: key);
@@ -86,10 +86,13 @@ class ComponentsPage extends StatelessWidget {
                     child: BText('item$index')))),
             ExpansionTiles(
                 title: const BText('title'),
-                children: 5.generate((int index) => Universal(
-                    margin: const EdgeInsets.all(12),
-                    alignment: Alignment.centerLeft,
-                    child: BText('item$index')))),
+                child: ScrollList.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (_, int index) => Universal(
+                        margin: const EdgeInsets.all(12),
+                        alignment: Alignment.centerLeft,
+                        child: BText('item$index')),
+                    itemCount: 5)),
             const Partition('Toast'),
             Wrap(
                 children: ToastStyle.values.builder((ToastStyle style) =>
