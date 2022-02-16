@@ -608,10 +608,7 @@ class Universal extends StatelessWidget {
     }
     if (gaussian) backdropFilter(current);
     if (fit != null) current = fittedBox(current);
-    if (opacity != null && opacity! > 0) {
-      current = Opacity(opacity: opacity!, child: current);
-    }
-
+    if (opacity != null) current = Opacity(opacity: opacity!, child: current);
     if (systemOverlayStyle != null) current = annotatedRegionWidget(current);
     if (offstage) current = offstageWidget(current);
     if (!visible) current = visibilityWidget(current);

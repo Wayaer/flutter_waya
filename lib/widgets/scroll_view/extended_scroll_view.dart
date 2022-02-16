@@ -60,6 +60,7 @@ class ExtendedScrollView extends StatefulWidget {
         cacheExtent = null,
         semanticChildCount = null,
         keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
+        assert(body != null),
         super(key: key);
 
   /// 是否使用 [NestedScrollView]
@@ -153,7 +154,7 @@ class _ExtendedScrollViewState extends State<ExtendedScrollView> {
       reverse: widget.reverse,
       physics: widget.physics,
       dragStartBehavior: widget.dragStartBehavior,
-      body: widget.body!,
+      body: widget.body ?? const SizedBox(),
       restorationId: widget.restorationId,
       controller: widget.controller,
       scrollBehavior: widget.scrollBehavior,
