@@ -2,7 +2,7 @@
     package="com.waya.example">
 
     <application
-        android:name="io.flutter.app.FlutterApplication"
+        android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:label="Waya">
         <activity

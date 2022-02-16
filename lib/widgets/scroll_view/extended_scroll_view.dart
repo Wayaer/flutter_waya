@@ -255,7 +255,7 @@ class ExtendedSliverAppBar extends SliverAppBar {
     /// 已被限制显示最高为 [kToolbarHeight]
     /// SliverAppBar的底部区
     Widget? bottom,
-    Size? bottomSize,
+    Size bottomSize = const Size(double.infinity, kToolbarHeight),
 
     /// 阴影
     double? elevation,
@@ -346,7 +346,7 @@ class ExtendedSliverAppBar extends SliverAppBar {
             shadowColor: shadowColor,
             bottom: bottom == null
                 ? null
-                : PreferredSize(child: bottom, preferredSize: bottomSize!),
+                : PreferredSize(child: bottom, preferredSize: bottomSize),
             flexibleSpace: flexibleSpace ??
                 (flexibleSpaceTitle != null || background != null
                     ? FlexibleSpaceBar(
