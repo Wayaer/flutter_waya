@@ -147,12 +147,59 @@ class DateTimePickerUnit {
   /// 设置 null 不显示
   /// [year] == null 不显示年
   const DateTimePickerUnit(
+      {this.year, this.month, this.day, this.hour, this.minute, this.second});
+
+  const DateTimePickerUnit.md({
+    this.month = 'M',
+    this.day = 'D',
+  })  : year = null,
+        hour = null,
+        minute = null,
+        second = null;
+
+  const DateTimePickerUnit.ym({
+    this.year = 'Y',
+    this.month = 'M',
+  })  : day = null,
+        hour = null,
+        minute = null,
+        second = null;
+
+  const DateTimePickerUnit.date({
+    this.year = 'Y',
+    this.month = 'M',
+    this.day = 'D',
+  })  : hour = null,
+        minute = null,
+        second = null;
+
+  const DateTimePickerUnit.time(
+      {this.hour = 'H', this.minute = 'M', this.second = 'S'})
+      : year = null,
+        month = null,
+        day = null;
+
+  const DateTimePickerUnit.hm(
+      {this.hour = 'H', this.minute = 'M', this.second = 'S'})
+      : year = null,
+        month = null,
+        day = null;
+
+  const DateTimePickerUnit.all(
       {this.year = 'Y',
       this.month = 'M',
       this.day = 'D',
       this.hour = 'H',
       this.minute = 'M',
       this.second = 'S'});
+
+  const DateTimePickerUnit.yhm({
+    this.year = 'Y',
+    this.month = 'M',
+    this.day = 'D',
+    this.hour = 'H',
+    this.minute = 'M',
+  }) : second = null;
 
   final String? year;
   final String? month;

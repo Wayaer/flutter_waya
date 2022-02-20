@@ -459,7 +459,7 @@ class MultipleChoicePicker extends StatelessWidget {
 class DateTimePicker extends _PickerConfig<DateTime> {
   DateTimePicker({
     Key? key,
-    this.unit = const DateTimePickerUnit(),
+    this.unit = const DateTimePickerUnit.all(),
     this.showUnit = true,
     this.dual = true,
     this.unitStyle,
@@ -539,30 +539,32 @@ class _DateTimePickerState extends State<DateTimePicker> {
       final int year = (endDate.year - startDate.year) + 1;
       yearData = year.generate((int index) => startDate.year + index);
       yearIndex = defaultDate.year - startDate.year;
+    } else {
+      yearData = [defaultDate.year];
     }
+    monthData = addList(12);
+    monthIndex = defaultDate.month - 1;
     if (unit.month != null) {
-      monthData = addList(12);
-      monthIndex = defaultDate.month - 1;
       controllerMonth = FixedExtentScrollController(initialItem: monthIndex);
     }
+    dayData = calculateDayNumber(isFirst: true);
+    dayIndex = defaultDate.day - 1;
     if (unit.day != null) {
-      dayData = calculateDayNumber(isFirst: true);
-      dayIndex = defaultDate.day - 1;
       controllerDay = FixedExtentScrollController(initialItem: dayIndex);
     }
+    hourData = addList(24);
+    hourIndex = defaultDate.hour;
     if (unit.hour != null) {
-      hourData = addList(24);
-      hourIndex = defaultDate.hour;
       controllerHour = FixedExtentScrollController(initialItem: hourIndex);
     }
+    minuteData = addList(60);
+    minuteIndex = defaultDate.minute;
     if (unit.minute != null) {
-      minuteData = addList(60);
-      minuteIndex = defaultDate.minute;
       controllerMinute = FixedExtentScrollController(initialItem: minuteIndex);
     }
+    secondData = addList(60);
+    secondIndex = defaultDate.second;
     if (unit.second != null) {
-      secondData = addList(60);
-      secondIndex = defaultDate.second;
       controllerSecond = FixedExtentScrollController(initialItem: secondIndex);
     }
   }
@@ -619,12 +621,12 @@ class _DateTimePickerState extends State<DateTimePicker> {
     if (isScrolling) return;
     isScrolling = true;
     final DateTime currentDate = DateTime(
-        yearData.isEmpty ? defaultDate.year : yearData[yearIndex],
-        monthData.isEmpty ? (defaultDate.month + 1) : monthData[monthIndex] + 1,
-        dayData.isEmpty ? (defaultDate.day + 1) : dayData[dayIndex] + 1,
-        hourData.isEmpty ? (defaultDate.hour) : hourData[hourIndex],
-        minuteData.isEmpty ? (defaultDate.minute) : minuteData[minuteIndex],
-        secondData.isEmpty ? (defaultDate.second) : secondData[secondIndex]);
+        yearData[yearIndex],
+        monthData[monthIndex] + 1,
+        dayData[dayIndex] + 1,
+        hourData[hourIndex],
+        minuteData[minuteIndex],
+        secondData[secondIndex]);
     if (currentDate.millisecondsSinceEpoch < startDate.millisecondsSinceEpoch) {
       if (currentDate.month < startDate.month) {
         jumpToIndex(startDate.month - 1, controllerMonth);
