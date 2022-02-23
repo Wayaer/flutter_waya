@@ -420,41 +420,6 @@ class _AreaPickerState extends State<AreaPicker> {
       controller.jumpToItem(index);
 }
 
-/// 单列选择
-class MultipleChoicePicker extends StatelessWidget {
-  MultipleChoicePicker({
-    Key? key,
-    this.initialIndex,
-    required this.itemCount,
-    required this.itemBuilder,
-    PickerOptions<int>? options,
-    this.wheelOptions,
-    FixedExtentScrollController? controller,
-  })  : controller = controller ??
-            FixedExtentScrollController(initialItem: initialIndex ?? 0),
-        options = options ?? PickerOptions<int>(),
-        super(key: key);
-  final PickerOptions<int> options;
-  final PickerWheelOptions? wheelOptions;
-  final int? initialIndex;
-  final int itemCount;
-  final IndexedWidgetBuilder itemBuilder;
-  final FixedExtentScrollController? controller;
-
-  @override
-  Widget build(BuildContext context) => PickerSubject<int>(
-      options: options,
-      child: SizedBox(
-          width: double.infinity,
-          height: kPickerDefaultHeight,
-          child: _PickerListWheel(
-              wheel: wheelOptions ?? GlobalOptions().pickerWheelOptions,
-              controller: controller,
-              itemBuilder: itemBuilder,
-              itemCount: itemCount)),
-      sureTap: () => controller?.selectedItem ?? 0);
-}
-
 /// 日期时间选择器
 class DateTimePicker extends _PickerConfig<DateTime> {
   DateTimePicker({
@@ -799,4 +764,176 @@ class _DateTimePickerState extends State<DateTimePicker> {
       {Duration? duration}) {
     controller?.jumpToItem(index);
   }
+}
+
+/// 单列选择
+class MultipleChoicePicker extends StatelessWidget {
+  MultipleChoicePicker({
+    Key? key,
+    this.initialIndex,
+    required this.itemCount,
+    required this.itemBuilder,
+    PickerOptions<int>? options,
+    this.wheelOptions,
+    FixedExtentScrollController? controller,
+  })  : controller = controller ??
+            FixedExtentScrollController(initialItem: initialIndex ?? 0),
+        options = options ?? PickerOptions<int>(),
+        super(key: key);
+  final PickerOptions<int> options;
+  final PickerWheelOptions? wheelOptions;
+  final int? initialIndex;
+  final int itemCount;
+  final IndexedWidgetBuilder itemBuilder;
+  final FixedExtentScrollController? controller;
+
+  @override
+  Widget build(BuildContext context) => PickerSubject<int>(
+      options: options,
+      child: SizedBox(
+          width: double.infinity,
+          height: kPickerDefaultHeight,
+          child: _PickerListWheel(
+              wheel: wheelOptions ?? GlobalOptions().pickerWheelOptions,
+              controller: controller,
+              itemBuilder: itemBuilder,
+              itemCount: itemCount)),
+      sureTap: () => controller?.selectedItem ?? 0);
+}
+
+class PickerEntry {
+  const PickerEntry({required this.text, this.children = const []});
+
+  final Widget text;
+
+  final List<PickerEntry> children;
+}
+
+/// 多列选择
+class MultiColumnChoicePicker extends StatefulWidget {
+  MultiColumnChoicePicker({
+    Key? key,
+    PickerOptions<List<int>>? options,
+    this.wheelOptions,
+    required this.entry,
+  })  : options = options ?? PickerOptions<List<int>>(),
+        super(key: key);
+
+  final PickerOptions<List<int>> options;
+
+  final PickerWheelOptions? wheelOptions;
+
+  final List<PickerEntry> entry;
+
+  @override
+  _MultiColumnChoicePickerState createState() =>
+      _MultiColumnChoicePickerState();
+}
+
+class _MultiColumnChoicePickerState extends State<MultiColumnChoicePicker> {
+  List<PickerEntry> entry = [];
+  List<int> positions = [];
+
+  List<FixedExtentScrollController> controllers = [];
+
+  bool isInit = false;
+
+  @override
+  void initState() {
+    super.initState();
+    entry = widget.entry;
+  }
+
+  int currentListLength = 0;
+
+  void calculateListLength(List<PickerEntry> list, bool isFirst) {
+    if (isFirst) currentListLength = 0;
+    log('是否第一个计算$isFirst $currentListLength  ${positions.length}');
+    if (list.isNotEmpty) {
+      List<PickerEntry> subsetList = [];
+      if (currentListLength >= positions.length) {
+        log('添加新的下标位置');
+        positions.add(0);
+        controllers.add(FixedExtentScrollController());
+        subsetList = list.first.children;
+      } else if (currentListLength < positions.length) {
+        log('获取旧的下标${positions[currentListLength]}');
+
+        final index = positions[currentListLength];
+        if (list.length >= index) {
+          subsetList = list[index].children;
+        } else {
+          log('走到这里了');
+        }
+        log('子集长度  ${subsetList.length}');
+      }
+      currentListLength += 1;
+      calculateListLength(subsetList, false);
+    } else {
+      while (positions.length > currentListLength) {
+        log('移出多余的');
+        positions.removeLast();
+        controllers.last.dispose();
+        controllers.removeLast();
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    calculateListLength(entry, true);
+    List<Widget> list = [];
+    log('当前 行维度$currentListLength 当前行定位$positions');
+    List<PickerEntry> currentEntry = entry;
+    positions.length.generate((index) {
+      final itemPosition = positions[index];
+      log('取值=$itemPosition=====');
+      log('$index 列渲染的 list ${currentEntry.builder((p0) => (p0.text as Text).data)}');
+      if (currentEntry.isNotEmpty) {
+        list.add(listWheel(
+            initialIndex: itemPosition,
+            list: currentEntry,
+            controller: controllers[index]));
+        log('$index 获取当前 currentEntry ${currentEntry.builder((p0) => (p0.text as Text).data)}');
+        currentEntry = currentEntry[itemPosition].children;
+      }
+    });
+    return PickerSubject<List<int>>(
+        options: widget.options,
+        sureTap: () {
+          return [0];
+        },
+        child: SizedBox(
+            width: double.infinity,
+            height: kPickerDefaultHeight,
+            child: ScrollList.builder(
+                itemCount: list.length,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (_, int index) {
+                  return SizedBox(
+                      height: kPickerDefaultHeight,
+                      child: list[index],
+                      width: kPickerDefaultHeight / 2);
+                })));
+  }
+
+  Widget listWheel(
+          {required List<PickerEntry> list,
+          required int initialIndex,
+          required FixedExtentScrollController controller}) =>
+      _PickerListWheel(
+          initialIndex: initialIndex,
+          controller: controller,
+          onScrollEnd: (int index) {
+            final position = controllers.indexOf(controller);
+            positions[position] = index;
+            log('滚动的列位置$position 滚动结束后的下标 $index');
+            log(positions);
+            300.milliseconds.delayed(() {
+              setState(() {});
+            });
+          },
+          itemBuilder: (_, int index) => list[index].text,
+          itemCount: list.length,
+          wheel: widget.wheelOptions ?? GlobalOptions().pickerWheelOptions);
 }

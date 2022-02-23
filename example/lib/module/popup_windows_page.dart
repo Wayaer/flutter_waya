@@ -1,7 +1,7 @@
+import 'package:app/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:app/main.dart';
 
 TapDownDetails? _details;
 
@@ -21,6 +21,8 @@ class PopupWindowsPage extends StatelessWidget {
               ElevatedText('showCustomPicker', onTap: _showCustomPicker),
               ElevatedText('showAreaPicker', onTap: selectCity),
               ElevatedText('showMultipleChoicePicker', onTap: showChoicePicker),
+              ElevatedText('showMultiColumnChoicePicker',
+                  onTap: showMultiColumnChoicePicker),
               ElevatedText('showDateTimePicker', onTap: selectTime),
               const Partition('Popup'),
               ElevatedText('showBottomPopup', onTap: () {
@@ -152,6 +154,64 @@ class PopupWindowsPage extends StatelessWidget {
   Future<void> selectCity() async {
     final String? data = await showAreaPicker<String>();
     showToast(data.toString());
+  }
+
+  Future<void> showMultiColumnChoicePicker() async {
+    final List<PickerEntry> list = <PickerEntry>[
+      const PickerEntry(text: Text('A1'), children: [
+        PickerEntry(text: Text('A2')),
+      ]),
+      const PickerEntry(text: Text('B1'), children: [
+        PickerEntry(text: Text('B2'), children: [
+          PickerEntry(text: Text('B3')),
+          PickerEntry(text: Text('B3')),
+          PickerEntry(text: Text('B3')),
+        ]),
+        PickerEntry(text: Text('B2')),
+      ]),
+      const PickerEntry(text: Text('C1'), children: [
+        PickerEntry(text: Text('C2'), children: [
+          PickerEntry(text: Text('C3'), children: [
+            PickerEntry(text: Text('C4'), children: [
+              PickerEntry(text: Text('C5'), children: [
+                PickerEntry(text: Text('C6'), children: [
+                  PickerEntry(text: Text('C7'), children: [
+                    PickerEntry(text: Text('C8')),
+                    PickerEntry(text: Text('C8')),
+                    PickerEntry(text: Text('C8')),
+                  ]),
+                  PickerEntry(text: Text('C7')),
+                  PickerEntry(text: Text('C7')),
+                ]),
+                PickerEntry(text: Text('C6')),
+                PickerEntry(text: Text('C6')),
+              ]),
+              PickerEntry(text: Text('C5')),
+              PickerEntry(text: Text('C5')),
+            ]),
+            PickerEntry(text: Text('C4')),
+            PickerEntry(text: Text('C4')),
+          ]),
+          PickerEntry(text: Text('C3')),
+          PickerEntry(text: Text('C3')),
+        ]),
+        PickerEntry(text: Text('C2')),
+        PickerEntry(text: Text('C2')),
+      ]),
+      const PickerEntry(text: Text('D1'), children: [
+        PickerEntry(text: Text('D2'), children: [
+          PickerEntry(text: Text('D3')),
+          PickerEntry(text: Text('D3')),
+          PickerEntry(text: Text('D3')),
+        ]),
+        PickerEntry(text: Text('D2')),
+        PickerEntry(text: Text('D2')),
+        PickerEntry(text: Text('D2')),
+      ])
+    ];
+    final int? index =
+        await showBottomPopup(widget: MultiColumnChoicePicker(entry: list));
+    showToast(index == null ? 'null' : list[index].toString());
   }
 
   Future<void> showChoicePicker() async {

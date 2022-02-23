@@ -7,6 +7,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 extension ExtensionWidget on Widget {
+  SliverToBoxAdapter sliverToBoxAdapter({Key? key}) =>
+      SliverToBoxAdapter(key: key, child: this);
+
   WidgetBuilder get toWidgetBuilder => (_) => this;
 
   RoutePageBuilder get toRoutePageBuilder =>
