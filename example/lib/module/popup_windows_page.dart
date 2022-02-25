@@ -18,12 +18,13 @@ class PopupWindowsPage extends StatelessWidget {
             isScroll: true,
             children: <Widget>[
               const Partition('Picker'),
-              ElevatedText('showCustomPicker', onTap: _showCustomPicker),
+              ElevatedText('showCustomPicker', onTap: customPicker),
               ElevatedText('showAreaPicker', onTap: selectCity),
-              ElevatedText('showMultipleChoicePicker', onTap: showChoicePicker),
-              ElevatedText('showMultiColumnChoicePicker',
-                  onTap: showMultiColumnChoicePicker),
               ElevatedText('showDateTimePicker', onTap: selectTime),
+              ElevatedText('showSingleColumnPicker', onTap: singleColumnPicker),
+              ElevatedText('showMultiColumnPicker', onTap: multiColumnPicker),
+              ElevatedText('showMultiColumnLinkagePicker',
+                  onTap: multiColumnLinkagePicker),
               const Partition('Popup'),
               ElevatedText('showBottomPopup', onTap: () {
                 showBottomPopup<dynamic>(
@@ -60,7 +61,7 @@ class PopupWindowsPage extends StatelessWidget {
               }),
               const Partition('Other'),
               ElevatedText('showDoubleChooseWindows',
-                  onTap: () => showDoubleChoose(context)),
+                  onTap: () => doubleChooseWindows(context)),
               ElevatedText('showSnackBar', onTap: () {
                 showSnackBar(const SnackBar(content: BText('Popup SnackBar')));
               }),
@@ -71,11 +72,10 @@ class PopupWindowsPage extends StatelessWidget {
       );
 
   void showOverlayLoading() => showLoading(
-        options: const ModalWindowsOptions(gaussian: true, onTap: closeOverlay),
-        custom: const SpinKitThreeBounce(color: Colors.red),
-      );
+      options: const ModalWindowsOptions(gaussian: true, onTap: closeOverlay),
+      custom: const SpinKitThreeBounce(color: Colors.red));
 
-  void showDoubleChoose(BuildContext context) {
+  void doubleChooseWindows(BuildContext context) {
     const bool isOverlay = false;
     showDoubleChooseWindows<dynamic>(
         isOverlay: isOverlay,
@@ -110,108 +110,132 @@ class PopupWindowsPage extends StatelessWidget {
           showToast(dateTime?.format(DateTimeDist.yearSecond) ?? 'cancel');
           return true;
         }),
-        unit: const DateTimePickerUnit(second: null),
         startDate: DateTime(2020, 8, 9, 9, 9, 9),
         defaultDate: DateTime(2021, 9, 21, 8, 8, 8),
         endDate: DateTime(2022, 10, 20, 10, 10, 10));
     showToast(dateTime?.format(DateTimeDist.yearSecond) ?? 'null');
   }
 
-  Future<void> _showCustomPicker() async {
+  Future<void> customPicker() async {
     final String? data = await showCustomPicker<String?>(
-      bottomSheetOptions:
-          BottomSheetOptions(barrierColor: Colors.red.withOpacity(0.3)),
-      options: PickerOptions<String?>(
-          sureTap: (String? value) {
-            return true;
-          },
-          cancelTap: (String? value) {
-            return true;
-          },
-          title: Container(
-              child: const BText('Title'),
-              alignment: Alignment.center,
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-              decoration: BoxDecoration(
-                  color: Colors.lightBlue,
-                  borderRadius: BorderRadius.circular(6))),
-          backgroundColor: Colors.red),
-      content: Container(
-          height: 300,
-          alignment: Alignment.center,
-          color: Colors.blue.withOpacity(0.2),
-          child: const BText('showCustomPicker', color: Colors.black)),
-      cancelTap: () {
-        return 'Cancel';
-      },
-      // sureTap: () {
-      //   return 'CustomPicker';
-      // },
-    );
+        bottomSheetOptions:
+            BottomSheetOptions(barrierColor: Colors.red.withOpacity(0.3)),
+        options: PickerOptions<String?>(
+            sureTap: (String? value) {
+              return true;
+            },
+            cancelTap: (String? value) {
+              return true;
+            },
+            title: Container(
+                child: const BText('Title'),
+                alignment: Alignment.center,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+                decoration: BoxDecoration(
+                    color: Colors.lightBlue,
+                    borderRadius: BorderRadius.circular(6))),
+            backgroundColor: Colors.red),
+        content: Container(
+            height: 300,
+            alignment: Alignment.center,
+            color: Colors.blue.withOpacity(0.2),
+            child: const BText('showCustomPicker', color: Colors.black)),
+        cancelTap: () {
+          return 'Cancel';
+        });
     showToast(data.toString());
   }
 
   Future<void> selectCity() async {
-    final String? data = await showAreaPicker<String>();
+    final String? data = await showAreaPicker<String>(
+        defaultProvince: '四川省', defaultCity: '绵阳市');
     showToast(data.toString());
   }
 
-  Future<void> showMultiColumnChoicePicker() async {
+  Future<void> multiColumnPicker() async {
+    List<String> listString = ['A', 'B', 'C', 'D', 'E', 'F'];
     final List<PickerEntry> list = <PickerEntry>[
-      const PickerEntry(text: Text('A1'), children: [
-        PickerEntry(text: Text('A2')),
-      ]),
-      const PickerEntry(text: Text('B1'), children: [
-        PickerEntry(text: Text('B2'), children: [
-          PickerEntry(text: Text('B3')),
-          PickerEntry(text: Text('B3')),
-          PickerEntry(text: Text('B3')),
-        ]),
-        PickerEntry(text: Text('B2')),
-      ]),
-      const PickerEntry(text: Text('C1'), children: [
-        PickerEntry(text: Text('C2'), children: [
-          PickerEntry(text: Text('C3'), children: [
-            PickerEntry(text: Text('C4'), children: [
-              PickerEntry(text: Text('C5'), children: [
-                PickerEntry(text: Text('C6'), children: [
-                  PickerEntry(text: Text('C7'), children: [
-                    PickerEntry(text: Text('C8')),
-                    PickerEntry(text: Text('C8')),
-                    PickerEntry(text: Text('C8')),
-                  ]),
-                  PickerEntry(text: Text('C7')),
-                  PickerEntry(text: Text('C7')),
-                ]),
-                PickerEntry(text: Text('C6')),
-                PickerEntry(text: Text('C6')),
-              ]),
-              PickerEntry(text: Text('C5')),
-              PickerEntry(text: Text('C5')),
-            ]),
-            PickerEntry(text: Text('C4')),
-            PickerEntry(text: Text('C4')),
-          ]),
-          PickerEntry(text: Text('C3')),
-          PickerEntry(text: Text('C3')),
-        ]),
-        PickerEntry(text: Text('C2')),
-        PickerEntry(text: Text('C2')),
-      ]),
-      const PickerEntry(text: Text('D1'), children: [
-        PickerEntry(text: Text('D2'), children: [
-          PickerEntry(text: Text('D3')),
-          PickerEntry(text: Text('D3')),
-          PickerEntry(text: Text('D3')),
-        ]),
-        PickerEntry(text: Text('D2')),
-        PickerEntry(text: Text('D2')),
-        PickerEntry(text: Text('D2')),
-      ])
+      PickerEntry(
+          itemCount: listString.length,
+          itemBuilder: (_, int index) => Text(listString[index])),
+      PickerEntry(
+          itemCount: listString.length,
+          itemBuilder: (_, int index) =>
+              Text('${listString[index]}${listString[index]}')),
+      PickerEntry(
+          itemCount: listString.length,
+          itemBuilder: (_, int index) =>
+              Text('${listString[index]}${listString[index]}')),
+      PickerEntry(
+          itemCount: listString.length,
+          itemBuilder: (_, int index) =>
+              Text('${listString[index]}${listString[index]}')),
+      PickerEntry(
+          itemCount: listString.length,
+          itemBuilder: (_, int index) =>
+              Text('${listString[index]}${listString[index]}')),
+      PickerEntry(
+          itemCount: listString.length,
+          itemBuilder: (_, int index) =>
+              Text('${listString[index]}${listString[index]}')),
     ];
-    final List<int>? index = await showBottomPopup(
-        widget: MultiColumnChoicePicker(entry: list, horizontalScroll: true));
-    List<PickerEntry> resultList = list;
+    final List<int>? index =
+        await showMultiColumnPicker(entry: list, horizontalScroll: true);
+    if (index != null) {
+      String result =
+          '${listString[index.first]}-${listString[index.last]}${listString[index.last]}';
+      if (result.isNotEmpty) showToast(result);
+    }
+  }
+
+  Future<void> multiColumnLinkagePicker() async {
+    final List<PickerLinkageEntry> list = <PickerLinkageEntry>[
+      const PickerLinkageEntry(text: Text('A1'), children: [
+        PickerLinkageEntry(text: Text('A2')),
+      ]),
+      const PickerLinkageEntry(text: Text('B1'), children: [
+        PickerLinkageEntry(text: Text('B2'), children: [
+          PickerLinkageEntry(text: Text('B3')),
+          PickerLinkageEntry(text: Text('B3')),
+          PickerLinkageEntry(text: Text('B3')),
+        ]),
+        PickerLinkageEntry(text: Text('B2')),
+      ]),
+      const PickerLinkageEntry(text: Text('C1'), children: [
+        PickerLinkageEntry(text: Text('C2'), children: [
+          PickerLinkageEntry(text: Text('C3'), children: [
+            PickerLinkageEntry(text: Text('C4'), children: [
+              PickerLinkageEntry(text: Text('C5'), children: [
+                PickerLinkageEntry(text: Text('C6'), children: [
+                  PickerLinkageEntry(text: Text('C7'), children: [
+                    PickerLinkageEntry(text: Text('C8')),
+                    PickerLinkageEntry(text: Text('C8')),
+                    PickerLinkageEntry(text: Text('C8')),
+                  ]),
+                  PickerLinkageEntry(text: Text('C7')),
+                  PickerLinkageEntry(text: Text('C7')),
+                ]),
+                PickerLinkageEntry(text: Text('C6')),
+                PickerLinkageEntry(text: Text('C6')),
+              ]),
+              PickerLinkageEntry(text: Text('C5')),
+              PickerLinkageEntry(text: Text('C5')),
+            ]),
+            PickerLinkageEntry(text: Text('C4')),
+            PickerLinkageEntry(text: Text('C4')),
+          ]),
+          PickerLinkageEntry(text: Text('C3')),
+          PickerLinkageEntry(text: Text('C3')),
+        ]),
+        PickerLinkageEntry(text: Text('C2')),
+        PickerLinkageEntry(text: Text('C2')),
+      ]),
+      const PickerLinkageEntry(text: Text('D1'), children: [])
+    ];
+    final List<int>? index = await showMultiColumnLinkagePicker(
+        entry: list, horizontalScroll: false);
+    List<PickerLinkageEntry> resultList = list;
     String result = '';
     index?.builder((item) {
       result += (resultList[item].text as Text).data!;
@@ -220,19 +244,9 @@ class PopupWindowsPage extends StatelessWidget {
     if (result.isNotEmpty) showToast(result);
   }
 
-  Future<void> showChoicePicker() async {
-    final List<String> list = <String>[
-      '一',
-      '二',
-      '三',
-      '四',
-      '五',
-      '六',
-      '七',
-      '八',
-      '十'
-    ];
-    final int? index = await showMultipleChoicePicker<int>(
+  Future<void> singleColumnPicker() async {
+    final list = <String>['一', '二', '三', '四', '五', '六', '七', '八', '十'];
+    final int? index = await showSingleColumnPicker<int>(
         itemBuilder: (BuildContext context, int index) => Container(
             alignment: Alignment.center,
             child: Text(list[index], style: context.textTheme.bodyText1)),

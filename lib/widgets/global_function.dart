@@ -238,7 +238,7 @@ Future<DateTime?> showDateTimePicker<T>({
   bool showUnit = true,
 
   /// 单位设置
-  DateTimePickerUnit unit = const DateTimePickerUnit(),
+  DateTimePickerUnit unit = const DateTimePickerUnit.all(),
 
   /// 头部和背景色配置
   PickerOptions<DateTime>? options,
@@ -297,9 +297,11 @@ Future<String?> showAreaPicker<T>({
 
 /// wheel 单列 取消确认 选择
 /// 关闭 closePopup()
-Future<int?> showMultipleChoicePicker<T>({
+Future<int?> showSingleColumnPicker<T>({
   /// 默认选中
-  int? initialIndex,
+  int initialIndex = 0,
+
+  /// 渲染子组件
   required int itemCount,
   required IndexedWidgetBuilder itemBuilder,
 
@@ -313,12 +315,77 @@ Future<int?> showMultipleChoicePicker<T>({
   BottomSheetOptions? bottomSheetOptions,
 }) {
   GlobalOptions().globalNavigatorKey.currentContext!.focusNode();
-  final Widget widget = MultipleChoicePicker(
+  final Widget widget = SingleColumnPicker(
       itemCount: itemCount,
       itemBuilder: itemBuilder,
       options: options,
       wheelOptions: wheelOptions,
       initialIndex: initialIndex);
+  return showBottomPopup(widget: widget, options: bottomSheetOptions);
+}
+
+/// wheel 多列 取消 确认 选择 不联动
+/// 关闭 closePopup()
+Future<List<int>?> showMultiColumnPicker<T>({
+  required List<PickerEntry> entry,
+
+  /// 头部和背景色配置
+  PickerOptions<List<int>>? options,
+
+  /// Wheel配置信息
+  PickerWheelOptions? wheelOptions,
+
+  /// 是否可以横向滚动
+  /// [horizontalScroll]==true 使用[SingleChildScrollView]创建,[wheelOptions]中的[itemWidth]控制宽度，如果不设置则为[kPickerDefaultWidth]
+  /// [horizontalScroll]==false 使用[Row] 创建每个滚动，居中显示
+  bool horizontalScroll = false,
+
+  /// [horizontalScroll]==false
+  bool addExpanded = true,
+
+  /// BottomSheet 配置
+  BottomSheetOptions? bottomSheetOptions,
+}) {
+  GlobalOptions().globalNavigatorKey.currentContext!.focusNode();
+  final Widget widget = MultiColumnPicker(
+      horizontalScroll: horizontalScroll,
+      addExpanded: addExpanded,
+      entry: entry,
+      options: options,
+      wheelOptions: wheelOptions);
+  return showBottomPopup(widget: widget, options: bottomSheetOptions);
+}
+
+/// wheel 多列 取消 确认 选择 联动
+/// 关闭 closePopup()
+Future<List<int>?> showMultiColumnLinkagePicker<T>({
+  /// 头部和背景色配置
+  PickerOptions<List<int>>? options,
+
+  /// 要渲染的数据
+  required List<PickerLinkageEntry> entry,
+
+  /// 是否可以横向滚动
+  /// [horizontalScroll]==true 使用[SingleChildScrollView]创建,[wheelOptions]中的[itemWidth]控制宽度，如果不设置则为[kPickerDefaultWidth]
+  /// [horizontalScroll]==false 使用[Row] 创建每个滚动，居中显示
+  bool horizontalScroll = false,
+
+  /// [horizontalScroll]==false
+  bool addExpanded = true,
+
+  /// Wheel配置信息
+  PickerWheelOptions? wheelOptions,
+
+  /// BottomSheet 配置
+  BottomSheetOptions? bottomSheetOptions,
+}) {
+  GlobalOptions().globalNavigatorKey.currentContext!.focusNode();
+  final Widget widget = MultiColumnLinkagePicker(
+      horizontalScroll: horizontalScroll,
+      addExpanded: addExpanded,
+      entry: entry,
+      options: options,
+      wheelOptions: wheelOptions);
   return showBottomPopup(widget: widget, options: bottomSheetOptions);
 }
 

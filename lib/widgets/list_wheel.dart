@@ -98,7 +98,7 @@ class WheelOptions {
 class ListWheel extends StatelessWidget {
   ListWheel({
     Key? key,
-    this.initialIndex = 0,
+    // this.initialIndex = 0,
     this.controller,
     this.itemBuilder,
     this.itemCount,
@@ -130,7 +130,7 @@ class ListWheel extends StatelessWidget {
 
   const ListWheel.builder({
     Key? key,
-    this.initialIndex = 0,
+    // this.initialIndex = 0,
     this.controller,
     required this.itemBuilder,
     required this.itemCount,
@@ -146,7 +146,7 @@ class ListWheel extends StatelessWidget {
 
   const ListWheel.list({
     Key? key,
-    this.initialIndex = 0,
+    // this.initialIndex = 0,
     this.controller,
     this.onScrollEnd,
     required this.children,
@@ -162,7 +162,7 @@ class ListWheel extends StatelessWidget {
 
   const ListWheel.looping({
     Key? key,
-    this.initialIndex = 0,
+    // this.initialIndex = 0,
     this.controller,
     this.onScrollEnd,
     this.children,
@@ -177,7 +177,7 @@ class ListWheel extends StatelessWidget {
         super(key: key);
 
   /// 初始选中的Item
-  final int initialIndex;
+  // final int initialIndex;
 
   final WheelOptions? options;
 
@@ -221,12 +221,6 @@ class ListWheel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (onScrollStart != null ||
-        onScrollEnd != null ||
-        onScrollUpdate != null) {
-      assert(controller != null, 'controller must be added');
-    }
-
     final _options = options ?? GlobalOptions().wheelOptions;
     Widget child;
     if (_options.isCupertino) {
@@ -271,8 +265,7 @@ class ListWheel extends StatelessWidget {
     }
     if (onScrollStart == null &&
         onScrollUpdate == null &&
-        onScrollEnd == null &&
-        controller != null) {
+        onScrollEnd == null) {
       return child;
     }
     return NotificationListener<ScrollNotification>(
@@ -281,15 +274,15 @@ class ListWheel extends StatelessWidget {
             (ScrollNotification notification) {
               if (notification is ScrollStartNotification &&
                   onScrollStart != null) {
-                onScrollStart!(controller!.selectedItem);
+                onScrollStart!(controller?.selectedItem ?? 0);
               } else if (notification is ScrollUpdateNotification &&
                   onScrollUpdate != null) {
-                onScrollUpdate!(controller!.selectedItem);
+                onScrollUpdate!(controller?.selectedItem ?? 0);
               } else if (notification is ScrollEndNotification &&
                   onScrollEnd != null) {
-                onScrollEnd!(controller!.selectedItem);
+                onScrollEnd!(controller?.selectedItem ?? 0);
               }
-              return true;
+              return false;
             });
   }
 }
@@ -380,7 +373,6 @@ class _AutoScrollEntryState extends State<AutoScrollEntry> {
         height: itemHeight,
         child: ListWheel(
           controller: controller,
-          initialIndex: widget.initialIndex,
           options: WheelOptions(
               physics: const NeverScrollableScrollPhysics(),
               onChanged: widget.onChanged ?? (int index) {},

@@ -10,15 +10,16 @@ const double kPickerDefaultWidth = 90;
 
 class PickerOptions<T> {
   PickerOptions({
-    this.titlePadding = const EdgeInsets.symmetric(horizontal: 10),
+    this.top,
+    this.bottom,
+    this.title,
+    this.padding = const EdgeInsets.symmetric(horizontal: 10),
     this.sure = const BText('sure'),
     this.cancel = const BText('cancel'),
     this.backgroundColor,
     this.contentStyle,
     PickerTapSureCallback<T>? sureTap,
     PickerTapCancelCallback<T>? cancelTap,
-    this.titleBottom,
-    this.title,
   })  : sureTap = sureTap ?? ((T? value) => true),
         cancelTap = cancelTap ?? ((T? value) => true);
 
@@ -27,8 +28,11 @@ class PickerOptions<T> {
   Color? backgroundColor;
 
   /// [title]底部内容
-  Widget? titleBottom;
-  EdgeInsetsGeometry titlePadding;
+  Widget? bottom;
+
+  /// [title]顶部内容
+  Widget? top;
+  EdgeInsetsGeometry padding;
 
   /// right
   Widget sure;
@@ -52,8 +56,9 @@ class PickerOptions<T> {
 
   PickerOptions copyWith({
     Color? backgroundColor,
-    Widget? titleBottom,
-    EdgeInsetsGeometry? titlePadding,
+    Widget? bottom,
+    Widget? top,
+    EdgeInsetsGeometry? padding,
     Widget? sure,
     Widget? cancel,
     Widget? title,
@@ -62,8 +67,9 @@ class PickerOptions<T> {
     PickerTapCancelCallback<T>? cancelTap,
   }) {
     if (backgroundColor != null) this.backgroundColor = backgroundColor;
-    if (titleBottom != null) this.titleBottom = titleBottom;
-    if (titlePadding != null) this.titlePadding = titlePadding;
+    if (bottom != null) this.bottom = bottom;
+    if (top != null) this.top = top;
+    if (padding != null) this.padding = padding;
     if (sure != null) this.sure = sure;
     if (cancel != null) this.cancel = cancel;
     if (title != null) this.title = title;
@@ -75,8 +81,9 @@ class PickerOptions<T> {
 
   PickerOptions merge(PickerOptions? options) => copyWith(
       backgroundColor: options?.backgroundColor,
-      titleBottom: options?.titleBottom,
-      titlePadding: options?.titlePadding,
+      top: options?.top,
+      bottom: options?.bottom,
+      padding: options?.padding,
       sure: options?.sure,
       cancel: options?.cancel,
       title: options?.title,
@@ -185,8 +192,9 @@ class PickerSubject<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> columnChildren = <Widget>[];
-    columnChildren.add(Universal(
+    final List<Widget> column = <Widget>[];
+    if (options.top != null) column.add(options.top!);
+    column.add(Universal(
         direction: Axis.horizontal,
         padding: const EdgeInsets.all(10),
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -203,14 +211,14 @@ class PickerSubject<T> extends StatelessWidget {
             if (isPop) closePopup(value);
           }),
         ]));
-    if (options.titleBottom != null) columnChildren.add(options.titleBottom!);
-    columnChildren.add(child);
+    if (options.bottom != null) column.add(options.bottom!);
+    column.add(child);
     return Universal(
         onTap: () {},
-        safeBottom: true,
+        padding: EdgeInsets.only(bottom: context.mediaQueryPadding.bottom),
         mainAxisSize: MainAxisSize.min,
         color: options.backgroundColor,
-        children: columnChildren);
+        children: column);
   }
 }
 
@@ -219,7 +227,6 @@ class _PickerListWheel extends ListWheel {
     Key? key,
     required PickerWheelOptions wheel,
     FixedExtentScrollController? controller,
-    int? initialIndex,
     ListWheelChildDelegateType childDelegateType =
         ListWheelChildDelegateType.builder,
     ValueChanged<int>? onChanged,
@@ -230,7 +237,6 @@ class _PickerListWheel extends ListWheel {
   }) : super(
             key: key,
             controller: controller,
-            initialIndex: initialIndex ?? 0,
             options: WheelOptions(
                 backgroundColor: wheel.backgroundColor,
                 isCupertino: wheel.isCupertino,
@@ -290,7 +296,9 @@ class _AreaPickerState extends State<AreaPicker> {
   int districtIndex = 0;
   int streetIndex = 0;
 
-  late FixedExtentScrollController controllerCity, controllerDistrict;
+  late FixedExtentScrollController controllerProvince,
+      controllerCity,
+      controllerDistrict;
 
   late StateSetter cityState;
   late StateSetter districtState;
@@ -328,6 +336,8 @@ class _AreaPickerState extends State<AreaPicker> {
     /// 街道
     ///  street = districtData[districtIndex];
 
+    controllerProvince =
+        FixedExtentScrollController(initialItem: provinceIndex);
     controllerCity = FixedExtentScrollController(initialItem: cityIndex);
     controllerDistrict =
         FixedExtentScrollController(initialItem: districtIndex);
@@ -343,7 +353,8 @@ class _AreaPickerState extends State<AreaPicker> {
     city = provinceData.keys.toList() as List<String>;
     cityState(() {});
     final Map<dynamic, dynamic> cityData =
-        provinceData[city[cityIndex]] as Map<dynamic, dynamic>;
+        provinceData[city[city.length < cityIndex ? 0 : cityIndex]]
+            as Map<dynamic, dynamic>;
     district = cityData.keys.toList() as List<String>;
     districtState(() {});
     controllerCity.jumpTo(0);
@@ -363,7 +374,7 @@ class _AreaPickerState extends State<AreaPicker> {
     final Row row =
         Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
       Expanded(
-          child: wheelItem(province, initialIndex: provinceIndex,
+          child: wheelItem(province, controller: controllerProvince,
               onChanged: (int newIndex) {
         provinceIndex = newIndex;
         refreshCity();
@@ -396,13 +407,11 @@ class _AreaPickerState extends State<AreaPicker> {
 
   Widget wheelItem(List<String> list,
           {FixedExtentScrollController? controller,
-          int? initialIndex,
           ListWheelChildDelegateType childDelegateType =
               ListWheelChildDelegateType.builder,
           ValueChanged<int>? onChanged}) =>
       _PickerListWheel(
           controller: controller,
-          initialIndex: initialIndex,
           wheel: wheelOptions,
           childDelegateType: childDelegateType,
           children: list.builder((String value) => item(value)),
@@ -423,6 +432,7 @@ class _AreaPickerState extends State<AreaPicker> {
   @override
   void dispose() {
     super.dispose();
+    controllerProvince.dispose();
     controllerCity.dispose();
     controllerDistrict.dispose();
   }
@@ -476,7 +486,8 @@ class _DateTimePickerState extends State<DateTimePicker> {
       minuteData = <int>[],
       secondData = <int>[];
 
-  FixedExtentScrollController? controllerMonth,
+  FixedExtentScrollController? controllerYear,
+      controllerMonth,
       controllerDay,
       controllerHour,
       controllerMinute,
@@ -512,6 +523,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
       final int year = (endDate.year - startDate.year) + 1;
       yearData = year.generate((int index) => startDate.year + index);
       yearIndex = defaultDate.year - startDate.year;
+      controllerYear = FixedExtentScrollController(initialItem: yearIndex);
     } else {
       yearData = [defaultDate.year];
     }
@@ -642,7 +654,8 @@ class _DateTimePickerState extends State<DateTimePicker> {
     final List<Widget> rowChildren = <Widget>[];
     if (unit.year != null) {
       rowChildren.add(wheelItem(yearData,
-          initialIndex: yearIndex, unit: unit.year, onChanged: (int newIndex) {
+          controller: controllerYear,
+          unit: unit.year, onChanged: (int newIndex) {
         yearIndex = newIndex;
         refreshPosition();
       }));
@@ -671,7 +684,6 @@ class _DateTimePickerState extends State<DateTimePicker> {
     if (unit.hour != null) {
       rowChildren.add(wheelItem(hourData,
           unit: unit.hour,
-          initialIndex: hourIndex,
           controller: controllerHour, onChanged: (int newIndex) {
         hourIndex = newIndex;
         refreshPosition();
@@ -680,7 +692,6 @@ class _DateTimePickerState extends State<DateTimePicker> {
 
     if (unit.minute != null) {
       rowChildren.add(wheelItem(minuteData,
-          initialIndex: minuteIndex,
           unit: unit.minute,
           controller: controllerMinute, onChanged: (int newIndex) {
         minuteIndex = newIndex;
@@ -690,7 +701,6 @@ class _DateTimePickerState extends State<DateTimePicker> {
 
     if (unit.second != null) {
       rowChildren.add(wheelItem(secondData,
-          initialIndex: secondIndex,
           unit: unit.second,
           controller: controllerSecond, onChanged: (int newIndex) {
         secondIndex = newIndex;
@@ -700,19 +710,17 @@ class _DateTimePickerState extends State<DateTimePicker> {
     return PickerSubject<DateTime>(
         options: widget.options,
         sureTap: sureTapVoid,
-        child: SizedBox(
-          width: double.infinity,
-          height: kPickerDefaultHeight,
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: rowChildren),
-        ));
+        child: Universal(
+            width: double.infinity,
+            direction: Axis.horizontal,
+            height: kPickerDefaultHeight,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: rowChildren));
   }
 
   Widget wheelItem(List<int> list,
           {FixedExtentScrollController? controller,
           String? unit,
-          int? initialIndex,
           bool startZero = true,
           ValueChanged<int>? onChanged}) =>
       Universal(
@@ -727,7 +735,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
                       child: listWheel(
                           list: list,
                           startZero: startZero,
-                          initialIndex: initialIndex,
+                          // initialIndex: initialIndex,
                           controller: controller,
                           onChanged: onChanged)),
                   Container(
@@ -744,19 +752,17 @@ class _DateTimePickerState extends State<DateTimePicker> {
               : listWheel(
                   list: list,
                   startZero: startZero,
-                  initialIndex: initialIndex,
+                  // initialIndex: initialIndex,
                   controller: controller,
                   onChanged: onChanged));
 
   Widget listWheel(
           {List<int>? list,
           bool startZero = true,
-          int? initialIndex,
           FixedExtentScrollController? controller,
           ValueChanged<int>? onChanged}) =>
       _PickerListWheel(
           controller: controller,
-          initialIndex: initialIndex,
           itemBuilder: (_, int index) => Container(
               alignment: Alignment.center,
               child: BText(
@@ -776,6 +782,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
   @override
   void dispose() {
     super.dispose();
+    controllerYear?.dispose();
     controllerMonth?.dispose();
     controllerDay?.dispose();
     controllerHour?.dispose();
@@ -785,24 +792,31 @@ class _DateTimePickerState extends State<DateTimePicker> {
 }
 
 /// 单列选择
-class MultipleChoicePicker extends StatelessWidget {
-  MultipleChoicePicker({
+class SingleColumnPicker extends StatelessWidget {
+  SingleColumnPicker({
     Key? key,
-    this.initialIndex,
+    int initialIndex = 0,
     required this.itemCount,
     required this.itemBuilder,
     PickerOptions<int>? options,
     this.wheelOptions,
     FixedExtentScrollController? controller,
   })  : controller = controller ??
-            FixedExtentScrollController(initialItem: initialIndex ?? 0),
+            FixedExtentScrollController(initialItem: initialIndex),
         options = options ?? PickerOptions<int>(),
         super(key: key);
+
+  /// 头部和背景色配置
   final PickerOptions<int> options;
+
+  /// Wheel配置信息
   final PickerWheelOptions? wheelOptions;
-  final int? initialIndex;
+
+  /// 渲染子组件
   final int itemCount;
   final IndexedWidgetBuilder itemBuilder;
+
+  /// 控制器
   final FixedExtentScrollController? controller;
 
   @override
@@ -820,37 +834,33 @@ class MultipleChoicePicker extends StatelessWidget {
 }
 
 class PickerEntry {
-  const PickerEntry({required this.text, this.children = const []});
+  const PickerEntry({required this.itemCount, required this.itemBuilder});
 
-  final Widget text;
-
-  final List<PickerEntry> children;
+  /// 渲染子组件
+  final int itemCount;
+  final IndexedWidgetBuilder itemBuilder;
 }
 
-/// 多列选择
-class MultiColumnChoicePicker extends StatefulWidget {
-  MultiColumnChoicePicker({
+/// 多列选择 不联动
+class MultiColumnPicker extends StatelessWidget {
+  MultiColumnPicker({
     Key? key,
     PickerOptions<List<int>>? options,
     this.wheelOptions,
     required this.entry,
-    this.defaultPosition,
     this.horizontalScroll = false,
     this.addExpanded = true,
   })  : options = options ?? PickerOptions<List<int>>(),
         super(key: key);
 
-  /// 弹窗样式
+  /// 头部和背景色配置
   final PickerOptions<List<int>> options;
 
-  /// 滚轮样式
+  /// Wheel配置信息
   final PickerWheelOptions? wheelOptions;
 
   /// 要渲染的数据
   final List<PickerEntry> entry;
-
-  /// 默认初始的位置
-  final List<int>? defaultPosition;
 
   /// 是否可以横向滚动
   /// [horizontalScroll]==true 使用[SingleChildScrollView]创建,[wheelOptions]中的[itemWidth]控制宽度，如果不设置则为[kPickerDefaultWidth]
@@ -861,63 +871,117 @@ class MultiColumnChoicePicker extends StatefulWidget {
   final bool addExpanded;
 
   @override
-  _MultiColumnChoicePickerState createState() =>
-      _MultiColumnChoicePickerState();
+  Widget build(BuildContext context) {
+    List<int> position = [];
+    return PickerSubject<List<int>>(
+        options: options,
+        child: Universal(
+            direction: Axis.horizontal,
+            mainAxisAlignment: MainAxisAlignment.center,
+            width: double.infinity,
+            isScroll: horizontalScroll,
+            height: kPickerDefaultHeight,
+            children: entry.builderEntry((item) {
+              position.add(0);
+              final value = item.value;
+              final location = item.key;
+              return Universal(
+                  width: wheelOptions?.itemWidth ?? kPickerDefaultWidth,
+                  expanded: horizontalScroll ? false : addExpanded,
+                  child: _PickerListWheel(
+                      wheel: wheelOptions ?? GlobalOptions().pickerWheelOptions,
+                      itemBuilder: value.itemBuilder,
+                      onChanged: (int index) {
+                        position[location] = index;
+                      },
+                      itemCount: value.itemCount));
+            })),
+        sureTap: () => position);
+  }
 }
 
-class _MultiColumnChoicePickerState extends State<MultiColumnChoicePicker> {
-  List<PickerEntry> entry = [];
+class PickerLinkageEntry {
+  const PickerLinkageEntry({required this.text, this.children = const []});
+
+  final Widget text;
+
+  final List<PickerLinkageEntry> children;
+}
+
+/// 多列选择 联动
+class MultiColumnLinkagePicker extends StatefulWidget {
+  MultiColumnLinkagePicker({
+    Key? key,
+    PickerOptions<List<int>>? options,
+    this.wheelOptions,
+    required this.entry,
+    this.horizontalScroll = false,
+    this.addExpanded = true,
+  })  : options = options ?? PickerOptions<List<int>>(),
+        super(key: key);
+
+  /// 头部和背景色配置
+  final PickerOptions<List<int>> options;
+
+  /// Wheel配置信息
+  final PickerWheelOptions? wheelOptions;
+
+  /// 要渲染的数据
+  final List<PickerLinkageEntry> entry;
+
+  /// 是否可以横向滚动
+  /// [horizontalScroll]==true 使用[SingleChildScrollView]创建,[wheelOptions]中的[itemWidth]控制宽度，如果不设置则为[kPickerDefaultWidth]
+  /// [horizontalScroll]==false 使用[Row] 创建每个滚动，居中显示
+  final bool horizontalScroll;
+
+  /// [horizontalScroll]==false
+  final bool addExpanded;
+
+  @override
+  _MultiColumnLinkagePickerState createState() =>
+      _MultiColumnLinkagePickerState();
+}
+
+class _MultiColumnLinkagePickerState extends State<MultiColumnLinkagePicker> {
+  List<PickerLinkageEntry> entry = [];
   List<int> position = [];
-
-  List<FixedExtentScrollController> controllers = [];
-
-  bool isInit = false;
 
   @override
   void initState() {
     super.initState();
     entry = widget.entry;
-    if (widget.defaultPosition != null) {
-      position = widget.defaultPosition!;
-      for (var element in position) {
-        controllers.add(FixedExtentScrollController(initialItem: element));
-      }
-    }
   }
 
   int currentListLength = 0;
 
-  void calculateListLength(List<PickerEntry> list, bool isFirst) {
+  void calculateListLength(List<PickerLinkageEntry> list, bool isFirst) {
     if (isFirst) currentListLength = 0;
     if (list.isNotEmpty) {
-      List<PickerEntry> subsetList = [];
+      List<PickerLinkageEntry> subsetList = [];
       if (currentListLength >= position.length) {
         position.add(0);
-        controllers.add(FixedExtentScrollController(initialItem: 0));
         subsetList = list.first.children;
       } else if (currentListLength < position.length) {
         final index = position[currentListLength];
         if (list.length > index) {
           subsetList = list[index].children;
+        } else {
+          subsetList = list.first.children;
         }
       }
       currentListLength += 1;
       calculateListLength(subsetList, false);
     } else {
       while (position.length > currentListLength) {
-        // position.removeLast();
-        if (controllers.isNotEmpty) {
-          controllers.removeLast();
-        }
+        position.removeLast();
       }
     }
   }
 
   @override
-  void didUpdateWidget(covariant MultiColumnChoicePicker oldWidget) {
+  void didUpdateWidget(covariant MultiColumnLinkagePicker oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.defaultPosition != widget.defaultPosition ||
-        oldWidget.entry != widget.entry) {
+    if (oldWidget.entry != widget.entry) {
       setState(() {});
     }
   }
@@ -926,16 +990,11 @@ class _MultiColumnChoicePickerState extends State<MultiColumnChoicePicker> {
   Widget build(BuildContext context) {
     calculateListLength(entry, true);
     List<Widget> list = [];
-    List<PickerEntry> currentEntry = entry;
+    List<PickerLinkageEntry> currentEntry = entry;
     position.length.generate((index) {
       final itemPosition = position[index];
       if (currentEntry.isNotEmpty && itemPosition < currentEntry.length) {
-        list.add(listWheel(
-          controller: controllers[index],
-          initialIndex: itemPosition,
-          location: index,
-          list: currentEntry,
-        ));
+        list.add(listWheel(location: index, list: currentEntry));
         currentEntry = currentEntry[itemPosition].children;
       }
     });
@@ -956,30 +1015,18 @@ class _MultiColumnChoicePickerState extends State<MultiColumnChoicePicker> {
         ));
   }
 
-  Widget listWheel({
-    required List<PickerEntry> list,
-    required int initialIndex,
-    required int location,
-    required FixedExtentScrollController controller,
-  }) =>
+  Widget listWheel(
+          {required List<PickerLinkageEntry> list, required int location}) =>
       _PickerListWheel(
-          controller: controller,
-          initialIndex: initialIndex,
-          onScrollEnd: (int? index) {
-            position[location] = index!;
-            200.milliseconds.delayed(() {
+          onChanged: (int index) {
+            position[location] = index;
+          },
+          onScrollEnd: (int index) {
+            100.milliseconds.delayed(() {
               setState(() {});
             });
           },
-          itemBuilder: (_, int index) => list[index].text,
+          itemBuilder: (_, int index) => Center(child: list[index].text),
           itemCount: list.length,
           wheel: widget.wheelOptions ?? GlobalOptions().pickerWheelOptions);
-
-  @override
-  void dispose() {
-    super.dispose();
-    for (var element in controllers) {
-      element.dispose();
-    }
-  }
 }

@@ -1,3 +1,11 @@
+## 1.19.0
+
+* Change `MultipleChoicePicker` to `SingleColumnPicker`
+* Change `showMultipleChoicePicker()` to `showSingleColumnPicker`
+* Add `MultiColumnPicker` and `MultiColumnLinkagePicker`
+* Add `showMultiColumnPicker()` and `showMultiColumnLinkagePicker()`
+* All have been added with [examples](https://github.com/Wayaer/flutter_waya/tree/main/example/lib/module/popup_windows_page.dart)
+
 ## 1.18.5
 
 * Fix bugs
