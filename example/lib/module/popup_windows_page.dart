@@ -209,9 +209,15 @@ class PopupWindowsPage extends StatelessWidget {
         PickerEntry(text: Text('D2')),
       ])
     ];
-    final int? index =
-        await showBottomPopup(widget: MultiColumnChoicePicker(entry: list));
-    showToast(index == null ? 'null' : list[index].toString());
+    final List<int>? index = await showBottomPopup(
+        widget: MultiColumnChoicePicker(entry: list, horizontalScroll: true));
+    List<PickerEntry> resultList = list;
+    String result = '';
+    index?.builder((item) {
+      result += (resultList[item].text as Text).data!;
+      resultList = resultList[item].children;
+    });
+    if (result.isNotEmpty) showToast(result);
   }
 
   Future<void> showChoicePicker() async {

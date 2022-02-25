@@ -6,6 +6,7 @@ typedef PickerTapSureCallback<T> = bool Function(T? value);
 typedef PickerTapCancelCallback<T> = bool Function(T? value);
 
 const double kPickerDefaultHeight = 180;
+const double kPickerDefaultWidth = 90;
 
 class PickerOptions<T> {
   PickerOptions({
@@ -418,6 +419,13 @@ class _AreaPickerState extends State<AreaPicker> {
   void jumpToIndex(int index, FixedExtentScrollController controller,
           {Duration? duration}) =>
       controller.jumpToItem(index);
+
+  @override
+  void dispose() {
+    super.dispose();
+    controllerCity.dispose();
+    controllerDistrict.dispose();
+  }
 }
 
 /// 日期时间选择器
@@ -764,6 +772,16 @@ class _DateTimePickerState extends State<DateTimePicker> {
       {Duration? duration}) {
     controller?.jumpToItem(index);
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+    controllerMonth?.dispose();
+    controllerDay?.dispose();
+    controllerHour?.dispose();
+    controllerMinute?.dispose();
+    controllerSecond?.dispose();
+  }
 }
 
 /// 单列选择
@@ -816,14 +834,31 @@ class MultiColumnChoicePicker extends StatefulWidget {
     PickerOptions<List<int>>? options,
     this.wheelOptions,
     required this.entry,
+    this.defaultPosition,
+    this.horizontalScroll = false,
+    this.addExpanded = true,
   })  : options = options ?? PickerOptions<List<int>>(),
         super(key: key);
 
+  /// 弹窗样式
   final PickerOptions<List<int>> options;
 
+  /// 滚轮样式
   final PickerWheelOptions? wheelOptions;
 
+  /// 要渲染的数据
   final List<PickerEntry> entry;
+
+  /// 默认初始的位置
+  final List<int>? defaultPosition;
+
+  /// 是否可以横向滚动
+  /// [horizontalScroll]==true 使用[SingleChildScrollView]创建,[wheelOptions]中的[itemWidth]控制宽度，如果不设置则为[kPickerDefaultWidth]
+  /// [horizontalScroll]==false 使用[Row] 创建每个滚动，居中显示
+  final bool horizontalScroll;
+
+  /// [horizontalScroll]==false
+  final bool addExpanded;
 
   @override
   _MultiColumnChoicePickerState createState() =>
@@ -832,7 +867,7 @@ class MultiColumnChoicePicker extends StatefulWidget {
 
 class _MultiColumnChoicePickerState extends State<MultiColumnChoicePicker> {
   List<PickerEntry> entry = [];
-  List<int> positions = [];
+  List<int> position = [];
 
   List<FixedExtentScrollController> controllers = [];
 
@@ -842,40 +877,48 @@ class _MultiColumnChoicePickerState extends State<MultiColumnChoicePicker> {
   void initState() {
     super.initState();
     entry = widget.entry;
+    if (widget.defaultPosition != null) {
+      position = widget.defaultPosition!;
+      for (var element in position) {
+        controllers.add(FixedExtentScrollController(initialItem: element));
+      }
+    }
   }
 
   int currentListLength = 0;
 
   void calculateListLength(List<PickerEntry> list, bool isFirst) {
     if (isFirst) currentListLength = 0;
-    log('是否第一个计算$isFirst $currentListLength  ${positions.length}');
     if (list.isNotEmpty) {
       List<PickerEntry> subsetList = [];
-      if (currentListLength >= positions.length) {
-        log('添加新的下标位置');
-        positions.add(0);
-        controllers.add(FixedExtentScrollController());
+      if (currentListLength >= position.length) {
+        position.add(0);
+        controllers.add(FixedExtentScrollController(initialItem: 0));
         subsetList = list.first.children;
-      } else if (currentListLength < positions.length) {
-        log('获取旧的下标${positions[currentListLength]}');
-
-        final index = positions[currentListLength];
-        if (list.length >= index) {
+      } else if (currentListLength < position.length) {
+        final index = position[currentListLength];
+        if (list.length > index) {
           subsetList = list[index].children;
-        } else {
-          log('走到这里了');
         }
-        log('子集长度  ${subsetList.length}');
       }
       currentListLength += 1;
       calculateListLength(subsetList, false);
     } else {
-      while (positions.length > currentListLength) {
-        log('移出多余的');
-        positions.removeLast();
-        controllers.last.dispose();
-        controllers.removeLast();
+      while (position.length > currentListLength) {
+        // position.removeLast();
+        if (controllers.isNotEmpty) {
+          controllers.removeLast();
+        }
       }
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant MultiColumnChoicePicker oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.defaultPosition != widget.defaultPosition ||
+        oldWidget.entry != widget.entry) {
+      setState(() {});
     }
   }
 
@@ -883,57 +926,60 @@ class _MultiColumnChoicePickerState extends State<MultiColumnChoicePicker> {
   Widget build(BuildContext context) {
     calculateListLength(entry, true);
     List<Widget> list = [];
-    log('当前 行维度$currentListLength 当前行定位$positions');
     List<PickerEntry> currentEntry = entry;
-    positions.length.generate((index) {
-      final itemPosition = positions[index];
-      log('取值=$itemPosition=====');
-      log('$index 列渲染的 list ${currentEntry.builder((p0) => (p0.text as Text).data)}');
-      if (currentEntry.isNotEmpty) {
+    position.length.generate((index) {
+      final itemPosition = position[index];
+      if (currentEntry.isNotEmpty && itemPosition < currentEntry.length) {
         list.add(listWheel(
-            initialIndex: itemPosition,
-            list: currentEntry,
-            controller: controllers[index]));
-        log('$index 获取当前 currentEntry ${currentEntry.builder((p0) => (p0.text as Text).data)}');
+          controller: controllers[index],
+          initialIndex: itemPosition,
+          location: index,
+          list: currentEntry,
+        ));
         currentEntry = currentEntry[itemPosition].children;
       }
     });
+
     return PickerSubject<List<int>>(
         options: widget.options,
-        sureTap: () {
-          return [0];
-        },
-        child: SizedBox(
-            width: double.infinity,
-            height: kPickerDefaultHeight,
-            child: ScrollList.builder(
-                itemCount: list.length,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (_, int index) {
-                  return SizedBox(
-                      height: kPickerDefaultHeight,
-                      child: list[index],
-                      width: kPickerDefaultHeight / 2);
-                })));
+        sureTap: () => position,
+        child: Universal(
+          width: double.infinity,
+          height: kPickerDefaultHeight,
+          direction: Axis.horizontal,
+          isScroll: widget.horizontalScroll,
+          children: list.builder((item) => Universal(
+              expanded: widget.horizontalScroll ? false : widget.addExpanded,
+              height: kPickerDefaultHeight,
+              child: Center(child: item),
+              width: widget.wheelOptions?.itemWidth ?? kPickerDefaultWidth)),
+        ));
   }
 
-  Widget listWheel(
-          {required List<PickerEntry> list,
-          required int initialIndex,
-          required FixedExtentScrollController controller}) =>
+  Widget listWheel({
+    required List<PickerEntry> list,
+    required int initialIndex,
+    required int location,
+    required FixedExtentScrollController controller,
+  }) =>
       _PickerListWheel(
-          initialIndex: initialIndex,
           controller: controller,
-          onScrollEnd: (int index) {
-            final position = controllers.indexOf(controller);
-            positions[position] = index;
-            log('滚动的列位置$position 滚动结束后的下标 $index');
-            log(positions);
-            300.milliseconds.delayed(() {
+          initialIndex: initialIndex,
+          onScrollEnd: (int? index) {
+            position[location] = index!;
+            200.milliseconds.delayed(() {
               setState(() {});
             });
           },
           itemBuilder: (_, int index) => list[index].text,
           itemCount: list.length,
           wheel: widget.wheelOptions ?? GlobalOptions().pickerWheelOptions);
+
+  @override
+  void dispose() {
+    super.dispose();
+    for (var element in controllers) {
+      element.dispose();
+    }
+  }
 }

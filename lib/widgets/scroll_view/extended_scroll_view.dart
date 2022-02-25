@@ -109,24 +109,25 @@ class _ExtendedScrollViewState extends State<ExtendedScrollView> {
     slivers = widget.slivers;
     super.initState();
     addPostFrameCallback((Duration duration) {
-      _calculate(slivers, sliverModel);
+      _calculate(slivers);
       showScrollView = true;
       setState(() {});
     });
   }
 
-  void _calculate(List<Widget> slivers, List<_SliverModel> sliver) {
-    sliver.builderEntry((MapEntry<int, _SliverModel> entry) {
+  void _calculate(List<Widget> slivers) {
+    sliverModel.builderEntry((MapEntry<int, _SliverModel> entry) {
       final _SliverModel value = entry.value;
       final int i = entry.key;
       if (value.key != null) {
-        sliver[i].size = value.key?.currentContext?.size ?? const Size(0, 0);
+        sliverModel[i].size =
+            value.key?.currentContext?.size ?? const Size(0, 0);
         if (value.extraKey != null) {
-          sliver[i].extraSize =
+          sliverModel[i].extraSize =
               value.extraKey?.currentContext?.size ?? const Size(0, 0);
-          if (sliver[i].extraSize.height > kToolbarHeight) {
-            sliver[i].extraSize =
-                Size(sliver[i].extraSize.width, kToolbarHeight);
+          if (sliverModel[i].extraSize.height > kToolbarHeight) {
+            sliverModel[i].extraSize =
+                Size(sliverModel[i].extraSize.width, kToolbarHeight);
           }
         }
       }

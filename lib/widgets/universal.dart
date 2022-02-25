@@ -272,7 +272,7 @@ class Universal extends StatelessWidget {
   final double? minRadius;
   final double? maxRadius;
 
-  /// ****** 开始滚动 ****** ///
+  /// ****** 开启滚动 ****** ///
   final bool isScroll;
 
   /// 是否使用 [SingleChildScrollView]创建滚动组件
@@ -793,10 +793,13 @@ class Universal extends StatelessWidget {
   Widget refreshedWidget(List<Widget> slivers) => RefreshScrollView(
       controller: scrollController,
       slivers: slivers,
+      dragStartBehavior: dragStartBehavior,
       padding: _paddingIncludingDecoration,
       noScrollBehavior: noScrollBehavior,
       reverse: reverse,
       primary: primary,
+      physics: physics,
+      clipBehavior: clipBehavior ?? Clip.hardEdge,
       scrollDirection: scrollDirection ?? direction,
       refreshConfig: refreshConfig);
 

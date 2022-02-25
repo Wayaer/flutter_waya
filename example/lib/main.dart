@@ -34,7 +34,7 @@ void main() {
 
   globalOptions.setGlobalPushMode(RoutePushStyle.ripple);
   globalOptions.setToastOptions(
-      ToastOptions(positioned: Alignment.topCenter, duration: 0.5.seconds));
+      ToastOptions(positioned: Alignment.center, duration: 2.seconds));
   globalOptions.setBottomSheetOptions(const BottomSheetOptions());
   globalOptions.setGeneralDialogOptions(
       const GeneralDialogOptions(fromStyle: PopupFromStyle.fromTop));

@@ -95,7 +95,7 @@ class WheelOptions {
           backgroundColor: backgroundColor ?? this.backgroundColor);
 }
 
-class ListWheel extends StatefulWidget {
+class ListWheel extends StatelessWidget {
   ListWheel({
     Key? key,
     this.initialIndex = 0,
@@ -110,9 +110,7 @@ class ListWheel extends StatefulWidget {
     this.onScrollUpdate,
     this.options,
   })  : assert(_checkType(childDelegateType, children, itemBuilder, itemCount)),
-        super(key: key) {
-    if (childDelegateType == ListWheelChildDelegateType.builder) {}
-  }
+        super(key: key);
 
   static bool _checkType(
       ListWheelChildDelegateType childDelegateType,
@@ -201,112 +199,98 @@ class ListWheel extends StatefulWidget {
   /// 滚动监听 添加此方法  [onScrollStart],[onScrollUpdate],[onScrollEnd] 无效
   final NotificationListenerCallback<ScrollNotification>? onNotification;
 
-  /// 动开始回调
+  /// 滚动开始回调
   final ValueChanged<int>? onScrollStart;
 
   /// 滚动中回调
   final ValueChanged<int>? onScrollUpdate;
 
-  /// 动结束回调
+  /// 滚动结束回调
   final ValueChanged<int>? onScrollEnd;
-
-  @override
-  _ListWheelState createState() => _ListWheelState();
-}
-
-class _ListWheelState extends State<ListWheel> {
-  late FixedExtentScrollController controller;
-  late WheelOptions options;
-
-  @override
-  void initState() {
-    super.initState();
-    controller = widget.controller ??
-        FixedExtentScrollController(initialItem: widget.initialIndex);
-    options = widget.options ?? GlobalOptions().wheelOptions;
-  }
 
   ListWheelChildDelegate getDelegate(ListWheelChildDelegateType type) {
     if (type == ListWheelChildDelegateType.list) {
-      return ListWheelChildListDelegate(children: widget.children!);
+      return ListWheelChildListDelegate(children: children!);
     }
     if (type == ListWheelChildDelegateType.looping) {
-      return ListWheelChildLoopingListDelegate(children: widget.children!);
+      return ListWheelChildLoopingListDelegate(children: children!);
     }
     return ListWheelChildBuilderDelegate(
-        builder: widget.itemBuilder!, childCount: widget.itemCount);
+        builder: itemBuilder!, childCount: itemCount);
   }
 
   @override
   Widget build(BuildContext context) {
-    Widget child;
+    if (onScrollStart != null ||
+        onScrollEnd != null ||
+        onScrollUpdate != null) {
+      assert(controller != null, 'controller must be added');
+    }
 
-    if (options.isCupertino) {
-      child = widget.childDelegateType == ListWheelChildDelegateType.builder
+    final _options = options ?? GlobalOptions().wheelOptions;
+    Widget child;
+    if (_options.isCupertino) {
+      child = childDelegateType == ListWheelChildDelegateType.builder
           ? CupertinoPicker.builder(
               scrollController: controller,
-              childCount: widget.itemCount,
-              itemBuilder: widget.itemBuilder!,
-              backgroundColor: options.backgroundColor,
-              itemExtent: options.itemExtent,
-              diameterRatio: options.diameterRatio,
-              onSelectedItemChanged: options.onChanged,
-              offAxisFraction: options.offAxisFraction,
-              useMagnifier: options.useMagnifier,
-              squeeze: options.squeeze,
-              magnification: options.magnification)
+              childCount: itemCount,
+              itemBuilder: itemBuilder!,
+              backgroundColor: _options.backgroundColor,
+              itemExtent: _options.itemExtent,
+              diameterRatio: _options.diameterRatio,
+              onSelectedItemChanged: _options.onChanged,
+              offAxisFraction: _options.offAxisFraction,
+              useMagnifier: _options.useMagnifier,
+              squeeze: _options.squeeze,
+              magnification: _options.magnification)
           : CupertinoPicker(
               scrollController: controller,
-              children: widget.children!,
-              backgroundColor: options.backgroundColor,
-              looping: widget.childDelegateType ==
-                  ListWheelChildDelegateType.looping,
-              itemExtent: options.itemExtent,
-              diameterRatio: options.diameterRatio,
-              onSelectedItemChanged: options.onChanged,
-              offAxisFraction: options.offAxisFraction,
-              useMagnifier: options.useMagnifier,
-              squeeze: options.squeeze,
-              magnification: options.magnification);
+              children: children!,
+              backgroundColor: _options.backgroundColor,
+              looping: childDelegateType == ListWheelChildDelegateType.looping,
+              itemExtent: _options.itemExtent,
+              diameterRatio: _options.diameterRatio,
+              onSelectedItemChanged: _options.onChanged,
+              offAxisFraction: _options.offAxisFraction,
+              useMagnifier: _options.useMagnifier,
+              squeeze: _options.squeeze,
+              magnification: _options.magnification);
     } else {
       child = ListWheelScrollView.useDelegate(
           controller: controller,
-          itemExtent: options.itemExtent,
-          physics: options.physics,
-          diameterRatio: options.diameterRatio,
-          onSelectedItemChanged: options.onChanged,
-          offAxisFraction: options.offAxisFraction,
-          perspective: options.perspective,
-          useMagnifier: options.useMagnifier,
-          squeeze: options.squeeze,
-          magnification: options.magnification,
-          childDelegate: getDelegate(widget.childDelegateType));
+          itemExtent: _options.itemExtent,
+          physics: _options.physics,
+          diameterRatio: _options.diameterRatio,
+          onSelectedItemChanged: _options.onChanged,
+          offAxisFraction: _options.offAxisFraction,
+          perspective: _options.perspective,
+          useMagnifier: _options.useMagnifier,
+          squeeze: _options.squeeze,
+          magnification: _options.magnification,
+          childDelegate: getDelegate(childDelegateType));
     }
-    if (widget.onScrollStart == null &&
-        widget.onScrollUpdate == null &&
-        widget.onScrollEnd == null) return child;
+    if (onScrollStart == null &&
+        onScrollUpdate == null &&
+        onScrollEnd == null &&
+        controller != null) {
+      return child;
+    }
     return NotificationListener<ScrollNotification>(
         child: child,
-        onNotification: widget.onNotification ??
+        onNotification: onNotification ??
             (ScrollNotification notification) {
               if (notification is ScrollStartNotification &&
-                  widget.onScrollStart != null) {
-                widget.onScrollStart!(controller.selectedItem);
+                  onScrollStart != null) {
+                onScrollStart!(controller!.selectedItem);
               } else if (notification is ScrollUpdateNotification &&
-                  widget.onScrollUpdate != null) {
-                widget.onScrollUpdate!(controller.selectedItem);
+                  onScrollUpdate != null) {
+                onScrollUpdate!(controller!.selectedItem);
               } else if (notification is ScrollEndNotification &&
-                  widget.onScrollEnd != null) {
-                widget.onScrollEnd!(controller.selectedItem);
+                  onScrollEnd != null) {
+                onScrollEnd!(controller!.selectedItem);
               }
               return true;
             });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    if (widget.controller == null) controller.dispose();
   }
 }
 
