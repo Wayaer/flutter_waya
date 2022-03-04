@@ -619,3 +619,21 @@ class _CustomDrawerState extends State<CustomDrawer> {
       constraints: BoxConstraints(maxWidth: widget.width),
       child: PopupModalWindows(options: widget.options, child: widget.child));
 }
+
+/// 暂无数据
+class PlaceholderChild extends StatelessWidget {
+  const PlaceholderChild(
+      {Key? key,
+      this.padding = const EdgeInsets.all(100),
+      this.child,
+      this.text = 'There is no data'})
+      : super(key: key);
+
+  final EdgeInsetsGeometry padding;
+  final Widget? child;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) =>
+      Padding(padding: padding, child: Center(child: child ?? BText(text)));
+}

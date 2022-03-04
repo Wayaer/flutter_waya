@@ -95,17 +95,18 @@ class _DropdownMenuButtonState extends State<DropdownMenuButton> {
 
   void showItem() {
     widget.onTap?.call();
-    final Offset offset = context.getWidgetLocalToGlobal();
-    final Size size = context.size!;
+    final NavigatorState navigator = Navigator.of(context);
+    final Rect? rect = context.getWidgetRectLocalToGlobal(
+        ancestor: navigator.context.findRenderObject());
     showDialogPopup<dynamic>(
         options: const GeneralDialogOptions(
             fromStyle: PopupFromStyle.fromCenter,
             barrierColor: Colors.transparent),
         widget: PopupModalWindows(
           options: GlobalOptions().modalWindowsOptions.copyWith(
-              top: offset.dy + size.height,
+              top: rect?.top,
               alignment: Alignment.topLeft,
-              left: offset.dx,
+              left: rect?.left,
               onTap: () {
                 isShow = false;
                 maybePop();
@@ -265,11 +266,9 @@ class _DropdownMenuState extends State<DropdownMenu> {
       });
 
   void popupWidget(int index) {
-    final RenderBox title =
-        titleKey.currentContext!.findRenderObject() as RenderBox;
-    final Offset local = title.localToGlobal(Offset.zero);
-    final double titleHeight = context.size!.height;
-
+    final NavigatorState navigator = Navigator.of(context);
+    final Rect? rect = context.getWidgetRectLocalToGlobal(
+        ancestor: navigator.context.findRenderObject());
     final ScrollList listBuilder = ScrollList.builder(
         itemCount: widget.valueCount[index],
         physics: const ClampingScrollPhysics(),
@@ -284,7 +283,7 @@ class _DropdownMenuState extends State<DropdownMenu> {
             }));
     final Widget popup = PopupModalWindows(
         options: GlobalOptions().modalWindowsOptions.copyWith(
-            top: local.dy + titleHeight,
+            top: (rect?.top ?? 0) + context.size!.height,
             alignment: Alignment.topLeft,
             color: Colors.transparent,
             onTap: widget.isModal

@@ -2,8 +2,7 @@ import 'dart:math' as math;
 import 'dart:math';
 
 import 'package:flutter/services.dart';
-
-import '../extension.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 
 /// num 扩展
 extension ExtensionNum on num {
@@ -106,6 +105,39 @@ extension ExtensionNum on num {
       return '${size / 100}GB';
     }
     return size.toString();
+  }
+
+  /// 数字转中文 简繁体
+  String toChineseNumbers({bool isSimplify = true, bool isWeek = false}) {
+    switch (toInt()) {
+      case 0:
+        return isSimplify ? '〇' : '零';
+      case 1:
+        return isSimplify ? '一' : '壹';
+      case 2:
+        return isSimplify ? '二' : '贰';
+      case 3:
+        return isSimplify ? '三' : '叁';
+      case 4:
+        return isSimplify ? '四' : '肆';
+      case 5:
+        return isSimplify ? '五' : '伍';
+      case 6:
+        return isSimplify ? '六' : '陆';
+      case 7:
+        return isSimplify
+            ? isWeek
+                ? '日'
+                : '七'
+            : '柒';
+      case 8:
+        return isSimplify ? '八' : '捌';
+      case 9:
+        return isSimplify ? '九' : '玖';
+      case 10:
+        return isSimplify ? '十' : '拾';
+    }
+    return toString();
   }
 }
 

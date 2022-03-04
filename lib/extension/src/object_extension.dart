@@ -4,8 +4,6 @@ import 'dart:typed_data';
 
 import 'package:flutter_waya/flutter_waya.dart';
 
-import '../extension.dart';
-
 extension ExtensionUint8List on Uint8List {
   List<int> bit32ListFromUInt8List() {
     final Uint8List bytes = this;
@@ -22,6 +20,11 @@ extension ExtensionUint8List on Uint8List {
     }
     return result;
   }
+}
+
+extension ExtensionListUnsafe on List? {
+  /// null 或者 Empty 返回 true
+  bool checkNullOrEmpty() => this == null || this!.isEmpty;
 }
 
 extension ExtensionList<T> on List<T> {
@@ -103,6 +106,11 @@ extension ExtensionList<T> on List<T> {
     if (isReplace) replaceRange(start, end, replacement);
     return this;
   }
+}
+
+extension ExtensionListString on List<String> {
+  /// 移出首尾的括号 转换为字符串
+  String removeStartEnd() => toString().removeSuffix(']').removePrefix('[');
 }
 
 extension ExtensionIterable<V> on Iterable<V> {
@@ -188,9 +196,9 @@ enum DateTimeDist {
 /// DateTime 扩展
 extension ExtensionDateTime on DateTime {
   /// 转换指定长度的字符串
-  String format([DateTimeDist? dateType, bool dual = true]) {
+  String format([DateTimeDist? dist, bool dual = true]) {
     final DateTime date = this;
-    dateType ??= DateTimeDist.yearSecond;
+    dist ??= DateTimeDist.yearSecond;
     final String year = date.year.toString();
     final String month =
         dual ? date.month.padLeft(2, '0') : date.month.toString();
@@ -200,7 +208,7 @@ extension ExtensionDateTime on DateTime {
         dual ? date.minute.padLeft(2, '0') : date.minute.toString();
     final String second =
         dual ? date.second.padLeft(2, '0') : date.second.toString();
-    switch (dateType) {
+    switch (dist) {
       case DateTimeDist.yearSecond:
         return '$year-$month-$day $hour:$minute:$second';
       case DateTimeDist.yearMinute:

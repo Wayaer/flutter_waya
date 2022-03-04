@@ -111,7 +111,7 @@ class _ClothButtonState extends State<ClothButton>
   }
 
   void onHover(PointerHoverEvent event) {
-    position = context.getWidgetGlobalToLocal(event.position);
+    position = context.getWidgetGlobalToLocal(point: event.position);
     if (mounted) setState(() {});
   }
 

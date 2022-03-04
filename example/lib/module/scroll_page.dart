@@ -565,7 +565,7 @@ class _ExtendedScrollViewNestedPage extends StatelessWidget {
                 isScroll: true,
                 color: Colors.yellow,
                 children: List<Widget>.generate(
-                    50, (int index) => Text(index.toString())))),
+                    100, (int index) => Text(index.toString())))),
       ));
 }
 
@@ -582,7 +582,7 @@ class _ExtendedScrollViewPage extends StatelessWidget {
             child: Universal(
                 color: Colors.yellow,
                 children: List<Widget>.generate(
-                    50, (int index) => Text(index.toString()))))
+                    100, (int index) => Text(index.toString()))))
       ]));
 }
 

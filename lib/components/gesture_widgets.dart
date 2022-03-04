@@ -110,7 +110,8 @@ class _GestureLockState extends State<GestureLock> {
   }
 
   void onPanUpdate(DragUpdateDetails e) {
-    final Offset offset = context.getWidgetGlobalToLocal(e.globalPosition);
+    final Offset offset =
+        context.getWidgetGlobalToLocal(point: e.globalPosition);
     slideDealt(offset);
     curPoint = _Point(x: offset.dx, y: offset.dy, position: -1);
     if (mounted) setState(() {});

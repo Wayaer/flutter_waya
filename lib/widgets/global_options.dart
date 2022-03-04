@@ -142,7 +142,7 @@ class GeneralDialogOptions {
     this.transitionBuilder,
     this.routeSettings,
     this.barrierColor = const Color(0x80000000),
-    this.transitionDuration = const Duration(milliseconds: 300),
+    this.transitionDuration = const Duration(milliseconds: 200),
     this.useRootNavigator = true,
     this.fromStyle = PopupFromStyle.fromCenter,
   });

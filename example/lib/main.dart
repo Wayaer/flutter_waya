@@ -12,7 +12,6 @@ import 'package:app/module/scroll_page.dart';
 import 'package:app/module/universal_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_curiosity/flutter_curiosity.dart';
-import 'package:flutter_waya/components/screen_adaptation.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 bool isCustomApp = false;
@@ -122,10 +121,7 @@ class _Home extends StatelessWidget {
               ElevatedText('Image', onTap: () => push(const ImagePage())),
               ElevatedText('Carousel', onTap: () => push(const CarouselPage())),
               ElevatedText('Progress', onTap: () => push(const ProgressPage())),
-              ElevatedText('GestureLock',
-                  onTap: () => push(const GestureLockPage())),
-              ElevatedText('GestureZoom',
-                  onTap: () => push(const GestureZoomPage())),
+              ElevatedText('Gesture', onTap: () => push(const GesturePage())),
               ElevatedText('Universal',
                   onTap: () => push(const UniversalPage())),
               ElevatedText('JsonParse',

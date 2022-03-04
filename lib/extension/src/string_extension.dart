@@ -1,9 +1,7 @@
 import 'dart:convert';
 
-import 'package:crypto/crypto.dart';
 import 'package:flutter/services.dart';
-
-import '../extension.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 
 /// String 扩展
 extension ExtensionString on String {
@@ -95,4 +93,9 @@ extension ExtensionString on String {
 
   /// 移出尾部指定长度
   String removeSuffixLength(int l) => substring(0, l);
+}
+
+extension ExtensionStringUnsafe on String? {
+  /// null 或者 Empty 返回 true
+  bool checkNullOrEmpty() => this == null || this!.isEmpty;
 }

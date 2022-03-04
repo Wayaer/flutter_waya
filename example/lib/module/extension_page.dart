@@ -316,7 +316,7 @@ class _Item extends StatelessWidget {
         decoration: BoxDecoration(
             color: context.theme.cardColor,
             borderRadius: BorderRadius.circular(6),
-            boxShadow: getBoxShadow(color: context.theme.shadowColor)),
+            boxShadow: getBoxShadow(color: context.theme.shadowColor, num: 3)),
         children: [
           RText(textAlign: TextAlign.start, texts: [
             'use :   ',

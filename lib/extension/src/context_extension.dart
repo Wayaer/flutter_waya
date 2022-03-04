@@ -133,16 +133,42 @@ extension ExtensionContext on BuildContext {
 
   /// Get the coordinates of the widget on the screen.Widgets must be rendered completely.
   /// 获取widget在屏幕上的坐标,widget必须渲染完成
-  Offset getWidgetLocalToGlobal([Offset point = Offset.zero]) {
+  Offset getWidgetLocalToGlobal(
+      {Offset point = Offset.zero, RenderObject? ancestor}) {
     final RenderBox? box = getRenderBox;
-    return box == null ? Offset.zero : box.localToGlobal(point);
+    return box == null
+        ? Offset.zero
+        : box.localToGlobal(point, ancestor: ancestor);
+  }
+
+  /// Get the Rect of the widget on the screen.Widgets must be rendered completely.
+  /// 获取widget在屏幕上的Rect,widget必须渲染完成
+  Rect? getWidgetRectLocalToGlobal(
+      {Offset point = Offset.zero, RenderObject? ancestor}) {
+    final RenderBox? box = getRenderBox;
+    return box == null
+        ? null
+        : box.localToGlobal(point, ancestor: ancestor) & box.size;
   }
 
   /// Get the coordinates of the widget on the screen.Widgets must be rendered completely.
   /// 获取widget在屏幕上的坐标,widget必须渲染完成
-  Offset getWidgetGlobalToLocal([Offset point = Offset.zero]) {
+  Offset getWidgetGlobalToLocal(
+      {Offset point = Offset.zero, RenderObject? ancestor}) {
     final RenderBox? box = getRenderBox;
-    return box == null ? Offset.zero : box.globalToLocal(point);
+    return box == null
+        ? Offset.zero
+        : box.globalToLocal(point, ancestor: ancestor);
+  }
+
+  /// Get the Rect of the widget on the screen.Widgets must be rendered completely.
+  /// 获取widget在屏幕上的Rect,widget必须渲染完成
+  Rect? getWidgetRectGlobalToLocal(
+      {Offset point = Offset.zero, RenderObject? ancestor}) {
+    final RenderBox? box = getRenderBox;
+    return box == null
+        ? null
+        : box.globalToLocal(point, ancestor: ancestor) & box.size;
   }
 }
 

@@ -108,8 +108,7 @@ class ButtonPage extends StatelessWidget {
                             .paddingSymmetric(vertical: 10);
                       })
                 ]),
-            const SizedBox(height: 20),
-            const SizedBox(height: 20),
+            const SizedBox(height: 40),
             SimpleButton(
                 padding:
                     const EdgeInsets.symmetric(vertical: 6, horizontal: 10),

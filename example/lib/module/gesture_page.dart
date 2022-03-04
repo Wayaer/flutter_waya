@@ -1,9 +1,27 @@
+import 'package:app/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:app/main.dart';
 
-class GestureLockPage extends StatelessWidget {
-  const GestureLockPage({Key? key}) : super(key: key);
+class GesturePage extends StatelessWidget {
+  const GesturePage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ExtendedScaffold(
+        appBar: AppBarText('Gesture'),
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          const SizedBox(height: 20),
+          ElevatedText('GestureLock',
+              onTap: () => push(const _GestureLockPage())),
+          ElevatedText('GestureZoom',
+              onTap: () => push(const _GestureZoomPage())),
+        ]);
+  }
+}
+
+class _GestureLockPage extends StatelessWidget {
+  const _GestureLockPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +35,8 @@ class GestureLockPage extends StatelessWidget {
   }
 }
 
-class GestureZoomPage extends StatelessWidget {
-  const GestureZoomPage({Key? key}) : super(key: key);
+class _GestureZoomPage extends StatelessWidget {
+  const _GestureZoomPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -15,21 +15,3 @@ List<BoxShadow> getBoxShadow(
         blurRadius: radius ?? blurRadius,
         spreadRadius: radius ?? spreadRadius,
         offset: offset ?? const Offset(0, 0)));
-
-/// 暂无数据
-class PlaceholderChild extends StatelessWidget {
-  const PlaceholderChild(
-      {Key? key,
-      this.padding = const EdgeInsets.all(100),
-      this.child,
-      this.text = 'There is no data'})
-      : super(key: key);
-
-  final EdgeInsetsGeometry padding;
-  final Widget? child;
-  final String text;
-
-  @override
-  Widget build(BuildContext context) =>
-      Padding(padding: padding, child: Center(child: child ?? BText(text)));
-}
