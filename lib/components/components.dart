@@ -25,6 +25,7 @@ export 'progress/liquid_progress.dart';
 export 'progress/progress.dart';
 export 'progress/wave.dart';
 export 'refresh/simple_refresh.dart';
+export 'screen_adaptation.dart';
 export 'simple_builder.dart';
 
 class NoScrollBehavior extends ScrollBehavior {

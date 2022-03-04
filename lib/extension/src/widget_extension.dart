@@ -41,11 +41,6 @@ extension ExtensionWidget on Widget {
             maintainState: maintainState,
             fullscreenDialog: fullscreenDialog,
             builder: (_) => this);
-      case RoutePushStyle.ripple:
-        assert(context != null);
-        return RipplePageRoute<T>(
-            builder: (_) => this,
-            routeConfig: RippleRouteConfig.fromContext(context!));
       default:
         return MaterialPageRoute<T>(
             settings: settings,

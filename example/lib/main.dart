@@ -12,6 +12,7 @@ import 'package:app/module/scroll_page.dart';
 import 'package:app/module/universal_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_curiosity/flutter_curiosity.dart';
+import 'package:flutter_waya/components/screen_adaptation.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 bool isCustomApp = false;
@@ -32,7 +33,7 @@ void main() {
 
   ExtendedDio().initialize();
 
-  globalOptions.setGlobalPushMode(RoutePushStyle.ripple);
+  globalOptions.setGlobalPushMode(RoutePushStyle.cupertino);
   globalOptions.setToastOptions(
       ToastOptions(positioned: Alignment.center, duration: 2.seconds));
   globalOptions.setBottomSheetOptions(const BottomSheetOptions());
@@ -91,6 +92,12 @@ class _AppState extends State<_App> {
         darkTheme: ThemeData.dark(),
         title: 'Waya UI',
         home: _Home(),
+        builder: (_, Widget? child) {
+          return ScreenAdaptation(
+              designWidth: 560,
+              scaleType: ScreenAdaptationScaleType.auto,
+              builder: (_, bool scaled) => child ?? const SizedBox());
+        },
         pushStyle: RoutePushStyle.material);
   }
 }
