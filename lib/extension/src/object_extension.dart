@@ -244,6 +244,17 @@ extension ExtensionDateTime on DateTime {
   /// 是否是闰年
   bool get isLeapYearByYear =>
       year % 4 == 0 && year % 100 != 0 || year % 400 == 0;
+
+  /// 获取时间区间内所有的日期
+  List<DateTime> getDaysForRange(DateTime endDate) {
+    List<DateTime> result = [];
+    DateTime date = this;
+    while (date.difference(endDate).inDays <= 0) {
+      result.add(date);
+      date = date.add(const Duration(hours: 24));
+    }
+    return result;
+  }
 }
 
 extension DurationExtension on Duration {
