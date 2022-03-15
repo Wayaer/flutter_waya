@@ -30,6 +30,7 @@ class ScrollViewPage extends StatelessWidget {
               onTap: () => push(const _RefreshScrollViewPage())),
           ElevatedText('DraggableScrollbar',
               onTap: () => push(_DraggableScrollbar(scrollController))),
+          const SizedBox(height: 40),
           ElevatedText('ScrollList',
               onTap: () => push(_ScrollListPage(scrollController))),
           ElevatedText('ScrollList.builder',
@@ -43,6 +44,8 @@ class ScrollViewPage extends StatelessWidget {
               onTap: () => push(_ScrollListCountPage(scrollController))),
           ElevatedText('ScrollList.placeholder',
               onTap: () => push(_ScrollListPlaceholderPage(scrollController))),
+          ElevatedText('AnchorScrollList',
+              onTap: () => push(const _AnchorScrollListPage())),
         ]);
   }
 
@@ -79,6 +82,63 @@ class ScrollViewPage extends StatelessWidget {
                 alignment: Alignment.center,
                 child: const Text('ExtendedSliverPersistentHeader'))),
       ];
+}
+
+class _AnchorScrollListPage extends StatefulWidget {
+  const _AnchorScrollListPage({Key? key}) : super(key: key);
+
+  @override
+  State<_AnchorScrollListPage> createState() => _AnchorScrollListPageState();
+}
+
+class _AnchorScrollListPageState extends State<_AnchorScrollListPage> {
+  AnchorScrollController controller = AnchorScrollController();
+
+  @override
+  Widget build(BuildContext context) {
+    return ExtendedScaffold(
+        appBar: AppBarText('AnchorScrollList'),
+        floatingActionButton: Universal(
+            margin: const EdgeInsets.only(right: 10),
+            onTap: () {
+              controller.jumpTo(0);
+            },
+            child: const Icon(Icons.arrow_circle_up, size: 50)),
+        bottomNavigationBar: Universal(
+            direction: Axis.horizontal,
+            height: 100,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              ElevatedText('jump20', onTap: () {
+                controller.animateToIndex(20);
+              }),
+              ElevatedText('jump40', onTap: () {
+                controller.animateToIndex(40);
+              }),
+              ElevatedText('jump60', onTap: () {
+                controller.animateToIndex(60);
+              }),
+              ElevatedText('jump80', onTap: () {
+                controller.animateToIndex(80);
+              }),
+              ElevatedText('jump100', onTap: () {
+                controller.animateToIndex(100);
+              }),
+            ]),
+        body: AnchorScrollList(
+          controller: controller,
+          itemCount: [..._colors, ..._colors, ..._colors].length,
+          itemBuilder: (_, int index) => _Item(
+              index, [..._colors, ..._colors, ..._colors][index],
+              height: index.isEven ? 120 : 60, width: double.infinity),
+        ));
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    controller.dispose();
+  }
 }
 
 class _ScrollListWaterfallFlowPage extends StatelessWidget {
@@ -595,8 +655,13 @@ class _Item extends StatelessWidget {
   final double width;
 
   @override
-  Widget build(BuildContext context) =>
-      Container(width: width, height: height, color: color);
+  Widget build(BuildContext context) => Container(
+      width: width,
+      height: height,
+      alignment: Alignment.center,
+      color: color,
+      child: BText(index.toString(),
+          color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold));
 }
 
 class _DraggableScrollbar extends StatelessWidget {

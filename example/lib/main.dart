@@ -93,7 +93,7 @@ class _AppState extends State<_App> {
         home: _Home(),
         builder: (_, Widget? child) {
           return ScreenAdaptation(
-              designWidth: 560,
+              designWidth: 480,
               scaleType: ScreenAdaptationScaleType.auto,
               builder: (_, bool scaled) => child ?? const SizedBox());
         },
