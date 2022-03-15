@@ -4,6 +4,7 @@ import 'package:flutter_waya/flutter_waya.dart';
 class AnchorScrollController extends ScrollController {
   List<GlobalKey> _keyList = [];
   GlobalKey? _lastKey;
+  int _lastIndex = 0;
   BuildContext? _context;
   double? _scrollTop;
   RenderObject? _ancestor;
@@ -14,41 +15,80 @@ class AnchorScrollController extends ScrollController {
     _keyList = count.generate((index) => GlobalKey());
   }
 
-  Future<void> animateToIndex(int index) async {
+  Future<void> jumpToIndex(int index) async {
     if (_keyList.length >= index && _context != null) {
       if (_scrollTop == null) {
         _ancestor = Navigator.of(_context!).context.findRenderObject();
         final firstOffset = _keyList.first.currentContext
             ?.getWidgetLocalToGlobal(ancestor: _ancestor);
-        if (firstOffset != null) {
-          _scrollTop = firstOffset.dy;
-        }
+        if (firstOffset != null) _scrollTop = firstOffset.dy;
       }
       if (_keyList[index].currentContext == null) {
-        _lastKey =
-            _keyList.where((element) => element.currentContext != null).last;
-        log('获取到最后一个${_keyList.indexOf(_lastKey!)}');
+        if (index < _lastIndex) {
+          _lastKey =
+              _keyList.where((element) => element.currentContext != null).first;
+        } else {
+          _lastKey =
+              _keyList.where((element) => element.currentContext != null).last;
+        }
+        _lastIndex = _keyList.indexOf(_lastKey!);
+        _jumpTo(_lastKey!.currentContext!);
+        await 10.milliseconds.delayed(() => jumpToIndex(index));
       } else {
-        log('直接跳转最后一个');
+        _lastIndex = index;
         _lastKey = null;
-        await _animateTo(_keyList[index].currentContext!);
-      }
-      if (_lastKey != null && _lastKey!.currentContext != null) {
-        await _animateTo(_lastKey!.currentContext!);
-        await animateToIndex(index);
+        _jumpTo(_keyList[index].currentContext!);
       }
     }
   }
 
-  Future<void> _animateTo(BuildContext context) async {
+  void _jumpTo(BuildContext context) {
     final rect = context.getWidgetRectLocalToGlobal(ancestor: _ancestor);
     if (rect != null) {
-      // _scrollTop = 0;
-      log(_scrollTop);
       double dy = rect.top - (_scrollTop ?? 0) + offset;
       if (dy > position.maxScrollExtent) dy = position.maxScrollExtent;
-      await animateTo(dy,
-          duration: const Duration(milliseconds: 300), curve: Curves.linear);
+      jumpTo(dy);
+    }
+  }
+
+  Future<void> animateToIndex(int index,
+      {Duration duration = const Duration(milliseconds: 100),
+      Curve curve = Curves.linear}) async {
+    if (_keyList.length >= index && _context != null) {
+      if (_scrollTop == null) {
+        _ancestor = Navigator.of(_context!).context.findRenderObject();
+        final firstOffset = _keyList.first.currentContext
+            ?.getWidgetLocalToGlobal(ancestor: _ancestor);
+        if (firstOffset != null) _scrollTop = firstOffset.dy;
+      }
+      if (_keyList[index].currentContext == null) {
+        if (index < _lastIndex) {
+          _lastKey =
+              _keyList.where((element) => element.currentContext != null).first;
+        } else {
+          _lastKey =
+              _keyList.where((element) => element.currentContext != null).last;
+        }
+        _lastIndex = _keyList.indexOf(_lastKey!);
+        await _animateTo(_lastKey!.currentContext!,
+            duration: duration, curve: curve);
+        await animateToIndex(index);
+      } else {
+        _lastIndex = index;
+        _lastKey = null;
+        await _animateTo(_keyList[index].currentContext!,
+            duration: duration, curve: curve);
+      }
+    }
+  }
+
+  Future<void> _animateTo(BuildContext context,
+      {required Duration duration, required Curve curve}) async {
+    final rect = context.getWidgetRectLocalToGlobal(ancestor: _ancestor);
+    if (rect != null) {
+      double dy = rect.top - (_scrollTop ?? 0) + offset;
+      if (dy > position.maxScrollExtent) dy = position.maxScrollExtent;
+      await animateTo(dy, duration: duration, curve: curve);
     }
   }
 }
@@ -81,28 +121,19 @@ class _AnchorScrollListState extends State<AnchorScrollList> {
     controller = widget.controller ?? AnchorScrollController();
     controller._setKey(widget.itemCount, context, scrollKey,
         widget.header == null ? null : headerKey);
-    addPostFrameCallback((_) {
-      final ancestor = Navigator.of(context).context.findRenderObject();
-      final headerRect = headerKey.currentContext
-          ?.getWidgetRectLocalToGlobal(ancestor: ancestor);
-      log(headerRect);
-      final scrollRect = scrollKey.currentContext
-          ?.getWidgetRectLocalToGlobal(ancestor: ancestor);
-      log(scrollRect);
-      final firstRect = controller._keyList.first.currentContext
-          ?.getWidgetRectLocalToGlobal(ancestor: ancestor);
-      log(firstRect);
+  }
 
-      final headerOffset =
-          headerKey.currentContext?.getWidgetLocalToGlobal(ancestor: ancestor);
-      log(headerOffset);
-      final scrollOffset =
-          scrollKey.currentContext?.getWidgetLocalToGlobal(ancestor: ancestor);
-      log(scrollOffset);
-      final firstOffset = controller._keyList.first.currentContext
-          ?.getWidgetLocalToGlobal(ancestor: ancestor);
-      log(firstOffset);
-    });
+  @override
+  void didUpdateWidget(covariant AnchorScrollList oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.controller != null && controller != widget.controller) {
+      controller.dispose();
+      controller = widget.controller!;
+    }
+    if (oldWidget.itemCount != widget.itemCount) {
+      controller._setKey(widget.itemCount, context, scrollKey,
+          widget.header == null ? null : headerKey);
+    }
   }
 
   @override

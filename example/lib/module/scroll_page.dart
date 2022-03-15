@@ -96,6 +96,15 @@ class _AnchorScrollListPageState extends State<_AnchorScrollListPage> {
 
   @override
   Widget build(BuildContext context) {
+    final colors = [
+      ..._colors,
+      ..._colors,
+      ..._colors,
+      ..._colors,
+      ..._colors,
+      ..._colors,
+      ..._colors
+    ];
     return ExtendedScaffold(
         appBar: AppBarText('AnchorScrollList'),
         floatingActionButton: Universal(
@@ -105,31 +114,45 @@ class _AnchorScrollListPageState extends State<_AnchorScrollListPage> {
             },
             child: const Icon(Icons.arrow_circle_up, size: 50)),
         bottomNavigationBar: Universal(
-            direction: Axis.horizontal,
-            height: 100,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisSize: MainAxisSize.min,
+            safeBottom: true,
             children: [
-              ElevatedText('jump20', onTap: () {
-                controller.animateToIndex(20);
-              }),
-              ElevatedText('jump40', onTap: () {
-                controller.animateToIndex(40);
-              }),
-              ElevatedText('jump60', onTap: () {
-                controller.animateToIndex(60);
-              }),
-              ElevatedText('jump80', onTap: () {
-                controller.animateToIndex(80);
-              }),
-              ElevatedText('jump100', onTap: () {
-                controller.animateToIndex(100);
-              }),
+              Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+                ElevatedText('animate 60', onTap: () {
+                  controller.animateToIndex(60);
+                }),
+                ElevatedText('animate 120', onTap: () {
+                  controller.animateToIndex(120);
+                }),
+                ElevatedText('animate 180', onTap: () {
+                  controller.animateToIndex(180);
+                }),
+                ElevatedText('animate 237', onTap: () {
+                  controller.animateToIndex(237);
+                }),
+              ]),
+              Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+                ElevatedText('jump 50', onTap: () {
+                  controller.jumpToIndex(50);
+                }),
+                ElevatedText('jump 100', onTap: () {
+                  controller.jumpToIndex(100);
+                }),
+                ElevatedText('jump 150', onTap: () {
+                  controller.jumpToIndex(150);
+                }),
+                ElevatedText('jump 200', onTap: () {
+                  controller.jumpToIndex(200);
+                }),
+                ElevatedText('jump 237', onTap: () {
+                  controller.jumpToIndex(237);
+                }),
+              ])
             ]),
         body: AnchorScrollList(
           controller: controller,
-          itemCount: [..._colors, ..._colors, ..._colors].length,
-          itemBuilder: (_, int index) => _Item(
-              index, [..._colors, ..._colors, ..._colors][index],
+          itemCount: colors.length,
+          itemBuilder: (_, int index) => _Item(index, colors[index],
               height: index.isEven ? 120 : 60, width: double.infinity),
         ));
   }
