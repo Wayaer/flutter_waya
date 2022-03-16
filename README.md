@@ -99,6 +99,7 @@ class _AppState extends State<_App> {
 
 ## 更新指南
 
-- [1.20.0 更新] 添加跳转至滚动组件指定下标 无论是`ListView`或`GridView`，无论使用`SliverChildBuilderDelegate()`
+- [1.20.0 更新](https://github.com/Wayaer/flutter_waya/blob/main/CHANGELOG.md) 添加跳转至滚动组件指定下标
+  无论是`ListView`或`GridView`，无论使用`SliverChildBuilderDelegate()`
   代理，或是`SliverChildListDelegate()` 都可以使用 要有能力
 - [1.16.2 修改指南](https://github.com/Wayaer/flutter_waya/blob/main/CHANGELOG.md)
