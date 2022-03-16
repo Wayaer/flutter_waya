@@ -57,8 +57,7 @@ class _AppState extends State<_App> {
 
 - [utils](https://github.com/Wayaer/flutter_waya/tree/main/lib/utils)
 
-    - [dio](https://github.com/Wayaer/flutter_waya/tree/main/lib/utils/src/dio.dart) dio
-      网络请求封装，统一error 返回[ResponseModel]
+    - [dio](https://github.com/Wayaer/flutter_waya/tree/main/lib/utils/src/dio.dart) dio 网络请求封装，统一error 返回[ResponseModel]
     - [event](https://github.com/Wayaer/flutter_waya/tree/main/lib/utils/src/event.dart) event bus
     - [media_query](https://github.com/Wayaer/flutter_waya/tree/main/lib/utils/src/media_query.dart)
       MediaQueryData
@@ -81,8 +80,7 @@ class _AppState extends State<_App> {
 
 - `ExtendedWidgetsApp()` 根组件使用 `ExtendedWidgetsApp()`可直接使用`push()` `pop()`
   等多个路由方法和`showDialogPopup()`,`showBottomPopup()`,`showCupertinoBottomPopup()`
-  ,`showDoubleChooseWindows()`,`showOverlay()`,`showLoading()`,`showToast()`,无需传 context ,随处打开,关闭
-  以上弹窗或页面 必须使用 `closePopup()`或直接 `pop()`,
+  ,`showDoubleChooseWindows()`,`showOverlay()`,`showLoading()`,`showToast()`,无需传 context ,随处打开,关闭 以上弹窗或页面 必须使用 `closePopup()`或直接 `pop()`,
 
 - `ExtendedScaffold()`
   添加 `onWillPop()` `RefreshConfig` `padding` `margin` `decoration` `isStack` `isScroll` `children`
@@ -99,7 +97,6 @@ class _AppState extends State<_App> {
 
 ## 更新指南
 
-- [1.20.0 更新](https://github.com/Wayaer/flutter_waya/blob/main/CHANGELOG.md) 添加跳转至滚动组件指定下标
-  无论是`ListView`或`GridView`，无论使用`SliverChildBuilderDelegate()`
-  代理，或是`SliverChildListDelegate()` 都可以使用 要有能力
+- [1.20.0 更新](https://github.com/Wayaer/flutter_waya/blob/main/CHANGELOG.md) 添加跳转至滚动组件指定下标 无论是`ListView`或`GridView`，无论使用`SliverChildBuilderDelegate()`
+  代理，或是`SliverChildListDelegate()` 都可以使用
 - [1.16.2 修改指南](https://github.com/Wayaer/flutter_waya/blob/main/CHANGELOG.md)
