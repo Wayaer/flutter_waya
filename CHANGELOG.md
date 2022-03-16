@@ -1,3 +1,11 @@
+## 1.20.0
+
+* Add `AnchorScrollBuilder()`,You can use it to specify the index whether it be a `ListView` or
+  `GridView`, whether `SliverChildBuilderDelegate()` structure, or `SliverChildListDelegate()` can
+  be competent for it,And
+  add [example](https://github.com/Wayaer/flutter_waya/tree/main/example/lib/module/anchor_scroll_builder_page.dart)
+* Add the `getDaysForRange()` extension method for `DateTime`
+
 ## 1.19.1
 
 * Add some extension

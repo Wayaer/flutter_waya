@@ -60,7 +60,7 @@ class _AppState extends State<_App> {
     - [dio](https://github.com/Wayaer/flutter_waya/tree/main/lib/utils/src/dio.dart) dio
       网络请求封装，统一error 返回[ResponseModel]
     - [event](https://github.com/Wayaer/flutter_waya/tree/main/lib/utils/src/event.dart) event bus
-    - [screen_fit](https://github.com/Wayaer/flutter_waya/tree/main/lib/utils/src/screen_fit.dart)
+    - [media_query](https://github.com/Wayaer/flutter_waya/tree/main/lib/utils/src/media_query.dart)
       MediaQueryData
 
 ### UI组件
@@ -97,7 +97,8 @@ class _AppState extends State<_App> {
 
 - `Universal()`中合多个官方组件功能 减少嵌套
 
-
 ## 更新指南
 
+- [1.20.0 更新] 添加跳转至滚动组件指定下标 无论是`ListView`或`GridView`，无论使用`SliverChildBuilderDelegate()`
+  代理，或是`SliverChildListDelegate()` 都可以使用 要有能力
 - [1.16.2 修改指南](https://github.com/Wayaer/flutter_waya/blob/main/CHANGELOG.md)

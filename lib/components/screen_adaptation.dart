@@ -79,9 +79,7 @@ class _ScreenAdaptationState extends State<ScreenAdaptation>
                 designWidth: widget.designWidth,
                 scaleType: widget.scaleType,
                 scaleRatio: scale,
-                child: Builder(
-                    builder: (BuildContext context) =>
-                        widget.builder(context, true)))));
+                child: widget.builder(context, true))));
   }
 }
 

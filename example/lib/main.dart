@@ -1,3 +1,4 @@
+import 'package:app/module/anchor_scroll_builder_page.dart';
 import 'package:app/module/button_page.dart';
 import 'package:app/module/carousel_page.dart';
 import 'package:app/module/components_page.dart';
@@ -8,6 +9,7 @@ import 'package:app/module/pages.dart';
 import 'package:app/module/popup_windows_page.dart';
 import 'package:app/module/progress_page.dart';
 import 'package:app/module/refresh_page.dart';
+import 'package:app/module/scroll_list_page.dart';
 import 'package:app/module/scroll_page.dart';
 import 'package:app/module/universal_page.dart';
 import 'package:flutter/material.dart';
@@ -128,8 +130,10 @@ class _Home extends StatelessWidget {
                   onTap: () => push(const JsonParsePage())),
               ElevatedText('ScrollView',
                   onTap: () => push(const ScrollViewPage())),
-              ElevatedText('SimpleRefresh',
-                  onTap: () => push(const RefreshPage())),
+              ElevatedText('ScrollList',
+                  onTap: () => push(const ScrollListPage())),
+              ElevatedText('AnchorScroll',
+                  onTap: () => push(const AnchorScrollBuilderPage())),
               ElevatedText('EasyRefreshed',
                   onTap: () => push(const EasyRefreshPage())),
               ElevatedText('Extension',
@@ -184,3 +188,8 @@ class Partition extends StatelessWidget {
         child: BText(title));
   }
 }
+
+const List<Color> colors = <Color>[
+  ...Colors.accents,
+  ...Colors.primaries,
+];

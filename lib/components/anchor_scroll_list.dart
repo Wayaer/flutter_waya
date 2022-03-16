@@ -4,26 +4,27 @@ import 'package:flutter_waya/flutter_waya.dart';
 class AnchorScrollController extends ScrollController {
   List<GlobalKey> _keyList = [];
   GlobalKey? _lastKey;
+  GlobalKey? _scrollKey;
   int _lastIndex = 0;
-  BuildContext? _context;
-  double? _scrollTop;
   RenderObject? _ancestor;
+  bool _reverse = false;
+  Axis _scrollDirection = Axis.vertical;
 
-  void _setKey(int count, BuildContext context, GlobalKey scrollKey,
-      GlobalKey? headerKey) {
-    _context = context;
+  void _setConfig(
+      int count, GlobalKey scrollKey, bool reverse, Axis scrollDirection) {
+    _scrollKey = scrollKey;
+    _reverse = reverse;
+    _scrollDirection = scrollDirection;
     _keyList = count.generate((index) => GlobalKey());
   }
 
-  Future<void> jumpToIndex(int index) async {
-    if (_keyList.length >= index && _context != null) {
-      if (_scrollTop == null) {
-        _ancestor = Navigator.of(_context!).context.findRenderObject();
-        final firstOffset = _keyList.first.currentContext
-            ?.getWidgetLocalToGlobal(ancestor: _ancestor);
-        if (firstOffset != null) _scrollTop = firstOffset.dy;
-      }
-      if (_keyList[index].currentContext == null) {
+  /// 跳转至指定 index
+  Future<void> jumpToIndex(int index,
+      {Duration duration = const Duration(milliseconds: 10)}) async {
+    if (_keyList.length >= index) {
+      _ancestor ??= _scrollKey!.currentContext!.findRenderObject();
+      final targetKey = _keyList[index];
+      if (targetKey.currentContext == null) {
         if (index < _lastIndex) {
           _lastKey =
               _keyList.where((element) => element.currentContext != null).first;
@@ -33,11 +34,11 @@ class AnchorScrollController extends ScrollController {
         }
         _lastIndex = _keyList.indexOf(_lastKey!);
         _jumpTo(_lastKey!.currentContext!);
-        await 10.milliseconds.delayed(() => jumpToIndex(index));
+        await duration.delayed(() => jumpToIndex(index));
       } else {
         _lastIndex = index;
-        _lastKey = null;
-        _jumpTo(_keyList[index].currentContext!);
+        _lastKey = targetKey;
+        _jumpTo(targetKey.currentContext!);
       }
     }
   }
@@ -45,23 +46,22 @@ class AnchorScrollController extends ScrollController {
   void _jumpTo(BuildContext context) {
     final rect = context.getWidgetRectLocalToGlobal(ancestor: _ancestor);
     if (rect != null) {
-      double dy = rect.top - (_scrollTop ?? 0) + offset;
+      double dy = offset + _rectToOffset(rect);
       if (dy > position.maxScrollExtent) dy = position.maxScrollExtent;
+      if (dy < 0) dy = 0;
+      if (dy == offset) return;
       jumpTo(dy);
     }
   }
 
+  /// 跳转至指定 index
   Future<void> animateToIndex(int index,
-      {Duration duration = const Duration(milliseconds: 100),
+      {Duration duration = const Duration(milliseconds: 50),
       Curve curve = Curves.linear}) async {
-    if (_keyList.length >= index && _context != null) {
-      if (_scrollTop == null) {
-        _ancestor = Navigator.of(_context!).context.findRenderObject();
-        final firstOffset = _keyList.first.currentContext
-            ?.getWidgetLocalToGlobal(ancestor: _ancestor);
-        if (firstOffset != null) _scrollTop = firstOffset.dy;
-      }
-      if (_keyList[index].currentContext == null) {
+    if (_keyList.length >= index) {
+      _ancestor ??= _scrollKey!.currentContext!.findRenderObject();
+      final targetKey = _keyList[index];
+      if (targetKey.currentContext == null) {
         if (index < _lastIndex) {
           _lastKey =
               _keyList.where((element) => element.currentContext != null).first;
@@ -75,8 +75,8 @@ class AnchorScrollController extends ScrollController {
         await animateToIndex(index);
       } else {
         _lastIndex = index;
-        _lastKey = null;
-        await _animateTo(_keyList[index].currentContext!,
+        _lastKey = targetKey;
+        await _animateTo(_lastKey!.currentContext!,
             duration: duration, curve: curve);
       }
     }
@@ -86,68 +86,112 @@ class AnchorScrollController extends ScrollController {
       {required Duration duration, required Curve curve}) async {
     final rect = context.getWidgetRectLocalToGlobal(ancestor: _ancestor);
     if (rect != null) {
-      double dy = rect.top - (_scrollTop ?? 0) + offset;
+      double dy = offset + _rectToOffset(rect);
       if (dy > position.maxScrollExtent) dy = position.maxScrollExtent;
+      if (dy < 0) dy = 0;
+      if (dy == offset) return;
       await animateTo(dy, duration: duration, curve: curve);
+    }
+  }
+
+  double _rectToOffset(Rect rect) {
+    switch (_scrollDirection) {
+      case Axis.horizontal:
+        final left = rect.left;
+        return _reverse ? -left : left;
+      case Axis.vertical:
+        final top = rect.top;
+        return _reverse ? -top : top;
     }
   }
 }
 
-class AnchorScrollList extends StatefulWidget {
-  const AnchorScrollList(
-      {Key? key,
-      required this.itemBuilder,
-      required this.itemCount,
-      this.controller,
-      this.header})
-      : super(key: key);
-  final IndexedWidgetBuilder itemBuilder;
-  final int itemCount;
-  final AnchorScrollController? controller;
-  final Widget? header;
+typedef AnchorBuilder = ScrollView Function(
+    BuildContext context,
+
+    /// 务必把 [scrollKey] 赋值给 滚动组件[key]
+    GlobalKey scrollKey,
+
+    /// 务必把 [scrollController] 回传给 builder 里的滚动组件
+    ScrollController scrollController,
+
+    /// 务必把 [reverse] 回传给 builder 里的滚动组件
+    bool reverse,
+
+    /// 务必把 [scrollDirection]] 回传给 builder 里的滚动组件
+    Axis scrollDirection,
+
+    /// 务必将 entryKey[index] 赋值给 子元素[key]
+    List<GlobalKey> entryKey);
+
+/// 滚动至指定index子元素
+class AnchorScrollBuilder extends StatefulWidget {
+  const AnchorScrollBuilder({
+    Key? key,
+    required this.controller,
+    required this.count,
+    required this.builder,
+    this.scrollDirection = Axis.vertical,
+    this.reverse = false,
+    this.disposeController = true,
+  }) : super(key: key);
+
+  /// 必须把 [controller] 回传给 builder 里的滚动组件
+  final AnchorScrollController controller;
+
+  /// 必须把 [scrollDirection]] 回传给 builder 里的滚动组件
+  final Axis scrollDirection;
+
+  /// 必须把 [reverse] 回传给 builder 里的滚动组件
+  final bool reverse;
+
+  /// 子组件数量
+  final int count;
+
+  /// 默认为[true] 组件 dispose 时 自动调用 controller.dispose()
+  final bool disposeController;
+
+  /// 滚动组件构造器
+  final AnchorBuilder builder;
 
   @override
-  State<AnchorScrollList> createState() => _AnchorScrollListState();
+  State<AnchorScrollBuilder> createState() => _AnchorScrollBuilderState();
 }
 
-class _AnchorScrollListState extends State<AnchorScrollList> {
-  GlobalKey headerKey = GlobalKey();
+class _AnchorScrollBuilderState extends State<AnchorScrollBuilder> {
   GlobalKey scrollKey = GlobalKey();
   late AnchorScrollController controller;
 
   @override
   void initState() {
+    controller = widget.controller;
+    controller._setConfig(
+        widget.count, scrollKey, widget.reverse, widget.scrollDirection);
     super.initState();
-    controller = widget.controller ?? AnchorScrollController();
-    controller._setKey(widget.itemCount, context, scrollKey,
-        widget.header == null ? null : headerKey);
   }
 
   @override
-  void didUpdateWidget(covariant AnchorScrollList oldWidget) {
+  void didUpdateWidget(covariant AnchorScrollBuilder oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.controller != null && controller != widget.controller) {
+    if (controller != widget.controller) {
       controller.dispose();
-      controller = widget.controller!;
+      controller = widget.controller;
     }
-    if (oldWidget.itemCount != widget.itemCount) {
-      controller._setKey(widget.itemCount, context, scrollKey,
-          widget.header == null ? null : headerKey);
+    if (oldWidget.count != widget.count ||
+        oldWidget.reverse != widget.reverse ||
+        oldWidget.scrollDirection != widget.scrollDirection) {
+      controller._setConfig(
+          widget.count, scrollKey, widget.reverse, widget.scrollDirection);
     }
   }
 
   @override
-  Widget build(BuildContext context) {
-    return ScrollList.builder(
-        key: scrollKey,
-        header: widget.header == null
-            ? null
-            : SliverToBoxAdapter(
-                child: SizedBox(key: headerKey, child: widget.header)),
-        controller: controller,
-        itemCount: widget.itemCount,
-        itemBuilder: (BuildContext context, int index) => SizedBox(
-            key: controller._keyList[index],
-            child: widget.itemBuilder(context, index)));
+  Widget build(BuildContext context) => widget.builder(context, scrollKey,
+      controller, widget.reverse, widget.scrollDirection, controller._keyList);
+
+  @override
+  void dispose() {
+    super.dispose();
+    if (widget.disposeController) controller.dispose();
   }
 }

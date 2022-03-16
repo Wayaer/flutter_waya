@@ -7,7 +7,7 @@ export 'src/des/des_engine.dart';
 export 'src/des/permuted.dart';
 export 'src/dio.dart';
 export 'src/event.dart';
-export 'src/screen_fit.dart';
+export 'src/media_query.dart';
 
 void logDebug(dynamic msg) => debugPrint(msg.toString());
 

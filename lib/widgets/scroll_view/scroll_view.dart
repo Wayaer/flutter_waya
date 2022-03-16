@@ -10,36 +10,35 @@ export 'sliver/sliver.dart';
 /// 嵌套 sliver 家族组件
 class RefreshScrollView extends ScrollView {
   RefreshScrollView({
-    this.refreshConfig,
-    bool? noScrollBehavior = false,
-    this.padding,
     Key? key,
+    this.refreshConfig,
+    this.noScrollBehavior = false,
+    this.padding,
+    this.slivers = const <Widget>[],
+    bool reverse = false,
+    bool shrinkWrap = false,
     Axis? scrollDirection = Axis.vertical,
-    bool? reverse = false,
+    double anchor = 0.0,
+    double? cacheExtent,
     ScrollController? controller,
     bool? primary,
     ScrollPhysics? physics,
-    bool? shrinkWrap = false,
     Key? center,
-    double anchor = 0.0,
-    double? cacheExtent,
-    this.slivers = const <Widget>[],
     int? semanticChildCount,
-    DragStartBehavior? dragStartBehavior = DragStartBehavior.start,
-    ScrollViewKeyboardDismissBehavior? keyboardDismissBehavior =
+    DragStartBehavior dragStartBehavior = DragStartBehavior.start,
+    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
         ScrollViewKeyboardDismissBehavior.manual,
-    String? restorationId,
-    Clip? clipBehavior = Clip.hardEdge,
+    Clip clipBehavior = Clip.hardEdge,
     ScrollBehavior? scrollBehavior,
-  })  : noScrollBehavior = noScrollBehavior ?? false,
-        super(
+    String? restorationId,
+  }) : super(
             key: key,
             controller: controller,
             scrollDirection: scrollDirection ?? Axis.vertical,
             shrinkWrap: _shrinkWrap(shrinkWrap, physics),
-            reverse: reverse ?? false,
-            clipBehavior: clipBehavior ?? Clip.hardEdge,
-            dragStartBehavior: dragStartBehavior ?? DragStartBehavior.start,
+            reverse: reverse,
+            clipBehavior: clipBehavior,
+            dragStartBehavior: dragStartBehavior,
             cacheExtent: cacheExtent,
             restorationId: restorationId,
             physics: physics,
@@ -48,12 +47,11 @@ class RefreshScrollView extends ScrollView {
             anchor: anchor,
             scrollBehavior: scrollBehavior,
             semanticChildCount: semanticChildCount,
-            keyboardDismissBehavior: keyboardDismissBehavior ??
-                ScrollViewKeyboardDismissBehavior.manual);
+            keyboardDismissBehavior: keyboardDismissBehavior);
 
-  static bool _shrinkWrap(bool? shrinkWrap, ScrollPhysics? physics) {
+  static bool _shrinkWrap(bool shrinkWrap, ScrollPhysics? physics) {
     if (physics == const NeverScrollableScrollPhysics()) return true;
-    return shrinkWrap ?? false;
+    return shrinkWrap;
   }
 
   final List<Widget> slivers;
@@ -80,10 +78,10 @@ class RefreshScrollView extends ScrollView {
           cacheExtent: cacheExtent,
           dragStartBehavior: dragStartBehavior);
     }
-    if (padding != null) widget = Padding(padding: padding!, child: widget);
     if (noScrollBehavior) {
       widget = ScrollConfiguration(behavior: NoScrollBehavior(), child: widget);
     }
+    if (padding != null) widget = Padding(padding: padding!, child: widget);
     return widget;
   }
 
@@ -214,6 +212,15 @@ class _EasyRefreshedState extends State<EasyRefreshed> {
   void initState() {
     super.initState();
     controller = widget.controller ?? EasyRefreshController();
+  }
+
+  @override
+  void didUpdateWidget(covariant EasyRefreshed oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.controller != null && controller != widget.controller) {
+      controller.dispose();
+      controller = widget.controller!;
+    }
   }
 
   void initEventBus() {
