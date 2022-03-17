@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 export 'anchor_scroll_list.dart';
+export 'builder.dart';
 export 'button/bubble_button.dart';
 export 'button/cloth_button.dart';
 export 'button/dropdown_button.dart';
@@ -27,7 +28,6 @@ export 'progress/progress.dart';
 export 'progress/wave.dart';
 export 'refresh/simple_refresh.dart';
 export 'screen_adaptation.dart';
-export 'simple_builder.dart';
 
 class NoScrollBehavior extends ScrollBehavior {
   @override

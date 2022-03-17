@@ -22,15 +22,23 @@ class ValueBuilder<T> extends StatefulWidget {
   const ValueBuilder({
     Key? key,
     this.initialValue,
-    this.onDispose,
-    this.onUpdate,
+    this.initState,
+    this.didChangeDependencies,
     required this.builder,
+    this.didUpdateWidget,
+    this.onUpdate,
+    this.deactivate,
+    this.dispose,
   }) : super(key: key);
 
   final T? initialValue;
+  final ValueCallback<BuildContext>? initState;
+  final ValueCallback<BuildContext>? didChangeDependencies;
   final ValueBuilderCallback<T> builder;
-  final VoidCallback? onDispose;
+  final ValueCallback<BuildContext>? didUpdateWidget;
   final ValueCallback<T?>? onUpdate;
+  final ValueCallback<BuildContext>? deactivate;
+  final ValueCallback<BuildContext>? dispose;
 
   @override
   _ValueBuilderState<T> createState() => _ValueBuilderState<T>();
@@ -42,21 +50,31 @@ class _ValueBuilderState<T> extends State<ValueBuilder<T>> {
   @override
   void initState() {
     super.initState();
+    widget.initState?.call(context);
     value = widget.initialValue;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    widget.didChangeDependencies?.call(context);
   }
 
   @override
   Widget build(BuildContext context) => widget.builder(context, value, updater);
 
   void updater(T? newValue) {
-    widget.onUpdate?.call(newValue);
-    value = newValue;
-    if (mounted) setState(() {});
+    if (mounted) {
+      widget.onUpdate?.call(newValue);
+      value = newValue;
+      setState(() {});
+    }
   }
 
   @override
   void didUpdateWidget(covariant ValueBuilder<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
+    widget.didUpdateWidget?.call(context);
     if (oldWidget.initialValue != widget.initialValue &&
         widget.initialValue != value) {
       value = widget.initialValue;
@@ -65,9 +83,15 @@ class _ValueBuilderState<T> extends State<ValueBuilder<T>> {
   }
 
   @override
+  void deactivate() {
+    super.deactivate();
+    widget.deactivate?.call(context);
+  }
+
+  @override
   void dispose() {
     super.dispose();
-    widget.onDispose?.call();
+    widget.dispose?.call(context);
     if (value is ChangeNotifier) {
       (value as ChangeNotifier).dispose();
     } else if (value is StreamController) {
@@ -94,15 +118,23 @@ typedef ValueListenBuilderCallback<T> = Widget Function(
 class ValueListenBuilder<T> extends StatefulWidget {
   const ValueListenBuilder({
     Key? key,
-    required this.builder,
     this.initialValue,
-    this.onDispose,
+    this.initState,
+    this.didChangeDependencies,
+    required this.builder,
+    this.didUpdateWidget,
     this.onUpdate,
+    this.deactivate,
+    this.dispose,
   }) : super(key: key);
   final T? initialValue;
+  final ValueCallback<BuildContext>? initState;
+  final ValueCallback<BuildContext>? didChangeDependencies;
   final ValueListenBuilderCallback<T> builder;
-  final VoidCallback? onDispose;
+  final ValueCallback<BuildContext>? didUpdateWidget;
   final ValueCallback<T?>? onUpdate;
+  final ValueCallback<BuildContext>? deactivate;
+  final ValueCallback<BuildContext>? dispose;
 
   @override
   _ValueListenBuilderState<T> createState() => _ValueListenBuilderState<T>();
@@ -115,14 +147,22 @@ class _ValueListenBuilderState<T> extends State<ValueListenBuilder<T>> {
   @override
   void initState() {
     super.initState();
+    widget.initState?.call(context);
     valueListenable = ValueNotifier<T?>(widget.initialValue);
     value = valueListenable.value;
     valueListenable.addListener(_valueChanged);
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    widget.didChangeDependencies?.call(context);
+  }
+
+  @override
   void didUpdateWidget(ValueListenBuilder<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
+    widget.didUpdateWidget?.call(context);
     if (oldWidget.initialValue != widget.initialValue &&
         widget.initialValue != value) {
       valueListenable.value = widget.initialValue;
@@ -130,9 +170,11 @@ class _ValueListenBuilderState<T> extends State<ValueListenBuilder<T>> {
   }
 
   void _valueChanged() {
-    value = valueListenable.value;
-    widget.onUpdate?.call(value);
-    if (mounted) setState(() {});
+    if (mounted) {
+      value = valueListenable.value;
+      widget.onUpdate?.call(value);
+      setState(() {});
+    }
   }
 
   @override
@@ -140,10 +182,16 @@ class _ValueListenBuilderState<T> extends State<ValueListenBuilder<T>> {
       widget.builder(context, valueListenable);
 
   @override
+  void deactivate() {
+    super.deactivate();
+    widget.deactivate?.call(context);
+  }
+
+  @override
   void dispose() {
-    valueListenable.removeListener(_valueChanged);
     super.dispose();
-    widget.onDispose?.call();
+    widget.dispose?.call(context);
+    valueListenable.removeListener(_valueChanged);
     if (value is ChangeNotifier) {
       (value as ChangeNotifier).dispose();
     } else if (value is StreamController) {
@@ -152,25 +200,93 @@ class _ValueListenBuilderState<T> extends State<ValueListenBuilder<T>> {
   }
 }
 
+typedef StatefulWidgetFunction = void Function(
+    BuildContext context, StateSetter setState);
+
+/// StatefulBuilder 扩展
+class ExtendedStatefulBuilder extends StatefulWidget {
+  const ExtendedStatefulBuilder({
+    Key? key,
+    this.initState,
+    this.didChangeDependencies,
+    required this.builder,
+    this.didUpdateWidget,
+    this.deactivate,
+    this.dispose,
+  }) : super(key: key);
+
+  final StatefulWidgetFunction? initState;
+  final StatefulWidgetFunction? didChangeDependencies;
+  final StatefulWidgetBuilder builder;
+  final StatefulWidgetFunction? didUpdateWidget;
+  final ValueCallback<BuildContext>? deactivate;
+  final ValueCallback<BuildContext>? dispose;
+
+  @override
+  State<ExtendedStatefulBuilder> createState() =>
+      _ExtendedStatefulBuilderState();
+}
+
+class _ExtendedStatefulBuilderState extends State<ExtendedStatefulBuilder> {
+  @override
+  void initState() {
+    super.initState();
+    widget.initState?.call(context, setState);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    widget.didChangeDependencies?.call(context, setState);
+  }
+
+  @override
+  Widget build(BuildContext context) => widget.builder(context, setState);
+
+  @override
+  void didUpdateWidget(covariant ExtendedStatefulBuilder oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    widget.didUpdateWidget?.call(context, setState);
+  }
+
+  @override
+  void deactivate() {
+    super.deactivate();
+    widget.deactivate?.call(context);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    widget.dispose?.call(context);
+  }
+}
+
+/// FutureBuilder 扩展
 class ExtendedFutureBuilder<T> extends StatefulWidget {
   const ExtendedFutureBuilder({
     Key? key,
-    this.future,
     this.initialData,
+    required this.future,
     this.onNone,
     this.onWaiting,
-    this.onError,
     this.onNull,
-    this.onDone,
-    this.didUpdateReset = false,
-    this.hasInitialReset = false,
+    this.onError,
+    required this.onDone,
+    this.didUpdateWidgetCallFuture = false,
+    this.initialCallFuture = false,
+    this.initState,
+    this.didChangeDependencies,
+    this.didUpdateWidget,
+    this.deactivate,
+    this.dispose,
   }) : super(key: key);
-
-  /// 异步方法
-  final Future<T> Function()? future;
 
   /// 初始化数据
   final T? initialData;
+
+  /// 异步方法
+  final Future<T> Function() future;
 
   /// 没有数据时 UI回调
   final Widget Function(BuildContext context, Function() reset)? onNone;
@@ -185,13 +301,19 @@ class ExtendedFutureBuilder<T> extends StatefulWidget {
   final ExtendedAsyncErrorWidgetBuilder? onError;
 
   /// 完成时 UI回调 异步返回的数据一定不为null
-  final ExtendedAsyncWidgetBuilder<T>? onDone;
+  final ExtendedAsyncWidgetBuilder<T> onDone;
 
   /// 父组件update时 是否重新执行异步请求 默认为false
-  final bool didUpdateReset;
+  final bool didUpdateWidgetCallFuture;
 
   /// 当 [initialData] !=null 时第一次渲染是否执行异步请求  默认为false
-  final bool hasInitialReset;
+  final bool initialCallFuture;
+
+  final ValueCallback<BuildContext>? initState;
+  final ValueCallback<BuildContext>? didChangeDependencies;
+  final ValueCallback<BuildContext>? didUpdateWidget;
+  final ValueCallback<BuildContext>? deactivate;
+  final ValueCallback<BuildContext>? dispose;
 
   @override
   _ExtendedFutureBuilderState<T> createState() =>
@@ -229,33 +351,38 @@ class _ExtendedFutureBuilderState<T> extends State<ExtendedFutureBuilder<T>> {
   @override
   void initState() {
     super.initState();
+    widget.initState?.call(context);
     if (widget.initialData != null) {
       state = BuilderState.done;
       data = widget.initialData!;
     }
-    if (widget.initialData == null || widget.hasInitialReset) {
+    if (widget.initialData == null || widget.initialCallFuture) {
       addPostFrameCallback((duration) => _subscribe());
     }
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    widget.didChangeDependencies?.call(context);
+  }
+
   void _subscribe() {
-    if (widget.future != null) {
-      state = BuilderState.waiting;
+    state = BuilderState.waiting;
+    if (mounted && widget.onWaiting != null) setState(() {});
+    widget.future.call().then((value) {
+      if (value != null) {
+        state = BuilderState.done;
+        data = value;
+      } else {
+        state = BuilderState.isNull;
+      }
       if (mounted) setState(() {});
-      widget.future!.call().then((value) {
-        if (value != null) {
-          state = BuilderState.done;
-          data = value;
-        } else {
-          state = BuilderState.isNull;
-        }
-        if (mounted) setState(() {});
-      }, onError: (Object error, StackTrace stackTrace) {
-        state = BuilderState.error;
-        _error = error;
-        if (mounted) setState(() {});
-      });
-    }
+    }, onError: (Object error, StackTrace stackTrace) {
+      state = BuilderState.error;
+      _error = error;
+      if (mounted) setState(() {});
+    });
   }
 
   @override
@@ -282,7 +409,7 @@ class _ExtendedFutureBuilderState<T> extends State<ExtendedFutureBuilder<T>> {
         }
         break;
       case BuilderState.done:
-        return widget.onDone!.call(context, data!, _subscribe);
+        return widget.onDone.call(context, data!, _subscribe);
     }
     return const SizedBox();
   }
@@ -290,6 +417,19 @@ class _ExtendedFutureBuilderState<T> extends State<ExtendedFutureBuilder<T>> {
   @override
   void didUpdateWidget(covariant ExtendedFutureBuilder<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.didUpdateReset) _subscribe();
+    widget.didUpdateWidget?.call(context);
+    if (widget.didUpdateWidgetCallFuture) _subscribe();
+  }
+
+  @override
+  void deactivate() {
+    super.deactivate();
+    widget.deactivate?.call(context);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    widget.dispose?.call(context);
   }
 }

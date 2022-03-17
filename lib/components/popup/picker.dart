@@ -256,6 +256,42 @@ class _PickerListWheel extends ListWheel {
             onScrollEnd: onScrollEnd);
 }
 
+class _PickerListStateWheel extends ListStateWheel {
+  _PickerListStateWheel({
+    Key? key,
+    required PickerWheelOptions wheel,
+    FixedExtentScrollController? controller,
+    ListWheelChildDelegateType childDelegateType =
+        ListWheelChildDelegateType.builder,
+    ValueChanged<int>? onChanged,
+    required int itemCount,
+    List<Widget>? children,
+    IndexedWidgetBuilder? itemBuilder,
+    ValueChanged<int>? onScrollEnd,
+    int initialItem = 0,
+  }) : super(
+            key: key,
+            initialItem: initialItem,
+            controller: controller,
+            options: WheelOptions(
+                backgroundColor: wheel.backgroundColor,
+                isCupertino: wheel.isCupertino,
+                itemExtent: wheel.itemExtent,
+                diameterRatio: wheel.diameterRatio,
+                offAxisFraction: wheel.offAxisFraction,
+                perspective: wheel.perspective,
+                magnification: wheel.magnification,
+                useMagnifier: wheel.useMagnifier,
+                squeeze: wheel.squeeze,
+                physics: wheel.physics,
+                onChanged: onChanged),
+            childDelegateType: childDelegateType,
+            children: children,
+            itemBuilder: itemBuilder,
+            itemCount: itemCount,
+            onScrollEnd: onScrollEnd);
+}
+
 /// 省市区三级联动
 class AreaPicker extends _PickerConfig<String> {
   AreaPicker({
@@ -945,14 +981,13 @@ class MultiColumnLinkagePicker extends StatefulWidget {
 class _MultiColumnLinkagePickerState extends State<MultiColumnLinkagePicker> {
   List<PickerLinkageEntry> entry = [];
   List<int> position = [];
+  int currentListLength = 0;
 
   @override
   void initState() {
     super.initState();
     entry = widget.entry;
   }
-
-  int currentListLength = 0;
 
   void calculateListLength(List<PickerLinkageEntry> list, bool isFirst) {
     if (isFirst) currentListLength = 0;
@@ -978,55 +1013,64 @@ class _MultiColumnLinkagePickerState extends State<MultiColumnLinkagePicker> {
     }
   }
 
-  @override
-  void didUpdateWidget(covariant MultiColumnLinkagePicker oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.entry != widget.entry) {
-      setState(() {});
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  List<Widget> get buildWheels {
     calculateListLength(entry, true);
     List<Widget> list = [];
     List<PickerLinkageEntry> currentEntry = entry;
     position.length.generate((index) {
       final itemPosition = position[index];
-      if (currentEntry.isNotEmpty && itemPosition < currentEntry.length) {
-        list.add(listWheel(location: index, list: currentEntry));
-        currentEntry = currentEntry[itemPosition].children;
+      if (currentEntry.isNotEmpty) {
+        list.add(listStateWheel(location: index, list: currentEntry));
+        if (itemPosition < currentEntry.length) {
+          currentEntry = currentEntry[itemPosition].children;
+        } else {
+          currentEntry = currentEntry.last.children;
+        }
       }
     });
-
-    return PickerSubject<List<int>>(
-        options: widget.options,
-        sureTap: () => position,
-        child: Universal(
-          width: double.infinity,
-          height: kPickerDefaultHeight,
-          direction: Axis.horizontal,
-          isScroll: widget.horizontalScroll,
-          children: list.builder((item) => Universal(
-              expanded: widget.horizontalScroll ? false : widget.addExpanded,
-              height: kPickerDefaultHeight,
-              child: Center(child: item),
-              width: widget.wheelOptions?.itemWidth ?? kPickerDefaultWidth)),
-        ));
+    return list;
   }
 
-  Widget listWheel(
+  @override
+  void didUpdateWidget(covariant MultiColumnLinkagePicker oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.entry != widget.entry) setState(() {});
+  }
+
+  @override
+  Widget build(BuildContext context) => PickerSubject<List<int>>(
+      options: widget.options,
+      sureTap: () => position,
+      child: Universal(
+        width: double.infinity,
+        height: kPickerDefaultHeight,
+        direction: Axis.horizontal,
+        isScroll: widget.horizontalScroll,
+        children: buildWheels.builder((item) => Universal(
+            expanded: widget.horizontalScroll ? false : widget.addExpanded,
+            height: kPickerDefaultHeight,
+            child: Center(child: item),
+            width: widget.wheelOptions?.itemWidth ?? kPickerDefaultWidth)),
+      ));
+
+  Widget listStateWheel(
           {required List<PickerLinkageEntry> list, required int location}) =>
-      _PickerListWheel(
+      _PickerListStateWheel(
+          initialItem: position[location],
           onChanged: (int index) {
             position[location] = index;
           },
           onScrollEnd: (int index) {
-            100.milliseconds.delayed(() {
-              setState(() {});
-            });
+            final builder =
+                list.length > index && list[index].children.isNotEmpty;
+            if (location != position.length - 1 || builder) {
+              50.milliseconds.delayed(() {
+                setState(() {});
+              });
+            }
           },
-          itemBuilder: (_, int index) => Center(child: list[index].text),
+          itemBuilder: (_, int index) => Center(
+              child: index > list.length ? list.last.text : list[index].text),
           itemCount: list.length,
           wheel: widget.wheelOptions ?? GlobalOptions().pickerWheelOptions);
 }

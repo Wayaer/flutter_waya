@@ -36,7 +36,7 @@ class ComponentsPage extends StatelessWidget {
                     color: Colors.yellow,
                     border: Border.all(color: Colors.yellow),
                     borderRadius: BorderRadius.circular(4)),
-                pinTextStyle: const TextStyle(color: Colors.white)),
+                textStyle: const TextStyle(color: Colors.white)),
             const Partition('WidgetPendant'),
             TextField(
                 decoration: InputDecoration(

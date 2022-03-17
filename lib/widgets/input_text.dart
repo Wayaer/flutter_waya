@@ -329,23 +329,24 @@ class NumberLimitFormatter extends TextInputFormatter {
 class PinBox extends StatefulWidget {
   const PinBox({
     Key? key,
+    this.onTap,
+    this.onChanged,
+    this.onDone,
     this.inputTextType = InputTextType.text,
-    this.autoFocus = false,
-    this.needKeyBoard = true,
+    this.autoFocus = true,
     this.enabled = true,
+    this.disposeController = true,
+    this.needKeyBoard = true,
     this.controller,
     this.maxLength = 4,
     this.inputFormatter,
+    this.focusNode,
+    this.decoration,
     this.pinDecoration,
     this.hasFocusPinDecoration,
-    this.pinTextStyle,
-    this.decoration,
+    this.textStyle,
     this.boxSize = const Size(40, 40),
-    this.focusNode,
-    this.onChanged,
-    this.onDone,
     this.spaces,
-    this.onTap,
   }) : super(key: key);
   final GestureTapCallback? onTap;
 
@@ -364,6 +365,9 @@ class PinBox extends StatefulWidget {
   /// 开启输入
   final bool enabled;
 
+  /// [dispose] 时自动销户 controller
+  final bool disposeController;
+
   /// 是否需要自动弹出键盘
   final bool needKeyBoard;
 
@@ -379,17 +383,17 @@ class PinBox extends StatefulWidget {
   /// 输入框焦点管理
   final FocusNode? focusNode;
 
-  /// 默认输入框装饰器
-  final Decoration? pinDecoration;
-
   /// 整个组件装饰器
   final Decoration? decoration;
+
+  /// 默认输入框装饰器
+  final Decoration? pinDecoration;
 
   /// 有文字后的输入框装饰器
   final Decoration? hasFocusPinDecoration;
 
   /// box 内文字样式
-  final TextStyle? pinTextStyle;
+  final TextStyle? textStyle;
 
   /// box 方框的大小
   final Size boxSize;
@@ -403,87 +407,58 @@ class PinBox extends StatefulWidget {
 
 class _PinBoxState extends State<PinBox> {
   late FocusNode focusNode;
-  late TextEditingController controller;
-  late Size size;
   List<Widget?> spaces = <Widget?>[];
-  List<String> texts = <String>[];
-  String text = '';
+
+  ValueNotifier<String> text = ValueNotifier('');
 
   @override
   void initState() {
     super.initState();
-    init();
+    initialize();
   }
 
-  void init() {
-    size = widget.boxSize;
+  void initialize() {
     spaces = widget.spaces ?? <Widget?>[];
-    controller = widget.controller ?? TextEditingController();
     focusNode = widget.focusNode ?? FocusNode();
-    controller.removeListener(listener);
-    controller.addListener(listener);
-  }
-
-  void listener() {
-    if (controller.text.length > widget.maxLength) {
-      controller.text = controller.text.substring(0, widget.maxLength);
-    }
-    if (text != controller.text) {
-      text = controller.text;
-      texts = text.trim().split('');
-      if (widget.onDone != null && text.length == widget.maxLength) {
-        widget.onDone!(text);
-      }
-      setState(() {});
-    }
   }
 
   @override
   void didUpdateWidget(covariant PinBox oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.spaces != widget.spaces ||
-        oldWidget.boxSize != widget.boxSize ||
-        oldWidget.decoration != widget.decoration ||
-        oldWidget.pinDecoration != widget.pinDecoration ||
-        oldWidget.controller != widget.controller ||
-        oldWidget.focusNode != widget.focusNode ||
-        oldWidget.hasFocusPinDecoration != widget.hasFocusPinDecoration) {
-      init();
+        oldWidget.focusNode != widget.focusNode) {
+      initialize();
       setState(() {});
     }
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Universal(
-        isStack: true,
-        height: size.height,
-        decoration: widget.decoration,
-        onTap: getFocus,
-        children: <Widget>[
-          SizedBox(height: size.height, child: pinTextInput),
-          boxRow(),
-        ]);
-  }
+  Widget build(BuildContext context) => Universal(
+          isStack: true,
+          height: widget.boxSize.height,
+          decoration: widget.decoration,
+          onTap: onTap,
+          children: <Widget>[
+            SizedBox(height: widget.boxSize.height, child: pinTextInput),
+            ValueListenableBuilder(
+                valueListenable: text,
+                builder: (_, String text, __) => boxRow(text)),
+          ]);
 
-  Widget boxRow() {
+  Widget boxRow(String text) {
     final List<Widget> box = <Widget>[];
-    if (texts.length < widget.maxLength) {
-      final int n = widget.maxLength - texts.length;
-      for (int i = 0; i < n; i++) {
-        texts.add('');
-      }
-    }
+    List<String> texts = text.trim().split('');
+    (widget.maxLength - texts.length).generate((index) => texts.add(''));
     bool hasFocus = false;
     for (int i = 0; i < widget.maxLength; i++) {
       if (texts[i].isEmpty) hasFocus = true;
       box.add(Container(
-          height: size.height,
-          width: size.width,
+          height: widget.boxSize.height,
+          width: widget.boxSize.width,
           decoration:
               hasFocus ? widget.pinDecoration : widget.hasFocusPinDecoration,
           alignment: Alignment.center,
-          child: BText(texts[i], style: widget.pinTextStyle)));
+          child: BText(texts[i], style: widget.textStyle)));
     }
     final List<Widget> children = <Widget>[];
     if (spaces.isNotEmpty) {
@@ -497,12 +472,12 @@ class _PinBoxState extends State<PinBox> {
     }
     return Universal(
         direction: Axis.horizontal,
-        onTap: getFocus,
+        onTap: onTap,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: spaces.isNotEmpty ? children : box);
   }
 
-  void getFocus() {
+  void onTap() {
     if (widget.needKeyBoard) {
       if (focusNode.hasFocus) focusNode.unfocus();
       100.milliseconds.delayed(() {
@@ -522,10 +497,17 @@ class _PinBoxState extends State<PinBox> {
           border: InputBorder.none),
       autofocus: widget.autoFocus,
       maxLines: 1,
-      onChanged: widget.onChanged,
+      onChanged: (String value) {
+        widget.onChanged?.call(value);
+
+        text.value = value;
+        if (value.length == widget.maxLength) {
+          widget.onDone?.call(value);
+        }
+      },
       enabled: widget.enabled,
       maxLength: widget.maxLength,
-      controller: controller,
+      controller: widget.controller,
       style: const BTextStyle(color: Colors.transparent),
       showCursor: false,
       inputFormatters: widget.inputFormatter ??
@@ -534,9 +516,9 @@ class _PinBoxState extends State<PinBox> {
 
   @override
   void dispose() {
-    controller.removeListener(listener);
-    if (widget.focusNode == null) focusNode.dispose();
-    if (widget.controller == null) controller.dispose();
     super.dispose();
+    if (widget.focusNode == null) focusNode.dispose();
+    if (widget.disposeController) widget.controller?.dispose();
+    text.dispose();
   }
 }

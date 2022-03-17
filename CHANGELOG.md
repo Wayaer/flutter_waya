@@ -1,3 +1,10 @@
+## 1.20.1
+
+* New `ExtendedStatefulBuilder`
+* New `ListStateWheel` Fixed some display index anomalies caused by builds
+* Add some lifecycle methods to `ValueListenBuilder` `ValueBuilder` `ExtendedFutureBuilder`
+* Fixed the `MultiColumnLinkagePicker` bug
+
 ## 1.20.0
 
 * Add `AnchorScrollBuilder()`,You can use it to specify the index whether it be a `ListView` or

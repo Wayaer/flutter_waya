@@ -98,7 +98,6 @@ class WheelOptions {
 class ListWheel extends StatelessWidget {
   ListWheel({
     Key? key,
-    // this.initialIndex = 0,
     this.controller,
     this.itemBuilder,
     this.itemCount,
@@ -130,7 +129,6 @@ class ListWheel extends StatelessWidget {
 
   const ListWheel.builder({
     Key? key,
-    // this.initialIndex = 0,
     this.controller,
     required this.itemBuilder,
     required this.itemCount,
@@ -146,7 +144,6 @@ class ListWheel extends StatelessWidget {
 
   const ListWheel.list({
     Key? key,
-    // this.initialIndex = 0,
     this.controller,
     this.onScrollEnd,
     required this.children,
@@ -162,7 +159,6 @@ class ListWheel extends StatelessWidget {
 
   const ListWheel.looping({
     Key? key,
-    // this.initialIndex = 0,
     this.controller,
     this.onScrollEnd,
     this.children,
@@ -175,9 +171,6 @@ class ListWheel extends StatelessWidget {
         itemBuilder = null,
         itemCount = null,
         super(key: key);
-
-  /// 初始选中的Item
-  // final int initialIndex;
 
   final WheelOptions? options;
 
@@ -284,6 +277,163 @@ class ListWheel extends StatelessWidget {
               }
               return false;
             });
+  }
+}
+
+/// 解决父组件重新 build 时 改变子元素长度后显示异常问题
+/// 添加支持初始位置
+class ListStateWheel extends StatefulWidget {
+  const ListStateWheel(
+      {Key? key,
+      this.controller,
+      this.disposeController = true,
+      this.itemBuilder,
+      this.itemCount,
+      this.childDelegateType = ListWheelChildDelegateType.looping,
+      this.onScrollEnd,
+      this.children,
+      this.onNotification,
+      this.onScrollStart,
+      this.onScrollUpdate,
+      this.options,
+      this.initialItem = 0,
+      this.animateDuration = const Duration(milliseconds: 10),
+      this.curve = Curves.linear,
+      this.onCreateController})
+      : super(key: key);
+
+  const ListStateWheel.list({
+    Key? key,
+    this.controller,
+    this.onScrollEnd,
+    required this.children,
+    this.onNotification,
+    this.onScrollStart,
+    this.onScrollUpdate,
+    this.options,
+    this.disposeController = true,
+    this.initialItem = 0,
+    this.onCreateController,
+    this.animateDuration = const Duration(milliseconds: 10),
+    this.curve = Curves.linear,
+  })  : assert(children != null),
+        childDelegateType = ListWheelChildDelegateType.list,
+        itemBuilder = null,
+        itemCount = null,
+        super(key: key);
+
+  const ListStateWheel.looping({
+    Key? key,
+    this.controller,
+    this.onScrollEnd,
+    this.children,
+    this.onNotification,
+    this.onScrollStart,
+    this.onScrollUpdate,
+    this.options,
+    this.disposeController = true,
+    this.initialItem = 0,
+    this.onCreateController,
+    this.animateDuration = const Duration(milliseconds: 10),
+    this.curve = Curves.linear,
+  })  : assert(children != null),
+        childDelegateType = ListWheelChildDelegateType.looping,
+        itemBuilder = null,
+        itemCount = null,
+        super(key: key);
+
+  final WheelOptions? options;
+
+  /// 默认为 true 组件 dispose 自动调用 controller.dispose()
+  final bool disposeController;
+
+  /// 子组件
+  final List<Widget>? children;
+
+  /// 条目构造器
+  final IndexedWidgetBuilder? itemBuilder;
+
+  /// 条目数量
+  final int? itemCount;
+
+  /// 初始item
+  final int initialItem;
+
+  /// 滚轮类型
+  final ListWheelChildDelegateType childDelegateType;
+
+  /// 控制器
+  final FixedExtentScrollController? controller;
+
+  /// 滚动监听 添加此方法  [onScrollStart],[onScrollUpdate],[onScrollEnd] 无效
+  final NotificationListenerCallback<ScrollNotification>? onNotification;
+
+  /// 滚动开始回调
+  final ValueChanged<int>? onScrollStart;
+
+  /// 滚动中回调
+  final ValueChanged<int>? onScrollUpdate;
+
+  /// 滚动结束回调
+  final ValueChanged<int>? onScrollEnd;
+
+  /// [controller] 为null  自动创建 controller 回调
+  final ValueCallback<FixedExtentScrollController>? onCreateController;
+
+  /// animateToItem
+  final Duration animateDuration;
+  final Curve curve;
+
+  @override
+  State<ListStateWheel> createState() => _ListStateWheelState();
+}
+
+class _ListStateWheelState extends State<ListStateWheel> {
+  late FixedExtentScrollController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = widget.controller ??
+        FixedExtentScrollController(initialItem: initialItem);
+    if (widget.controller == null) widget.onCreateController?.call(controller);
+  }
+
+  int get count => widget.itemCount ?? widget.children?.length ?? 0;
+
+  int get initialItem =>
+      widget.initialItem > count ? count : widget.initialItem;
+
+  @override
+  Widget build(BuildContext context) => ListWheel(
+      controller: controller,
+      itemBuilder: widget.itemBuilder,
+      itemCount: widget.itemCount,
+      childDelegateType: widget.childDelegateType,
+      onScrollEnd: widget.onScrollEnd,
+      children: widget.children,
+      onNotification: widget.onNotification,
+      onScrollStart: widget.onScrollStart,
+      onScrollUpdate: widget.onScrollUpdate,
+      options: widget.options);
+
+  @override
+  void didUpdateWidget(covariant ListStateWheel oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.controller != null && controller != widget.controller) {
+      controller.dispose();
+      controller = widget.controller!;
+    }
+    if (oldWidget.itemCount != widget.itemCount) {
+      controller.animateToItem(initialItem,
+          duration: widget.animateDuration, curve: widget.curve);
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    if (widget.disposeController) controller.dispose();
   }
 }
 

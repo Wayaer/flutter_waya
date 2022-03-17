@@ -190,7 +190,7 @@ class PopupWindowsPage extends StatelessWidget {
   }
 
   Future<void> multiColumnLinkagePicker() async {
-    final List<PickerLinkageEntry> list = <PickerLinkageEntry>[
+    final List<PickerLinkageEntry> entry = <PickerLinkageEntry>[
       const PickerLinkageEntry(text: Text('A1'), children: [
         PickerLinkageEntry(text: Text('A2')),
       ]),
@@ -234,8 +234,8 @@ class PopupWindowsPage extends StatelessWidget {
       const PickerLinkageEntry(text: Text('D1'), children: [])
     ];
     final List<int>? index = await showMultiColumnLinkagePicker(
-        entry: list, horizontalScroll: false);
-    List<PickerLinkageEntry> resultList = list;
+        entry: entry, horizontalScroll: false);
+    List<PickerLinkageEntry> resultList = entry;
     String result = '';
     index?.builder((item) {
       result += (resultList[item].text as Text).data!;
