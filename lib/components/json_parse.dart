@@ -179,27 +179,27 @@ class _HttpDataPageState extends State<_HttpDataPage> {
   Widget build(BuildContext context) {
     return Stack(children: [
       ValueListenableBuilder<Offset>(
-        valueListenable: iconOffSet,
-        builder: (_, Offset value, __) => Positioned(
-            left: value.dx,
-            top: value.dy,
-            child: Universal(
-                enabled: true,
-                onTap: showData,
-                onDoubleTap: () {
-                  _httpDataOverlay?.remove();
-                  _httpDataOverlay = null;
-                },
-                onPanStart: (DragStartDetails details) =>
-                    updatePositioned(details.globalPosition),
-                onPanUpdate: (DragUpdateDetails details) =>
-                    updatePositioned(details.globalPosition),
-                decoration: BoxDecoration(
-                    color: context.theme.primaryColor, shape: BoxShape.circle),
-                padding: const EdgeInsets.all(4),
-                child: const Icon(Icons.bug_report_rounded,
-                    size: 20, color: Colors.white))),
-      )
+          valueListenable: iconOffSet,
+          builder: (_, Offset value, __) => Positioned(
+              left: value.dx,
+              top: value.dy,
+              child: Universal(
+                  enabled: true,
+                  onTap: showData,
+                  onDoubleTap: () {
+                    _httpDataOverlay?.remove();
+                    _httpDataOverlay = null;
+                  },
+                  onPanStart: (DragStartDetails details) =>
+                      updatePositioned(details.globalPosition),
+                  onPanUpdate: (DragUpdateDetails details) =>
+                      updatePositioned(details.globalPosition),
+                  decoration: BoxDecoration(
+                      color: context.theme.primaryColor,
+                      shape: BoxShape.circle),
+                  padding: const EdgeInsets.all(4),
+                  child: const Icon(Icons.bug_report_rounded,
+                      size: 20, color: Colors.white))))
     ]);
   }
 
@@ -208,7 +208,11 @@ class _HttpDataPageState extends State<_HttpDataPage> {
       pop();
     } else {
       hasWindows = true;
-      await showBottomPopup(widget: httpDataWidget);
+      await showBottomPopup(
+          options: GlobalOptions()
+              .bottomSheetOptions
+              .copyWith(backgroundColor: Colors.transparent),
+          widget: httpDataWidget);
       hasWindows = false;
     }
   }

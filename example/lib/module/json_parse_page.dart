@@ -1,8 +1,8 @@
 import 'dart:convert';
 
+import 'package:app/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:app/main.dart';
 
 class JsonParsePage extends StatelessWidget {
   const JsonParsePage({Key? key}) : super(key: key);
@@ -13,6 +13,10 @@ class JsonParsePage extends StatelessWidget {
         appBar: AppBarText('JsonParse Demo'),
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
+          ElevatedText('showHttpLogTs', onTap: () {
+            setHttpData(
+                ResponseModel(requestOptions: RequestOptions(path: 'test')));
+          }),
           ElevatedText('JsonParse', onTap: () => push(_JsonParsePage())),
           ElevatedText('JsonParse.list',
               onTap: () => push(_JsonParseListPage())),
