@@ -75,8 +75,7 @@ class _ValueBuilderState<T> extends State<ValueBuilder<T>> {
   void didUpdateWidget(covariant ValueBuilder<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
     widget.didUpdateWidget?.call(context);
-    if (oldWidget.initialValue != widget.initialValue &&
-        widget.initialValue != value) {
+    if (widget.initialValue != null && widget.initialValue != value) {
       value = widget.initialValue;
       if (mounted) setState(() {});
     }
@@ -163,8 +162,7 @@ class _ValueListenBuilderState<T> extends State<ValueListenBuilder<T>> {
   void didUpdateWidget(ValueListenBuilder<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
     widget.didUpdateWidget?.call(context);
-    if (oldWidget.initialValue != widget.initialValue &&
-        widget.initialValue != value) {
+    if (widget.initialValue != null && widget.initialValue != value) {
       valueListenable.value = widget.initialValue;
     }
   }
