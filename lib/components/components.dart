@@ -282,68 +282,79 @@ class CustomDismissible extends Dismissible {
 
 /// 组件右上角加红点
 class Badge extends StatelessWidget {
-  const Badge(
-      {Key? key,
-      required this.child,
-      this.hide = false,
-      this.pointPadding,
-      this.width,
-      this.height,
-      this.onTap,
-      this.margin,
-      this.pointColor,
-      this.top,
-      this.right,
-      this.bottom,
-      this.left,
-      this.pointSize,
-      this.pointChild,
-      this.alignment})
-      : super(key: key);
+  const Badge({
+    Key? key,
+    this.hide = false,
+    required this.child,
+    required this.badge,
+    this.badgeColor,
+    this.badgeSize,
+    this.top,
+    this.right,
+    this.bottom,
+    this.left,
+    this.alignment,
+    this.width,
+    this.height,
+    this.onTap,
+    this.margin,
+  }) : super(key: key);
 
+  /// 是否显示badge
   final bool hide;
+
+  /// 底部组件
   final Widget child;
-  final Widget? pointChild;
-  final double? width;
-  final double? height;
-  final GestureTapCallback? onTap;
-  final EdgeInsetsGeometry? margin;
-  final EdgeInsetsGeometry? pointPadding;
-  final Color? pointColor;
-  final double? pointSize;
+
+  /// 自定义badge内容
+  final Widget badge;
+  final Color? badgeColor;
+  final double? badgeSize;
+
+  /// badge 的位置
   final double? top;
   final double? right;
   final double? bottom;
   final double? left;
   final AlignmentGeometry? alignment;
 
+  /// 整个组件的宽高
+  final double? width;
+  final double? height;
+
+  /// 点击事件
+  final GestureTapCallback? onTap;
+  final EdgeInsetsGeometry? margin;
+
   @override
   Widget build(BuildContext context) {
-    if (hide) return child;
     final List<Widget> children = <Widget>[child];
-    Widget dot = dotWidget(context);
-    if (alignment != null) dot = Align(alignment: alignment!, child: dot);
-    if (right != null || top != null || bottom != null || left != null) {
-      dot = Positioned(
-          right: right, top: top, bottom: bottom, left: left, child: dot);
+    if (!hide) {
+      Widget current = dot(context);
+      if (alignment != null) {
+        current = Align(alignment: alignment!, child: current);
+      }
+      if (right != null || top != null || bottom != null || left != null) {
+        current = Positioned(
+            right: right, top: top, bottom: bottom, left: left, child: current);
+      }
+      children.add(current);
     }
-    children.add(dot);
     return Universal(
         onTap: onTap,
         margin: margin,
         width: width,
         height: height,
-        isStack: true,
+        isStack: !hide,
         children: children);
   }
 
-  Widget dotWidget(BuildContext context) => Container(
-      child: pointChild,
-      padding: pointPadding,
-      width: pointChild == null ? (pointSize ?? 4) : null,
-      height: pointChild == null ? (pointSize ?? 4) : null,
+  Widget dot(BuildContext context) => Container(
+      child: badge,
+      width: badgeSize,
+      height: badgeSize,
       decoration: BoxDecoration(
-          color: pointColor ?? context.theme.primaryColor,
+          color: badgeColor ?? context.theme.primaryColor,
           shape: BoxShape.circle));
 }
 
