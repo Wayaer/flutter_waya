@@ -7,6 +7,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 extension ExtensionWidget on Widget {
+  Widget get toSliverBox => SliverToBoxAdapter(child: this);
+
   SliverToBoxAdapter sliverToBoxAdapter({Key? key}) =>
       SliverToBoxAdapter(key: key, child: this);
 
@@ -119,8 +121,6 @@ extension ExtensionWidget on Widget {
               top: top, left: left, right: right, bottom: bottom),
           child: this);
 
-  Widget get sliverBox => SliverToBoxAdapter(child: this);
-
   ColoredBox color(Color color, {Key? key}) =>
       ColoredBox(key: key, color: color, child: this);
 
@@ -180,6 +180,15 @@ extension ExtensionWidget on Widget {
 
   SizedBox sizedBox({Key? key, double? width, double? height}) =>
       SizedBox(key: key, width: width, height: height, child: this);
+
+  SizedBox setWidth(double width, {Key? key}) =>
+      SizedBox(key: key, width: width, child: this);
+
+  SizedBox setHeight(double height, {Key? key}) =>
+      SizedBox(key: key, height: height, child: this);
+
+  SizedBox setSize(Size size, {Key? key}) =>
+      SizedBox(key: key, height: size.height, width: size.width, child: this);
 
   SizedBox get expand => SizedBox.expand(child: this);
 
