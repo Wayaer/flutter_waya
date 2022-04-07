@@ -15,9 +15,10 @@ const _colors = [
   ...colors
 ];
 
-double _random() {
-  const min = 100;
-  const max = 200;
+double _random(int index) {
+  return index.isEven ? 500 : 1000;
+  const min = 500;
+  const max = 1000;
   final _random = Random();
   return (min + _random.nextInt(max - min)).toDouble();
 }
@@ -164,10 +165,10 @@ class _AnchorScrollBuilderPage extends StatelessWidget {
                         key: entryKey[index],
                         height: scrollDirection == Axis.horizontal
                             ? double.infinity
-                            : _random(),
+                            : _random(index),
                         width: scrollDirection == Axis.vertical
                             ? double.infinity
-                            : _random()));
+                            : _random(index)));
               }).expandedNull
         ]);
   }
@@ -218,10 +219,10 @@ class _AnchorScrollGridPage extends StatelessWidget {
                         key: entryKey[index],
                         height: scrollDirection == Axis.horizontal
                             ? double.infinity
-                            : _random(),
+                            : _random(index),
                         width: scrollDirection == Axis.vertical
                             ? double.infinity
-                            : _random()));
+                            : _random(index)));
               }).expandedNull
         ]);
   }
@@ -274,10 +275,10 @@ class _AnchorScrollBuilderWaterfallPage extends StatelessWidget {
                         key: entryKey[index],
                         height: scrollDirection == Axis.horizontal
                             ? double.infinity
-                            : _random(),
+                            : _random(index),
                         width: scrollDirection == Axis.vertical
                             ? double.infinity
-                            : _random()));
+                            : _random(index)));
               }).expandedNull
         ]);
   }
@@ -322,10 +323,10 @@ class _AnchorScrollCountPage extends StatelessWidget {
                         key: entryKey[entry.key],
                         height: scrollDirection == Axis.horizontal
                             ? double.infinity
-                            : _random(),
+                            : _random(entry.key),
                         width: scrollDirection == Axis.vertical
                             ? double.infinity
-                            : _random())),
+                            : _random(entry.key))),
                     reverse: reverse,
                     header: const _Header().sliverToBoxAdapter(),
                     footer: const _Footer().sliverToBoxAdapter(),
@@ -395,22 +396,22 @@ class _BottomNavigationBar extends StatelessWidget {
           const BText('animateToIndex').marginOnly(top: 12),
           Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
             ElevatedText('0', onTap: () {
-              controller.animateToIndex(0);
+              controller.jumpToIndex(0, useAnimateTo: true);
             }),
             ElevatedText('50', onTap: () {
-              controller.animateToIndex(50);
+              controller.jumpToIndex(50, useAnimateTo: true);
             }),
             ElevatedText('100', onTap: () {
-              controller.animateToIndex(100);
+              controller.jumpToIndex(100, useAnimateTo: true);
             }),
             ElevatedText('150', onTap: () {
-              controller.animateToIndex(150);
+              controller.jumpToIndex(150, useAnimateTo: true);
             }),
             ElevatedText('200', onTap: () {
-              controller.animateToIndex(200);
+              controller.jumpToIndex(200, useAnimateTo: true);
             }),
             ElevatedText('237', onTap: () {
-              controller.animateToIndex(237);
+              controller.jumpToIndex(237, useAnimateTo: true);
             }),
           ]),
           const BText('jumpToIndex').marginOnly(top: 12),
