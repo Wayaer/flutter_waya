@@ -26,44 +26,51 @@ class AnchorScrollController extends ScrollController {
   Future<void> jumpToIndex(int index,
       {Duration duration = const Duration(milliseconds: 20),
       bool useAnimateTo = false,
+      double ruleOutSpacing = 0,
       Curve curve = Curves.linear}) async {
-    if (_keyList.length >= index) {
-      if (_ancestor == null) jumpTimes = 0;
-      _ancestor ??= _scrollKey!.currentContext!.findRenderObject();
-      final targetKey = _keyList[index];
-      GlobalKey? jumpKey;
-      if (targetKey.currentContext == null) {
-        if (index < lastIndex) {
-          jumpKey = _keyList.where((e) => e.currentContext != null).first;
-        } else {
-          jumpKey = _keyList.where((e) => e.currentContext != null).last;
-        }
-        final jumpIndex = _keyList.indexOf(jumpKey);
-        final value = useAnimateTo
-            ? await _animateTo(jumpKey.currentContext!,
-                duration: duration, curve: curve)
-            : _jumpTo(jumpKey.currentContext!);
-        if (value) {
-          lastIndex = jumpIndex;
-          await duration.delayed(() async => await jumpToIndex(index));
-        }
+    if (index >= _keyList.length) index = _keyList.length - 1;
+    if (index < 1) index = 1;
+    if (_ancestor == null) jumpTimes = 0;
+    _ancestor ??= _scrollKey!.currentContext!.findRenderObject();
+    final targetKey = _keyList[index];
+    GlobalKey? jumpKey;
+    if (targetKey.currentContext == null) {
+      if (index < lastIndex) {
+        jumpKey = _keyList.where((e) => e.currentContext != null).first;
       } else {
-        lastIndex = index;
-        useAnimateTo
-            ? await _animateTo(targetKey.currentContext!,
-                duration: duration, curve: curve, isEnd: true)
-            : _jumpTo(targetKey.currentContext!, isEnd: true);
-        jumpTimes = 0;
+        jumpKey = _keyList.where((e) => e.currentContext != null).last;
       }
+      final jumpIndex = _keyList.indexOf(jumpKey);
+      final value = useAnimateTo
+          ? await _animateTo(jumpKey.currentContext!,
+              duration: duration, curve: curve, ruleOutSpacing: ruleOutSpacing)
+          : _jumpTo(jumpKey.currentContext!, ruleOutSpacing: ruleOutSpacing);
+      if (value) {
+        lastIndex = jumpIndex;
+        await duration.delayed(() async => await jumpToIndex(index));
+      }
+    } else {
+      lastIndex = index;
+      useAnimateTo
+          ? await _animateTo(targetKey.currentContext!,
+              duration: duration,
+              curve: curve,
+              isEnd: true,
+              ruleOutSpacing: ruleOutSpacing)
+          : _jumpTo(targetKey.currentContext!,
+              isEnd: true, ruleOutSpacing: ruleOutSpacing);
+      jumpTimes = 0;
     }
   }
 
-  bool _jumpTo(BuildContext context, {bool isEnd = false}) {
+  bool _jumpTo(BuildContext context,
+      {bool isEnd = false, double ruleOutSpacing = 0}) {
     final rect = context.getWidgetRectLocalToGlobal(ancestor: _ancestor);
     if (rect != null) {
-      double dy = offset + _rectToOffset(rect);
+      double dy = offset + _rectToOffset(rect, ruleOutSpacing: ruleOutSpacing);
       if (dy == offset && !isEnd) {
-        dy = offset + _rectToOffset(rect, useEnd: true);
+        dy = offset +
+            _rectToOffset(rect, useEnd: true, ruleOutSpacing: ruleOutSpacing);
       }
       if (dy == offset) return false;
       if (dy > position.maxScrollExtent) dy = position.maxScrollExtent;
@@ -75,14 +82,15 @@ class AnchorScrollController extends ScrollController {
     return false;
   }
 
-  double _rectToOffset(Rect rect, {bool useEnd = false}) {
+  double _rectToOffset(Rect rect,
+      {bool useEnd = false, double ruleOutSpacing = 0}) {
     switch (_scrollDirection) {
       case Axis.horizontal:
-        double left = rect.left;
+        double left = rect.left + ruleOutSpacing;
         if (useEnd) left += rect.width;
         return _reverse ? -left : left;
       case Axis.vertical:
-        double top = rect.top;
+        double top = rect.top + ruleOutSpacing;
         if (useEnd) top += rect.height;
         return _reverse ? -top : top;
     }
@@ -91,12 +99,14 @@ class AnchorScrollController extends ScrollController {
   Future<bool> _animateTo(BuildContext context,
       {required Duration duration,
       required Curve curve,
-      bool isEnd = false}) async {
+      bool isEnd = false,
+      double ruleOutSpacing = 0}) async {
     final rect = context.getWidgetRectLocalToGlobal(ancestor: _ancestor);
     if (rect != null) {
-      double dy = offset + _rectToOffset(rect);
+      double dy = offset + _rectToOffset(rect, ruleOutSpacing: ruleOutSpacing);
       if (dy == offset && !isEnd) {
-        dy = offset + _rectToOffset(rect, useEnd: true);
+        dy = offset +
+            _rectToOffset(rect, useEnd: true, ruleOutSpacing: ruleOutSpacing);
       }
       if (dy == offset) return false;
       if (dy > position.maxScrollExtent) dy = position.maxScrollExtent;
