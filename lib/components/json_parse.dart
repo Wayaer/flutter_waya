@@ -197,9 +197,9 @@ class _HttpDataPageState extends State<_HttpDataPage> {
                   decoration: BoxDecoration(
                       color: context.theme.primaryColor,
                       shape: BoxShape.circle),
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(4),
                   child: const Icon(Icons.bug_report_rounded,
-                      size: 26, color: Colors.white))))
+                      size: 18, color: Colors.white))))
     ]);
   }
 
