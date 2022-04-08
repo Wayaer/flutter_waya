@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:app/main.dart';
 import 'package:app/module/scroll_page.dart';
 import 'package:flutter/material.dart';
@@ -17,10 +15,10 @@ const _colors = [
 
 double _random(int index) {
   return index.isEven ? 500 : 1000;
-  const min = 500;
-  const max = 1000;
-  final _random = Random();
-  return (min + _random.nextInt(max - min)).toDouble();
+  // const min = 500;
+  // const max = 1000;
+  // final _random = Random();
+  // return (min + _random.nextInt(max - min)).toDouble();
 }
 
 class AnchorScrollBuilderPage extends StatelessWidget {
