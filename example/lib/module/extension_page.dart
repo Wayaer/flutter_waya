@@ -203,35 +203,33 @@ class _ExtensionFunctionPage extends StatelessWidget {
                 ]);
               }),
           const SizedBox(height: 10),
-          const _NoThrottle(),
+          const _NoThrottleFunction(),
         ]);
   }
 }
 
-class _NoThrottle extends StatefulWidget {
-  const _NoThrottle({Key? key}) : super(key: key);
+class _NoThrottleFunction extends StatefulWidget {
+  const _NoThrottleFunction({Key? key}) : super(key: key);
 
   @override
-  _NoThrottleState createState() => _NoThrottleState();
+  _NoThrottleFunctionState createState() => _NoThrottleFunctionState();
 }
 
-class _NoThrottleState extends State<_NoThrottle> {
+class _NoThrottleFunctionState extends State<_NoThrottleFunction> {
   int i = 0;
 
   @override
-  Widget build(BuildContext context) {
-    return Column(children: <Widget>[
-      const Text('未节流函数'),
-      Padding(
-          padding: const EdgeInsets.symmetric(vertical: 2),
-          child: Text(i.toString())),
-      ElevatedText('点击+1', onTap: () async {
-        await 2.seconds.delayed(() {});
-        i++;
-        setState(() {});
-      }),
-    ]);
-  }
+  Widget build(BuildContext context) => Column(children: <Widget>[
+        const Text('未节流函数'),
+        Padding(
+            padding: const EdgeInsets.symmetric(vertical: 2),
+            child: Text(i.toString())),
+        ElevatedText('点击+1', onTap: () async {
+          await 2.seconds.delayed(() {});
+          i++;
+          setState(() {});
+        }),
+      ]);
 }
 
 class _ExtensionNumPage extends StatelessWidget {
