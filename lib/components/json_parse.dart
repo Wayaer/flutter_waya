@@ -132,26 +132,26 @@ class _JsonParseState extends State<JsonParse> {
       (content is List && content.isEmpty));
 }
 
-void setHttpData(ResponseModel res) {
+void setHttpData(ResponseModel response) {
   if (_httpDataOverlay == null) {
-    _httpDataOverlay = showOverlay(_HttpDataPage(res), autoOff: true)!;
+    _httpDataOverlay = showOverlay(_HttpDataPage(response), autoOff: true)!;
   } else {
-    EventBus().emit('httpData', res);
+    EventBus().emit('httpData', response);
   }
 }
 
 ExtendedOverlayEntry? _httpDataOverlay;
 
 class _HttpDataPage extends StatefulWidget {
-  const _HttpDataPage(this.res, {Key? key}) : super(key: key);
-  final ResponseModel res;
+  const _HttpDataPage(this.response, {Key? key}) : super(key: key);
+  final ResponseModel response;
 
   @override
   _HttpDataPageState createState() => _HttpDataPageState();
 }
 
 class _HttpDataPageState extends State<_HttpDataPage> {
-  final List<ResponseModel> httpDataList = <ResponseModel>[];
+  final List<ResponseModel> list = <ResponseModel>[];
   final String eventName = 'httpData';
   bool hasWindows = false;
   ValueNotifier<Offset> iconOffSet =
@@ -160,11 +160,11 @@ class _HttpDataPageState extends State<_HttpDataPage> {
   @override
   void initState() {
     super.initState();
-    httpDataList.add(widget.res);
+    list.add(widget.response);
     EventBus().add(eventName, (dynamic data) {
       if (data is ResponseModel) {
-        httpDataList.insert(0, data);
-        if (httpDataList.length > 30) httpDataList.removeLast();
+        list.insert(0, data);
+        if (list.length > 30) list.removeLast();
       }
     });
   }
@@ -180,26 +180,24 @@ class _HttpDataPageState extends State<_HttpDataPage> {
     return Stack(children: [
       ValueListenableBuilder<Offset>(
           valueListenable: iconOffSet,
-          builder: (_, Offset value, __) => Positioned(
+          builder: (_, Offset value, __) => Universal(
               left: value.dx,
               top: value.dy,
-              child: Universal(
-                  enabled: true,
-                  onTap: showData,
-                  onDoubleTap: () {
-                    _httpDataOverlay?.remove();
-                    _httpDataOverlay = null;
-                  },
-                  onPanStart: (DragStartDetails details) =>
-                      updatePositioned(details.globalPosition),
-                  onPanUpdate: (DragUpdateDetails details) =>
-                      updatePositioned(details.globalPosition),
-                  decoration: BoxDecoration(
-                      color: context.theme.primaryColor,
-                      shape: BoxShape.circle),
-                  padding: const EdgeInsets.all(4),
-                  child: const Icon(Icons.bug_report_rounded,
-                      size: 18, color: Colors.white))))
+              enabled: true,
+              onTap: showData,
+              onDoubleTap: () {
+                _httpDataOverlay?.remove();
+                _httpDataOverlay = null;
+              },
+              onPanStart: (DragStartDetails details) =>
+                  updatePositioned(details.globalPosition),
+              onPanUpdate: (DragUpdateDetails details) =>
+                  updatePositioned(details.globalPosition),
+              decoration: BoxDecoration(
+                  color: context.theme.primaryColor, shape: BoxShape.circle),
+              padding: const EdgeInsets.all(4),
+              child: const Icon(Icons.bug_report_rounded,
+                  size: 20, color: Colors.white)))
     ]);
   }
 
@@ -211,8 +209,8 @@ class _HttpDataPageState extends State<_HttpDataPage> {
       await showBottomPopup(
           options: GlobalOptions()
               .bottomSheetOptions
-              .copyWith(backgroundColor: Colors.transparent),
-          widget: httpDataWidget);
+              .copyWith(backgroundColor: Colors.transparent, enableDrag: true),
+          widget: httpData);
       hasWindows = false;
     }
   }
@@ -228,52 +226,45 @@ class _HttpDataPageState extends State<_HttpDataPage> {
     }
   }
 
-  Widget get httpDataWidget => Universal(
+  Widget get httpData => Universal(
       width: double.infinity,
       margin: EdgeInsets.only(top: context.mediaQueryPadding.top + 100),
       decoration: BoxDecoration(
           color: context.theme.cardColor,
           borderRadius: const BorderRadius.vertical(top: Radius.circular(10))),
       child: ScrollList.builder(
-          itemCount: httpDataList.length,
+          itemCount: list.length,
           padding: const EdgeInsets.all(10),
-          itemBuilder: (_, int index) {
-            final ResponseModel res = httpDataList[index];
-            return Universal(
-                onLongPress: () {
-                  res.toMap().toString().toClipboard;
-                  showToast('已复制');
-                },
-                margin: const EdgeInsets.only(top: 10),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(6),
-                    color: context.theme.cardColor,
-                    boxShadow: getBoxShadow(
-                        color: context.theme.shadowColor.withOpacity(0.1),
-                        radius: 2)),
-                child: ValueBuilder<bool>(
-                    initialValue: false,
-                    builder: (_, bool? show, updater) {
-                      show ??= false;
-                      return !show
-                          ? title(res.requestOptions.uri.path, onTap: () {
-                              updater(true);
-                            })
-                          : Column(children: <Widget>[
-                              title(res.requestOptions.uri.path, onTap: () {
-                                updater(false);
-                              }),
-                              JsonParse(<String, dynamic>{
-                                'requestOptions': res.requestOptionsToMap(),
-                                'response': res.data is Map
-                                    ? res.data
-                                    : <String, dynamic>{
-                                        'data': res.data.toString()
-                                      },
-                              }),
-                            ]);
-                    }));
-          }));
+          itemBuilder: (_, int index) => itemBuilder(list[index])));
+
+  Widget itemBuilder(ResponseModel res) => Universal(
+      onLongPress: () {
+        res.toMap().toString().toClipboard;
+        showToast('已复制');
+      },
+      margin: const EdgeInsets.fromLTRB(12, 12, 12, 0),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(6),
+          color: context.theme.cardColor,
+          boxShadow: getBoxShadow(
+              color: context.theme.shadowColor.withOpacity(0.1), radius: 2)),
+      child: ValueBuilder<bool>(
+          initialValue: false,
+          builder: (_, bool? show, updater) => !show!
+              ? title(res.requestOptions.uri.path, onTap: () {
+                  updater(true);
+                })
+              : Column(children: <Widget>[
+                  title(res.requestOptions.uri.path, onTap: () {
+                    updater(false);
+                  }),
+                  JsonParse(<String, dynamic>{
+                    'requestOptions': res.requestOptionsToMap(),
+                    'response': res.data is Map
+                        ? res.data
+                        : <String, dynamic>{'data': res.data.toString()},
+                  }),
+                ])));
 
   Widget title(String url, {GestureTapCallback? onTap}) => SimpleButton(
       padding: const EdgeInsets.all(10),
