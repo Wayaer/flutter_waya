@@ -458,18 +458,19 @@ class ExtendedScaffold extends StatelessWidget {
         restorationId: restorationId,
         body: universal);
     return onWillPop != null || onWillPopOverlayClose
-        ? WillPopScope(child: scaffold, onWillPop: onWillPop ?? onWillPopFun)
+        ? WillPopScope(child: scaffold, onWillPop: onWillPopFun)
         : scaffold;
   }
 
   Future<bool> onWillPopFun() async {
-    if (!scaffoldWillPop) return scaffoldWillPop;
+    if (!scaffoldWillPop) return await onWillPop?.call() ?? scaffoldWillPop;
     if (onWillPopOverlayClose &&
         ExtendedOverlay().overlayEntryList.isNotEmpty) {
       closeOverlay();
-      return false;
+      return await onWillPop?.call() ?? false;
+    } else {
+      return await onWillPop?.call() ?? true;
     }
-    return true;
   }
 
   PreferredSizeWidget? get appBarFun {

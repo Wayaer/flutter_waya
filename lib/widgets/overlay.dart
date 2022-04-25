@@ -135,7 +135,6 @@ class ExtendedOverlayEntry extends OverlayEntry {
     try {
       super.remove();
       if (!autoOff) ExtendedOverlay()._overlayEntryList.remove(this);
-      if (scaffoldWillPop) scaffoldWillPop = false;
       return true;
     } catch (e) {
       return false;
