@@ -1,5 +1,6 @@
 ## 1.20.5
 
+* Fixed issues with `scaffoldWillPop`
 * Add the `AnchorScrollBuilder()` component,And fix known problems, and it works perfectly
 
 ## 1.20.2
@@ -12,15 +13,12 @@
 ## 1.20.0
 
 * Add `AnchorScrollBuilder()`,You can use it to specify the index whether it be a `ListView` or
-  `GridView`, whether `SliverChildBuilderDelegate()` structure, or `SliverChildListDelegate()` can
-  be competent for it,And
-  add [example](https://github.com/Wayaer/flutter_waya/tree/main/example/lib/module/anchor_scroll_builder_page.dart)
+  `GridView`, whether `SliverChildBuilderDelegate()` structure, or `SliverChildListDelegate()` can be competent for it,And add [example](https://github.com/Wayaer/flutter_waya/tree/main/example/lib/module/anchor_scroll_builder_page.dart)
 * Add the `getDaysForRange()` extension method for `DateTime`
 
 ## 1.19.1
 
-* Add some extension
-  methods `toChineseNumbers()` `getWidgetRectGlobalToLocal()` `getWidgetRectLocalToGlobal()` `checkNullOrEmpty()`
+* Add some extension methods `toChineseNumbers()` `getWidgetRectGlobalToLocal()` `getWidgetRectLocalToGlobal()` `checkNullOrEmpty()`
 * Remove `RipplePageRoute()`
 * Fixed some popover bugs
 
@@ -30,8 +28,7 @@
 * Change `showMultipleChoicePicker()` to `showSingleColumnPicker`
 * Add `MultiColumnPicker` and `MultiColumnLinkagePicker`
 * Add `showMultiColumnPicker()` and `showMultiColumnLinkagePicker()`
-* All have been added
-  with [examples](https://github.com/Wayaer/flutter_waya/tree/main/example/lib/module/popup_windows_page.dart)
+* All have been added with [examples](https://github.com/Wayaer/flutter_waya/tree/main/example/lib/module/popup_windows_page.dart)
 
 ## 1.18.5
 
@@ -72,16 +69,14 @@
 * Modify `showDialogSureCancel()` to `showDoubleChooseWindows()`,
 * Modify `PopupFromType` to `PopupFromStyle`,
 * Modify `PopupSureCancel()` to `PopupDoubleChooseWindows()`,
-* Remove `setToastDuration()` `setGlobalPushMode()` `setAllToastIgnoringBackground()` methods,
-  please use the `GlobalOptions()` set up some global properties
+* Remove `setToastDuration()` `setGlobalPushMode()` `setAllToastIgnoringBackground()` methods, please use the `GlobalOptions()` set up some global properties
 * Modify `ExtendedOptions()` to `ExtendedDioOptions()`
 * Modify `PopupOptions()` to `PopupModalWindows()`, add `options`, use `ModalWindowsOptions()`
 * Modify `ToastType` to `ToastStyle`, `toastType` to style, add `options` in `showToast()` method
 * Remove the default background color for `showBottomPopup`
 * Add positioned for `showToast` and Add the global `setToastPositioned()`
 * Modify all `widgetMode` to `pushStyle` and Change all `WidgetMode` to `RoutePushStyle`
-* Add the `GlobalOptions()` class to set
-  all `ToastOptions` `WheelOptions` `BottomSheetOptions` `GeneralDialogOptions` `PickerWheelOptions` `ModalWindowsOptions`
+* Add the `GlobalOptions()` class to set all `ToastOptions` `WheelOptions` `BottomSheetOptions` `GeneralDialogOptions` `PickerWheelOptions` `ModalWindowsOptions`
   configuration information
 * After modifying `showToast`, you may need to modify some of your own code
 * Add `ExtendedOverlay`
@@ -175,8 +170,7 @@
 * Change `GlobalWidgetsApp` to `ExtendedWidgetsApp`
 * Change `OverlayScaffold` to `ExtendedScaffold`
 * Change `SliverAutoAppBar` to `ExtendedSliverAppBar`
-* Change `PickerSub` to `PickerOptions` and change pickerSub to options , change pickerWheel to
-  wheel
+* Change `PickerSub` to `PickerOptions` and change pickerSub to options , change pickerWheel to wheel
 * Change `FlexibleSpaceAutoBar` to `ExtendedFlexibleSpaceBar`
 * Change `SliverAutoPersistentHeader` to `ExtendedSliverPersistentHeader`
 * Change `ScrollViewAuto` to `ExtendedScrollView`
@@ -190,8 +184,7 @@
 * Change `BasisText` to `BText`
 * Change `BasisTextStyle` to `BTextStyle`
 * Remove `InputField`
-* Add `WidgetPendant` for all widgets, add header, footer, extraPrefix , extraSuffix, prefix,
-  suffix. you can use it with `CupertinoTextField` or `TextField`
+* Add `WidgetPendant` for all widgets, add header, footer, extraPrefix , extraSuffix, prefix, suffix. you can use it with `CupertinoTextField` or `TextField`
 * Add `inputTextTypeToTextInputFormatter()`
 
 ## 1.10.3
@@ -222,11 +215,9 @@
 
 ## 1.9.13
 
-* `Universal` add useSingleChildScrollView property，The default is true, If useSingleChildScrollView
-  is false, the scrolling component will be created using `Scrollview`
+* `Universal` add useSingleChildScrollView property，The default is true, If useSingleChildScrollView is false, the scrolling component will be created using `Scrollview`
 * `Universal` add `Wrap`,
-* `Universal` adds `StatefulBuilder`、`Builder` and `LayoutBuilder`，and uses them through builder
-  properties
+* `Universal` adds `StatefulBuilder`、`Builder` and `LayoutBuilder`，and uses them through builder properties
 * Fix bugs for `TabBarMerge`
 * Fix `ListWheel` controller auto destroy problem
 
@@ -395,8 +386,7 @@
 
 * Optimize time selector (simplified parameter)
 * Optimize overlay stack
-* To fix the problem that overlay cannot be closed by clicking the return button (overlay scaffold
-  is required)
+* To fix the problem that overlay cannot be closed by clicking the return button (overlay scaffold is required)
 * Add hero component
 
 ## 1.0.2

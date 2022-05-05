@@ -295,6 +295,7 @@ class ExtendedWidgetsApp extends StatelessWidget {
 /// 统一全局控制 是否可返回
 /// true 允许的返回
 /// false 不允许返回
+///  [ExtendedScaffold.onWillPop] 方法优先于 [scaffoldWillPop]
 bool scaffoldWillPop = true;
 
 /// ExtendedScaffold
