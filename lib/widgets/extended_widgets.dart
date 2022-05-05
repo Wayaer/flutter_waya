@@ -292,6 +292,9 @@ class ExtendedWidgetsApp extends StatelessWidget {
       scrollBehavior: scrollBehavior);
 }
 
+/// 统一全局控制 是否可返回
+/// true 允许的返回
+/// false 不允许返回
 bool scaffoldWillPop = true;
 
 /// ExtendedScaffold
@@ -463,13 +466,13 @@ class ExtendedScaffold extends StatelessWidget {
   }
 
   Future<bool> onWillPopFun() async {
-    if (!scaffoldWillPop) return await onWillPop?.call() ?? scaffoldWillPop;
+    if (!scaffoldWillPop) return (await onWillPop?.call()) ?? scaffoldWillPop;
     if (onWillPopOverlayClose &&
         ExtendedOverlay().overlayEntryList.isNotEmpty) {
       closeOverlay();
-      return await onWillPop?.call() ?? false;
+      return (await onWillPop?.call()) ?? false;
     } else {
-      return await onWillPop?.call() ?? true;
+      return (await onWillPop?.call()) ?? true;
     }
   }
 
