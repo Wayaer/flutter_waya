@@ -5,12 +5,24 @@ import 'package:flutter_waya/flutter_waya.dart';
 
 /// String 扩展
 extension ExtensionString on String {
+  num get parseNum => num.parse(this);
+
+  num? get tryParseNum => num.tryParse(this);
+
   int get parseInt => int.parse(this);
+
+  int? get tryParseInt => int.tryParse(this);
+
+  double get parseDouble => double.parse(this);
+
+  double? get tryParseDouble => double.tryParse(this);
+
+  DateTime get parseDateTime => DateTime.parse(this);
+
+  DateTime? get tryParseDateTime => DateTime.tryParse(this);
 
   String insert(int index, String element) =>
       '${substring(0, index)}$element${substring(index, length)}';
-
-  double get parseDouble => double.parse(this);
 
   /// md5 加密
   String get toMd5 => md5.convert(utf8.encode(this)).toString();
