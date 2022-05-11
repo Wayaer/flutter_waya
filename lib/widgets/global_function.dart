@@ -206,9 +206,10 @@ Future<T?>? showDoubleChooseWindows<T>({
     showOverlay(widget);
     return null;
   }
-  var _options = GlobalOptions()
-      .dialogOptions
-      .copyWith(fromStyle: PopupFromStyle.fromCenter);
+  var _options = options ??
+      GlobalOptions()
+          .dialogOptions
+          .copyWith(fromStyle: PopupFromStyle.fromCenter);
   return showDialogPopup(widget: widget, options: _options);
 }
 
