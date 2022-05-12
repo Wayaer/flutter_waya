@@ -123,6 +123,7 @@ class PickerWheelOptions extends WheelOptions {
     ScrollPhysics physics = const FixedExtentScrollPhysics(),
     this.itemWidth,
   }) : super(
+            physics: physics,
             backgroundColor: backgroundColor,
             itemExtent: itemHeight,
             isCupertino: isCupertino,

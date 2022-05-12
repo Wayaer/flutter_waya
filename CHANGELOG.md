@@ -1,3 +1,7 @@
+## 2.0.0
+
+* Compatible with flutter 3.0.0
+
 ## 1.20.5
 
 * Fixed issues with `scaffoldWillPop`

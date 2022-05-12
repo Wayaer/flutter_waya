@@ -488,7 +488,7 @@ class _GifImageState extends State<GifImage> {
     } else if (provider is MemoryImage) {
       data = provider.bytes;
     }
-    final ui.Codec codec = await PaintingBinding.instance!
+    final ui.Codec codec = await PaintingBinding.instance
         .instantiateImageCodec(data.buffer.asUint8List() as Uint8List);
     images = <ImageInfo>[];
     for (int i = 0; i < codec.frameCount; i++) {
