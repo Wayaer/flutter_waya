@@ -224,7 +224,7 @@ class CheckBox extends StatefulWidget {
   final EdgeInsetsGeometry? padding;
 
   @override
-  _CheckBoxState createState() => _CheckBoxState();
+  State<CheckBox> createState() => _CheckBoxState();
 }
 
 class _CheckBoxState extends State<CheckBox> {

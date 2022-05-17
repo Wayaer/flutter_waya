@@ -67,10 +67,10 @@ extension ExtensionWidget on Widget {
           Clip clipBehavior = Clip.none}) =>
       FittedBox(
           key: key,
-          child: this,
           fit: fit,
           alignment: alignment,
-          clipBehavior: clipBehavior);
+          clipBehavior: clipBehavior,
+          child: this);
 
   AnnotatedRegion<SystemUiOverlayStyle> statusBarStyle(
           SystemUiOverlayStyle style) =>
@@ -135,7 +135,6 @@ extension ExtensionWidget on Widget {
     bool? semanticContainer,
   }) =>
       Card(
-          child: this,
           color: color,
           shadowColor: shadowColor,
           elevation: elevation,
@@ -143,7 +142,8 @@ extension ExtensionWidget on Widget {
           borderOnForeground: borderOnForeground ?? true,
           margin: margin,
           clipBehavior: clipBehavior,
-          semanticContainer: semanticContainer ?? true);
+          semanticContainer: semanticContainer ?? true,
+          child: this);
 
   Positioned positioned(
           {Key? key,
@@ -195,7 +195,7 @@ extension ExtensionWidget on Widget {
   SizedBox get shrink => SizedBox.shrink(child: this);
 
   SizedBox fromSize(Size size, {Key? key}) =>
-      SizedBox.fromSize(key: key, child: this, size: size);
+      SizedBox.fromSize(key: key, size: size, child: this);
 
   ConstrainedBox constrainedBox(BoxConstraints constraints, {Key? key}) =>
       ConstrainedBox(key: key, constraints: constraints, child: this);

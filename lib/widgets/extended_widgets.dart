@@ -165,16 +165,16 @@ class ExtendedWidgetsApp extends StatelessWidget {
     if (cupertinoTheme != null || pushStyle == RoutePushStyle.cupertino) {
       return cupertinoApp;
     }
-    late Color _color;
+    late Color color;
     switch (pushStyle) {
       case RoutePushStyle.cupertino:
         final CupertinoThemeData effectiveThemeData =
             CupertinoTheme.of(context);
-        _color = CupertinoDynamicColor.resolve(
-            color ?? effectiveThemeData.primaryColor, context);
+        color = CupertinoDynamicColor.resolve(
+            this.color ?? effectiveThemeData.primaryColor, context);
         break;
       case RoutePushStyle.material:
-        _color = color ?? theme?.primaryColor ?? Colors.blue;
+        color = this.color ?? theme?.primaryColor ?? Colors.blue;
         break;
     }
     return WidgetsApp(
@@ -200,7 +200,7 @@ class ExtendedWidgetsApp extends StatelessWidget {
         title: title,
         onGenerateTitle: onGenerateTitle,
         textStyle: textStyle,
-        color: _color,
+        color: color,
         locale: locale,
         localizationsDelegates: localizationsDelegates,
         localeListResolutionCallback: localeListResolutionCallback,
@@ -462,7 +462,7 @@ class ExtendedScaffold extends StatelessWidget {
         restorationId: restorationId,
         body: universal);
     return onWillPop != null || onWillPopOverlayClose
-        ? WillPopScope(child: scaffold, onWillPop: onWillPopFun)
+        ? WillPopScope(onWillPop: onWillPopFun, child: scaffold)
         : scaffold;
   }
 
@@ -482,9 +482,9 @@ class ExtendedScaffold extends StatelessWidget {
     return appBar == null
         ? null
         : PreferredSize(
-            child: appBar!,
             preferredSize:
-                Size.fromHeight(getStatusBarHeight + (appBarHeight ?? 30)));
+                Size.fromHeight(getStatusBarHeight + (appBarHeight ?? 30)),
+            child: appBar!);
   }
 
   Universal get universal => Universal(

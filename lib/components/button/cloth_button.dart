@@ -42,7 +42,7 @@ class ClothButton extends StatefulWidget {
   final int? gap;
 
   @override
-  _ClothButtonState createState() => _ClothButtonState();
+  State<ClothButton> createState() => _ClothButtonState();
 }
 
 class _ClothButtonState extends State<ClothButton>

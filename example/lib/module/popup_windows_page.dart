@@ -128,13 +128,13 @@ class PopupWindowsPage extends StatelessWidget {
               return true;
             },
             title: Container(
-                child: const BText('Title'),
                 alignment: Alignment.center,
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
                 decoration: BoxDecoration(
                     color: Colors.lightBlue,
-                    borderRadius: BorderRadius.circular(6))),
+                    borderRadius: BorderRadius.circular(6)),
+                child: const BText('Title')),
             backgroundColor: Colors.red),
         content: Container(
             height: 300,
@@ -265,11 +265,11 @@ class _AlertDemo extends StatelessWidget {
         message: Text('是否要删除当前项？'),
         actions: <Widget>[
           CupertinoActionSheetAction(
-              child: Text('删除'), onPressed: closePopup, isDefaultAction: true),
+              onPressed: closePopup, isDefaultAction: true, child: Text('删除')),
           CupertinoActionSheetAction(
-              child: Text('暂时不删'),
               onPressed: closePopup,
-              isDestructiveAction: true),
+              isDestructiveAction: true,
+              child: Text('暂时不删')),
         ]);
   }
 }

@@ -82,7 +82,7 @@ class SendSMS extends StatefulWidget {
   final EdgeInsetsGeometry? padding;
 
   @override
-  _SendSMSState createState() => _SendSMSState();
+  State<SendSMS> createState() => _SendSMSState();
 }
 
 class _SendSMSState extends State<SendSMS> {
@@ -167,7 +167,7 @@ class CountDown extends StatefulWidget {
   final ValueChanged<int>? onChanged;
 
   @override
-  _CountDownState createState() => _CountDownState();
+  State<CountDown> createState() => _CountDownState();
 }
 
 class _CountDownState extends State<CountDown> {
@@ -350,12 +350,12 @@ class Badge extends StatelessWidget {
   }
 
   Widget dot(BuildContext context) => Container(
-      child: badge,
       width: badgeSize,
       height: badgeSize,
       decoration: BoxDecoration(
           color: badgeColor ?? context.theme.primaryColor,
-          shape: BoxShape.circle));
+          shape: BoxShape.circle),
+      child: badge);
 }
 
 typedef ToggleBuilder = Widget Function(Widget child);
@@ -399,7 +399,7 @@ class ToggleRotate extends StatefulWidget {
   final ToggleBuilder? toggleBuilder;
 
   @override
-  _ToggleRotateState createState() => _ToggleRotateState();
+  State<ToggleRotate> createState() => _ToggleRotateState();
 }
 
 class _ToggleRotateState extends State<ToggleRotate>
@@ -502,7 +502,7 @@ class ExpansionTiles extends StatefulWidget {
   final bool initiallyExpanded;
 
   @override
-  _ExpansionTilesState createState() => _ExpansionTilesState();
+  State<ExpansionTiles> createState() => _ExpansionTilesState();
 }
 
 class _ExpansionTilesState extends State<ExpansionTiles>
@@ -610,7 +610,7 @@ class CustomDrawer extends StatefulWidget {
   final ModalWindowsOptions? options;
 
   @override
-  _CustomDrawerState createState() => _CustomDrawerState();
+  State<CustomDrawer> createState() => _CustomDrawerState();
 }
 
 class _CustomDrawerState extends State<CustomDrawer> {

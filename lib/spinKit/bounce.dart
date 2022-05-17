@@ -21,7 +21,7 @@ class SpinKitDoubleBounce extends StatefulWidget {
   final AnimationController? controller;
 
   @override
-  _SpinKitDoubleBounceState createState() => _SpinKitDoubleBounceState();
+  State<SpinKitDoubleBounce> createState() => _SpinKitDoubleBounceState();
 }
 
 class _SpinKitDoubleBounceState extends State<SpinKitDoubleBounce>
@@ -87,7 +87,7 @@ class SpinKitThreeBounce extends StatefulWidget {
   final AnimationController? controller;
 
   @override
-  _SpinKitThreeBounceState createState() => _SpinKitThreeBounceState();
+  State<SpinKitThreeBounce> createState() => _SpinKitThreeBounceState();
 }
 
 class _SpinKitThreeBounceState extends State<SpinKitThreeBounce>
@@ -151,7 +151,7 @@ class SpinKitPulse extends StatefulWidget {
   final AnimationController? controller;
 
   @override
-  _SpinKitPulseState createState() => _SpinKitPulseState();
+  State<SpinKitPulse> createState() => _SpinKitPulseState();
 }
 
 class _SpinKitPulseState extends State<SpinKitPulse>
@@ -217,7 +217,7 @@ class SpinKitRipple extends StatefulWidget {
   final AnimationController? controller;
 
   @override
-  _SpinKitRippleState createState() => _SpinKitRippleState();
+  State<SpinKitRipple> createState() => _SpinKitRippleState();
 }
 
 class _SpinKitRippleState extends State<SpinKitRipple>

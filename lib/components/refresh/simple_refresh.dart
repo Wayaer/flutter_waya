@@ -51,7 +51,7 @@ class SimpleRefresh extends StatefulWidget {
   final RefreshController? controller;
 
   @override
-  _RefreshState createState() => _RefreshState();
+  State<SimpleRefresh> createState() => _RefreshState();
 }
 
 class _RefreshState extends State<SimpleRefresh> {
@@ -130,7 +130,7 @@ class _RefreshState extends State<SimpleRefresh> {
             physics: const BouncingScrollPhysics(),
             slivers: slivers));
     if (isScrollListPadding != null) {
-      scrollView = Padding(child: scrollView, padding: isScrollListPadding!);
+      scrollView = Padding(padding: isScrollListPadding!, child: scrollView);
     }
     return scrollView;
   }
@@ -443,7 +443,7 @@ class ScrollNotificationListener extends StatefulWidget {
   final ScrollFocusCallback? onFocus;
 
   @override
-  _ScrollNotificationListenerState createState() =>
+  State<ScrollNotificationListener> createState() =>
       _ScrollNotificationListenerState();
 }
 

@@ -51,21 +51,21 @@ class Indicator extends StatelessWidget {
 
   final double activeSize;
 
-  _IndicatorPainter createPainter(Color activeColor, Color color) {
-    final Paint _paint = Paint();
+  IndicatorPainter createPainter(Color activeColor, Color color) {
+    final Paint paint = Paint();
     switch (layout) {
       case IndicatorType.none:
-        return _NonePainter(this, position, index, _paint, activeColor, color);
+        return _NonePainter(this, position, index, paint, activeColor, color);
       case IndicatorType.slide:
-        return _SlidePainter(this, position, index, _paint, activeColor, color);
+        return _SlidePainter(this, position, index, paint, activeColor, color);
       case IndicatorType.warm:
-        return _WarmPainter(this, position, index, _paint, activeColor, color);
+        return _WarmPainter(this, position, index, paint, activeColor, color);
       case IndicatorType.color:
-        return _ColorPainter(this, position, index, _paint, activeColor, color);
+        return _ColorPainter(this, position, index, paint, activeColor, color);
       case IndicatorType.scale:
-        return _ScalePainter(this, position, index, _paint, activeColor, color);
+        return _ScalePainter(this, position, index, paint, activeColor, color);
       case IndicatorType.drop:
-        return _DropPainter(this, position, index, _paint, activeColor, color);
+        return _DropPainter(this, position, index, paint, activeColor, color);
       default:
         throw Exception('Not a valid layout');
     }
@@ -87,7 +87,7 @@ class Indicator extends StatelessWidget {
   }
 }
 
-class _WarmPainter extends _IndicatorPainter {
+class _WarmPainter extends IndicatorPainter {
   _WarmPainter(Indicator widget, double page, int index, Paint paint,
       Color activeColor, Color color)
       : super(widget, page, index, paint, activeColor, color);
@@ -114,7 +114,7 @@ class _WarmPainter extends _IndicatorPainter {
   }
 }
 
-class _DropPainter extends _IndicatorPainter {
+class _DropPainter extends IndicatorPainter {
   _DropPainter(Indicator widget, double page, int index, Paint paint,
       Color activeColor, Color color)
       : super(widget, page, index, paint, activeColor, color);
@@ -133,7 +133,7 @@ class _DropPainter extends _IndicatorPainter {
   }
 }
 
-class _NonePainter extends _IndicatorPainter {
+class _NonePainter extends IndicatorPainter {
   _NonePainter(Indicator widget, double page, int index, Paint paint,
       Color activeColor, Color color)
       : super(widget, page, index, paint, activeColor, color);
@@ -153,7 +153,7 @@ class _NonePainter extends _IndicatorPainter {
   }
 }
 
-class _SlidePainter extends _IndicatorPainter {
+class _SlidePainter extends IndicatorPainter {
   _SlidePainter(Indicator widget, double page, int index, Paint paint,
       Color activeColor, Color color)
       : super(widget, page, index, paint, activeColor, color);
@@ -164,7 +164,7 @@ class _SlidePainter extends _IndicatorPainter {
           Offset(radius + (page * (size + space)), radius), radius, _paint);
 }
 
-class _ScalePainter extends _IndicatorPainter {
+class _ScalePainter extends IndicatorPainter {
   _ScalePainter(
     Indicator widget,
     double page,
@@ -215,7 +215,7 @@ class _ScalePainter extends _IndicatorPainter {
   }
 }
 
-class _ColorPainter extends _IndicatorPainter {
+class _ColorPainter extends IndicatorPainter {
   _ColorPainter(Indicator widget, double page, int index, Paint paint,
       Color activeColor, Color color)
       : super(widget, page, index, paint, activeColor, color);
@@ -244,8 +244,8 @@ class _ColorPainter extends _IndicatorPainter {
   }
 }
 
-abstract class _IndicatorPainter extends CustomPainter {
-  _IndicatorPainter(this.widget, this.page, this.index, this._paint,
+abstract class IndicatorPainter extends CustomPainter {
+  IndicatorPainter(this.widget, this.page, this.index, this._paint,
       this._activeColor, this._color);
 
   final Indicator widget;
@@ -281,5 +281,5 @@ abstract class _IndicatorPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(_IndicatorPainter oldDelegate) => oldDelegate.page != page;
+  bool shouldRepaint(IndicatorPainter oldDelegate) => oldDelegate.page != page;
 }

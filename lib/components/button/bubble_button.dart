@@ -164,9 +164,9 @@ class _BubbleButtonState extends State<BubbleButton>
                       ? _scaleAnimation.value
                       : 1.0,
                   child: SizedBox(
-                      child: bubbleWidget,
                       height: widget.size,
-                      width: widget.size),
+                      width: widget.size,
+                      child: bubbleWidget),
                 ))
           ]);
         });
@@ -225,9 +225,9 @@ double _clamp(double value, double low, double high) =>
     math.min(math.max(value, low), high);
 
 class _OvershootCurve extends Curve {
-  const _OvershootCurve([this.period = 2.5]);
+  const _OvershootCurve();
 
-  final double period;
+  final double period = 2.5;
 
   @override
   double transform(double t) {
@@ -291,7 +291,6 @@ class _CirclePainter extends CustomPainter {
 class _BubblesPainter extends CustomPainter {
   _BubblesPainter({
     required this.currentProgress,
-    this.bubblesCount = 7,
     this.color1 = const Color(0xFFFFC107),
     this.color2 = const Color(0xFFFF9800),
     this.color3 = const Color(0xFFFF5722),
@@ -304,7 +303,7 @@ class _BubblesPainter extends CustomPainter {
   }
 
   final double currentProgress;
-  final int bubblesCount;
+  final int bubblesCount = 7;
   final Color color1;
   final Color color2;
   final Color color3;

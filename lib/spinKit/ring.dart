@@ -17,7 +17,7 @@ class SpinKitRing extends StatefulWidget {
   final AnimationController? controller;
 
   @override
-  _SpinKitRingState createState() => _SpinKitRingState();
+  State<SpinKitRing> createState() => _SpinKitRingState();
 }
 
 class _SpinKitRingState extends State<SpinKitRing>
@@ -124,7 +124,7 @@ class SpinKitDualRing extends StatefulWidget {
   final AnimationController? controller;
 
   @override
-  _SpinKitDualRingState createState() => _SpinKitDualRingState();
+  State<SpinKitDualRing> createState() => _SpinKitDualRingState();
 }
 
 class _SpinKitDualRingState extends State<SpinKitDualRing>
@@ -157,26 +157,25 @@ class _SpinKitDualRingState extends State<SpinKitDualRing>
             transform: Matrix4.identity()..rotateZ((_animation.value) * pi * 2),
             alignment: FractionalOffset.center,
             child: CustomPaint(
-              child: SizedBox.fromSize(size: Size.square(widget.size)),
               painter: _DualRingPainter(
                   paintWidth: widget.lineWidth,
                   color: widget.color ??
                       context.theme.progressIndicatorTheme.color ??
                       context.theme.primaryColor),
+              child: SizedBox.fromSize(size: Size.square(widget.size)),
             )));
   }
 }
 
 class _DualRingPainter extends CustomPainter {
-  _DualRingPainter(
-      {this.angle = 90.0, required double paintWidth, required Color color})
+  _DualRingPainter({required double paintWidth, required Color color})
       : ringPaint = Paint()
           ..color = color
           ..strokeWidth = paintWidth
           ..style = PaintingStyle.stroke;
 
   final Paint ringPaint;
-  final double angle;
+  final double angle = 90;
 
   @override
   void paint(Canvas canvas, Size size) {

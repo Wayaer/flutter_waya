@@ -224,15 +224,15 @@ class ComponentsPage extends StatelessWidget {
                 width: double.infinity,
                 height: 40,
                 alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    border: DottedLineBorder.all(
+                        color: context.theme.dividerColor)),
                 child: CustomPaint(
                     size: const Size(double.infinity, 1),
                     painter: DottedLinePainter(
                         color: context.theme.dividerColor,
                         strokeWidth: 1,
-                        gap: 20)),
-                decoration: BoxDecoration(
-                    border: DottedLineBorder.all(
-                        color: context.theme.dividerColor))),
+                        gap: 20))),
             const Partition('ValueBuilder'),
             ValueBuilder<int>(
                 initialValue: 0,

@@ -63,101 +63,101 @@ class SpinKit extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color _color = color ??
+    final Color color = this.color ??
         context.theme.progressIndicatorTheme.color ??
         context.theme.primaryColor;
     switch (style) {
       case SpinKitStyle.circle:
         return SpinKitCircle(
-            color: _color,
+            color: color,
             size: size,
             duration: duration,
             itemBuilder: itemBuilder,
             controller: controller);
       case SpinKitStyle.fadingCircle:
         return SpinKitFadingCircle(
-            color: _color,
+            color: color,
             size: size,
             duration: duration,
             itemBuilder: itemBuilder,
             controller: controller);
       case SpinKitStyle.squareCircle:
         return SpinKitFadingCircle(
-            color: _color,
+            color: color,
             size: size,
             duration: duration,
             itemBuilder: itemBuilder,
             controller: controller);
       case SpinKitStyle.doubleBounce:
         return SpinKitDoubleBounce(
-            color: _color,
+            color: color,
             size: size,
             duration: duration,
             itemBuilder: itemBuilder,
             controller: controller);
       case SpinKitStyle.threeBounce:
         return SpinKitThreeBounce(
-            color: _color,
+            color: color,
             size: size,
             duration: duration,
             itemBuilder: itemBuilder,
             controller: controller);
       case SpinKitStyle.pulse:
         return SpinKitPulse(
-            color: _color,
+            color: color,
             size: size,
             duration: duration,
             itemBuilder: itemBuilder,
             controller: controller);
       case SpinKitStyle.ripple:
         return SpinKitRipple(
-            color: _color,
+            color: color,
             size: size,
             duration: duration,
             itemBuilder: itemBuilder,
             controller: controller);
       case SpinKitStyle.cubeGrid:
         return SpinKitCubeGrid(
-            color: _color,
+            color: color,
             size: size,
             duration: duration,
             itemBuilder: itemBuilder,
             controller: controller);
       case SpinKitStyle.foldingCube:
         return SpinKitFoldingCube(
-            color: _color,
+            color: color,
             size: size,
             duration: duration,
             itemBuilder: itemBuilder,
             controller: controller);
       case SpinKitStyle.fadingFour:
         return SpinKitFadingFour(
-            color: _color,
+            color: color,
             size: size,
             duration: duration,
             itemBuilder: itemBuilder,
             controller: controller);
       case SpinKitStyle.wanderingCubes:
         return SpinKitWanderingCubes(
-            color: _color,
+            color: color,
             size: size,
             duration: duration,
             itemBuilder: itemBuilder);
       case SpinKitStyle.ring:
         return SpinKitRing(
-            color: _color,
+            color: color,
             size: size,
             duration: duration,
             controller: controller);
       case SpinKitStyle.dualRing:
         return SpinKitDualRing(
-            color: _color,
+            color: color,
             size: size,
             duration: duration,
             controller: controller);
       case SpinKitStyle.wave:
         return SpinKitWave(
-            color: _color,
+            color: color,
             size: size,
             duration: duration,
             itemBuilder: itemBuilder,
@@ -190,7 +190,7 @@ class SpinKitWave extends StatefulWidget {
   final AnimationController? controller;
 
   @override
-  _SpinKitWaveState createState() => _SpinKitWaveState();
+  State<SpinKitWave> createState() => _SpinKitWaveState();
 }
 
 class _SpinKitWaveState extends State<SpinKitWave>
@@ -213,14 +213,14 @@ class _SpinKitWaveState extends State<SpinKitWave>
 
   @override
   Widget build(BuildContext context) {
-    final List<double> _bars = getAnimationDelay(widget.itemCount);
+    final List<double> bars = getAnimationDelay(widget.itemCount);
     return Center(
         child: Universal(
             size: Size(widget.size * 1.25, widget.size),
             direction: Axis.horizontal,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: _bars.length.generate((int i) => _ScaleYWidget(
-                  scaleY: _DelayTween(begin: .4, end: 1.0, delay: _bars[i])
+            children: bars.length.generate((int i) => _ScaleYWidget(
+                  scaleY: _DelayTween(begin: .4, end: 1.0, delay: bars[i])
                       .animate(_controller),
                   child: SizedBox.fromSize(
                       size: Size(widget.size / widget.itemCount, widget.size),
@@ -289,17 +289,15 @@ class _ScaleYWidget extends AnimatedWidget {
     Key? key,
     required Animation<double> scaleY,
     required this.child,
-    this.alignment = Alignment.center,
   }) : super(key: key, listenable: scaleY);
 
   final Widget child;
-  final Alignment alignment;
 
   Animation<double> get scale => listenable as Animation<double>;
 
   @override
   Widget build(BuildContext context) => Transform(
       transform: Matrix4.identity()..scale(1.0, scale.value, 1.0),
-      alignment: alignment,
+      alignment: Alignment.center,
       child: child);
 }

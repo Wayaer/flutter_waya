@@ -1,12 +1,12 @@
+import 'package:app/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:app/main.dart';
 
 class ProgressPage extends StatefulWidget {
   const ProgressPage({Key? key}) : super(key: key);
 
   @override
-  _ProgressPageState createState() => _ProgressPageState();
+  State<ProgressPage> createState() => _ProgressPageState();
 }
 
 class _ProgressPageState extends State<ProgressPage>

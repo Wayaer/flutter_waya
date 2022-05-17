@@ -21,12 +21,12 @@ class ExtendedOverlay {
 
   /// 自定义Overlay
   ExtendedOverlayEntry? showOverlay(Widget widget, {bool autoOff = false}) {
-    final OverlayState? _overlay =
+    final OverlayState? overlay =
         GlobalOptions().globalNavigatorKey.currentState!.overlay;
-    if (_overlay == null) return null;
+    if (overlay == null) return null;
     final ExtendedOverlayEntry entry =
         ExtendedOverlayEntry(autoOff: autoOff, widget: widget);
-    _overlay.insert(entry);
+    overlay.insert(entry);
     if (!autoOff) _overlayEntryList.add(entry);
     return entry;
   }
@@ -51,17 +51,17 @@ class ExtendedOverlay {
       Duration? duration,
       AlignmentGeometry? positioned,
       IconData? customIcon}) async {
-    var _options = (options ?? GlobalOptions().toastOptions).copyWith(
+    (options ??= GlobalOptions().toastOptions).copyWith(
         style: style,
         positioned: positioned,
         customIcon: customIcon,
         duration: duration);
     if (_haveToast) return;
     Widget toast =
-        BText(message, color: _options.iconColor, maxLines: 5, fontSize: 14);
-    if (_options.style != null) {
+        BText(message, color: options.iconColor, maxLines: 5, fontSize: 14);
+    if (options.style != null) {
       IconData icon;
-      switch (_options.style!) {
+      switch (options.style!) {
         case ToastStyle.success:
           icon = ConstIcon.success;
           break;
@@ -78,38 +78,38 @@ class ExtendedOverlay {
           icon = ConstIcon.smile;
           break;
         case ToastStyle.custom:
-          assert(_options.customIcon != null);
-          icon = _options.customIcon ?? ConstIcon.success;
+          assert(options.customIcon != null);
+          icon = options.customIcon ?? ConstIcon.success;
           break;
       }
       toast = IconBox(
           icon: icon,
-          direction: _options.direction,
-          spacing: _options.spacing,
-          size: _options.iconSize,
-          color: _options.iconColor,
+          direction: options.direction,
+          spacing: options.spacing,
+          size: options.iconSize,
+          color: options.iconColor,
           title: toast);
     }
     final ExtendedOverlayEntry? entry = showOverlay(
         PopupModalWindows(
-            options: (_options.modalWindowsOptions ??
+            options: (options.modalWindowsOptions ??
                     GlobalOptions().modalWindowsOptions)
                 .copyWith(
-                    absorbing: _options.absorbing,
-                    ignoring: _options.ignoring,
-                    alignment: _options.positioned),
+                    absorbing: options.absorbing,
+                    ignoring: options.ignoring,
+                    alignment: options.positioned),
             child: Universal(
-                onTap: _options.onTap,
-                margin: _options.margin,
-                decoration: _options.decoration ??
+                onTap: options.onTap,
+                margin: options.margin,
+                decoration: options.decoration ??
                     BoxDecoration(
-                        color: _options.backgroundColor,
+                        color: options.backgroundColor,
                         borderRadius: BorderRadius.circular(5)),
-                padding: _options.padding,
+                padding: options.padding,
                 child: toast)),
         autoOff: true);
     _haveToast = true;
-    await (_options.duration).delayed<dynamic>();
+    await (options.duration).delayed<dynamic>();
     closeOverlay(entry: entry);
     _haveToast = false;
   }

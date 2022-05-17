@@ -96,7 +96,7 @@ class ExtendedScrollView extends StatefulWidget {
   final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
 
   @override
-  _ExtendedScrollViewState createState() => _ExtendedScrollViewState();
+  State<ExtendedScrollView> createState() => _ExtendedScrollViewState();
 }
 
 class _ExtendedScrollViewState extends State<ExtendedScrollView> {
@@ -182,11 +182,11 @@ class _ExtendedScrollViewState extends State<ExtendedScrollView> {
       clipBehavior: widget.clipBehavior);
 
   List<Widget> _sliverBuilder(
-          List<Widget> slivers, List<_SliverModel> _sliver) =>
+          List<Widget> slivers, List<_SliverModel> sliverModels) =>
       slivers.builderEntry<Widget>((MapEntry<int, Widget> entry) {
         final Widget element = entry.value;
         final int index = entry.key;
-        final _SliverModel sliver = _sliver[index];
+        final _SliverModel sliver = sliverModels[index];
         if (element is SliverAppBar) {
           return _SliverAppBar(
               sliverAppBar: element,
@@ -347,7 +347,7 @@ class ExtendedSliverAppBar extends SliverAppBar {
             shadowColor: shadowColor,
             bottom: bottom == null
                 ? null
-                : PreferredSize(child: bottom, preferredSize: bottomSize),
+                : PreferredSize(preferredSize: bottomSize, child: bottom),
             flexibleSpace: flexibleSpace ??
                 (flexibleSpaceTitle != null || background != null
                     ? FlexibleSpaceBar(
@@ -411,8 +411,8 @@ class _Calculate extends StatelessWidget {
     final List<Widget> column = <Widget>[];
     if (slivers.isNotEmpty) {
       for (final Widget element in slivers) {
-        final _SliverModel _sliver = _SliverModel();
-        _sliver.sliver = element;
+        final _SliverModel sliver = _SliverModel();
+        sliver.sliver = element;
         if (element is SliverAppBar) {
           final Widget flexibleSpace = element.flexibleSpace!;
           final GlobalKey flexibleSpaceKey = GlobalKey();
@@ -425,18 +425,18 @@ class _Calculate extends StatelessWidget {
           } else {
             column.add(Container(key: flexibleSpaceKey, child: flexibleSpace));
           }
-          _sliver.key = flexibleSpaceKey;
+          sliver.key = flexibleSpaceKey;
           if (element.bottom != null) {
             final GlobalKey bottomKey = GlobalKey();
             column.add(Container(key: bottomKey, child: element.bottom));
-            _sliver.extraKey = bottomKey;
+            sliver.extraKey = bottomKey;
           }
         } else if (element is ExtendedSliverPersistentHeader) {
           final GlobalKey persistentHeaderKey = GlobalKey();
           column.add(Container(key: persistentHeaderKey, child: element.child));
-          _sliver.key = persistentHeaderKey;
+          sliver.key = persistentHeaderKey;
         }
-        sliverModel.add(_sliver);
+        sliverModel.add(sliver);
       }
     }
     return Column(children: column);
@@ -559,11 +559,11 @@ class _SliverAppBar extends SliverAppBar {
             bottom: sliverAppBar.bottom == null
                 ? null
                 : PreferredSize(
+                    preferredSize: bottomSize!,
                     child: ConstrainedBox(
                         constraints:
-                            BoxConstraints(maxHeight: bottomSize!.height),
-                        child: sliverAppBar.bottom),
-                    preferredSize: bottomSize),
+                            BoxConstraints(maxHeight: bottomSize.height),
+                        child: sliverAppBar.bottom)),
             flexibleSpace: sliverAppBar.flexibleSpace);
 
   final SliverAppBar sliverAppBar;
@@ -783,12 +783,12 @@ class _CustomSliverAppbarDelegate extends SliverPinnedPersistentHeaderDelegate {
     return Material(
         child: Universal(isClipRect: true, isStack: true, children: <Widget>[
       Positioned(
-          child: maxExtentProtoType,
           top: -shrinkOffset,
           bottom: 0,
           left: 0,
-          right: 0),
-      Positioned(child: toolbar, top: 0, left: 0, right: 0),
+          right: 0,
+          child: maxExtentProtoType),
+      Positioned(top: 0, left: 0, right: 0, child: toolbar),
     ]));
   }
 

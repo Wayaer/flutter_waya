@@ -309,8 +309,8 @@ class ScrollList extends RefreshScrollView {
               addSemanticIndexes: addSemanticIndexes,
               addRepaintBoundaries: addRepaintBoundaries,
               addAutomaticKeepALives: addAutomaticKeepALives,
-              children: children,
-              itemExtent: itemExtent)
+              itemExtent: itemExtent,
+              children: children)
         ],
         super(
             key: key,

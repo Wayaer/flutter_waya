@@ -51,16 +51,16 @@ class _ScrollListWaterfallFlowPage extends StatelessWidget {
             margin: const EdgeInsets.only(bottom: 10),
             height: 100,
             alignment: Alignment.center,
-            child: const Text('Header'),
             color: Colors.grey.withOpacity(0.3),
+            child: const Text('Header'),
           )),
           footer: SliverToBoxAdapter(
               child: Container(
             margin: const EdgeInsets.only(top: 10),
             height: 100,
             alignment: Alignment.center,
-            child: const Text('Footer'),
             color: Colors.grey.withOpacity(0.3),
+            child: const Text('Footer'),
           )),
           padding: const EdgeInsets.all(10),
           refreshConfig: RefreshConfig(onRefresh: () async {
@@ -98,16 +98,16 @@ class _ScrollListSeparatedPage extends StatelessWidget {
             margin: const EdgeInsets.only(bottom: 10),
             height: 100,
             alignment: Alignment.center,
-            child: const Text('Header'),
             color: Colors.grey.withOpacity(0.3),
+            child: const Text('Header'),
           )),
           footer: SliverToBoxAdapter(
               child: Container(
             margin: const EdgeInsets.only(top: 10),
             height: 100,
             alignment: Alignment.center,
-            child: const Text('Footer'),
             color: Colors.grey.withOpacity(0.3),
+            child: const Text('Footer'),
           )),
           padding: const EdgeInsets.all(10),
           refreshConfig: RefreshConfig(
@@ -149,16 +149,16 @@ class _ScrollListPlaceholderPage extends StatelessWidget {
               margin: const EdgeInsets.only(bottom: 10),
               height: 100,
               alignment: Alignment.center,
-              child: const Text('Header'),
               color: Colors.grey.withOpacity(0.3),
+              child: const Text('Header'),
             )),
             footer: SliverToBoxAdapter(
                 child: Container(
               margin: const EdgeInsets.only(top: 10),
               height: 100,
               alignment: Alignment.center,
-              child: const Text('Footer'),
               color: Colors.grey.withOpacity(0.3),
+              child: const Text('Footer'),
             )),
             padding: const EdgeInsets.all(10),
             refreshConfig: RefreshConfig(onRefresh: () async {
@@ -207,16 +207,16 @@ class _ScrollListBuilderPage extends StatelessWidget {
                     margin: const EdgeInsets.only(bottom: 10),
                     height: 100,
                     alignment: Alignment.center,
-                    child: const Text('Header'),
                     color: Colors.grey.withOpacity(0.3),
+                    child: const Text('Header'),
                   )),
                   footer: SliverToBoxAdapter(
                       child: Container(
                     margin: const EdgeInsets.only(top: 10),
                     height: 100,
                     alignment: Alignment.center,
-                    child: const Text('Footer'),
                     color: Colors.grey.withOpacity(0.3),
+                    child: const Text('Footer'),
                   )),
                   padding: const EdgeInsets.all(10),
                   refreshConfig: RefreshConfig(
@@ -257,16 +257,16 @@ class _ScrollListPage extends StatelessWidget {
               margin: const EdgeInsets.only(bottom: 10),
               height: 100,
               alignment: Alignment.center,
-              child: const Text('Header'),
               color: Colors.grey.withOpacity(0.3),
+              child: const Text('Header'),
             )),
             footer: SliverToBoxAdapter(
                 child: Container(
               margin: const EdgeInsets.only(top: 10),
               height: 100,
               alignment: Alignment.center,
-              child: const Text('Footer'),
               color: Colors.grey.withOpacity(0.3),
+              child: const Text('Footer'),
             )),
             refreshConfig: RefreshConfig(
               onRefresh: () async {
@@ -285,24 +285,24 @@ class _ScrollListPage extends StatelessWidget {
             sliver: <Widget>[
               SliverToBoxAdapter(
                   child: Container(
-                      child: const BText('SliverListGrid builder',
-                          color: Colors.white),
                       alignment: Alignment.center,
                       color: colors[14],
                       margin: const EdgeInsets.symmetric(vertical: 10),
-                      padding: const EdgeInsets.symmetric(vertical: 10))),
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: const BText('SliverListGrid builder',
+                          color: Colors.white))),
               SliverListGrid(
                   itemCount: colors.length,
                   itemBuilder: (_, int index) =>
                       ColorEntry(index, colors[index]).paddingOnly(bottom: 10)),
               SliverToBoxAdapter(
                   child: Container(
-                      child: const BText('SliverWaterfallFlow.aligned',
-                          color: Colors.white),
                       alignment: Alignment.center,
                       color: colors[14],
                       margin: const EdgeInsets.symmetric(vertical: 10),
-                      padding: const EdgeInsets.symmetric(vertical: 10))),
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: const BText('SliverWaterfallFlow.aligned',
+                          color: Colors.white))),
               SliverWaterfallFlow.aligned(
                   crossAxisCount: 2,
                   mainAxisSpacing: 10,
@@ -313,12 +313,12 @@ class _ScrollListPage extends StatelessWidget {
                       height: index & 3 == 0 ? 200 : 40)),
               SliverToBoxAdapter(
                   child: Container(
-                      child: const BText('SliverListGrid Grid Builder',
-                          color: Colors.white),
                       alignment: Alignment.center,
                       color: colors[14],
                       margin: const EdgeInsets.symmetric(vertical: 10),
-                      padding: const EdgeInsets.symmetric(vertical: 10))),
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: const BText('SliverListGrid Grid Builder',
+                          color: Colors.white))),
               SliverListGrid(
                   itemCount: colors.length,
                   crossAxisFlex: true,
@@ -329,12 +329,12 @@ class _ScrollListPage extends StatelessWidget {
                       ColorEntry(index, colors[index]).paddingOnly(bottom: 10)),
               SliverToBoxAdapter(
                   child: Container(
-                      child: const BText('SliverListGrid Grid Builder',
-                          color: Colors.white),
                       alignment: Alignment.center,
                       color: colors[14],
                       margin: const EdgeInsets.symmetric(vertical: 10),
-                      padding: const EdgeInsets.symmetric(vertical: 10))),
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: const BText('SliverListGrid Grid Builder',
+                          color: Colors.white))),
               SliverListGrid(
                   itemCount: colors.length,
                   crossAxisCount: 6,
@@ -344,12 +344,12 @@ class _ScrollListPage extends StatelessWidget {
                       ColorEntry(index, colors[index]).paddingOnly(bottom: 10)),
               SliverToBoxAdapter(
                   child: Container(
-                      child: const BText('SliverListGrid separatorBuilder',
-                          color: Colors.white),
                       alignment: Alignment.center,
                       color: colors[14],
                       margin: const EdgeInsets.symmetric(vertical: 10),
-                      padding: const EdgeInsets.symmetric(vertical: 10))),
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: const BText('SliverListGrid separatorBuilder',
+                          color: Colors.white))),
               SliverListGrid(
                   itemCount: colors.length,
                   separatorBuilder: (_, int index) =>
@@ -358,12 +358,12 @@ class _ScrollListPage extends StatelessWidget {
                       ColorEntry(index, colors[index])),
               SliverToBoxAdapter(
                   child: Container(
-                      child: const BText('SliverWaterfallFlow Children',
-                          color: Colors.white),
                       alignment: Alignment.center,
                       color: colors[14],
                       margin: const EdgeInsets.symmetric(vertical: 10),
-                      padding: const EdgeInsets.symmetric(vertical: 10))),
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: const BText('SliverWaterfallFlow Children',
+                          color: Colors.white))),
               SliverWaterfallFlow.count(
                   crossAxisCount: 3,
                   mainAxisSpacing: 10,
@@ -374,12 +374,12 @@ class _ScrollListPage extends StatelessWidget {
                       width: entry.key.isEven ? 50 : 100))),
               SliverToBoxAdapter(
                   child: Container(
-                      child: const BText('SliverWaterfallFlow Builder',
-                          color: Colors.white),
                       alignment: Alignment.center,
                       color: colors[14],
                       margin: const EdgeInsets.symmetric(vertical: 10),
-                      padding: const EdgeInsets.symmetric(vertical: 10))),
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: const BText('SliverWaterfallFlow Builder',
+                          color: Colors.white))),
               SliverWaterfallFlow(
                   crossAxisCount: 5,
                   mainAxisSpacing: 10,
@@ -409,16 +409,16 @@ class _ScrollListCountPage extends StatelessWidget {
               margin: const EdgeInsets.only(bottom: 10),
               height: 100,
               alignment: Alignment.center,
-              child: const Text('Header'),
               color: Colors.grey.withOpacity(0.3),
+              child: const Text('Header'),
             )),
             footer: SliverToBoxAdapter(
                 child: Container(
               margin: const EdgeInsets.only(top: 10),
               height: 100,
               alignment: Alignment.center,
-              child: const Text('Footer'),
               color: Colors.grey.withOpacity(0.3),
+              child: const Text('Footer'),
             )),
             padding: const EdgeInsets.all(10),
             refreshConfig: RefreshConfig(onRefresh: () async {

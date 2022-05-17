@@ -202,7 +202,7 @@ class EasyRefreshed extends StatefulWidget {
   final bool shrinkWrap;
 
   @override
-  _EasyRefreshedState createState() => _EasyRefreshedState();
+  State<EasyRefreshed> createState() => _EasyRefreshedState();
 }
 
 class _EasyRefreshedState extends State<EasyRefreshed> {

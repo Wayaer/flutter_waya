@@ -254,18 +254,13 @@ class ImageSequenceState extends State<ImageSequence>
 
   String getSuffix(String value) {
     while (value.length < suffixCount) {
-      value = '0' + value;
+      value = '0$value';
     }
     return value;
   }
 
   String getDirectory() =>
-      folderName +
-      '/' +
-      fileName +
-      getSuffix((suffixStart + previousFrame).toString()) +
-      '.' +
-      fileFormat;
+      '$folderName/$fileName${getSuffix((suffixStart + previousFrame).toString())}.$fileFormat';
 
   @override
   Widget build(BuildContext context) {
@@ -361,7 +356,7 @@ class GifImage extends StatefulWidget {
   final bool excludeFromSemantics;
 
   @override
-  _GifImageState createState() => _GifImageState();
+  State<GifImage> createState() => _GifImageState();
 
   static GifCache cache = GifCache();
 }

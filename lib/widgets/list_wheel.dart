@@ -214,46 +214,46 @@ class ListWheel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _options = options ?? GlobalOptions().wheelOptions;
+    final options = this.options ?? GlobalOptions().wheelOptions;
     Widget child;
-    if (_options.isCupertino) {
+    if (options.isCupertino) {
       child = childDelegateType == ListWheelChildDelegateType.builder
           ? CupertinoPicker.builder(
               scrollController: controller,
               childCount: itemCount,
               itemBuilder: itemBuilder!,
-              backgroundColor: _options.backgroundColor,
-              itemExtent: _options.itemExtent,
-              diameterRatio: _options.diameterRatio,
-              onSelectedItemChanged: _options.onChanged,
-              offAxisFraction: _options.offAxisFraction,
-              useMagnifier: _options.useMagnifier,
-              squeeze: _options.squeeze,
-              magnification: _options.magnification)
+              backgroundColor: options.backgroundColor,
+              itemExtent: options.itemExtent,
+              diameterRatio: options.diameterRatio,
+              onSelectedItemChanged: options.onChanged,
+              offAxisFraction: options.offAxisFraction,
+              useMagnifier: options.useMagnifier,
+              squeeze: options.squeeze,
+              magnification: options.magnification)
           : CupertinoPicker(
               scrollController: controller,
-              children: children!,
-              backgroundColor: _options.backgroundColor,
+              backgroundColor: options.backgroundColor,
               looping: childDelegateType == ListWheelChildDelegateType.looping,
-              itemExtent: _options.itemExtent,
-              diameterRatio: _options.diameterRatio,
-              onSelectedItemChanged: _options.onChanged,
-              offAxisFraction: _options.offAxisFraction,
-              useMagnifier: _options.useMagnifier,
-              squeeze: _options.squeeze,
-              magnification: _options.magnification);
+              itemExtent: options.itemExtent,
+              diameterRatio: options.diameterRatio,
+              onSelectedItemChanged: options.onChanged,
+              offAxisFraction: options.offAxisFraction,
+              useMagnifier: options.useMagnifier,
+              squeeze: options.squeeze,
+              magnification: options.magnification,
+              children: children!);
     } else {
       child = ListWheelScrollView.useDelegate(
           controller: controller,
-          itemExtent: _options.itemExtent,
-          physics: _options.physics,
-          diameterRatio: _options.diameterRatio,
-          onSelectedItemChanged: _options.onChanged,
-          offAxisFraction: _options.offAxisFraction,
-          perspective: _options.perspective,
-          useMagnifier: _options.useMagnifier,
-          squeeze: _options.squeeze,
-          magnification: _options.magnification,
+          itemExtent: options.itemExtent,
+          physics: options.physics,
+          diameterRatio: options.diameterRatio,
+          onSelectedItemChanged: options.onChanged,
+          offAxisFraction: options.offAxisFraction,
+          perspective: options.perspective,
+          useMagnifier: options.useMagnifier,
+          squeeze: options.squeeze,
+          magnification: options.magnification,
           childDelegate: getDelegate(childDelegateType));
     }
     if (onScrollStart == null &&
@@ -262,7 +262,6 @@ class ListWheel extends StatelessWidget {
       return child;
     }
     return NotificationListener<ScrollNotification>(
-        child: child,
         onNotification: onNotification ??
             (ScrollNotification notification) {
               if (notification is ScrollStartNotification &&
@@ -276,7 +275,8 @@ class ListWheel extends StatelessWidget {
                 onScrollEnd!(controller?.selectedItem ?? 0);
               }
               return false;
-            });
+            },
+        child: child);
   }
 }
 
@@ -411,11 +411,11 @@ class _ListStateWheelState extends State<ListStateWheel> {
       itemCount: widget.itemCount,
       childDelegateType: widget.childDelegateType,
       onScrollEnd: widget.onScrollEnd,
-      children: widget.children,
       onNotification: widget.onNotification,
       onScrollStart: widget.onScrollStart,
       onScrollUpdate: widget.onScrollUpdate,
-      options: widget.options);
+      options: widget.options,
+      children: widget.children);
 
   @override
   void didUpdateWidget(covariant ListStateWheel oldWidget) {
@@ -475,7 +475,7 @@ class AutoScrollEntry extends StatefulWidget {
   final double? itemWidth;
 
   @override
-  _AutoScrollEntryState createState() => _AutoScrollEntryState();
+  State<AutoScrollEntry> createState() => _AutoScrollEntryState();
 }
 
 class _AutoScrollEntryState extends State<AutoScrollEntry> {

@@ -41,7 +41,7 @@ class ValueBuilder<T> extends StatefulWidget {
   final ValueCallback<BuildContext>? dispose;
 
   @override
-  _ValueBuilderState<T> createState() => _ValueBuilderState<T>();
+  State<ValueBuilder<T>> createState() => _ValueBuilderState<T>();
 }
 
 class _ValueBuilderState<T> extends State<ValueBuilder<T>> {
@@ -136,7 +136,7 @@ class ValueListenBuilder<T> extends StatefulWidget {
   final ValueCallback<BuildContext>? dispose;
 
   @override
-  _ValueListenBuilderState<T> createState() => _ValueListenBuilderState<T>();
+  State<ValueListenBuilder<T>> createState() => _ValueListenBuilderState<T>();
 }
 
 class _ValueListenBuilderState<T> extends State<ValueListenBuilder<T>> {
@@ -314,7 +314,7 @@ class ExtendedFutureBuilder<T> extends StatefulWidget {
   final ValueCallback<BuildContext>? dispose;
 
   @override
-  _ExtendedFutureBuilderState<T> createState() =>
+  State<ExtendedFutureBuilder<T>> createState() =>
       _ExtendedFutureBuilderState<T>();
 }
 
@@ -352,7 +352,7 @@ class _ExtendedFutureBuilderState<T> extends State<ExtendedFutureBuilder<T>> {
     widget.initState?.call(context);
     if (widget.initialData != null) {
       state = BuilderState.done;
-      data = widget.initialData!;
+      data = widget.initialData as T;
     }
     if (widget.initialData == null || widget.initialCallFuture) {
       addPostFrameCallback((duration) => _subscribe());
@@ -407,7 +407,7 @@ class _ExtendedFutureBuilderState<T> extends State<ExtendedFutureBuilder<T>> {
         }
         break;
       case BuilderState.done:
-        return widget.onDone.call(context, data!, _subscribe);
+        return widget.onDone.call(context, data as T, _subscribe);
     }
     return const SizedBox();
   }

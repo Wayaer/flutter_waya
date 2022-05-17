@@ -385,7 +385,7 @@ class GlobalOptions {
       refreshedText: '我已经刷新完成了',
       refreshFailedText: '我刷新失败了唉',
       noMoreText: '没有更多了',
-      infoText: '现在时刻 : ' + DateTime.now().format(DateTimeDist.hourMinute));
+      infoText: '现在时刻 : ${DateTime.now().format(DateTimeDist.hourMinute)}');
 
   Footer globalRefreshFooter = ClassicalFooter(
       loadText: '请尽情拉我',
@@ -394,7 +394,7 @@ class GlobalOptions {
       loadedText: '我已经加载完成了',
       loadFailedText: '我加载失败了唉',
       noMoreText: '没有更多了哦',
-      infoText: '现在时刻 : ' + DateTime.now().format(DateTimeDist.hourMinute));
+      infoText: '现在时刻 : ${DateTime.now().format(DateTimeDist.hourMinute)}');
 }
 
 void addPostFrameCallback(FrameCallback duration) =>

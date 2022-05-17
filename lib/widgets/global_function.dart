@@ -75,13 +75,13 @@ Future<T?> showDialogPopup<T>({
   GeneralDialogOptions? options,
 }) {
   assert(builder != null || widget != null);
-  var _options = options ?? GlobalOptions().dialogOptions;
+  options ??= GlobalOptions().dialogOptions;
   RouteTransitionsBuilder? transitionBuilder;
-  if (_options.fromStyle != PopupFromStyle.fromCenter) {
-    transitionBuilder = _options.transitionBuilder ??
+  if (options.fromStyle != PopupFromStyle.fromCenter) {
+    transitionBuilder = options.transitionBuilder ??
         (__, Animation<double> animation, _, Widget child) {
           late Offset translation;
-          switch (_options.fromStyle) {
+          switch (options!.fromStyle) {
             case PopupFromStyle.fromLeft:
               translation = Offset(animation.value - 1, 0);
               break;
@@ -104,13 +104,13 @@ Future<T?> showDialogPopup<T>({
   return showGeneralDialog(
       context: GlobalOptions().globalNavigatorKey.currentContext!,
       pageBuilder: builder ?? (_, Animation<double> animation, __) => widget!,
-      barrierDismissible: _options.barrierDismissible,
-      barrierLabel: _options.barrierLabel,
-      barrierColor: _options.barrierColor,
-      transitionDuration: _options.transitionDuration,
+      barrierDismissible: options.barrierDismissible,
+      barrierLabel: options.barrierLabel,
+      barrierColor: options.barrierColor,
+      transitionDuration: options.transitionDuration,
       transitionBuilder: transitionBuilder,
-      useRootNavigator: _options.useRootNavigator,
-      routeSettings: _options.routeSettings);
+      useRootNavigator: options.useRootNavigator,
+      routeSettings: options.routeSettings);
 }
 
 /// showModalBottomSheet
@@ -121,21 +121,21 @@ Future<T?> showBottomPopup<T>({
   BottomSheetOptions? options,
 }) {
   assert(builder != null || widget != null);
-  BottomSheetOptions _options = options ?? GlobalOptions().bottomSheetOptions;
+  options ??= GlobalOptions().bottomSheetOptions;
   return showModalBottomSheet(
       context: GlobalOptions().globalNavigatorKey.currentContext!,
       builder: builder ?? widget!.toWidgetBuilder,
-      backgroundColor: _options.backgroundColor,
-      elevation: _options.elevation,
-      shape: _options.shape,
-      clipBehavior: _options.clipBehavior,
-      barrierColor: _options.barrierColor,
-      routeSettings: _options.routeSettings,
-      transitionAnimationController: _options.transitionAnimationController,
-      isScrollControlled: _options.isScrollControlled,
-      useRootNavigator: _options.useRootNavigator,
-      isDismissible: _options.isDismissible,
-      enableDrag: _options.enableDrag);
+      backgroundColor: options.backgroundColor,
+      elevation: options.elevation,
+      shape: options.shape,
+      clipBehavior: options.clipBehavior,
+      barrierColor: options.barrierColor,
+      routeSettings: options.routeSettings,
+      transitionAnimationController: options.transitionAnimationController,
+      isScrollControlled: options.isScrollControlled,
+      useRootNavigator: options.useRootNavigator,
+      isDismissible: options.isDismissible,
+      enableDrag: options.enableDrag);
 }
 
 /// showCupertinoModalPopup
@@ -206,11 +206,10 @@ Future<T?>? showDoubleChooseWindows<T>({
     showOverlay(widget);
     return null;
   }
-  var _options = options ??
-      GlobalOptions()
-          .dialogOptions
-          .copyWith(fromStyle: PopupFromStyle.fromCenter);
-  return showDialogPopup(widget: widget, options: _options);
+  options ??= GlobalOptions()
+      .dialogOptions
+      .copyWith(fromStyle: PopupFromStyle.fromCenter);
+  return showDialogPopup(widget: widget, options: options);
 }
 
 /// 关闭弹窗

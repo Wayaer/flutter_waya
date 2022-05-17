@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 const double _sweep = (math.pi * 2.0) - .001;
-enum _LiquidProgressType {
+
+enum LiquidProgressType {
   linear,
   circular,
   custom,
@@ -22,7 +23,7 @@ class LiquidProgress extends ProgressIndicator {
     this.center,
     this.direction = Axis.horizontal,
   })  : shapePath = null,
-        type = _LiquidProgressType.linear,
+        type = LiquidProgressType.linear,
         super(
             key: key,
             value: value,
@@ -40,7 +41,7 @@ class LiquidProgress extends ProgressIndicator {
       this.direction = Axis.vertical})
       : borderRadius = 0,
         shapePath = null,
-        type = _LiquidProgressType.circular,
+        type = LiquidProgressType.circular,
         super(
             key: key,
             value: value,
@@ -58,7 +59,7 @@ class LiquidProgress extends ProgressIndicator {
       : borderWidth = null,
         borderColor = null,
         borderRadius = 0,
-        type = _LiquidProgressType.custom,
+        type = LiquidProgressType.custom,
         super(
             key: key,
             value: value,
@@ -84,7 +85,7 @@ class LiquidProgress extends ProgressIndicator {
   /// the progress indicator is controlled by the bounds of this path.
   final Path? shapePath;
 
-  final _LiquidProgressType type;
+  final LiquidProgressType type;
 
   Color _getBackgroundColor(BuildContext context) =>
       backgroundColor ?? Theme.of(context).backgroundColor;
@@ -100,11 +101,11 @@ class _ProgressState extends State<LiquidProgress> {
   @override
   Widget build(BuildContext context) {
     switch (widget.type) {
-      case _LiquidProgressType.linear:
+      case LiquidProgressType.linear:
         return linear;
-      case _LiquidProgressType.circular:
+      case LiquidProgressType.circular:
         return circular;
-      case _LiquidProgressType.custom:
+      case LiquidProgressType.custom:
         return custom;
     }
   }

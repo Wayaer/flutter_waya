@@ -1,12 +1,12 @@
+import 'package:app/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:app/main.dart';
 
 class ImagePage extends StatefulWidget {
   const ImagePage({Key? key}) : super(key: key);
 
   @override
-  _ImagePageState createState() => _ImagePageState();
+  State<ImagePage> createState() => _ImagePageState();
 }
 
 class _ImagePageState extends State<ImagePage> with TickerProviderStateMixin {

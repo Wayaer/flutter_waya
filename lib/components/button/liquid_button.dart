@@ -37,7 +37,7 @@ class LiquidButton extends StatefulWidget {
   final double expandFactor;
 
   @override
-  _LiquidButtonState createState() => _LiquidButtonState();
+  State<LiquidButton> createState() => _LiquidButtonState();
 }
 
 class _LiquidButtonState extends State<LiquidButton>

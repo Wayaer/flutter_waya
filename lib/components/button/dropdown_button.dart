@@ -71,7 +71,7 @@ class DropdownMenuButton extends StatefulWidget {
   final GestureTapCallback? onTap;
 
   @override
-  _DropdownMenuButtonState createState() => _DropdownMenuButtonState();
+  State<DropdownMenuButton> createState() => _DropdownMenuButtonState();
 }
 
 class _DropdownMenuButtonState extends State<DropdownMenuButton> {
@@ -87,8 +87,8 @@ class _DropdownMenuButtonState extends State<DropdownMenuButton> {
           toggleBuilder: (Widget child) => Row(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[current, child]),
-          child: widget.toggle!,
-          onTap: showItem);
+          onTap: showItem,
+          child: widget.toggle!);
     }
     return Universal(onTap: showItem, child: current);
   }
@@ -254,7 +254,7 @@ class DropdownMenu extends StatefulWidget {
   final EdgeInsetsGeometry? padding;
 
   @override
-  _DropdownMenuState createState() => _DropdownMenuState();
+  State<DropdownMenu> createState() => _DropdownMenuState();
 }
 
 class _DropdownMenuState extends State<DropdownMenu> {
@@ -274,13 +274,13 @@ class _DropdownMenuState extends State<DropdownMenu> {
         physics: const ClampingScrollPhysics(),
         itemBuilder: (_, int i) => Universal(
             alignment: Alignment.center,
-            child: widget.valueBuilder(context, index, i),
             width: double.infinity,
             onTap: () {
               changeState(index);
               pop();
               if (widget.onTap != null) widget.onTap!(index, i);
-            }));
+            },
+            child: widget.valueBuilder(context, index, i)));
     final Widget popup = PopupModalWindows(
         options: GlobalOptions().modalWindowsOptions.copyWith(
             top: (rect?.top ?? 0) + context.size!.height,

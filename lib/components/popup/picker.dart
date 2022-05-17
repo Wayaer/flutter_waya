@@ -317,7 +317,7 @@ class AreaPicker extends _PickerConfig<String> {
   final String? defaultDistrict;
 
   @override
-  _AreaPickerState createState() => _AreaPickerState();
+  State<AreaPicker> createState() => _AreaPickerState();
 }
 
 class _AreaPickerState extends State<AreaPicker> {
@@ -437,9 +437,9 @@ class _AreaPickerState extends State<AreaPicker> {
     ]);
     return PickerSubject<String>(
         options: widget.options,
+        sureTap: sureTapVoid,
         child: SizedBox(
-            width: double.infinity, height: kPickerDefaultHeight, child: row),
-        sureTap: sureTapVoid);
+            width: double.infinity, height: kPickerDefaultHeight, child: row));
   }
 
   Widget wheelItem(List<String> list,
@@ -451,10 +451,10 @@ class _AreaPickerState extends State<AreaPicker> {
           controller: controller,
           wheel: wheelOptions,
           childDelegateType: childDelegateType,
-          children: list.builder((String value) => item(value)),
           itemBuilder: (BuildContext context, int index) => item(list[index]),
           onChanged: onChanged,
-          itemCount: list.length);
+          itemCount: list.length,
+          children: list.builder((String value) => item(value)));
 
   Widget item(String value) => Center(
       child: BText(value,
@@ -512,7 +512,7 @@ class DateTimePicker extends _PickerConfig<DateTime> {
   final DateTime? endDate;
 
   @override
-  _DateTimePickerState createState() => _DateTimePickerState();
+  State<DateTimePicker> createState() => _DateTimePickerState();
 }
 
 class _DateTimePickerState extends State<DateTimePicker> {
@@ -975,7 +975,7 @@ class MultiColumnLinkagePicker extends StatefulWidget {
   final bool addExpanded;
 
   @override
-  _MultiColumnLinkagePickerState createState() =>
+  State<MultiColumnLinkagePicker> createState() =>
       _MultiColumnLinkagePickerState();
 }
 
@@ -1050,8 +1050,8 @@ class _MultiColumnLinkagePickerState extends State<MultiColumnLinkagePicker> {
         children: buildWheels.builder((item) => Universal(
             expanded: widget.horizontalScroll ? false : widget.addExpanded,
             height: kPickerDefaultHeight,
-            child: Center(child: item),
-            width: widget.wheelOptions?.itemWidth ?? kPickerDefaultWidth)),
+            width: widget.wheelOptions?.itemWidth ?? kPickerDefaultWidth,
+            child: Center(child: item))),
       ));
 
   Widget listStateWheel(

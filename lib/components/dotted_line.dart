@@ -27,22 +27,22 @@ class DottedLinePainter extends CustomPainter {
       ..style = PaintingStyle.stroke;
     final double x = size.width;
     final double y = size.height;
-    final Path _topPath = getDashedPath(
+    final Path topPath = getDashedPath(
         a: const math.Point<double>(0, 0),
         b: math.Point<double>(x, 0),
         gap: gap);
-    final Path _rightPath = getDashedPath(
+    final Path rightPath = getDashedPath(
         a: math.Point<double>(x, 0), b: math.Point<double>(x, y), gap: gap);
-    final Path _bottomPath = getDashedPath(
+    final Path bottomPath = getDashedPath(
         a: math.Point<double>(0, y), b: math.Point<double>(x, y), gap: gap);
-    final Path _leftPath = getDashedPath(
+    final Path leftPath = getDashedPath(
         a: const math.Point<double>(0, 0),
         b: math.Point<double>(0.001, y),
         gap: gap);
-    canvas.drawPath(_topPath, dashedPaint);
-    canvas.drawPath(_rightPath, dashedPaint);
-    canvas.drawPath(_bottomPath, dashedPaint);
-    canvas.drawPath(_leftPath, dashedPaint);
+    canvas.drawPath(topPath, dashedPaint);
+    canvas.drawPath(rightPath, dashedPaint);
+    canvas.drawPath(bottomPath, dashedPaint);
+    canvas.drawPath(leftPath, dashedPaint);
   }
 
   Path getDashedPath(

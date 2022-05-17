@@ -1,12 +1,12 @@
+import 'package:app/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:app/main.dart';
 
 class CarouselPage extends StatefulWidget {
   const CarouselPage({Key? key}) : super(key: key);
 
   @override
-  _CarouselPageState createState() => _CarouselPageState();
+  State<CarouselPage> createState() => _CarouselPageState();
 }
 
 class _CarouselPageState extends State<CarouselPage> {

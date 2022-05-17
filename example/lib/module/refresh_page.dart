@@ -1,12 +1,12 @@
+import 'package:app/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:app/main.dart';
 
 class RefreshPage extends StatefulWidget {
   const RefreshPage({Key? key}) : super(key: key);
 
   @override
-  _RefreshPageState createState() => _RefreshPageState();
+  State<RefreshPage> createState() => _RefreshPageState();
 }
 
 class _RefreshPageState extends State<RefreshPage> {
@@ -52,7 +52,7 @@ class EasyRefreshPage extends StatefulWidget {
   const EasyRefreshPage({Key? key}) : super(key: key);
 
   @override
-  _EasyRefreshPageState createState() => _EasyRefreshPageState();
+  State<EasyRefreshPage> createState() => _EasyRefreshPageState();
 }
 
 class _EasyRefreshPageState extends State<EasyRefreshPage> {

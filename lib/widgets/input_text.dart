@@ -402,7 +402,7 @@ class PinBox extends StatefulWidget {
   final List<Widget?>? spaces;
 
   @override
-  _PinBoxState createState() => _PinBoxState();
+  State<PinBox> createState() => _PinBoxState();
 }
 
 class _PinBoxState extends State<PinBox> {

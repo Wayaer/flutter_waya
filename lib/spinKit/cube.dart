@@ -21,7 +21,7 @@ class SpinKitCubeGrid extends StatefulWidget {
   final AnimationController? controller;
 
   @override
-  _SpinKitCubeGridState createState() => _SpinKitCubeGridState();
+  State<SpinKitCubeGrid> createState() => _SpinKitCubeGridState();
 }
 
 class _SpinKitCubeGridState extends State<SpinKitCubeGrid>
@@ -125,7 +125,7 @@ class SpinKitFoldingCube extends StatefulWidget {
   final AnimationController? controller;
 
   @override
-  _SpinKitFoldingCubeState createState() => _SpinKitFoldingCubeState();
+  State<SpinKitFoldingCube> createState() => _SpinKitFoldingCubeState();
 }
 
 class _SpinKitFoldingCubeState extends State<SpinKitFoldingCube>
@@ -177,23 +177,23 @@ class _SpinKitFoldingCubeState extends State<SpinKitFoldingCube>
   }
 
   Widget _cube(int i, {required Animation<double> animation}) {
-    final double _size = widget.size * 0.5, _position = widget.size * .5;
-    final Matrix4 _tRotate = Matrix4.identity()
+    final double size = widget.size * 0.5, position = widget.size * .5;
+    final Matrix4 tRotate = Matrix4.identity()
       ..rotateY(animation.value * 0.0174533);
     return Positioned.fill(
-      top: _position,
-      left: _position,
+      top: position,
+      left: position,
       child: Transform(
           transform: Matrix4.rotationZ(90.0 * (i - 1) * 0.0174533),
           child: Align(
               alignment: Alignment.center,
               child: Transform(
-                  transform: _tRotate,
+                  transform: tRotate,
                   alignment: Alignment.centerLeft,
                   child: Opacity(
                       opacity: 1.0 - (animation.value / 180.0),
                       child: SizedBox.fromSize(
-                        size: Size.square(_size),
+                        size: Size.square(size),
                         child: _itemBuilder(i - 1),
                       ))))),
     );

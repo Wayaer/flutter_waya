@@ -90,7 +90,7 @@ class _RefreshScrollViewPage extends StatelessWidget {
                 crossAxisFlex: true,
                 maxCrossAxisExtent: 30,
                 separatorBuilder: (_, int index) {
-                  return Text('s' + index.toString());
+                  return Text('s$index');
                 },
                 itemBuilder: (_, int index) {
                   return ColorEntry(index, colors[index]);
@@ -210,9 +210,9 @@ class _DraggableScrollbar extends StatelessWidget {
 
     Widget scrollbar = DraggableScrollbar(
         controller: scrollController,
-        child: list,
         backgroundColor: context.theme.dialogBackgroundColor,
-        scrollbarStyle: ScrollbarStyle.semicircle);
+        scrollbarStyle: ScrollbarStyle.semicircle,
+        child: list);
     // scrollbar = DraggableScrollbar(
     //     controller: scrollController,
     //     child: list,

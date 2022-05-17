@@ -316,6 +316,10 @@ class _AnchorScrollCountPage extends StatelessWidget {
                 return ScrollList.count(
                     key: scrollKey,
                     controller: scrollController,
+                    reverse: reverse,
+                    header: const _Header().sliverToBoxAdapter(),
+                    footer: const _Footer().sliverToBoxAdapter(),
+                    scrollDirection: scrollDirection,
                     children: _colors.builderEntry((entry) => ColorEntry(
                         entry.key, _colors[entry.key],
                         key: entryKey[entry.key],
@@ -324,11 +328,7 @@ class _AnchorScrollCountPage extends StatelessWidget {
                             : _random(entry.key),
                         width: scrollDirection == Axis.vertical
                             ? double.infinity
-                            : _random(entry.key))),
-                    reverse: reverse,
-                    header: const _Header().sliverToBoxAdapter(),
-                    footer: const _Footer().sliverToBoxAdapter(),
-                    scrollDirection: scrollDirection);
+                            : _random(entry.key))));
               }).expandedNull
         ]);
   }

@@ -69,10 +69,10 @@ class DraggableScrollbar extends StatefulWidget {
           case ScrollbarStyle.rect:
             scrollThumb = Material(
                 elevation: 4.0,
-                child: Container(
-                    constraints: BoxConstraints.tight(Size(16.0, height))),
                 color: backgroundColor,
-                borderRadius: const BorderRadius.all(Radius.circular(7.0)));
+                borderRadius: const BorderRadius.all(Radius.circular(7.0)),
+                child: Container(
+                    constraints: BoxConstraints.tight(Size(16.0, height))));
             break;
           case ScrollbarStyle.arrows:
             scrollThumb = Universal(
@@ -90,16 +90,16 @@ class DraggableScrollbar extends StatefulWidget {
                 foregroundPainter: _ArrowCustomPainter(Colors.grey),
                 child: Material(
                     elevation: 4.0,
-                    child: Container(
-                        constraints:
-                            BoxConstraints.tight(Size(width * 0.6, height))),
                     color: backgroundColor,
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(height),
                       bottomLeft: Radius.circular(height),
                       topRight: const Radius.circular(4.0),
                       bottomRight: const Radius.circular(4.0),
-                    )));
+                    ),
+                    child: Container(
+                        constraints:
+                            BoxConstraints.tight(Size(width * 0.6, height)))));
             break;
         }
         return buildScrollThumbAndLabel(
@@ -128,9 +128,9 @@ class DraggableScrollbar extends StatefulWidget {
             children: <Widget>[
                 _ScrollLabel(
                     animation: labelAnimation,
-                    child: labelText,
                     backgroundColor: backgroundColor,
-                    constraints: labelConstraints),
+                    constraints: labelConstraints,
+                    child: labelText),
                 scrollThumb,
               ]);
 
@@ -173,7 +173,7 @@ class DraggableScrollbar extends StatefulWidget {
   final bool alwaysVisibleScrollThumb;
 
   @override
-  _DraggableScrollbarState createState() => _DraggableScrollbarState();
+  State<DraggableScrollbar> createState() => _DraggableScrollbarState();
 }
 
 class _ScrollLabel extends StatelessWidget {

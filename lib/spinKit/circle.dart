@@ -21,7 +21,7 @@ class SpinKitCircle extends StatefulWidget {
   final AnimationController? controller;
 
   @override
-  _SpinKitCircleState createState() => _SpinKitCircleState();
+  State<SpinKitCircle> createState() => _SpinKitCircleState();
 }
 
 class _SpinKitCircleState extends State<SpinKitCircle>
@@ -61,10 +61,10 @@ class _SpinKitCircleState extends State<SpinKitCircle>
       child: SizedBox.fromSize(
           size: Size.square(widget.size),
           child: Stack(children: delays.length.generate((int index) {
-            final double _position = widget.size * .5;
+            final double position = widget.size * .5;
             return Positioned.fill(
-                left: _position,
-                top: _position,
+                left: position,
+                top: position,
                 child: Transform(
                     transform: Matrix4.rotationZ(30.0 * index * 0.0174533),
                     child: Align(
@@ -110,7 +110,7 @@ class SpinKitFadingCircle extends StatefulWidget {
   final AnimationController? controller;
 
   @override
-  _SpinKitFadingCircleState createState() => _SpinKitFadingCircleState();
+  State<SpinKitFadingCircle> createState() => _SpinKitFadingCircleState();
 }
 
 class _SpinKitFadingCircleState extends State<SpinKitFadingCircle>
@@ -152,10 +152,10 @@ class _SpinKitFadingCircleState extends State<SpinKitFadingCircle>
             size: Size.square(widget.size),
             child: Stack(
                 children: 12.generate((int i) {
-              final double _position = widget.size * .5;
+              final double position = widget.size * .5;
               return Positioned.fill(
-                left: _position,
-                top: _position,
+                left: position,
+                top: position,
                 child: Transform(
                     transform: Matrix4.rotationZ(30.0 * i * 0.0174533),
                     child: Align(
@@ -203,7 +203,7 @@ class SpinKitSquareCircle extends StatefulWidget {
   final AnimationController? controller;
 
   @override
-  _SpinKitSquareCircleState createState() => _SpinKitSquareCircleState();
+  State<SpinKitSquareCircle> createState() => _SpinKitSquareCircleState();
 }
 
 class _SpinKitSquareCircleState extends State<SpinKitSquareCircle>

@@ -6,7 +6,7 @@ class UniversalPage extends StatefulWidget {
   const UniversalPage({Key? key}) : super(key: key);
 
   @override
-  _UniversalPageState createState() => _UniversalPageState();
+  State<UniversalPage> createState() => _UniversalPageState();
 }
 
 class _UniversalPageState extends State<UniversalPage>

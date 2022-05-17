@@ -28,7 +28,7 @@ class CounterAnimation extends StatefulWidget {
   final ValueCallback<int>? onTap;
 
   @override
-  _CounterAnimationState createState() => _CounterAnimationState();
+  State<CounterAnimation> createState() => _CounterAnimationState();
 }
 
 class _CounterAnimationState extends State<CounterAnimation>
@@ -99,11 +99,11 @@ class _CounterAnimationState extends State<CounterAnimation>
               Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
                 Stack(fit: StackFit.passthrough, children: <Widget>[
                   Opacity(
-                      child: currentSameWidget,
-                      opacity: _opacityAnimation.value),
+                      opacity: _opacityAnimation.value,
+                      child: currentSameWidget),
                   Opacity(
-                      child: preSameWidget,
-                      opacity: 1.0 - _opacityAnimation.value),
+                      opacity: 1.0 - _opacityAnimation.value,
+                      child: preSameWidget),
                 ]),
                 Stack(fit: StackFit.passthrough, children: <Widget>[
                   FractionalTranslation(
@@ -137,7 +137,7 @@ class _CounterAnimationState extends State<CounterAnimation>
                 ],
               ));
     }
-    return Universal(onTap: animation, child: child, clipper: _CountClip());
+    return Universal(onTap: animation, clipper: _CountClip(), child: child);
   }
 
   Widget _createCount(int count, String text) =>

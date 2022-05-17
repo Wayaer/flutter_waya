@@ -15,7 +15,7 @@ class Wave extends StatefulWidget {
   final Axis direction;
 
   @override
-  _WaveState createState() => _WaveState();
+  State<Wave> createState() => _WaveState();
 }
 
 class _WaveState extends State<Wave> with SingleTickerProviderStateMixin {
@@ -40,11 +40,11 @@ class _WaveState extends State<Wave> with SingleTickerProviderStateMixin {
       animation: CurvedAnimation(
           parent: _animationController, curve: Curves.easeInOut),
       builder: (BuildContext context, Widget? child) => ClipPath(
-          child: Container(color: widget.color),
           clipper: _WaveClipper(
               animationValue: _animationController.value,
               value: widget.value,
-              direction: widget.direction)));
+              direction: widget.direction),
+          child: Container(color: widget.color)));
 }
 
 class _WaveClipper extends CustomClipper<Path> {

@@ -19,7 +19,7 @@ class JsonParse extends StatefulWidget {
   final bool isList;
 
   @override
-  _JsonParseState createState() => _JsonParseState();
+  State<JsonParse> createState() => _JsonParseState();
 }
 
 class _JsonParseState extends State<JsonParse> {
@@ -60,7 +60,6 @@ class _JsonParseState extends State<JsonParse> {
       ]);
       list.add(Universal(
           direction: Axis.horizontal,
-          children: row,
           addInkWell: true,
           crossAxisAlignment: CrossAxisAlignment.start,
           onTap: !isTap(content)
@@ -68,7 +67,8 @@ class _JsonParseState extends State<JsonParse> {
               : () {
                   mapFlag[key.toString()] = !(mapFlag[key.toString()] ?? false);
                   setState(() {});
-                }));
+                },
+          children: row));
       list.add(const SizedBox(height: 4));
       if ((mapFlag[key.toString()]) ?? false) {
         list.add(getContentWidget(content));
@@ -271,6 +271,6 @@ class _HttpDataPageState extends State<_HttpDataPage> {
       width: double.infinity,
       text: url,
       maxLines: 2,
-      child: BText(url, textAlign: TextAlign.start, fontSize: 13),
-      onTap: onTap);
+      onTap: onTap,
+      child: BText(url, textAlign: TextAlign.start, fontSize: 13));
 }

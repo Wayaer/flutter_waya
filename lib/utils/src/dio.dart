@@ -90,21 +90,20 @@ class ExtendedDio {
   }
 
   void _initializeOptions(Dio dio, {BaseOptions? options}) {
-    final BaseOptions _options = dio.options;
     if (options?.connectTimeout != null) {
-      _options.connectTimeout = options!.connectTimeout;
+      dio.options.connectTimeout = options!.connectTimeout;
     }
     if (options?.receiveTimeout != null) {
-      _options.receiveTimeout = options!.receiveTimeout;
+      dio.options.receiveTimeout = options!.receiveTimeout;
     }
     if (options?.contentType != null) {
-      _options.contentType = options?.contentType ??
+      dio.options.contentType = options?.contentType ??
           (dio == _dio ? httpContentType[2] : httpContentType[1]);
     }
     if (options?.responseType != null) {
-      _options.responseType = options!.responseType;
+      dio.options.responseType = options!.responseType;
     }
-    if (options?.headers != null) _options.headers = options!.headers;
+    if (options?.headers != null) dio.options.headers = options!.headers;
   }
 
   late Dio _dio;
@@ -290,18 +289,18 @@ class LoggerInterceptor<T> extends InterceptorsWrapper {
   @override
   void onResponse(
       Response<dynamic> response, ResponseInterceptorHandler handler) {
-    bool _forbidPrint = false;
+    bool forbidPrint = false;
     String requestUri = response.requestOptions.uri.toString();
     for (var element in forbidPrintUrl) {
       if (requestUri.toString().contains(element)) {
-        _forbidPrint = true;
+        forbidPrint = true;
         break;
       }
     }
     log('| [DIO] Response [statusCode : ${response.statusCode}] [statusMessage : ${response.statusMessage}]',
         hasDottedLine: false);
     log('| [DIO] Request uri ($requestUri)', hasDottedLine: false);
-    log('| [DIO] Response data: ${_forbidPrint ? 'This data is not printed' : '\n${response.data}'}',
+    log('| [DIO] Response data: ${forbidPrint ? 'This data is not printed' : '\n${response.data}'}',
         hasDottedLine: false);
     log('└------------------------------------------------------------------------------',
         hasDottedLine: false);

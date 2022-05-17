@@ -160,7 +160,7 @@ class PopupModalWindows extends StatelessWidget {
     } else if (options.onTap == null && options.absorbing) {
       child = AbsorbPointer(child: child);
     }
-    if (onWillPop != null) WillPopScope(child: child, onWillPop: onWillPop);
+    if (onWillPop != null) WillPopScope(onWillPop: onWillPop, child: child);
     return child;
   }
 
@@ -246,11 +246,11 @@ class PopupDoubleChooseWindows extends StatelessWidget {
     final List<Widget> widgets = <Widget>[];
     widgets.add(content);
     if (left != null && right != null) widgets.add(doubleChoose);
-    var _options = options ?? GlobalOptions().modalWindowsOptions;
-    _options = _options.copyWith(
-        left: _options.left ?? 30, right: _options.right ?? 30);
+    var options = this.options ?? GlobalOptions().modalWindowsOptions;
+    options =
+        options.copyWith(left: options.left ?? 30, right: options.right ?? 30);
     return PopupModalWindows(
-        options: _options,
+        options: options,
         child: Universal(
             onTap: () {},
             width: width,

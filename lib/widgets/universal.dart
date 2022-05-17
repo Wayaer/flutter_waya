@@ -628,10 +628,10 @@ class Universal extends StatelessWidget {
           sized: sized, value: systemOverlayStyle!, child: current);
 
   Widget fittedBox(Widget current) => FittedBox(
-      child: current,
       fit: fit!,
       alignment: alignment ?? Alignment.center,
-      clipBehavior: clipBehavior ?? Clip.none);
+      clipBehavior: clipBehavior ?? Clip.none,
+      child: current);
 
   Widget builderWidget(Widget current) {
     if (builder is StatefulWidgetBuilder) {
@@ -654,42 +654,42 @@ class Universal extends StatelessWidget {
       child: current);
 
   Widget offstageWidget(Widget current) =>
-      Offstage(child: current, offstage: offstage);
+      Offstage(offstage: offstage, child: current);
 
   /// 裁剪组件
   Widget clipWidget(Widget current, {CustomClipper<dynamic>? clipper}) {
     if (isOval) {
       return ClipOval(
-          child: current, clipBehavior: clipBehavior ?? Clip.antiAlias);
+          clipBehavior: clipBehavior ?? Clip.antiAlias, child: current);
     } else if (clipper is CustomClipper<Rect> || isClipRect) {
       return ClipRect(
-          child: current,
           clipper: clipper is CustomClipper<Rect> ? clipper : null,
-          clipBehavior: clipBehavior ?? Clip.hardEdge);
+          clipBehavior: clipBehavior ?? Clip.hardEdge,
+          child: current);
     } else if (clipper is CustomClipper<Path>) {
       return ClipPath(
-          child: current,
           clipper: clipper,
-          clipBehavior: clipBehavior ?? Clip.antiAlias);
+          clipBehavior: clipBehavior ?? Clip.antiAlias,
+          child: current);
     } else if (clipper is CustomClipper<RRect> || isClipRRect) {
       return ClipRRect(
-          child: current,
           borderRadius: borderRadius,
           clipper: clipper is CustomClipper<RRect> ? clipper : null,
-          clipBehavior: clipBehavior ?? Clip.antiAlias);
+          clipBehavior: clipBehavior ?? Clip.antiAlias,
+          child: current);
     }
     return current;
   }
 
   Widget circleAvatarWidget(Widget current) => CircleAvatar(
-      child: current,
       backgroundColor: color,
       backgroundImage: backgroundImage,
       onBackgroundImageError: onBackgroundImageError,
       foregroundColor: foregroundColor,
       radius: radius,
       minRadius: minRadius,
-      maxRadius: maxRadius);
+      maxRadius: maxRadius,
+      child: current);
 
   Widget heroWidget(Widget current) => Hero(
       tag: heroTag!,
@@ -700,19 +700,19 @@ class Universal extends StatelessWidget {
       child: current);
 
   Widget visibilityWidget(Widget current) => Visibility(
-      child: current,
       replacement: replacement,
       visible: visible,
       maintainState: maintainState,
       maintainAnimation: maintainAnimation,
       maintainSize: maintainSize,
       maintainSemantics: maintainSemantics,
-      maintainInteractivity: maintainInteractivity);
+      maintainInteractivity: maintainInteractivity,
+      child: current);
 
   Widget flexibleWidget(Widget current) => Flexible(
-      child: current,
       flex: flex ?? 1,
-      fit: expanded ? FlexFit.tight : FlexFit.loose);
+      fit: expanded ? FlexFit.tight : FlexFit.loose,
+      child: current);
 
   Widget cardWidget(Widget current, BuildContext context) {
     final ThemeData theme = Theme.of(context);
@@ -743,7 +743,6 @@ class Universal extends StatelessWidget {
           required bool mBorderOnForeground,
           required Clip mClipBehavior}) =>
       Material(
-          child: current,
           color: mColor,
           type: mType,
           elevation: mElevation,
@@ -752,12 +751,12 @@ class Universal extends StatelessWidget {
           borderRadius: (mShape != null || shape != null) ? null : borderRadius,
           shape: mShape ?? shape,
           borderOnForeground: mBorderOnForeground,
-          clipBehavior: mClipBehavior);
+          clipBehavior: mClipBehavior,
+          child: current);
 
   Widget inkWellWidget(Widget current) => Ink(
       decoration: decoration,
       child: InkWell(
-          child: current,
           onTap: onTap,
           onLongPress: onLongPress,
           onDoubleTap: onDoubleTap,
@@ -778,7 +777,8 @@ class Universal extends StatelessWidget {
           focusNode: focusNode,
           canRequestFocus: canRequestFocus,
           onFocusChange: onFocusChange,
-          autofocus: autoFocus));
+          autofocus: autoFocus,
+          child: current));
 
   Widget singleChildScrollViewWidget(Widget current) => SingleChildScrollView(
       physics: physics,
@@ -804,17 +804,16 @@ class Universal extends StatelessWidget {
       refreshConfig: refreshConfig);
 
   Widget flexWidget(List<Widget> children) => Flex(
-      children: children,
       mainAxisAlignment: mainAxisAlignment,
       crossAxisAlignment: crossAxisAlignment,
       direction: direction,
       textBaseline: textBaseline,
       verticalDirection: verticalDirection,
       textDirection: textDirection,
-      mainAxisSize: mainAxisSize);
+      mainAxisSize: mainAxisSize,
+      children: children);
 
   Widget wrapWidget(List<Widget> children) => Wrap(
-      children: children,
       direction: direction,
       alignment: wrapAlignment,
       spacing: wrapSpacing,
@@ -823,7 +822,8 @@ class Universal extends StatelessWidget {
       crossAxisAlignment: wrapCrossAlignment,
       clipBehavior: clipBehavior ?? Clip.none,
       verticalDirection: verticalDirection,
-      textDirection: textDirection);
+      textDirection: textDirection,
+      children: children);
 
   Widget stackWidget(List<Widget> children) => Stack(
       alignment: alignment ?? AlignmentDirectional.topStart,
@@ -977,11 +977,11 @@ class SimpleButton extends StatelessWidget {
             overflow: overflow);
     if (isElastic && onTap != null) {
       return ElasticButton(
-          child: universal(current),
           onTap: onTap,
           withOpacity: withOpacity,
           scaleCoefficient: scaleCoefficient,
-          useCache: useCache);
+          useCache: useCache,
+          child: universal(current));
     }
     return universal(current, onTap: onTap);
   }
@@ -997,7 +997,6 @@ class SimpleButton extends StatelessWidget {
       splashColor: splashColor,
       focusColor: focusColor,
       mainAxisSize: MainAxisSize.min,
-      child: current,
       onTap: onTap,
       width: width,
       height: height,
@@ -1005,5 +1004,6 @@ class SimpleButton extends StatelessWidget {
       color: color,
       decoration: decoration,
       padding: padding,
-      alignment: alignment);
+      alignment: alignment,
+      child: current);
 }

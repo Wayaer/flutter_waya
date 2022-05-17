@@ -102,7 +102,7 @@ class ElasticButton extends StatefulWidget {
   final GestureForcePressEndCallback? onForcePressEnd;
 
   @override
-  _ElasticButtonState createState() => _ElasticButtonState();
+  State<ElasticButton> createState() => _ElasticButtonState();
 }
 
 class _ElasticButtonState extends State<ElasticButton>

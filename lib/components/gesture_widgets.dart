@@ -48,7 +48,7 @@ class GestureLock extends StatefulWidget {
   final ValueChanged<List<int>>? onPanUp;
 
   @override
-  _GestureLockState createState() => _GestureLockState();
+  State<GestureLock> createState() => _GestureLockState();
 }
 
 class _GestureLockState extends State<GestureLock> {
@@ -89,6 +89,9 @@ class _GestureLockState extends State<GestureLock> {
                         context.theme.unselectedWidgetColor,
                     points: points)),
             GestureDetector(
+                onPanDown: onPanDown,
+                onPanUpdate: onPanUpdate,
+                onPanEnd: onPanEnd,
                 child: curPoint == null
                     ? null
                     : CustomPaint(
@@ -98,10 +101,7 @@ class _GestureLockState extends State<GestureLock> {
                             selectColor: widget.selectColor ??
                                 context.theme.selectedRowColor,
                             lineWidth: widget.lineWidth,
-                            curPoint: curPoint!)),
-                onPanDown: onPanDown,
-                onPanUpdate: onPanUpdate,
-                onPanEnd: onPanEnd)
+                            curPoint: curPoint!)))
           ]);
 
   void onPanDown(DragDownDetails e) {
@@ -295,7 +295,7 @@ class GestureZoom extends StatefulWidget {
   final Duration duration;
 
   @override
-  _GestureZoomState createState() => _GestureZoomState();
+  State<GestureZoom> createState() => _GestureZoomState();
 }
 
 class _GestureZoomState extends State<GestureZoom>

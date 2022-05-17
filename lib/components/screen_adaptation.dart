@@ -22,7 +22,7 @@ class ScreenAdaptation extends StatefulWidget {
   final ScreenAdaptationScaleType scaleType;
 
   @override
-  _ScreenAdaptationState createState() => _ScreenAdaptationState();
+  State<ScreenAdaptation> createState() => _ScreenAdaptationState();
 }
 
 class _ScreenAdaptationState extends State<ScreenAdaptation>
