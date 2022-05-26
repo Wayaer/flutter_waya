@@ -10,46 +10,7 @@ enum LinearStrokeCap { butt, round, roundAll }
 enum ArcType { half, full }
 
 class Progress extends StatefulWidget {
-  Progress.circular({
-    Key? key,
-    this.percent = 0.0,
-    this.lineWidth = 5.0,
-    this.startAngle = 0.0,
-    required this.radius,
-    this.backgroundColor,
-    this.progressColor,
-    this.backgroundWidth = -1,
-    this.linearGradient,
-    this.animation = false,
-    this.animationDuration = const Duration(milliseconds: 500),
-    this.center,
-    this.addAutomaticKeepAlive = true,
-    this.circularStrokeCap = CircularStrokeCap.round,
-    this.arcBackgroundColor,
-    this.arcType,
-    this.animateFromLastPercent = false,
-    this.reverse = false,
-    this.curve = Curves.linear,
-    this.maskFilter,
-    this.restartAnimation = false,
-    this.onAnimationEnd,
-    this.widgetIndicator,
-    this.rotateLinearGradient = false,
-  })  : assert(startAngle! >= 0.0),
-        assert(linearGradient != null || progressColor != null,
-            'Cannot provide both linearGradient and progressColor'),
-        assert(arcType == null || arcBackgroundColor != null,
-            'arcType is required when you arcBackgroundColor'),
-        state = _CircularState(),
-        width = null,
-        lineHeight = 0,
-        linearStrokeCap = LinearStrokeCap.butt,
-        mainAxisAlignment = MainAxisAlignment.start,
-        isRTL = false,
-        clipLinearGradient = false,
-        super(key: key);
-
-  Progress.linear({
+  const Progress.linear({
     Key? key,
     this.percent = 0.0,
     this.lineHeight = 5.0,
@@ -73,16 +34,6 @@ class Progress extends StatefulWidget {
     this.widgetIndicator,
   })  : assert(linearGradient != null || progressColor != null,
             'Cannot provide both linearGradient and progressColor'),
-        state = _LinearState(),
-        radius = 0,
-        lineWidth = 5.0,
-        backgroundWidth = 1,
-        circularStrokeCap = CircularStrokeCap.round,
-        startAngle = null,
-        arcType = null,
-        arcBackgroundColor = null,
-        reverse = false,
-        rotateLinearGradient = null,
         super(key: key);
 
   /// Percent value between 0.0 and 1.0
@@ -131,36 +82,6 @@ class Progress extends StatefulWidget {
   /// Display a widget indicator at the end of the progress. It only works when `animation` is true
   final Widget? widgetIndicator;
 
-  //// circular
-
-  final double radius;
-
-  /// Width of the progress bar of the circle
-  final double lineWidth;
-
-  /// Width of the unfilled background of the progress bar
-  final double? backgroundWidth;
-
-  /// The kind of finish to place on the end of lines drawn, values
-  /// supported: butt, round, square
-  final CircularStrokeCap circularStrokeCap;
-
-  /// the angle which the circle will start the progress (in degrees, eg: 0
-  /// .0, 45.0, 90.0)
-  final double? startAngle;
-
-  /// set the arc type
-  final ArcType? arcType;
-
-  /// set a circular background color when use the arcType property
-  final Color? arcBackgroundColor;
-
-  /// set true when you want to display the progress in reverse mode
-  final bool reverse;
-
-  /// Set to true if you want to rotate linear gradient in accordance to the [startAngle].
-  final bool? rotateLinearGradient;
-
   //// linear
 
   /// Percent value between 0.0 and 1.0
@@ -183,10 +104,8 @@ class Progress extends StatefulWidget {
   /// (ie. create 'VU effect'). If no [linearGradient] is specified this option is ignored.
   final bool clipLinearGradient;
 
-  final State<StatefulWidget> state;
-
   @override
-  State<StatefulWidget> createState() => state;
+  State<StatefulWidget> createState() => _LinearState();
 }
 
 abstract class _ProgressSubState extends State<Progress>
@@ -246,61 +165,6 @@ abstract class _ProgressSubState extends State<Progress>
   void dispose() {
     animationController?.dispose();
     super.dispose();
-  }
-}
-
-class _CircularState extends _ProgressSubState {
-  @override
-  Widget build(BuildContext context) {
-    super.build(context);
-    return Universal(
-        isStack: true,
-        height: widget.radius,
-        width: widget.radius,
-        children: <Widget>[
-          CustomPaint(
-              painter: _CirclePainter(
-                  progress: percent * 360,
-                  progressColor: widget.progressColor ??
-                      context.theme.progressIndicatorTheme.color ??
-                      context.theme.primaryColor,
-                  backgroundColor:
-                      widget.backgroundColor ?? context.theme.backgroundColor,
-                  startAngle: widget.startAngle!,
-                  circularStrokeCap: widget.circularStrokeCap,
-                  radius: (widget.radius / 2) - widget.lineWidth / 2,
-                  lineWidth: widget.lineWidth,
-                  backgroundWidth: widget.backgroundWidth! >= 0.0
-                      ? widget.backgroundWidth!
-                      : widget.lineWidth,
-                  arcBackgroundColor: widget.arcBackgroundColor,
-                  arcType: widget.arcType,
-                  reverse: widget.reverse,
-                  linearGradient: widget.linearGradient,
-                  maskFilter: widget.maskFilter,
-                  rotateLinearGradient: widget.rotateLinearGradient!),
-              child: (widget.center != null)
-                  ? Center(child: widget.center)
-                  : Container()),
-          if (widget.widgetIndicator != null && widget.animation)
-            Positioned.fill(
-                child: Transform.rotate(
-              angle: _radians(
-                  (widget.circularStrokeCap != CircularStrokeCap.butt &&
-                          widget.reverse)
-                      ? -15
-                      : 0),
-              child: Transform.rotate(
-                  angle: _radians((widget.reverse ? -360 : 360) * percent),
-                  child: Transform.translate(
-                      offset: Offset(
-                          (widget.circularStrokeCap != CircularStrokeCap.butt)
-                              ? widget.lineWidth / 2
-                              : 0,
-                          -(widget.radius / 2) + widget.lineWidth / 2),
-                      child: widget.widgetIndicator)),
-            ))
-        ]);
   }
 }
 
@@ -446,164 +310,6 @@ class _LinearPainter extends CustomPainter {
         : Offset(xProgress, size.height);
     return linearGradient!
         .createShader(Rect.fromPoints(Offset.zero, shaderEndPoint));
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) => true;
-}
-
-class _CirclePainter extends CustomPainter {
-  _CirclePainter(
-      {required this.lineWidth,
-      required this.backgroundWidth,
-      required this.progress,
-      required this.radius,
-      required this.progressColor,
-      required this.backgroundColor,
-      this.startAngle = 0.0,
-      this.circularStrokeCap = CircularStrokeCap.round,
-      this.linearGradient,
-      this.reverse = false,
-      this.arcBackgroundColor,
-      this.arcType,
-      this.maskFilter,
-      required this.rotateLinearGradient}) {
-    _paintBackground.color = backgroundColor;
-    _paintBackground.style = PaintingStyle.stroke;
-    _paintBackground.strokeWidth = backgroundWidth;
-    if (circularStrokeCap == CircularStrokeCap.round) {
-      _paintBackground.strokeCap = StrokeCap.round;
-    } else if (circularStrokeCap == CircularStrokeCap.butt) {
-      _paintBackground.strokeCap = StrokeCap.butt;
-    } else {
-      _paintBackground.strokeCap = StrokeCap.square;
-    }
-    if (arcBackgroundColor != null) {
-      _paintBackgroundStartAngle.color = arcBackgroundColor!;
-      _paintBackgroundStartAngle.style = PaintingStyle.stroke;
-      _paintBackgroundStartAngle.strokeWidth = lineWidth;
-      if (circularStrokeCap == CircularStrokeCap.round) {
-        _paintBackgroundStartAngle.strokeCap = StrokeCap.round;
-      } else if (circularStrokeCap == CircularStrokeCap.butt) {
-        _paintBackgroundStartAngle.strokeCap = StrokeCap.butt;
-      } else {
-        _paintBackgroundStartAngle.strokeCap = StrokeCap.square;
-      }
-    }
-
-    _paintLine.color = progressColor;
-    _paintLine.style = PaintingStyle.stroke;
-    _paintLine.strokeWidth = lineWidth;
-    if (circularStrokeCap == CircularStrokeCap.round) {
-      _paintLine.strokeCap = StrokeCap.round;
-    } else if (circularStrokeCap == CircularStrokeCap.butt) {
-      _paintLine.strokeCap = StrokeCap.butt;
-    } else {
-      _paintLine.strokeCap = StrokeCap.square;
-    }
-  }
-
-  final Paint _paintBackground = Paint();
-  final Paint _paintLine = Paint();
-  final Paint _paintBackgroundStartAngle = Paint();
-  final double lineWidth;
-  final double backgroundWidth;
-  final double progress;
-  final double radius;
-  final Color progressColor;
-  final Color backgroundColor;
-  final CircularStrokeCap circularStrokeCap;
-  final double startAngle;
-  final LinearGradient? linearGradient;
-  final Color? arcBackgroundColor;
-  final ArcType? arcType;
-  final bool reverse;
-  final MaskFilter? maskFilter;
-  final bool rotateLinearGradient;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final Offset center = Offset(size.width / 2, size.height / 2);
-    double fixedStartAngle = startAngle;
-    final Rect rectForArc = Rect.fromCircle(center: center, radius: radius);
-    double startAngleFixedMargin = 1.0;
-    if (arcType != null) {
-      if (arcType == ArcType.full) {
-        fixedStartAngle = 220;
-        startAngleFixedMargin = 172 / fixedStartAngle;
-      } else {
-        fixedStartAngle = 270;
-        startAngleFixedMargin = 135 / fixedStartAngle;
-      }
-    }
-    arcType == ArcType.half
-        ? canvas.drawArc(rectForArc, _radians(-90.0 + fixedStartAngle),
-            _radians(360 * startAngleFixedMargin), false, _paintBackground)
-        : canvas.drawCircle(center, radius, _paintBackground);
-
-    if (maskFilter != null) _paintLine.maskFilter = maskFilter;
-
-    if (linearGradient != null) {
-      if (rotateLinearGradient && progress > 0) {
-        double correction = 0;
-        if (_paintLine.strokeCap == StrokeCap.round ||
-            _paintLine.strokeCap == StrokeCap.square) {
-          correction = math.atan(_paintLine.strokeWidth / 2 / radius);
-        }
-
-        _paintLine.shader = SweepGradient(
-                transform: reverse
-                    ? GradientRotation(
-                        _radians(-90 - progress + startAngle) - correction)
-                    : GradientRotation(
-                        _radians(-90.0 + startAngle) - correction),
-                startAngle: _radians(0),
-                endAngle: _radians(progress),
-                tileMode: TileMode.clamp,
-                colors: reverse
-                    ? linearGradient!.colors.reversed.toList()
-                    : linearGradient!.colors)
-            .createShader(Rect.fromCircle(center: center, radius: radius));
-      } else if (!rotateLinearGradient) {
-        _paintLine.shader = linearGradient!
-            .createShader(Rect.fromCircle(center: center, radius: radius));
-      }
-    }
-
-    fixedStartAngle = startAngle;
-
-    startAngleFixedMargin = 1.0;
-    if (arcType != null) {
-      if (arcType == ArcType.full) {
-        fixedStartAngle = 220;
-        startAngleFixedMargin = 172 / fixedStartAngle;
-      } else {
-        fixedStartAngle = 270;
-        startAngleFixedMargin = 135 / fixedStartAngle;
-      }
-    }
-
-    if (arcBackgroundColor != null) {
-      canvas.drawArc(
-          Rect.fromCircle(center: center, radius: radius),
-          _radians(-90.0 + fixedStartAngle),
-          _radians(360 * startAngleFixedMargin),
-          false,
-          _paintBackgroundStartAngle);
-    }
-
-    if (reverse) {
-      final double start =
-          _radians(360 * startAngleFixedMargin - 90.0 + fixedStartAngle);
-      final double end = _radians(-progress * startAngleFixedMargin);
-      canvas.drawArc(Rect.fromCircle(center: center, radius: radius), start,
-          end, false, _paintLine);
-    } else {
-      final double start = _radians(-90.0 + fixedStartAngle);
-      final double end = _radians(progress * startAngleFixedMargin);
-      canvas.drawArc(Rect.fromCircle(center: center, radius: radius), start,
-          end, false, _paintLine);
-    }
   }
 
   @override

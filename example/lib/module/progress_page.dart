@@ -18,7 +18,7 @@ class _ProgressPageState extends State<ProgressPage>
     super.initState();
     _animationController =
         AnimationController(duration: const Duration(seconds: 10), vsync: this);
-    _animationController.addListener(() => setState(() {}));
+    // _animationController.addListener(() => setState(() {}));
     _animationController.repeat();
   }
 
@@ -48,32 +48,6 @@ class _ProgressPageState extends State<ProgressPage>
               widgetIndicator: const BText('0', color: Colors.red),
               progressColor: Colors.lightGreen,
               backgroundColor: Colors.black12),
-          const SizedBox(height: 20),
-          Container(
-            color: Colors.blue.withOpacity(0.2),
-            child: Progress.circular(
-                radius: 120,
-                lineWidth: 15,
-                animation: true,
-                percent: 0,
-                restartAnimation: true,
-                animationDuration: const Duration(seconds: 10),
-                widgetIndicator: Container(
-                    width: 20,
-                    height: 20,
-                    alignment: Alignment.center,
-                    child: const BText('0', color: Colors.black)),
-                arcType: ArcType.full,
-                arcBackgroundColor: Colors.cyan,
-                center: const BText('70.0%',
-                    fontWeight: FontWeight.bold, fontSize: 20.0),
-                circularStrokeCap: CircularStrokeCap.round,
-                linearGradient: LinearGradient(colors: <Color>[
-                  Colors.red,
-                  context.theme.progressIndicatorTheme.color ??
-                      context.theme.primaryColor
-                ])),
-          ),
           const SizedBox(height: 20),
           SizedBox.fromSize(
               size: const Size(150, 30),
