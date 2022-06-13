@@ -16,7 +16,8 @@ class LiquidProgress extends ProgressIndicator {
     Key? key,
     double value = 0.5,
     Color? backgroundColor,
-    Animation<Color>? valueColor,
+    Color? color,
+    Animation<Color?>? valueColor,
     this.borderWidth = 0,
     this.borderColor = Colors.transparent,
     this.borderRadius = 0,
@@ -27,6 +28,7 @@ class LiquidProgress extends ProgressIndicator {
         super(
             key: key,
             value: value,
+            color: color,
             backgroundColor: backgroundColor,
             valueColor: valueColor);
 
@@ -34,7 +36,8 @@ class LiquidProgress extends ProgressIndicator {
       {Key? key,
       double value = 0.5,
       Color? backgroundColor,
-      Animation<Color>? valueColor,
+      Color? color,
+      Animation<Color?>? valueColor,
       this.borderWidth = 0,
       this.borderColor,
       this.center,
@@ -45,6 +48,7 @@ class LiquidProgress extends ProgressIndicator {
         super(
             key: key,
             value: value,
+            color: color,
             backgroundColor: backgroundColor,
             valueColor: valueColor);
 
@@ -52,7 +56,8 @@ class LiquidProgress extends ProgressIndicator {
       {Key? key,
       double value = 0.5,
       Color? backgroundColor,
-      Animation<Color>? valueColor,
+      Animation<Color?>? valueColor,
+      Color? color,
       this.center,
       required this.direction,
       required this.shapePath})
@@ -63,6 +68,7 @@ class LiquidProgress extends ProgressIndicator {
         super(
             key: key,
             value: value,
+            color: color,
             backgroundColor: backgroundColor,
             valueColor: valueColor);
 
@@ -91,7 +97,7 @@ class LiquidProgress extends ProgressIndicator {
       backgroundColor ?? Theme.of(context).backgroundColor;
 
   Color _getValueColor(BuildContext context) =>
-      valueColor?.value ?? Theme.of(context).colorScheme.secondary;
+      color ?? valueColor?.value ?? Theme.of(context).colorScheme.secondary;
 
   @override
   State<StatefulWidget> createState() => _ProgressState();

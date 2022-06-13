@@ -1,6 +1,6 @@
+import 'package:app/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:app/main.dart';
 
 const List<String> _colors = <String>['红色', '黄色黄色', '蓝色'];
 
@@ -119,13 +119,6 @@ class ButtonPage extends StatelessWidget {
             const SizedBox(height: 20),
             ElevatedText('BubbleButton',
                 onTap: () => push(_BubbleButtonPage())),
-            const SizedBox(height: 40),
-            const ClothButton.rectangle(size: Size(200, 60)),
-            const SizedBox(height: 20),
-            const ClothButton.round(size: Size(200, 60)),
-            const SizedBox(height: 40),
-            const LiquidButton(width: 200, height: 60),
-            const SizedBox(height: 40),
           ]);
 }
 

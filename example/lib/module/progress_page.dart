@@ -77,6 +77,7 @@ class _ProgressPageState extends State<ProgressPage>
           SizedBox.fromSize(
               size: const Size(150, 150),
               child: LiquidProgress.circular(
+                  color: Colors.deepPurpleAccent,
                   value: _animationController.value,
                   center: BText('${percentage.toStringAsFixed(0)}%',
                       style: const BTextStyle(
@@ -85,16 +86,19 @@ class _ProgressPageState extends State<ProgressPage>
                           fontWeight: FontWeight.bold)))),
           const SizedBox(height: 20),
           LiquidProgress.custom(
+              color: Colors.deepPurpleAccent,
               direction: Axis.vertical,
               value: 0.2,
               shapePath: _buildBoatPath()),
           const SizedBox(height: 20),
           LiquidProgress.custom(
               direction: Axis.horizontal,
+              color: Colors.deepPurpleAccent,
               backgroundColor: Colors.grey[300],
               shapePath: _buildSpeechBubblePath()),
           const SizedBox(height: 20),
           LiquidProgress.custom(
+              color: Colors.deepPurpleAccent,
               value: _animationController.value,
               direction: Axis.vertical,
               shapePath: _buildHeartPath(),

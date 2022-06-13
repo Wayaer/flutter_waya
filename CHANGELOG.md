@@ -1,8 +1,4 @@
-## 2.0.0+1
-
-* Compatible with flutter 3.0.0
-
-## 1.20.5
+## 1.20.6
 
 * Fixed issues with `scaffoldWillPop`
 * Add the `AnchorScrollBuilder()` component,And fix known problems, and it works perfectly
