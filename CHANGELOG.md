@@ -1,4 +1,4 @@
-## 1.20.6+1
+## 1.20.6
 
 * Fixed issues with `scaffoldWillPop`
 * Add the `AnchorScrollBuilder()` component,And fix known problems, and it works perfectly
