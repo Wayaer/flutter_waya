@@ -120,7 +120,6 @@ class _Home extends StatelessWidget {
               ElevatedText('Button', onTap: () => push(const ButtonPage())),
               ElevatedText('PopupWindows',
                   onTap: () => push(const PopupWindowsPage())),
-              ElevatedText('Image', onTap: () => push(const ImagePage())),
               ElevatedText('Carousel', onTap: () => push(const CarouselPage())),
               ElevatedText('Progress', onTap: () => push(const ProgressPage())),
               ElevatedText('Gesture', onTap: () => push(const GesturePage())),
