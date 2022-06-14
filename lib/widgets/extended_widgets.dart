@@ -511,19 +511,30 @@ class ExtendedScaffold extends StatelessWidget {
 /// ************ 以下为 路由跳转 *****************  ///
 ///
 /// 打开新页面
-Future<T?> push<T extends Object?>(
-  Widget widget, {
-  bool maintainState = true,
-  bool fullscreenDialog = false,
-  RoutePushStyle? pushStyle,
-  RouteSettings? settings,
-}) =>
-    GlobalOptions().globalNavigatorKey.currentState!.push(widget.buildPageRoute(
+Future<T?> push<T extends Object?, TO extends Object?>(Widget widget,
+    {bool maintainState = true,
+    bool fullscreenDialog = false,
+    RoutePushStyle? pushStyle,
+    RouteSettings? settings,
+    bool replacement = false,
+    TO? result}) {
+  if (replacement) {
+    return pushReplacement(widget,
+        settings: settings,
         maintainState: maintainState,
         fullscreenDialog: fullscreenDialog,
-        context: GlobalOptions().globalNavigatorKey.currentState!.context,
-        settings: settings,
-        pushStyle: pushStyle ?? GlobalOptions().pushStyle));
+        pushStyle: pushStyle ?? GlobalOptions().pushStyle,
+        result: result);
+  } else {
+    return GlobalOptions().globalNavigatorKey.currentState!.push(
+        widget.buildPageRoute(
+            maintainState: maintainState,
+            fullscreenDialog: fullscreenDialog,
+            context: GlobalOptions().globalNavigatorKey.currentState!.context,
+            settings: settings,
+            pushStyle: pushStyle ?? GlobalOptions().pushStyle));
+  }
+}
 
 /// 打开新页面替换当前页面
 Future<T?> pushReplacement<T extends Object?, TO extends Object?>(Widget widget,
@@ -562,8 +573,14 @@ Future<bool> maybePop<T extends Object>([T? result]) =>
     GlobalOptions().globalNavigatorKey.currentState!.maybePop<T>(result);
 
 /// 返回上一个页面
-void pop<T extends Object>([T? result]) =>
+Future<bool?> pop<T extends Object>([T? result, bool isMaybe = false]) {
+  if (isMaybe) {
+    return GlobalOptions().globalNavigatorKey.currentState!.maybePop<T>(result);
+  } else {
     GlobalOptions().globalNavigatorKey.currentState!.pop<T>(result);
+    return Future.value(true);
+  }
+}
 
 /// pop 返回简写 带参数  [nullBack] =true  navigator 返回为空 就继续返回上一页面
 void popBack(Future<dynamic> navigator,
@@ -571,9 +588,9 @@ void popBack(Future<dynamic> navigator,
   final Future<dynamic> future = navigator;
   future.then((dynamic value) {
     if (nullBack) {
-      useMaybePop ? maybePop(value) : pop(value);
+      pop(value, useMaybePop);
     } else {
-      if (value != null) useMaybePop ? maybePop(value) : pop(value);
+      if (value != null) pop(value, useMaybePop);
     }
   });
 }
