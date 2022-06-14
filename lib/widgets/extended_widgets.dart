@@ -575,7 +575,7 @@ Future<bool> maybePop<T extends Object>([T? result]) =>
 /// 返回上一个页面
 Future<bool?> pop<T extends Object>([T? result, bool isMaybe = false]) {
   if (isMaybe) {
-    return GlobalOptions().globalNavigatorKey.currentState!.maybePop<T>(result);
+    return maybePop<T>(result);
   } else {
     GlobalOptions().globalNavigatorKey.currentState!.pop<T>(result);
     return Future.value(true);
