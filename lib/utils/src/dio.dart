@@ -8,13 +8,9 @@ const List<String> httpContentType = <String>[
   'text/xml'
 ];
 
-enum HttpType { get, post, put, delete, patch }
-
 class ExtendedDioOptions extends BaseOptions {
   ExtendedDioOptions(
-      {this.interceptors,
-      this.requestCookie,
-      this.saveCookie,
+      {this.interceptors = const [],
       this.logTs = false,
       String? method,
       int? connectTimeout = 5000,
@@ -59,13 +55,9 @@ class ExtendedDioOptions extends BaseOptions {
   bool logTs;
 
   /// 添加自定义拦截器
-  List<InterceptorsWrapper>? interceptors;
-
-  /// 拦截器中 请求回调添加 cookie 方法
-  RequestCookie? requestCookie;
-
-  /// 拦截器中 返回回调添加 获取cookie 方法
-  ResponseSaveCookies? saveCookie;
+  /// [LoggerInterceptor] 日志打印
+  /// [CookieInterceptor] cookie 请求和获取
+  List<InterceptorsWrapper> interceptors;
 }
 
 class ExtendedDio {
@@ -75,149 +67,130 @@ class ExtendedDio {
 
   static ExtendedDio? _singleton;
 
-  /// 只可调用一次
-  ExtendedDio initialize([ExtendedDioOptions? options]) {
-    _dio = Dio();
-    options ??= ExtendedDioOptions(contentType: httpContentType[2]);
-    logTools = options.logTs;
-    _initializeOptions(_dio, options: options);
-    _dio.interceptors.add(ResponseModelInterceptorWrapper<dynamic>(
-        requestCookie: options.requestCookie, saveCookies: options.saveCookie));
-    if (options.interceptors != null && options.interceptors!.isNotEmpty) {
-      _dio.interceptors.addAll(options.interceptors!);
-    }
+  Dio? _dio;
+
+  Dio? get dio => _dio;
+
+  Dio? _dioUpload;
+
+  Dio? get dioUpload => _dioUpload;
+
+  Dio? _dioDownload;
+
+  Dio? get dioDownload => _dioDownload;
+
+  ExtendedDioOptions? options;
+
+  /// initialize
+  ExtendedDio initialize({ExtendedDioOptions? options}) {
+    this.options =
+        options ?? ExtendedDioOptions(contentType: httpContentType[2]);
     return this;
   }
-
-  void _initializeOptions(Dio dio, {BaseOptions? options}) {
-    if (options?.connectTimeout != null) {
-      dio.options.connectTimeout = options!.connectTimeout;
-    }
-    if (options?.receiveTimeout != null) {
-      dio.options.receiveTimeout = options!.receiveTimeout;
-    }
-    if (options?.contentType != null) {
-      dio.options.contentType = options?.contentType ??
-          (dio == _dio ? httpContentType[2] : httpContentType[1]);
-    }
-    if (options?.responseType != null) {
-      dio.options.responseType = options!.responseType;
-    }
-    if (options?.headers != null) dio.options.headers = options!.headers;
-  }
-
-  late Dio _dio;
-
-  Dio get dio => _dio;
-
-  late bool logTools;
 
   CancelToken _cancelToken = CancelToken();
 
   CancelToken get cancelToken => _cancelToken;
 
-  Future<ResponseModel> getHttp(
-    String url, {
-    Map<String, dynamic>? params,
-    dynamic data,
-    HttpType httpType = HttpType.get,
-    BaseOptions? options,
-  }) async {
-    assert(_singleton != null, 'Please call initialize');
-    try {
-      if (options != null) _initializeOptions(_dio, options: options);
-      Response<dynamic> response;
-      switch (httpType) {
-        case HttpType.get:
-          response = await _dio.get<dynamic>(url,
-              queryParameters: params, cancelToken: _cancelToken);
-          break;
-        case HttpType.post:
-          response = await _dio.post<dynamic>(url,
-              queryParameters: params, data: data, cancelToken: _cancelToken);
-          break;
-        case HttpType.put:
-          response = await _dio.put<dynamic>(url,
-              queryParameters: params, data: data, cancelToken: _cancelToken);
-          break;
-        case HttpType.delete:
-          response = await _dio.delete<dynamic>(url,
-              queryParameters: params, data: data, cancelToken: _cancelToken);
-          break;
-        case HttpType.patch:
-          response = await _dio.patch<dynamic>(url,
-              queryParameters: params, data: data, cancelToken: _cancelToken);
-          break;
-      }
-      final ResponseModel responseModel = ResponseModel.formResponse(response);
-      responseModel.baseOptions = _dio.options;
-      if (logTools) setHttpData(responseModel);
-      return responseModel;
-    } on DioError catch (e) {
-      final DioError error = e;
-      final ResponseModel responseModel = ResponseModel.mergeError(error);
-      responseModel.baseOptions = _dio.options;
-      if (logTools) setHttpData(responseModel);
-      return responseModel;
-    } catch (e) {
-      final ResponseModel responseModel = ResponseModel.constResponseModel();
-      responseModel.baseOptions = _dio.options;
-      if (logTools) setHttpData(responseModel);
-      return responseModel;
-    }
+  /// get
+  Future<ResponseModel> get(String url,
+      {Map<String, dynamic>? params,
+      dynamic data,
+      BaseOptions? options}) async {
+    _dio ??= Dio(this.options);
+    if (options != null) _mergeOptions(_dio!, options: options);
+    return await _handle(
+        () => _dio!.get<dynamic>(url,
+            queryParameters: params, cancelToken: _cancelToken),
+        baseOptions: dio!.options);
   }
 
-  /// 下载文件需要申请文件储存权限
+  /// post
+  Future<ResponseModel> post(String url,
+      {Map<String, dynamic>? params,
+      dynamic data,
+      BaseOptions? options}) async {
+    _dio ??= Dio(this.options);
+    if (options != null) _mergeOptions(_dio!, options: options);
+    return await _handle(
+        () => _dio!.post<dynamic>(url,
+            queryParameters: params, cancelToken: _cancelToken),
+        baseOptions: dio!.options);
+  }
+
+  /// put
+  Future<ResponseModel> put(String url,
+      {Map<String, dynamic>? params,
+      dynamic data,
+      BaseOptions? options}) async {
+    _dio ??= Dio(this.options);
+    if (options != null) _mergeOptions(_dio!, options: options);
+    return await _handle(
+        () => _dio!.put<dynamic>(url,
+            queryParameters: params, cancelToken: _cancelToken),
+        baseOptions: dio!.options);
+  }
+
+  /// delete
+  Future<ResponseModel> delete(String url,
+      {Map<String, dynamic>? params,
+      dynamic data,
+      BaseOptions? options}) async {
+    _dio ??= Dio(this.options);
+    if (options != null) _mergeOptions(_dio!, options: options);
+    return await _handle(
+        () => _dio!.delete<dynamic>(url,
+            queryParameters: params, cancelToken: _cancelToken),
+        baseOptions: dio!.options);
+  }
+
+  /// patch
+  Future<ResponseModel> patch(String url,
+      {Map<String, dynamic>? params,
+      dynamic data,
+      BaseOptions? options}) async {
+    _dio ??= Dio(this.options);
+    if (options != null) _mergeOptions(_dio!, options: options);
+    return await _handle(
+        () => _dio!.patch<dynamic>(url,
+            queryParameters: params, cancelToken: _cancelToken),
+        baseOptions: dio!.options);
+  }
+
+  /// download
   Future<ResponseModel> download(
     String url,
     String savePath, {
     ProgressCallback? onReceiveProgress,
     BaseOptions? options,
   }) async {
-    assert(_singleton != null, 'Please call initialize');
-    try {
-      final Dio dio = Dio();
-      if (options != null) _initializeOptions(dio, options: options);
-      final Response<dynamic> response = await dio.download(url, savePath,
-          cancelToken: _cancelToken, onReceiveProgress: onReceiveProgress);
-      return ResponseModel.formResponse(response, baseOptions: dio.options);
-    } on DioError catch (e) {
-      final DioError error = e;
-      final ResponseModel responseModel = ResponseModel.mergeError(error);
-      return responseModel;
-    } catch (e) {
-      return ResponseModel.constResponseModel();
-    }
+    _dioDownload ??= Dio(this.options);
+    if (options != null) _mergeOptions(_dioDownload!, options: options);
+    return await _handle(
+        () => _dioDownload!.download(url, savePath,
+            cancelToken: _cancelToken, onReceiveProgress: onReceiveProgress),
+        baseOptions: _dioDownload!.options);
   }
 
-  /// 文件上传
+  /// upload
   Future<ResponseModel> upload<T>(
     String url, {
     Map<String, dynamic>? params,
     dynamic data,
     BaseOptions? options,
-    CancelToken? cancelToken,
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    assert(_singleton != null, 'Please call initialize');
-    try {
-      final Dio dio = Dio();
-      if (options != null) _initializeOptions(dio, options: options);
-      final Response<dynamic> response = await dio.post<dynamic>(url,
-          queryParameters: params,
-          data: data,
-          cancelToken: cancelToken ?? _cancelToken,
-          onSendProgress: onSendProgress,
-          onReceiveProgress: onReceiveProgress);
-      return ResponseModel.formResponse(response, baseOptions: dio.options);
-    } on DioError catch (e) {
-      final DioError error = e;
-      final ResponseModel responseModel = ResponseModel.mergeError(error);
-      return responseModel;
-    } catch (e) {
-      return ResponseModel.constResponseModel();
-    }
+    _dioUpload ??= Dio(this.options);
+    if (options != null) _mergeOptions(_dioUpload!, options: options);
+    return await _handle(
+        () => _dioUpload!.post<dynamic>(url,
+            queryParameters: params,
+            data: data,
+            cancelToken: _cancelToken,
+            onSendProgress: onSendProgress,
+            onReceiveProgress: onReceiveProgress),
+        baseOptions: _dioUpload!.options);
   }
 
   void cancel([dynamic reason]) {
@@ -225,25 +198,81 @@ class ExtendedDio {
     _cancelToken.cancel(reason);
     _cancelToken = CancelToken();
   }
+
+  Future<ResponseModel> _handle(Future<Response<dynamic>> Function() func,
+      {BaseOptions? baseOptions}) async {
+    assert(_singleton != null, 'Please call initialize');
+    try {
+      final ResponseModel responseModel =
+          ResponseModel.formResponse(await func.call());
+      responseModel.baseOptions = baseOptions;
+      if (options!.logTs) setHttpData(responseModel);
+      return responseModel;
+    } on DioError catch (e) {
+      final DioError error = e;
+      final ResponseModel responseModel = ResponseModel.mergeError(error);
+      responseModel.baseOptions = baseOptions;
+      if (options!.logTs) setHttpData(responseModel);
+      return responseModel;
+    } catch (e) {
+      final ResponseModel responseModel = ResponseModel.constResponseModel();
+      responseModel.baseOptions = baseOptions;
+      if (options!.logTs) setHttpData(responseModel);
+      return responseModel;
+    }
+  }
+
+  void _mergeOptions(Dio dio, {BaseOptions? options}) {
+    dio.options = dio.options.copyWith(
+        method: options?.method,
+        receiveTimeout: options?.receiveTimeout,
+        sendTimeout: options?.sendTimeout,
+        connectTimeout: options?.connectTimeout,
+        extra: options?.extra,
+        baseUrl: options?.baseUrl,
+        setRequestContentTypeWhenNoPayload:
+            options?.setRequestContentTypeWhenNoPayload,
+        queryParameters: options?.queryParameters,
+        headers: options?.headers,
+        responseType: options?.responseType,
+        contentType: options?.contentType,
+        validateStatus: options?.validateStatus,
+        receiveDataWhenStatusError: options?.receiveDataWhenStatusError,
+        followRedirects: options?.followRedirects,
+        maxRedirects: options?.maxRedirects,
+        requestEncoder: options?.requestEncoder,
+        responseDecoder: options?.responseDecoder,
+        listFormat: options?.listFormat);
+    log('options');
+    log(options?.contentType);
+    log(options?.responseType);
+    log('dio.options');
+    log(dio.options.contentType);
+    log(dio.options.responseType);
+  }
 }
 
-/// 添加cookie
+/// 请求cookie
 typedef RequestCookie = Future<void> Function(RequestOptions options);
 
-/// 从http请求中获取cookie
-typedef ResponseSaveCookies = List<String> Function(Response<dynamic> response);
+/// 获取cookie
+typedef ResponseGetCookies = List<String> Function(Response<dynamic> response);
 
-class ResponseModelInterceptorWrapper<T> extends InterceptorsWrapper {
-  ResponseModelInterceptorWrapper({this.requestCookie, this.saveCookies});
+class CookieInterceptor<T> extends InterceptorsWrapper {
+  CookieInterceptor({this.requestCookie, this.getCookies});
 
+  /// 拦截器中 请求回调添加 cookie 方法
   final RequestCookie? requestCookie;
-  final ResponseSaveCookies? saveCookies;
+
+  /// 拦截器中 返回回调添加 获取cookie 方法
+  final ResponseGetCookies? getCookies;
+
   late ResponseModel responseModel;
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     responseModel = ResponseModel(requestOptions: options);
-    if (requestCookie != null) requestCookie!(options);
+    requestCookie?.call(options);
     super.onRequest(options, handler);
   }
 
@@ -251,7 +280,7 @@ class ResponseModelInterceptorWrapper<T> extends InterceptorsWrapper {
   void onResponse(
       Response<dynamic> response, ResponseInterceptorHandler handler) {
     responseModel.response = response;
-    if (saveCookies != null) responseModel.cookie = saveCookies!(response);
+    responseModel.cookie = getCookies?.call(response) ?? [];
     responseModel = ResponseModel.formResponse(response);
     super.onResponse(responseModel, handler);
   }

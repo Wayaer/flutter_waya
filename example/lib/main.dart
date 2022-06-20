@@ -2,6 +2,7 @@ import 'package:app/module/anchor_scroll_builder_page.dart';
 import 'package:app/module/button_page.dart';
 import 'package:app/module/carousel_page.dart';
 import 'package:app/module/components_page.dart';
+import 'package:app/module/dio_page.dart';
 import 'package:app/module/extension_page.dart';
 import 'package:app/module/gesture_page.dart';
 import 'package:app/module/json_parse_page.dart';
@@ -32,7 +33,9 @@ void main() {
     log('des解密完成==> $decoded');
   }
 
-  ExtendedDio().initialize();
+  ExtendedDio().initialize(
+      options:
+          ExtendedDioOptions(interceptors: [LoggerInterceptor()], logTs: true));
 
   globalOptions.setGlobalPushMode(RoutePushStyle.cupertino);
   globalOptions.setToastOptions(
@@ -115,6 +118,8 @@ class _Home extends StatelessWidget {
             runSpacing: 10,
             spacing: 10,
             children: <Widget>[
+              ElevatedText('ExtendedDio',
+                  onTap: () => push(const ExtendedDioPage())),
               ElevatedText('Components',
                   onTap: () => push(const ComponentsPage())),
               ElevatedText('Button', onTap: () => push(const ButtonPage())),
