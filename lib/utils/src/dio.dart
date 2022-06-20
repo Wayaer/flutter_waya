@@ -166,6 +166,9 @@ class ExtendedDio {
   }) async {
     _dioDownload ??= Dio(this.options);
     if (options != null) _mergeOptions(_dioDownload!, options: options);
+    log('_dioDownload.options');
+    log(_dioDownload!.options.contentType);
+    log(_dioDownload!.options.responseType);
     return await _handle(
         () => _dioDownload!.download(url, savePath,
             cancelToken: _cancelToken, onReceiveProgress: onReceiveProgress),
