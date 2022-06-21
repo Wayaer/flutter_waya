@@ -83,9 +83,10 @@ class ResponseModel extends Response<dynamic> {
     return responseModel;
   }
 
-  static ResponseModel constResponseModel() {
+  static ResponseModel constResponseModel({dynamic error}) {
     final HttpStatus status = ConstConstant.httpStatus[100]!;
     return ResponseModel(
+        error: error,
         requestOptions: RequestOptions(path: ''),
         statusCode: status.code,
         statusMessage: status.message,

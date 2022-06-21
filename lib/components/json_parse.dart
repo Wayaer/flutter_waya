@@ -79,7 +79,9 @@ class _JsonParseState extends State<JsonParse> {
 
   Widget getContentWidget(dynamic content) => content is List
       ? JsonParse.list(content)
-      : JsonParse(content as Map<String, dynamic>);
+      : content is Map<String, dynamic>
+          ? JsonParse(content)
+          : JsonParse({content.runtimeType: content.toString()});
 
   Widget getValueWidget(dynamic content) {
     String text = '';

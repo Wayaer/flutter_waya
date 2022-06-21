@@ -22,7 +22,9 @@ class _ExtendedDioPageState extends State<ExtendedDioPage> {
     Curiosity().native.appPath.then((value) {
       if (isAndroid) {
         cachePath = value?.externalCacheDir;
-      } else if (isIOS || isMacOS) {
+      } else if (isIOS) {
+        cachePath = value?.cachesDirectory;
+      } else if (isMacOS) {
         cachePath = value?.cachesDirectory;
       }
     });
@@ -34,22 +36,25 @@ class _ExtendedDioPageState extends State<ExtendedDioPage> {
         isScroll: true,
         padding: const EdgeInsets.all(20),
         appBar: AppBarText('ExtendedDio'),
-        body: Wrap(alignment: WrapAlignment.center, children: [
-          ElevatedText('get', onTap: get),
-          ElevatedText('post', onTap: post),
-          ElevatedText('put', onTap: put),
-          ElevatedText('delete', onTap: delete),
-          ElevatedText('patch', onTap: patch),
-          ElevatedText('download', onTap: download),
-          ElevatedText('upload', onTap: upload),
+        children: [
+          Wrap(alignment: WrapAlignment.center, children: [
+            ElevatedText('get', onTap: get),
+            ElevatedText('post', onTap: post),
+            ElevatedText('put', onTap: put),
+            ElevatedText('delete', onTap: delete),
+            ElevatedText('patch', onTap: patch),
+            ElevatedText('download', onTap: download),
+            ElevatedText('upload', onTap: upload),
+          ]),
           StatefulBuilder(builder: (_, state) {
             progressState = state;
             return count == null && total == null
                 ? const SizedBox()
-                : BText('total: $total  count: $count');
+                : BText('total: $total  count: $count')
+                    .marginSymmetric(vertical: 10);
           }),
           JsonParse(res)
-        ]));
+        ]);
   }
 
   void get() async {}
@@ -72,13 +77,11 @@ class _ExtendedDioPageState extends State<ExtendedDioPage> {
       showToast('缓存地址为null');
       return;
     }
-    BaseOptions options = BaseOptions();
-    options.contentType = httpContentType[1];
-    options.responseType = ResponseType.bytes;
     final data = await ExtendedDio().download(
         'https://dldir1.qq.com/qqfile/qq/PCQQ9.6.1/QQ9.6.1.28732.exe',
-        cachePath!,
-        options: options, onReceiveProgress: (int count, int total) {
+        cachePath! + 'QQ.exe', onReceiveProgress: (int count, int total) {
+      this.count = count;
+      this.total = total;
       progressState?.call(() {});
     });
     res = data.toMap();

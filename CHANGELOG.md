@@ -1,3 +1,8 @@
+## 1.21.0
+
+* Fix `JsonParse` bug
+* Refactoring `ExtendedDio()`
+
 ## 1.20.6
 
 * Fixed issues with `scaffoldWillPop`
