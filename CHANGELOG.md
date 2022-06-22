@@ -1,3 +1,7 @@
+## 2.1.0
+
+* Compatible with flutter 3.0.0
+
 ## 1.21.1
 
 * Fix `JsonParse` bug
