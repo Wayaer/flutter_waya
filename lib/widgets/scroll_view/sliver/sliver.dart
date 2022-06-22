@@ -341,6 +341,5 @@ class SliverListGrid extends StatelessWidget {
     return current;
   }
 
-  /// Helper method to compute the actual child count for the separated constructor.
   int _computeActualChildCount(int itemCount) => math.max(0, itemCount * 2 - 1);
 }

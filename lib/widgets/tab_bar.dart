@@ -24,7 +24,7 @@ class TabBarMerge extends StatelessWidget {
     this.dragStartBehavior = DragStartBehavior.start,
   }) : super(key: key);
 
-  /// 使用 [TabBarBox]
+  /// 使用 [TabBarBox] [TabBar]
   final Widget tabBar;
 
   final DragStartBehavior dragStartBehavior;
@@ -98,7 +98,7 @@ class TabBarBox extends StatelessWidget {
     this.tabBarLevel,
     this.labelColor,
     this.unselectedLabelColor,
-    this.indicatorSize,
+    this.indicatorSize = TabBarIndicatorSize.label,
     this.labelStyle,
     this.unselectedLabelStyle,
     this.indicatorWeight = 1,
@@ -213,5 +213,5 @@ class TabBarBox extends StatelessWidget {
       indicatorPadding: indicatorPadding,
       labelStyle: labelStyle,
       unselectedLabelStyle: unselectedLabelStyle,
-      indicatorSize: indicatorSize ?? TabBarIndicatorSize.label);
+      indicatorSize: indicatorSize);
 }

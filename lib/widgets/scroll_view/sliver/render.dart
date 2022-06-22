@@ -46,9 +46,9 @@ class RenderSliverPinnedPersistentHeader extends RenderSliver
     markNeedsLayout();
   }
 
-  double get minExtent => getChildExtend(minProtoType, constraints);
+  double get minExtent => _getChildExtend(minProtoType, constraints);
 
-  double get maxExtent => getChildExtend(maxProtoType, constraints);
+  double get maxExtent => _getChildExtend(maxProtoType, constraints);
 
   bool _needsUpdateChild = true;
   double _lastShrinkOffset = 0.0;
@@ -89,7 +89,7 @@ class RenderSliverPinnedPersistentHeader extends RenderSliver
   }
 
   @protected
-  double get childExtent => getChildExtend(child, constraints);
+  double get childExtent => _getChildExtend(child, constraints);
 
   @protected
   void layoutChild(double scrollOffset, double maxExtent,
@@ -280,18 +280,16 @@ class RenderSliverPinnedToBoxAdapter extends RenderSliverSingleBoxAdapter {
         .clamp(0.0, effectiveRemainingPaintExtent);
 
     geometry = SliverGeometry(
-      scrollExtent: childExtent!,
-      paintOrigin: constraints.overlap,
-      paintExtent: math.min(childExtent!, effectiveRemainingPaintExtent),
-      layoutExtent: layoutExtent,
-      maxPaintExtent: childExtent!,
-      maxScrollObstructionExtent: childExtent!,
-      cacheExtent: layoutExtent > 0.0
-          ? -constraints.cacheOrigin + layoutExtent
-          : layoutExtent,
-      hasVisualOverflow:
-          true, // Conservatively say we do have overflow to avoid complexity.
-    );
+        scrollExtent: childExtent!,
+        paintOrigin: constraints.overlap,
+        paintExtent: math.min(childExtent!, effectiveRemainingPaintExtent),
+        layoutExtent: layoutExtent,
+        maxPaintExtent: childExtent!,
+        maxScrollObstructionExtent: childExtent!,
+        cacheExtent: layoutExtent > 0.0
+            ? -constraints.cacheOrigin + layoutExtent
+            : layoutExtent,
+        hasVisualOverflow: true);
     setChildParentData(child!, constraints, geometry);
   }
 
@@ -330,10 +328,10 @@ class RenderSliverPinnedToBoxAdapter extends RenderSliverSingleBoxAdapter {
   @override
   double childMainAxisPosition(RenderBox child) => 0.0;
 
-  double? get childExtent => getChildExtend(child, constraints);
+  double? get childExtent => _getChildExtend(child, constraints);
 }
 
-double getChildExtend(RenderBox? child, SliverConstraints constraints) {
+double _getChildExtend(RenderBox? child, SliverConstraints constraints) {
   if (child == null) return 0.0;
   assert(child.hasSize);
   switch (constraints.axis) {
