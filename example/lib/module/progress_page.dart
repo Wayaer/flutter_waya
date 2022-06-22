@@ -18,7 +18,6 @@ class _ProgressPageState extends State<ProgressPage>
     super.initState();
     _animationController =
         AnimationController(duration: const Duration(seconds: 10), vsync: this);
-    // _animationController.addListener(() => setState(() {}));
     _animationController.repeat();
   }
 

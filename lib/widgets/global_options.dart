@@ -273,8 +273,8 @@ class GlobalOptions {
 
   static GlobalOptions? _singleton;
 
-  WidgetsBinding? widgetsBinding = WidgetsBinding.instance;
-  SchedulerBinding? schedulerBinding = SchedulerBinding.instance;
+  WidgetsBinding widgetsBinding = WidgetsBinding.instance;
+  SchedulerBinding schedulerBinding = SchedulerBinding.instance;
 
   GlobalKey<NavigatorState> _globalNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -398,16 +398,16 @@ class GlobalOptions {
 }
 
 void addPostFrameCallback(FrameCallback duration) =>
-    GlobalOptions().widgetsBinding?.addPostFrameCallback(duration);
+    GlobalOptions().widgetsBinding.addPostFrameCallback(duration);
 
 void addObserver(WidgetsBindingObserver observer) =>
-    GlobalOptions().widgetsBinding?.addObserver(observer);
+    GlobalOptions().widgetsBinding.addObserver(observer);
 
 void removeObserver(WidgetsBindingObserver observer) =>
-    GlobalOptions().widgetsBinding?.removeObserver(observer);
+    GlobalOptions().widgetsBinding.removeObserver(observer);
 
 void addPersistentFrameCallback(FrameCallback duration) =>
-    GlobalOptions().widgetsBinding?.addPersistentFrameCallback(duration);
+    GlobalOptions().widgetsBinding.addPersistentFrameCallback(duration);
 
 void addTimingsCallback(TimingsCallback callback) =>
-    GlobalOptions().widgetsBinding?.addTimingsCallback(callback);
+    GlobalOptions().widgetsBinding.addTimingsCallback(callback);

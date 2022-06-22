@@ -79,7 +79,7 @@ class _ExtendedDioPageState extends State<ExtendedDioPage> {
     }
     final data = await ExtendedDio().download(
         'https://dldir1.qq.com/qqfile/qq/PCQQ9.6.1/QQ9.6.1.28732.exe',
-        cachePath! + 'QQ.exe', onReceiveProgress: (int count, int total) {
+        '${cachePath!}QQ.exe', onReceiveProgress: (int count, int total) {
       this.count = count;
       this.total = total;
       progressState?.call(() {});
