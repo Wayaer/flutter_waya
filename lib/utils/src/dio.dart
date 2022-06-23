@@ -255,7 +255,6 @@ class ExtendedDio {
     ResponseModel? responseModel;
     try {
       responseModel = ResponseModel.formResponse(await func.call());
-      return responseModel;
     } on DioError catch (e) {
       final DioError error = e;
       responseModel = ResponseModel.mergeError(error);
