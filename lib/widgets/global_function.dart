@@ -16,9 +16,9 @@ ExtendedOverlayEntry? showOverlay(Widget widget, {bool autoOff = false}) =>
     ExtendedOverlay().showOverlay(widget, autoOff: autoOff);
 
 /// Toast
-/// 关闭 closeOverlay();
+/// 关闭 closeToast();
 /// 添加 await Toast 关闭后继续执行之后的方法
-Future<void> showToast(String message,
+Future<ExtendedOverlayEntry?> showToast(String message,
         {ToastStyle? style,
         AlignmentGeometry? positioned,
         IconData? customIcon,
@@ -30,6 +30,42 @@ Future<void> showToast(String message,
         positioned: positioned,
         customIcon: customIcon,
         style: style);
+
+bool closeToast() => ExtendedOverlay().closeToast();
+
+/// loading 加载框 关闭 closeLoading();
+ExtendedOverlayEntry? showLoading({
+  /// 通常使用自定义的
+  Widget? custom,
+
+  /// 底层模态框配置
+  ModalWindowsOptions? options,
+
+  /// 官方 ProgressIndicator 底部加个组件
+  Widget? extra,
+
+  /// 以下为官方三个 ProgressIndicator 配置
+  double? value,
+  Color? backgroundColor,
+  Animation<Color>? valueColor,
+  double strokeWidth = 4.0,
+  String? semanticsLabel,
+  String? semanticsValue,
+  LoadingStyle style = LoadingStyle.circular,
+}) =>
+    ExtendedOverlay().showLoading(
+        custom: custom,
+        extra: extra,
+        options: options,
+        value: value,
+        backgroundColor: backgroundColor,
+        valueColor: valueColor,
+        strokeWidth: strokeWidth,
+        semanticsLabel: semanticsLabel,
+        semanticsValue: semanticsValue,
+        style: style);
+
+bool closeLoading() => ExtendedOverlay().closeLoading();
 
 ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? showSnackBar(
     SnackBar snackBar) {
@@ -206,10 +242,8 @@ Future<T?>? showDoubleChooseWindows<T>({
     showOverlay(widget);
     return null;
   }
-  options ??= GlobalOptions()
-      .dialogOptions
-      .copyWith(fromStyle: PopupFromStyle.fromCenter);
-  return showDialogPopup(widget: widget, options: options);
+  return showDialogPopup(
+      widget: widget, options: options ??= GlobalOptions().dialogOptions);
 }
 
 /// 关闭弹窗

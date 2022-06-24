@@ -1,8 +1,13 @@
+## 2.1.1
+
+* Optimize loading toast and all related `ExtendedOverlayEntry()`
+* Limit loading and toast to only one
+
 ## 2.1.0+1
 
 * Compatible with flutter 3.0.0
 
-## 1.21.1
+## 1.21.1+1
 
 * Fix `JsonParse` bug
 * Refactoring `ExtendedDio()`
