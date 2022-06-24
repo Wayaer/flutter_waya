@@ -281,6 +281,9 @@ enum LoadingStyle {
 
   /// 不常用 下拉刷新圆圈
   refresh,
+
+  /// 自定义
+  custom,
 }
 
 class PopupLoadingWindows extends StatelessWidget {
@@ -318,8 +321,8 @@ class PopupLoadingWindows extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget? windows = custom;
-    if (windows == null) {
+    Widget windows = const SizedBox();
+    if (style != LoadingStyle.custom) {
       final List<Widget> children = <Widget>[];
       switch (style) {
         case LoadingStyle.circular:
@@ -348,6 +351,8 @@ class PopupLoadingWindows extends StatelessWidget {
               semanticsLabel: semanticsLabel,
               semanticsValue: semanticsValue));
           break;
+        case LoadingStyle.custom:
+          break;
       }
       if (extra != null) children.add(extra!);
       windows = Universal(
@@ -358,6 +363,9 @@ class PopupLoadingWindows extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: children);
+    } else {
+      assert(custom != null);
+      windows = custom ?? const SizedBox();
     }
     return PopupModalWindows(options: options, child: windows);
   }

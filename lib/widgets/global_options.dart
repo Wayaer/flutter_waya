@@ -15,14 +15,12 @@ class ToastOptions {
       this.positioned = Alignment.center,
       this.ignoring = false,
       this.absorbing = false,
-      this.style,
-      this.customIcon,
       this.iconSize = 30,
       this.spacing = 10,
       this.padding = const EdgeInsets.all(10),
       this.margin = const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
       this.direction = Axis.vertical,
-      this.modalWindowsOptions});
+      this.modalWindowsOptions = const ModalWindowsOptions()});
 
   /// 背景色
   final Color? backgroundColor;
@@ -52,13 +50,6 @@ class ToastOptions {
   /// [onTap] != null 时  无效
   final bool absorbing;
 
-  /// icon style
-  /// 如果使用ToastStyle.custom  请设置 customIcon
-  final ToastStyle? style;
-
-  /// customIcon
-  final IconData? customIcon;
-
   /// icon
   final Color iconColor;
 
@@ -70,14 +61,12 @@ class ToastOptions {
   final Axis direction;
 
   /// 全局Toast的 modalWindowsOptions
-  final ModalWindowsOptions? modalWindowsOptions;
+  final ModalWindowsOptions modalWindowsOptions;
 
   ToastOptions copyWith({
-    ToastStyle? style,
     AlignmentGeometry? positioned,
     bool? ignoring,
     bool? absorbing,
-    IconData? customIcon,
     Color? backgroundColor,
     EdgeInsetsGeometry? margin,
     EdgeInsetsGeometry? padding,
@@ -93,9 +82,7 @@ class ToastOptions {
   }) =>
       ToastOptions(
           modalWindowsOptions: modalWindowsOptions ?? this.modalWindowsOptions,
-          style: style ?? this.style,
           positioned: positioned ?? this.positioned,
-          customIcon: customIcon ?? this.customIcon,
           ignoring: ignoring ?? this.ignoring,
           absorbing: ignoring ?? this.absorbing,
           backgroundColor: backgroundColor ?? this.backgroundColor,
@@ -274,6 +261,7 @@ class GlobalOptions {
   static GlobalOptions? _singleton;
 
   WidgetsBinding? widgetsBinding = WidgetsBinding.instance;
+
   SchedulerBinding? schedulerBinding = SchedulerBinding.instance;
 
   GlobalKey<NavigatorState> _globalNavigatorKey = GlobalKey<NavigatorState>();
@@ -320,6 +308,16 @@ class GlobalOptions {
   /// Set the global [ModalWindowsOptions] 配置
   void setModalWindowsOptions(ModalWindowsOptions modalWindowsOptions) {
     _modalWindowsOptions = modalWindowsOptions;
+  }
+
+  Widget? _globalCustomLoading;
+
+  Widget? get globalCustomLoading => _globalCustomLoading;
+
+  /// 设置全局 [LoadingStyle.custom] 配置
+  /// Set the global [LoadingStyle.custom] configuration
+  void setGlobalCustomLoading(Widget custom) {
+    _globalCustomLoading = custom;
   }
 
   ToastOptions _toastOptions = const ToastOptions();

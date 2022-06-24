@@ -1,3 +1,8 @@
+## 1.21.2
+
+* Optimize loading toast and all related `ExtendedOverlayEntry()`
+* Limit loading and toast to only one
+
 ## 1.21.1+1
 
 * Fix `JsonParse` bug

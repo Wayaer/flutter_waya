@@ -43,25 +43,26 @@ class ExtendedOverlay {
     return false;
   }
 
-  bool _haveToast = false;
+  /// Toast
+  ExtendedOverlayEntry? _toast;
 
-  Future<void> showToast(String message,
+  ExtendedOverlayEntry? get toast => _toast;
+
+  /// Toast 关闭 closeToast();
+  Future<ExtendedOverlayEntry?> showToast(String message,
       {ToastOptions? options,
       ToastStyle? style,
       Duration? duration,
       AlignmentGeometry? positioned,
       IconData? customIcon}) async {
-    (options ??= GlobalOptions().toastOptions).copyWith(
-        style: style,
-        positioned: positioned,
-        customIcon: customIcon,
-        duration: duration);
-    if (_haveToast) return;
+    if (_toast != null) return _toast;
+    options = (options ??= GlobalOptions().toastOptions)
+        .copyWith(positioned: positioned, duration: duration);
     Widget toast =
         BText(message, color: options.iconColor, maxLines: 5, fontSize: 14);
-    if (options.style != null) {
+    if (style != null) {
       IconData icon;
-      switch (options.style!) {
+      switch (style) {
         case ToastStyle.success:
           icon = ConstIcon.success;
           break;
@@ -78,8 +79,8 @@ class ExtendedOverlay {
           icon = ConstIcon.smile;
           break;
         case ToastStyle.custom:
-          assert(options.customIcon != null);
-          icon = options.customIcon ?? ConstIcon.success;
+          assert(customIcon != null);
+          icon = customIcon ?? ConstIcon.info;
           break;
       }
       toast = IconBox(
@@ -90,28 +91,94 @@ class ExtendedOverlay {
           color: options.iconColor,
           title: toast);
     }
-    final ExtendedOverlayEntry? entry = showOverlay(
+    _toast = showOverlay(
         PopupModalWindows(
-            options: (options.modalWindowsOptions ??
-                    GlobalOptions().modalWindowsOptions)
-                .copyWith(
-                    absorbing: options.absorbing,
-                    ignoring: options.ignoring,
-                    alignment: options.positioned),
+            options: options.modalWindowsOptions.copyWith(
+                absorbing: options.absorbing,
+                ignoring: options.ignoring,
+                alignment: options.positioned),
             child: Universal(
                 onTap: options.onTap,
                 margin: options.margin,
                 decoration: options.decoration ??
                     BoxDecoration(
                         color: options.backgroundColor,
-                        borderRadius: BorderRadius.circular(5)),
+                        borderRadius: BorderRadius.circular(4)),
                 padding: options.padding,
                 child: toast)),
         autoOff: true);
-    _haveToast = true;
+    _toast!.addListener(_toastListener);
     await (options.duration).delayed<dynamic>();
-    closeOverlay(entry: entry);
-    _haveToast = false;
+    closeToast();
+    return _toast;
+  }
+
+  void _toastListener() {
+    if (_toast?.mounted == false) {
+      _toast?.removeListener(_toastListener);
+      _toast?.dispose();
+      _toast = null;
+    }
+  }
+
+  bool closeToast() {
+    final value = _toast?.removeEntry() ?? false;
+    _toast = null;
+    return value;
+  }
+
+  ExtendedOverlayEntry? _loading;
+
+  ExtendedOverlayEntry? get loading => _loading;
+
+  /// loading 加载框 关闭 closeLoading();
+  ExtendedOverlayEntry? showLoading({
+    /// 通常使用自定义的
+    Widget? custom,
+
+    /// 底层模态框配置
+    ModalWindowsOptions? options = const ModalWindowsOptions(),
+
+    /// 官方 ProgressIndicator 底部加个组件
+    Widget? extra,
+
+    /// 以下为官方三个 ProgressIndicator 配置
+    double? value,
+    Color? backgroundColor,
+    Animation<Color>? valueColor,
+    double strokeWidth = 4.0,
+    String? semanticsLabel,
+    String? semanticsValue,
+    LoadingStyle style = LoadingStyle.circular,
+  }) {
+    if (_loading != null) return _loading;
+    _loading = ExtendedOverlay().showOverlay(PopupLoadingWindows(
+        custom: custom ?? GlobalOptions().globalCustomLoading,
+        extra: extra,
+        options: options,
+        value: value,
+        backgroundColor: backgroundColor,
+        valueColor: valueColor,
+        strokeWidth: strokeWidth,
+        semanticsLabel: semanticsLabel,
+        semanticsValue: semanticsValue,
+        style: style));
+    _loading!.addListener(_loadingListener);
+    return _loading;
+  }
+
+  void _loadingListener() {
+    if (_loading?.mounted == false) {
+      _loading?.removeListener(_loadingListener);
+      _loading?.dispose();
+      _loading = null;
+    }
+  }
+
+  bool closeLoading() {
+    final value = _loading?.removeEntry() ?? false;
+    _loading = null;
+    return value;
   }
 }
 
@@ -144,35 +211,3 @@ class ExtendedOverlayEntry extends OverlayEntry {
   @override
   void remove() => removeEntry();
 }
-
-/// loading 加载框 关闭 closeOverlay();
-ExtendedOverlayEntry? showLoading({
-  /// 通常使用自定义的
-  Widget? custom,
-
-  /// 底层模态框配置
-  ModalWindowsOptions? options,
-
-  /// 官方 ProgressIndicator 底部加个组件
-  Widget? extra,
-
-  /// 以下为官方三个 ProgressIndicator 配置
-  double? value,
-  Color? backgroundColor,
-  Animation<Color>? valueColor,
-  double strokeWidth = 4.0,
-  String? semanticsLabel,
-  String? semanticsValue,
-  LoadingStyle style = LoadingStyle.circular,
-}) =>
-    ExtendedOverlay().showOverlay(PopupLoadingWindows(
-        custom: custom,
-        extra: extra,
-        options: options,
-        value: value,
-        backgroundColor: backgroundColor,
-        valueColor: valueColor,
-        strokeWidth: strokeWidth,
-        semanticsLabel: semanticsLabel,
-        semanticsValue: semanticsValue,
-        style: style));
