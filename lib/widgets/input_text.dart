@@ -326,6 +326,15 @@ class NumberLimitFormatter extends TextInputFormatter {
   }
 }
 
+typedef TextFieldBuilder = Widget Function(
+    TextEditingController? controller,
+    InputDecoration decoration,
+    ValueChanged<String> onChanged,
+    FocusNode focusNode,
+    bool showCursor,
+    TextStyle style,
+    List<TextInputFormatter> textInputFormatter);
+
 class PinBox extends StatefulWidget {
   const PinBox({
     Key? key,
@@ -347,6 +356,8 @@ class PinBox extends StatefulWidget {
     this.textStyle,
     this.boxSize = const Size(40, 40),
     this.spaces,
+    this.keyboardType,
+    this.textFieldBuilder,
   }) : super(key: key);
   final GestureTapCallback? onTap;
 
@@ -400,6 +411,10 @@ class PinBox extends StatefulWidget {
 
   /// box 中间添加 东西
   final List<Widget?>? spaces;
+
+  final TextInputType? keyboardType;
+
+  final TextFieldBuilder? textFieldBuilder;
 
   @override
   State<PinBox> createState() => _PinBoxState();
@@ -487,32 +502,41 @@ class _PinBoxState extends State<PinBox> {
     widget.onTap?.call();
   }
 
-  Widget get pinTextInput => TextField(
-      focusNode: focusNode,
-      decoration: const InputDecoration(
-          contentPadding: EdgeInsets.zero,
-          isDense: false,
-          counter: null,
-          counterText: '',
-          border: InputBorder.none),
-      autofocus: widget.autoFocus,
-      maxLines: 1,
-      onChanged: (String value) {
-        widget.onChanged?.call(value);
+  Widget get pinTextInput {
+    const inputDecoration = InputDecoration(
+        contentPadding: EdgeInsets.zero,
+        isDense: false,
+        counter: null,
+        counterText: '',
+        border: InputBorder.none);
+    void onChanged(String value) {
+      widget.onChanged?.call(value);
+      text.value = value;
+      if (value.length == widget.maxLength) {
+        widget.onDone?.call(value);
+      }
+    }
 
-        text.value = value;
-        if (value.length == widget.maxLength) {
-          widget.onDone?.call(value);
-        }
-      },
-      enabled: widget.enabled,
-      maxLength: widget.maxLength,
-      controller: widget.controller,
-      style: const BTextStyle(color: Colors.transparent),
-      showCursor: false,
-      inputFormatters: widget.inputFormatter ??
-          inputTextTypeToTextInputFormatter(widget.inputTextType),
-      textAlign: TextAlign.center);
+    final inputFormatter = widget.inputFormatter ??
+        inputTextTypeToTextInputFormatter(widget.inputTextType);
+    TextStyle style = const BTextStyle(color: Colors.transparent);
+    return widget.textFieldBuilder?.call(widget.controller, inputDecoration,
+            onChanged, focusNode, false, style, inputFormatter) ??
+        TextField(
+            focusNode: focusNode,
+            decoration: inputDecoration,
+            autofocus: widget.autoFocus,
+            maxLines: 1,
+            onChanged: onChanged,
+            keyboardType: widget.keyboardType,
+            enabled: widget.enabled,
+            maxLength: widget.maxLength,
+            controller: widget.controller,
+            style: style,
+            showCursor: false,
+            inputFormatters: inputFormatter,
+            textAlign: TextAlign.center);
+  }
 
   @override
   void dispose() {

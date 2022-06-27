@@ -1,3 +1,8 @@
+## 1.21.3
+
+* Add global Settings `LoadingOptions()`
+* `PinBox()` adds a custom build `TextField()`
+
 ## 1.21.2
 
 * Optimize loading toast and all related `ExtendedOverlayEntry()`

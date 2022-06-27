@@ -137,7 +137,7 @@ class ExtendedOverlay {
     Widget? custom,
 
     /// 底层模态框配置
-    ModalWindowsOptions? options = const ModalWindowsOptions(),
+    ModalWindowsOptions? options,
 
     /// 官方 ProgressIndicator 底部加个组件
     Widget? extra,
@@ -149,20 +149,23 @@ class ExtendedOverlay {
     double strokeWidth = 4.0,
     String? semanticsLabel,
     String? semanticsValue,
-    LoadingStyle style = LoadingStyle.circular,
+    LoadingStyle? style,
   }) {
     if (_loading != null) return _loading;
+    final loadingOptions = GlobalOptions()
+        .loadingOptions
+        .copyWith(custom: custom, style: style, options: options);
     _loading = ExtendedOverlay().showOverlay(PopupLoadingWindows(
-        custom: custom ?? GlobalOptions().globalCustomLoading,
+        custom: loadingOptions.custom,
         extra: extra,
-        options: options,
+        options: loadingOptions.options,
         value: value,
         backgroundColor: backgroundColor,
         valueColor: valueColor,
         strokeWidth: strokeWidth,
         semanticsLabel: semanticsLabel,
         semanticsValue: semanticsValue,
-        style: style));
+        style: loadingOptions.style));
     _loading!.addListener(_loadingListener);
     return _loading;
   }

@@ -51,7 +51,7 @@ ExtendedOverlayEntry? showLoading({
   double strokeWidth = 4.0,
   String? semanticsLabel,
   String? semanticsValue,
-  LoadingStyle style = LoadingStyle.circular,
+  LoadingStyle? style,
 }) =>
     ExtendedOverlay().showLoading(
         custom: custom,
