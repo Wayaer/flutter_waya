@@ -279,6 +279,18 @@ extension DurationExtension on Duration {
   /// 需要手动释放timer
   Timer timerPeriodic(void Function(Timer timer) callback) =>
       Timer.periodic(this, (Timer time) => callback(time));
+
+  /// 以毫秒结尾
+  String toEndMillisecondsString() => toString().removeSuffixLength(3);
+
+  /// 以秒结尾
+  String toEndSecondsString() => toString().removeSuffixLength(7);
+
+  /// 以分结尾
+  String toEndMinutesString() => toString().removeSuffixLength(10);
+
+  /// 以时结尾
+  String toEndHoursString() => toString().removeSuffixLength(13);
 }
 
 extension ExtensionFunction on Function() {

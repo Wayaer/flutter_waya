@@ -42,9 +42,13 @@ class _ExtensionDurationPage extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
         crossAxisAlignment: CrossAxisAlignment.start,
         children: const <Widget>[
-          _Item('\$duration.delayed()', '转换指定长度的字符串'),
-          _Item('\$duration.timer()', 'Timer'),
-          _Item('\$duration.timerPeriodic()', '需要手动释放timer'),
+          _Item('\$ duration.delayed()', '转换指定长度的字符串'),
+          _Item('\$ duration.timer()', 'Timer'),
+          _Item('\$ duration.timerPeriodic()', '定时器 需要手动释放timer'),
+          _Item('\$ duration.toEndHoursString()', '移除时后面的'),
+          _Item('\$ duration.toEndMinutesString()', '移除分后面的'),
+          _Item('\$ duration.toEndSecondsString()', '移除秒后面的'),
+          _Item('\$ duration.toEndMillisecondsString()', '移除微妙后面的'),
         ]);
   }
 }
@@ -59,8 +63,8 @@ class _ExtensionDateTimePage extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
         crossAxisAlignment: CrossAxisAlignment.start,
         children: const <Widget>[
-          _Item('\$dateTime.format()', '转换指定长度的字符串'),
-          _Item('\$dateTime.isLeapYearByYear', '是否是闰年'),
+          _Item('\$ dateTime.format()', '转换指定长度的字符串'),
+          _Item('\$ dateTime.isLeapYearByYear', '是否是闰年'),
         ]);
   }
 }
@@ -76,12 +80,12 @@ class _ExtensionMapPage extends StatelessWidget {
         isScroll: true,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: const <Widget>[
-          _Item('\$map.keysList()', ''),
-          _Item('\$map.valuesList()', ''),
-          _Item('\$map.builderEntry()', ''),
-          _Item('\$map.addAllT()', 'addAll map 并返回 新map'),
-          _Item('\$map.updateT()', 'update map 并返回 新map'),
-          _Item('\$map.updateAllT()', 'update map 并返回 新map'),
+          _Item('\$ map.keysList()', ''),
+          _Item('\$ map.valuesList()', ''),
+          _Item('\$ map.builderEntry()', ''),
+          _Item('\$ map.addAllT()', 'addAll map 并返回 新map'),
+          _Item('\$ map.updateT()', 'update map 并返回 新map'),
+          _Item('\$ map.updateAllT()', 'update map 并返回 新map'),
         ]);
   }
 }
@@ -97,18 +101,18 @@ class _ExtensionListPage extends StatelessWidget {
         isScroll: true,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: const <Widget>[
-          _Item('\$list.builder()', 'list.map.toList()'),
-          _Item('\$list.builderEntry()', 'list.asMap().entries.map.toList()'),
-          _Item('\$list.generate()', ''),
-          _Item('\$list.addT()', '添加子元素 并返回 新数组'),
-          _Item('\$list.addAllT()', '添加数组 并返回 新数组'),
-          _Item('\$list.insertT()', '插入子元素 并返回 新数组'),
-          _Item('\$list.insertAllT()', '插入数组 并返回 新数组'),
-          _Item('\$list.replaceRangeT()', '替换指定区域 返回 新数组'),
-          _Item('\$list.base64Encode', ''),
-          _Item('\$list.utf8Decode', ''),
-          _Item('\$list.uInt8ListFrom32BitList', ''),
-          _Item('\$list.toUtf8', ''),
+          _Item('\$ list.builder()', 'list.map.toList()'),
+          _Item('\$ list.builderEntry()', 'list.asMap().entries.map.toList()'),
+          _Item('\$ list.generate()', ''),
+          _Item('\$ list.addT()', '添加子元素 并返回 新数组'),
+          _Item('\$ list.addAllT()', '添加数组 并返回 新数组'),
+          _Item('\$ list.insertT()', '插入子元素 并返回 新数组'),
+          _Item('\$ list.insertAllT()', '插入数组 并返回 新数组'),
+          _Item('\$ list.replaceRangeT()', '替换指定区域 返回 新数组'),
+          _Item('\$ list.base64Encode', ''),
+          _Item('\$ list.utf8Decode', ''),
+          _Item('\$ list.uInt8ListFrom32BitList', ''),
+          _Item('\$ list.toUtf8', ''),
         ]);
   }
 }
@@ -124,23 +128,23 @@ class _ExtensionStringPage extends StatelessWidget {
         isScroll: true,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: const <Widget>[
-          _Item('\$string.parseInt', '转换为int'),
-          _Item('\$string.parseDouble', '转换为Double'),
-          _Item('\$string.toMd5', 'md5 加密'),
-          _Item('\$string.toEncodeBase64', 'Base64加密'),
-          _Item('\$string.toDecodeBase64', 'Base64解密'),
-          _Item('\$string.toClipboard', '复制到粘贴板'),
-          _Item('\$string.isEmail', '验证邮箱'),
-          _Item('\$string.isChinaPhone', '手机号验证'),
-          _Item('\$string.utf8ToList', 'utf8ToList'),
-          _Item('\$string.utf8Encode', '进行utf8编码'),
-          _Item('\$string.formatDigitPattern()', '每隔 x位 加 pattern'),
-          _Item('\$string.formatDigitPatternEnd()', '每隔 x位 加 pattern, 从末尾开始'),
-          _Item('\$string.reverse', 'reverse'),
-          _Item('\$string.removePrefix', '移出头部指定 [prefix] 不包含不移出'),
-          _Item('\$string.removeSuffix', '移出尾部指定 [suffix] 不包含不移出'),
-          _Item('\$string.removePrefixLength', '移出头部指定长度'),
-          _Item('\$string.removeSuffixLength', '移出尾部指定长度'),
+          _Item('\$ string.parseInt', '转换为int'),
+          _Item('\$ string.parseDouble', '转换为Double'),
+          _Item('\$ string.toMd5', 'md5 加密'),
+          _Item('\$ string.toEncodeBase64', 'Base64加密'),
+          _Item('\$ string.toDecodeBase64', 'Base64解密'),
+          _Item('\$ string.toClipboard', '复制到粘贴板'),
+          _Item('\$ string.isEmail', '验证邮箱'),
+          _Item('\$ string.isChinaPhone', '手机号验证'),
+          _Item('\$ string.utf8ToList', 'utf8ToList'),
+          _Item('\$ string.utf8Encode', '进行utf8编码'),
+          _Item('\$ string.formatDigitPattern()', '每隔 x位 加 pattern'),
+          _Item('\$ string.formatDigitPatternEnd()', '每隔 x位 加 pattern, 从末尾开始'),
+          _Item('\$ string.reverse', 'reverse'),
+          _Item('\$ string.removePrefix', '移出头部指定 [prefix] 不包含不移出'),
+          _Item('\$ string.removeSuffix', '移出尾部指定 [suffix] 不包含不移出'),
+          _Item('\$ string.removePrefixLength', '移出头部指定长度'),
+          _Item('\$ string.removeSuffixLength', '移出尾部指定长度'),
         ]);
   }
 }
@@ -243,18 +247,18 @@ class _ExtensionNumPage extends StatelessWidget {
         isScroll: true,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: const <Widget>[
-          _Item('\$num.generate()', '创建指定长度的List'),
-          _Item('\$num.length', 'num 长'),
-          _Item('\$num.fromMicrosecondsSinceEpoch()', '微秒时间戳转换 DateTime'),
-          _Item('\$num.fromMillisecondsSinceEpoch()', '毫秒时间戳转换 DateTime'),
-          _Item('\$num.milliseconds()', '返回 Duration(milliseconds:\$num)'),
-          _Item('\$num.milliseconds()', '返回 Duration(milliseconds:\$num)'),
-          _Item('\$num.seconds()', '返回 Duration()'),
-          _Item('\$num.minutes()', '返回 Duration()'),
-          _Item('\$num.hours()', '返回 Duration()'),
-          _Item('\$num.days()', '返回 Duration()'),
-          _Item('\$num.days()', '返回 Duration()'),
-          _Item('\$num.contains()', '是否包含'),
+          _Item('\$ num.generate()', '创建指定长度的List'),
+          _Item('\$ num.length', 'num 长'),
+          _Item('\$ num.fromMicrosecondsSinceEpoch()', '微秒时间戳转换 DateTime'),
+          _Item('\$ num.fromMillisecondsSinceEpoch()', '毫秒时间戳转换 DateTime'),
+          _Item('\$ num.milliseconds()', '返回 Duration(milliseconds:\$ num)'),
+          _Item('\$ num.milliseconds()', '返回 Duration(milliseconds:\$ num)'),
+          _Item('\$ num.seconds()', '返回 Duration()'),
+          _Item('\$ num.minutes()', '返回 Duration()'),
+          _Item('\$ num.hours()', '返回 Duration()'),
+          _Item('\$ num.days()', '返回 Duration()'),
+          _Item('\$ num.days()', '返回 Duration()'),
+          _Item('\$ num.contains()', '是否包含'),
         ]);
   }
 }
