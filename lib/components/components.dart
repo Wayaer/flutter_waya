@@ -146,20 +146,37 @@ class _SendSMSState extends State<SendSMS> {
 
 typedef CountDownBuilder = Widget Function(int i);
 
-/// 点击跳过
+enum CountDownType {
+  microseconds,
+  milliseconds,
+  seconds,
+  minutes,
+  hours,
+  days,
+}
+
+/// 倒计时
 class CountDown extends StatefulWidget {
   const CountDown({
     Key? key,
     this.duration = const Duration(seconds: 5),
     this.onChanged,
     required this.builder,
+    this.periodic = 1000,
+    this.type = CountDownType.seconds,
   }) : super(key: key);
 
   /// UI 回调
   final CountDownBuilder builder;
 
-  /// 默认秒数
+  /// 倒计时时间
   final Duration duration;
+
+  /// 定时 依据[countDownType]
+  final int periodic;
+
+  /// 倒计时 类型
+  final CountDownType type;
 
   final ValueChanged<int>? onChanged;
 
@@ -168,7 +185,7 @@ class CountDown extends StatefulWidget {
 }
 
 class _CountDownState extends State<CountDown> {
-  late int seconds;
+  late int i;
   Timer? timer;
 
   @override
@@ -179,14 +196,41 @@ class _CountDownState extends State<CountDown> {
 
   void init() {
     disposeTime();
-    seconds = widget.duration.inSeconds;
+    Duration periodic;
+    switch (widget.type) {
+      case CountDownType.microseconds:
+        i = widget.duration.inMicroseconds;
+        periodic = widget.periodic.microseconds;
+        break;
+      case CountDownType.milliseconds:
+        i = widget.duration.inMilliseconds;
+        periodic = widget.periodic.milliseconds;
+        break;
+      case CountDownType.seconds:
+        i = widget.duration.inSeconds;
+        periodic = widget.periodic.seconds;
+        break;
+      case CountDownType.minutes:
+        i = widget.duration.inMinutes;
+        periodic = widget.periodic.minutes;
+        break;
+      case CountDownType.hours:
+        i = widget.duration.inHours;
+        periodic = widget.periodic.hours;
+        break;
+      case CountDownType.days:
+        i = widget.duration.inDays;
+        periodic = widget.periodic.days;
+        break;
+    }
+
     addPostFrameCallback((Duration callback) {
-      if (seconds > 0) {
-        timer = 1.seconds.timerPeriodic((Timer time) {
-          seconds -= 1;
+      if (i > 0) {
+        timer = periodic.timerPeriodic((Timer time) {
+          i -= widget.periodic;
           if (mounted) setState(() {});
-          widget.onChanged?.call(seconds);
-          if (seconds == 0) disposeTime();
+          widget.onChanged?.call(i);
+          if (i == 0) disposeTime();
         });
       }
     });
@@ -202,11 +246,12 @@ class _CountDownState extends State<CountDown> {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.duration != widget.duration ||
         oldWidget.onChanged != widget.onChanged ||
+        oldWidget.periodic != widget.periodic ||
         oldWidget.builder != widget.builder) init();
   }
 
   @override
-  Widget build(BuildContext context) => widget.builder(seconds);
+  Widget build(BuildContext context) => widget.builder(i);
 
   @override
   void dispose() {

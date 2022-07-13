@@ -77,16 +77,24 @@ extension ExtensionNum on num {
   bool contains(Pattern other, [int startIndex = 0]) =>
       toString().contains(other);
 
+  /// 微秒
+  Duration get microseconds => Duration(microseconds: round());
+
+  /// 毫秒
   Duration get milliseconds => Duration(microseconds: (this * 1000).round());
 
+  /// 秒
   Duration get seconds => Duration(milliseconds: (this * 1000).round());
 
+  /// 分
   Duration get minutes =>
       Duration(seconds: (this * Duration.secondsPerMinute).round());
 
+  /// 时
   Duration get hours =>
       Duration(minutes: (this * Duration.minutesPerHour).round());
 
+  /// 天
   Duration get days => Duration(hours: (this * Duration.hoursPerDay).round());
 
   /// int 字节转 k MB GB
