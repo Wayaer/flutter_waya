@@ -13,6 +13,7 @@ export 'button/elastic_button.dart';
 export 'carousel/carousel.dart';
 export 'carousel/indicator.dart';
 export 'carousel/pagination.dart';
+export 'check_box.dart';
 export 'counter.dart';
 export 'dotted_line.dart';
 export 'draggable_scrollbar.dart';
