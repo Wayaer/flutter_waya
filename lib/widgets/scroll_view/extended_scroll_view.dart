@@ -395,6 +395,20 @@ class _SliverModel {
   Size size;
   GlobalKey? extraKey;
   Size extraSize;
+
+  _SliverModel copyWith({
+    Widget? sliver,
+    GlobalKey? key,
+    Size? size,
+    GlobalKey? extraKey,
+    Size? extraSize,
+  }) =>
+      _SliverModel(
+          sliver: sliver ?? this.sliver,
+          key: key ?? this.key,
+          size: size ?? this.size,
+          extraKey: extraKey ?? this.extraKey,
+          extraSize: extraSize ?? this.extraSize);
 }
 
 class _Calculate extends StatelessWidget {

@@ -208,16 +208,15 @@ class ComponentsPage extends StatelessWidget {
             const Partition('CountDown'),
             CountDown(
                 onChanged: (int i) {},
+                periodic: 1,
                 duration: const Duration(seconds: 100),
-                builder: (int i) {
-                  return SimpleButton(
-                      text: i.toString(),
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 6, horizontal: 12),
-                      decoration: BoxDecoration(
-                          color: Colors.blue,
-                          borderRadius: BorderRadius.circular(4)));
-                }),
+                builder: (int i) => SimpleButton(
+                    text: i.toString(),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                    decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.circular(4)))),
 
             const Partition('DottedLine'),
             Container(

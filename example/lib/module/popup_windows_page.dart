@@ -65,6 +65,9 @@ class PopupWindowsPage extends StatelessWidget {
             ElevatedText('showSnackBar', onTap: () {
               showSnackBar(const SnackBar(content: BText('Popup SnackBar')));
             }),
+            ElevatedText('showLoading', onTap: () {
+              showLoading();
+            }),
             ...LoadingStyle.values.builder(
                 (style) => ElevatedText('showLoading ($style)', onTap: () {
                       showLoading(

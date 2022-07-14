@@ -104,7 +104,7 @@ extension ExtensionString on String {
   String removePrefixLength(int l) => substring(l, length);
 
   /// 移出尾部指定长度
-  String removeSuffixLength(int l) => substring(0, l);
+  String removeSuffixLength(int l) => substring(0, length - l);
 }
 
 extension ExtensionStringUnsafe on String? {

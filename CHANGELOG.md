@@ -1,11 +1,16 @@
-## 2.1.1
+## 2.2.0
+
+* Compatible with flutter 3.0.0
+
+## 1.21.3+1
+
+* Add global Settings `LoadingOptions()`
+* `PinBox()` adds a custom build `TextField()`
+
+## 1.21.2
 
 * Optimize loading toast and all related `ExtendedOverlayEntry()`
 * Limit loading and toast to only one
-
-## 2.1.0+1
-
-* Compatible with flutter 3.0.0
 
 ## 1.21.1+1
 

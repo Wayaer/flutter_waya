@@ -48,7 +48,10 @@ void main() {
   globalOptions.setPickerWheelOptions(
       const PickerWheelOptions(useMagnifier: true, magnification: 1.5));
   globalOptions.setLogDottedLine(false);
-
+  globalOptions.setLoadingOptions(const LoadingOptions(
+      custom: BText('全局设置loading', fontSize: 20),
+      style: LoadingStyle.custom,
+      options: ModalWindowsOptions(onTap: closeLoading)));
   des();
   runApp(isCustomApp ? _CustomApp() : _App());
 }

@@ -4,6 +4,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
+class LoadingOptions {
+  const LoadingOptions({
+    this.custom,
+    this.style = LoadingStyle.circular,
+    this.options = const ModalWindowsOptions(),
+  });
+
+  final Widget? custom;
+  final LoadingStyle style;
+  final ModalWindowsOptions options;
+
+  LoadingOptions copyWith({
+    Widget? custom,
+    LoadingStyle? style,
+    ModalWindowsOptions? options,
+  }) =>
+      LoadingOptions(
+          custom: custom ?? this.custom,
+          style: style ?? this.style,
+          options: options ?? this.options);
+}
+
 class ToastOptions {
   const ToastOptions(
       {this.backgroundColor = const Color(0xCC000000),
@@ -310,14 +332,14 @@ class GlobalOptions {
     _modalWindowsOptions = modalWindowsOptions;
   }
 
-  Widget? _globalCustomLoading;
+  LoadingOptions _loadingOptions = const LoadingOptions();
 
-  Widget? get globalCustomLoading => _globalCustomLoading;
+  LoadingOptions get loadingOptions => _loadingOptions;
 
-  /// 设置全局 [LoadingStyle.custom] 配置
-  /// Set the global [LoadingStyle.custom] configuration
-  void setGlobalCustomLoading(Widget custom) {
-    _globalCustomLoading = custom;
+  /// 设置全局 [LoadingOptions] 配置
+  /// Set the global [LoadingOptions] configuration
+  void setLoadingOptions(LoadingOptions options) {
+    _loadingOptions = options;
   }
 
   ToastOptions _toastOptions = const ToastOptions();
