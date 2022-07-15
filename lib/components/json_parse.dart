@@ -89,7 +89,7 @@ class _JsonParseState extends State<JsonParse> {
     if (content == null) {
       text = 'null';
       color = Colors.grey;
-    } else if (content is int) {
+    } else if (content is num) {
       text = content.toString();
       color = Colors.teal;
     } else if (content is String) {
@@ -97,10 +97,7 @@ class _JsonParseState extends State<JsonParse> {
       color = Colors.redAccent;
     } else if (content is bool) {
       text = content.toString();
-      color = color;
-    } else if (content is double) {
-      text = content.toString();
-      color = Colors.teal;
+      color = Colors.blue;
     } else if (content is List) {
       text = content.isEmpty
           ? 'Array[0]'
