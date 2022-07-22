@@ -1,5 +1,7 @@
-## 2.3.0
+## 2.3.1
 
+* Add `SwitchState()` and `CheckboxState()`
+* 
 * All Carousel names are changed to FlSwiper
 
 ## 2.2.0

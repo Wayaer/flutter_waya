@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-typedef CheckboxStateChanged = bool Function(bool? value);
+typedef CheckboxStateChanged = Future<bool?> Function(bool? value);
 
+/// 官方版增加状态
 class CheckboxState extends StatelessWidget {
   const CheckboxState({
     Key? key,
     required this.value,
     this.tristate = false,
     this.onChanged,
-    required this.onWaitChanged,
+    this.onWaitChanged,
     this.mouseCursor,
     this.activeColor,
     this.fillColor,
@@ -28,7 +29,8 @@ class CheckboxState extends StatelessWidget {
     this.dispose,
     this.didChangeDependencies,
     this.didUpdateWidget,
-  }) : super(key: key);
+  })  : assert(tristate || value != null),
+        super(key: key);
 
   /// Whether this checkbox is checked.
   ///
@@ -288,13 +290,13 @@ class CheckboxState extends StatelessWidget {
   final ValueCallback<BuildContext>? didUpdateWidget;
 
   @override
-  Widget build(BuildContext context) => ValueBuilder<bool>(
+  Widget build(BuildContext context) => ValueBuilder<bool?>(
       initialValue: value,
       initState: initState,
       dispose: dispose,
       didChangeDependencies: didChangeDependencies,
       didUpdateWidget: didUpdateWidget,
-      builder: (_, bool? value, Function update) => Checkbox(
+      builder: (_, bool? value, Function updater) => Checkbox(
           tristate: tristate,
           mouseCursor: mouseCursor,
           activeColor: activeColor,
@@ -311,12 +313,97 @@ class CheckboxState extends StatelessWidget {
           shape: shape,
           side: side,
           value: value,
-          onChanged: (bool? v) async {
+          onChanged: (bool? v) {
+            onChanged?.call(v);
             if (onWaitChanged != null) {
-              final result = onWaitChanged!.call(v);
-              if (result) update(v);
+              onWaitChanged!.call(v).then((result) {
+                assert(tristate || result != null);
+                updater(result);
+              });
             } else {
-              onChanged?.call(v);
+              updater(v);
             }
           }));
+}
+
+typedef CheckBoxStateBuilder = Widget Function(bool? value);
+
+/// 自定义版
+class CheckBox extends StatefulWidget {
+  const CheckBox({
+    Key? key,
+    this.value = false,
+    required this.stateBuilder,
+    this.useNull = false,
+    this.onChanged,
+    this.decoration,
+    this.margin,
+    this.padding,
+  }) : super(key: key);
+
+  /// 不同状态时 显示的组件
+  final CheckBoxStateBuilder stateBuilder;
+
+  /// bool 类型是否使用后null
+  final bool useNull;
+
+  /// 初始化值 默认为 false
+  final bool? value;
+
+  /// bool 值改变回调
+  final ValueCallback<bool?>? onChanged;
+
+  /// decoration
+  final Decoration? decoration;
+
+  /// margin
+  final EdgeInsetsGeometry? margin;
+
+  /// padding
+  final EdgeInsetsGeometry? padding;
+
+  @override
+  State<CheckBox> createState() => _CheckBoxState();
+}
+
+class _CheckBoxState extends State<CheckBox> {
+  bool? value = false;
+
+  @override
+  void initState() {
+    super.initState();
+    value = widget.value;
+  }
+
+  @override
+  void didUpdateWidget(covariant CheckBox oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.value != widget.value ||
+        oldWidget.stateBuilder != widget.stateBuilder) {
+      value = widget.value;
+      if (mounted) setState(() {});
+    }
+  }
+
+  void changeState() {
+    if (widget.useNull) {
+      if (value == null) {
+        value = true;
+      } else {
+        value = value! ? false : null;
+      }
+    } else {
+      value = !value!;
+    }
+    setState(() {});
+    widget.onChanged?.call(value);
+  }
+
+  @override
+  Widget build(BuildContext context) => Universal(
+      decoration: widget.decoration,
+      margin: widget.margin,
+      padding: widget.padding,
+      onTap: changeState,
+      child: widget.stateBuilder(value));
 }

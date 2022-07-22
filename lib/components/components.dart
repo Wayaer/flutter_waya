@@ -11,6 +11,7 @@ export 'button/bubble_button.dart';
 export 'button/dropdown_button.dart';
 export 'button/elastic_button.dart';
 export 'check_box.dart';
+export 'check_box.dart';
 export 'counter.dart';
 export 'dotted_line.dart';
 export 'draggable_scrollbar.dart';
@@ -26,6 +27,7 @@ export 'screen_adaptation.dart';
 export 'swiper/indicator.dart';
 export 'swiper/pagination.dart';
 export 'swiper/swiper.dart';
+export 'switch.dart';
 
 class NoScrollBehavior extends ScrollBehavior {
   @override
