@@ -9,7 +9,7 @@ class StateComponentsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ExtendedScaffold(
         isScroll: true,
-        appBar: AppBarText('Components Demo'),
+        appBar: AppBarText('State Components Demo'),
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
         children: <Widget>[
           const Partition('ValueBuilder'),
@@ -65,7 +65,7 @@ class StateComponentsPage extends StatelessWidget {
                           })
                     ]);
               }),
-          const Partition('CheckBox'),
+          const Partition('CheckBox 自定义版'),
           Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: <
               Widget>[
             CheckBox(
