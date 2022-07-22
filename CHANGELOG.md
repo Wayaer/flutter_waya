@@ -1,3 +1,7 @@
+## 2.3.0
+
+* All Carousel names are changed to FlSwiper
+
 ## 2.2.0
 
 * Compatible with flutter 3.0.0
@@ -334,7 +338,7 @@
 * Modify `sendMessage(RefreshCompletedType.refresh)`
   to `sendRefreshType(RefreshCompletedType.refresh)`
 * Remove Ts
-* Remove `Carousel.pageView`
+* Remove `FlSwiper.pageView`
 * ShowToast add async callback
 
 ## 1.5.0

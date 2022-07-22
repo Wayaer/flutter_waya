@@ -70,9 +70,9 @@ class _AppState extends State<_App> {
     - `LiquidButton()` 流体按钮
     - `ElasticButton()` 弹性按钮
 
-- [carousel](https://github.com/Wayaer/flutter_waya/tree/main/lib/components/carousel)
+- [swiper](https://github.com/Wayaer/flutter_waya/tree/main/lib/components/swiper)
     - `Indicator()` 指示器
-    - `Carousel()` 轮播图
+    - `FlSwiper()` 轮播图
 
 - [progress](https://github.com/Wayaer/flutter_waya/tree/main/lib/components/progress)
     - `LiquidProgress()` 流体progress

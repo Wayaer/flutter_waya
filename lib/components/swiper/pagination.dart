@@ -3,34 +3,34 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-enum CarouselEvent { next, previous, start, stop }
+enum FlSwiperEvent { next, previous, start, stop }
 
-class CarouselController extends ChangeNotifier {
+class FlSwiperController extends ChangeNotifier {
   late Completer<dynamic> _completer;
 
   int index = 0;
   bool animation = false;
-  late CarouselEvent event;
+  late FlSwiperEvent event;
 
   bool autoPlay = false;
 
   /// 开始自动播放
   void startAutoPlay() {
-    event = CarouselEvent.start;
+    event = FlSwiperEvent.start;
     autoPlay = true;
     notifyListeners();
   }
 
   /// 停止自动播放
   void stopAutoPlay() {
-    event = CarouselEvent.stop;
+    event = FlSwiperEvent.stop;
     autoPlay = false;
     notifyListeners();
   }
 
   /// 下一页
   Future<void> next({bool animation = true}) {
-    event = CarouselEvent.next;
+    event = FlSwiperEvent.next;
     this.animation = animation;
     _completer = Completer<dynamic>();
     notifyListeners();
@@ -39,7 +39,7 @@ class CarouselController extends ChangeNotifier {
 
   /// 上一页
   Future<void> previous({bool animation = true}) {
-    event = CarouselEvent.previous;
+    event = FlSwiperEvent.previous;
     this.animation = animation;
     _completer = Completer<dynamic>();
     notifyListeners();
@@ -47,8 +47,8 @@ class CarouselController extends ChangeNotifier {
   }
 }
 
-class CarouselPluginConfig {
-  const CarouselPluginConfig({
+class FlSwiperPluginConfig {
+  const FlSwiperPluginConfig({
     int? activeIndex,
     this.controller,
     int? itemCount,
@@ -62,16 +62,16 @@ class CarouselPluginConfig {
   final int itemCount;
   final Axis scrollDirection;
   final bool loop;
-  final CarouselController? controller;
+  final FlSwiperController? controller;
 }
 
-abstract class CarouselPlugin {
-  const CarouselPlugin();
+abstract class FlSwiperPlugin {
+  const FlSwiperPlugin();
 
-  Widget build(BuildContext context, CarouselPluginConfig config);
+  Widget build(BuildContext context, FlSwiperPluginConfig config);
 }
 
-class ArrowPagination extends CarouselPlugin {
+class ArrowPagination extends FlSwiperPlugin {
   const ArrowPagination(
       {this.iconPrevious = Icons.arrow_back_ios,
       this.iconNext = Icons.arrow_forward_ios,
@@ -97,7 +97,7 @@ class ArrowPagination extends CarouselPlugin {
   /// 控制按钮颜色
   final Color? color;
 
-  /// if set loop=false on Carousel, this color will be used when carousel goto the last slide.
+  /// if set loop=false on FlSwiper, this color will be used when swiper goto the last slide.
   /// The theme's [ThemeData.disabledColor] by default.
   final Color? disableColor;
 
@@ -106,7 +106,7 @@ class ArrowPagination extends CarouselPlugin {
 
   final Key? key;
 
-  Widget buildButton(CarouselPluginConfig config, Color color,
+  Widget buildButton(FlSwiperPluginConfig config, Color color,
           IconData iconData, int quarterTurns, bool previous) =>
       Universal(
           behavior: HitTestBehavior.opaque,
@@ -122,7 +122,7 @@ class ArrowPagination extends CarouselPlugin {
                   color: color)));
 
   @override
-  Widget build(BuildContext context, CarouselPluginConfig config) {
+  Widget build(BuildContext context, FlSwiperPluginConfig config) {
     final ThemeData themeData = Theme.of(context);
     final Color color =
         this.color ?? themeData.iconTheme.color ?? themeData.primaryColor;
@@ -152,7 +152,7 @@ class ArrowPagination extends CarouselPlugin {
 }
 
 /// 底部指示器
-class FractionPagination extends CarouselPlugin {
+class FractionPagination extends FlSwiperPlugin {
   const FractionPagination(
       {this.color,
       this.fontSize = 20.0,
@@ -175,7 +175,7 @@ class FractionPagination extends CarouselPlugin {
   final Key? key;
 
   @override
-  Widget build(BuildContext context, CarouselPluginConfig config) {
+  Widget build(BuildContext context, FlSwiperPluginConfig config) {
     final ThemeData themeData = Theme.of(context);
     final Color activeColor = this.activeColor ?? themeData.primaryColor;
     final Color color = this.color ?? themeData.scaffoldBackgroundColor;
@@ -194,8 +194,8 @@ class FractionPagination extends CarouselPlugin {
 }
 
 /// 底部指示器
-class DotCarouselPagination extends CarouselPlugin {
-  const DotCarouselPagination(
+class DotFlSwiperPagination extends FlSwiperPlugin {
+  const DotFlSwiperPagination(
       {this.activeColor,
       this.color,
       this.key,
@@ -221,9 +221,9 @@ class DotCarouselPagination extends CarouselPlugin {
   final Key? key;
 
   @override
-  Widget build(BuildContext context, CarouselPluginConfig config) {
+  Widget build(BuildContext context, FlSwiperPluginConfig config) {
     if (config.itemCount > 20) {
-      log('The itemCount is too big, we suggest use FractionPaginationBuilder instead of DotCarouselPaginationBuilder in this sitituation');
+      log('The itemCount is too big, we suggest use FractionPaginationBuilder instead of DotFlSwiperPaginationBuilder in this sitituation');
     }
     Color? activeColor = this.activeColor;
     Color? color = this.color;
@@ -254,12 +254,12 @@ class DotCarouselPagination extends CarouselPlugin {
 }
 
 /// 底部指示器组件
-class CarouselPagination extends CarouselPlugin {
-  const CarouselPagination(
+class FlSwiperPagination extends FlSwiperPlugin {
+  const FlSwiperPagination(
       {this.alignment,
       this.key,
       this.margin = const EdgeInsets.all(10.0),
-      this.builder = const DotCarouselPagination()});
+      this.builder = const DotFlSwiperPagination()});
 
   /// Alignment.bottomCenter by default when scrollDirection== Axis.horizontal
   /// Alignment.centerRight by default when scrollDirection== Axis.vertical
@@ -269,12 +269,12 @@ class CarouselPagination extends CarouselPlugin {
   final EdgeInsetsGeometry margin;
 
   /// Build the wide
-  final CarouselPlugin builder;
+  final FlSwiperPlugin builder;
 
   final Key? key;
 
   @override
-  Widget build(BuildContext context, CarouselPluginConfig config) {
+  Widget build(BuildContext context, FlSwiperPluginConfig config) {
     final Alignment alignment = this.alignment ??
         (config.scrollDirection == Axis.horizontal
             ? Alignment.bottomCenter
@@ -287,15 +287,15 @@ class CarouselPagination extends CarouselPlugin {
   }
 }
 
-typedef CarouselPaginationBuilder = Widget Function(
-    BuildContext context, CarouselPluginConfig config);
+typedef FlSwiperPaginationBuilder = Widget Function(
+    BuildContext context, FlSwiperPluginConfig config);
 
-class CarouselCustomPagination extends CarouselPlugin {
-  CarouselCustomPagination({required this.builder});
+class FlSwiperCustomPagination extends FlSwiperPlugin {
+  FlSwiperCustomPagination({required this.builder});
 
-  final CarouselPaginationBuilder builder;
+  final FlSwiperPaginationBuilder builder;
 
   @override
-  Widget build(BuildContext context, CarouselPluginConfig config) =>
+  Widget build(BuildContext context, FlSwiperPluginConfig config) =>
       builder(context, config);
 }

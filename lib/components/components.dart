@@ -10,9 +10,6 @@ export 'builder.dart';
 export 'button/bubble_button.dart';
 export 'button/dropdown_button.dart';
 export 'button/elastic_button.dart';
-export 'carousel/carousel.dart';
-export 'carousel/indicator.dart';
-export 'carousel/pagination.dart';
 export 'check_box.dart';
 export 'counter.dart';
 export 'dotted_line.dart';
@@ -26,6 +23,9 @@ export 'progress/progress.dart';
 export 'progress/wave.dart';
 export 'refresh/simple_refresh.dart';
 export 'screen_adaptation.dart';
+export 'swiper/indicator.dart';
+export 'swiper/pagination.dart';
+export 'swiper/swiper.dart';
 
 class NoScrollBehavior extends ScrollBehavior {
   @override

@@ -1,6 +1,5 @@
 import 'package:app/module/anchor_scroll_builder_page.dart';
 import 'package:app/module/button_page.dart';
-import 'package:app/module/carousel_page.dart';
 import 'package:app/module/components_page.dart';
 import 'package:app/module/dio_page.dart';
 import 'package:app/module/extension_page.dart';
@@ -12,6 +11,7 @@ import 'package:app/module/progress_page.dart';
 import 'package:app/module/refresh_page.dart';
 import 'package:app/module/scroll_list_page.dart';
 import 'package:app/module/scroll_page.dart';
+import 'package:app/module/swiper_page.dart';
 import 'package:app/module/universal_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_curiosity/flutter_curiosity.dart';
@@ -128,7 +128,7 @@ class _Home extends StatelessWidget {
               ElevatedText('Button', onTap: () => push(const ButtonPage())),
               ElevatedText('PopupWindows',
                   onTap: () => push(const PopupWindowsPage())),
-              ElevatedText('Carousel', onTap: () => push(const CarouselPage())),
+              ElevatedText('FlSwiper', onTap: () => push(const FlSwiperPage())),
               ElevatedText('Progress', onTap: () => push(const ProgressPage())),
               ElevatedText('Gesture', onTap: () => push(const GesturePage())),
               ElevatedText('Universal',

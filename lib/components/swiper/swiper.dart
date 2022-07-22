@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-typedef CarouselOnTap = void Function(int index);
+typedef FlSwiperOnTap = void Function(int index);
 
 /// Default auto play transition duration
 const Duration kDefaultAutoPlayTransitionDuration = Duration(milliseconds: 400);
@@ -11,18 +11,18 @@ const Duration kDefaultAutoPlayTransitionDuration = Duration(milliseconds: 400);
 /// default auto play Duration
 const Duration kDefaultAutoPlayDelay = Duration(seconds: 3);
 
-enum CarouselLayout { stack, tinder }
+enum FlSwiperLayout { stack, tinder }
 
-class Carousel extends StatefulWidget {
-  const Carousel.builder({
+class FlSwiper extends StatefulWidget {
+  const FlSwiper.builder({
     Key? key,
     required this.itemBuilder,
     required this.itemCount,
     this.autoPlay = true,
-    this.layout = CarouselLayout.stack,
+    this.layout = FlSwiperLayout.stack,
     this.duration = kDefaultAutoPlayDelay,
     this.transitionDuration = kDefaultAutoPlayTransitionDuration,
-    this.pagination = const <CarouselPlugin>[],
+    this.pagination = const <FlSwiperPlugin>[],
     this.onChanged,
     this.index,
     this.onTap,
@@ -70,36 +70,36 @@ class Carousel extends StatefulWidget {
   final bool loop;
 
   /// Index number of initial slide.
-  /// If not set , the `Carousel` is 'uncontrolled', which means manage index by itself
-  /// If set , the `Carousel` is 'controlled', which means the index is fully managed by parent widget.
+  /// If not set , the `FlSwiper` is 'uncontrolled', which means manage index by itself
+  /// If set , the `FlSwiper` is 'controlled', which means the index is fully managed by parent widget.
   /// 初始的时候下标位置
   final int? index;
 
   /// Called when tap
   /// 当用户点击某个轮播的时候调用
-  final CarouselOnTap? onTap;
+  final FlSwiperOnTap? onTap;
 
   /// other plugins, you can custom your own plugin
-  final List<CarouselPlugin> pagination;
+  final List<FlSwiperPlugin> pagination;
 
   /// 控制器
-  final CarouselController? controller;
+  final FlSwiperController? controller;
 
   /// Build in layouts
-  final CarouselLayout layout;
+  final FlSwiperLayout layout;
 
   @override
-  State<StatefulWidget> createState() => _CarouselState();
+  State<StatefulWidget> createState() => _FlSwiperState();
 }
 
-abstract class _CarouselTimerMixin extends State<Carousel> {
+abstract class _FlSwiperTimerMixin extends State<FlSwiper> {
   Timer? _timer;
 
-  late CarouselController _controller;
+  late FlSwiperController _controller;
 
   @override
   void initState() {
-    _controller = widget.controller ?? CarouselController();
+    _controller = widget.controller ?? FlSwiperController();
     _controller.addListener(_onController);
     _handleAutoPlay();
     super.initState();
@@ -107,15 +107,15 @@ abstract class _CarouselTimerMixin extends State<Carousel> {
 
   void _onController() {
     switch (_controller.event) {
-      case CarouselEvent.start:
+      case FlSwiperEvent.start:
         if (_timer == null) _startAutoPlay();
         break;
-      case CarouselEvent.stop:
+      case FlSwiperEvent.stop:
         if (_timer != null) _stopAutoPlay();
         break;
-      case CarouselEvent.next:
+      case FlSwiperEvent.next:
         break;
-      case CarouselEvent.previous:
+      case FlSwiperEvent.previous:
         break;
     }
   }
@@ -127,7 +127,7 @@ abstract class _CarouselTimerMixin extends State<Carousel> {
   }
 
   @override
-  void didUpdateWidget(Carousel oldWidget) {
+  void didUpdateWidget(FlSwiper oldWidget) {
     if (_controller != oldWidget.controller && oldWidget.controller != null) {
       oldWidget.controller!.removeListener(_onController);
       _controller = oldWidget.controller!;
@@ -157,7 +157,7 @@ abstract class _CarouselTimerMixin extends State<Carousel> {
   }
 }
 
-class _CarouselState extends _CarouselTimerMixin {
+class _FlSwiperState extends _FlSwiperTimerMixin {
   late int _activeIndex;
 
   @override
@@ -167,21 +167,21 @@ class _CarouselState extends _CarouselTimerMixin {
   }
 
   @override
-  void didUpdateWidget(Carousel oldWidget) {
+  void didUpdateWidget(FlSwiper oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.index != null && widget.index != _activeIndex) {
       _activeIndex = widget.index!;
     }
   }
 
-  Widget get buildCarousel {
+  Widget get buildFlSwiper {
     final IndexedWidgetBuilder itemBuilder = widget.onTap == null
         ? widget.itemBuilder
         : (BuildContext context, int index) => GestureDetector(
             behavior: HitTestBehavior.opaque,
             onTap: () => widget.onTap!(index),
             child: widget.itemBuilder(context, index));
-    return _SubCarousel(
+    return _SubFlSwiper(
         loop: widget.loop,
         layout: widget.layout,
         itemWidth: widget.itemWidth,
@@ -202,12 +202,12 @@ class _CarouselState extends _CarouselTimerMixin {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.pagination.isEmpty) return buildCarousel;
-    final List<Widget> children = <Widget>[buildCarousel];
-    widget.pagination.builder((CarouselPlugin plugin) {
+    if (widget.pagination.isEmpty) return buildFlSwiper;
+    final List<Widget> children = <Widget>[buildFlSwiper];
+    widget.pagination.builder((FlSwiperPlugin plugin) {
       children.add(plugin.build(
           context,
-          CarouselPluginConfig(
+          FlSwiperPluginConfig(
               itemCount: widget.itemCount,
               activeIndex: _activeIndex,
               scrollDirection: widget.scrollDirection,
@@ -218,8 +218,8 @@ class _CarouselState extends _CarouselTimerMixin {
   }
 }
 
-class _SubCarousel extends StatefulWidget {
-  const _SubCarousel(
+class _SubFlSwiper extends StatefulWidget {
+  const _SubFlSwiper(
       {Key? key,
       this.loop = false,
       required this.itemHeight,
@@ -232,25 +232,25 @@ class _SubCarousel extends StatefulWidget {
       this.itemCount = 0,
       this.scrollDirection = Axis.horizontal,
       this.onChanged,
-      this.layout = CarouselLayout.tinder})
+      this.layout = FlSwiperLayout.tinder})
       : super(key: key);
 
   final IndexedWidgetBuilder? itemBuilder;
   final int itemCount;
   final int index;
   final ValueChanged<int>? onChanged;
-  final CarouselController? controller;
+  final FlSwiperController? controller;
   final Duration duration;
   final Curve? curve;
   final double itemWidth;
   final double itemHeight;
   final bool loop;
   final Axis scrollDirection;
-  final CarouselLayout layout;
+  final FlSwiperLayout layout;
 
   @override
   State<StatefulWidget> createState() =>
-      layout == CarouselLayout.tinder ? _TinderState() : _StackState();
+      layout == FlSwiperLayout.tinder ? _TinderState() : _StackState();
 
   int getCorrectIndex(int indexNeedsFix) {
     if (itemCount == 0) return 0;
@@ -260,7 +260,7 @@ class _SubCarousel extends StatefulWidget {
   }
 }
 
-class _TinderState extends _LayoutState<_SubCarousel> {
+class _TinderState extends _LayoutState<_SubFlSwiper> {
   late List<double> scales;
   late List<double> offsetsX;
   late List<double> offsetsY;
@@ -271,7 +271,7 @@ class _TinderState extends _LayoutState<_SubCarousel> {
       widget.itemHeight - widget.itemHeight * scale;
 
   @override
-  void didUpdateWidget(_SubCarousel oldWidget) {
+  void didUpdateWidget(_SubFlSwiper oldWidget) {
     _updateValues();
     super.didUpdateWidget(oldWidget);
   }
@@ -289,11 +289,11 @@ class _TinderState extends _LayoutState<_SubCarousel> {
 
   void _updateValues() {
     if (widget.scrollDirection == Axis.horizontal) {
-      offsetsX = <double>[0.0, 0.0, 0.0, 0.0, _carouselWidth, _carouselWidth];
+      offsetsX = <double>[0.0, 0.0, 0.0, 0.0, _swiperWidth, _swiperWidth];
       offsetsY = <double>[0.0, 0.0, -5.0, -10.0, -15.0, -20.0];
     } else {
       offsetsX = <double>[0.0, 0.0, 5.0, 10.0, 15.0, 20.0];
-      offsetsY = <double>[0.0, 0.0, 0.0, 0.0, _carouselHeight, _carouselHeight];
+      offsetsY = <double>[0.0, 0.0, 0.0, 0.0, _swiperHeight, _swiperHeight];
     }
   }
 
@@ -338,35 +338,29 @@ double _getValue(List<double> values, double animationValue, int index) {
   return s;
 }
 
-class _StackState extends _LayoutState<_SubCarousel> {
+class _StackState extends _LayoutState<_SubFlSwiper> {
   late List<double> scales;
   late List<double> offsets;
   late List<double> opacity;
 
   void _updateValues() {
     if (widget.scrollDirection == Axis.horizontal) {
-      final double space = (_carouselWidth - widget.itemWidth) / 2;
-      offsets = <double>[
-        -space,
-        -space / 3 * 2,
-        -space / 3,
-        0.0,
-        _carouselWidth
-      ];
+      final double space = (_swiperWidth - widget.itemWidth) / 2;
+      offsets = <double>[-space, -space / 3 * 2, -space / 3, 0.0, _swiperWidth];
     } else {
-      final double space = (_carouselHeight - widget.itemHeight) / 2;
+      final double space = (_swiperHeight - widget.itemHeight) / 2;
       offsets = <double>[
         -space,
         -space / 3 * 2,
         -space / 3,
         0.0,
-        _carouselHeight
+        _swiperHeight
       ];
     }
   }
 
   @override
-  void didUpdateWidget(_SubCarousel oldWidget) {
+  void didUpdateWidget(_SubFlSwiper oldWidget) {
     _updateValues();
     super.didUpdateWidget(oldWidget);
   }
@@ -412,10 +406,10 @@ class _StackState extends _LayoutState<_SubCarousel> {
 }
 
 /// _LayoutState
-abstract class _LayoutState<T extends _SubCarousel> extends State<T>
+abstract class _LayoutState<T extends _SubFlSwiper> extends State<T>
     with SingleTickerProviderStateMixin {
-  late double _carouselWidth;
-  late double _carouselHeight;
+  late double _swiperWidth;
+  late double _swiperHeight;
   late Animation<double> _animation;
   late AnimationController _animationController;
   late int _startIndex;
@@ -442,8 +436,8 @@ abstract class _LayoutState<T extends _SubCarousel> extends State<T>
   void afterRender() {
     final RenderObject renderObject = context.findRenderObject()!;
     final Size size = renderObject.paintBounds.size;
-    _carouselWidth = size.width;
-    _carouselHeight = size.height;
+    _swiperWidth = size.width;
+    _swiperHeight = size.height;
     if (mounted) setState(() {});
   }
 
@@ -542,18 +536,18 @@ abstract class _LayoutState<T extends _SubCarousel> extends State<T>
 
   void _onController() {
     switch (widget.controller!.event) {
-      case CarouselEvent.previous:
+      case FlSwiperEvent.previous:
         final int prevIndex = _prevIndex();
         if (prevIndex == _currentIndex) return;
         _move(1.0, nextIndex: prevIndex);
         break;
-      case CarouselEvent.next:
+      case FlSwiperEvent.next:
         final int nextIndex = _nextIndex();
         if (nextIndex == _currentIndex) return;
         _move(0.0, nextIndex: nextIndex);
         break;
-      case CarouselEvent.start:
-      case CarouselEvent.stop:
+      case FlSwiperEvent.start:
+      case FlSwiperEvent.stop:
         break;
     }
   }
@@ -589,7 +583,7 @@ abstract class _LayoutState<T extends _SubCarousel> extends State<T>
                     ? details.globalPosition.dx
                     : details.globalPosition.dy) -
                 _currentPos) /
-            _carouselWidth /
+            _swiperWidth /
             2;
     if (!widget.loop) {
       if (_currentIndex >= widget.itemCount - 1) {

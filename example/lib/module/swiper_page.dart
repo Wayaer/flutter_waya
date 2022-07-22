@@ -2,15 +2,15 @@ import 'package:app/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-class CarouselPage extends StatefulWidget {
-  const CarouselPage({Key? key}) : super(key: key);
+class FlSwiperPage extends StatefulWidget {
+  const FlSwiperPage({Key? key}) : super(key: key);
 
   @override
-  State<CarouselPage> createState() => _CarouselPageState();
+  State<FlSwiperPage> createState() => _FlSwiperPageState();
 }
 
-class _CarouselPageState extends State<CarouselPage> {
-  CarouselController controller = CarouselController();
+class _FlSwiperPageState extends State<FlSwiperPage> {
+  FlSwiperController controller = FlSwiperController();
   PageController pageController = PageController();
   ValueNotifier<double> position = ValueNotifier(0);
   List<Color> list = <Color>[
@@ -36,22 +36,22 @@ class _CarouselPageState extends State<CarouselPage> {
   Widget build(BuildContext context) {
     return ExtendedScaffold(
         isScroll: true,
-        appBar: AppBarText('Carousel Demo'),
+        appBar: AppBarText('FlSwiper Demo'),
         children: <Widget>[
           SizedBox(
               height: 200,
               width: double.infinity,
-              child: Carousel.builder(
+              child: FlSwiper.builder(
                   autoPlay: true,
                   duration: const Duration(seconds: 3),
-                  pagination: const <CarouselPagination>[
-                    CarouselPagination(
+                  pagination: const <FlSwiperPagination>[
+                    FlSwiperPagination(
                         alignment: Alignment.bottomCenter,
-                        builder: DotCarouselPagination()),
-                    CarouselPagination(
+                        builder: DotFlSwiperPagination()),
+                    FlSwiperPagination(
                         alignment: Alignment.bottomCenter,
                         builder: ArrowPagination()),
-                    CarouselPagination(
+                    FlSwiperPagination(
                         alignment: Alignment.center,
                         builder: FractionPagination()),
                   ],
@@ -62,7 +62,7 @@ class _CarouselPageState extends State<CarouselPage> {
                         duration: const Duration(milliseconds: 300),
                         curve: Curves.linear);
                   },
-                  layout: CarouselLayout.tinder,
+                  layout: FlSwiperLayout.tinder,
                   itemHeight: double.infinity,
                   itemBuilder: (BuildContext context, int index) => Container(
                       alignment: Alignment.center, color: list[index]),
@@ -133,23 +133,23 @@ class _CarouselPageState extends State<CarouselPage> {
           SizedBox(
               height: 200,
               width: double.infinity,
-              child: Carousel.builder(
+              child: FlSwiper.builder(
                   autoPlay: true,
                   duration: const Duration(seconds: 3),
-                  pagination: const <CarouselPagination>[
-                    CarouselPagination(
+                  pagination: const <FlSwiperPagination>[
+                    FlSwiperPagination(
                         alignment: Alignment.bottomCenter,
-                        builder: DotCarouselPagination()),
-                    CarouselPagination(
+                        builder: DotFlSwiperPagination()),
+                    FlSwiperPagination(
                         alignment: Alignment.bottomCenter,
                         builder: ArrowPagination()),
-                    CarouselPagination(
+                    FlSwiperPagination(
                         alignment: Alignment.center,
                         builder: FractionPagination()),
                   ],
                   controller: controller,
                   itemWidth: 340,
-                  layout: CarouselLayout.stack,
+                  layout: FlSwiperLayout.stack,
                   itemHeight: double.infinity,
                   itemBuilder: (BuildContext context, int index) => Container(
                       alignment: Alignment.center, color: list[index]),
