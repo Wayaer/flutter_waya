@@ -18,25 +18,25 @@ class RText extends RichText {
     TextStyle? style,
 
     /// [texts]内样式
-    List<TextStyle>? styles,
+    List<TextStyle> styles = const <TextStyle>[],
 
     /// 所有[text]、[texts]手势
     GestureRecognizer? recognizer,
 
     /// [texts]内手势
-    List<GestureRecognizer>? recognizers,
+    List<GestureRecognizer?> recognizers = const <GestureRecognizer?>[],
 
     /// 所有[text]、[texts]语义 - 语义描述标签，相当于此text的别名
     String? semanticsLabel,
 
     /// [texts]内语义 - 语义描述标签，相当于此text的别名
-    List<String>? semanticsLabels,
+    List<String> semanticsLabels = const <String>[],
 
     /// StrutStyle,影响Text在垂直方向上的布局
     StrutStyle? strutStyle,
 
     /// TextAlign,内容对齐方式
-    TextAlign? textAlign,
+    TextAlign textAlign = TextAlign.center,
 
     /// TextDirection,内容的走向方式
     TextDirection? textDirection,
@@ -45,19 +45,19 @@ class RText extends RichText {
     Locale? locale,
 
     /// bool 文本是否应在软换行时断行
-    bool? softWrap,
+    bool softWrap = true,
 
     /// TextOverflow，内容溢出时的处理方式
-    TextOverflow? overflow,
+    TextOverflow overflow = TextOverflow.clip,
 
     /// double 设置文字的放大缩小，例如，fontSize=10，this.textScaleFactor=2.0，最终得到的文字大小为10*2.0
-    double? textScaleFactor,
+    double textScaleFactor = 1.0,
 
     /// int 设置文字的最大展示行数
     int? maxLines,
 
     /// TextWidthBasis 测量一行或多行文本宽度
-    TextWidthBasis? textWidthBasis,
+    TextWidthBasis textWidthBasis = TextWidthBasis.parent,
     ui.TextHeightBehavior? textHeightBehavior,
   }) : super(
             text: texts == null || texts.isEmpty
@@ -70,17 +70,17 @@ class RText extends RichText {
                     text: text ?? '',
                     texts: texts,
                     style: style,
-                    styles: styles ?? <TextStyle>[],
+                    styles: styles,
                     recognizer: recognizer,
-                    recognizers: recognizers ?? <GestureRecognizer>[],
+                    recognizers: recognizers,
                     semanticsLabel: semanticsLabel,
-                    semanticsLabels: semanticsLabels ?? <String>[]),
+                    semanticsLabels: semanticsLabels),
             key: key,
-            textAlign: textAlign ?? TextAlign.center,
-            softWrap: softWrap ?? true,
-            overflow: overflow ?? TextOverflow.clip,
-            textWidthBasis: textWidthBasis ?? TextWidthBasis.parent,
-            textScaleFactor: textScaleFactor ?? 1.0,
+            textAlign: textAlign,
+            softWrap: softWrap,
+            overflow: overflow,
+            textWidthBasis: textWidthBasis,
+            textScaleFactor: textScaleFactor,
             textDirection: textDirection,
             maxLines: maxLines,
             locale: locale,
@@ -104,7 +104,7 @@ class RText extends RichText {
     String? text,
     TextStyle? style,
     GestureRecognizer? recognizer,
-    required List<GestureRecognizer> recognizers,
+    required List<GestureRecognizer?> recognizers,
     String? semanticsLabel,
     required List<String> semanticsLabels,
   }) {
