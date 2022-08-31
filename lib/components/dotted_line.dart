@@ -77,30 +77,27 @@ class DottedLinePainter extends CustomPainter {
 }
 
 class DottedLineBorder extends BoxBorder {
-  const DottedLineBorder({
-    this.top = BorderSide.none,
-    this.right = BorderSide.none,
-    this.bottom = BorderSide.none,
-    this.left = BorderSide.none,
-    this.length = 5,
-    this.space = 3,
-  });
+  const DottedLineBorder(
+      {this.top = BorderSide.none,
+      this.right = BorderSide.none,
+      this.bottom = BorderSide.none,
+      this.left = BorderSide.none,
+      this.length = 5,
+      this.space = 3});
 
-  const DottedLineBorder.fromBorderSide(
-    BorderSide side, {
-    this.length = 5,
-    this.space = 3,
-  })  : top = side,
+  const DottedLineBorder.fromBorderSide(BorderSide side,
+      {this.length = 5, this.space = 3})
+      : top = side,
         right = side,
         bottom = side,
         left = side;
 
-  const DottedLineBorder.symmetric({
-    BorderSide vertical = BorderSide.none,
-    BorderSide horizontal = BorderSide.none,
-    this.length = 5,
-    this.space = 3,
-  })  : left = vertical,
+  const DottedLineBorder.symmetric(
+      {BorderSide vertical = BorderSide.none,
+      BorderSide horizontal = BorderSide.none,
+      this.length = 5,
+      this.space = 3})
+      : left = vertical,
         top = horizontal,
         right = vertical,
         bottom = horizontal;

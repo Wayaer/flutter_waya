@@ -919,9 +919,9 @@ class SimpleButton extends StatelessWidget {
     this.alignment,
     this.maxLines,
     this.child,
-    this.withOpacity,
-    this.useCache,
-    this.scaleCoefficient,
+    this.withOpacity = false,
+    this.useCache = true,
+    this.scaleCoefficient = 0.95,
     this.focusColor,
     this.hoverColor,
     this.highlightColor,
@@ -946,10 +946,10 @@ class SimpleButton extends StatelessWidget {
   final bool visible;
   final String? heroTag;
   final BoxConstraints? constraints;
-  final bool? withOpacity;
+  final bool withOpacity;
   final bool isElastic;
-  final bool? useCache;
-  final double? scaleCoefficient;
+  final bool useCache;
+  final double scaleCoefficient;
 
   /// 是否添加水波纹效果
   final bool addInkWell;

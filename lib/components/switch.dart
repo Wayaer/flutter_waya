@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
@@ -431,4 +432,127 @@ class SwitchState extends StatelessWidget {
                 });
         }
       });
+}
+
+/// 官方版增加状态
+class CupertinoSwitchState extends StatelessWidget {
+  const CupertinoSwitchState(
+      {Key? key,
+      required this.value,
+      this.onChanged,
+      this.onWaitChanged,
+      this.activeColor,
+      this.trackColor,
+      this.thumbColor,
+      this.dragStartBehavior = DragStartBehavior.start,
+      this.initState,
+      this.dispose,
+      this.didChangeDependencies,
+      this.didUpdateWidget})
+      : super(key: key);
+
+  /// Whether this switch is on or off.
+  ///
+  /// Must not be null.
+  final bool value;
+
+  /// Called when the user toggles with switch on or off.
+  ///
+  /// The switch passes the new value to the callback but does not actually
+  /// change state until the parent widget rebuilds the switch with the new
+  /// value.
+  ///
+  /// If null, the switch will be displayed as disabled, which has a reduced opacity.
+  ///
+  /// The callback provided to onChanged should update the state of the parent
+  /// [StatefulWidget] using the [State.setState] method, so that the parent
+  /// gets rebuilt; for example:
+  ///
+  /// ```dart
+  /// CupertinoSwitch(
+  ///   value: _giveVerse,
+  ///   onChanged: (bool newValue) {
+  ///     setState(() {
+  ///       _giveVerse = newValue;
+  ///     });
+  ///   },
+  /// )
+  /// ```
+  final ValueChanged<bool>? onChanged;
+
+  final SwitchStateChanged? onWaitChanged;
+
+  /// The color to use when this switch is on.
+  ///
+  /// Defaults to [CupertinoColors.systemGreen] when null and ignores
+  /// the [CupertinoTheme] in accordance to native iOS behavior.
+  final Color? activeColor;
+
+  /// The color to use for the background when the switch is off.
+  ///
+  /// Defaults to [CupertinoColors.secondarySystemFill] when null.
+  final Color? trackColor;
+
+  /// The color to use for the thumb of the switch.
+  ///
+  /// Defaults to [CupertinoColors.white] when null.
+  final Color? thumbColor;
+
+  /// {@template flutter.cupertino.CupertinoSwitch.dragStartBehavior}
+  /// Determines the way that drag start behavior is handled.
+  ///
+  /// If set to [DragStartBehavior.start], the drag behavior used to move the
+  /// switch from on to off will begin at the position where the drag gesture won
+  /// the arena. If set to [DragStartBehavior.down] it will begin at the position
+  /// where a down event was first detected.
+  ///
+  /// In general, setting this to [DragStartBehavior.start] will make drag
+  /// animation smoother and setting it to [DragStartBehavior.down] will make
+  /// drag behavior feel slightly more reactive.
+  ///
+  /// By default, the drag start behavior is [DragStartBehavior.start].
+  ///
+  /// See also:
+  ///
+  ///  * [DragGestureRecognizer.dragStartBehavior], which gives an example for
+  ///    the different behaviors.
+  ///
+  /// {@endtemplate}
+  final DragStartBehavior dragStartBehavior;
+
+  /// initState
+  final ValueCallback<BuildContext>? initState;
+
+  /// dispose
+  final ValueCallback<BuildContext>? dispose;
+
+  /// didChangeDependencies
+  final ValueCallback<BuildContext>? didChangeDependencies;
+
+  /// didUpdateWidget
+  final ValueCallback<BuildContext>? didUpdateWidget;
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueBuilder<bool>(
+        initialValue: value,
+        initState: initState,
+        dispose: dispose,
+        didChangeDependencies: didChangeDependencies,
+        didUpdateWidget: didUpdateWidget,
+        builder: (_, bool? value, Function update) => CupertinoSwitch(
+            value: value!,
+            activeColor: activeColor,
+            trackColor: trackColor,
+            thumbColor: thumbColor,
+            dragStartBehavior: dragStartBehavior,
+            onChanged: (bool v) async {
+              onChanged?.call(v);
+              if (onWaitChanged != null) {
+                onWaitChanged!.call(v).then((result) => update(result));
+              } else {
+                update(v);
+              }
+            }));
+  }
 }

@@ -107,12 +107,24 @@ class StateComponentsPage extends StatelessWidget {
                       return value;
                     }),
               ]),
-          const Partition('SwitchState 官方版'),
+          const Partition('SwitchState 官方附加状态版本'),
           Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 SwitchState(value: true, onChanged: (bool? value) {}),
                 SwitchState.adaptive(
+                    value: true,
+                    onWaitChanged: (bool value) async {
+                      await 1.seconds.delayed();
+                      return value;
+                    }),
+              ]),
+          const Partition('CupertinoSwitchState 官方附加状态版本'),
+          Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                CupertinoSwitchState(value: true, onChanged: (bool? value) {}),
+                CupertinoSwitchState(
                     value: true,
                     onWaitChanged: (bool value) async {
                       await 1.seconds.delayed();

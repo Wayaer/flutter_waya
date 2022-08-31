@@ -1,6 +1,7 @@
 ## 2.3.2
 
 * Some code has been updated
+* Add `CupertinoSwitchState()`
 
 ## 2.3.1
 

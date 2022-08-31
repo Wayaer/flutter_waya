@@ -126,6 +126,7 @@ class ValueListenBuilder<T> extends StatefulWidget {
     this.deactivate,
     this.dispose,
   }) : super(key: key);
+
   final T? initialValue;
   final ValueCallback<BuildContext>? initState;
   final ValueCallback<BuildContext>? didChangeDependencies;

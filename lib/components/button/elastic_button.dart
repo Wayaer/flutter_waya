@@ -5,10 +5,10 @@ import 'package:flutter_waya/flutter_waya.dart';
 class ElasticButton extends StatefulWidget {
   const ElasticButton({
     Key? key,
-    bool? withOpacity,
-    bool? useCache,
-    Alignment? alignment,
-    double? scaleCoefficient,
+    this.withOpacity = false,
+    this.useCache = true,
+    this.alignment = Alignment.center,
+    this.scaleCoefficient = 0.95,
     this.child,
     this.onTapDown,
     this.onTapUp,
@@ -45,11 +45,7 @@ class ElasticButton extends StatefulWidget {
     this.onScaleStart,
     this.onScaleUpdate,
     this.onScaleEnd,
-  })  : withOpacity = withOpacity ?? false,
-        scaleCoefficient = scaleCoefficient ?? 0.95,
-        useCache = useCache ?? true,
-        alignment = alignment ?? Alignment.center,
-        super(key: key);
+  }) : super(key: key);
 
   final bool withOpacity;
 
