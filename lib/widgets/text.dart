@@ -169,7 +169,7 @@ class BText extends StatelessWidget {
       this.height,
       this.foreground,
       this.background,
-      this.decoration,
+      this.decoration = TextDecoration.none,
       this.decorationColor,
       this.decorationStyle,
       this.decorationThickness,
@@ -265,7 +265,7 @@ class BText extends StatelessWidget {
   /// [TextDecoration.underline] 下划线
   /// [TextDecoration.overline] 上划线
   /// [TextDecoration.lineThrough] 中间的线（删除线）
-  final TextDecoration? decoration;
+  final TextDecoration decoration;
 
   /// [decoration]划线的颜色
   final Color? decorationColor;
@@ -390,7 +390,7 @@ class BTextStyle extends TextStyle {
     /// [TextDecoration.underline] 下划线
     /// [TextDecoration.overline] 上划线
     /// [TextDecoration.lineThrough] 中间的线（删除线）
-    TextDecoration? decoration,
+    TextDecoration decoration = TextDecoration.none,
 
     /// [decoration]划线的颜色
     Color? decorationColor,
@@ -426,7 +426,7 @@ class BTextStyle extends TextStyle {
             background: background,
             shadows: shadows,
             fontFeatures: fontFeatures,
-            decoration: decoration ?? TextDecoration.none,
+            decoration: decoration,
             decorationColor: decorationColor,
             decorationStyle: decorationStyle,
             decorationThickness: decorationThickness,

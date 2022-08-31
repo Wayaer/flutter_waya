@@ -355,7 +355,7 @@ class PinBox extends StatefulWidget {
     this.hasFocusPinDecoration,
     this.textStyle,
     this.boxSize = const Size(40, 40),
-    this.spaces,
+    this.spaces = const <Widget>[],
     this.keyboardType,
     this.textFieldBuilder,
   }) : super(key: key);
@@ -410,7 +410,7 @@ class PinBox extends StatefulWidget {
   final Size boxSize;
 
   /// box 中间添加 东西
-  final List<Widget?>? spaces;
+  final List<Widget?> spaces;
 
   final TextInputType? keyboardType;
 
@@ -433,7 +433,7 @@ class _PinBoxState extends State<PinBox> {
   }
 
   void initialize() {
-    spaces = widget.spaces ?? <Widget?>[];
+    spaces = widget.spaces;
     focusNode = widget.focusNode ?? FocusNode();
   }
 
