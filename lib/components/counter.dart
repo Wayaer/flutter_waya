@@ -7,13 +7,13 @@ enum CountAnimationType { part, all }
 
 class CounterAnimation extends StatefulWidget {
   const CounterAnimation({
-    Key? key,
+    super.key,
     this.animationType = CountAnimationType.part,
     this.duration = const Duration(milliseconds: 500),
     required this.count,
     required this.countBuilder,
     this.onTap,
-  }) : super(key: key);
+  });
 
   final int count;
 

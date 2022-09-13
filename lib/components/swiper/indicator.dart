@@ -6,7 +6,7 @@ enum IndicatorType { none, slide, warm, color, scale, drop }
 /// 指示器
 class Indicator extends StatelessWidget {
   const Indicator(
-      {Key? key,
+      {super.key,
       required this.count,
       this.size = 20.0,
       this.space = 5.0,
@@ -17,8 +17,7 @@ class Indicator extends StatelessWidget {
       this.scale = 0.6,
       this.dropHeight = 20.0,
       required this.index,
-      required this.position})
-      : super(key: key);
+      required this.position});
 
   final int index;
 
@@ -88,9 +87,8 @@ class Indicator extends StatelessWidget {
 }
 
 class _WarmPainter extends IndicatorPainter {
-  _WarmPainter(Indicator widget, double page, int index, Paint paint,
-      Color activeColor, Color color)
-      : super(widget, page, index, paint, activeColor, color);
+  _WarmPainter(super.widget, super.page, super.index, super.paint,
+      super.activeColor, super.color);
 
   @override
   void draw(Canvas canvas, double space, double size, double radius) {
@@ -115,9 +113,8 @@ class _WarmPainter extends IndicatorPainter {
 }
 
 class _DropPainter extends IndicatorPainter {
-  _DropPainter(Indicator widget, double page, int index, Paint paint,
-      Color activeColor, Color color)
-      : super(widget, page, index, paint, activeColor, color);
+  _DropPainter(super.widget, super.page, super.index, super.paint,
+      super.activeColor, super.color);
 
   @override
   void draw(Canvas canvas, double space, double size, double radius) {
@@ -134,9 +131,8 @@ class _DropPainter extends IndicatorPainter {
 }
 
 class _NonePainter extends IndicatorPainter {
-  _NonePainter(Indicator widget, double page, int index, Paint paint,
-      Color activeColor, Color color)
-      : super(widget, page, index, paint, activeColor, color);
+  _NonePainter(super.widget, super.page, super.index, super.paint,
+      super.activeColor, super.color);
 
   @override
   void draw(Canvas canvas, double space, double size, double radius) {
@@ -154,9 +150,8 @@ class _NonePainter extends IndicatorPainter {
 }
 
 class _SlidePainter extends IndicatorPainter {
-  _SlidePainter(Indicator widget, double page, int index, Paint paint,
-      Color activeColor, Color color)
-      : super(widget, page, index, paint, activeColor, color);
+  _SlidePainter(super.widget, super.page, super.index, super.paint,
+      super.activeColor, super.color);
 
   @override
   void draw(Canvas canvas, double space, double size, double radius) =>
@@ -165,14 +160,8 @@ class _SlidePainter extends IndicatorPainter {
 }
 
 class _ScalePainter extends IndicatorPainter {
-  _ScalePainter(
-    Indicator widget,
-    double page,
-    int index,
-    Paint paint,
-    Color activeColor,
-    Color color,
-  ) : super(widget, page, index, paint, activeColor, color);
+  _ScalePainter(super.widget, super.page, super.index, super.paint,
+      super.activeColor, super.color);
 
   @override
   bool _shouldSkip(int i) {
@@ -216,9 +205,8 @@ class _ScalePainter extends IndicatorPainter {
 }
 
 class _ColorPainter extends IndicatorPainter {
-  _ColorPainter(Indicator widget, double page, int index, Paint paint,
-      Color activeColor, Color color)
-      : super(widget, page, index, paint, activeColor, color);
+  _ColorPainter(super.widget, super.page, super.index, super.paint,
+      super.activeColor, super.color);
 
   @override
   bool _shouldSkip(int i) {

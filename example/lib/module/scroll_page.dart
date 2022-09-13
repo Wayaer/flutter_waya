@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 class ScrollViewPage extends StatelessWidget {
-  const ScrollViewPage({Key? key}) : super(key: key);
+  const ScrollViewPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -67,24 +67,23 @@ class ScrollViewPage extends StatelessWidget {
 }
 
 class _RefreshScrollViewPage extends StatelessWidget {
-  const _RefreshScrollViewPage({Key? key}) : super(key: key);
+  const _RefreshScrollViewPage();
 
   @override
   Widget build(BuildContext context) => ExtendedScaffold(
-          body: RefreshScrollView(
-              padding: const EdgeInsets.all(10),
-              refreshConfig: RefreshConfig(onRefresh: () async {
-                await showToast('onRefresh');
-                sendRefreshType(EasyRefreshType.refreshSuccess);
-              }, onLoading: () async {
-                await showToast('onLoading');
-                await 2.seconds.delayed(() {
-                  sendRefreshType(EasyRefreshType.loadingSuccess);
-                });
-              }),
-              slivers: <Widget>[
-            const SliverAppBar(
-                title: BText('RefreshScrollView', color: Colors.white)),
+      appBar: AppBarText('RefreshScrollView'),
+      body: RefreshScrollView(
+          padding: const EdgeInsets.all(10),
+          refreshConfig: RefreshConfig(onRefresh: () async {
+            await showToast('onRefresh');
+            sendRefreshType(EasyRefreshType.refreshSuccess);
+          }, onLoading: () async {
+            await showToast('onLoading');
+            await 2.seconds.delayed(() {
+              sendRefreshType(EasyRefreshType.loadingSuccess);
+            });
+          }),
+          slivers: <Widget>[
             SliverListGrid(
                 itemCount: colors.length,
                 crossAxisFlex: true,
@@ -105,7 +104,7 @@ class _RefreshScrollViewPage extends StatelessWidget {
 }
 
 class _CustomScrollViewPage extends StatelessWidget {
-  const _CustomScrollViewPage({Key? key}) : super(key: key);
+  const _CustomScrollViewPage();
 
   @override
   Widget build(BuildContext context) => ExtendedScaffold(
@@ -124,8 +123,7 @@ class _CustomScrollViewPage extends StatelessWidget {
 }
 
 class _ExtendedScrollViewNestedPage extends StatelessWidget {
-  const _ExtendedScrollViewNestedPage(this.slivers, {Key? key})
-      : super(key: key);
+  const _ExtendedScrollViewNestedPage(this.slivers);
 
   final List<Widget> slivers;
 
@@ -154,7 +152,7 @@ class _ExtendedScrollViewNestedPage extends StatelessWidget {
 }
 
 class _ExtendedScrollViewPage extends StatelessWidget {
-  const _ExtendedScrollViewPage(this.slivers, {Key? key}) : super(key: key);
+  const _ExtendedScrollViewPage(this.slivers);
 
   final List<Widget> slivers;
 
@@ -172,8 +170,7 @@ class _ExtendedScrollViewPage extends StatelessWidget {
 
 class ColorEntry extends StatelessWidget {
   const ColorEntry(this.index, this.color,
-      {this.height = 80, this.width = 80, Key? key})
-      : super(key: key);
+      {this.height = 80, this.width = 80, super.key});
 
   final int index;
   final Color color;
@@ -191,8 +188,7 @@ class ColorEntry extends StatelessWidget {
 }
 
 class _DraggableScrollbar extends StatelessWidget {
-  const _DraggableScrollbar(this.scrollController, {Key? key})
-      : super(key: key);
+  const _DraggableScrollbar(this.scrollController);
 
   final ScrollController scrollController;
 

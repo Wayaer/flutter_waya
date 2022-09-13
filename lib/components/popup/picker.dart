@@ -95,44 +95,34 @@ class PickerOptions<T> {
 class PickerWheelOptions extends WheelOptions {
   const PickerWheelOptions({
     /// 高度
-    double itemHeight = 22,
+    super.itemExtent = 22,
 
     /// 半径大小,越大则越平面,越小则间距越大
-    double diameterRatio = 1.3,
+    super.diameterRatio = 1.3,
 
     /// 选中item偏移
-    double offAxisFraction = 0,
+    super.offAxisFraction = 0,
 
     /// 表示ListWheel水平偏离中心的程度  范围[0,0.01]
-    double perspective = 0.01,
+    super.perspective = 0.01,
 
     /// 是否启用放大
-    bool useMagnifier = true,
+    super.useMagnifier = true,
 
     /// 放大倍率
-    double magnification = 1.1,
+    super.magnification = 1.1,
 
     /// 上下间距默认为1 数越小 间距越大
-    double squeeze = 1,
+    super.squeeze = 1,
 
     /// 使用ios Cupertino 风格
-    bool isCupertino = true,
+    super.isCupertino = true,
 
     /// [isCupertino]=true生效
-    Color? backgroundColor,
-    ScrollPhysics physics = const FixedExtentScrollPhysics(),
+    super.backgroundColor,
+    super.physics = const FixedExtentScrollPhysics(),
     this.itemWidth,
-  }) : super(
-            physics: physics,
-            backgroundColor: backgroundColor,
-            itemExtent: itemHeight,
-            isCupertino: isCupertino,
-            diameterRatio: diameterRatio,
-            offAxisFraction: offAxisFraction,
-            perspective: perspective,
-            magnification: magnification,
-            useMagnifier: useMagnifier,
-            squeeze: squeeze);
+  });
 
   /// 不设置 [itemWidth] 默认均分
   final double? itemWidth;
@@ -168,8 +158,7 @@ class PickerWheelOptions extends WheelOptions {
 
 abstract class _PickerConfig<T> extends StatefulWidget {
   const _PickerConfig(
-      {Key? key, required this.options, required this.wheelOptions})
-      : super(key: key);
+      {super.key, required this.options, required this.wheelOptions});
 
   final PickerOptions<T> options;
   final PickerWheelOptions wheelOptions;
@@ -179,12 +168,12 @@ typedef PickerSubjectTapCallback<T> = T Function();
 
 class PickerSubject<T> extends StatelessWidget {
   const PickerSubject({
-    Key? key,
+    super.key,
     required this.options,
     required this.child,
     required this.sureTap,
     this.cancelTap,
-  }) : super(key: key);
+  });
 
   final PickerOptions<T> options;
   final Widget child;
@@ -225,19 +214,15 @@ class PickerSubject<T> extends StatelessWidget {
 
 class _PickerListWheel extends ListWheel {
   _PickerListWheel({
-    Key? key,
-    required PickerWheelOptions wheel,
-    FixedExtentScrollController? controller,
-    ListWheelChildDelegateType childDelegateType =
-        ListWheelChildDelegateType.builder,
     ValueChanged<int>? onChanged,
-    required int itemCount,
-    List<Widget>? children,
-    IndexedWidgetBuilder? itemBuilder,
-    ValueChanged<int>? onScrollEnd,
+    required super.itemCount,
+    required PickerWheelOptions wheel,
+    super.controller,
+    super.childDelegateType = ListWheelChildDelegateType.builder,
+    super.children,
+    super.itemBuilder,
+    super.onScrollEnd,
   }) : super(
-            key: key,
-            controller: controller,
             options: WheelOptions(
                 backgroundColor: wheel.backgroundColor,
                 isCupertino: wheel.isCupertino,
@@ -249,31 +234,19 @@ class _PickerListWheel extends ListWheel {
                 useMagnifier: wheel.useMagnifier,
                 squeeze: wheel.squeeze,
                 physics: wheel.physics,
-                onChanged: onChanged),
-            childDelegateType: childDelegateType,
-            children: children,
-            itemBuilder: itemBuilder,
-            itemCount: itemCount,
-            onScrollEnd: onScrollEnd);
+                onChanged: onChanged));
 }
 
 class _PickerListStateWheel extends ListStateWheel {
   _PickerListStateWheel({
-    Key? key,
-    required PickerWheelOptions wheel,
-    FixedExtentScrollController? controller,
-    ListWheelChildDelegateType childDelegateType =
-        ListWheelChildDelegateType.builder,
     ValueChanged<int>? onChanged,
-    required int itemCount,
-    List<Widget>? children,
-    IndexedWidgetBuilder? itemBuilder,
-    ValueChanged<int>? onScrollEnd,
-    int initialItem = 0,
+    required super.itemCount,
+    required PickerWheelOptions wheel,
+    super.itemBuilder,
+    super.onScrollEnd,
+    super.initialItem = 0,
   }) : super(
-            key: key,
-            initialItem: initialItem,
-            controller: controller,
+            childDelegateType: ListWheelChildDelegateType.builder,
             options: WheelOptions(
                 backgroundColor: wheel.backgroundColor,
                 isCupertino: wheel.isCupertino,
@@ -285,25 +258,19 @@ class _PickerListStateWheel extends ListStateWheel {
                 useMagnifier: wheel.useMagnifier,
                 squeeze: wheel.squeeze,
                 physics: wheel.physics,
-                onChanged: onChanged),
-            childDelegateType: childDelegateType,
-            children: children,
-            itemBuilder: itemBuilder,
-            itemCount: itemCount,
-            onScrollEnd: onScrollEnd);
+                onChanged: onChanged));
 }
 
 /// 省市区三级联动
 class AreaPicker extends _PickerConfig<String> {
   AreaPicker({
-    Key? key,
+    super.key,
     this.defaultProvince,
     this.defaultCity,
     this.defaultDistrict,
     PickerOptions<String>? options,
     PickerWheelOptions? wheelOptions,
   }) : super(
-            key: key,
             options: options ?? PickerOptions<String>(),
             wheelOptions: wheelOptions ?? GlobalOptions().pickerWheelOptions);
 
@@ -478,7 +445,7 @@ class _AreaPickerState extends State<AreaPicker> {
 /// 日期时间选择器
 class DateTimePicker extends _PickerConfig<DateTime> {
   DateTimePicker({
-    Key? key,
+    super.key,
     this.unit = const DateTimePickerUnit.all(),
     this.showUnit = true,
     this.dual = true,
@@ -489,7 +456,6 @@ class DateTimePicker extends _PickerConfig<DateTime> {
     PickerOptions<DateTime>? options,
     PickerWheelOptions? wheelOptions,
   }) : super(
-            key: key,
             options: options ?? PickerOptions<DateTime>(),
             wheelOptions: wheelOptions ?? GlobalOptions().pickerWheelOptions);
 
@@ -800,14 +766,14 @@ class _DateTimePickerState extends State<DateTimePicker> {
           ValueChanged<int>? onChanged}) =>
       _PickerListWheel(
           controller: controller,
+          itemCount: list!.length,
           itemBuilder: (_, int index) => Container(
               alignment: Alignment.center,
               child: BText(
-                  valuePadLeft(startZero ? list![index] : list![index] + 1),
+                  valuePadLeft(startZero ? list[index] : list[index] + 1),
                   fontSize: 12,
                   style: widget.options.contentStyle ??
                       context.textTheme.bodyText1)),
-          itemCount: list!.length,
           onScrollEnd: onChanged,
           wheel: wheelOptions);
 
@@ -831,7 +797,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
 /// 单列选择
 class SingleColumnPicker extends StatelessWidget {
   SingleColumnPicker({
-    Key? key,
+    super.key,
     int initialIndex = 0,
     required this.itemCount,
     required this.itemBuilder,
@@ -840,8 +806,7 @@ class SingleColumnPicker extends StatelessWidget {
     FixedExtentScrollController? controller,
   })  : controller = controller ??
             FixedExtentScrollController(initialItem: initialIndex),
-        options = options ?? PickerOptions<int>(),
-        super(key: key);
+        options = options ?? PickerOptions<int>();
 
   /// 头部和背景色配置
   final PickerOptions<int> options;
@@ -881,14 +846,13 @@ class PickerEntry {
 /// 多列选择 不联动
 class MultiColumnPicker extends StatelessWidget {
   MultiColumnPicker({
-    Key? key,
+    super.key,
     PickerOptions<List<int>>? options,
     this.wheelOptions,
     required this.entry,
     this.horizontalScroll = false,
     this.addExpanded = true,
-  })  : options = options ?? PickerOptions<List<int>>(),
-        super(key: key);
+  }) : options = options ?? PickerOptions<List<int>>();
 
   /// 头部和背景色配置
   final PickerOptions<List<int>> options;
@@ -948,14 +912,13 @@ class PickerLinkageEntry {
 /// 多列选择 联动
 class MultiColumnLinkagePicker extends StatefulWidget {
   MultiColumnLinkagePicker({
-    Key? key,
+    super.key,
     PickerOptions<List<int>>? options,
     this.wheelOptions,
     required this.entry,
     this.horizontalScroll = false,
     this.addExpanded = true,
-  })  : options = options ?? PickerOptions<List<int>>(),
-        super(key: key);
+  }) : options = options ?? PickerOptions<List<int>>();
 
   /// 头部和背景色配置
   final PickerOptions<List<int>> options;

@@ -57,14 +57,13 @@ typedef SendStateBuilder = Widget Function(SendState state, int i);
 /// 发送验证码
 class SendSMS extends StatefulWidget {
   const SendSMS(
-      {Key? key,
+      {super.key,
       required this.onTap,
       this.decoration,
       this.duration = const Duration(seconds: 60),
       this.margin,
       this.padding,
-      required this.stateBuilder})
-      : super(key: key);
+      required this.stateBuilder});
 
   /// 状态回调
   final SendStateBuilder stateBuilder;
@@ -161,13 +160,13 @@ enum CountDownType {
 /// 倒计时
 class CountDown extends StatefulWidget {
   const CountDown({
-    Key? key,
+    super.key,
     this.duration = const Duration(seconds: 5),
     this.onChanged,
     required this.builder,
     this.periodic = 1000,
     this.type = CountDownType.seconds,
-  }) : super(key: key);
+  });
 
   /// UI 回调
   final CountDownBuilder builder;
@@ -266,69 +265,54 @@ class _CountDownState extends State<CountDown> {
 /// 侧滑菜单
 class CustomDismissible extends Dismissible {
   const CustomDismissible({
-    required Key key,
-    required Widget child,
+    required super.key,
+    required super.child,
 
     /// 滑动时组件下一层显示的内容
     /// 没有设置secondaryBackground时，从右往左或者从左往右滑动都显示该内容
     /// 设置了secondaryBackground后，从左往右滑动显示该内容，从右往左滑动显示secondaryBackground的内容
-    Widget? background,
+    super.background,
 
     /// 不能单独设置，只能在已经设置了background后才能设置，从右往左滑动时显示
-    Widget? secondaryBackground,
+    super.secondaryBackground,
 
     /// 组件消失前回调，可以弹出是否消失确认窗口。
-    ConfirmDismissCallback? confirmDismiss,
+    super.confirmDismiss,
 
     /// 组件大小改变时回调
-    VoidCallback? onResize,
+    super.onResize,
 
     /// 组件消失后回调
-    DismissDirectionCallback? onDismissed,
+    super.onDismissed,
 
     /// 滑动方向（水平、垂直）
     /// 默认DismissDirection.horizontal 水平
-    DismissDirection? direction,
+    super.direction = DismissDirection.horizontal,
 
     /// 组件大小改变的时长，默认300毫秒。Duration(milliseconds: 300)
-    Duration? resizeDuration,
+    super.resizeDuration = const Duration(milliseconds: 300),
 
     /// 必须拖动项目的偏移阈值才能被视为已解除
-    Map<DismissDirection, double>? dismissThresholds,
+    super.dismissThresholds = const <DismissDirection, double>{},
 
     /// 组件消失的时长，默认200毫秒。Duration(milliseconds: 200)
-    Duration? movementDuration,
+    super.movementDuration = const Duration(milliseconds: 200),
 
     /// 滑动时偏移量，默认0.0，
-    double? crossAxisEndOffset,
+    super.crossAxisEndOffset = 0.0,
 
     /// 拖动消失后组件大小改变方式
     /// start：下面组件向上滑动
     /// down：上面组件向下滑动
     /// 默认DragStartBehavior.start
-    DragStartBehavior? dragStartBehavior,
-  }) : super(
-            key: key,
-            child: child,
-            background: background,
-            secondaryBackground: secondaryBackground,
-            confirmDismiss: confirmDismiss,
-            onResize: onResize,
-            onDismissed: onDismissed,
-            direction: direction ?? DismissDirection.horizontal,
-            resizeDuration: resizeDuration ?? const Duration(milliseconds: 300),
-            dismissThresholds:
-                dismissThresholds ?? const <DismissDirection, double>{},
-            movementDuration:
-                movementDuration ?? const Duration(milliseconds: 200),
-            crossAxisEndOffset: crossAxisEndOffset ?? 0.0,
-            dragStartBehavior: dragStartBehavior ?? DragStartBehavior.start);
+    super.dragStartBehavior = DragStartBehavior.start,
+  });
 }
 
 /// 组件右上角加红点
 class Badge extends StatelessWidget {
   const Badge({
-    Key? key,
+    super.key,
     this.hide = false,
     required this.child,
     required this.badge,
@@ -343,7 +327,7 @@ class Badge extends StatelessWidget {
     this.height,
     this.onTap,
     this.margin,
-  }) : super(key: key);
+  });
 
   /// 是否显示badge
   final bool hide;
@@ -408,7 +392,7 @@ typedef ToggleBuilder = Widget Function(Widget child);
 /// 旋转组件
 class ToggleRotate extends StatefulWidget {
   const ToggleRotate(
-      {Key? key,
+      {super.key,
       required this.child,
       this.onTap,
       this.rad = pi / 2,
@@ -416,8 +400,7 @@ class ToggleRotate extends StatefulWidget {
       this.duration = const Duration(milliseconds: 200),
       this.curve = Curves.fastOutSlowIn,
       this.toggleBuilder,
-      this.isRotate = false})
-      : super(key: key);
+      this.isRotate = false});
 
   final Widget child;
 
@@ -507,7 +490,7 @@ const Duration _kExpand = Duration(milliseconds: 200);
 
 class ExpansionTiles extends StatefulWidget {
   const ExpansionTiles({
-    Key? key,
+    super.key,
     this.leading,
     required this.title,
     this.children = const <Widget>[],
@@ -517,7 +500,7 @@ class ExpansionTiles extends StatefulWidget {
     this.backgroundColor,
     this.onExpansionChanged,
     this.trailing,
-  }) : super(key: key);
+  });
 
   /// 标题左侧图标，
   final Widget? leading;
@@ -641,13 +624,12 @@ class _ExpansionTilesState extends State<ExpansionTiles>
 
 class CustomDrawer extends StatefulWidget {
   CustomDrawer({
-    Key? key,
+    super.key,
     double? width,
     required this.child,
     this.callback,
     this.options,
-  })  : width = width ?? deviceWidth * 0.7,
-        super(key: key);
+  }) : width = width ?? deviceWidth * 0.7;
 
   final Widget child;
   final DrawerCallback? callback;
@@ -680,11 +662,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
 /// 暂无数据
 class PlaceholderChild extends StatelessWidget {
   const PlaceholderChild(
-      {Key? key,
+      {super.key,
       this.padding = const EdgeInsets.all(100),
       this.child,
-      this.text = 'There is no data'})
-      : super(key: key);
+      this.text = 'There is no data'});
 
   final EdgeInsetsGeometry padding;
   final Widget? child;

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 class StateComponentsPage extends StatelessWidget {
-  const StateComponentsPage({Key? key}) : super(key: key);
+  const StateComponentsPage({super.key});
 
   @override
   Widget build(BuildContext context) {

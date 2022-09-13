@@ -2,17 +2,16 @@ part of 'spin_kit.dart';
 
 class SpinKitCircle extends StatefulWidget {
   const SpinKitCircle({
-    Key? key,
+    super.key,
     this.color,
     this.size = 50.0,
     this.itemBuilder,
     this.duration = const Duration(milliseconds: 1200),
     this.controller,
-  })  : assert(
+  }) : assert(
             !(itemBuilder is IndexedWidgetBuilder && color is Color) &&
                 !(itemBuilder == null && color == null),
-            'You should specify either a itemBuilder or a color'),
-        super(key: key);
+            'You should specify either a itemBuilder or a color');
 
   final Color? color;
   final double size;
@@ -91,17 +90,16 @@ class _SpinKitCircleState extends State<SpinKitCircle>
 
 class SpinKitFadingCircle extends StatefulWidget {
   const SpinKitFadingCircle({
-    Key? key,
+    super.key,
     this.color,
     this.size = 50.0,
     this.itemBuilder,
     this.duration = const Duration(milliseconds: 1200),
     this.controller,
-  })  : assert(
+  }) : assert(
             !(itemBuilder is IndexedWidgetBuilder && color is Color) &&
                 !(itemBuilder == null && color == null),
-            'You should specify either a itemBuilder or a color'),
-        super(key: key);
+            'You should specify either a itemBuilder or a color');
 
   final Color? color;
   final double size;
@@ -184,17 +182,16 @@ class _SpinKitFadingCircleState extends State<SpinKitFadingCircle>
 
 class SpinKitSquareCircle extends StatefulWidget {
   const SpinKitSquareCircle({
-    Key? key,
+    super.key,
     this.color,
     this.size = 50.0,
     this.itemBuilder,
     this.duration = const Duration(milliseconds: 500),
     this.controller,
-  })  : assert(
+  }) : assert(
             !(itemBuilder is IndexedWidgetBuilder && color is Color) &&
                 !(itemBuilder == null && color == null),
-            'You should specify either a itemBuilder or a color'),
-        super(key: key);
+            'You should specify either a itemBuilder or a color');
 
   final Color? color;
   final double size;

@@ -1,9 +1,7 @@
 import 'dart:math' as math;
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/widgets/scroll_view/sliver/element.dart';
 import 'package:flutter_waya/widgets/scroll_view/sliver/render.dart';
@@ -11,7 +9,7 @@ import 'package:flutter_waya/widgets/scroll_view/sliver/render.dart';
 /// 配合 sliver 家族组件 无需设置高度  自适应高度
 class ExtendedScrollView extends StatefulWidget {
   const ExtendedScrollView({
-    Key? key,
+    super.key,
     this.expanded = false,
     this.flex = 1,
     this.clipBehavior = Clip.hardEdge,
@@ -33,11 +31,10 @@ class ExtendedScrollView extends StatefulWidget {
   })  : isNestedScrollView = false,
         floatHeaderSlivers = true,
         body = null,
-        headerSliverBuilder = null,
-        super(key: key);
+        headerSliverBuilder = null;
 
   const ExtendedScrollView.nested({
-    Key? key,
+    super.key,
     this.expanded = false,
     this.flex = 1,
     this.headerSliverBuilder,
@@ -60,8 +57,7 @@ class ExtendedScrollView extends StatefulWidget {
         cacheExtent = null,
         semanticChildCount = null,
         keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
-        assert(body != null),
-        super(key: key);
+        assert(body != null);
 
   /// 是否使用 [NestedScrollView]
   final bool isNestedScrollView;
@@ -108,11 +104,13 @@ class _ExtendedScrollViewState extends State<ExtendedScrollView> {
   void initState() {
     slivers = widget.slivers;
     super.initState();
-    addPostFrameCallback((Duration duration) {
-      _calculate(slivers);
-      showScrollView = true;
-      setState(() {});
-    });
+    addPostFrameCallback((Duration duration) => updateWidget());
+  }
+
+  void updateWidget() {
+    _calculate(slivers);
+    showScrollView = true;
+    setState(() {});
   }
 
   void _calculate(List<Widget> slivers) {
@@ -199,21 +197,26 @@ class _ExtendedScrollViewState extends State<ExtendedScrollView> {
         }
         return element;
       });
+
+  @override
+  void didUpdateWidget(covariant ExtendedScrollView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    showScrollView = false;
+    setState(() {});
+    1.seconds.delayed(updateWidget);
+  }
 }
 
 /// 初始化 delegate
 class ExtendedSliverPersistentHeader extends SliverPersistentHeader {
   ExtendedSliverPersistentHeader(
-      {Key? key,
-      bool pinned = true,
-      bool floating = true,
+      {super.key,
+      super.pinned = true,
+      super.floating = true,
       this.minHeight,
       this.maxHeight,
       required this.child})
       : super(
-            key: key,
-            pinned: pinned,
-            floating: floating,
             delegate: pinned
                 ? _PinnedPersistentHeaderDelegate(
                     height: maxHeight, child: child)
@@ -235,23 +238,23 @@ class ExtendedSliverPersistentHeader extends SliverPersistentHeader {
 /// 配合 [ExtendedScrollView] 使用 无需设置 [expandedHeight]
 class ExtendedSliverAppBar extends SliverAppBar {
   ExtendedSliverAppBar({
-    Key? key,
+    super.key,
 
     /// 是否提供控件占位。
-    bool automaticallyImplyLeading = true,
+    super.automaticallyImplyLeading = true,
 
     /// 左侧的图标或文字，多为返回箭头
-    Widget? leading,
-    double? leadingWidth,
+    super.leading,
+    super.leadingWidth,
 
     /// 已被显示最高为 [kToolbarHeight]
-    Widget? title,
+    super.title,
 
     /// 标题是否居中显示
-    bool centerTitle = true,
+    super.centerTitle = true,
 
     /// 标题右侧的操作
-    List<Widget>? actions,
+    super.actions,
 
     /// 已被限制显示最高为 [kToolbarHeight]
     /// SliverAppBar的底部区
@@ -259,10 +262,10 @@ class ExtendedSliverAppBar extends SliverAppBar {
     Size bottomSize = const Size(double.infinity, kToolbarHeight),
 
     /// 阴影
-    double? elevation,
+    super.elevation,
 
     /// 是否显示阴影
-    bool forceElevated = false,
+    super.forceElevated = false,
 
     /// FlexibleSpaceBar
     /// 可以理解为SliverAppBar的背景内容区
@@ -275,76 +278,46 @@ class ExtendedSliverAppBar extends SliverAppBar {
     List<StretchMode> stretchModes = const <StretchMode>[
       StretchMode.zoomBackground
     ],
-    double? expandedHeight,
+    super.expandedHeight,
 
     /// 背景颜色
-    Color? backgroundColor,
+    super.backgroundColor,
 
     /// SliverAppBar图标主题
-    IconThemeData? iconTheme,
-    TextStyle? titleTextStyle,
-    TextStyle? toolbarTextStyle,
+    super.iconTheme,
+    super.titleTextStyle,
+    super.toolbarTextStyle,
 
     /// action图标主题
-    IconThemeData? actionsIconTheme,
+    super.actionsIconTheme,
 
     /// 如果希望title占用所有可用空间，请将此值设置为0.0。
-    double titleSpacing = NavigationToolbar.kMiddleSpacing,
+    super.titleSpacing = NavigationToolbar.kMiddleSpacing,
 
     /// 是否显示在状态栏的下面,false就会占领状态栏的高度
-    bool primary = true,
+    super.primary = true,
 
     /// 状态栏主题
-    SystemUiOverlayStyle? systemOverlayStyle,
-    AsyncCallback? onStretchTrigger,
+    super.systemOverlayStyle,
+    super.onStretchTrigger,
 
     /// [pinned]=true AppBar[title]不消失
-    bool pinned = false,
+    super.pinned = false,
 
     /// [floating]=true，AppBar下拉手势时立即展开（即使下面滚动组件不在顶部）
-    bool floating = false,
+    super.floating = false,
 
     /// [floating]&&[snap] is true，AppBar下拉手势时立即全部展开
-    bool snap = false,
-    bool stretch = true,
-    double stretchTriggerOffset = 100,
-    ShapeBorder? shape,
-    double toolbarHeight = kToolbarHeight,
-    double? collapsedHeight,
-    Color? foregroundColor,
-    Color? shadowColor,
-    bool excludeHeaderSemantics = false,
+    super.snap = false,
+    super.stretch = true,
+    super.stretchTriggerOffset = 100,
+    super.shape,
+    super.toolbarHeight = kToolbarHeight,
+    super.collapsedHeight,
+    super.foregroundColor,
+    super.shadowColor,
+    super.excludeHeaderSemantics = false,
   }) : super(
-            key: key,
-            title: title,
-            actions: actions,
-            forceElevated: forceElevated,
-            backgroundColor: backgroundColor,
-            iconTheme: iconTheme,
-            toolbarTextStyle: toolbarTextStyle,
-            titleTextStyle: titleTextStyle,
-            actionsIconTheme: actionsIconTheme,
-            titleSpacing: titleSpacing,
-            primary: primary,
-            centerTitle: centerTitle,
-            stretch: stretch,
-            stretchTriggerOffset: stretchTriggerOffset,
-            systemOverlayStyle: systemOverlayStyle,
-            onStretchTrigger: onStretchTrigger,
-            elevation: elevation,
-            leading: leading,
-            leadingWidth: leadingWidth,
-            pinned: pinned,
-            floating: floating,
-            snap: snap,
-            shape: shape,
-            expandedHeight: expandedHeight,
-            toolbarHeight: toolbarHeight,
-            collapsedHeight: collapsedHeight,
-            automaticallyImplyLeading: automaticallyImplyLeading,
-            foregroundColor: foregroundColor,
-            excludeHeaderSemantics: excludeHeaderSemantics,
-            shadowColor: shadowColor,
             bottom: bottom == null
                 ? null
                 : PreferredSize(preferredSize: bottomSize, child: bottom),
@@ -363,23 +336,14 @@ class ExtendedSliverAppBar extends SliverAppBar {
 /// 简化部分参数 [FlexibleSpaceBar]
 class ExtendedFlexibleSpaceBar extends FlexibleSpaceBar {
   const ExtendedFlexibleSpaceBar({
-    Key? key,
-    Widget? title,
-    Widget? background,
-    bool centerTitle = true,
-    EdgeInsetsGeometry? titlePadding,
-    CollapseMode collapseMode = CollapseMode.parallax,
-    List<StretchMode> stretchModes = const <StretchMode>[
-      StretchMode.zoomBackground
-    ],
-  }) : super(
-            key: key,
-            title: title,
-            centerTitle: centerTitle,
-            titlePadding: titlePadding,
-            collapseMode: collapseMode,
-            stretchModes: stretchModes,
-            background: background);
+    super.key,
+    super.title,
+    super.background,
+    super.centerTitle = true,
+    super.titlePadding,
+    super.collapseMode = CollapseMode.parallax,
+    super.stretchModes = const <StretchMode>[StretchMode.zoomBackground],
+  });
 }
 
 class _SliverModel {
@@ -413,10 +377,10 @@ class _SliverModel {
 
 class _Calculate extends StatelessWidget {
   const _Calculate({
-    Key? key,
     required this.slivers,
     required this.sliverModel,
-  }) : super(key: key);
+  });
+
   final List<Widget> slivers;
   final List<_SliverModel> sliverModel;
 
@@ -461,8 +425,8 @@ class _Calculate extends StatelessWidget {
 class _PinnedPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
   _PinnedPersistentHeaderDelegate({
     required this.child,
-    double? height,
-  }) : height = height ?? kToolbarHeight;
+    this.height = kToolbarHeight,
+  });
 
   final Widget child;
   final double? height;
@@ -515,9 +479,8 @@ class _NoPinnedPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
 
 class _ExtendedSliverPersistentHeader extends SliverPersistentHeader {
   _ExtendedSliverPersistentHeader(
-      {Key? key, required this.header, required this.maxHeight})
+      {required this.header, required this.maxHeight})
       : super(
-            key: key,
             pinned: header.pinned,
             floating: header.floating,
             delegate: header.pinned
@@ -535,12 +498,10 @@ class _ExtendedSliverPersistentHeader extends SliverPersistentHeader {
 
 class _SliverAppBar extends SliverAppBar {
   _SliverAppBar({
-    Key? key,
     required this.sliverAppBar,
     double? expandedHeight,
     Size? bottomSize,
   }) : super(
-            key: key,
             automaticallyImplyLeading: sliverAppBar.automaticallyImplyLeading,
             title: sliverAppBar.title,
             actions: sliverAppBar.actions,
@@ -609,8 +570,7 @@ abstract class SliverPinnedPersistentHeaderDelegate {
 }
 
 class SliverPinnedPersistentHeader extends StatelessWidget {
-  const SliverPinnedPersistentHeader({Key? key, required this.delegate})
-      : super(key: key);
+  const SliverPinnedPersistentHeader({super.key, required this.delegate});
 
   final SliverPinnedPersistentHeaderDelegate delegate;
 
@@ -622,8 +582,7 @@ class SliverPinnedPersistentHeader extends StatelessWidget {
 class SliverPinnedPersistentHeaderRenderObjectWidget
     extends RenderObjectWidget {
   const SliverPinnedPersistentHeaderRenderObjectWidget(this.delegate,
-      {Key? key})
-      : super(key: key);
+      {super.key});
 
   final SliverPinnedPersistentHeaderDelegate delegate;
 
@@ -637,8 +596,8 @@ class SliverPinnedPersistentHeaderRenderObjectWidget
 }
 
 class SliverPinnedToBoxAdapter extends SingleChildRenderObjectWidget {
-  const SliverPinnedToBoxAdapter({Key? key, Widget? child})
-      : super(key: key, child: child);
+  const SliverPinnedToBoxAdapter({super.key, Widget? child})
+      : super(child: child);
 
   @override
   RenderSliverPinnedToBoxAdapter createRenderObject(BuildContext context) =>
@@ -647,7 +606,7 @@ class SliverPinnedToBoxAdapter extends SingleChildRenderObjectWidget {
 
 class CustomSliverAppBar extends StatelessWidget {
   const CustomSliverAppBar({
-    Key? key,
+    super.key,
     this.leading,
     this.title,
     this.actions,
@@ -660,7 +619,7 @@ class CustomSliverAppBar extends StatelessWidget {
     this.isOpacityFadeWithTitle = true,
     this.mainAxisAlignment = MainAxisAlignment.spaceBetween,
     this.crossAxisAlignment = CrossAxisAlignment.center,
-  }) : super(key: key);
+  });
 
   final Widget? leading;
 

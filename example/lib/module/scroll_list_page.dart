@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 class ScrollListPage extends StatelessWidget {
-  const ScrollListPage({Key? key}) : super(key: key);
+  const ScrollListPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +33,7 @@ class ScrollListPage extends StatelessWidget {
 }
 
 class _ScrollListWaterfallFlowPage extends StatelessWidget {
-  const _ScrollListWaterfallFlowPage(this.scrollController, {Key? key})
-      : super(key: key);
+  const _ScrollListWaterfallFlowPage(this.scrollController);
 
   final ScrollController scrollController;
 
@@ -83,8 +82,7 @@ class _ScrollListWaterfallFlowPage extends StatelessWidget {
 }
 
 class _ScrollListSeparatedPage extends StatelessWidget {
-  const _ScrollListSeparatedPage(this.scrollController, {Key? key})
-      : super(key: key);
+  const _ScrollListSeparatedPage(this.scrollController);
 
   final ScrollController scrollController;
 
@@ -134,8 +132,7 @@ class _ScrollListSeparatedPage extends StatelessWidget {
 }
 
 class _ScrollListPlaceholderPage extends StatelessWidget {
-  const _ScrollListPlaceholderPage(this.scrollController, {Key? key})
-      : super(key: key);
+  const _ScrollListPlaceholderPage(this.scrollController);
 
   final ScrollController scrollController;
 
@@ -183,8 +180,7 @@ class _ScrollListPlaceholderPage extends StatelessWidget {
 }
 
 class _ScrollListBuilderPage extends StatelessWidget {
-  const _ScrollListBuilderPage(this.scrollController, {Key? key})
-      : super(key: key);
+  const _ScrollListBuilderPage(this.scrollController);
 
   final ScrollController scrollController;
 
@@ -242,7 +238,7 @@ class _ScrollListBuilderPage extends StatelessWidget {
 }
 
 class _ScrollListPage extends StatelessWidget {
-  const _ScrollListPage(this.scrollController, {Key? key}) : super(key: key);
+  const _ScrollListPage(this.scrollController);
 
   final ScrollController scrollController;
 
@@ -394,8 +390,7 @@ class _ScrollListPage extends StatelessWidget {
 }
 
 class _ScrollListCountPage extends StatelessWidget {
-  const _ScrollListCountPage(this.scrollController, {Key? key})
-      : super(key: key);
+  const _ScrollListCountPage(this.scrollController);
 
   final ScrollController scrollController;
 

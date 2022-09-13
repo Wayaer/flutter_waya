@@ -22,7 +22,7 @@ double _random(int index) {
 }
 
 class AnchorScrollBuilderPage extends StatelessWidget {
-  const AnchorScrollBuilderPage({Key? key}) : super(key: key);
+  const AnchorScrollBuilderPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -121,11 +121,9 @@ class AnchorScrollBuilderPage extends StatelessWidget {
 
 class _AnchorScrollBuilderPage extends StatelessWidget {
   const _AnchorScrollBuilderPage(
-      {Key? key,
-      required this.reverse,
+      {required this.reverse,
       required this.scrollDirection,
-      required this.controller})
-      : super(key: key);
+      required this.controller});
 
   final AnchorScrollController controller;
   final bool reverse;
@@ -174,11 +172,9 @@ class _AnchorScrollBuilderPage extends StatelessWidget {
 
 class _AnchorScrollGridPage extends StatelessWidget {
   const _AnchorScrollGridPage(
-      {Key? key,
-      required this.reverse,
+      {required this.reverse,
       required this.scrollDirection,
-      required this.controller})
-      : super(key: key);
+      required this.controller});
 
   final AnchorScrollController controller;
   final bool reverse;
@@ -228,11 +224,9 @@ class _AnchorScrollGridPage extends StatelessWidget {
 
 class _AnchorScrollBuilderWaterfallPage extends StatelessWidget {
   const _AnchorScrollBuilderWaterfallPage(
-      {Key? key,
-      required this.reverse,
+      {required this.reverse,
       required this.scrollDirection,
-      required this.controller})
-      : super(key: key);
+      required this.controller});
 
   final AnchorScrollController controller;
   final bool reverse;
@@ -284,11 +278,9 @@ class _AnchorScrollBuilderWaterfallPage extends StatelessWidget {
 
 class _AnchorScrollCountPage extends StatelessWidget {
   const _AnchorScrollCountPage(
-      {Key? key,
-      required this.reverse,
+      {required this.reverse,
       required this.scrollDirection,
-      required this.controller})
-      : super(key: key);
+      required this.controller});
 
   final AnchorScrollController controller;
   final bool reverse;
@@ -335,7 +327,8 @@ class _AnchorScrollCountPage extends StatelessWidget {
 }
 
 class _FloatingActionButton extends StatelessWidget {
-  const _FloatingActionButton(this.controller, {Key? key}) : super(key: key);
+  const _FloatingActionButton(this.controller);
+
   final AnchorScrollController controller;
 
   @override
@@ -348,7 +341,7 @@ class _FloatingActionButton extends StatelessWidget {
 }
 
 class _Footer extends StatelessWidget {
-  const _Footer({Key? key}) : super(key: key);
+  const _Footer();
 
   @override
   Widget build(BuildContext context) => Container(
@@ -360,7 +353,7 @@ class _Footer extends StatelessWidget {
 }
 
 class _Header extends StatelessWidget {
-  const _Header({Key? key}) : super(key: key);
+  const _Header();
 
   @override
   Widget build(BuildContext context) => Container(
@@ -372,7 +365,7 @@ class _Header extends StatelessWidget {
 }
 
 class _TopWidget extends StatelessWidget {
-  const _TopWidget({Key? key}) : super(key: key);
+  const _TopWidget();
 
   @override
   Widget build(BuildContext context) => Container(
@@ -382,7 +375,8 @@ class _TopWidget extends StatelessWidget {
 }
 
 class _BottomNavigationBar extends StatelessWidget {
-  const _BottomNavigationBar(this.controller, {Key? key}) : super(key: key);
+  const _BottomNavigationBar(this.controller);
+
   final AnchorScrollController controller;
 
   @override

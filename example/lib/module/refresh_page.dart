@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 class RefreshPage extends StatefulWidget {
-  const RefreshPage({Key? key}) : super(key: key);
+  const RefreshPage({super.key});
 
   @override
   State<RefreshPage> createState() => _RefreshPageState();
@@ -49,7 +49,7 @@ class _Item extends StatelessWidget {
 }
 
 class EasyRefreshPage extends StatefulWidget {
-  const EasyRefreshPage({Key? key}) : super(key: key);
+  const EasyRefreshPage({super.key});
 
   @override
   State<EasyRefreshPage> createState() => _EasyRefreshPageState();
@@ -91,32 +91,27 @@ class _EasyRefreshPageState extends State<EasyRefreshPage> {
         body: DefaultTabController(
           length: 3,
           child: TabBarView(
-            children: 3.generate(
-              (int index) => EasyRefreshed(
-                onRefresh: () async {
-                  2.seconds.delayed(() {
-                    sendRefreshType(EasyRefreshType.refreshSuccess);
-                  });
-                },
-                onLoading: () async {
-                  2.seconds.delayed(() {
-                    colors.addAll(Colors.accents);
-                    setState(() {});
-                    sendRefreshType(EasyRefreshType.loadingSuccess);
-                  });
-                },
-                slivers: <Widget>[
-                  SliverToBoxAdapter(
-                      child: Universal(
-                          padding: const EdgeInsets.all(10),
-                          children: colors.builderEntry(
-                              (MapEntry<int, Color> entry) =>
-                                  _Item(entry.key, entry.value)
-                                      .paddingOnly(bottom: 10))))
-                ],
-              ),
-            ),
-          ),
+              children: 3.generate((int index) => EasyRefreshed(
+                  config: RefreshConfig(onRefresh: () async {
+                    2.seconds.delayed(() {
+                      sendRefreshType(EasyRefreshType.refreshSuccess);
+                    });
+                  }, onLoading: () async {
+                    2.seconds.delayed(() {
+                      colors.addAll(Colors.accents);
+                      setState(() {});
+                      sendRefreshType(EasyRefreshType.loadingSuccess);
+                    });
+                  }),
+                  child: CustomScrollView(slivers: [
+                    SliverToBoxAdapter(
+                        child: Universal(
+                            padding: const EdgeInsets.all(10),
+                            children: colors.builderEntry(
+                                (MapEntry<int, Color> entry) =>
+                                    _Item(entry.key, entry.value)
+                                        .paddingOnly(bottom: 10))))
+                  ])))),
         ));
   }
 }

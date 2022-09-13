@@ -34,14 +34,13 @@ typedef RefreshLoadingCallback = Future<bool> Function();
 
 class SimpleRefresh extends StatefulWidget {
   const SimpleRefresh(
-      {Key? key,
+      {super.key,
       required this.child,
       this.onRefresh,
       this.onLoading,
       this.header,
       this.footer,
-      this.controller})
-      : super(key: key);
+      this.controller});
 
   final Widget child;
   final RefreshLoadingCallback? onRefresh;
@@ -257,11 +256,8 @@ class RefreshController extends ScrollController {
   RefreshController(
       {this.onRefresh,
       this.onLoading,
-      double? initialScrollOffset,
-      bool keepScrollOffset = true})
-      : super(
-            initialScrollOffset: initialScrollOffset ?? 0,
-            keepScrollOffset: keepScrollOffset);
+      super.initialScrollOffset = 0,
+      super.keepScrollOffset = true});
 
   RefreshLoadingCallback? onRefresh;
 
@@ -428,11 +424,11 @@ typedef NotificationListenerScrollCallback = bool Function(
 /// 滚动事件监听器
 class ScrollNotificationListener extends StatefulWidget {
   const ScrollNotificationListener({
-    Key? key,
+    super.key,
     required this.child,
     required this.onNotification,
     this.onFocus,
-  }) : super(key: key);
+  });
 
   final Widget child;
 

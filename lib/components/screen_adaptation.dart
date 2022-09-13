@@ -11,11 +11,11 @@ enum ScreenAdaptationScaleType { none, auto, width }
 
 class ScreenAdaptation extends StatefulWidget {
   const ScreenAdaptation({
-    Key? key,
+    super.key,
     required this.designWidth,
     required this.builder,
     this.scaleType = ScreenAdaptationScaleType.auto,
-  }) : super(key: key);
+  });
 
   final double designWidth;
   final ScreenAdaptationChildBuilder builder;
@@ -85,12 +85,11 @@ class _ScreenAdaptationState extends State<ScreenAdaptation>
 
 class ScreenAdaptationScope extends InheritedWidget {
   ScreenAdaptationScope._({
-    Key? key,
     required this.designWidth,
     required this.scaleType,
     required this.scaleRatio,
     required Widget child,
-  }) : super(key: key, child: _MediaQueryDataProvider(child: child));
+  }) : super(child: _MediaQueryDataProvider(child: child));
 
   final double designWidth;
   final ScreenAdaptationScaleType scaleType;
@@ -116,8 +115,7 @@ class ScreenAdaptationScope extends InheritedWidget {
 }
 
 class _MediaQueryDataProvider extends StatelessWidget {
-  const _MediaQueryDataProvider({Key? key, required this.child})
-      : super(key: key);
+  const _MediaQueryDataProvider({required this.child});
 
   final Widget child;
 

@@ -398,23 +398,25 @@ class GlobalOptions {
 
   void setLogDottedLine(bool has) => _logHasDottedLine = has;
 
-  Header globalRefreshHeader = ClassicalHeader(
-      refreshText: '请尽情拉我',
-      refreshReadyText: '我要开始刷新了',
-      refreshingText: '我在拼命刷新中',
-      refreshedText: '我已经刷新完成了',
-      refreshFailedText: '我刷新失败了唉',
+  Header globalRefreshHeader = const ClassicHeader(
+      dragText: '请尽情拉我',
+      armedText: '可以松开我了',
+      readyText: '我要开始刷新了',
+      processingText: '我在拼命刷新中',
+      processedText: '我已经刷新完成了',
+      failedText: '我刷新失败了唉',
       noMoreText: '没有更多了',
-      infoText: '现在时刻 : ${DateTime.now().format(DateTimeDist.hourMinute)}');
+      showMessage: false);
 
-  Footer globalRefreshFooter = ClassicalFooter(
-      loadText: '请尽情拉我',
-      loadReadyText: '我要准备加载了',
-      loadingText: '我在拼命加载中',
-      loadedText: '我已经加载完成了',
-      loadFailedText: '我加载失败了唉',
+  Footer globalRefreshFooter = const ClassicFooter(
+      dragText: '请尽情拉我',
+      armedText: '可以松开我了',
+      readyText: '我要准备加载了',
+      processingText: '我在拼命加载中',
+      processedText: '我已经加载完成了',
+      failedText: '我加载失败了唉',
       noMoreText: '没有更多了哦',
-      infoText: '现在时刻 : ${DateTime.now().format(DateTimeDist.hourMinute)}');
+      showMessage: false);
 }
 
 void addPostFrameCallback(FrameCallback duration) =>

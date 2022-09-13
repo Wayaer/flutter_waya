@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 class UniversalPage extends StatefulWidget {
-  const UniversalPage({Key? key}) : super(key: key);
+  const UniversalPage({super.key});
 
   @override
   State<UniversalPage> createState() => _UniversalPageState();

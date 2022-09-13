@@ -14,23 +14,21 @@ export 'text.dart';
 export 'universal.dart';
 
 class SystemUiOverlayStyleLight extends SystemUiOverlayStyle {
-  const SystemUiOverlayStyleLight()
-      : super(
-            systemNavigationBarColor: Colors.transparent,
-            systemNavigationBarDividerColor: Colors.transparent,
-            statusBarColor: Colors.transparent,
-            systemNavigationBarIconBrightness: Brightness.light,
-            statusBarIconBrightness: Brightness.light,
-            statusBarBrightness: Brightness.dark);
+  const SystemUiOverlayStyleLight(
+      {super.systemNavigationBarColor = Colors.transparent,
+      super.systemNavigationBarDividerColor = Colors.transparent,
+      super.statusBarColor = Colors.transparent,
+      super.systemNavigationBarIconBrightness = Brightness.light,
+      super.statusBarIconBrightness = Brightness.light,
+      super.statusBarBrightness = Brightness.dark});
 }
 
 class SystemUiOverlayStyleDark extends SystemUiOverlayStyle {
-  const SystemUiOverlayStyleDark()
-      : super(
-            systemNavigationBarColor: Colors.transparent,
-            systemNavigationBarDividerColor: Colors.transparent,
-            statusBarColor: Colors.transparent,
-            systemNavigationBarIconBrightness: Brightness.dark,
-            statusBarIconBrightness: Brightness.dark,
-            statusBarBrightness: Brightness.light);
+  const SystemUiOverlayStyleDark(
+      {super.systemNavigationBarColor = Colors.transparent,
+      super.systemNavigationBarDividerColor = Colors.transparent,
+      super.statusBarColor = Colors.transparent,
+      super.systemNavigationBarIconBrightness = Brightness.dark,
+      super.statusBarIconBrightness = Brightness.dark,
+      super.statusBarBrightness = Brightness.light});
 }

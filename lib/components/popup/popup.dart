@@ -128,13 +128,12 @@ class ModalWindowsOptions {
 /// 模态框背景
 class PopupModalWindows extends StatelessWidget {
   PopupModalWindows(
-      {Key? key,
+      {super.key,
       this.onWillPop,
       this.children,
       this.child,
       ModalWindowsOptions? options})
-      : options = options ?? GlobalOptions().modalWindowsOptions,
-        super(key: key);
+      : options = options ?? GlobalOptions().modalWindowsOptions;
 
   /// 顶层组件
   final Widget? child;
@@ -206,7 +205,7 @@ class PopupModalWindows extends StatelessWidget {
 
 class PopupDoubleChooseWindows extends StatelessWidget {
   const PopupDoubleChooseWindows({
-    Key? key,
+    super.key,
     this.backgroundColor,
     this.width,
     this.height,
@@ -216,7 +215,7 @@ class PopupDoubleChooseWindows extends StatelessWidget {
     this.right,
     this.decoration,
     this.options,
-  }) : super(key: key);
+  });
 
   /// 弹框内容
   final Widget content;
@@ -288,7 +287,7 @@ enum LoadingStyle {
 
 class PopupLoadingWindows extends StatelessWidget {
   const PopupLoadingWindows({
-    Key? key,
+    super.key,
     this.strokeWidth = 4.0,
     this.style = LoadingStyle.circular,
     this.custom,
@@ -299,7 +298,7 @@ class PopupLoadingWindows extends StatelessWidget {
     this.backgroundColor,
     this.options,
     this.extra,
-  }) : super(key: key);
+  });
 
   /// 以下为官方三个 ProgressIndicator 配置
   final LoadingStyle style;

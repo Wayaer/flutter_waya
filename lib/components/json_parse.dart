@@ -4,15 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 class JsonParse extends StatefulWidget {
-  JsonParse(this.json, {Key? key})
+  JsonParse(this.json, {super.key})
       : list = <dynamic>[],
-        isList = false,
-        super(key: key);
+        isList = false;
 
-  JsonParse.list(this.list, {Key? key})
+  JsonParse.list(this.list, {super.key})
       : json = list.asMap(),
-        isList = true,
-        super(key: key);
+        isList = true;
 
   final Map<dynamic, dynamic> json;
   final List<dynamic> list;
@@ -142,7 +140,8 @@ void setHttpData(ResponseModel response) {
 ExtendedOverlayEntry? _httpDataOverlay;
 
 class _HttpDataPage extends StatefulWidget {
-  const _HttpDataPage(this.response, {Key? key}) : super(key: key);
+  const _HttpDataPage(this.response);
+
   final ResponseModel response;
 
   @override

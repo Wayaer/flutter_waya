@@ -5,7 +5,7 @@ enum LinearStrokeCap { butt, round, roundAll }
 
 class Progress extends StatefulWidget {
   const Progress.linear({
-    Key? key,
+    super.key,
     this.percent = 0.0,
     this.lineHeight = 5.0,
     this.width,
@@ -26,9 +26,8 @@ class Progress extends StatefulWidget {
     this.restartAnimation = false,
     this.onAnimationEnd,
     this.widgetIndicator,
-  })  : assert(linearGradient != null || progressColor != null,
-            'Cannot provide both linearGradient and progressColor'),
-        super(key: key);
+  }) : assert(linearGradient != null || progressColor != null,
+            'Cannot provide both linearGradient and progressColor');
 
   /// Percent value between 0.0 and 1.0
   final double percent;

@@ -6,7 +6,7 @@ import 'package:flutter_waya/flutter_waya.dart';
 TapDownDetails? _details;
 
 class PopupWindowsPage extends StatelessWidget {
-  const PopupWindowsPage({Key? key}) : super(key: key);
+  const PopupWindowsPage({super.key});
 
   @override
   Widget build(BuildContext context) => GestureDetector(
@@ -260,7 +260,7 @@ class PopupWindowsPage extends StatelessWidget {
 }
 
 class _AlertDemo extends StatelessWidget {
-  const _AlertDemo({Key? key}) : super(key: key);
+  const _AlertDemo();
 
   @override
   Widget build(BuildContext context) {

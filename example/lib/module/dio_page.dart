@@ -4,7 +4,7 @@ import 'package:flutter_curiosity/flutter_curiosity.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 class ExtendedDioPage extends StatefulWidget {
-  const ExtendedDioPage({Key? key}) : super(key: key);
+  const ExtendedDioPage({super.key});
 
   @override
   State<ExtendedDioPage> createState() => _ExtendedDioPageState();

@@ -94,7 +94,7 @@ enum InputTextType {
 /// [Widget] 挂件
 class WidgetPendant extends StatelessWidget {
   const WidgetPendant({
-    Key? key,
+    super.key,
     required this.child,
     this.header,
     this.footer,
@@ -115,7 +115,7 @@ class WidgetPendant extends StatelessWidget {
     this.padding,
     this.extraMargin,
     this.extraPadding,
-  }) : super(key: key);
+  });
 
   final Widget child;
 
@@ -337,7 +337,7 @@ typedef TextFieldBuilder = Widget Function(
 
 class PinBox extends StatefulWidget {
   const PinBox({
-    Key? key,
+    super.key,
     this.onTap,
     this.onChanged,
     this.onDone,
@@ -358,7 +358,8 @@ class PinBox extends StatefulWidget {
     this.spaces = const <Widget>[],
     this.keyboardType,
     this.textFieldBuilder,
-  }) : super(key: key);
+  });
+
   final GestureTapCallback? onTap;
 
   /// 输入内容监听

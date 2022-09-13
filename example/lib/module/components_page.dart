@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 class ComponentsPage extends StatelessWidget {
-  const ComponentsPage({Key? key}) : super(key: key);
+  const ComponentsPage({super.key});
 
   @override
   Widget build(BuildContext context) => ExtendedScaffold(

@@ -97,7 +97,7 @@ class WheelOptions {
 
 class ListWheel extends StatelessWidget {
   ListWheel({
-    Key? key,
+    super.key,
     this.controller,
     this.itemBuilder,
     this.itemCount,
@@ -108,8 +108,7 @@ class ListWheel extends StatelessWidget {
     this.onScrollStart,
     this.onScrollUpdate,
     this.options,
-  })  : assert(_checkType(childDelegateType, children, itemBuilder, itemCount)),
-        super(key: key);
+  }) : assert(_checkType(childDelegateType, children, itemBuilder, itemCount));
 
   static bool _checkType(
       ListWheelChildDelegateType childDelegateType,
@@ -128,7 +127,7 @@ class ListWheel extends StatelessWidget {
   }
 
   const ListWheel.builder({
-    Key? key,
+    super.key,
     this.controller,
     required this.itemBuilder,
     required this.itemCount,
@@ -139,11 +138,10 @@ class ListWheel extends StatelessWidget {
     this.options,
   })  : assert(itemBuilder != null && itemCount != null),
         childDelegateType = ListWheelChildDelegateType.builder,
-        children = null,
-        super(key: key);
+        children = null;
 
   const ListWheel.list({
-    Key? key,
+    super.key,
     this.controller,
     this.onScrollEnd,
     required this.children,
@@ -154,11 +152,10 @@ class ListWheel extends StatelessWidget {
   })  : assert(children != null),
         childDelegateType = ListWheelChildDelegateType.list,
         itemBuilder = null,
-        itemCount = null,
-        super(key: key);
+        itemCount = null;
 
   const ListWheel.looping({
-    Key? key,
+    super.key,
     this.controller,
     this.onScrollEnd,
     this.children,
@@ -169,8 +166,7 @@ class ListWheel extends StatelessWidget {
   })  : assert(children != null),
         childDelegateType = ListWheelChildDelegateType.looping,
         itemBuilder = null,
-        itemCount = null,
-        super(key: key);
+        itemCount = null;
 
   final WheelOptions? options;
 
@@ -284,7 +280,7 @@ class ListWheel extends StatelessWidget {
 /// 添加支持初始位置
 class ListStateWheel extends StatefulWidget {
   const ListStateWheel(
-      {Key? key,
+      {super.key,
       this.controller,
       this.disposeController = true,
       this.itemBuilder,
@@ -299,11 +295,10 @@ class ListStateWheel extends StatefulWidget {
       this.initialItem = 0,
       this.animateDuration = const Duration(milliseconds: 10),
       this.curve = Curves.linear,
-      this.onCreateController})
-      : super(key: key);
+      this.onCreateController});
 
   const ListStateWheel.list({
-    Key? key,
+    super.key,
     this.controller,
     this.onScrollEnd,
     required this.children,
@@ -319,11 +314,10 @@ class ListStateWheel extends StatefulWidget {
   })  : assert(children != null),
         childDelegateType = ListWheelChildDelegateType.list,
         itemBuilder = null,
-        itemCount = null,
-        super(key: key);
+        itemCount = null;
 
   const ListStateWheel.looping({
-    Key? key,
+    super.key,
     this.controller,
     this.onScrollEnd,
     this.children,
@@ -339,8 +333,7 @@ class ListStateWheel extends StatefulWidget {
   })  : assert(children != null),
         childDelegateType = ListWheelChildDelegateType.looping,
         itemBuilder = null,
-        itemCount = null,
-        super(key: key);
+        itemCount = null;
 
   final WheelOptions? options;
 
@@ -439,7 +432,7 @@ class _ListStateWheelState extends State<ListStateWheel> {
 
 class AutoScrollEntry extends StatefulWidget {
   const AutoScrollEntry(
-      {Key? key,
+      {super.key,
       this.duration = const Duration(seconds: 3),
       this.animateDuration = const Duration(milliseconds: 500),
       this.initialIndex = 0,
@@ -449,8 +442,7 @@ class AutoScrollEntry extends StatefulWidget {
       required this.children,
       this.onChanged,
       this.margin,
-      this.padding})
-      : super(key: key);
+      this.padding});
 
   final int initialIndex;
   final List<Widget> children;
@@ -547,7 +539,7 @@ class _AutoScrollEntryState extends State<AutoScrollEntry> {
 
 class ListEntry extends StatelessWidget {
   const ListEntry(
-      {Key? key,
+      {super.key,
       this.isThreeLine = false,
       this.enabled = true,
       this.dense = true,
@@ -574,8 +566,7 @@ class ListEntry extends StatelessWidget {
       this.selected,
       this.prefix,
       this.arrowColor,
-      this.arrowIcon})
-      : super(key: key);
+      this.arrowIcon});
 
   /// 单击事件
   final GestureTapCallback? onTap;

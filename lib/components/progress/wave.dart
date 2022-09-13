@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 
 class Wave extends StatefulWidget {
   const Wave({
-    Key? key,
+    super.key,
     required this.value,
     required this.color,
     required this.direction,
-  }) : super(key: key);
+  });
 
   final double value;
   final Color color;

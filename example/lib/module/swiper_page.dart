@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 class FlSwiperPage extends StatefulWidget {
-  const FlSwiperPage({Key? key}) : super(key: key);
+  const FlSwiperPage({super.key});
 
   @override
   State<FlSwiperPage> createState() => _FlSwiperPageState();

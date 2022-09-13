@@ -10,7 +10,7 @@ typedef SwitchStateChanged = Future<bool> Function(bool value);
 /// 官方版增加状态
 class SwitchState extends StatelessWidget {
   const SwitchState(
-      {Key? key,
+      {super.key,
       required this.value,
       this.onChanged,
       this.activeColor,
@@ -37,8 +37,7 @@ class SwitchState extends StatelessWidget {
       this.didChangeDependencies,
       this.didUpdateWidget,
       this.onWaitChanged})
-      : _switchType = _SwitchType.material,
-        super(key: key);
+      : _switchType = _SwitchType.material;
 
   /// Creates an adaptive [Switch] based on whether the target platform is iOS
   /// or macOS, following Material design's
@@ -56,7 +55,7 @@ class SwitchState extends StatelessWidget {
   ///
   /// The target platform is based on the current [Theme]: [ThemeData.platform].
   const SwitchState.adaptive({
-    Key? key,
+    super.key,
     required this.value,
     this.onChanged,
     this.activeColor,
@@ -83,8 +82,7 @@ class SwitchState extends StatelessWidget {
     this.didChangeDependencies,
     this.didUpdateWidget,
     this.onWaitChanged,
-  })  : _switchType = _SwitchType.adaptive,
-        super(key: key);
+  }) : _switchType = _SwitchType.adaptive;
 
   /// Whether this switch is on or off.
   ///
@@ -437,7 +435,7 @@ class SwitchState extends StatelessWidget {
 /// 官方版增加状态
 class CupertinoSwitchState extends StatelessWidget {
   const CupertinoSwitchState(
-      {Key? key,
+      {super.key,
       required this.value,
       this.onChanged,
       this.onWaitChanged,
@@ -448,8 +446,7 @@ class CupertinoSwitchState extends StatelessWidget {
       this.initState,
       this.dispose,
       this.didChangeDependencies,
-      this.didUpdateWidget})
-      : super(key: key);
+      this.didUpdateWidget});
 
   /// Whether this switch is on or off.
   ///

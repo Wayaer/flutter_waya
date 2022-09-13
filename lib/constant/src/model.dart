@@ -5,24 +5,17 @@ import 'constant.dart';
 class ResponseModel extends Response<dynamic> {
   ResponseModel({
     this.type,
-    dynamic data,
+    super.data,
     this.response,
-    int? statusCode,
-    String? statusMessage,
-    Headers? headers,
-    required RequestOptions requestOptions,
-    List<RedirectRecord>? redirects,
-    Map<String, dynamic>? extra,
+    super.statusCode,
+    super.statusMessage,
+    super.headers,
+    required super.requestOptions,
+    super.redirects,
+    super.extra,
     this.baseOptions,
     this.error,
-  }) : super(
-            data: data,
-            headers: headers,
-            requestOptions: requestOptions,
-            statusCode: statusCode,
-            statusMessage: statusMessage,
-            redirects: redirects,
-            extra: extra);
+  });
 
   BaseOptions? baseOptions;
 

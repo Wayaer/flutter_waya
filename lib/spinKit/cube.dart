@@ -2,17 +2,16 @@ part of 'spin_kit.dart';
 
 class SpinKitCubeGrid extends StatefulWidget {
   const SpinKitCubeGrid({
-    Key? key,
+    super.key,
     this.color,
     this.size = 50.0,
     this.itemBuilder,
     this.duration = const Duration(milliseconds: 1200),
     this.controller,
-  })  : assert(
+  }) : assert(
             !(itemBuilder is IndexedWidgetBuilder && color is Color) &&
                 !(itemBuilder == null && color == null),
-            'You should specify either a itemBuilder or a color'),
-        super(key: key);
+            'You should specify either a itemBuilder or a color');
 
   final Color? color;
   final double size;
@@ -32,7 +31,6 @@ class _SpinKitCubeGridState extends State<SpinKitCubeGrid>
   @override
   void initState() {
     super.initState();
-
     _controller = (widget.controller ??
         AnimationController(vsync: this, duration: widget.duration))
       ..repeat(reverse: true);
@@ -106,17 +104,16 @@ class _SpinKitCubeGridState extends State<SpinKitCubeGrid>
 
 class SpinKitFoldingCube extends StatefulWidget {
   const SpinKitFoldingCube({
-    Key? key,
+    super.key,
     this.color,
     this.size = 50.0,
     this.itemBuilder,
     this.duration = const Duration(milliseconds: 2400),
     this.controller,
-  })  : assert(
+  }) : assert(
             !(itemBuilder is IndexedWidgetBuilder && color is Color) &&
                 !(itemBuilder == null && color == null),
-            'You should specify either a itemBuilder or a color'),
-        super(key: key);
+            'You should specify either a itemBuilder or a color');
 
   final Color? color;
   final double size;
@@ -136,7 +133,6 @@ class _SpinKitFoldingCubeState extends State<SpinKitFoldingCube>
   @override
   void initState() {
     super.initState();
-
     _controller = (widget.controller ??
         AnimationController(vsync: this, duration: widget.duration))
       ..addListener(() => setState(() {}))

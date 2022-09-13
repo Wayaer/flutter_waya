@@ -2,17 +2,16 @@ part of 'spin_kit.dart';
 
 class SpinKitDoubleBounce extends StatefulWidget {
   const SpinKitDoubleBounce({
-    Key? key,
+    super.key,
     this.color,
     this.size = 50.0,
     this.itemBuilder,
     this.duration = const Duration(milliseconds: 2000),
     this.controller,
-  })  : assert(
+  }) : assert(
             !(itemBuilder is IndexedWidgetBuilder && color is Color) &&
                 !(itemBuilder == null && color == null),
-            'You should specify either a itemBuilder or a color'),
-        super(key: key);
+            'You should specify either a itemBuilder or a color');
 
   final Color? color;
   final double size;
@@ -68,17 +67,16 @@ class _SpinKitDoubleBounceState extends State<SpinKitDoubleBounce>
 
 class SpinKitThreeBounce extends StatefulWidget {
   const SpinKitThreeBounce({
-    Key? key,
+    super.key,
     this.color,
     this.size = 50.0,
     this.itemBuilder,
     this.duration = const Duration(milliseconds: 1400),
     this.controller,
-  })  : assert(
+  }) : assert(
             !(itemBuilder is IndexedWidgetBuilder && color is Color) &&
                 !(itemBuilder == null && color == null),
-            'You should specify either a itemBuilder or a color'),
-        super(key: key);
+            'You should specify either a itemBuilder or a color');
 
   final Color? color;
   final double size;
@@ -132,17 +130,16 @@ class _SpinKitThreeBounceState extends State<SpinKitThreeBounce>
 
 class SpinKitPulse extends StatefulWidget {
   const SpinKitPulse({
-    Key? key,
+    super.key,
     this.color,
     this.size = 50.0,
     this.itemBuilder,
     this.duration = const Duration(seconds: 1),
     this.controller,
-  })  : assert(
+  }) : assert(
             !(itemBuilder is IndexedWidgetBuilder && color is Color) &&
                 !(itemBuilder == null && color == null),
-            'You should specify either a itemBuilder or a color'),
-        super(key: key);
+            'You should specify either a itemBuilder or a color');
 
   final Color? color;
   final double size;
@@ -196,18 +193,17 @@ class _SpinKitPulseState extends State<SpinKitPulse>
 
 class SpinKitRipple extends StatefulWidget {
   const SpinKitRipple({
-    Key? key,
+    super.key,
     this.color,
     this.size = 50.0,
     this.borderWidth = 6.0,
     this.itemBuilder,
     this.duration = const Duration(milliseconds: 1800),
     this.controller,
-  })  : assert(
+  }) : assert(
             !(itemBuilder is IndexedWidgetBuilder && color is Color) &&
                 !(itemBuilder == null && color == null),
-            'You should specify either a itemBuilder or a color'),
-        super(key: key);
+            'You should specify either a itemBuilder or a color');
 
   final Color? color;
   final double size;
@@ -262,13 +258,12 @@ class _SpinKitRippleState extends State<SpinKitRipple>
   }
 
   Widget _itemBuilder(int index) => SizedBox.fromSize(
-        size: Size.square(widget.size),
-        child: widget.itemBuilder != null
-            ? widget.itemBuilder!(context, index)
-            : DecoratedBox(
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                        color: widget.color!, width: widget.borderWidth))),
-      );
+      size: Size.square(widget.size),
+      child: widget.itemBuilder != null
+          ? widget.itemBuilder!(context, index)
+          : DecoratedBox(
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                      color: widget.color!, width: widget.borderWidth))));
 }

@@ -38,12 +38,12 @@ class CircleColor {
   }
 
   @override
-  int get hashCode => hashValues(start, end);
+  int get hashCode => Object.hash(start, end);
 }
 
 class BubbleButton extends StatefulWidget {
   const BubbleButton({
-    Key? key,
+    super.key,
     this.size = 20.0,
     required this.bubbleBuilder,
     double? bubblesSize,
@@ -59,8 +59,7 @@ class BubbleButton extends StatefulWidget {
         start: Colors.lightBlueAccent, end: Colors.lightGreenAccent),
     this.onTap,
   })  : bubblesSize = bubblesSize ?? size * 2.0,
-        circleSize = circleSize ?? size * 0.8,
-        super(key: key);
+        circleSize = circleSize ?? size * 0.8;
 
   /// size of bubble widget
   final double size;

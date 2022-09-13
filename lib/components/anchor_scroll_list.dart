@@ -139,14 +139,14 @@ typedef AnchorBuilder = Widget Function(
 /// 滚动至指定index子元素
 class AnchorScrollBuilder extends StatefulWidget {
   const AnchorScrollBuilder({
-    Key? key,
+    super.key,
     required this.controller,
     required this.count,
     required this.builder,
     this.scrollDirection = Axis.vertical,
     this.reverse = false,
     this.disposeController = true,
-  }) : super(key: key);
+  });
 
   /// 必须把 [controller] 回传给 builder 里的滚动组件
   final AnchorScrollController controller;

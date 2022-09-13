@@ -4,7 +4,7 @@ import 'package:flutter_waya/flutter_waya.dart';
 /// 九宫格解锁
 class GestureLock extends StatefulWidget {
   const GestureLock(
-      {Key? key,
+      {super.key,
       this.selectColor = Colors.red,
       this.unSelectColor,
       required this.size,
@@ -15,8 +15,7 @@ class GestureLock extends StatefulWidget {
       this.lineWidth = 3,
       this.onPanUp,
       this.onPanDown,
-      this.immediatelyClear = true})
-      : super(key: key);
+      this.immediatelyClear = true});
 
   /// 整个九宫格宽高
   final double size;
@@ -270,15 +269,14 @@ class _CanvasLine extends CustomPainter {
 /// 可缩放/平移的盒子小部件
 class GestureZoom extends StatefulWidget {
   const GestureZoom({
-    Key? key,
+    super.key,
     this.maxScale = 5.0,
     this.doubleTapScale = 2.0,
     required this.child,
     this.onPressed,
     this.duration = const Duration(milliseconds: 300),
   })  : assert(maxScale >= 1.0),
-        assert(doubleTapScale >= 1.0 && doubleTapScale <= maxScale),
-        super(key: key);
+        assert(doubleTapScale >= 1.0 && doubleTapScale <= maxScale);
 
   /// 通过最大缩放比例 [maxScale]、双击缩放比例 [doubleTapScale]、子部件 [child]、点击事件 [onPressed] 创建小部件
   final double maxScale;

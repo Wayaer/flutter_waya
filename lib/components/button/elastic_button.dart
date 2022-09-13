@@ -4,7 +4,7 @@ import 'package:flutter_waya/flutter_waya.dart';
 /// 弹性按钮
 class ElasticButton extends StatefulWidget {
   const ElasticButton({
-    Key? key,
+    super.key,
     this.withOpacity = false,
     this.useCache = true,
     this.alignment = Alignment.center,
@@ -45,7 +45,7 @@ class ElasticButton extends StatefulWidget {
     this.onScaleStart,
     this.onScaleUpdate,
     this.onScaleEnd,
-  }) : super(key: key);
+  });
 
   final bool withOpacity;
 

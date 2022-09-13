@@ -2,13 +2,13 @@ part of 'spin_kit.dart';
 
 class SpinKitRing extends StatefulWidget {
   const SpinKitRing({
-    Key? key,
+    super.key,
     required this.color,
     this.lineWidth = 7.0,
     this.size = 50.0,
     this.duration = const Duration(milliseconds: 1200),
     this.controller,
-  }) : super(key: key);
+  });
 
   final Color color;
   final double size;
@@ -109,13 +109,13 @@ class _SpinKitRingCurve extends Curve {
 
 class SpinKitDualRing extends StatefulWidget {
   const SpinKitDualRing({
-    Key? key,
+    super.key,
     this.color,
     this.lineWidth = 7.0,
     this.size = 50.0,
     this.duration = const Duration(milliseconds: 1200),
     this.controller,
-  }) : super(key: key);
+  });
 
   final Color? color;
   final double lineWidth;

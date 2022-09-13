@@ -2,18 +2,17 @@ part of 'spin_kit.dart';
 
 class SpinKitFadingFour extends StatefulWidget {
   const SpinKitFadingFour({
-    Key? key,
+    super.key,
     this.color,
     this.shape = BoxShape.circle,
     this.size = 50.0,
     this.itemBuilder,
     this.duration = const Duration(milliseconds: 1200),
     this.controller,
-  })  : assert(
+  }) : assert(
             !(itemBuilder is IndexedWidgetBuilder && color is Color) &&
                 !(itemBuilder == null && color == null),
-            'You should specify either a itemBuilder or a color'),
-        super(key: key);
+            'You should specify either a itemBuilder or a color');
 
   final Color? color;
   final BoxShape shape;
@@ -80,7 +79,7 @@ class _SpinKitFadingFourState extends State<SpinKitFadingFour>
 
 class SpinKitWanderingCubes extends StatefulWidget {
   const SpinKitWanderingCubes({
-    Key? key,
+    super.key,
     this.color,
     this.shape = BoxShape.rectangle,
     this.size = 50.0,
@@ -90,8 +89,7 @@ class SpinKitWanderingCubes extends StatefulWidget {
             !(itemBuilder is IndexedWidgetBuilder && color is Color) &&
                 !(itemBuilder == null && color == null),
             'You should specify either a itemBuilder or a color'),
-        offset = size * 0.75,
-        super(key: key);
+        offset = size * 0.75;
 
   final Color? color;
   final BoxShape shape;

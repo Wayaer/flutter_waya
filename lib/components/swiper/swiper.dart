@@ -15,7 +15,7 @@ enum FlSwiperLayout { stack, tinder }
 
 class FlSwiper extends StatefulWidget {
   const FlSwiper.builder({
-    Key? key,
+    super.key,
     required this.itemBuilder,
     required this.itemCount,
     this.autoPlay = true,
@@ -32,7 +32,7 @@ class FlSwiper extends StatefulWidget {
     this.controller,
     required this.itemHeight,
     required this.itemWidth,
-  }) : super(key: key);
+  });
 
   /// Inner item height, this property is valid if layout=stack or layout=tinder,
   final double itemHeight;
@@ -203,7 +203,7 @@ class _FlSwiperState extends _FlSwiperTimerMixin {
   @override
   Widget build(BuildContext context) {
     if (widget.pagination.isEmpty) return buildFlSwiper;
-    final List<Widget> children = <Widget>[buildFlSwiper];
+    final List<Widget> children = [buildFlSwiper];
     widget.pagination.builder((FlSwiperPlugin plugin) {
       children.add(plugin.build(
           context,
@@ -220,8 +220,7 @@ class _FlSwiperState extends _FlSwiperTimerMixin {
 
 class _SubFlSwiper extends StatefulWidget {
   const _SubFlSwiper(
-      {Key? key,
-      this.loop = false,
+      {this.loop = false,
       required this.itemHeight,
       required this.itemWidth,
       this.duration = const Duration(seconds: 3),
@@ -232,8 +231,7 @@ class _SubFlSwiper extends StatefulWidget {
       this.itemCount = 0,
       this.scrollDirection = Axis.horizontal,
       this.onChanged,
-      this.layout = FlSwiperLayout.tinder})
-      : super(key: key);
+      this.layout = FlSwiperLayout.tinder});
 
   final IndexedWidgetBuilder? itemBuilder;
   final int itemCount;

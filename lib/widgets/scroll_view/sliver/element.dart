@@ -4,9 +4,7 @@ import 'package:flutter_waya/widgets/scroll_view/extended_scroll_view.dart';
 import 'render.dart';
 
 class SliverPinnedPersistentHeaderElement extends RenderObjectElement {
-  SliverPinnedPersistentHeaderElement(
-      SliverPinnedPersistentHeaderRenderObjectWidget widget)
-      : super(widget);
+  SliverPinnedPersistentHeaderElement(super.widget);
 
   @override
   SliverPinnedPersistentHeaderRenderObjectWidget get widget =>
@@ -77,7 +75,6 @@ class SliverPinnedPersistentHeaderElement extends RenderObjectElement {
   void forgetChild(Element child) {
     assert(child == this.child);
     this.child = null;
-    // 1.20 @mustCallSuper.
     super.forgetChild(child);
   }
 

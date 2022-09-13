@@ -15,7 +15,7 @@ enum RoutePushStyle {
 /// ExtendedWidgetsApp
 class ExtendedWidgetsApp extends StatelessWidget {
   const ExtendedWidgetsApp({
-    Key? key,
+    super.key,
     this.routes = const <String, WidgetBuilder>{},
     this.title = '',
     this.themeMode = ThemeMode.system,
@@ -63,7 +63,7 @@ class ExtendedWidgetsApp extends StatelessWidget {
     this.restorationScopeId,
     this.textStyle,
     this.useInheritedMediaQuery = false,
-  }) : super(key: key);
+  });
 
   /// 风格
   final RoutePushStyle pushStyle;
@@ -301,7 +301,7 @@ bool scaffoldWillPop = true;
 /// ExtendedScaffold
 class ExtendedScaffold extends StatelessWidget {
   const ExtendedScaffold({
-    Key? key,
+    super.key,
     this.safeLeft = false,
     this.safeTop = false,
     this.safeRight = false,
@@ -362,7 +362,7 @@ class ExtendedScaffold extends StatelessWidget {
     this.restorationId,
     this.backgroundColor,
     this.systemOverlayStyle,
-  }) : super(key: key);
+  });
 
   /// 相当于给[body] 套用 [Column]、[Row]、[Stack]
   final List<Widget>? children;

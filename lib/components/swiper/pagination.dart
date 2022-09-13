@@ -49,15 +49,13 @@ class FlSwiperController extends ChangeNotifier {
 
 class FlSwiperPluginConfig {
   const FlSwiperPluginConfig({
-    int? activeIndex,
+    this.activeIndex = 0,
     this.controller,
-    int? itemCount,
-    Axis? scrollDirection,
-    bool? loop,
-  })  : itemCount = itemCount ?? 0,
-        activeIndex = activeIndex ?? 0,
-        loop = loop ?? true,
-        scrollDirection = scrollDirection ?? Axis.horizontal;
+    this.itemCount = 0,
+    this.scrollDirection = Axis.horizontal,
+    this.loop = true,
+  });
+
   final int activeIndex;
   final int itemCount;
   final Axis scrollDirection;

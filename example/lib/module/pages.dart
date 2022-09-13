@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 class ExtendedFutureBuilderPage extends StatelessWidget {
-  const ExtendedFutureBuilderPage({Key? key}) : super(key: key);
+  const ExtendedFutureBuilderPage({super.key});
 
   @override
   Widget build(BuildContext context) {

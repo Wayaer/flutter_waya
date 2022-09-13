@@ -5,13 +5,12 @@ import 'package:flutter_waya/flutter_waya.dart';
 
 /// Build the Scroll Thumb and label using the current configuration
 typedef ScrollThumbBuilder = Widget Function(
-  Color backgroundColor,
-  Animation<double> thumbAnimation,
-  Animation<double> labelAnimation,
-  double height, {
-  Widget? labelText,
-  BoxConstraints? labelConstraints,
-});
+    Color backgroundColor,
+    Animation<double> thumbAnimation,
+    Animation<double> labelAnimation,
+    double height,
+    {Widget? labelText,
+    BoxConstraints? labelConstraints});
 
 enum ScrollbarStyle {
   rect,
@@ -24,7 +23,7 @@ typedef LabelBuilder = Widget Function(double offsetY);
 
 class DraggableScrollbar extends StatefulWidget {
   DraggableScrollbar({
-    Key? key,
+    super.key,
     Key? scrollThumbKey,
     ScrollbarStyle scrollbarStyle = ScrollbarStyle.semicircle,
     this.alwaysVisibleScrollThumb = false,
@@ -37,12 +36,11 @@ class DraggableScrollbar extends StatefulWidget {
     this.scrollbarTimeToFade = const Duration(milliseconds: 600),
     this.labelBuilder,
     this.labelConstraints,
-  })  : scrollThumbBuilder = _thumbBuilder(scrollThumbKey,
-            alwaysVisibleScrollThumb, heightScrollThumb, scrollbarStyle),
-        super(key: key);
+  }) : scrollThumbBuilder = _thumbBuilder(scrollThumbKey,
+            alwaysVisibleScrollThumb, heightScrollThumb, scrollbarStyle);
 
   const DraggableScrollbar.custom({
-    Key? key,
+    super.key,
     this.alwaysVisibleScrollThumb = false,
     required this.heightScrollThumb,
     required this.backgroundColor,
@@ -54,7 +52,7 @@ class DraggableScrollbar extends StatefulWidget {
     this.scrollbarTimeToFade = const Duration(milliseconds: 600),
     this.labelBuilder,
     this.labelConstraints,
-  }) : super(key: key);
+  });
 
   static ScrollThumbBuilder _thumbBuilder(
           Key? scrollThumbKey,
@@ -178,12 +176,11 @@ class DraggableScrollbar extends StatefulWidget {
 
 class _ScrollLabel extends StatelessWidget {
   const _ScrollLabel({
-    Key? key,
     required this.child,
     required this.animation,
     required this.backgroundColor,
     this.constraints = _defaultConstraints,
-  }) : super(key: key);
+  });
 
   final Animation<double> animation;
   final Color backgroundColor;
@@ -449,11 +446,7 @@ class _ArrowClipper extends CustomClipper<Path> {
 }
 
 class _SlideFadeTransition extends StatelessWidget {
-  const _SlideFadeTransition({
-    Key? key,
-    required this.animation,
-    required this.child,
-  }) : super(key: key);
+  const _SlideFadeTransition({required this.animation, required this.child});
 
   final Animation<double> animation;
   final Widget child;

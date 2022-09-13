@@ -6,7 +6,7 @@ import 'package:flutter_waya/flutter_waya.dart';
 /// 外层添加 常用属性
 class TabBarMerge extends StatelessWidget {
   const TabBarMerge({
-    Key? key,
+    super.key,
     required this.tabBar,
     required this.controller,
     this.tabView,
@@ -22,7 +22,7 @@ class TabBarMerge extends StatelessWidget {
     this.decoration,
     this.constraints,
     this.dragStartBehavior = DragStartBehavior.start,
-  }) : super(key: key);
+  });
 
   /// 使用 [TabBarBox] [TabBar]
   final Widget tabBar;
@@ -87,7 +87,7 @@ enum TabBarLevelPosition { right, left }
 
 class TabBarBox extends StatelessWidget {
   const TabBarBox({
-    Key? key,
+    super.key,
     required this.controller,
     required this.tabs,
     this.indicatorPadding = EdgeInsets.zero,
@@ -116,7 +116,7 @@ class TabBarBox extends StatelessWidget {
     this.mouseCursor,
     this.enableFeedback,
     this.physics,
-  }) : super(key: key);
+  });
 
   /// [TabBar] 位置
   final TabBarLevelPosition levelPosition;

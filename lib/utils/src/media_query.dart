@@ -25,9 +25,6 @@ double get getDevicePixelRatio => mediaQuery.devicePixelRatio;
 /// disableAnimations → bool 平台是否要求尽可能禁用或减少使用动画。
 bool get getDisableAnimations => mediaQuery.disableAnimations;
 
-/// hashCode → int 此对象的哈希码
-int get getHashCode => mediaQuery.hashCode;
-
 /// invertColors → bool 设备是否反转平台的颜色
 bool get getInvertColors => mediaQuery.invertColors;
 

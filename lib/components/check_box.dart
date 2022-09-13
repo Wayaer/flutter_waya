@@ -6,7 +6,7 @@ typedef CheckboxStateChanged = Future<bool?> Function(bool? value);
 /// 官方版增加状态
 class CheckboxState extends StatelessWidget {
   const CheckboxState({
-    Key? key,
+    super.key,
     required this.value,
     this.tristate = false,
     this.onChanged,
@@ -29,8 +29,7 @@ class CheckboxState extends StatelessWidget {
     this.dispose,
     this.didChangeDependencies,
     this.didUpdateWidget,
-  })  : assert(tristate || value != null),
-        super(key: key);
+  }) : assert(tristate || value != null);
 
   /// Whether this checkbox is checked.
   ///
@@ -331,7 +330,7 @@ typedef CheckBoxStateBuilder = Widget Function(bool? value);
 /// 自定义版
 class CheckBox extends StatefulWidget {
   const CheckBox({
-    Key? key,
+    super.key,
     this.value = false,
     required this.stateBuilder,
     this.useNull = false,
@@ -339,7 +338,7 @@ class CheckBox extends StatefulWidget {
     this.decoration,
     this.margin,
     this.padding,
-  }) : super(key: key);
+  }) ;
 
   /// 不同状态时 显示的组件
   final CheckBoxStateBuilder stateBuilder;

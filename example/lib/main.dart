@@ -155,9 +155,8 @@ class _Home extends StatelessWidget {
 }
 
 class AppBarText extends AppBar {
-  AppBarText(String text, {Key? key})
+  AppBarText(String text, {super.key})
       : super(
-            key: key,
             elevation: 0,
             systemOverlayStyle: const SystemUiOverlayStyleLight(),
             title: BText(text, fontSize: 18, fontWeight: FontWeight.bold),
@@ -165,7 +164,7 @@ class AppBarText extends AppBar {
 }
 
 class ElevatedText extends StatelessWidget {
-  const ElevatedText(this.text, {Key? key, this.onTap}) : super(key: key);
+  const ElevatedText(this.text, {super.key, this.onTap});
 
   final String text;
   final VoidCallback? onTap;
@@ -184,7 +183,8 @@ class ElevatedText extends StatelessWidget {
 }
 
 class Partition extends StatelessWidget {
-  const Partition(this.title, {Key? key}) : super(key: key);
+  const Partition(this.title, {super.key});
+
   final String title;
 
   @override

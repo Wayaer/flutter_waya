@@ -13,7 +13,7 @@ typedef ToggleDefaultBuilder = Widget Function(Widget child, Widget toggle);
 
 class DropdownMenuButton extends StatefulWidget {
   const DropdownMenuButton(
-      {Key? key,
+      {super.key,
       required this.defaultBuilder,
       required this.itemBuilder,
       required this.itemCount,
@@ -23,11 +23,10 @@ class DropdownMenuButton extends StatefulWidget {
       this.decoration,
       this.margin,
       this.padding = const EdgeInsets.symmetric(horizontal: 4),
-      this.toggle})
-      : super(key: key);
+      this.toggle});
 
   DropdownMenuButton.material({
-    Key? key,
+    super.key,
     Color? iconColor,
     double iconSize = 24,
     IconData? iconData,
@@ -43,8 +42,7 @@ class DropdownMenuButton extends StatefulWidget {
   })  : toggle = Icon(iconData ?? Icons.arrow_right_rounded,
             color: iconColor, size: iconSize),
         itemBuilder = ((int index) =>
-            itemBuilder(index).paddingSymmetric(vertical: 8, horizontal: 4)),
-        super(key: key);
+            itemBuilder(index).paddingSymmetric(vertical: 8, horizontal: 4));
 
   /// 旋转组件
   final Widget? toggle;
@@ -155,7 +153,7 @@ typedef DropdownMenuValueBuilder = Widget Function(
 
 class DropdownMenu extends StatefulWidget {
   DropdownMenu({
-    Key? key,
+    super.key,
     TextStyle? titleStyle,
     TextStyle? valueStyle,
     this.backgroundColor = const Color(0x80000000),
@@ -193,11 +191,10 @@ class DropdownMenu extends StatefulWidget {
                     border: Border(
                         top: BorderSide(color: context.theme.dividerColor))),
                 child: BText(value[titleIndex][valueIndex],
-                    style: valueStyle ?? context.textTheme.bodyText1))),
-        super(key: key);
+                    style: valueStyle ?? context.textTheme.bodyText1)));
 
   DropdownMenu.custom({
-    Key? key,
+    super.key,
     required this.titleCount,
     required this.titleBuilder,
     required this.valueCount,
@@ -214,8 +211,7 @@ class DropdownMenu extends StatefulWidget {
     this.onTap,
   })  : assert(titleCount == valueCount.length),
         label = label ??
-            ((bool isSelect) => const Icon(Icons.keyboard_arrow_up, size: 20)),
-        super(key: key);
+            ((bool isSelect) => const Icon(Icons.keyboard_arrow_up, size: 20));
 
   /// title 长度
   final int titleCount;

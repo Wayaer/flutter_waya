@@ -6,7 +6,7 @@ import 'package:flutter_waya/flutter_waya.dart';
 /// 瀑布流 添加空数据视图
 class SliverWaterfallFlow extends StatelessWidget {
   const SliverWaterfallFlow(
-      {Key? key,
+      {super.key,
       this.itemBuilder,
       this.itemCount,
       this.findChildIndexCallback,
@@ -21,11 +21,10 @@ class SliverWaterfallFlow extends StatelessWidget {
       this.placeholder = const PlaceholderChild()})
       : assert(maxCrossAxisExtent != null || crossAxisCount != null),
         aligned = false,
-        children = null,
-        super(key: key);
+        children = null;
 
   const SliverWaterfallFlow.count(
-      {Key? key,
+      {super.key,
       this.children,
       this.semanticIndexCallback,
       this.addAutomaticKeepALives = true,
@@ -40,11 +39,10 @@ class SliverWaterfallFlow extends StatelessWidget {
         aligned = false,
         itemBuilder = null,
         itemCount = null,
-        findChildIndexCallback = null,
-        super(key: key);
+        findChildIndexCallback = null;
 
   const SliverWaterfallFlow.aligned(
-      {Key? key,
+      {super.key,
       this.itemBuilder,
       this.itemCount,
       this.findChildIndexCallback,
@@ -60,8 +58,7 @@ class SliverWaterfallFlow extends StatelessWidget {
       : assert(maxCrossAxisExtent != null || crossAxisCount != null),
         assert(itemBuilder != null),
         children = null,
-        aligned = true,
-        super(key: key);
+        aligned = true;
 
   final ChildIndexGetter? findChildIndexCallback;
   final SemanticIndexCallback? semanticIndexCallback;
@@ -151,7 +148,7 @@ class SliverWaterfallFlow extends StatelessWidget {
 /// 组合[SliverList]、[SliverGrid]、[SliverFixedExtentList]
 class SliverListGrid extends StatelessWidget {
   const SliverListGrid({
-    Key? key,
+    super.key,
 
     /// 多列最大列数 [crossAxisCount]>1 固定列
     this.crossAxisCount = 1,
@@ -185,11 +182,10 @@ class SliverListGrid extends StatelessWidget {
     this.placeholder = const PlaceholderChild(),
     this.prototypeItem,
   })  : assert(itemBuilder != null && itemCount != null),
-        children = null,
-        super(key: key);
+        children = null;
 
   const SliverListGrid.count({
-    Key? key,
+    super.key,
 
     /// 多列最大列数 [crossAxisCount]>1 固定列
     this.crossAxisCount = 1,
@@ -223,8 +219,7 @@ class SliverListGrid extends StatelessWidget {
         itemBuilder = null,
         itemCount = null,
         separatorBuilder = null,
-        findChildIndexCallback = null,
-        super(key: key);
+        findChildIndexCallback = null;
 
   /// 横轴的等长度元素数量
   final int crossAxisCount;

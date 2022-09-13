@@ -7,7 +7,7 @@ import 'package:flutter_waya/flutter_waya.dart';
 
 class Universal extends StatelessWidget {
   const Universal({
-    Key? key,
+    super.key,
     this.addCard = false,
     this.addInkWell = false,
     this.isScroll = false,
@@ -159,8 +159,7 @@ class Universal extends StatelessWidget {
     this.builder,
     this.fit,
     this.systemOverlayStyle,
-  })  : assert(!(addCard && addInkWell), 'One of them must be true'),
-        super(key: key);
+  }) : assert(!(addCard && addInkWell), 'One of them must be true');
 
   /// ****** [AnnotatedRegion]  ****** ///
   final SystemUiOverlayStyle? systemOverlayStyle;
@@ -900,7 +899,7 @@ class _DecorationClipper extends CustomClipper<Path> {
 
 class SimpleButton extends StatelessWidget {
   const SimpleButton({
-    Key? key,
+    super.key,
     this.text = 'Button',
     this.isElastic = false,
     this.addInkWell = false,
@@ -927,7 +926,7 @@ class SimpleButton extends StatelessWidget {
     this.highlightColor,
     this.splashColor,
     this.borderRadius = BorderRadius.zero,
-  }) : super(key: key);
+  });
 
   final Widget? child;
   final TextStyle? textStyle;

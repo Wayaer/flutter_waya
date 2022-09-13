@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 class ExtensionPage extends StatelessWidget {
-  const ExtensionPage({Key? key}) : super(key: key);
+  const ExtensionPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class ExtensionPage extends StatelessWidget {
 }
 
 class _ExtensionDurationPage extends StatelessWidget {
-  const _ExtensionDurationPage({Key? key}) : super(key: key);
+  const _ExtensionDurationPage();
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +54,7 @@ class _ExtensionDurationPage extends StatelessWidget {
 }
 
 class _ExtensionDateTimePage extends StatelessWidget {
-  const _ExtensionDateTimePage({Key? key}) : super(key: key);
+  const _ExtensionDateTimePage();
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +70,7 @@ class _ExtensionDateTimePage extends StatelessWidget {
 }
 
 class _ExtensionMapPage extends StatelessWidget {
-  const _ExtensionMapPage({Key? key}) : super(key: key);
+  const _ExtensionMapPage();
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +91,7 @@ class _ExtensionMapPage extends StatelessWidget {
 }
 
 class _ExtensionListPage extends StatelessWidget {
-  const _ExtensionListPage({Key? key}) : super(key: key);
+  const _ExtensionListPage();
 
   @override
   Widget build(BuildContext context) {
@@ -118,7 +118,7 @@ class _ExtensionListPage extends StatelessWidget {
 }
 
 class _ExtensionStringPage extends StatelessWidget {
-  const _ExtensionStringPage({Key? key}) : super(key: key);
+  const _ExtensionStringPage();
 
   @override
   Widget build(BuildContext context) {
@@ -150,7 +150,7 @@ class _ExtensionStringPage extends StatelessWidget {
 }
 
 class _ExtensionFunctionPage extends StatelessWidget {
-  const _ExtensionFunctionPage({Key? key}) : super(key: key);
+  const _ExtensionFunctionPage();
 
   @override
   Widget build(BuildContext context) {
@@ -213,7 +213,7 @@ class _ExtensionFunctionPage extends StatelessWidget {
 }
 
 class _NoThrottleFunction extends StatefulWidget {
-  const _NoThrottleFunction({Key? key}) : super(key: key);
+  const _NoThrottleFunction();
 
   @override
   _NoThrottleFunctionState createState() => _NoThrottleFunctionState();
@@ -237,7 +237,7 @@ class _NoThrottleFunctionState extends State<_NoThrottleFunction> {
 }
 
 class _ExtensionNumPage extends StatelessWidget {
-  const _ExtensionNumPage({Key? key}) : super(key: key);
+  const _ExtensionNumPage();
 
   @override
   Widget build(BuildContext context) {
@@ -264,7 +264,7 @@ class _ExtensionNumPage extends StatelessWidget {
 }
 
 class _ExtensionContextPage extends StatelessWidget {
-  const _ExtensionContextPage({Key? key}) : super(key: key);
+  const _ExtensionContextPage();
 
   @override
   Widget build(BuildContext context) {
@@ -305,7 +305,8 @@ class _ExtensionContextPage extends StatelessWidget {
 }
 
 class _Item extends StatelessWidget {
-  const _Item(this.func, this.description, {Key? key}) : super(key: key);
+  const _Item(this.func, this.description);
+
   final String func;
   final String description;
 

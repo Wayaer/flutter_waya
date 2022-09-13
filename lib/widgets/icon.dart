@@ -3,7 +3,7 @@ import 'package:flutter_waya/flutter_waya.dart';
 
 class IconBox extends StatelessWidget {
   const IconBox({
-    Key? key,
+    super.key,
     this.maxLines = 1,
     this.overflow = TextOverflow.ellipsis,
     this.textAlign = TextAlign.start,
@@ -34,7 +34,7 @@ class IconBox extends StatelessWidget {
     this.title,
     this.visible = true,
     this.widget,
-  }) : super(key: key);
+  });
 
   /// icon > image > imageProvider > widget
   final Widget? widget;
@@ -182,7 +182,6 @@ class IconBox extends StatelessWidget {
           excludeFromSemantics: true,
           semanticLabel: semanticLabel));
     }
-
     if (widget != null) listWidget.add(widget!);
     return listWidget;
   }

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 class GesturePage extends StatelessWidget {
-  const GesturePage({Key? key}) : super(key: key);
+  const GesturePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class GesturePage extends StatelessWidget {
 }
 
 class _GestureLockPage extends StatelessWidget {
-  const _GestureLockPage({Key? key}) : super(key: key);
+  const _GestureLockPage();
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +36,7 @@ class _GestureLockPage extends StatelessWidget {
 }
 
 class _GestureZoomPage extends StatelessWidget {
-  const _GestureZoomPage({Key? key}) : super(key: key);
+  const _GestureZoomPage();
 
   @override
   Widget build(BuildContext context) {

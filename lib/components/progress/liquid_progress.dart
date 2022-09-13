@@ -13,64 +13,46 @@ enum LiquidProgressType {
 
 class LiquidProgress extends ProgressIndicator {
   const LiquidProgress.linear({
-    Key? key,
-    double value = 0.5,
-    Color? backgroundColor,
-    Color? color,
-    Animation<Color?>? valueColor,
+    super.key,
+    super.value = 0.5,
+    super.backgroundColor,
+    super.color,
+    super.valueColor,
     this.borderWidth = 0,
     this.borderColor = Colors.transparent,
     this.borderRadius = 0,
     this.center,
     this.direction = Axis.horizontal,
   })  : shapePath = null,
-        type = LiquidProgressType.linear,
-        super(
-            key: key,
-            value: value,
-            color: color,
-            backgroundColor: backgroundColor,
-            valueColor: valueColor);
+        type = LiquidProgressType.linear;
 
   const LiquidProgress.circular(
-      {Key? key,
-      double value = 0.5,
-      Color? backgroundColor,
-      Color? color,
-      Animation<Color?>? valueColor,
+      {super.key,
+      super.value = 0.5,
+      super.backgroundColor,
+      super.color,
+      super.valueColor,
       this.borderWidth = 0,
       this.borderColor,
       this.center,
       this.direction = Axis.vertical})
       : borderRadius = 0,
         shapePath = null,
-        type = LiquidProgressType.circular,
-        super(
-            key: key,
-            value: value,
-            color: color,
-            backgroundColor: backgroundColor,
-            valueColor: valueColor);
+        type = LiquidProgressType.circular;
 
   const LiquidProgress.custom(
-      {Key? key,
-      double value = 0.5,
-      Color? backgroundColor,
-      Animation<Color?>? valueColor,
-      Color? color,
+      {super.key,
+      super.value = 0.5,
+      super.backgroundColor,
+      super.valueColor,
+      super.color,
       this.center,
       required this.direction,
       required this.shapePath})
       : borderWidth = null,
         borderColor = null,
         borderRadius = 0,
-        type = LiquidProgressType.custom,
-        super(
-            key: key,
-            value: value,
-            color: color,
-            backgroundColor: backgroundColor,
-            valueColor: valueColor);
+        type = LiquidProgressType.custom;
 
   /// The width of the border, if this is set [borderColor] must also be set.
   final double? borderWidth;

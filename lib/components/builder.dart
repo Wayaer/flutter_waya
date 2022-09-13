@@ -20,7 +20,7 @@ typedef ValueBuilderCallback<T> = Widget Function(
 /// ```
 class ValueBuilder<T> extends StatefulWidget {
   const ValueBuilder({
-    Key? key,
+    super.key,
     this.initialValue,
     this.initState,
     this.didChangeDependencies,
@@ -29,7 +29,7 @@ class ValueBuilder<T> extends StatefulWidget {
     this.onUpdate,
     this.deactivate,
     this.dispose,
-  }) : super(key: key);
+  });
 
   final T? initialValue;
   final ValueCallback<BuildContext>? initState;
@@ -116,7 +116,7 @@ typedef ValueListenBuilderCallback<T> = Widget Function(
 
 class ValueListenBuilder<T> extends StatefulWidget {
   const ValueListenBuilder({
-    Key? key,
+    super.key,
     this.initialValue,
     this.initState,
     this.didChangeDependencies,
@@ -125,7 +125,7 @@ class ValueListenBuilder<T> extends StatefulWidget {
     this.onUpdate,
     this.deactivate,
     this.dispose,
-  }) : super(key: key);
+  });
 
   final T? initialValue;
   final ValueCallback<BuildContext>? initState;
@@ -205,14 +205,14 @@ typedef StatefulWidgetFunction = void Function(
 /// StatefulBuilder 扩展
 class ExtendedStatefulBuilder extends StatefulWidget {
   const ExtendedStatefulBuilder({
-    Key? key,
+    super.key,
     this.initState,
     this.didChangeDependencies,
     required this.builder,
     this.didUpdateWidget,
     this.deactivate,
     this.dispose,
-  }) : super(key: key);
+  });
 
   final StatefulWidgetFunction? initState;
   final StatefulWidgetFunction? didChangeDependencies;
@@ -264,7 +264,7 @@ class _ExtendedStatefulBuilderState extends State<ExtendedStatefulBuilder> {
 /// FutureBuilder 扩展
 class ExtendedFutureBuilder<T> extends StatefulWidget {
   const ExtendedFutureBuilder({
-    Key? key,
+    super.key,
     this.initialData,
     required this.future,
     this.onNone,
@@ -279,7 +279,7 @@ class ExtendedFutureBuilder<T> extends StatefulWidget {
     this.didUpdateWidget,
     this.deactivate,
     this.dispose,
-  }) : super(key: key);
+  });
 
   /// 初始化数据
   final T? initialData;

@@ -190,13 +190,10 @@ class ExtendedOverlayEntry extends OverlayEntry {
     this.autoOff = false,
     WidgetBuilder? builder,
     Widget? widget,
-    bool opaque = false,
-    bool maintainState = false,
+    super.opaque = false,
+    super.maintainState = false,
   })  : assert(builder != null || widget != null),
-        super(
-            builder: builder ?? (_) => widget!,
-            opaque: opaque,
-            maintainState: maintainState);
+        super(builder: builder ?? (_) => widget!);
 
   /// 是否自动关闭
   final bool autoOff;

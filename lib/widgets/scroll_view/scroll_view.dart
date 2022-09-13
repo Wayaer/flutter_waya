@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
@@ -10,44 +12,27 @@ export 'sliver/sliver.dart';
 /// 嵌套 sliver 家族组件
 class RefreshScrollView extends ScrollView {
   RefreshScrollView({
-    Key? key,
+    super.key,
     this.refreshConfig,
     this.noScrollBehavior = false,
     this.padding,
     this.slivers = const <Widget>[],
-    bool reverse = false,
     bool shrinkWrap = false,
-    Axis? scrollDirection = Axis.vertical,
-    double anchor = 0.0,
-    double? cacheExtent,
-    ScrollController? controller,
-    bool? primary,
-    ScrollPhysics? physics,
-    Key? center,
-    int? semanticChildCount,
-    DragStartBehavior dragStartBehavior = DragStartBehavior.start,
-    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
-        ScrollViewKeyboardDismissBehavior.manual,
-    Clip clipBehavior = Clip.hardEdge,
-    ScrollBehavior? scrollBehavior,
-    String? restorationId,
-  }) : super(
-            key: key,
-            controller: controller,
-            scrollDirection: scrollDirection ?? Axis.vertical,
-            shrinkWrap: _shrinkWrap(shrinkWrap, physics),
-            reverse: reverse,
-            clipBehavior: clipBehavior,
-            dragStartBehavior: dragStartBehavior,
-            cacheExtent: cacheExtent,
-            restorationId: restorationId,
-            physics: physics,
-            primary: primary,
-            center: center,
-            anchor: anchor,
-            scrollBehavior: scrollBehavior,
-            semanticChildCount: semanticChildCount,
-            keyboardDismissBehavior: keyboardDismissBehavior);
+    super.reverse = false,
+    super.scrollDirection = Axis.vertical,
+    super.anchor = 0.0,
+    super.cacheExtent,
+    super.controller,
+    super.primary,
+    super.physics,
+    super.center,
+    super.semanticChildCount,
+    super.dragStartBehavior = DragStartBehavior.start,
+    super.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
+    super.clipBehavior = Clip.hardEdge,
+    super.scrollBehavior,
+    super.restorationId,
+  }) : super(shrinkWrap: _shrinkWrap(shrinkWrap, physics));
 
   static bool _shrinkWrap(bool shrinkWrap, ScrollPhysics? physics) {
     if (physics == const NeverScrollableScrollPhysics()) return true;
@@ -62,26 +47,24 @@ class RefreshScrollView extends ScrollView {
   @override
   Widget build(BuildContext context) {
     Widget widget = super.build(context);
-    if (refreshConfig != null) {
-      widget = EasyRefreshed(
-          slivers: buildSlivers(context),
-          scrollDirection: scrollDirection,
-          reverse: reverse,
-          scrollController: controller,
-          controller: refreshConfig!.controller,
-          onLoading: refreshConfig!.onLoading,
-          onRefresh: refreshConfig!.onRefresh,
-          header: refreshConfig!.header,
-          footer: refreshConfig!.footer,
-          primary: primary,
-          shrinkWrap: shrinkWrap,
-          cacheExtent: cacheExtent,
-          dragStartBehavior: dragStartBehavior);
-    }
     if (noScrollBehavior) {
       widget = ScrollConfiguration(behavior: NoScrollBehavior(), child: widget);
     }
     if (padding != null) widget = Padding(padding: padding!, child: widget);
+    if (refreshConfig != null) {
+      widget = EasyRefreshed(
+          config: refreshConfig!..scrollController = controller,
+          builder: (_, ScrollPhysics physics) => CustomScrollView(
+              physics: physics,
+              controller: controller,
+              primary: primary,
+              shrinkWrap: shrinkWrap,
+              cacheExtent: cacheExtent,
+              dragStartBehavior: dragStartBehavior,
+              scrollDirection: scrollDirection,
+              reverse: reverse,
+              slivers: buildSlivers(context)));
+    }
     return widget;
   }
 
@@ -95,25 +78,96 @@ void sendRefreshType([EasyRefreshType? refresh]) {
 
 class RefreshConfig {
   RefreshConfig(
-      {this.header,
-      this.controller,
+      {this.controller,
       this.onRefresh,
       this.onLoading,
-      this.footer});
+      this.header,
+      this.footer,
+      this.spring,
+      this.frictionFactor,
+      this.simultaneously = false,
+      this.noMoreRefresh = false,
+      this.noMoreLoad = false,
+      this.resetAfterRefresh = true,
+      this.refreshOnStart = false,
+      this.refreshOnStartHeader,
+      this.callRefreshOverOffset = 20,
+      this.callLoadOverOffset = 20,
+      this.fit = StackFit.loose,
+      this.clipBehavior = Clip.hardEdge,
+      this.scrollController,
+      this.notLoadFooter,
+      this.notRefreshHeader});
 
+  /// 可不传controller，
+  /// 若想关闭刷新组件可以通过发送消息
+  /// sendRefreshType(RefreshCompletedType.refresh);
   EasyRefreshController? controller;
 
   /// 下拉刷新回调(null为不开启刷新)
-  OnRefreshCallback? onRefresh;
+  FutureOr Function()? onRefresh;
 
   /// 上拉加载回调(null为不开启加载)
-  OnLoadCallback? onLoading;
+  FutureOr Function()? onLoading;
 
   /// CustomHeader
   Header? header;
 
   /// CustomFooter
   Footer? footer;
+
+  /// Structure that describes a spring's constants.
+  /// When spring is not set in [Header] and [Footer].
+  SpringDescription? spring;
+
+  /// Friction factor when list is out of bounds.
+  FrictionFactor? frictionFactor;
+
+  /// Refresh and load can be performed simultaneously.
+  bool simultaneously;
+
+  /// Is it possible to refresh after there is no more.
+  bool noMoreRefresh;
+
+  /// Is it loadable after no more.
+  bool noMoreLoad;
+
+  /// Reset after refresh when no more deactivation is loaded.
+  bool resetAfterRefresh;
+
+  /// Refresh on start.
+  /// When the EasyRefresh build is complete, trigger the refresh.
+  bool refreshOnStart;
+
+  /// Header for refresh on start.
+  /// Use [header] when null.
+  Header? refreshOnStartHeader;
+
+  /// Offset beyond trigger offset when calling refresh.
+  /// Used when refreshOnStart is true and [EasyRefreshController.callRefresh].
+  double callRefreshOverOffset;
+
+  /// Offset beyond trigger offset when calling load.
+  /// Used when [EasyRefreshController.callLoad].
+  double callLoadOverOffset;
+
+  /// See [Stack.StackFit]
+  StackFit fit;
+
+  /// See [Stack.clipBehavior].
+  Clip clipBehavior;
+
+  /// When the position cannot be determined, such as [NestedScrollView].
+  /// Mainly used to trigger events.
+  ScrollController? scrollController;
+
+  /// Overscroll behavior when [onRefresh] is null.
+  /// Won't build widget.
+  NotRefreshHeader? notRefreshHeader;
+
+  /// Overscroll behavior when [onLoad] is null.
+  /// Won't build widget.
+  NotLoadFooter? notLoadFooter;
 }
 
 EasyRefreshController? _holdController;
@@ -149,57 +203,15 @@ enum EasyRefreshType {
 
 class EasyRefreshed extends StatefulWidget {
   const EasyRefreshed({
-    Key? key,
-    this.scrollDirection = Axis.vertical,
-    this.shrinkWrap = false,
-    this.reverse = false,
-    this.dragStartBehavior = DragStartBehavior.start,
-    this.controller,
-    this.onRefresh,
-    this.onLoading,
-    this.header,
-    this.footer,
-    required this.slivers,
-    this.cacheExtent,
-    this.primary,
-    this.scrollController,
-  }) : super(key: key);
+    super.key,
+    this.child,
+    this.builder,
+    required this.config,
+  }) : assert(child != null || builder != null);
 
-  /// 可不传controller，
-  /// 若想关闭刷新组件可以通过发送消息
-  /// sendRefreshType(RefreshCompletedType.refresh);
-  final EasyRefreshController? controller;
-  final OnRefreshCallback? onRefresh;
-  final OnLoadCallback? onLoading;
-
-  /// CustomHeader
-  final Header? header;
-
-  /// CustomFooter
-  final Footer? footer;
-
-  final List<Widget> slivers;
-
-  /// 是否倒置列表
-  final bool reverse;
-
-  /// 设置预加载的区域
-  final double? cacheExtent;
-
-  /// 如果内容不足，则用户无法滚动 而如果[primary]为true，它们总是可以尝试滚动。
-  final bool? primary;
-
-  /// 滚动方向
-  /// [Axis.vertical] 垂直滚动
-  /// [Axis.horizontal] 水平滚动
-  final Axis scrollDirection;
-  final DragStartBehavior dragStartBehavior;
-
-  /// 整个滚动控制器
-  final ScrollController? scrollController;
-
-  /// 当嵌套在无限长的组件里时必须设置为 false
-  final bool shrinkWrap;
+  final Widget? child;
+  final ERChildBuilder? builder;
+  final RefreshConfig config;
 
   @override
   State<EasyRefreshed> createState() => _EasyRefreshedState();
@@ -207,19 +219,28 @@ class EasyRefreshed extends StatefulWidget {
 
 class _EasyRefreshedState extends State<EasyRefreshed> {
   late EasyRefreshController controller;
+  late RefreshConfig config;
 
   @override
   void initState() {
     super.initState();
-    controller = widget.controller ?? EasyRefreshController();
+    config = widget.config;
+    controller = config.controller ??
+        EasyRefreshController(
+            controlFinishRefresh: config.onRefresh != null,
+            controlFinishLoad: config.onLoading != null);
   }
 
   @override
   void didUpdateWidget(covariant EasyRefreshed oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.controller != null && controller != widget.controller) {
+    if (oldWidget.config != widget.config) {
       controller.dispose();
-      controller = widget.controller!;
+      config = widget.config;
+      controller = config.controller ??
+          EasyRefreshController(
+              controlFinishRefresh: config.onRefresh != null,
+              controlFinishLoad: config.onLoading != null);
     }
   }
 
@@ -231,25 +252,25 @@ class _EasyRefreshedState extends State<EasyRefreshed> {
             _holdController!.callRefresh();
             break;
           case EasyRefreshType.refreshSuccess:
-            _holdController!.finishRefresh(success: true);
+            _holdController!.finishRefresh(IndicatorResult.success);
             break;
           case EasyRefreshType.refreshFailed:
-            _holdController!.finishRefresh(success: false);
+            _holdController!.finishRefresh(IndicatorResult.fail);
             break;
           case EasyRefreshType.refreshNoMore:
-            _holdController!.finishRefresh(success: true, noMore: true);
+            _holdController!.finishRefresh(IndicatorResult.noMore);
             break;
           case EasyRefreshType.loading:
             _holdController!.callLoad();
             break;
           case EasyRefreshType.loadingSuccess:
-            _holdController!.finishLoad(success: true);
+            _holdController!.finishLoad(IndicatorResult.success);
             break;
           case EasyRefreshType.loadFailed:
-            _holdController!.finishLoad(success: false);
+            _holdController!.finishLoad(IndicatorResult.fail);
             break;
           case EasyRefreshType.loadNoMore:
-            _holdController!.finishLoad(success: true, noMore: true);
+            _holdController!.finishLoad(IndicatorResult.noMore);
             break;
         }
       }
@@ -259,34 +280,40 @@ class _EasyRefreshedState extends State<EasyRefreshed> {
 
   @override
   Widget build(BuildContext context) {
-    return EasyRefresh.custom(
-        enableControlFinishRefresh: true,
-        enableControlFinishLoad: true,
+    return EasyRefresh.builder(
         controller: controller,
-        header: widget.header ?? GlobalOptions().globalRefreshHeader,
-        footer: widget.footer ?? GlobalOptions().globalRefreshFooter,
-        onLoad: widget.onLoading == null
+        header: config.header ?? GlobalOptions().globalRefreshHeader,
+        footer: config.footer ?? GlobalOptions().globalRefreshFooter,
+        onLoad: config.onLoading == null
             ? null
             : () async {
                 _holdController = controller;
                 initEventBus();
-                widget.onLoading!.call();
+                config.onLoading!.call();
               },
-        onRefresh: widget.onRefresh == null
+        onRefresh: config.onRefresh == null
             ? null
             : () async {
                 _holdController = controller;
                 initEventBus();
-                widget.onRefresh!.call();
+                config.onRefresh!.call();
               },
-        slivers: widget.slivers,
-        scrollDirection: widget.scrollDirection,
-        reverse: widget.reverse,
-        scrollController: widget.scrollController,
-        primary: widget.primary,
-        shrinkWrap: widget.shrinkWrap,
-        cacheExtent: widget.cacheExtent,
-        dragStartBehavior: widget.dragStartBehavior);
+        scrollController: config.scrollController,
+        spring: config.spring,
+        frictionFactor: config.frictionFactor,
+        notRefreshHeader: config.notRefreshHeader,
+        notLoadFooter: config.notLoadFooter,
+        simultaneously: config.simultaneously,
+        noMoreRefresh: config.noMoreRefresh,
+        noMoreLoad: config.noMoreLoad,
+        resetAfterRefresh: config.resetAfterRefresh,
+        refreshOnStart: config.refreshOnStart,
+        refreshOnStartHeader: config.refreshOnStartHeader,
+        callRefreshOverOffset: config.callRefreshOverOffset,
+        callLoadOverOffset: config.callLoadOverOffset,
+        fit: config.fit,
+        clipBehavior: config.clipBehavior,
+        childBuilder: widget.builder ?? (_, __) => widget.child!);
   }
 
   @override
