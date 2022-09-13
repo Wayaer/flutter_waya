@@ -224,6 +224,10 @@ class _EasyRefreshedState extends State<EasyRefreshed> {
   @override
   void initState() {
     super.initState();
+    initConfig();
+  }
+
+  void initConfig() {
     config = widget.config;
     controller = config.controller ??
         EasyRefreshController(
@@ -235,12 +239,9 @@ class _EasyRefreshedState extends State<EasyRefreshed> {
   void didUpdateWidget(covariant EasyRefreshed oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.config != widget.config) {
-      controller.dispose();
-      config = widget.config;
-      controller = config.controller ??
-          EasyRefreshController(
-              controlFinishRefresh: config.onRefresh != null,
-              controlFinishLoad: config.onLoading != null);
+      if (controller != config.controller) controller.dispose();
+      initConfig();
+      setState(() {});
     }
   }
 
