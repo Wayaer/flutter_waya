@@ -212,8 +212,8 @@ class _RefreshState extends State<SimpleRefresh> {
     if (child is ScrollView) {
       if (child is BoxScrollView) {
         slivers = child.buildSlivers(context);
-      } else if (child is ScrollList) {
-        slivers = child.buildSlivers(context);
+      } else if (child is RefreshScrollView) {
+        slivers = (child as RefreshScrollView).buildSlivers();
       } else if (child is CustomScrollView) {
         slivers = child.slivers;
       }
