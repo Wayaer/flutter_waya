@@ -338,7 +338,7 @@ class CheckBox extends StatefulWidget {
     this.decoration,
     this.margin,
     this.padding,
-  }) ;
+  });
 
   /// 不同状态时 显示的组件
   final CheckBoxStateBuilder stateBuilder;
