@@ -9,7 +9,7 @@ class ScrollList extends RefreshScrollView {
   /// BouncingScrollPhysics()  内容超过一屏 有回弹效果
   /// ClampingScrollPhysics()  包裹内容 不会有回弹
 
-  ScrollList({
+  const ScrollList({
     super.key,
     super.reverse = false,
     super.shrinkWrap = false,
@@ -264,8 +264,8 @@ class ScrollList extends RefreshScrollView {
   final Widget? footer;
 
   @override
-  List<Widget> buildSlivers(BuildContext context) {
-    final List<Widget> slivers = <Widget>[];
+  List<Widget> buildSlivers() {
+    final List<Widget> slivers = [];
     if (sliver.isNotEmpty) slivers.addAll(sliver);
     if (header != null) slivers.insert(0, header!);
     if (footer != null) slivers.add(footer!);

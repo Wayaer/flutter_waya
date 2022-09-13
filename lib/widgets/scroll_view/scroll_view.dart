@@ -10,66 +10,93 @@ export 'sliver/sliver.dart';
 
 /// 可刷新的滚动组件
 /// 嵌套 sliver 家族组件
-class RefreshScrollView extends ScrollView {
-  RefreshScrollView({
-    super.key,
-    this.refreshConfig,
-    this.noScrollBehavior = false,
-    this.padding,
-    this.slivers = const <Widget>[],
-    bool shrinkWrap = false,
-    super.reverse = false,
-    super.scrollDirection = Axis.vertical,
-    super.anchor = 0.0,
-    super.cacheExtent,
-    super.controller,
-    super.primary,
-    super.physics,
-    super.center,
-    super.semanticChildCount,
-    super.dragStartBehavior = DragStartBehavior.start,
-    super.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
-    super.clipBehavior = Clip.hardEdge,
-    super.scrollBehavior,
-    super.restorationId,
-  }) : super(shrinkWrap: _shrinkWrap(shrinkWrap, physics));
+class RefreshScrollView extends StatelessWidget {
+  const RefreshScrollView(
+      {super.key,
+      this.refreshConfig,
+      this.padding,
+      this.slivers = const <Widget>[],
+      this.noScrollBehavior = false,
+      this.shrinkWrap = false,
+      this.reverse = false,
+      this.scrollDirection = Axis.vertical,
+      this.anchor = 0.0,
+      this.cacheExtent,
+      this.controller,
+      this.primary,
+      this.physics,
+      this.center,
+      this.semanticChildCount,
+      this.dragStartBehavior = DragStartBehavior.start,
+      this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
+      this.clipBehavior = Clip.hardEdge,
+      this.scrollBehavior,
+      this.restorationId});
 
-  static bool _shrinkWrap(bool shrinkWrap, ScrollPhysics? physics) {
-    if (physics == const NeverScrollableScrollPhysics()) return true;
-    return shrinkWrap;
-  }
-
+  /// CustomScrollView
+  final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
+  final String? restorationId;
+  final Clip clipBehavior;
+  final DragStartBehavior dragStartBehavior;
+  final int? semanticChildCount;
+  final double? cacheExtent;
+  final double anchor;
+  final Key? center;
+  final ScrollBehavior? scrollBehavior;
+  final ScrollPhysics? physics;
+  final bool? primary;
+  final ScrollController? controller;
+  final bool shrinkWrap;
+  final bool reverse;
+  final Axis scrollDirection;
   final List<Widget> slivers;
+
+  /// Extra parameters
   final bool noScrollBehavior;
   final EdgeInsetsGeometry? padding;
   final RefreshConfig? refreshConfig;
 
-  @override
-  Widget build(BuildContext context) {
-    Widget widget = super.build(context);
-    if (noScrollBehavior) {
-      widget = ScrollConfiguration(behavior: NoScrollBehavior(), child: widget);
-    }
-    if (padding != null) widget = Padding(padding: padding!, child: widget);
-    if (refreshConfig != null) {
-      widget = EasyRefreshed(
-          config: refreshConfig!..scrollController = controller,
-          builder: (_, ScrollPhysics physics) => CustomScrollView(
-              physics: physics,
-              controller: controller,
-              primary: primary,
-              shrinkWrap: shrinkWrap,
-              cacheExtent: cacheExtent,
-              dragStartBehavior: dragStartBehavior,
-              scrollDirection: scrollDirection,
-              reverse: reverse,
-              slivers: buildSlivers(context)));
-    }
-    return widget;
+  bool _shrinkWrap(bool shrinkWrap, ScrollPhysics? physics) {
+    if (physics == const NeverScrollableScrollPhysics()) return true;
+    return shrinkWrap;
   }
 
   @override
-  List<Widget> buildSlivers(BuildContext context) => slivers;
+  Widget build(BuildContext context) {
+    Widget widget = buildCustomScrollView(physics);
+    if (noScrollBehavior) {
+      widget = ScrollConfiguration(behavior: NoScrollBehavior(), child: widget);
+    }
+    if (refreshConfig != null) {
+      widget = EasyRefreshed(
+          config: refreshConfig!..scrollController = controller,
+          builder: (_, ScrollPhysics physics) =>
+              buildCustomScrollView(physics));
+    }
+    if (padding != null) widget = Padding(padding: padding!, child: widget);
+    return widget;
+  }
+
+  List<Widget> buildSlivers() => slivers;
+
+  CustomScrollView buildCustomScrollView(ScrollPhysics? physics) =>
+      CustomScrollView(
+          physics: physics,
+          controller: controller,
+          primary: primary,
+          shrinkWrap: _shrinkWrap(shrinkWrap, physics),
+          cacheExtent: cacheExtent,
+          dragStartBehavior: dragStartBehavior,
+          scrollDirection: scrollDirection,
+          reverse: reverse,
+          slivers: buildSlivers(),
+          anchor: anchor,
+          center: center,
+          scrollBehavior: scrollBehavior,
+          keyboardDismissBehavior: keyboardDismissBehavior,
+          restorationId: restorationId,
+          clipBehavior: clipBehavior,
+          semanticChildCount: semanticChildCount);
 }
 
 void sendRefreshType([EasyRefreshType? refresh]) {
@@ -209,7 +236,10 @@ class EasyRefreshed extends StatefulWidget {
     required this.config,
   }) : assert(child != null || builder != null);
 
+  /// 用于 非ScrollView
   final Widget? child;
+
+  /// 用于 ScrollView
   final ERChildBuilder? builder;
   final RefreshConfig config;
 
