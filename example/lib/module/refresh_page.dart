@@ -77,13 +77,13 @@ class _EasyRefreshPageState extends State<EasyRefreshPage> {
                 10, 10, 10, getBottomNavigationBarHeight + 10),
             children: <Widget>[
               ElevatedText('Refresh', onTap: () {
-                sendRefreshType(EasyRefreshType.refresh);
+                currentController?.callRefresh();
               }),
               ElevatedText('开启新的页面', onTap: () {
                 push(const EasyRefreshPage());
               }),
               ElevatedText('Loading', onTap: () {
-                sendRefreshType(EasyRefreshType.loading);
+                currentController?.callLoad();
                 colors.addAll(Colors.accents);
                 setState(() {});
               }),
@@ -103,15 +103,16 @@ class _EasyRefreshPageState extends State<EasyRefreshPage> {
                       sendRefreshType(EasyRefreshType.loadingSuccess);
                     });
                   }),
-                  child: CustomScrollView(slivers: [
-                    SliverToBoxAdapter(
-                        child: Universal(
-                            padding: const EdgeInsets.all(10),
-                            children: colors.builderEntry(
-                                (MapEntry<int, Color> entry) =>
-                                    _Item(entry.key, entry.value)
-                                        .paddingOnly(bottom: 10))))
-                  ])))),
+                  builder: (_, physics) =>
+                      CustomScrollView(physics: physics, slivers: [
+                        SliverToBoxAdapter(
+                            child: Universal(
+                                padding: const EdgeInsets.all(10),
+                                children: colors.builderEntry(
+                                    (MapEntry<int, Color> entry) =>
+                                        _Item(entry.key, entry.value)
+                                            .paddingOnly(bottom: 10))))
+                      ])))),
         ));
   }
 }

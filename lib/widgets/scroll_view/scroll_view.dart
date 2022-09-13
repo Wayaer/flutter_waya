@@ -197,9 +197,10 @@ class RefreshConfig {
   NotLoadFooter? notLoadFooter;
 }
 
-EasyRefreshController? _holdController;
+/// 当前最顶层刷新组件的 Controller
+EasyRefreshController? currentController;
 
-String get _eventName => refreshEvent + _holdController.hashCode.toString();
+String get _eventName => refreshEvent + currentController.hashCode.toString();
 
 /// 刷新类型
 enum EasyRefreshType {
@@ -263,6 +264,7 @@ class _EasyRefreshedState extends State<EasyRefreshed> {
         EasyRefreshController(
             controlFinishRefresh: config.onRefresh != null,
             controlFinishLoad: config.onLoading != null);
+    currentController = controller;
   }
 
   @override
@@ -280,28 +282,28 @@ class _EasyRefreshedState extends State<EasyRefreshed> {
       if (data != null && data is EasyRefreshType) {
         switch (data) {
           case EasyRefreshType.refresh:
-            _holdController!.callRefresh();
+            currentController!.callRefresh();
             break;
           case EasyRefreshType.refreshSuccess:
-            _holdController!.finishRefresh(IndicatorResult.success);
+            currentController!.finishRefresh(IndicatorResult.success);
             break;
           case EasyRefreshType.refreshFailed:
-            _holdController!.finishRefresh(IndicatorResult.fail);
+            currentController!.finishRefresh(IndicatorResult.fail);
             break;
           case EasyRefreshType.refreshNoMore:
-            _holdController!.finishRefresh(IndicatorResult.noMore);
+            currentController!.finishRefresh(IndicatorResult.noMore);
             break;
           case EasyRefreshType.loading:
-            _holdController!.callLoad();
+            currentController!.callLoad();
             break;
           case EasyRefreshType.loadingSuccess:
-            _holdController!.finishLoad(IndicatorResult.success);
+            currentController!.finishLoad(IndicatorResult.success);
             break;
           case EasyRefreshType.loadFailed:
-            _holdController!.finishLoad(IndicatorResult.fail);
+            currentController!.finishLoad(IndicatorResult.fail);
             break;
           case EasyRefreshType.loadNoMore:
-            _holdController!.finishLoad(IndicatorResult.noMore);
+            currentController!.finishLoad(IndicatorResult.noMore);
             break;
         }
       }
@@ -318,14 +320,14 @@ class _EasyRefreshedState extends State<EasyRefreshed> {
         onLoad: config.onLoading == null
             ? null
             : () async {
-                _holdController = controller;
+                currentController = controller;
                 initEventBus();
                 config.onLoading!.call();
               },
         onRefresh: config.onRefresh == null
             ? null
             : () async {
-                _holdController = controller;
+                currentController = controller;
                 initEventBus();
                 config.onRefresh!.call();
               },
@@ -349,7 +351,10 @@ class _EasyRefreshedState extends State<EasyRefreshed> {
 
   @override
   void dispose() {
-    super.dispose();
     controller.dispose();
+    if (currentController == controller) {
+      currentController = null;
+    }
+    super.dispose();
   }
 }
