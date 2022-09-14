@@ -294,7 +294,7 @@ extension DurationExtension on Duration {
 }
 
 extension ExtensionFunction on Function() {
-  /// 函数防抖
+  /// 函数防抖 [delay] 时间后执行一次
   Function() debounce([Duration delay = const Duration(seconds: 2)]) {
     Timer? timer;
     return () {
@@ -303,7 +303,7 @@ extension ExtensionFunction on Function() {
     };
   }
 
-  /// 截流函数
+  /// 截流函数 [delay] 时间内只执行一次
   Function() throttle([Duration delay = const Duration(seconds: 2)]) {
     bool enable = true;
     return () {
