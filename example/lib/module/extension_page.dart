@@ -229,7 +229,7 @@ class _NoThrottleFunctionState extends State<_NoThrottleFunction> {
             padding: const EdgeInsets.symmetric(vertical: 2),
             child: Text(i.toString())),
         ElevatedText('点击+1', onTap: () async {
-          await 2.seconds.delayed(() {});
+          await 1.seconds.delayed(() {});
           i++;
           setState(() {});
         }),
