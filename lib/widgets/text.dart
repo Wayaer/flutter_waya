@@ -126,6 +126,15 @@ class RText extends RichText {
             style: const BTextStyle()
                 .merge(styles.isEmpty ? null : styles[entry.key]))));
   }
+
+  static convertTextStyle(BuildContext context, TextStyle style) {
+    final DefaultTextStyle defaultTextStyle = DefaultTextStyle.of(context);
+    TextStyle effectiveTextStyle = style;
+    if (style.inherit) {
+      effectiveTextStyle = defaultTextStyle.style.merge(style);
+    }
+    return effectiveTextStyle;
+  }
 }
 
 class BText extends StatelessWidget {
@@ -277,12 +286,7 @@ class BText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final DefaultTextStyle defaultTextStyle = DefaultTextStyle.of(context);
-    TextStyle? effectiveTextStyle = style;
-    if (style == null || style!.inherit) {
-      effectiveTextStyle = defaultTextStyle.style.merge(style);
-    }
-    effectiveTextStyle = effectiveTextStyle!
-        .merge(BTextStyle(
+    TextStyle effectiveTextStyle = BTextStyle(
             inherit: inherit,
             color: color,
             backgroundColor: backgroundColor,
@@ -305,8 +309,11 @@ class BText extends StatelessWidget {
             debugLabel: debugLabel,
             fontFamily: fontFamily,
             fontFamilyFallback: fontFamilyFallback,
-            package: package))
+            package: package)
         .merge(style);
+    if (inherit && (style?.inherit ?? true)) {
+      effectiveTextStyle = defaultTextStyle.style.merge(effectiveTextStyle);
+    }
     return RText(
         text: text,
         style: effectiveTextStyle,
