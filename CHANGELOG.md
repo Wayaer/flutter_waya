@@ -1,3 +1,7 @@
+## 3.0.1
+
+* Refactoring `RText` and `BText`
+
 ## 3.0.0+2
 
 * Update Flutter version 3.3.0

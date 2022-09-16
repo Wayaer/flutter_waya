@@ -65,7 +65,7 @@ class RText extends RichText {
     super.selectionColor,
   })  : assert(texts.isNotEmpty),
         super(
-            text: textSpan(buildTextSpan(
+            text: buildTextSpan(buildTextSpans(
                 texts: texts,
                 style: style,
                 styles: styles,
@@ -77,7 +77,7 @@ class RText extends RichText {
                 locales: locales,
                 spellOuts: spellOuts)));
 
-  static TextSpan textSpan(List<TextSpan> textSpans) => TextSpan(
+  static TextSpan buildTextSpan(List<TextSpan> textSpans) => TextSpan(
       text: textSpans.first.text,
       style: textSpans.first.style,
       semanticsLabel: textSpans.first.semanticsLabel,
@@ -85,7 +85,7 @@ class RText extends RichText {
       children:
           textSpans.length > 1 ? textSpans.sublist(1, textSpans.length) : null);
 
-  static List<TextSpan> buildTextSpan({
+  static List<TextSpan> buildTextSpans({
     TextStyle? style,
     required List<String> texts,
     required List<TextStyle?> styles,
@@ -97,37 +97,35 @@ class RText extends RichText {
     required List<Locale?> locales,
     required List<bool?> spellOuts,
   }) =>
-      texts.builderEntry((MapEntry<int, String> entry) {
-        return TextSpan(
-            text: entry.value,
-            semanticsLabel: semanticsLabels.isEmpty ||
-                    (semanticsLabels.length - 1) < entry.key
-                ? null
-                : semanticsLabels[entry.key],
-            mouseCursor:
-                mouseCursors.isEmpty || (mouseCursors.length - 1) < entry.key
-                    ? null
-                    : mouseCursors[entry.key],
-            onEnter: onEnters.isEmpty || (onEnters.length - 1) < entry.key
-                ? null
-                : onEnters[entry.key],
-            onExit: onExits.isEmpty || (onExits.length - 1) < entry.key
-                ? null
-                : onExits[entry.key],
-            spellOut: spellOuts.isEmpty || (spellOuts.length - 1) < entry.key
-                ? null
-                : spellOuts[entry.key],
-            locale: locales.isEmpty || (locales.length - 1) < entry.key
-                ? null
-                : locales[entry.key],
-            recognizer:
-                recognizers.isEmpty || (recognizers.length - 1) < entry.key
-                    ? null
-                    : recognizers[entry.key],
-            style: styles.isEmpty || (styles.length - 1) < entry.key
-                ? const BTextStyle().merge(style)
-                : const BTextStyle().merge(style).merge(styles[entry.key]));
-      });
+      texts.builderEntry((MapEntry<int, String> entry) => TextSpan(
+          text: entry.value,
+          semanticsLabel: semanticsLabels.isEmpty ||
+                  (semanticsLabels.length - 1) < entry.key
+              ? null
+              : semanticsLabels[entry.key],
+          mouseCursor:
+              mouseCursors.isEmpty || (mouseCursors.length - 1) < entry.key
+                  ? null
+                  : mouseCursors[entry.key],
+          onEnter: onEnters.isEmpty || (onEnters.length - 1) < entry.key
+              ? null
+              : onEnters[entry.key],
+          onExit: onExits.isEmpty || (onExits.length - 1) < entry.key
+              ? null
+              : onExits[entry.key],
+          spellOut: spellOuts.isEmpty || (spellOuts.length - 1) < entry.key
+              ? null
+              : spellOuts[entry.key],
+          locale: locales.isEmpty || (locales.length - 1) < entry.key
+              ? null
+              : locales[entry.key],
+          recognizer:
+              recognizers.isEmpty || (recognizers.length - 1) < entry.key
+                  ? null
+                  : recognizers[entry.key],
+          style: styles.isEmpty || (styles.length - 1) < entry.key
+              ? const BTextStyle().merge(style)
+              : const BTextStyle().merge(style).merge(styles[entry.key])));
 
   static convertTextStyle(BuildContext context, TextStyle style) {
     final DefaultTextStyle defaultTextStyle = DefaultTextStyle.of(context);
