@@ -232,6 +232,35 @@ class ComponentsPage extends StatelessWidget {
                         color: context.theme.dividerColor,
                         strokeWidth: 1,
                         gap: 20))),
+            const Partition('RText'),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+              const BText('BText'),
+              const BText.rich(
+                  style: BTextStyle(color: Color(0xFF42A5F5)),
+                  texts: [
+                    'BText',
+                    ' . ',
+                    'rich',
+                  ],
+                  styles: [
+                    BTextStyle(color: Color(0xFFD32F2F)),
+                    BTextStyle(color: Colors.white),
+                    BTextStyle(color: Color(0xFFFFC400)),
+                  ]),
+              RText(
+                  style: const BTextStyle(color: Color(0xFF42A5F5)),
+                  texts: const [
+                    'RText',
+                    ' = ',
+                    'RichText 魔改版',
+                  ],
+                  styles: const [
+                    BTextStyle(color: Color(0xFFD32F2F)),
+                    BTextStyle(color: Colors.white),
+                    // BTextStyle(color: Color(0xFFFFC400)),
+                  ])
+            ]),
+
             const SizedBox(height: 100),
           ]);
 }
