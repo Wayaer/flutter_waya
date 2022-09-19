@@ -53,6 +53,7 @@ enum SendState {
 }
 
 typedef SendStateBuilder = Widget Function(SendState state, int i);
+typedef SendStateChanged = void Function(SendState state);
 
 /// 发送验证码
 class SendSMS extends StatefulWidget {
@@ -63,7 +64,8 @@ class SendSMS extends StatefulWidget {
       this.duration = const Duration(seconds: 60),
       this.margin,
       this.padding,
-      required this.stateBuilder});
+      required this.stateBuilder,
+      this.onStateChanged});
 
   /// 状态回调
   final SendStateBuilder stateBuilder;
@@ -73,6 +75,9 @@ class SendSMS extends StatefulWidget {
 
   /// 点击按钮
   final SendSMSValueCallback? onTap;
+
+  /// 状态变化
+  final SendStateChanged? onStateChanged;
 
   /// 装饰器
   final Decoration? decoration;
@@ -88,6 +93,14 @@ class _SendSMSState extends State<SendSMS> {
   int seconds = -1;
   Timer? timer;
   SendState sendState = SendState.none;
+
+  @override
+  void initState() {
+    super.initState();
+    addPostFrameCallback((_) {
+      widget.onStateChanged?.call(sendState);
+    });
+  }
 
   @override
   Widget build(BuildContext context) => Universal(
@@ -110,6 +123,8 @@ class _SendSMSState extends State<SendSMS> {
 
   void onTap() {
     sendState = SendState.sending;
+    lastState = sendState;
+    widget.onStateChanged?.call(sendState);
     if (mounted) setState(() {});
     widget.onTap?.call(send);
   }
@@ -120,9 +135,13 @@ class _SendSMSState extends State<SendSMS> {
       startTimer();
     } else {
       sendState = SendState.resend;
+      lastState = sendState;
+      widget.onStateChanged?.call(sendState);
       if (mounted) setState(() {});
     }
   }
+
+  SendState lastState = SendState.none;
 
   void startTimer() {
     timer = 1.seconds.timerPeriodic((Timer time) {
@@ -132,6 +151,10 @@ class _SendSMSState extends State<SendSMS> {
       }
       seconds--;
       sendState = seconds < 0 ? SendState.resend : SendState.countDown;
+      if (sendState != lastState) {
+        widget.onStateChanged?.call(sendState);
+        lastState = sendState;
+      }
       if (mounted) setState(() {});
     });
   }
