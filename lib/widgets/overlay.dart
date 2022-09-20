@@ -211,3 +211,130 @@ class ExtendedOverlayEntry extends OverlayEntry {
   @override
   void remove() => removeEntry();
 }
+
+/// 关闭所有Overlay
+void closeAllOverlay() => ExtendedOverlay().closeAllOverlay();
+
+/// 关闭最顶层的Overlay
+bool closeOverlay({ExtendedOverlayEntry? entry}) =>
+    ExtendedOverlay().closeOverlay(entry: entry);
+
+/// 自定义Overlay
+ExtendedOverlayEntry? showOverlay(Widget widget, {bool autoOff = false}) =>
+    ExtendedOverlay().showOverlay(widget, autoOff: autoOff);
+
+/// Toast
+/// 关闭 closeToast();
+/// 添加 await Toast 关闭后继续执行之后的方法
+Future<ExtendedOverlayEntry?> showToast(String message,
+        {ToastStyle? style,
+        AlignmentGeometry? positioned,
+        IconData? customIcon,
+        Duration? duration,
+        ToastOptions? options}) =>
+    ExtendedOverlay().showToast(message,
+        options: options,
+        duration: duration,
+        positioned: positioned,
+        customIcon: customIcon,
+        style: style);
+
+bool closeToast() => ExtendedOverlay().closeToast();
+
+/// Toast类型
+/// 如果使用custom  请设置 [customIcon]
+enum ToastStyle { success, fail, info, warning, smile, custom }
+
+class ToastOptions {
+  const ToastOptions(
+      {this.backgroundColor = const Color(0xCC000000),
+      this.iconColor = const Color(0xFFFFFFFF),
+      this.decoration,
+      this.onTap,
+      this.textStyle,
+      this.duration = const Duration(milliseconds: 1500),
+      this.positioned = Alignment.center,
+      this.ignoring = false,
+      this.absorbing = false,
+      this.iconSize = 30,
+      this.spacing = 10,
+      this.padding = const EdgeInsets.all(10),
+      this.margin = const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+      this.direction = Axis.vertical,
+      this.modalWindowsOptions = const ModalWindowsOptions()});
+
+  /// 背景色
+  final Color? backgroundColor;
+
+  final EdgeInsetsGeometry margin;
+  final EdgeInsetsGeometry padding;
+
+  final BoxDecoration? decoration;
+
+  /// Toast onTap
+  final GestureTapCallback? onTap;
+
+  /// 显示文字样式
+  final TextStyle? textStyle;
+
+  /// Toast显示时间
+  final Duration duration;
+
+  /// Toast 定位
+  final AlignmentGeometry positioned;
+
+  /// toast 是否忽略子组件点击事件响应背景点击事件 默认 false
+  /// true [onTap] 和 [modalWindowsOptions.onTap] 都会失效
+  final bool ignoring;
+
+  /// 是否吸收子组件的点击事件且不响应背景点击事件 默认 false
+  /// [onTap] != null 时  无效
+  final bool absorbing;
+
+  /// icon
+  final Color iconColor;
+
+  /// icon size
+  final double iconSize;
+
+  final double spacing;
+
+  final Axis direction;
+
+  /// 全局Toast的 modalWindowsOptions
+  final ModalWindowsOptions modalWindowsOptions;
+
+  ToastOptions copyWith({
+    AlignmentGeometry? positioned,
+    bool? ignoring,
+    bool? absorbing,
+    Color? backgroundColor,
+    EdgeInsetsGeometry? margin,
+    EdgeInsetsGeometry? padding,
+    BoxDecoration? decoration,
+    GestureTapCallback? onTap,
+    TextStyle? textStyle,
+    Duration? duration,
+    Color? iconColor,
+    double? iconSize,
+    double? spacing,
+    Axis? direction,
+    ModalWindowsOptions? modalWindowsOptions,
+  }) =>
+      ToastOptions(
+          modalWindowsOptions: modalWindowsOptions ?? this.modalWindowsOptions,
+          positioned: positioned ?? this.positioned,
+          ignoring: ignoring ?? this.ignoring,
+          absorbing: ignoring ?? this.absorbing,
+          backgroundColor: backgroundColor ?? this.backgroundColor,
+          margin: margin ?? this.margin,
+          padding: padding ?? this.padding,
+          decoration: decoration ?? this.decoration,
+          onTap: onTap ?? this.onTap,
+          textStyle: textStyle ?? this.textStyle,
+          duration: duration ?? this.duration,
+          iconColor: iconColor ?? this.iconColor,
+          iconSize: iconSize ?? this.iconSize,
+          spacing: spacing ?? this.spacing,
+          direction: direction ?? this.direction);
+}

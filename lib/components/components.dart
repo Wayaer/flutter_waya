@@ -17,7 +17,7 @@ export 'dotted_line.dart';
 export 'draggable_scrollbar.dart';
 export 'gesture_widgets.dart';
 export 'json_parse.dart';
-export 'popup/picker.dart';
+export 'picker/picker.dart';
 export 'popup/popup.dart';
 export 'progress/liquid_progress.dart';
 export 'progress/progress.dart';
