@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 export 'extended_widgets.dart';
-export 'global_function.dart';
 export 'global_options.dart';
 export 'icon.dart';
 export 'input_text.dart';
