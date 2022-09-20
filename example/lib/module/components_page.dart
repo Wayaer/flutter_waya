@@ -183,6 +183,9 @@ class ComponentsPage extends StatelessWidget {
             const Partition('SendSMS'),
             SendSMS(
                 duration: const Duration(seconds: 10),
+                onStateChanged: (SendState value) {
+                  showToast(value.toString());
+                },
                 padding:
                     const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
                 decoration: BoxDecoration(
