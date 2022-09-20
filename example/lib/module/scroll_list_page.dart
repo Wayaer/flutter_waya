@@ -264,20 +264,17 @@ class _ScrollListPage extends StatelessWidget {
               color: Colors.grey.withOpacity(0.3),
               child: const Text('Footer'),
             )),
-            refreshConfig: RefreshConfig(
-              onRefresh: () async {
-                showToast('onRefresh');
-                2.seconds.delayed(() {
-                  sendRefreshType(EasyRefreshType.refreshSuccess);
-                });
-              },
-              onLoading: () async {
-                showToast('onLoading');
-                2.seconds.delayed(() {
-                  sendRefreshType(EasyRefreshType.loadingSuccess);
-                });
-              },
-            ),
+            refreshConfig: RefreshConfig(onRefresh: () async {
+              showToast('onRefresh');
+              2.seconds.delayed(() {
+                sendRefreshType(EasyRefreshType.refreshSuccess);
+              });
+            }, onLoading: () async {
+              showToast('onLoading');
+              2.seconds.delayed(() {
+                sendRefreshType(EasyRefreshType.loadingSuccess);
+              });
+            }),
             sliver: <Widget>[
               SliverToBoxAdapter(
                   child: Container(

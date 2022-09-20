@@ -6,9 +6,12 @@ import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/widgets/scroll_view/sliver/element.dart';
 import 'package:flutter_waya/widgets/scroll_view/sliver/render.dart';
 
+typedef BuilderScrollView = Widget Function(
+    BuildContext context, List<Widget> sliver);
+
 /// 配合 sliver 家族组件 无需设置高度  自适应高度
 class ExtendedScrollView extends StatefulWidget {
-  const ExtendedScrollView({
+  const ExtendedScrollView.custom({
     super.key,
     this.expanded = false,
     this.flex = 1,
@@ -30,6 +33,7 @@ class ExtendedScrollView extends StatefulWidget {
     this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
   })  : isNestedScrollView = false,
         floatHeaderSlivers = true,
+        builderScrollView = null,
         body = null,
         headerSliverBuilder = null;
 
@@ -50,6 +54,7 @@ class ExtendedScrollView extends StatefulWidget {
     this.slivers = const <Widget>[],
     this.scrollBehavior,
   })  : isNestedScrollView = true,
+        builderScrollView = null,
         primary = null,
         shrinkWrap = false,
         center = null,
@@ -59,14 +64,49 @@ class ExtendedScrollView extends StatefulWidget {
         keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
         assert(body != null);
 
-  /// 是否使用 [NestedScrollView]
-  final bool isNestedScrollView;
+  const ExtendedScrollView({
+    super.key,
+    this.expanded = false,
+    this.flex = 1,
+    required this.builderScrollView,
+    required this.slivers,
+  })  : isNestedScrollView = true,
+        primary = null,
+        shrinkWrap = false,
+        center = null,
+        anchor = 0.0,
+        cacheExtent = null,
+        semanticChildCount = null,
+        controller = null,
+        restorationId = null,
+        clipBehavior = Clip.hardEdge,
+        reverse = false,
+        physics = null,
+        scrollDirection = Axis.vertical,
+        dragStartBehavior = DragStartBehavior.start,
+        floatHeaderSlivers = true,
+        body = null,
+        headerSliverBuilder = null,
+        scrollBehavior = null,
+        keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
+        assert(builderScrollView != null);
 
   /// [ScrollView] 外嵌套 [Expanded]
   final bool expanded;
   final int flex;
 
-  /// **** ScrollView **** ///
+  /// 内部组件
+  final List<Widget> slivers;
+
+  /// 自定义 ScrollView
+  /// 使用自定义 [ScrollView]，以下 [ScrollView]、[NestedScrollView] 、[CustomScrollView] 均完全无效
+  /// 请将对应的 [ScrollView] 设置在自定义的组件中
+  final BuilderScrollView? builderScrollView;
+
+  /// 是否使用 [NestedScrollView]
+  final bool isNestedScrollView;
+
+  /// **** [ScrollView] **** ///
   final ScrollController? controller;
   final String? restorationId;
   final Clip clipBehavior;
@@ -81,7 +121,6 @@ class ExtendedScrollView extends StatefulWidget {
   final NestedScrollViewHeaderSliversBuilder? headerSliverBuilder;
 
   /// **** [CustomScrollView] **** ///
-  final List<Widget> slivers;
   final bool? primary;
   final bool shrinkWrap;
   final Key? center;
@@ -136,7 +175,13 @@ class _ExtendedScrollViewState extends State<ExtendedScrollView> {
   Widget build(BuildContext context) {
     late Widget current = const SizedBox();
     if (showScrollView) {
-      current = widget.isNestedScrollView ? nestedScrollView : customScrollView;
+      if (widget.builderScrollView != null) {
+        current = widget.builderScrollView!(
+            context, _sliverBuilder(slivers, sliverModel));
+      } else {
+        current =
+            widget.isNestedScrollView ? nestedScrollView : customScrollView;
+      }
       if (widget.expanded) current = expanded(current);
     } else {
       current = _Calculate(slivers: slivers, sliverModel: sliverModel);
@@ -158,8 +203,7 @@ class _ExtendedScrollViewState extends State<ExtendedScrollView> {
       controller: widget.controller,
       scrollBehavior: widget.scrollBehavior,
       headerSliverBuilder: widget.headerSliverBuilder ??
-          (BuildContext context, bool innerBoxIsScrolled) =>
-              _sliverBuilder(slivers, sliverModel));
+          (_, bool innerBoxIsScrolled) => _sliverBuilder(slivers, sliverModel));
 
   CustomScrollView get customScrollView => CustomScrollView(
       slivers: _sliverBuilder(slivers, sliverModel),
@@ -201,13 +245,17 @@ class _ExtendedScrollViewState extends State<ExtendedScrollView> {
   @override
   void didUpdateWidget(covariant ExtendedScrollView oldWidget) {
     super.didUpdateWidget(oldWidget);
-    showScrollView = false;
-    setState(() {});
-    1.seconds.delayed(updateWidget);
+    if (oldWidget.slivers.hashCode != widget.slivers.hashCode) {
+      sliverModel.clear();
+      slivers = widget.slivers;
+      showScrollView = false;
+      setState(() {});
+      1.seconds.delayed(updateWidget);
+    }
   }
 }
 
-/// 初始化 delegate
+/// 初始化 delegate 参数
 class ExtendedSliverPersistentHeader extends SliverPersistentHeader {
   ExtendedSliverPersistentHeader(
       {super.key,
@@ -335,15 +383,14 @@ class ExtendedSliverAppBar extends SliverAppBar {
 
 /// 简化部分参数 [FlexibleSpaceBar]
 class ExtendedFlexibleSpaceBar extends FlexibleSpaceBar {
-  const ExtendedFlexibleSpaceBar({
-    super.key,
-    super.title,
-    super.background,
-    super.centerTitle = true,
-    super.titlePadding,
-    super.collapseMode = CollapseMode.parallax,
-    super.stretchModes = const <StretchMode>[StretchMode.zoomBackground],
-  });
+  const ExtendedFlexibleSpaceBar(
+      {super.key,
+      super.title,
+      super.background,
+      super.centerTitle = true,
+      super.titlePadding,
+      super.collapseMode = CollapseMode.parallax,
+      super.stretchModes = const <StretchMode>[StretchMode.zoomBackground]});
 }
 
 class _SliverModel {
@@ -376,10 +423,7 @@ class _SliverModel {
 }
 
 class _Calculate extends StatelessWidget {
-  const _Calculate({
-    required this.slivers,
-    required this.sliverModel,
-  });
+  const _Calculate({required this.slivers, required this.sliverModel});
 
   final List<Widget> slivers;
   final List<_SliverModel> sliverModel;
@@ -401,17 +445,17 @@ class _Calculate extends StatelessWidget {
             if (space.background != null) stack.add(space.background!);
             column.add(Stack(key: flexibleSpaceKey, children: stack));
           } else {
-            column.add(Container(key: flexibleSpaceKey, child: flexibleSpace));
+            column.add(SizedBox(key: flexibleSpaceKey, child: flexibleSpace));
           }
           sliver.key = flexibleSpaceKey;
           if (element.bottom != null) {
             final GlobalKey bottomKey = GlobalKey();
-            column.add(Container(key: bottomKey, child: element.bottom));
+            column.add(SizedBox(key: bottomKey, child: element.bottom));
             sliver.extraKey = bottomKey;
           }
         } else if (element is ExtendedSliverPersistentHeader) {
           final GlobalKey persistentHeaderKey = GlobalKey();
-          column.add(Container(key: persistentHeaderKey, child: element.child));
+          column.add(SizedBox(key: persistentHeaderKey, child: element.child));
           sliver.key = persistentHeaderKey;
         }
         sliverModel.add(sliver);
@@ -437,10 +481,10 @@ class _PinnedPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
       child;
 
   @override
-  double get maxExtent => height!;
+  double get maxExtent => height ?? 0;
 
   @override
-  double get minExtent => height!;
+  double get minExtent => height ?? 0;
 
   @override
   bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) => false;

@@ -1,3 +1,8 @@
+## 3.0.1+2
+
+* Fixed an issue with `ExtendedScrollView()` calling `didUpdateWidget` during the lifecycle
+* Add `builderScrollView` to `ExtendedScrollView()` to customize your own `ScrollView`
+
 ## 3.0.1+1
 
 * Add `onStateChanged` for `SendSMS()`

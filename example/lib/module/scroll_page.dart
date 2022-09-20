@@ -18,7 +18,9 @@ class ScrollViewPage extends StatelessWidget {
           ElevatedText('ExtendedScrollView',
               onTap: () => push(_ExtendedScrollViewPage(slivers))),
           ElevatedText('ExtendedScrollView.nested',
-              onTap: () => push(_ExtendedScrollViewNestedPage(slivers))),
+              onTap: () => push(_ExtendedNestedScrollViewPage(slivers))),
+          ElevatedText('ExtendedScrollView.custom',
+              onTap: () => push(_ExtendedCustomScrollViewPage(slivers))),
           const SizedBox(height: 40),
           ElevatedText('CustomScrollView',
               onTap: () => push(const _CustomScrollViewPage())),
@@ -37,8 +39,8 @@ class ScrollViewPage extends StatelessWidget {
             snap: true,
             floating: true,
             backgroundColor: Colors.transparent,
-            flexibleSpaceTitle:
-                const Text('title', style: TextStyle(color: Colors.black)),
+            flexibleSpaceTitle: const Text('ExtendedSliverAppBar',
+                style: TextStyle(color: Colors.black)),
             background:
                 Container(height: kToolbarHeight * 2, color: colors[0])),
         ExtendedSliverAppBar(
@@ -46,23 +48,27 @@ class ScrollViewPage extends StatelessWidget {
             snap: true,
             floating: true,
             backgroundColor: colors[3],
-            flexibleSpaceTitle:
-                const Text('第二个Title', style: TextStyle(color: Colors.black)),
+            flexibleSpaceTitle: const Text('第二个 ExtendedSliverAppBar',
+                style: TextStyle(color: Colors.black)),
             background: Container(height: kToolbarHeight, color: colors[7])),
         ExtendedSliverPersistentHeader(
             pinned: true,
             floating: false,
             child: Container(
+                height: 60,
                 color: colors[9],
                 alignment: Alignment.center,
-                child: const Text('ExtendedSliverPersistentHeader'))),
+                child: const BText('ExtendedSliverPersistentHeader',
+                    color: Colors.black))),
         ExtendedSliverPersistentHeader(
             pinned: true,
             floating: false,
             child: Container(
+                height: 60,
                 color: colors[13],
                 alignment: Alignment.center,
-                child: const Text('ExtendedSliverPersistentHeader'))),
+                child: const BText('第二个  ExtendedSliverPersistentHeader',
+                    color: Colors.black))),
       ];
 }
 
@@ -122,8 +128,8 @@ class _CustomScrollViewPage extends StatelessWidget {
       ]));
 }
 
-class _ExtendedScrollViewNestedPage extends StatelessWidget {
-  const _ExtendedScrollViewNestedPage(this.slivers);
+class _ExtendedNestedScrollViewPage extends StatelessWidget {
+  const _ExtendedNestedScrollViewPage(this.slivers);
 
   final List<Widget> slivers;
 
@@ -147,8 +153,44 @@ class _ExtendedScrollViewNestedPage extends StatelessWidget {
                 isScroll: true,
                 color: Colors.yellow,
                 children: List<Widget>.generate(
-                    100, (int index) => Text(index.toString())))),
+                    100,
+                    (int index) => ColorEntry(
+                          index,
+                          index.isEven ? Colors.yellow : Colors.blue,
+                          width: double.infinity,
+                        )))),
       ));
+}
+
+class _ExtendedCustomScrollViewPage extends StatelessWidget {
+  const _ExtendedCustomScrollViewPage(this.slivers);
+
+  final List<Widget> slivers;
+
+  @override
+  Widget build(BuildContext context) => ExtendedScaffold(
+      body: RefreshIndicator(
+          notificationPredicate: (ScrollNotification notification) {
+            /// 返回true即可
+            return true;
+          },
+          onRefresh: () async {
+            /// 模拟网络请求
+            await Future<dynamic>.delayed(const Duration(seconds: 4));
+
+            /// 结束刷新
+            return Future<dynamic>.value(true);
+          },
+          child: ExtendedScrollView.custom(slivers: <Widget>[
+            ...slivers,
+            ...List<Widget>.generate(
+                100,
+                (int index) => ColorEntry(
+                      index,
+                      index.isEven ? Colors.yellow : Colors.blue,
+                      width: double.infinity,
+                    ).toSliverBox)
+          ])));
 }
 
 class _ExtendedScrollViewPage extends StatelessWidget {
@@ -158,14 +200,32 @@ class _ExtendedScrollViewPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ExtendedScaffold(
-          body: ExtendedScrollView(slivers: <Widget>[
-        ...slivers,
-        SliverToBoxAdapter(
-            child: Universal(
-                color: Colors.yellow,
-                children: List<Widget>.generate(
-                    100, (int index) => Text(index.toString()))))
-      ]));
+          body: ExtendedScrollView(
+              builderScrollView: (BuildContext context, List<Widget> slivers) {
+                return RefreshScrollView(
+                    slivers: slivers,
+                    refreshConfig: RefreshConfig(onRefresh: () async {
+                      showToast('onRefresh');
+                      2.seconds.delayed(() {
+                        sendRefreshType(EasyRefreshType.refreshSuccess);
+                      });
+                    }, onLoading: () async {
+                      showToast('onLoading');
+                      2.seconds.delayed(() {
+                        sendRefreshType(EasyRefreshType.loadingSuccess);
+                      });
+                    }));
+              },
+              slivers: [
+            ...slivers,
+            ...List<Widget>.generate(
+                100,
+                (int index) => ColorEntry(
+                      index,
+                      index.isEven ? Colors.yellow : Colors.blue,
+                      width: double.infinity,
+                    ).toSliverBox)
+          ]));
 }
 
 class ColorEntry extends StatelessWidget {
