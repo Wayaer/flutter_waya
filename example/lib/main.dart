@@ -103,8 +103,16 @@ class _AppState extends State<_App> {
         title: 'Waya UI',
         home: _Home(),
         builder: (_, Widget? child) {
+          if (isWeb) {
+            child = ExtendedScaffold(
+                body: Align(
+                    alignment: Alignment.center,
+                    child: Container(
+                        constraints: const BoxConstraints(maxWidth: 700),
+                        child: child)));
+          }
           return ScreenAdaptation(
-              designWidth: 480,
+              designWidth: 600,
               scaleType: ScreenAdaptationScaleType.auto,
               builder: (_, bool scaled) => child ?? const SizedBox());
         },
