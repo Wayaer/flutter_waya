@@ -11,24 +11,25 @@ class ScrollViewPage extends StatelessWidget {
     final ScrollController scrollController = ScrollController();
     return ExtendedScaffold(
         isScroll: true,
+        padding: const EdgeInsets.all(20),
         appBar: AppBarText('ScrollView'),
         mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          const SizedBox(height: 20),
+        children: [
+          const Partition('ExtendedScrollView'),
           ElevatedText('ExtendedScrollView',
               onTap: () => push(_ExtendedScrollViewPage(slivers))),
           ElevatedText('ExtendedScrollView.nested',
               onTap: () => push(_ExtendedNestedScrollViewPage(slivers))),
           ElevatedText('ExtendedScrollView.custom',
               onTap: () => push(_ExtendedCustomScrollViewPage(slivers))),
-          const SizedBox(height: 40),
+          const Partition('ScrollView'),
           ElevatedText('CustomScrollView',
               onTap: () => push(const _CustomScrollViewPage())),
           ElevatedText('RefreshScrollView',
               onTap: () => push(const _RefreshScrollViewPage())),
           ElevatedText('DraggableScrollbar',
               onTap: () => push(_DraggableScrollbar(scrollController))),
-          const SizedBox(height: 40),
+          const Partition('Refresh'),
           ElevatedText('SimpleRefresh', onTap: () => push(const RefreshPage())),
         ]);
   }

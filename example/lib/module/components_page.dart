@@ -12,9 +12,8 @@ class ComponentsPage extends StatelessWidget {
   Widget build(BuildContext context) => ExtendedScaffold(
           isScroll: true,
           appBar: AppBarText('Components Demo'),
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+          padding: const EdgeInsets.all(20),
           children: <Widget>[
-            //// PinBox
             const Partition('PinBox'),
             const SizedBox(height: 20),
             PinBox(
@@ -93,38 +92,7 @@ class ComponentsPage extends StatelessWidget {
                         alignment: Alignment.centerLeft,
                         child: BText('item$index')),
                     itemCount: 5)),
-            const Partition('Toast'),
-            Wrap(
-                children: ToastStyle.values.builder((ToastStyle style) =>
-                    ElevatedText(style.toString(), onTap: () async {
-                      await showToast(style.toString(),
-                          style: style, customIcon: Icons.ac_unit_sharp);
-                      showToast('添加await第一个Toast完了之后弹出第二个Toast');
-                    }))),
-            Wrap(
-                children: [
-              Alignment.topCenter,
-              Alignment.topLeft,
-              Alignment.topRight,
-              Alignment.bottomCenter,
-              Alignment.bottomLeft,
-              Alignment.bottomRight,
-              Alignment.center,
-              Alignment.centerLeft,
-              Alignment.centerRight,
-            ].builder((alignment) => ElevatedText(
-                        alignment.toString().split('.')[1], onTap: () async {
-                      showToast(alignment.toString(),
-                          positioned: alignment,
-                          customIcon: Icons.ac_unit_sharp,
-                          options: ToastOptions(onTap: () {
-                            log('点击了Toast');
-                          }, modalWindowsOptions: ModalWindowsOptions(
-                            onTap: () {
-                              log('点击了背景');
-                            },
-                          )));
-                    }))),
+
             const Partition('CounterAnimation'),
 
             /// CounterAnimation
@@ -180,46 +148,6 @@ class ComponentsPage extends StatelessWidget {
                             child: const Icon(Icons.chevron_left, size: 30));
                       }),
                 ]),
-            const Partition('SendSMS'),
-            SendSMS(
-                duration: const Duration(seconds: 10),
-                onStateChanged: (SendState value) {
-                  showToast(value.toString());
-                },
-                padding:
-                    const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                decoration: BoxDecoration(
-                    color: Colors.blue, borderRadius: BorderRadius.circular(4)),
-                onTap: (Function sending) async {
-                  1.seconds.delayed(() {
-                    sending(true);
-                  });
-                },
-                stateBuilder: (SendState state, int i) {
-                  switch (state) {
-                    case SendState.none:
-                      return const BText('发送验证码');
-                    case SendState.sending:
-                      return const BText('发送中');
-                    case SendState.resend:
-                      return const BText('重新发送');
-                    case SendState.countDown:
-                      return BText('等待 $i s');
-                  }
-                }),
-
-            const Partition('CountDown'),
-            CountDown(
-                onChanged: (int i) {},
-                periodic: 1,
-                duration: const Duration(seconds: 100),
-                builder: (int i) => SimpleButton(
-                    text: i.toString(),
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                    decoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(4)))),
 
             const Partition('DottedLine'),
             Container(

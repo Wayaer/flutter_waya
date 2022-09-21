@@ -5,8 +5,10 @@ import 'package:app/module/dio_page.dart';
 import 'package:app/module/extension_page.dart';
 import 'package:app/module/gesture_page.dart';
 import 'package:app/module/json_parse_page.dart';
+import 'package:app/module/overlay_page.dart';
 import 'package:app/module/pages.dart';
-import 'package:app/module/popup_windows_page.dart';
+import 'package:app/module/picker_page.dart';
+import 'package:app/module/popup_page.dart';
 import 'package:app/module/progress_page.dart';
 import 'package:app/module/refresh_page.dart';
 import 'package:app/module/scroll_list_page.dart';
@@ -129,8 +131,9 @@ class _Home extends StatelessWidget {
               ElevatedText('State Components',
                   onTap: () => push(const StateComponentsPage())),
               ElevatedText('Button', onTap: () => push(const ButtonPage())),
-              ElevatedText('PopupWindows',
-                  onTap: () => push(const PopupWindowsPage())),
+              ElevatedText('Popup', onTap: () => push(const PopupPage())),
+              ElevatedText('Picker', onTap: () => push(const PickerPage())),
+              ElevatedText('Overlay', onTap: () => push(const OverlayPage())),
               ElevatedText('FlSwiper', onTap: () => push(const FlSwiperPage())),
               ElevatedText('Progress', onTap: () => push(const ProgressPage())),
               ElevatedText('Gesture', onTap: () => push(const GesturePage())),

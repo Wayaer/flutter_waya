@@ -48,6 +48,8 @@ class SingleListPicker extends StatelessWidget {
     required this.itemCount,
     required this.itemBuilder,
     PickerOptions<List<int>>? options,
+    this.singleListPickerOptions = const SingleListPickerOptions(),
+    this.listBuilder,
   }) : options = options ?? PickerOptions<List<int>>();
 
   /// 头部和背景色配置
@@ -56,6 +58,8 @@ class SingleListPicker extends StatelessWidget {
   /// 渲染子组件
   final int itemCount;
   final SelectIndexedWidgetBuilder itemBuilder;
+  final SingleListPickerOptions singleListPickerOptions;
+  final SelectScrollListBuilder? listBuilder;
 
   @override
   Widget build(BuildContext context) {
@@ -63,28 +67,47 @@ class SingleListPicker extends StatelessWidget {
     return PickerSubject<List<int>>(
         options: options,
         child: _SingleListPickerContent(
-            onChanged: (List<int> index) {
-              selectIndex = index;
-            },
-            itemBuilder: itemBuilder,
-            itemCount: itemCount),
+                listBuilder: listBuilder,
+                singleListPickerOptions: singleListPickerOptions,
+                onChanged: (List<int> index) {
+                  selectIndex = index;
+                },
+                itemBuilder: itemBuilder,
+                itemCount: itemCount)
+            .expandedNull,
         sureTap: () => selectIndex);
   }
 }
 
-typedef SelectIndexedWidgetBuilder = Widget Function(
-    BuildContext context, int index, bool isSelect);
+class SingleListPickerOptions {
+  const SingleListPickerOptions(
+      {this.isCustomGestureTap = false, this.allowedMultipleChoice = true});
+
+  final bool isCustomGestureTap;
+  final bool allowedMultipleChoice;
+}
+
+typedef SelectIndexedWidgetBuilder = Widget Function(BuildContext context,
+    int index, bool isSelect, Function(int index) changeFunc);
+
 typedef SelectIndexedChanged = void Function(List<int> index);
+
+typedef SelectScrollListBuilder = void Function(
+    int itemCount, SelectIndexedWidgetBuilder itemBuilder);
 
 class _SingleListPickerContent extends StatefulWidget {
   const _SingleListPickerContent(
       {required this.itemCount,
       required this.itemBuilder,
-      required this.onChanged});
+      required this.onChanged,
+      required this.singleListPickerOptions,
+      this.listBuilder});
 
   final int itemCount;
   final SelectIndexedWidgetBuilder itemBuilder;
   final SelectIndexedChanged onChanged;
+  final SelectScrollListBuilder? listBuilder;
+  final SingleListPickerOptions singleListPickerOptions;
 
   @override
   State<_SingleListPickerContent> createState() =>
@@ -94,20 +117,25 @@ class _SingleListPickerContent extends StatefulWidget {
 class _SingleListPickerContentState extends State<_SingleListPickerContent> {
   List<int> selectIndex = [];
 
+  void changeSelect(int index) {
+    if (selectIndex.contains(index)) {
+      selectIndex.remove(index);
+    } else {
+      selectIndex.add(index);
+    }
+    widget.onChanged(selectIndex);
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return ScrollList.builder(
-        itemBuilder: (_, int index) => widget
-                .itemBuilder(context, index, selectIndex.contains(index))
-                .onTap(() {
-              if (selectIndex.contains(index)) {
-                selectIndex.remove(index);
-              } else {
-                selectIndex.add(index);
-              }
-              widget.onChanged(selectIndex);
-              setState(() {});
-            }),
+        itemBuilder: (_, int index) {
+          final entry = widget.itemBuilder(
+              context, index, selectIndex.contains(index), changeSelect);
+          if (widget.singleListPickerOptions.isCustomGestureTap) return entry;
+          return Universal(onTap: () => changeSelect(index), child: entry);
+        },
         itemCount: widget.itemCount);
   }
 }

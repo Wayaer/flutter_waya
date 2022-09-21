@@ -13,8 +13,8 @@ class ScrollListPage extends StatelessWidget {
         isScroll: true,
         appBar: AppBarText('ScrollList'),
         mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          const SizedBox(height: 40),
+        padding: const EdgeInsets.all(20),
+        children: [
           ElevatedText('ScrollList',
               onTap: () => push(_ScrollListPage(scrollController))),
           ElevatedText('ScrollList.builder',

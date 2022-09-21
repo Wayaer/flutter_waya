@@ -468,3 +468,35 @@ Future<T?> showCustomPicker<T>({
           options: options,
           child: content));
 }
+
+/// 多选或单选 取消 确认 选择
+/// 关闭 closePopup()
+Future<List<int>?> showSingleListPicker<T>({
+  /// 默认选中
+  int initialIndex = 0,
+
+  /// 渲染子组件
+  required int itemCount,
+  required SelectIndexedWidgetBuilder itemBuilder,
+
+  /// 头部和背景色配置
+  PickerOptions<List<int>>? options,
+
+  /// BottomSheet 配置
+  BottomSheetOptions? bottomSheetOptions,
+  SingleListPickerOptions singleListPickerOptions =
+      const SingleListPickerOptions(),
+  SelectScrollListBuilder? listBuilder,
+}) {
+  GlobalOptions().globalNavigatorKey.currentContext!.focusNode();
+  final Widget widget = SingleListPicker(
+      listBuilder: listBuilder,
+      singleListPickerOptions: singleListPickerOptions,
+      itemCount: itemCount,
+      itemBuilder: itemBuilder,
+      options: options);
+  final bottomSheet =
+      GlobalOptions().bottomSheetOptions.copyWith(isScrollControlled: false);
+  log(bottomSheet.isScrollControlled);
+  return showBottomPopup(widget: widget, options: bottomSheet);
+}

@@ -10,7 +10,7 @@ class StateComponentsPage extends StatelessWidget {
     return ExtendedScaffold(
         isScroll: true,
         appBar: AppBarText('State Components Demo'),
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+        padding: const EdgeInsets.all(20),
         children: <Widget>[
           const Partition('ValueBuilder'),
           ValueBuilder<int>(
@@ -92,7 +92,7 @@ class StateComponentsPage extends StatelessWidget {
                       value! ? Icons.check_box : Icons.check_box_outline_blank);
                 }),
           ]),
-          const Partition('Checkbox 官方版'),
+          const Partition('Checkbox 官方附加状态版本'),
           Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
@@ -131,6 +131,44 @@ class StateComponentsPage extends StatelessWidget {
                       return value;
                     }),
               ]),
+          const Partition('SendSMS'),
+          SendSMS(
+              duration: const Duration(seconds: 10),
+              onStateChanged: (SendState value) {
+                showToast(value.toString());
+              },
+              padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+              decoration: BoxDecoration(
+                  color: Colors.blue, borderRadius: BorderRadius.circular(4)),
+              onTap: (Function sending) async {
+                1.seconds.delayed(() {
+                  sending(true);
+                });
+              },
+              stateBuilder: (SendState state, int i) {
+                switch (state) {
+                  case SendState.none:
+                    return const BText('发送验证码');
+                  case SendState.sending:
+                    return const BText('发送中');
+                  case SendState.resend:
+                    return const BText('重新发送');
+                  case SendState.countDown:
+                    return BText('等待 $i s');
+                }
+              }),
+          const Partition('CountDown'),
+          CountDown(
+              onChanged: (int i) {},
+              periodic: 1,
+              duration: const Duration(seconds: 100),
+              builder: (int i) => SimpleButton(
+                  text: i.toString(),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                  decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(4)))),
           const SizedBox(height: 100),
         ]);
   }
