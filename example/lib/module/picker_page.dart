@@ -15,10 +15,16 @@ class PickerPage extends StatelessWidget {
             ElevatedText('showAreaPicker', onTap: selectCity),
             ElevatedText('showDateTimePicker', onTap: selectTime),
             ElevatedText('showSingleColumnPicker', onTap: singleColumnPicker),
+            const Partition('MultiColumnPicker'),
             ElevatedText('showMultiColumnPicker', onTap: multiColumnPicker),
             ElevatedText('showMultiColumnLinkagePicker',
                 onTap: multiColumnLinkagePicker),
+            const Partition('SingleListPicker'),
             ElevatedText('showSingleListPicker', onTap: singleListPicker),
+            ElevatedText('showSingleListPicker with screen',
+                onTap: singleListPickerWithScreen),
+            ElevatedText('showSingleListPicker custom',
+                onTap: customSingleListPicker),
           ]);
 
   Future<void> selectTime() async {
@@ -110,14 +116,40 @@ class PickerPage extends StatelessWidget {
     }
   }
 
-  Future<void> singleListPicker() async {
-    final list = ['1', '2', '3', '4', '5'];
+  Future<void> customSingleListPicker() async {
+    final list = 40.generate((index) => index.toString());
     final value = await showSingleListPicker(
         itemCount: list.length,
+        listBuilder: (int itemCount, IndexedWidgetBuilder itemBuilder) {
+          return ScrollList.waterfall(
+              maxCrossAxisExtent: 100,
+              mainAxisSpacing: 12,
+              crossAxisSpacing: 12,
+              itemBuilder: itemBuilder,
+              itemCount: itemCount);
+        },
+        itemBuilder: (context, index, isSelect, changedFun) {
+          return Universal(
+              alignment: Alignment.center,
+              decoration: BoxDecoration(color: isSelect ? Colors.blue : null),
+              direction: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(vertical: 6),
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: BText('第 $index 项'));
+        });
+    showToast(value.toString());
+  }
+
+  Future<void> singleListPicker() async {
+    final list = 40.generate((index) => index.toString());
+    final value = await showSingleListPicker(
+        itemCount: list.length,
+        singleListPickerOptions: const SingleListPickerOptions(
+            isCustomGestureTap: true, allowedMultipleChoice: false),
         itemBuilder: (context, index, isSelect, changedFun) {
           return Universal(
               direction: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
+              padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 20),
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 BText('第 $index 项'),
@@ -127,6 +159,56 @@ class PickerPage extends StatelessWidget {
                       changedFun.call(index);
                     })
               ]);
+        });
+    showToast(value.toString());
+  }
+
+  Future<void> singleListPickerWithScreen() async {
+    final list = 40.generate((index) => index.toString());
+    final type = ['筛选1', '筛选2', '筛选3'];
+    SelectIndexedChangedFunction? change;
+    List<String> screen = [];
+    final value = await showSingleListPicker(
+        itemCount: list.length,
+        options: PickerOptions(
+            bottom: Universal(
+          child: DropdownMenu(
+              onTap: (int title, int? value) {
+                showToast(
+                    '${type[title]}  ${value == null ? '' : list[value]}');
+                if (value != null) {
+                  screen = [list[value]];
+                  change?.call();
+                } else {
+                  screen.clear();
+                }
+              },
+              title: type,
+              value: [list, list, list]),
+        )),
+        singleListPickerOptions: const SingleListPickerOptions(
+            isCustomGestureTap: true, allowedMultipleChoice: false),
+        itemBuilder: (context, index, isSelect, changedFun) {
+          change = changedFun;
+          final entry = Universal(
+              direction: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 20),
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                BText('第 $index 项'),
+                Checkbox(
+                    value: isSelect,
+                    onChanged: (value) {
+                      changedFun(index);
+                    })
+              ]);
+          if (screen.isNotEmpty) {
+            if (list[index] == screen.first) {
+              return entry;
+            }
+            return const SizedBox();
+          }
+          return entry;
         });
     showToast(value.toString());
   }

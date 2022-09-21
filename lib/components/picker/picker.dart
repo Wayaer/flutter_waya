@@ -497,6 +497,5 @@ Future<List<int>?> showSingleListPicker<T>({
       options: options);
   final bottomSheet =
       GlobalOptions().bottomSheetOptions.copyWith(isScrollControlled: false);
-  log(bottomSheet.isScrollControlled);
   return showBottomPopup(widget: widget, options: bottomSheet);
 }

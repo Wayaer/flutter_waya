@@ -88,12 +88,14 @@ class SingleListPickerOptions {
 }
 
 typedef SelectIndexedWidgetBuilder = Widget Function(BuildContext context,
-    int index, bool isSelect, Function(int index) changeFunc);
+    int index, bool isSelect, SelectIndexedChangedFunction changeFunc);
+
+typedef SelectIndexedChangedFunction = void Function([int? index]);
 
 typedef SelectIndexedChanged = void Function(List<int> index);
 
-typedef SelectScrollListBuilder = void Function(
-    int itemCount, SelectIndexedWidgetBuilder itemBuilder);
+typedef SelectScrollListBuilder = Widget Function(
+    int itemCount, IndexedWidgetBuilder itemBuilder);
 
 class _SingleListPickerContent extends StatefulWidget {
   const _SingleListPickerContent(
@@ -117,25 +119,35 @@ class _SingleListPickerContent extends StatefulWidget {
 class _SingleListPickerContentState extends State<_SingleListPickerContent> {
   List<int> selectIndex = [];
 
-  void changeSelect(int index) {
-    if (selectIndex.contains(index)) {
-      selectIndex.remove(index);
-    } else {
-      selectIndex.add(index);
+  void changeSelect([int? index]) {
+    if (index != null) {
+      if (widget.singleListPickerOptions.allowedMultipleChoice) {
+        if (selectIndex.contains(index)) {
+          selectIndex.remove(index);
+        } else {
+          selectIndex.add(index);
+        }
+      } else {
+        selectIndex = [index];
+      }
+      widget.onChanged(selectIndex);
     }
-    widget.onChanged(selectIndex);
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
+    Widget itemBuilder(_, int index) {
+      final entry = widget.itemBuilder(
+          context, index, selectIndex.contains(index), changeSelect);
+      if (widget.singleListPickerOptions.isCustomGestureTap) return entry;
+      return Universal(onTap: () => changeSelect(index), child: entry);
+    }
+
+    if (widget.listBuilder != null) {
+      return widget.listBuilder!.call(widget.itemCount, itemBuilder);
+    }
     return ScrollList.builder(
-        itemBuilder: (_, int index) {
-          final entry = widget.itemBuilder(
-              context, index, selectIndex.contains(index), changeSelect);
-          if (widget.singleListPickerOptions.isCustomGestureTap) return entry;
-          return Universal(onTap: () => changeSelect(index), child: entry);
-        },
-        itemCount: widget.itemCount);
+        itemBuilder: itemBuilder, itemCount: widget.itemCount);
   }
 }
