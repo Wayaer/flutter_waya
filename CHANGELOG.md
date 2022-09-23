@@ -1,3 +1,8 @@
+## 3.1.0
+
+* Add `CookiesInterceptor()` `DebuggerInterceptor()` `LoggerInterceptor()`
+* Modify the incorrect naming
+
 ## 3.0.1+2
 
 * Fixed an issue with `ExtendedScrollView()` calling `didUpdateWidget` during the lifecycle

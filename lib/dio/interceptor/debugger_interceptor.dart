@@ -248,16 +248,19 @@ class _HttpDataWindows extends StatelessWidget {
             final list = DebuggerInterceptorHelper().allData;
             return ScrollList.builder(
                 itemCount: list.length,
-                itemBuilder: (_, int index) => _HttpDataEntry(list[index]));
+                itemBuilder: (_, int index) =>
+                    _HttpDataEntry(list[index], canTap: true));
           }).expandedNull
         ]);
   }
 }
 
 class _HttpDataEntry extends StatelessWidget {
-  const _HttpDataEntry(this.model);
+  const _HttpDataEntry(this.model, {this.canTap = false});
 
   final DebuggerInterceptorDataModel model;
+
+  final bool canTap;
 
   @override
   Widget build(BuildContext context) {
@@ -326,7 +329,8 @@ class _HttpDataEntry extends StatelessWidget {
     return '';
   }
 
-  void showDetailData() async {
+  void showDetailData() {
+    if (!canTap) return;
     showBottomPopup(
         options: GlobalOptions()
             .bottomSheetOptions

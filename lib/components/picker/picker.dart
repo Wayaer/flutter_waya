@@ -10,7 +10,7 @@ part 'multi_column.dart';
 part 'single_column.dart';
 
 /// 返回 false 不关闭弹窗;
-typedef PickerTapSureCallback<T> = bool Function(T? value);
+typedef PickerTapConfirmCallback<T> = bool Function(T? value);
 typedef PickerTapCancelCallback<T> = bool Function(T? value);
 
 const double kPickerDefaultHeight = 180;
@@ -26,7 +26,7 @@ class PickerOptions<T> {
     this.cancel = const BText('cancel'),
     this.backgroundColor,
     this.contentStyle,
-    PickerTapSureCallback<T>? confirmTap,
+    PickerTapConfirmCallback<T>? confirmTap,
     PickerTapCancelCallback<T>? cancelTap,
   })  : confirmTap = confirmTap ?? ((T? value) => true),
         cancelTap = cancelTap ?? ((T? value) => true);
@@ -56,7 +56,7 @@ class PickerOptions<T> {
 
   /// 确定点击事件 picker 关闭前，返回 false 不关闭弹窗
   /// 默认 为 true;
-  PickerTapSureCallback<T> confirmTap;
+  PickerTapConfirmCallback<T> confirmTap;
 
   /// 取消点击事件 picker 关闭前，返回 false 不关闭弹窗
   /// 默认 为 true;
@@ -71,7 +71,7 @@ class PickerOptions<T> {
     Widget? cancel,
     Widget? title,
     TextStyle? contentStyle,
-    PickerTapSureCallback<T>? confirmTap,
+    PickerTapConfirmCallback<T>? confirmTap,
     PickerTapCancelCallback<T>? cancelTap,
   }) {
     if (backgroundColor != null) this.backgroundColor = backgroundColor;
