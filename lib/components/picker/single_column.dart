@@ -58,7 +58,11 @@ class SingleListPicker extends StatelessWidget {
   /// 渲染子组件
   final int itemCount;
   final SelectIndexedWidgetBuilder itemBuilder;
+
+  /// 可选配置项
   final SingleListPickerOptions singleListPickerOptions;
+
+  /// 自定义渲染 list
   final SelectScrollListBuilder? listBuilder;
 
   @override

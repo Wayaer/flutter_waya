@@ -1,9 +1,9 @@
 import 'package:flutter_waya/flutter_waya.dart';
 
 class LoggerInterceptor<T> extends InterceptorsWrapper {
-  LoggerInterceptor({this.forbidPrintUrl = const []});
+  LoggerInterceptor({this.filteredUrls = const []});
 
-  final List<String> forbidPrintUrl;
+  final List<String> filteredUrls;
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
@@ -17,7 +17,7 @@ class LoggerInterceptor<T> extends InterceptorsWrapper {
         hasDottedLine: false);
     log('├------------------------------------------------------------------------------',
         hasDottedLine: false);
-    handler.next(options);
+    super.onRequest(options, handler);
   }
 
   @override
@@ -25,7 +25,7 @@ class LoggerInterceptor<T> extends InterceptorsWrapper {
       Response<dynamic> response, ResponseInterceptorHandler handler) {
     bool forbidPrint = false;
     String requestUri = response.requestOptions.uri.toString();
-    for (var element in forbidPrintUrl) {
+    for (var element in filteredUrls) {
       if (requestUri.toString().contains(element)) {
         forbidPrint = true;
         break;
@@ -38,7 +38,7 @@ class LoggerInterceptor<T> extends InterceptorsWrapper {
         hasDottedLine: false);
     log('└------------------------------------------------------------------------------',
         hasDottedLine: false);
-    handler.next(response);
+    super.onResponse(response, handler);
   }
 
   @override
@@ -51,6 +51,6 @@ class LoggerInterceptor<T> extends InterceptorsWrapper {
         hasDottedLine: false);
     log('└------------------------------------------------------------------------------',
         hasDottedLine: false);
-    handler.next(err);
+    super.onError(err, handler);
   }
 }
