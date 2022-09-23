@@ -38,7 +38,7 @@ class SingleColumnPicker extends StatelessWidget {
               controller: controller,
               itemBuilder: itemBuilder,
               itemCount: itemCount)),
-      sureTap: () => controller?.selectedItem ?? 0);
+      confirmTap: () => controller?.selectedItem ?? 0);
 }
 
 /// list 单多项选择器
@@ -75,7 +75,7 @@ class SingleListPicker extends StatelessWidget {
                 itemBuilder: itemBuilder,
                 itemCount: itemCount)
             .expandedNull,
-        sureTap: () => selectIndex);
+        confirmTap: () => selectIndex);
   }
 }
 

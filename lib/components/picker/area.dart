@@ -87,7 +87,7 @@ class _AreaPickerState extends State<AreaPicker> {
   }
 
   /// 点击确定返回选择的地区
-  String sureTapVoid() =>
+  String confirmTapVoid() =>
       '${province[provinceIndex]} ${city[cityIndex]} ${district[districtIndex]}';
 
   void refreshCity() {
@@ -143,7 +143,7 @@ class _AreaPickerState extends State<AreaPicker> {
     ]);
     return PickerSubject<String>(
         options: widget.options,
-        sureTap: sureTapVoid,
+        confirmTap: confirmTapVoid,
         child: SizedBox(
             width: double.infinity, height: kPickerDefaultHeight, child: row));
   }

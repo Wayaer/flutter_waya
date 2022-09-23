@@ -22,13 +22,13 @@ class PickerOptions<T> {
     this.bottom,
     this.title,
     this.padding = const EdgeInsets.symmetric(horizontal: 10),
-    this.sure = const BText('sure'),
+    this.confirm = const BText('confirm'),
     this.cancel = const BText('cancel'),
     this.backgroundColor,
     this.contentStyle,
-    PickerTapSureCallback<T>? sureTap,
+    PickerTapSureCallback<T>? confirmTap,
     PickerTapCancelCallback<T>? cancelTap,
-  })  : sureTap = sureTap ?? ((T? value) => true),
+  })  : confirmTap = confirmTap ?? ((T? value) => true),
         cancelTap = cancelTap ?? ((T? value) => true);
 
   /// 容器属性
@@ -43,7 +43,7 @@ class PickerOptions<T> {
   EdgeInsetsGeometry padding;
 
   /// right
-  Widget sure;
+  Widget confirm;
 
   /// left
   Widget cancel;
@@ -56,7 +56,7 @@ class PickerOptions<T> {
 
   /// 确定点击事件 picker 关闭前，返回 false 不关闭弹窗
   /// 默认 为 true;
-  PickerTapSureCallback<T> sureTap;
+  PickerTapSureCallback<T> confirmTap;
 
   /// 取消点击事件 picker 关闭前，返回 false 不关闭弹窗
   /// 默认 为 true;
@@ -67,22 +67,22 @@ class PickerOptions<T> {
     Widget? bottom,
     Widget? top,
     EdgeInsetsGeometry? padding,
-    Widget? sure,
+    Widget? confirm,
     Widget? cancel,
     Widget? title,
     TextStyle? contentStyle,
-    PickerTapSureCallback<T>? sureTap,
+    PickerTapSureCallback<T>? confirmTap,
     PickerTapCancelCallback<T>? cancelTap,
   }) {
     if (backgroundColor != null) this.backgroundColor = backgroundColor;
     if (bottom != null) this.bottom = bottom;
     if (top != null) this.top = top;
     if (padding != null) this.padding = padding;
-    if (sure != null) this.sure = sure;
+    if (confirm != null) this.confirm = confirm;
     if (cancel != null) this.cancel = cancel;
     if (title != null) this.title = title;
     if (contentStyle != null) this.contentStyle = contentStyle;
-    if (sureTap != null) this.sureTap = sureTap;
+    if (confirmTap != null) this.confirmTap = confirmTap;
     if (cancelTap != null) this.cancelTap = cancelTap;
     return this;
   }
@@ -92,11 +92,11 @@ class PickerOptions<T> {
       top: options?.top,
       bottom: options?.bottom,
       padding: options?.padding,
-      sure: options?.sure,
+      confirm: options?.confirm,
       cancel: options?.cancel,
       title: options?.title,
       contentStyle: options?.contentStyle,
-      sureTap: options?.sureTap,
+      confirmTap: options?.confirmTap,
       cancelTap: options?.cancelTap);
 }
 
@@ -179,13 +179,13 @@ class PickerSubject<T> extends StatelessWidget {
     super.key,
     required this.options,
     required this.child,
-    required this.sureTap,
+    required this.confirmTap,
     this.cancelTap,
   });
 
   final PickerOptions<T> options;
   final Widget child;
-  final PickerSubjectTapCallback<T>? sureTap;
+  final PickerSubjectTapCallback<T>? confirmTap;
   final PickerSubjectTapCallback<T>? cancelTap;
 
   @override
@@ -203,9 +203,9 @@ class PickerSubject<T> extends StatelessWidget {
             if (isPop) closePopup(value);
           }),
           if (options.title != null) options.title!.expandedNull,
-          options.sure.onTap(() {
-            final T? value = sureTap?.call();
-            final bool isPop = options.sureTap.call(value);
+          options.confirm.onTap(() {
+            final T? value = confirmTap?.call();
+            final bool isPop = options.confirmTap.call(value);
             if (isPop) closePopup(value);
           }),
         ]));
@@ -447,7 +447,7 @@ Future<T?> showCustomPicker<T>({
   required Widget content,
 
   /// 自定义 确定 按钮 返回参数
-  PickerSubjectTapCallback<T>? sureTap,
+  PickerSubjectTapCallback<T>? confirmTap,
 
   /// 自定义 取消 按钮 返回参数
   PickerSubjectTapCallback<T?>? cancelTap,
@@ -463,7 +463,7 @@ Future<T?> showCustomPicker<T>({
   return showBottomPopup(
       options: bottomSheetOptions,
       widget: PickerSubject<T?>(
-          sureTap: sureTap,
+          confirmTap: confirmTap,
           cancelTap: cancelTap,
           options: options,
           child: content));

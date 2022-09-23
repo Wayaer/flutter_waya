@@ -62,7 +62,7 @@ class MultiColumnPicker extends StatelessWidget {
                       },
                       itemCount: value.itemCount));
             })),
-        sureTap: () => position);
+        confirmTap: () => position);
   }
 }
 
@@ -169,7 +169,7 @@ class _MultiColumnLinkagePickerState extends State<MultiColumnLinkagePicker> {
   @override
   Widget build(BuildContext context) => PickerSubject<List<int>>(
       options: widget.options,
-      sureTap: () => position,
+      confirmTap: () => position,
       child: Universal(
         width: double.infinity,
         height: kPickerDefaultHeight,

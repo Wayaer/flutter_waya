@@ -155,7 +155,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
         : addList(30);
   }
 
-  DateTime sureTapVoid() => DateTime(
+  DateTime confirmTapVoid() => DateTime(
       unit.year == null ? defaultDate.year : yearData[yearIndex],
       unit.month == null ? defaultDate.month : (monthData[monthIndex] + 1),
       unit.day == null ? defaultDate.day : (dayData[dayIndex] + 1),
@@ -270,7 +270,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
     }
     return PickerSubject<DateTime>(
         options: widget.options,
-        sureTap: sureTapVoid,
+        confirmTap: confirmTapVoid,
         child: Universal(
             width: double.infinity,
             direction: Axis.horizontal,

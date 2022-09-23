@@ -30,7 +30,7 @@ class PickerPage extends StatelessWidget {
   Future<void> selectTime() async {
     final DateTime? dateTime = await showDateTimePicker<DateTime?>(
         dual: true,
-        options: PickerOptions<DateTime>(sureTap: (DateTime? dateTime) {
+        options: PickerOptions<DateTime>(confirmTap: (DateTime? dateTime) {
           showToast(dateTime!.format(DateTimeDist.yearSecond));
           return true;
         }, cancelTap: (DateTime? dateTime) {
@@ -48,7 +48,7 @@ class PickerPage extends StatelessWidget {
         bottomSheetOptions:
             BottomSheetOptions(barrierColor: Colors.red.withOpacity(0.3)),
         options: PickerOptions<String?>(
-            sureTap: (String? value) {
+            confirmTap: (String? value) {
               return true;
             },
             cancelTap: (String? value) {
