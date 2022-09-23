@@ -96,14 +96,6 @@ class _UniversalPageState extends State<UniversalPage>
           },
           size: const Size(200, 50)),
       const SizedBox(height: 20),
-      ValueBuilder<bool>(
-          initialValue: false,
-          builder: (_, bool? value, Function update) {
-            return Checkbox(
-                value: value,
-                shape: const CircleBorder(),
-                onChanged: (bool? v) => update(v));
-          })
     ];
     children = children.builder((Widget item) => SizeTransition(
         sizeFactor: controller, axis: Axis.horizontal, child: item));
