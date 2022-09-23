@@ -13,9 +13,8 @@ class JsonParsePage extends StatelessWidget {
         appBar: AppBarText('JsonParse Demo'),
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          ElevatedText('showHttpLogTs', onTap: () {
-            setHttpData(
-                ResponseModel(requestOptions: RequestOptions(path: 'test')));
+          ElevatedText('showDebuggerInterceptorHelper', onTap: () {
+            DebuggerInterceptorHelper().addData(DebuggerInterceptorDataModel());
           }),
           ElevatedText('JsonParse', onTap: () => push(_JsonParsePage())),
           ElevatedText('JsonParse.list',

@@ -37,8 +37,16 @@ void main() {
   }
 
   ExtendedDio().initialize(
-      options:
-          ExtendedDioOptions(interceptors: [LoggerInterceptor()], logTs: true));
+      options: ExtendedDioOptions(interceptors: [
+    /// 日志打印
+    LoggerInterceptor(),
+
+    /// debug 调试工具
+    DebuggerInterceptor(),
+
+    /// cooker 管理
+    CookiesInterceptor()
+  ]));
 
   globalOptions.setGlobalPushMode(RoutePushStyle.cupertino);
   globalOptions.setToastOptions(

@@ -150,6 +150,9 @@ extension ExtensionMap<K, V> on Map<K, V> {
 }
 
 enum DateTimeDist {
+  /// 2020-01-01 00:00:00.000
+  yearMillisecond,
+
   /// 2020-01-01 00:00:00
   yearSecond,
 
@@ -165,6 +168,9 @@ enum DateTimeDist {
   /// 2020-01
   yearMonth,
 
+  /// 01-01 00:00:00.00
+  monthMillisecond,
+
   /// 01-01 00:00:00
   monthSecond,
 
@@ -177,6 +183,9 @@ enum DateTimeDist {
   /// 01-01
   monthDay,
 
+  /// 01 00:00:00.000
+  dayMillisecond,
+
   /// 01 00:00:00
   daySecond,
 
@@ -185,6 +194,9 @@ enum DateTimeDist {
 
   /// 01 00
   dayHour,
+
+  /// 00:00:00.000
+  hourMillisecond,
 
   /// 00:00:00
   hourSecond,
@@ -208,7 +220,13 @@ extension ExtensionDateTime on DateTime {
         dual ? date.minute.padLeft(2, '0') : date.minute.toString();
     final String second =
         dual ? date.second.padLeft(2, '0') : date.second.toString();
+    final String millisecond =
+        dual ? date.millisecond.padLeft(2, '0') : date.millisecond.toString();
+    // final String microsecond =
+    //     dual ? date.microsecond.padLeft(2, '0') : date.microsecond.toString();
     switch (dist) {
+      case DateTimeDist.yearMillisecond:
+        return '$year-$month-$day $hour:$minute:$second.$millisecond';
       case DateTimeDist.yearSecond:
         return '$year-$month-$day $hour:$minute:$second';
       case DateTimeDist.yearMinute:
@@ -219,6 +237,8 @@ extension ExtensionDateTime on DateTime {
         return '$year-$month-$day';
       case DateTimeDist.yearMonth:
         return '$year-$month';
+      case DateTimeDist.monthMillisecond:
+        return '$month-$day $hour:$minute:$second.$millisecond';
       case DateTimeDist.monthSecond:
         return '$month-$day $hour:$minute:$second';
       case DateTimeDist.monthMinute:
@@ -227,12 +247,16 @@ extension ExtensionDateTime on DateTime {
         return '$month-$day $hour';
       case DateTimeDist.monthDay:
         return '$month-$day';
+      case DateTimeDist.dayMillisecond:
+        return '$day $hour:$minute:$second.$millisecond';
       case DateTimeDist.daySecond:
         return '$day $hour:$minute:$second';
       case DateTimeDist.dayMinute:
         return '$day $hour:$minute';
       case DateTimeDist.dayHour:
         return '$day $hour';
+      case DateTimeDist.hourMillisecond:
+        return '$hour:$minute:$second.$millisecond';
       case DateTimeDist.hourSecond:
         return '$hour:$minute:$second';
       case DateTimeDist.hourMinute:

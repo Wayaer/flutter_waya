@@ -5,7 +5,6 @@ export 'src/ali_oss.dart';
 export 'src/des/des.dart';
 export 'src/des/des_engine.dart';
 export 'src/des/permuted.dart';
-export 'src/dio.dart';
 export 'src/event.dart';
 export 'src/media_query.dart';
 

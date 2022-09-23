@@ -1,5 +1,9 @@
 import 'package:flutter_waya/flutter_waya.dart';
 
+export 'interceptor/cookies_interceptor.dart';
+export 'interceptor/debugger_interceptor.dart';
+export 'interceptor/logger_interceptor.dart';
+
 /// 请求数据类型 (4种): application/x-www-form-urlencoded 、multipart/form-data、application/json、text/xml
 const List<String> httpContentType = <String>[
   'application/x-www-form-urlencoded',
@@ -11,7 +15,6 @@ const List<String> httpContentType = <String>[
 class ExtendedDioOptions extends BaseOptions {
   ExtendedDioOptions(
       {this.interceptors = const [],
-      this.logTs = false,
       this.httpClientAdapter,
       this.transformer,
       super.method,
@@ -33,12 +36,10 @@ class ExtendedDioOptions extends BaseOptions {
       super.listFormat,
       super.setRequestContentTypeWhenNoPayload = false});
 
-  /// 抓包工具
-  bool logTs;
-
   /// 添加自定义拦截器
   /// [LoggerInterceptor] 日志打印
   /// [CookieInterceptor] cookie 请求和获取
+  /// [DebuggerInterceptor] debug 工具
   List<InterceptorsWrapper> interceptors;
 
   HttpClientAdapter? httpClientAdapter;
@@ -243,7 +244,6 @@ class ExtendedDio {
       responseModel = ResponseModel.constResponseModel(error: e);
     }
     responseModel.baseOptions = baseOptions;
-    if (options!.logTs) setHttpData(responseModel);
     return responseModel;
   }
 
@@ -266,100 +266,113 @@ class ExtendedDio {
   }
 }
 
-/// 请求cookie
-typedef RequestCookie = Future<void> Function(RequestOptions options);
+class ResponseModel extends Response<dynamic> {
+  ResponseModel({
+    this.type,
+    super.data,
+    this.response,
+    super.statusCode,
+    super.statusMessage,
+    super.headers,
+    required super.requestOptions,
+    super.redirects,
+    super.extra,
+    this.baseOptions,
+    this.error,
+  });
 
-/// 获取cookie
-typedef ResponseGetCookies = List<String> Function(Response<dynamic> response);
+  BaseOptions? baseOptions;
 
-class CookieInterceptor<T> extends InterceptorsWrapper {
-  CookieInterceptor({this.requestCookie, this.getCookies});
+  /// 请求返回类型 [DioErrorType].toString
+  String? type;
 
-  /// 拦截器中 请求回调添加 cookie 方法
-  final RequestCookie? requestCookie;
+  /// dio response
+  Response<dynamic>? response;
 
-  /// 拦截器中 返回回调添加 获取cookie 方法
-  final ResponseGetCookies? getCookies;
+  /// error 信息
+  dynamic error;
 
-  late ResponseModel responseModel;
+  /// 保存的cookie
+  List<String> cookie = <String>[];
 
-  @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    responseModel = ResponseModel(requestOptions: options);
-    requestCookie?.call(options);
-    super.onRequest(options, handler);
+  Map<String, dynamic> toMap() => {
+        'headers': headers.map,
+        'requestOptions': requestOptionsToMap(),
+        'type': type,
+        'data': data,
+        'cookie': cookie,
+        'statusCode': statusCode,
+        'statusMessage': statusMessage,
+        'extra': extra,
+        'error': error,
+      };
+
+  static ResponseModel formResponse(Response<dynamic> response,
+          {DioErrorType? type, BaseOptions? baseOptions}) =>
+      ResponseModel(
+          baseOptions: baseOptions,
+          requestOptions: response.requestOptions,
+          type: type.toString(),
+          statusCode: response.statusCode,
+          statusMessage: response.statusMessage,
+          data: response.data,
+          extra: response.extra,
+          headers: response.headers,
+          redirects: response.redirects,
+          response: response);
+
+  static ResponseModel mergeError(DioError err,
+      [ResponseModel? responseModel]) {
+    responseModel ??= ResponseModel(requestOptions: err.requestOptions);
+    responseModel.type = err.type.toString();
+    final Response<dynamic>? errResponse = err.response;
+    responseModel.requestOptions = err.requestOptions;
+    responseModel.error = err.error;
+    if (errResponse != null) {
+      responseModel.headers = errResponse.headers;
+      responseModel.redirects = errResponse.redirects;
+      responseModel.extra = errResponse.extra;
+      responseModel.statusCode = errResponse.statusCode;
+      responseModel.statusMessage = errResponse.statusMessage;
+      responseModel.data = errResponse.data;
+    }
+    responseModel.cookie = <String>[];
+    return responseModel;
   }
 
-  @override
-  void onResponse(
-      Response<dynamic> response, ResponseInterceptorHandler handler) {
-    responseModel.response = response;
-    responseModel.cookie = getCookies?.call(response) ?? [];
-    responseModel = ResponseModel.formResponse(response);
-    super.onResponse(responseModel, handler);
-  }
+  static ResponseModel constResponseModel({dynamic error}) => ResponseModel(
+      error: error,
+      requestOptions: RequestOptions(path: ''),
+      statusCode: 0,
+      statusMessage: 'unknown exception',
+      type: DioErrorType.other.toString());
 
-  @override
-  void onError(DioError err, ErrorInterceptorHandler handler) {
-    super.onError(
-        DioError(
-            response: ResponseModel.mergeError(err, responseModel),
-            requestOptions: err.requestOptions),
-        handler);
-  }
+  String toJson() =>
+      '{"type":"${type.toString()}","data":$data,"cookie":$cookie,"statusCode'
+      '":$statusCode,"statusMessage":"$statusMessage","extra":$extra"}';
+
+  Map<String, dynamic> requestOptionsToMap() => <String, dynamic>{
+        'uri': requestOptions.uri.path,
+        'method': requestOptions.method,
+        'baseUrl': requestOptions.baseUrl,
+        'path': requestOptions.path,
+        'requestHeaders': baseOptions?.headers,
+        'responseHeaders': response?.headers.map,
+        'body': requestOptions.data,
+        'params': requestOptions.queryParameters,
+        'contentType': requestOptions.contentType,
+        'receiveTimeout': requestOptions.receiveTimeout,
+        'sendTimeout': requestOptions.sendTimeout,
+        'connectTimeout': requestOptions.connectTimeout,
+        'extra': requestOptions.extra,
+        'responseType': requestOptions.responseType.toString(),
+      };
 }
 
-class LoggerInterceptor<T> extends InterceptorsWrapper {
-  LoggerInterceptor({this.forbidPrintUrl = const []});
+class HttpStatus {
+  const HttpStatus(this.code, this.message, this.messageT);
 
-  final List<String> forbidPrintUrl;
-
-  @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    String headers = '';
-    options.headers.forEach((String key, dynamic value) {
-      headers += ' | $key: $value';
-    });
-    log('┌------------------------------------------------------------------------------',
-        hasDottedLine: false);
-    log('''| [DIO] Request: ${options.method} ${options.uri}\n| QueryParameters:${options.queryParameters}\n| Data:${options.data}\n| Headers:$headers''',
-        hasDottedLine: false);
-    log('├------------------------------------------------------------------------------',
-        hasDottedLine: false);
-    handler.next(options);
-  }
-
-  @override
-  void onResponse(
-      Response<dynamic> response, ResponseInterceptorHandler handler) {
-    bool forbidPrint = false;
-    String requestUri = response.requestOptions.uri.toString();
-    for (var element in forbidPrintUrl) {
-      if (requestUri.toString().contains(element)) {
-        forbidPrint = true;
-        break;
-      }
-    }
-    log('| [DIO] Response [statusCode : ${response.statusCode}] [statusMessage : ${response.statusMessage}]',
-        hasDottedLine: false);
-    log('| [DIO] Request uri ($requestUri)', hasDottedLine: false);
-    log('| [DIO] Response data: ${forbidPrint ? 'This data is not printed' : '\n${response.data}'}',
-        hasDottedLine: false);
-    log('└------------------------------------------------------------------------------',
-        hasDottedLine: false);
-    handler.next(response);
-  }
-
-  @override
-  void onError(DioError err, ErrorInterceptorHandler handler) {
-    log('| [DIO] Response [statusCode : ${err.response?.statusCode}] [statusMessage : ${err.response?.statusMessage}]',
-        hasDottedLine: false);
-    log('| [DIO] Error: ${err.error}: ${err.response?.toString()}',
-        hasDottedLine: false);
-    log('|            : ${err.type}: ${err.message.toString()}',
-        hasDottedLine: false);
-    log('└------------------------------------------------------------------------------',
-        hasDottedLine: false);
-    handler.next(err);
-  }
+  final int code;
+  final String message;
+  final String messageT;
 }

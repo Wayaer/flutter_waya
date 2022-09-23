@@ -57,7 +57,10 @@ class _ExtendedDioPageState extends State<ExtendedDioPage> {
         ]);
   }
 
-  void get() async {}
+  void get() async {
+    final value = await ExtendedDio().get(
+        'https://lf3-beecdn.bytetos.com/obj/ies-fe-bee/bee_prod/biz_216/bee_prod_216_bee_publish_6676.json');
+  }
 
   void post() async {}
 
