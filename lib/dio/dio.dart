@@ -368,11 +368,3 @@ class ResponseModel extends Response<dynamic> {
         'responseType': requestOptions.responseType.toString(),
       };
 }
-
-class HttpStatus {
-  const HttpStatus(this.code, this.message, this.messageT);
-
-  final int code;
-  final String message;
-  final String messageT;
-}

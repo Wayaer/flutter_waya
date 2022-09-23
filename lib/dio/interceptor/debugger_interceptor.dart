@@ -130,33 +130,68 @@ class DebuggerInterceptorHelper {
 
   ExtendedOverlayEntry? overlayEntry;
 
-  GlobalKey<DebuggerWindowsState> overlayKey = GlobalKey();
-
-  List<DebuggerInterceptorDataModel> allData = [];
+  ValueNotifier<List<DebuggerInterceptorDataModel>> allData = ValueNotifier([]);
 
   void addData(DebuggerInterceptorDataModel data) {
-    final widget = DebuggerWindows(
-        key: overlayKey,
+    final widget = _DebuggerWindows(
+        showAllData: showAllData,
         onClose: () {
           overlayEntry?.remove();
           overlayEntry = null;
         });
     overlayEntry ??= showOverlay(widget, autoOff: true);
-    allData.add(data);
-    overlayKey.currentState?.refreshData();
+    allData.value.add(data);
+  }
+
+  Future<void> showAllData() async {
+    await showBottomPopup(
+        options: GlobalOptions()
+            .bottomSheetOptions
+            .copyWith(backgroundColor: Colors.transparent, enableDrag: true),
+        widget: _HttpDataWindows(allData));
   }
 }
 
-class DebuggerWindows extends StatefulWidget {
-  const DebuggerWindows({super.key, this.onClose});
+class _HttpDataWindows extends StatelessWidget {
+  const _HttpDataWindows(this.allData);
 
-  final void Function()? onClose;
+  final ValueNotifier<List<DebuggerInterceptorDataModel>> allData;
 
   @override
-  State<DebuggerWindows> createState() => DebuggerWindowsState();
+  Widget build(BuildContext context) {
+    return Universal(
+        width: double.infinity,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        margin: EdgeInsets.only(top: context.mediaQueryPadding.top + 60),
+        decoration: BoxDecoration(
+            color: context.theme.cardColor,
+            borderRadius:
+                const BorderRadius.vertical(top: Radius.circular(10))),
+        children: [
+          const CloseButton().marginOnly(right: 10),
+          ValueListenableBuilder(
+                  valueListenable: allData,
+                  builder: (_, List<DebuggerInterceptorDataModel> list, __) =>
+                      ScrollList.builder(
+                          itemCount: list.length,
+                          itemBuilder: (_, int index) =>
+                              _HttpDataEntry(list[index], canTap: true)))
+              .expandedNull
+        ]);
+  }
 }
 
-class DebuggerWindowsState extends State<DebuggerWindows> {
+class _DebuggerWindows extends StatefulWidget {
+  const _DebuggerWindows({required this.showAllData, this.onClose});
+
+  final void Function()? onClose;
+  final Future<void> Function() showAllData;
+
+  @override
+  State<_DebuggerWindows> createState() => _DebuggerWindowsState();
+}
+
+class _DebuggerWindowsState extends State<_DebuggerWindows> {
   bool hasWindows = false;
   ValueNotifier<Offset> iconOffSet =
       ValueNotifier<Offset>(const Offset(10, 10));
@@ -192,7 +227,7 @@ class DebuggerWindowsState extends State<DebuggerWindows> {
                   color: context.theme.primaryColor, shape: BoxShape.circle),
               padding: const EdgeInsets.all(6),
               child: const Icon(Icons.bug_report_rounded,
-                  size: 25, color: Colors.white)))
+                  size: 23, color: Colors.white)))
     ]);
   }
 
@@ -201,13 +236,7 @@ class DebuggerWindowsState extends State<DebuggerWindows> {
       pop();
     } else {
       hasWindows = true;
-      await showBottomPopup(
-          options: GlobalOptions()
-              .bottomSheetOptions
-              .copyWith(backgroundColor: Colors.transparent, enableDrag: true),
-          widget: _HttpDataWindows(onState: (StateSetter setState) {
-            listState = setState;
-          }));
+      await widget.showAllData();
       hasWindows = false;
     }
   }
@@ -224,35 +253,6 @@ class DebuggerWindowsState extends State<DebuggerWindows> {
   }
 
   StateSetter? listState;
-}
-
-class _HttpDataWindows extends StatelessWidget {
-  const _HttpDataWindows({required this.onState});
-
-  final void Function(StateSetter setState) onState;
-
-  @override
-  Widget build(BuildContext context) {
-    return Universal(
-        width: double.infinity,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        margin: EdgeInsets.only(top: context.mediaQueryPadding.top + 60),
-        decoration: BoxDecoration(
-            color: context.theme.cardColor,
-            borderRadius:
-                const BorderRadius.vertical(top: Radius.circular(10))),
-        children: [
-          const CloseButton().marginOnly(right: 10),
-          StatefulBuilder(builder: (_, StateSetter setState) {
-            onState(setState);
-            final list = DebuggerInterceptorHelper().allData;
-            return ScrollList.builder(
-                itemCount: list.length,
-                itemBuilder: (_, int index) =>
-                    _HttpDataEntry(list[index], canTap: true));
-          }).expandedNull
-        ]);
-  }
 }
 
 class _HttpDataEntry extends StatelessWidget {
