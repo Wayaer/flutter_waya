@@ -8,10 +8,11 @@ class DebuggerInterceptor<T> extends InterceptorsWrapper {
   DebuggerInterceptor({this.isShow = true});
 
   bool isShow;
-  DebuggerInterceptorDataModel data = DebuggerInterceptorDataModel();
+  late DebuggerInterceptorDataModel data;
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+    data = DebuggerInterceptorDataModel();
     data.requestTime = DateTime.now();
     data.requestOptions = options;
     super.onRequest(options, handler);
@@ -140,7 +141,7 @@ class DebuggerInterceptorHelper {
           overlayEntry = null;
         });
     overlayEntry ??= showOverlay(widget, autoOff: true);
-    allData.value.add(data);
+    allData.value.insert(0, data);
   }
 
   Future<void> showAllData() async {

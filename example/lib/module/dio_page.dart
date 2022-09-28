@@ -58,17 +58,27 @@ class _ExtendedDioPageState extends State<ExtendedDioPage> {
   }
 
   void get() async {
-    final value = await ExtendedDio().get(
+    await ExtendedDio().get(
         'https://lf3-beecdn.bytetos.com/obj/ies-fe-bee/bee_prod/biz_216/bee_prod_216_bee_publish_6676.json');
   }
 
-  void post() async {}
+  void post() async {
+    await ExtendedDio().post(
+        'http://huayang2.zd.simingkuai.com:45929/api/paymentSwitch',
+        data: {"channel": "android", "code": 2022080300});
+  }
 
-  void put() async {}
+  void put() async {
+    showToast('未添加');
+  }
 
-  void delete() async {}
+  void delete() async {
+    showToast('未添加');
+  }
 
-  void patch() async {}
+  void patch() async {
+    showToast('未添加');
+  }
 
   int? count;
   int? total;
@@ -91,5 +101,7 @@ class _ExtendedDioPageState extends State<ExtendedDioPage> {
     setState(() {});
   }
 
-  void upload() async {}
+  void upload() async {
+    showToast('未添加');
+  }
 }

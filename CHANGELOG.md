@@ -1,4 +1,4 @@
-## 3.1.0
+## 3.1.0+1
 
 * Add `CookiesInterceptor()` `DebuggerInterceptor()` `LoggerInterceptor()`
 * Modify the incorrect naming
