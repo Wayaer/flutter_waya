@@ -347,3 +347,16 @@ extension ExtensionFunction on Function {
     };
   }
 }
+
+extension ExtensionT<T> on T {
+  /// let是做了操作后返回新的类型
+  ReturnType let<ReturnType>(ReturnType Function(T it) operation) {
+    return operation(this);
+  }
+
+  /// 做了某个操作后还返回本身啊
+  T also(void Function(T it) operation) {
+    operation(this);
+    return this;
+  }
+}
