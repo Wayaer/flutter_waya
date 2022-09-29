@@ -1,3 +1,7 @@
+## 3.1.0+2
+
+* Add `ExtensionT`
+
 ## 3.1.0+1
 
 * Add `CookiesInterceptor()` `DebuggerInterceptor()` `LoggerInterceptor()`
