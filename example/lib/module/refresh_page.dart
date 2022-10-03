@@ -77,13 +77,13 @@ class _EasyRefreshPageState extends State<EasyRefreshPage> {
                 10, 10, 10, getBottomNavigationBarHeight + 10),
             children: <Widget>[
               ElevatedText('Refresh', onTap: () {
-                currentController?.callRefresh();
+                RefreshControllers().current?.callRefresh();
               }),
               ElevatedText('开启新的页面', onTap: () {
                 push(const EasyRefreshPage());
               }),
               ElevatedText('Loading', onTap: () {
-                currentController?.callLoad();
+                RefreshControllers().current?.callLoad();
                 colors.addAll(Colors.accents);
                 setState(() {});
               }),
@@ -94,13 +94,13 @@ class _EasyRefreshPageState extends State<EasyRefreshPage> {
               children: 3.generate((int index) => EasyRefreshed(
                   config: RefreshConfig(onRefresh: () async {
                     2.seconds.delayed(() {
-                      sendRefreshType(EasyRefreshType.refreshSuccess);
+                      RefreshControllers().call(EasyRefreshType.refreshSuccess);
                     });
                   }, onLoading: () async {
                     2.seconds.delayed(() {
                       colors.addAll(Colors.accents);
                       setState(() {});
-                      sendRefreshType(EasyRefreshType.loadingSuccess);
+                      RefreshControllers().call(EasyRefreshType.loadingSuccess);
                     });
                   }),
                   builder: (_, physics) =>

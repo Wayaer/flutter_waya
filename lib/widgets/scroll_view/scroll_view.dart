@@ -99,10 +99,6 @@ class RefreshScrollView extends StatelessWidget {
           semanticChildCount: semanticChildCount);
 }
 
-void sendRefreshType([EasyRefreshType? refresh]) {
-  EventBus().emit(_eventName, refresh ?? EasyRefreshType.refreshSuccess);
-}
-
 class RefreshConfig {
   RefreshConfig(
       {this.controller,
@@ -195,12 +191,63 @@ class RefreshConfig {
   /// Overscroll behavior when [onLoad] is null.
   /// Won't build widget.
   NotLoadFooter? notLoadFooter;
+
+  /// get Controller
+  EasyRefreshControllerCallback? onController;
 }
 
-/// 当前最顶层刷新组件的 Controller
-EasyRefreshController? currentController;
+class RefreshControllers {
+  factory RefreshControllers() => _singleton ??= RefreshControllers._();
 
-String get _eventName => refreshEvent + currentController.hashCode.toString();
+  RefreshControllers._();
+
+  static RefreshControllers? _singleton;
+
+  final Map<int, EasyRefreshController> _controllers = {};
+
+  void set(EasyRefreshController controller) {
+    _controllers[controller.hashCode] = controller;
+  }
+
+  EasyRefreshController? get(int hashCode) => _controllers[hashCode];
+
+  void remove(int hashCode) {
+    _controllers.remove(hashCode);
+  }
+
+  /// 当前最顶层刷新组件的 Controller
+  EasyRefreshController? current;
+
+  /// 调用当前刷新
+  void call(EasyRefreshType data, {EasyRefreshController? controller}) {
+    switch (data) {
+      case EasyRefreshType.refresh:
+        (controller ?? current)?.callRefresh();
+        break;
+      case EasyRefreshType.refreshSuccess:
+        (controller ?? current)?.finishRefresh(IndicatorResult.success);
+        break;
+      case EasyRefreshType.refreshFailed:
+        (controller ?? current)?.finishRefresh(IndicatorResult.fail);
+        break;
+      case EasyRefreshType.refreshNoMore:
+        (controller ?? current)?.finishRefresh(IndicatorResult.noMore);
+        break;
+      case EasyRefreshType.loading:
+        (controller ?? current)?.callLoad();
+        break;
+      case EasyRefreshType.loadingSuccess:
+        (controller ?? current)?.finishLoad(IndicatorResult.success);
+        break;
+      case EasyRefreshType.loadFailed:
+        (controller ?? current)?.finishLoad(IndicatorResult.fail);
+        break;
+      case EasyRefreshType.loadNoMore:
+        (controller ?? current)?.finishLoad(IndicatorResult.noMore);
+        break;
+    }
+  }
+}
 
 /// 刷新类型
 enum EasyRefreshType {
@@ -228,6 +275,9 @@ enum EasyRefreshType {
   /// 加载完成 没有数据
   loadNoMore,
 }
+
+typedef EasyRefreshControllerCallback = void Function(
+    EasyRefreshController controller);
 
 class EasyRefreshed extends StatefulWidget {
   const EasyRefreshed({
@@ -264,7 +314,8 @@ class _EasyRefreshedState extends State<EasyRefreshed> {
         EasyRefreshController(
             controlFinishRefresh: config.onRefresh != null,
             controlFinishLoad: config.onLoading != null);
-    currentController = controller;
+    widget.config.onController?.call(controller);
+    RefreshControllers().set(controller);
   }
 
   @override
@@ -277,40 +328,6 @@ class _EasyRefreshedState extends State<EasyRefreshed> {
     }
   }
 
-  void initEventBus() {
-    EventBus().add(_eventName, (dynamic data) {
-      if (data != null && data is EasyRefreshType) {
-        switch (data) {
-          case EasyRefreshType.refresh:
-            currentController!.callRefresh();
-            break;
-          case EasyRefreshType.refreshSuccess:
-            currentController!.finishRefresh(IndicatorResult.success);
-            break;
-          case EasyRefreshType.refreshFailed:
-            currentController!.finishRefresh(IndicatorResult.fail);
-            break;
-          case EasyRefreshType.refreshNoMore:
-            currentController!.finishRefresh(IndicatorResult.noMore);
-            break;
-          case EasyRefreshType.loading:
-            currentController!.callLoad();
-            break;
-          case EasyRefreshType.loadingSuccess:
-            currentController!.finishLoad(IndicatorResult.success);
-            break;
-          case EasyRefreshType.loadFailed:
-            currentController!.finishLoad(IndicatorResult.fail);
-            break;
-          case EasyRefreshType.loadNoMore:
-            currentController!.finishLoad(IndicatorResult.noMore);
-            break;
-        }
-      }
-      EventBus().remove(_eventName);
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return EasyRefresh.builder(
@@ -320,15 +337,13 @@ class _EasyRefreshedState extends State<EasyRefreshed> {
         onLoad: config.onLoading == null
             ? null
             : () async {
-                currentController = controller;
-                initEventBus();
+                RefreshControllers().current = controller;
                 config.onLoading!.call();
               },
         onRefresh: config.onRefresh == null
             ? null
             : () async {
-                currentController = controller;
-                initEventBus();
+                RefreshControllers().current = controller;
                 config.onRefresh!.call();
               },
         scrollController: config.scrollController,
@@ -352,8 +367,8 @@ class _EasyRefreshedState extends State<EasyRefreshed> {
   @override
   void dispose() {
     controller.dispose();
-    if (currentController == controller) {
-      currentController = null;
+    if (RefreshControllers().current == controller) {
+      RefreshControllers().current = null;
     }
     super.dispose();
   }

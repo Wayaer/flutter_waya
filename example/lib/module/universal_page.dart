@@ -92,7 +92,7 @@ class _UniversalPageState extends State<UniversalPage>
           color: color,
           opacity: 0.2,
           onTap: () {
-            sendRefreshType(EasyRefreshType.refresh);
+            RefreshControllers().call(EasyRefreshType.refresh);
           },
           size: const Size(200, 50)),
       const SizedBox(height: 20),
@@ -105,7 +105,7 @@ class _UniversalPageState extends State<UniversalPage>
       isScroll: true,
       refreshConfig: RefreshConfig(onRefresh: () async {
         await showToast('onRefresh');
-        sendRefreshType(EasyRefreshType.refreshSuccess);
+        RefreshControllers().call(EasyRefreshType.refreshSuccess);
       }),
       children: children,
     );
@@ -140,7 +140,7 @@ class _ScrollUniversalPage extends StatelessWidget {
             ]),
         refreshConfig: RefreshConfig(onRefresh: () async {
           await showToast('onRefresh');
-          sendRefreshType(EasyRefreshType.refreshSuccess);
+          RefreshControllers().call(EasyRefreshType.refreshSuccess);
         }),
         child: Container(
             margin: const EdgeInsets.all(10),

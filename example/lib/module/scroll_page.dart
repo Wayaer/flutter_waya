@@ -83,11 +83,11 @@ class _RefreshScrollViewPage extends StatelessWidget {
           padding: const EdgeInsets.all(10),
           refreshConfig: RefreshConfig(onRefresh: () async {
             await showToast('onRefresh');
-            sendRefreshType(EasyRefreshType.refreshSuccess);
+            RefreshControllers().call(EasyRefreshType.refreshSuccess);
           }, onLoading: () async {
             await showToast('onLoading');
             await 2.seconds.delayed(() {
-              sendRefreshType(EasyRefreshType.loadingSuccess);
+              RefreshControllers().call(EasyRefreshType.loadingSuccess);
             });
           }),
           slivers: <Widget>[
@@ -208,12 +208,14 @@ class _ExtendedScrollViewPage extends StatelessWidget {
                     refreshConfig: RefreshConfig(onRefresh: () async {
                       showToast('onRefresh');
                       2.seconds.delayed(() {
-                        sendRefreshType(EasyRefreshType.refreshSuccess);
+                        RefreshControllers()
+                            .call(EasyRefreshType.refreshSuccess);
                       });
                     }, onLoading: () async {
                       showToast('onLoading');
                       2.seconds.delayed(() {
-                        sendRefreshType(EasyRefreshType.loadingSuccess);
+                        RefreshControllers()
+                            .call(EasyRefreshType.loadingSuccess);
                       });
                     }));
               },

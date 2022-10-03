@@ -65,12 +65,12 @@ class _ScrollListWaterfallFlowPage extends StatelessWidget {
           refreshConfig: RefreshConfig(onRefresh: () async {
             await showToast('onRefresh');
             await 2.seconds.delayed(() {
-              sendRefreshType(EasyRefreshType.refreshSuccess);
+              RefreshControllers().call(EasyRefreshType.refreshSuccess);
             });
           }, onLoading: () async {
             await showToast('onLoading');
             await 2.seconds.delayed(() {
-              sendRefreshType(EasyRefreshType.loadingSuccess);
+              RefreshControllers().call(EasyRefreshType.loadingSuccess);
             });
           }),
           itemCount: [...colors, ...colors, ...colors].length,
@@ -112,13 +112,13 @@ class _ScrollListSeparatedPage extends StatelessWidget {
             onRefresh: () async {
               await showToast('onRefresh');
               await 2.seconds.delayed(() {
-                sendRefreshType(EasyRefreshType.refreshSuccess);
+                RefreshControllers().call(EasyRefreshType.refreshSuccess);
               });
             },
             onLoading: () async {
               await showToast('onLoading');
               await 2.seconds.delayed(() {
-                sendRefreshType(EasyRefreshType.loadingSuccess);
+                RefreshControllers().call(EasyRefreshType.loadingSuccess);
               });
             },
           ),
@@ -161,12 +161,12 @@ class _ScrollListPlaceholderPage extends StatelessWidget {
             refreshConfig: RefreshConfig(onRefresh: () async {
               await showToast('onRefresh');
               await 2.seconds.delayed(() {
-                sendRefreshType(EasyRefreshType.refreshSuccess);
+                RefreshControllers().call(EasyRefreshType.refreshSuccess);
               });
             }, onLoading: () async {
               await showToast('onLoading');
               await 2.seconds.delayed(() {
-                sendRefreshType(EasyRefreshType.loadingSuccess);
+                RefreshControllers().call(EasyRefreshType.loadingSuccess);
               });
             }),
             placeholder: const BText('没有数据', color: Colors.white).container(
@@ -198,41 +198,40 @@ class _ScrollListBuilderPage extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                   fontSize: 20)),
           ScrollList.builder(
-                  header: SliverToBoxAdapter(
-                      child: Container(
-                    margin: const EdgeInsets.only(bottom: 10),
-                    height: 100,
-                    alignment: Alignment.center,
-                    color: Colors.grey.withOpacity(0.3),
-                    child: const Text('Header'),
-                  )),
-                  footer: SliverToBoxAdapter(
-                      child: Container(
-                    margin: const EdgeInsets.only(top: 10),
-                    height: 100,
-                    alignment: Alignment.center,
-                    color: Colors.grey.withOpacity(0.3),
-                    child: const Text('Footer'),
-                  )),
-                  padding: const EdgeInsets.all(10),
-                  refreshConfig: RefreshConfig(
-                    onRefresh: () async {
-                      showToast('onRefresh');
-                      2.seconds.delayed(() {
-                        sendRefreshType(EasyRefreshType.refreshSuccess);
-                      });
-                    },
-                    onLoading: () async {
-                      showToast('onLoading');
-                      2.seconds.delayed(() {
-                        sendRefreshType(EasyRefreshType.loadingSuccess);
-                      });
-                    },
-                  ),
-                  itemCount: colors.length,
-                  itemBuilder: (_, int index) =>
-                      ColorEntry(index, colors[index]).paddingOnly(bottom: 10))
-              .expandedNull,
+              header: SliverToBoxAdapter(
+                  child: Container(
+                margin: const EdgeInsets.only(bottom: 10),
+                height: 100,
+                alignment: Alignment.center,
+                color: Colors.grey.withOpacity(0.3),
+                child: const Text('Header'),
+              )),
+              footer: SliverToBoxAdapter(
+                  child: Container(
+                margin: const EdgeInsets.only(top: 10),
+                height: 100,
+                alignment: Alignment.center,
+                color: Colors.grey.withOpacity(0.3),
+                child: const Text('Footer'),
+              )),
+              padding: const EdgeInsets.all(10),
+              refreshConfig: RefreshConfig(
+                onRefresh: () async {
+                  showToast('onRefresh');
+                  2.seconds.delayed(() {
+                    RefreshControllers().call(EasyRefreshType.refreshSuccess);
+                  });
+                },
+                onLoading: () async {
+                  showToast('onLoading');
+                  2.seconds.delayed(() {
+                    RefreshControllers().call(EasyRefreshType.loadingSuccess);
+                  });
+                },
+              ),
+              itemCount: colors.length,
+              itemBuilder: (_, int index) => ColorEntry(index, colors[index])
+                  .paddingOnly(bottom: 10)).expandedNull,
         ]));
   }
 }
@@ -267,12 +266,12 @@ class _ScrollListPage extends StatelessWidget {
             refreshConfig: RefreshConfig(onRefresh: () async {
               showToast('onRefresh');
               2.seconds.delayed(() {
-                sendRefreshType(EasyRefreshType.refreshSuccess);
+                RefreshControllers().call(EasyRefreshType.refreshSuccess);
               });
             }, onLoading: () async {
               showToast('onLoading');
               2.seconds.delayed(() {
-                sendRefreshType(EasyRefreshType.loadingSuccess);
+                RefreshControllers().call(EasyRefreshType.loadingSuccess);
               });
             }),
             sliver: <Widget>[
@@ -416,12 +415,12 @@ class _ScrollListCountPage extends StatelessWidget {
             refreshConfig: RefreshConfig(onRefresh: () async {
               await showToast('onRefresh');
               await 2.seconds.delayed(() {
-                sendRefreshType(EasyRefreshType.refreshSuccess);
+                RefreshControllers().call(EasyRefreshType.refreshSuccess);
               });
             }, onLoading: () async {
               await showToast('onLoading');
               await 2.seconds.delayed(() {
-                sendRefreshType(EasyRefreshType.loadingSuccess);
+                RefreshControllers().call(EasyRefreshType.loadingSuccess);
               });
             }),
             children: colors.builderEntry((MapEntry<int, Color> entry) =>
