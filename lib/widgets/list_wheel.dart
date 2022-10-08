@@ -278,8 +278,8 @@ class ListWheel extends StatelessWidget {
 
 /// 解决父组件重新 build 时 改变子元素长度后显示异常问题
 /// 添加支持初始位置
-class ListStateWheel extends StatefulWidget {
-  const ListStateWheel(
+class ListWheelState extends StatefulWidget {
+  const ListWheelState(
       {super.key,
       this.controller,
       this.disposeController = true,
@@ -297,7 +297,7 @@ class ListStateWheel extends StatefulWidget {
       this.curve = Curves.linear,
       this.onCreateController});
 
-  const ListStateWheel.list({
+  const ListWheelState.list({
     super.key,
     this.controller,
     this.onScrollEnd,
@@ -316,7 +316,7 @@ class ListStateWheel extends StatefulWidget {
         itemBuilder = null,
         itemCount = null;
 
-  const ListStateWheel.looping({
+  const ListWheelState.looping({
     super.key,
     this.controller,
     this.onScrollEnd,
@@ -378,10 +378,10 @@ class ListStateWheel extends StatefulWidget {
   final Curve curve;
 
   @override
-  State<ListStateWheel> createState() => _ListStateWheelState();
+  State<ListWheelState> createState() => _ListWheelStateState();
 }
 
-class _ListStateWheelState extends State<ListStateWheel> {
+class _ListWheelStateState extends State<ListWheelState> {
   late FixedExtentScrollController controller;
 
   @override
@@ -411,7 +411,7 @@ class _ListStateWheelState extends State<ListStateWheel> {
       children: widget.children);
 
   @override
-  void didUpdateWidget(covariant ListStateWheel oldWidget) {
+  void didUpdateWidget(covariant ListWheelState oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.controller != null && controller != widget.controller) {
       controller.dispose();

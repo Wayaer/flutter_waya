@@ -245,8 +245,8 @@ class _PickerListWheel extends ListWheel {
                 onChanged: onChanged));
 }
 
-class _PickerListStateWheel extends ListStateWheel {
-  _PickerListStateWheel({
+class _PickerListWheelState extends ListWheelState {
+  _PickerListWheelState({
     ValueChanged<int>? onChanged,
     required super.itemCount,
     required PickerWheelOptions wheel,

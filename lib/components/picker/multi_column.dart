@@ -184,7 +184,7 @@ class _MultiColumnLinkagePickerState extends State<MultiColumnLinkagePicker> {
 
   Widget listStateWheel(
           {required List<PickerLinkageEntry> list, required int location}) =>
-      _PickerListStateWheel(
+      _PickerListWheelState(
           initialItem: position[location],
           onChanged: (int index) {
             position[location] = index;
