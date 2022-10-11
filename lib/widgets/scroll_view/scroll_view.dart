@@ -215,7 +215,7 @@ class RefreshControllers {
     _controllers.remove(hashCode);
   }
 
-  /// 当前最顶层刷新组件的 Controller
+  /// 最近一次调用刷新组件的 Controller
   EasyRefreshController? current;
 
   /// 调用当前刷新
@@ -322,7 +322,9 @@ class _EasyRefreshedState extends State<EasyRefreshed> {
   void didUpdateWidget(covariant EasyRefreshed oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.config != widget.config) {
-      if (controller != config.controller) controller.dispose();
+      if (config.controller != null && controller != config.controller) {
+        controller.dispose();
+      }
       initConfig();
       setState(() {});
     }
@@ -336,13 +338,13 @@ class _EasyRefreshedState extends State<EasyRefreshed> {
         footer: config.footer ?? GlobalOptions().globalRefreshFooter,
         onLoad: config.onLoading == null
             ? null
-            : () async {
+            : () {
                 RefreshControllers().current = controller;
                 config.onLoading!.call();
               },
         onRefresh: config.onRefresh == null
             ? null
-            : () async {
+            : () {
                 RefreshControllers().current = controller;
                 config.onRefresh!.call();
               },

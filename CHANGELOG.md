@@ -1,3 +1,5 @@
+## 3.2.1+1
+* Repair the `EasyRefreshed` problem
 ## 3.2.1
 
 * Change `ListStateWheel()` to `ListWheelState()`
