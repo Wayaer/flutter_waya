@@ -166,7 +166,7 @@ class WidgetPendant extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget current = currentWidget;
+    Widget current = buildCurrent;
     if (extraPrefix != null || extraSuffix != null) {
       final List<Widget> row = <Widget>[];
       if (extraPrefix != null) row.add(extraPrefix!);
@@ -193,7 +193,7 @@ class WidgetPendant extends StatelessWidget {
     return current;
   }
 
-  Widget get currentWidget {
+  Widget get buildCurrent {
     Widget current = child;
     Border? border;
     switch (borderType) {
