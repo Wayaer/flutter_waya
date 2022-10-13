@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_waya/flutter_waya.dart';
@@ -11,30 +12,30 @@ import 'package:flutter_waya/flutter_waya.dart';
 ///
 /// 长按输入的文字时，true显示系统的粘贴板  false不显示
 /// final bool enableInteractiveSelection;
-///     设置键盘上enter键的显示内容
-///     textInputAction: TextInputAction.search, /// 搜索
-///     textInputAction: TextInputAction.none,/// 默认回车符号
-///     textInputAction: TextInputAction.done,/// 安卓显示 回车符号
-///     textInputAction: TextInputAction.go,/// 开始
-///     textInputAction: TextInputAction.next,/// 下一步
-///     textInputAction: TextInputAction.send,/// 发送
-///     textInputAction: TextInputAction.continueAction,/// android  不支持
-///     textInputAction: TextInputAction.emergencyCall,/// android  不支持
-///     textInputAction: TextInputAction.newline,/// 安卓显示 回车符号
-///     textInputAction: TextInputAction.route,/// android  不支持
-///     textInputAction: TextInputAction.join,/// android  不支持
-///     textInputAction: TextInputAction.previous,/// 安卓显示 回车符号
-///     textInputAction: TextInputAction.unspecified,/// 安卓显示 回车符号
+/// 设置键盘上enter键的显示内容
+/// textInputAction: TextInputAction.search, /// 搜索
+/// textInputAction: TextInputAction.none,/// 默认回车符号
+/// textInputAction: TextInputAction.done,/// 安卓显示 回车符号
+/// textInputAction: TextInputAction.go,/// 开始
+/// textInputAction: TextInputAction.next,/// 下一步
+/// textInputAction: TextInputAction.send,/// 发送
+/// textInputAction: TextInputAction.continueAction,/// android  不支持
+/// textInputAction: TextInputAction.emergencyCall,/// android  不支持
+/// textInputAction: TextInputAction.newline,/// 安卓显示 回车符号
+/// textInputAction: TextInputAction.route,/// android  不支持
+/// textInputAction: TextInputAction.join,/// android  不支持
+/// textInputAction: TextInputAction.previous,/// 安卓显示 回车符号
+/// textInputAction: TextInputAction.unspecified,/// 安卓显示 回车符号
 /// final TextInputAction? textInputAction,
 ///
-///   输入时键盘的英文都是大写
-///   textCapitalization: TextCapitalization.characters,
-///   键盘英文默认显示小写
-///   textCapitalization:  TextCapitalization.none,
-///   在输入每个句子的第一个字母时，键盘大写形式，输入后续字母时键盘小写形式
-///   textCapitalization:  TextCapitalization.sentences,
-///   在输入每个单词的第一个字母时，键盘大写形式，输入其他字母时键盘小写形式
-///   textCapitalization: TextCapitalization.words,
+/// 输入时键盘的英文都是大写
+/// textCapitalization: TextCapitalization.characters,
+/// 键盘英文默认显示小写
+/// textCapitalization:  TextCapitalization.none,
+/// 在输入每个句子的第一个字母时，键盘大写形式，输入后续字母时键盘小写形式
+/// textCapitalization:  TextCapitalization.sentences,
+/// 在输入每个单词的第一个字母时，键盘大写形式，输入其他字母时键盘小写形式
+/// textCapitalization: TextCapitalization.words,
 /// final TextCapitalization textCapitalization;
 ///
 /// 自定义数字显示 指定maxLength后 右下角会出现字数，flutter有默认实现  可以通过这个自定义
@@ -81,18 +82,14 @@ enum TextInputLimitFormatter {
 }
 
 enum AccessoryMode {
-  /// 编辑时显示
-  editing,
-
-  /// [TextField] 内部的 [InputDecoration]
   /// 在 [TextField] 内部
   inner,
 
-  /// 在 [WidgetDecorator] 内部
   /// 在 [TextField] 外部
+  /// 在 [WidgetDecorator] 内部
   outer,
 
-  /// 在 [WidgetDecorator] 外部  最外面
+  /// 在 [WidgetDecorator] 外部
   outermost,
 }
 
@@ -101,6 +98,8 @@ class AccessoryEntry {
 
   /// 显示的位置
   final AccessoryMode mode;
+
+  // final OverlayVisibilityMode mode;
 
   /// 要显示的 组件
   final Widget widget;
@@ -203,20 +202,15 @@ class WidgetDecoratorStyle {
 }
 
 typedef ExtendedTextFieldBuilder = Widget Function(TextInputType keyboardType,
-    List<TextInputFormatter> inputFormatters, InputDecoration? decoration);
+    List<TextInputFormatter> inputFormatters, Widget? suffix, Widget? prefix);
 
 class ExtendedTextField extends StatelessWidget {
   const ExtendedTextField({
     Key? key,
     this.decorator,
     this.inputLimitFormatter = TextInputLimitFormatter.text,
-    this.decoration,
-    this.hideCounter = true,
     this.suffixes = const [],
-    this.suffixInnerConstraints,
     this.prefixes = const [],
-    this.prefixInnerConstraints,
-    this.contentPadding = EdgeInsets.zero,
     required this.builder,
   }) : super(key: key);
 
@@ -229,18 +223,11 @@ class ExtendedTextField extends StatelessWidget {
   /// ***** [WidgetDecorator] *****
   final WidgetDecoratorStyle? decorator;
 
-  /// ***** [InputDecoration] *****
-  final InputDecoration? decoration;
-  final EdgeInsetsGeometry? contentPadding;
-  final bool hideCounter;
-
   /// 前缀
   final List<AccessoryEntry> suffixes;
-  final BoxConstraints? suffixInnerConstraints;
 
   /// 后缀
   final List<AccessoryEntry> prefixes;
-  final BoxConstraints? prefixInnerConstraints;
 
   /// InputBorderStyle to InputBorder
   static InputBorder toInputBorder(InputBorderStyle style) {
@@ -310,39 +297,9 @@ class ExtendedTextField extends StatelessWidget {
     Widget current = builder.call(
         limitFormatterToKeyboardType(inputLimitFormatter),
         limitFormatterToTextInputFormatter(inputLimitFormatter),
-        buildDecoration);
+        buildSuffix(AccessoryMode.inner),
+        buildPrefix(AccessoryMode.inner));
     return buildWidgetDecorator(current);
-  }
-
-  /// TextField 自带装饰器
-  InputDecoration? get buildDecoration {
-    InputDecoration? decoration = this.decoration;
-    final suffix =
-        buildSuffix(AccessoryMode.editing, extra: decoration?.suffix);
-    final innerSuffix =
-        buildSuffix(AccessoryMode.inner, extra: decoration?.suffixIcon);
-    final prefix =
-        buildPrefix(AccessoryMode.editing, extra: decoration?.prefix);
-    final innerPrefix =
-        buildPrefix(AccessoryMode.inner, extra: decoration?.prefixIcon);
-    if (hideCounter ||
-        suffix != null ||
-        innerSuffix != null ||
-        prefix != null ||
-        innerPrefix != null) {
-      decoration = decoration?.copyWith(
-          contentPadding: contentPadding,
-          counterText: hideCounter ? '' : decoration.counterText,
-          suffix: suffix,
-          suffixIcon: innerSuffix,
-          suffixIconConstraints:
-              suffixInnerConstraints ?? decoration.suffixIconConstraints,
-          prefix: prefix,
-          prefixIcon: innerPrefix,
-          prefixIconConstraints:
-              prefixInnerConstraints ?? decoration.prefixIconConstraints);
-    }
-    return decoration;
   }
 
   /// TextField 外部装饰器
@@ -380,9 +337,8 @@ class ExtendedTextField extends StatelessWidget {
   }
 
   /// 后缀
-  Widget? buildSuffix(AccessoryMode mode, {Widget? extra}) {
+  Widget? buildSuffix(AccessoryMode mode) {
     final children = suffixes.where((element) => element.mode == mode).toList();
-    if (extra != null) children.add(AccessoryEntry(widget: extra, mode: mode));
     if (children.isEmpty) return null;
     if (children.length == 1) return children.first.widget;
     return Row(
@@ -391,11 +347,8 @@ class ExtendedTextField extends StatelessWidget {
   }
 
   /// 前缀
-  Widget? buildPrefix(AccessoryMode mode, {Widget? extra}) {
+  Widget? buildPrefix(AccessoryMode mode) {
     final children = prefixes.where((element) => element.mode == mode).toList();
-    if (extra != null) {
-      children.insert(0, AccessoryEntry(widget: extra, mode: mode));
-    }
     if (children.isEmpty) return null;
     if (children.length == 1) return children.first.widget;
     return Row(

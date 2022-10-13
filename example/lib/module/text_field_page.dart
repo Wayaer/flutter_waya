@@ -40,47 +40,51 @@ class TextFieldPage extends StatelessWidget {
           builderExtendedTextFieldBuilder(
               builder: (TextInputType keyboardType,
                       List<TextInputFormatter> inputFormatters,
-                      InputDecoration? decoration) =>
+                      Widget? suffix,
+                      Widget? prefix) =>
                   TextField(
                     keyboardType: keyboardType,
                     inputFormatters: inputFormatters,
-                    decoration: decoration,
+                    decoration: InputDecoration(suffix: suffix, prefix: prefix),
                   )),
           const Partition('ExtendedTextField with TextFormField'),
           builderExtendedTextFieldBuilder(
               builder: (TextInputType keyboardType,
                       List<TextInputFormatter> inputFormatters,
-                      InputDecoration? decoration) =>
+                      Widget? suffix,
+                      Widget? prefix) =>
                   TextFormField(
                     keyboardType: keyboardType,
                     inputFormatters: inputFormatters,
-                    decoration: decoration,
+                    decoration: InputDecoration(suffix: suffix, prefix: prefix),
                   )),
           const Partition('ExtendedTextField with CupertinoTextField'),
           builderExtendedTextFieldBuilder(
               builder: (TextInputType keyboardType,
                       List<TextInputFormatter> inputFormatters,
-                      InputDecoration? decoration) =>
+                      Widget? suffix,
+                      Widget? prefix) =>
                   CupertinoTextField(
                       keyboardType: keyboardType,
                       inputFormatters: inputFormatters,
                       suffixMode: OverlayVisibilityMode.editing,
-                      suffix: decoration?.suffix,
+                      suffix: suffix,
                       prefixMode: OverlayVisibilityMode.editing,
-                      prefix: decoration?.prefix)),
+                      prefix: prefix)),
           const Partition(
               'ExtendedTextField with CupertinoTextField.borderless'),
           builderExtendedTextFieldBuilder(
               builder: (TextInputType keyboardType,
                       List<TextInputFormatter> inputFormatters,
-                      InputDecoration? decoration) =>
+                      Widget? suffix,
+                      Widget? prefix) =>
                   CupertinoTextField.borderless(
                       keyboardType: keyboardType,
                       inputFormatters: inputFormatters,
                       suffixMode: OverlayVisibilityMode.editing,
-                      suffix: decoration?.suffix,
+                      suffix: suffix,
                       prefixMode: OverlayVisibilityMode.editing,
-                      prefix: decoration?.prefix)),
+                      prefix: prefix)),
           const Partition('WidgetDecorator'),
           WidgetDecorator(
               gradient: const LinearGradient(colors: Colors.accents),
@@ -107,47 +111,26 @@ class TextFieldPage extends StatelessWidget {
   Widget builderExtendedTextFieldBuilder(
           {required ExtendedTextFieldBuilder builder}) =>
       ExtendedTextField(
-        builder: builder,
-        decorator: WidgetDecoratorStyle(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            gradient: const LinearGradient(colors: Colors.accents),
-            header: Row(children: const <Widget>[Text(' header')]),
-            footer: Row(children: const <Widget>[Text(' footer')]),
-            fillColor: Colors.blue.withOpacity(0.2),
-            borderType: BorderType.outline,
-            borderSide: const BorderSide(color: Colors.yellow),
-            borderRadius: BorderRadius.circular(6)),
-        suffixes: const [
-          AccessoryEntry(mode: AccessoryMode.editing, widget: Text('editing')),
-          AccessoryEntry(mode: AccessoryMode.inner, widget: Text('inner')),
-          AccessoryEntry(mode: AccessoryMode.outer, widget: Text('outer')),
-          AccessoryEntry(
-              mode: AccessoryMode.outermost, widget: Text('outer\nmost')),
-        ],
-        prefixes: const [
-          AccessoryEntry(mode: AccessoryMode.editing, widget: Text('editing')),
-          AccessoryEntry(mode: AccessoryMode.inner, widget: Text('inner')),
-          AccessoryEntry(mode: AccessoryMode.outer, widget: Text('outer')),
-          AccessoryEntry(
-              mode: AccessoryMode.outermost, widget: Text('outer\nmost')),
-        ],
-        hideCounter: true,
-        decoration: InputDecoration(
-            label: const Text('label'),
-            // helperText: 'helperText',
-            // errorText: 'errorText',
-            suffixIcon: const Text(' icon '),
-            prefixIcon: const Text(' icon '),
-            floatingLabelBehavior: FloatingLabelBehavior.always,
-            enabledBorder: const OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.blue)),
-            errorBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.red.withOpacity(0.5))),
-            focusedErrorBorder: const OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.red)),
-            focusedBorder: const OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.black54)),
-            fillColor: Colors.blue.withOpacity(0.2),
-            filled: true),
-      );
+          builder: builder,
+          decorator: WidgetDecoratorStyle(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              gradient: const LinearGradient(colors: Colors.accents),
+              header: Row(children: const <Widget>[Text(' header')]),
+              footer: Row(children: const <Widget>[Text(' footer')]),
+              fillColor: Colors.blue.withOpacity(0.2),
+              borderType: BorderType.outline,
+              borderSide: const BorderSide(color: Colors.yellow),
+              borderRadius: BorderRadius.circular(6)),
+          suffixes: const [
+            AccessoryEntry(mode: AccessoryMode.inner, widget: Text('inner')),
+            AccessoryEntry(mode: AccessoryMode.outer, widget: Text('outer')),
+            AccessoryEntry(
+                mode: AccessoryMode.outermost, widget: Text('outer\nmost')),
+          ],
+          prefixes: const [
+            AccessoryEntry(mode: AccessoryMode.inner, widget: Text('inner')),
+            AccessoryEntry(mode: AccessoryMode.outer, widget: Text('outer')),
+            AccessoryEntry(
+                mode: AccessoryMode.outermost, widget: Text('outer\nmost')),
+          ]);
 }
