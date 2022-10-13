@@ -184,7 +184,6 @@ class _PinBoxState extends State<PinBox> {
     const inputDecoration = InputDecoration(
         contentPadding: EdgeInsets.zero,
         isDense: false,
-        counter: null,
         counterText: '',
         border: InputBorder.none);
     void onChanged(String value) {
@@ -195,9 +194,9 @@ class _PinBoxState extends State<PinBox> {
       }
     }
 
-    final inputFormatter = widget.inputFormatter ??
-        ExtendedTextField.limitFormatterToTextInputFormatter(
-            widget.inputLimitFormatter);
+    final inputFormatter = ExtendedTextField.limitFormatterToTextInputFormatter(
+            widget.inputLimitFormatter)
+        .addAllT(widget.inputFormatter ?? []);
     TextStyle style = const BTextStyle(color: Colors.transparent);
     return widget.textFieldBuilder?.call(widget.controller, inputDecoration,
             onChanged, focusNode, false, style, inputFormatter) ??
