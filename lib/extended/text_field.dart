@@ -251,13 +251,13 @@ class ExtendedTextField extends StatelessWidget {
         strokeAlign: style.strokeAlign);
     switch (style.borderType) {
       case BorderType.outline:
-        return UnderlineInputBorder(
-            borderRadius: style.radius, borderSide: borderSide);
-      case BorderType.underline:
         return OutlineInputBorder(
             gapPadding: style.gapPadding,
             borderRadius: style.radius,
             borderSide: borderSide);
+      case BorderType.underline:
+        return UnderlineInputBorder(
+            borderRadius: style.radius, borderSide: borderSide);
       case BorderType.none:
         return InputBorder.none;
     }
