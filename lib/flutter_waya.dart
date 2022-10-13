@@ -10,6 +10,6 @@ export 'package:http_parser/http_parser.dart';
 export 'components/components.dart';
 export 'constant/constant.dart';
 export 'dio/dio.dart';
+export 'extended/extended.dart';
 export 'extension/extension.dart';
 export 'utils/utils.dart';
-export 'widgets/widgets.dart';

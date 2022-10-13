@@ -2,9 +2,9 @@ import 'dart:math' as math;
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_waya/extended/scroll_view/sliver/element.dart';
+import 'package:flutter_waya/extended/scroll_view/sliver/render.dart';
 import 'package:flutter_waya/flutter_waya.dart';
-import 'package:flutter_waya/widgets/scroll_view/sliver/element.dart';
-import 'package:flutter_waya/widgets/scroll_view/sliver/render.dart';
 
 typedef BuilderScrollView = Widget Function(
     BuildContext context, List<Widget> sliver);

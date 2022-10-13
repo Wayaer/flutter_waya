@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_waya/widgets/scroll_view/extended_scroll_view.dart';
+import 'package:flutter_waya/extended/scroll_view/extended_scroll_view.dart';
 
 import 'render.dart';
 
