@@ -1,6 +1,7 @@
 ## 3.3.0
 
-* Add `ExtendedTextField()`
+* Add `ExtendedTextField()` and Example
+* Change `WidgetPendant()` to `WidgetDecorator()`
 
 ## 3.2.1+1
 
