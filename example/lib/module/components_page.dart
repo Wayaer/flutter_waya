@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:app/main.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
@@ -13,69 +12,7 @@ class ComponentsPage extends StatelessWidget {
           isScroll: true,
           appBar: AppBarText('Components Demo'),
           padding: const EdgeInsets.all(20),
-          children: <Widget>[
-            const Partition('PinBox'),
-            const SizedBox(height: 20),
-            PinBox(
-                maxLength: 5,
-                autoFocus: false,
-                spaces: const <Widget?>[
-                  Icon(Icons.ac_unit, size: 12),
-                  Icon(Icons.ac_unit, size: 12),
-                  Icon(Icons.ac_unit, size: 12),
-                  Icon(Icons.ac_unit, size: 12),
-                  Icon(Icons.ac_unit, size: 12),
-                  Icon(Icons.ac_unit, size: 12),
-                ],
-                hasFocusPinDecoration: BoxDecoration(
-                    color: Colors.purple,
-                    border: Border.all(color: Colors.purple),
-                    borderRadius: BorderRadius.circular(4)),
-                pinDecoration: BoxDecoration(
-                    color: Colors.yellow,
-                    border: Border.all(color: Colors.yellow),
-                    borderRadius: BorderRadius.circular(4)),
-                textStyle: const TextStyle(color: Colors.white)),
-            const Partition('WidgetPendant'),
-            TextField(
-                decoration: InputDecoration(
-                    hintText: '11111',
-                    icon: const Icon(Icons.call),
-                    filled: true,
-                    fillColor: Colors.grey,
-                    contentPadding: const EdgeInsets.all(6),
-                    prefixIcon: Container(
-                        color: Colors.red.withOpacity(0.2), width: 20),
-                    suffixIcon: Container(
-                        color: Colors.red.withOpacity(0.2), width: 20),
-                    prefix:
-                        Container(color: Colors.green, width: 20, height: 20),
-                    isDense: true,
-                    suffix:
-                        Container(color: Colors.green, width: 20, height: 20),
-                    helperText: '33333',
-                    errorText: '5555',
-                    counterText: '',
-                    border: const OutlineInputBorder()),
-                textInputAction: TextInputAction.done),
-            WidgetPendant(
-                borderType: BorderType.underline,
-                fillColor: Colors.amberAccent,
-                borderColor: Colors.greenAccent,
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                extraPrefix: const Text('前缀'),
-                extraSuffix: const Text('后缀'),
-                prefix: const Text('前缀'),
-                suffix: const Text('后缀'),
-                header: Row(children: const <Widget>[Text('头部')]),
-                footer: Row(children: const <Widget>[Text('底部')]),
-                child: CupertinoTextField.borderless(
-                    prefixMode: OverlayVisibilityMode.always,
-                    prefix:
-                        Container(color: Colors.green, width: 20, height: 20),
-                    suffixMode: OverlayVisibilityMode.editing,
-                    suffix:
-                        Container(color: Colors.green, width: 20, height: 20))),
+          children: [
             const Partition('ExpansionTiles'),
             ExpansionTiles(
                 title: const BText('title'),
@@ -92,7 +29,6 @@ class ComponentsPage extends StatelessWidget {
                         alignment: Alignment.centerLeft,
                         child: BText('item$index')),
                     itemCount: 5)),
-
             const Partition('CounterAnimation'),
 
             /// CounterAnimation

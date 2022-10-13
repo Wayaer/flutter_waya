@@ -15,6 +15,7 @@ import 'package:app/module/scroll_list_page.dart';
 import 'package:app/module/scroll_page.dart';
 import 'package:app/module/state_components_page.dart';
 import 'package:app/module/swiper_page.dart';
+import 'package:app/module/text_field_page.dart';
 import 'package:app/module/universal_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_curiosity/flutter_curiosity.dart';
@@ -160,6 +161,8 @@ class _Home extends StatelessWidget {
                   onTap: () => push(const EasyRefreshPage())),
               ElevatedText('Extension',
                   onTap: () => push(const ExtensionPage())),
+              ElevatedText('ExtendedTextField',
+                  onTap: () => push(const TextFieldPage())),
               ElevatedText('ExtendedFutureBuilder',
                   onTap: () => push(const ExtendedFutureBuilderPage())),
             ]));

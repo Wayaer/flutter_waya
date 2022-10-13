@@ -5,48 +5,43 @@ const String refreshEvent = 'refreshEvent';
 
 /// Constant
 class ConstConstant {
-  static const Map<InputTextType, String> regExp = <InputTextType, String>{
+  static const Map<TextInputLimitFormatter, String> regExp =
+      <TextInputLimitFormatter, String>{
     /// 字母和数字
-    InputTextType.lettersNumbers: '[a-zA-Z0-9]',
+    TextInputLimitFormatter.lettersNumbers: '[a-zA-Z0-9]',
 
     /// 密码 字母和数字和.
-    InputTextType.password: '[a-zA-Z0-9.]',
+    TextInputLimitFormatter.password: '[a-zA-Z0-9.]',
 
     /// 整数
-    InputTextType.number: '',
+    TextInputLimitFormatter.number: '[0-9]',
 
     /// 文本
-    InputTextType.text: '',
+    TextInputLimitFormatter.text: '',
 
     /// 小数
-    InputTextType.decimal: '[0-9.]',
+    TextInputLimitFormatter.decimal: '[0-9.]',
 
     /// 字母
-    InputTextType.letter: '[a-zA-Z]',
+    TextInputLimitFormatter.letter: '[a-zA-Z]',
 
     /// 中文
-    InputTextType.chinese: '[\u4e00-\u9fa5]',
+    TextInputLimitFormatter.chinese: '[\u4e00-\u9fa5]',
 
     /// 邮箱
-    InputTextType.email: '[a-zA-Z0-9.@]',
-
-    /// 手机号码
-    InputTextType.mobilePhone: '[0-9]',
+    TextInputLimitFormatter.email: '[a-zA-Z0-9.@]',
 
     /// 电话号码
-    InputTextType.phone: '[0-9-]',
+    TextInputLimitFormatter.phone: '[0-9-+]',
 
     /// 身份证
-    InputTextType.idCard: '[0-9Xx]',
-
-    /// ip地址
-    InputTextType.ip: '[0-9:.]',
+    TextInputLimitFormatter.idCard: '[0-9Xx]',
 
     /// 正数
-    InputTextType.positive: '[+0-9.]',
+    TextInputLimitFormatter.positive: '[+0-9.]',
 
     /// 负数
-    InputTextType.negative: '[-0-9.]',
+    TextInputLimitFormatter.negative: '[-0-9.]',
   };
 }
 

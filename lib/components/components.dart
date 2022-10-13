@@ -17,6 +17,7 @@ export 'draggable_scrollbar.dart';
 export 'gesture.dart';
 export 'json_parse.dart';
 export 'picker/picker.dart';
+export 'pin_box.dart';
 export 'popup/popup.dart';
 export 'progress/liquid_progress.dart';
 export 'progress/progress.dart';
