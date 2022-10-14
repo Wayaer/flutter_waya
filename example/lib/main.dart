@@ -15,8 +15,8 @@ import 'package:app/module/scroll_list_page.dart';
 import 'package:app/module/scroll_page.dart';
 import 'package:app/module/state_components_page.dart';
 import 'package:app/module/swiper_page.dart';
-import 'package:app/module/text_field_page.dart';
 import 'package:app/module/universal_page.dart';
+import 'package:app/module/widget_decorator_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_curiosity/flutter_curiosity.dart';
 import 'package:flutter_waya/flutter_waya.dart';
@@ -59,7 +59,7 @@ void main() {
       const WheelOptions(useMagnifier: true, magnification: 1.5));
   globalOptions.setPickerWheelOptions(
       const PickerWheelOptions(useMagnifier: true, magnification: 1.5));
-  globalOptions.setLogDottedLine(false);
+  globalOptions.setLogDottedLine(true);
   globalOptions.setLoadingOptions(const LoadingOptions(
       custom: BText('全局设置loading', fontSize: 20),
       style: LoadingStyle.custom,
@@ -161,8 +161,8 @@ class _Home extends StatelessWidget {
                   onTap: () => push(const EasyRefreshPage())),
               ElevatedText('Extension',
                   onTap: () => push(const ExtensionPage())),
-              ElevatedText('ExtendedTextField',
-                  onTap: () => push(const TextFieldPage())),
+              ElevatedText('WidgetDecorator',
+                  onTap: () => push(const WidgetDecoratorPage())),
               ElevatedText('ExtendedFutureBuilder',
                   onTap: () => push(const ExtendedFutureBuilderPage())),
             ]));

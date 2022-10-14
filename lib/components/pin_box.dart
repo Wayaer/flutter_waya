@@ -194,8 +194,8 @@ class _PinBoxState extends State<PinBox> {
       }
     }
 
-    final inputFormatter = ExtendedTextField.limitFormatterToTextInputFormatter(
-            widget.inputLimitFormatter)
+    final inputFormatter = widget.inputLimitFormatter
+        .toTextInputFormatter()
         .addAllT(widget.inputFormatter ?? []);
     TextStyle style = const BTextStyle(color: Colors.transparent);
     return widget.textFieldBuilder?.call(widget.controller, inputDecoration,
@@ -206,7 +206,8 @@ class _PinBoxState extends State<PinBox> {
             autofocus: widget.autoFocus,
             maxLines: 1,
             onChanged: onChanged,
-            keyboardType: widget.keyboardType,
+            keyboardType: widget.keyboardType ??
+                widget.inputLimitFormatter.toKeyboardType(),
             enabled: widget.enabled,
             maxLength: widget.maxLength,
             controller: widget.controller,

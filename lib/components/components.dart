@@ -28,6 +28,7 @@ export 'swiper/indicator.dart';
 export 'swiper/pagination.dart';
 export 'swiper/swiper.dart';
 export 'switch.dart';
+export 'widget_decorator.dart';
 
 class NoScrollBehavior extends ScrollBehavior {
   @override

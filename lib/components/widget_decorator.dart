@@ -41,144 +41,89 @@ import 'package:flutter_waya/flutter_waya.dart';
 /// 自定义数字显示 指定maxLength后 右下角会出现字数，flutter有默认实现  可以通过这个自定义
 /// final InputCounterWidgetBuilder? buildCounter;
 
-enum BorderType { outline, underline, none }
-
-enum TextInputLimitFormatter {
-  /// 字母和数字
-  lettersNumbers,
-
-  /// 密码 字母和数字和.
-  password,
-
-  /// 整数
-  number,
-
-  /// 文本
-  text,
-
-  /// 小数
-  decimal,
-
-  /// 字母
-  letter,
-
-  /// 中文
-  chinese,
-
-  /// 邮箱
-  email,
-
-  /// 电话号码
-  phone,
-
-  /// 身份证
-  idCard,
-
-  /// 正数
-  positive,
-
-  /// 负数
-  negative,
-}
-
-enum AccessoryMode {
-  /// 在 [TextField] 内部
+enum DecoratorPositioned {
+  /// 在 Border 内部
   inner,
 
-  /// 在 [TextField] 外部
-  /// 在 [WidgetDecorator] 内部
+  /// 在 Border 外部
   outer,
-
-  /// 在 [WidgetDecorator] 外部
-  outermost,
 }
 
-class AccessoryEntry {
-  const AccessoryEntry({required this.mode, required this.widget});
+class DecoratorEntry {
+  const DecoratorEntry(
+      {required this.positioned,
+      required this.widget,
+      this.mode = OverlayVisibilityMode.always});
 
   /// 显示的位置
-  final AccessoryMode mode;
+  final DecoratorPositioned positioned;
 
-  // final OverlayVisibilityMode mode;
+  /// 模式
+  final OverlayVisibilityMode mode;
 
   /// 要显示的 组件
   final Widget widget;
 }
 
-class InputBorderStyle {
-  InputBorderStyle({
-    this.borderType = BorderType.none,
-    this.radius = BorderRadius.zero,
-    this.color = const Color(0xFF000000),
-    this.width = 1,
-    this.gapPadding = 4,
-    this.style = BorderStyle.solid,
-    this.strokeAlign = StrokeAlign.inside,
-  });
+typedef WidgetDecoratorStateBuilder = Widget Function(FocusNode focusNode);
 
-  /// 边框类型
-  final BorderType borderType;
-
-  /// 边框圆角
-  final BorderRadius radius;
-
-  /// 颜色
-  final Color color;
-
-  /// 边框宽度
-  final double width;
-
-  /// [borderType] = [BorderType.outline]有效
-  final double gapPadding;
-
-  /// 样式
-  final BorderStyle style;
-
-  /// strokeAlign
-  final StrokeAlign strokeAlign;
-
-  InputBorderStyle copyWith({
-    BorderType? borderType,
-    BorderRadius? radius,
-    Color? color,
-    double? width,
-    double? gapPadding,
-    BorderStyle? style,
-    StrokeAlign? strokeAlign,
-  }) =>
-      InputBorderStyle(
-          borderType: borderType ?? this.borderType,
-          radius: radius ?? this.radius,
-          color: color ?? this.color,
-          width: width ?? this.width,
-          gapPadding: gapPadding ?? this.gapPadding,
-          style: style ?? this.style,
-          strokeAlign: strokeAlign ?? this.strokeAlign);
-}
-
-class WidgetDecoratorStyle {
-  const WidgetDecoratorStyle({
-    this.borderType = BorderType.none,
+/// [Widget] 装饰器 动态焦点样式
+class WidgetDecoratorState extends StatefulWidget {
+  const WidgetDecoratorState({
+    super.key,
+    this.suffixes = const [],
+    this.prefixes = const [],
+    this.borderType = BorderType.outline,
     this.borderRadius = BorderRadius.zero,
-    this.borderSide = const BorderSide(),
+    this.borderSide = const BorderSide(color: Colors.black),
+    this.focusBorderSide = const BorderSide(color: Colors.red),
     this.header,
     this.footer,
     this.margin,
     this.padding,
-    this.crossAxisAlignment = CrossAxisAlignment.center,
     this.fillColor,
     this.boxShadow,
     this.gradient,
-  });
+    this.constraints,
+    required this.focusNode,
+    required this.child,
+  })  : assert(focusNode != null),
+        builder = null;
+
+  const WidgetDecoratorState.builder({
+    super.key,
+    this.suffixes = const [],
+    this.prefixes = const [],
+    this.borderType = BorderType.outline,
+    this.borderRadius = BorderRadius.zero,
+    this.borderSide = const BorderSide(color: Colors.black),
+    this.focusBorderSide = const BorderSide(color: Colors.red),
+    this.header,
+    this.footer,
+    this.margin,
+    this.padding,
+    this.fillColor,
+    this.boxShadow,
+    this.gradient,
+    this.constraints,
+    required this.builder,
+  })  : assert(builder != null),
+        child = null,
+        focusNode = null;
+
+  final WidgetDecoratorStateBuilder? builder;
 
   /// 边框类型
   final BorderType borderType;
 
   /// 边框圆角
-  final BorderRadius borderRadius;
+  final BorderRadius? borderRadius;
 
   /// 边框样式
   final BorderSide borderSide;
+
+  /// 获得焦点时的边框样式
+  final BorderSide focusBorderSide;
 
   /// [TextField] 头部和尾部挂件
   final Widget? header;
@@ -188,9 +133,6 @@ class WidgetDecoratorStyle {
   final EdgeInsetsGeometry? margin;
   final EdgeInsetsGeometry? padding;
 
-  /// [TextField] 与 [outer]、[outermost] 对齐方式
-  final CrossAxisAlignment crossAxisAlignment;
-
   /// [TextField] 填充色
   final Color? fillColor;
 
@@ -199,146 +141,101 @@ class WidgetDecoratorStyle {
 
   /// [TextField] 渐变色
   final Gradient? gradient;
-}
 
-typedef ExtendedTextFieldBuilder = Widget Function(TextInputType keyboardType,
-    List<TextInputFormatter> inputFormatters, Widget? suffix, Widget? prefix);
+  final FocusNode? focusNode;
 
-class ExtendedTextField extends StatelessWidget {
-  const ExtendedTextField({
-    Key? key,
-    this.decorator,
-    this.inputLimitFormatter = TextInputLimitFormatter.text,
-    this.suffixes = const [],
-    this.prefixes = const [],
-    required this.builder,
-  }) : super(key: key);
-
-  /// 文本限制输入类型
-  final TextInputLimitFormatter inputLimitFormatter;
-
-  /// ***** [TextField] Builder *****
-  final ExtendedTextFieldBuilder builder;
-
-  /// ***** [WidgetDecorator] *****
-  final WidgetDecoratorStyle? decorator;
+  final Widget? child;
 
   /// 前缀
-  final List<AccessoryEntry> suffixes;
+  final List<DecoratorEntry> suffixes;
 
   /// 后缀
-  final List<AccessoryEntry> prefixes;
+  final List<DecoratorEntry> prefixes;
 
-  /// InputBorderStyle to InputBorder
-  static InputBorder toInputBorder(InputBorderStyle style) {
-    final borderSide = BorderSide(
-        color: style.color,
-        width: style.width,
-        style: style.style,
-        strokeAlign: style.strokeAlign);
-    switch (style.borderType) {
-      case BorderType.outline:
-        return OutlineInputBorder(
-            gapPadding: style.gapPadding,
-            borderRadius: style.radius,
-            borderSide: borderSide);
-      case BorderType.underline:
-        return UnderlineInputBorder(
-            borderRadius: style.radius, borderSide: borderSide);
-      case BorderType.none:
-        return InputBorder.none;
+  /// 作用于整个组件
+  final BoxConstraints? constraints;
+
+  @override
+  State<WidgetDecoratorState> createState() => _WidgetDecoratorStateState();
+}
+
+class _WidgetDecoratorStateState extends State<WidgetDecoratorState> {
+  late FocusNode focusNode;
+  late BorderSide borderSide;
+  bool hasFocus = false;
+
+  @override
+  void initState() {
+    super.initState();
+    initFocusNode();
+  }
+
+  void initFocusNode() {
+    focusNode = widget.focusNode ?? FocusNode();
+    hasFocus = focusNode.hasFocus;
+    borderSide = hasFocus ? widget.focusBorderSide : widget.borderSide;
+    focusNode.addListener(listener);
+  }
+
+  void listener() {
+    if (hasFocus == focusNode.hasFocus ||
+        widget.borderType == BorderType.none) {
+      return;
     }
+    hasFocus = focusNode.hasFocus;
+    borderSide = hasFocus ? widget.focusBorderSide : widget.borderSide;
+    if (mounted) setState(() {});
   }
 
-  /// TextInputLimitFormatter 转换为  List<TextInputFormatter>
-  static List<TextInputFormatter> limitFormatterToTextInputFormatter(
-      TextInputLimitFormatter textInputLimitFormatter) {
-    if (textInputLimitFormatter == TextInputLimitFormatter.text) return [];
-    const Map<TextInputLimitFormatter, String> regExpMap = ConstConstant.regExp;
-    final RegExp regExp = RegExp(regExpMap[textInputLimitFormatter]!);
-    return [FilteringTextInputFormatter.allow(regExp)];
-  }
-
-  /// TextInputLimitFormatter 转换为 TextInputType
-  static TextInputType limitFormatterToKeyboardType(
-      TextInputLimitFormatter inputLimitFormatter) {
-    switch (inputLimitFormatter) {
-      case TextInputLimitFormatter.lettersNumbers:
-        return TextInputType.name;
-      case TextInputLimitFormatter.password:
-        return TextInputType.visiblePassword;
-      case TextInputLimitFormatter.number:
-        return TextInputType.number;
-      case TextInputLimitFormatter.text:
-        return TextInputType.text;
-      case TextInputLimitFormatter.decimal:
-        return const TextInputType.numberWithOptions(decimal: true);
-      case TextInputLimitFormatter.letter:
-        return TextInputType.name;
-      case TextInputLimitFormatter.chinese:
-        return TextInputType.text;
-      case TextInputLimitFormatter.email:
-        return TextInputType.emailAddress;
-      case TextInputLimitFormatter.phone:
-        return TextInputType.phone;
-      case TextInputLimitFormatter.idCard:
-        return TextInputType.name;
-      case TextInputLimitFormatter.positive:
-        return const TextInputType.numberWithOptions(
-            decimal: true, signed: true);
-      case TextInputLimitFormatter.negative:
-        return const TextInputType.numberWithOptions(
-            decimal: true, signed: true);
+  @override
+  void didUpdateWidget(covariant WidgetDecoratorState oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.focusNode != null && focusNode != widget.focusNode) {
+      disposeFocusNode();
+      initFocusNode();
+      setState(() {});
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    Widget current = builder.call(
-        limitFormatterToKeyboardType(inputLimitFormatter),
-        limitFormatterToTextInputFormatter(inputLimitFormatter),
-        buildSuffix(AccessoryMode.inner),
-        buildPrefix(AccessoryMode.inner));
-    return buildWidgetDecorator(current);
-  }
-
-  /// TextField 外部装饰器
-  Widget buildWidgetDecorator(Widget current) {
-    final decorator = this.decorator;
-    final suffix = buildSuffix(AccessoryMode.outer);
-    final prefix = buildPrefix(AccessoryMode.outer);
-    final extraSuffix = buildSuffix(AccessoryMode.outermost);
-    final extraPrefix = buildPrefix(AccessoryMode.outermost);
-    if (decorator != null ||
-        suffix != null ||
-        prefix != null ||
-        extraSuffix != null ||
-        extraPrefix != null) {
-      return WidgetDecorator(
-          borderType: decorator?.borderType ?? BorderType.none,
-          borderRadius: decorator?.borderRadius,
-          borderSide: decorator?.borderSide ?? BorderSide.none,
-          header: decorator?.header,
-          footer: decorator?.footer,
-          crossAxisAlignment:
-              decorator?.crossAxisAlignment ?? CrossAxisAlignment.center,
-          fillColor: decorator?.fillColor,
-          boxShadow: decorator?.boxShadow,
-          gradient: decorator?.gradient,
-          margin: decorator?.margin,
-          padding: decorator?.padding,
-          suffix: suffix,
-          prefix: prefix,
-          extraSuffix: extraSuffix,
-          extraPrefix: extraPrefix,
-          child: current);
-    }
-    return current;
+    return WidgetDecorator(
+        constraints: widget.constraints,
+        borderType: widget.borderType,
+        borderRadius: widget.borderRadius,
+        borderSide: borderSide,
+        header: widget.header,
+        footer: widget.footer,
+        fillColor: widget.fillColor,
+        boxShadow: widget.boxShadow,
+        gradient: widget.gradient,
+        margin: widget.margin,
+        padding: widget.padding,
+        prefix: buildPrefix(DecoratorPositioned.inner),
+        suffix: buildSuffix(DecoratorPositioned.inner),
+        extraPrefix: buildPrefix(DecoratorPositioned.outer),
+        extraSuffix: buildSuffix(DecoratorPositioned.outer),
+        child: widget.child ??
+            widget.builder?.call(focusNode) ??
+            const SizedBox());
   }
 
   /// 后缀
-  Widget? buildSuffix(AccessoryMode mode) {
-    final children = suffixes.where((element) => element.mode == mode).toList();
+  Widget? buildSuffix(DecoratorPositioned positioned) {
+    List children = widget.suffixes.where((element) {
+      if (element.positioned != positioned) return false;
+      switch (element.mode) {
+        case OverlayVisibilityMode.never:
+          return false;
+        case OverlayVisibilityMode.editing:
+          return focusNode.hasFocus;
+        case OverlayVisibilityMode.notEditing:
+          return !focusNode.hasFocus;
+        case OverlayVisibilityMode.always:
+          return true;
+      }
+    }).toList();
+
     if (children.isEmpty) return null;
     if (children.length == 1) return children.first.widget;
     return Row(
@@ -347,13 +244,36 @@ class ExtendedTextField extends StatelessWidget {
   }
 
   /// 前缀
-  Widget? buildPrefix(AccessoryMode mode) {
-    final children = prefixes.where((element) => element.mode == mode).toList();
+  Widget? buildPrefix(DecoratorPositioned positioned) {
+    final children = widget.prefixes.where((element) {
+      if (element.positioned != positioned) return false;
+      switch (element.mode) {
+        case OverlayVisibilityMode.never:
+          return false;
+        case OverlayVisibilityMode.editing:
+          return focusNode.hasFocus;
+        case OverlayVisibilityMode.notEditing:
+          return !focusNode.hasFocus;
+        case OverlayVisibilityMode.always:
+          return true;
+      }
+    }).toList();
     if (children.isEmpty) return null;
     if (children.length == 1) return children.first.widget;
     return Row(
         mainAxisSize: MainAxisSize.min,
         children: children.builder((entry) => entry.widget));
+  }
+
+  void disposeFocusNode() {
+    focusNode.removeListener(listener);
+    focusNode.dispose();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    disposeFocusNode();
   }
 }
 
@@ -377,9 +297,13 @@ class WidgetDecorator extends StatelessWidget {
     this.margin,
     this.padding,
     this.borderSide = const BorderSide(),
+    this.constraints,
   });
 
   final Widget child;
+
+  /// 作用于整个组件
+  final BoxConstraints? constraints;
 
   /// [child] 头部和尾部挂件
   final Widget? header;
@@ -441,20 +365,7 @@ class WidgetDecorator extends StatelessWidget {
 
   Widget get buildCurrent {
     Widget current = child;
-    Border? border;
-    switch (borderType) {
-      case BorderType.outline:
-        border = Border.fromBorderSide(borderSide);
-        break;
-      case BorderType.underline:
-        assert(borderRadius == null,
-            'The current borderType, borderRadius must be null');
-        border = Border(bottom: borderSide);
-        break;
-      case BorderType.none:
-        break;
-    }
-
+    Border? border = borderType.value(borderSide);
     Decoration? decoration;
     if (border != null ||
         fillColor != null ||
@@ -473,6 +384,7 @@ class WidgetDecorator extends StatelessWidget {
     if (suffix != null) children.add(suffix!);
     current = Universal(
         decoration: decoration,
+        constraints: constraints,
         margin: margin,
         padding: padding,
         direction: Axis.horizontal,
@@ -489,7 +401,7 @@ class NumberLimitFormatter extends TextInputFormatter {
   final int decimalLength;
   final int numberLength;
 
-  RegExp exp = RegExp(ConstConstant.regExp[TextInputLimitFormatter.decimal]!);
+  RegExp exp = RegExp(TextInputLimitFormatter.decimal.value);
 
   @override
   TextEditingValue formatEditUpdate(

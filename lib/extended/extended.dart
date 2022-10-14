@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 export 'extended_widgets.dart';
 export 'global_options.dart';
 export 'icon.dart';
-export 'text_field.dart';
 export 'list_wheel.dart';
 export 'overlay.dart';
 export 'scroll_view/scroll_view.dart';

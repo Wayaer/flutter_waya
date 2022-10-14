@@ -1,49 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/flutter_waya.dart';
 
 const String refreshEvent = 'refreshEvent';
-
-/// Constant
-class ConstConstant {
-  static const Map<TextInputLimitFormatter, String> regExp =
-      <TextInputLimitFormatter, String>{
-    /// 字母和数字
-    TextInputLimitFormatter.lettersNumbers: '[a-zA-Z0-9]',
-
-    /// 密码 字母和数字和.
-    TextInputLimitFormatter.password: '[a-zA-Z0-9.]',
-
-    /// 整数
-    TextInputLimitFormatter.number: '[0-9]',
-
-    /// 文本
-    TextInputLimitFormatter.text: '',
-
-    /// 小数
-    TextInputLimitFormatter.decimal: '[0-9.]',
-
-    /// 字母
-    TextInputLimitFormatter.letter: '[a-zA-Z]',
-
-    /// 中文
-    TextInputLimitFormatter.chinese: '[\u4e00-\u9fa5]',
-
-    /// 邮箱
-    TextInputLimitFormatter.email: '[a-zA-Z0-9.@]',
-
-    /// 电话号码
-    TextInputLimitFormatter.phone: '[0-9-+]',
-
-    /// 身份证
-    TextInputLimitFormatter.idCard: '[0-9Xx]',
-
-    /// 正数
-    TextInputLimitFormatter.positive: '[+0-9.]',
-
-    /// 负数
-    TextInputLimitFormatter.negative: '[-0-9.]',
-  };
-}
 
 /// icons
 class ConstIcon {
