@@ -9,6 +9,7 @@ export 'overlay.dart';
 export 'scroll_view/scroll_view.dart';
 export 'tab_bar.dart';
 export 'text.dart';
+export 'text_field.dart';
 export 'universal.dart';
 
 class SystemUiOverlayStyleLight extends SystemUiOverlayStyle {

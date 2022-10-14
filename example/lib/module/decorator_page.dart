@@ -20,28 +20,6 @@ class _DecoratorBoxPageState extends State<DecoratorBoxPage> {
         appBar: AppBarText('DecoratorBox Demo'),
         padding: const EdgeInsets.all(20),
         children: [
-          const Partition('PinBox'),
-          const SizedBox(height: 20),
-          PinBox(
-              maxLength: 5,
-              autoFocus: false,
-              spaces: const <Widget?>[
-                Icon(Icons.ac_unit, size: 12),
-                Icon(Icons.ac_unit, size: 12),
-                Icon(Icons.ac_unit, size: 12),
-                Icon(Icons.ac_unit, size: 12),
-                Icon(Icons.ac_unit, size: 12),
-                Icon(Icons.ac_unit, size: 12),
-              ],
-              hasFocusPinDecoration: BoxDecoration(
-                  color: Colors.purple,
-                  border: Border.all(color: Colors.purple),
-                  borderRadius: BorderRadius.circular(4)),
-              pinDecoration: BoxDecoration(
-                  color: Colors.yellow,
-                  border: Border.all(color: Colors.yellow),
-                  borderRadius: BorderRadius.circular(4)),
-              textStyle: const TextStyle(color: Colors.white)),
           const Partition('DecoratorBoxState'),
           DecoratorBoxState(
               gradient: const LinearGradient(colors: Colors.accents),
