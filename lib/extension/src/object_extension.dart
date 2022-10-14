@@ -360,5 +360,5 @@ extension ExtensionT<T> on T {
     return this;
   }
 
-  List<T> toList() => [this];
+  List<T> convertToList() => [this];
 }

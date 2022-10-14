@@ -104,7 +104,7 @@ class TextFieldPage extends StatelessWidget {
           suffixes: [
             ...const Text('inner')
                 .toDecoratorEntry(positioned: DecoratorPositioned.inner)
-                .toList(),
+                .convertToList(),
             const DecoratorEntry(
                 mode: OverlayVisibilityMode.always,
                 positioned: DecoratorPositioned.outer,
