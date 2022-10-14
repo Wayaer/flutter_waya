@@ -50,6 +50,7 @@ class DecoratorBoxState extends StatefulWidget {
     this.boxShadow,
     this.gradient,
     this.constraints,
+    this.hasFocusChangeBorder = true,
     required this.focusNode,
     required this.child,
   })  : assert(focusNode != null),
@@ -62,7 +63,7 @@ class DecoratorBoxState extends StatefulWidget {
     this.borderType = BorderType.outline,
     this.borderRadius,
     this.borderSide = const BorderSide(color: Colors.black),
-    this.focusBorderSide = const BorderSide(color: Colors.red),
+    this.focusBorderSide,
     this.header,
     this.footer,
     this.margin,
@@ -72,6 +73,7 @@ class DecoratorBoxState extends StatefulWidget {
     this.gradient,
     this.constraints,
     required this.builder,
+    this.hasFocusChangeBorder = true,
   })  : assert(builder != null),
         child = null,
         focusNode = null;
@@ -88,7 +90,7 @@ class DecoratorBoxState extends StatefulWidget {
   final BorderSide borderSide;
 
   /// 获得焦点时的边框样式
-  final BorderSide focusBorderSide;
+  final BorderSide? focusBorderSide;
 
   /// [TextField] 头部和尾部挂件
   final Widget? header;
@@ -120,6 +122,9 @@ class DecoratorBoxState extends StatefulWidget {
   /// 作用于整个组件
   final BoxConstraints? constraints;
 
+  /// 获取焦点修改 border 样式
+  final bool hasFocusChangeBorder;
+
   @override
   State<DecoratorBoxState> createState() => _DecoratorBoxStateState();
 }
@@ -139,7 +144,10 @@ class _DecoratorBoxStateState extends State<DecoratorBoxState> {
   void initFocusNode() {
     focusNode = widget.focusNode ?? FocusNode();
     hasFocus = focusNode.hasFocus;
-    borderSide = hasFocus ? widget.focusBorderSide : widget.borderSide;
+    borderSide = widget.borderSide;
+    if (widget.focusBorderSide != null && hasFocus) {
+      borderSide = widget.focusBorderSide!;
+    }
     focusNode.addListener(listener);
     final editingSuffixes = widget.suffixes.where((element) =>
         element.mode == OverlayVisibilityMode.editing ||
@@ -156,18 +164,10 @@ class _DecoratorBoxStateState extends State<DecoratorBoxState> {
       return;
     }
     hasFocus = focusNode.hasFocus;
-    borderSide = hasFocus ? widget.focusBorderSide : widget.borderSide;
-    if (mounted) setState(() {});
-  }
-
-  @override
-  void didUpdateWidget(covariant DecoratorBoxState oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.focusNode != null && focusNode != widget.focusNode) {
-      disposeFocusNode();
-      initFocusNode();
-      setState(() {});
+    if (widget.focusBorderSide != null) {
+      borderSide = hasFocus ? widget.focusBorderSide! : widget.borderSide;
     }
+    if (mounted) setState(() {});
   }
 
   @override
@@ -348,7 +348,8 @@ class DecoratorBox extends StatelessWidget {
       decoration = BoxDecoration(
           border: border,
           color: fillColor,
-          borderRadius: borderRadius,
+          borderRadius:
+              borderType == BorderType.underline ? null : borderRadius,
           gradient: gradient,
           boxShadow: boxShadow);
     }
