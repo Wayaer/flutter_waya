@@ -528,6 +528,12 @@ extension ExtensionWidget on Widget {
           excludeFromSemantics: excludeFromSemantics,
           dragStartBehavior: dragStartBehavior,
           child: this);
+
+  DecoratorEntry toDecoratorEntry({
+    DecoratorPositioned positioned = DecoratorPositioned.outer,
+    OverlayVisibilityMode mode = OverlayVisibilityMode.always,
+  }) =>
+      DecoratorEntry(widget: this, positioned: positioned, mode: mode);
 }
 
 extension ExtensionFlex on Flex {

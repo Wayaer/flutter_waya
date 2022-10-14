@@ -101,16 +101,15 @@ class TextFieldPage extends StatelessWidget {
               borderType: BorderType.outline,
               borderSide: const BorderSide(color: Colors.yellow),
               borderRadius: BorderRadius.circular(6)),
-          suffixes: const [
-            DecoratorEntry(
-                mode: OverlayVisibilityMode.always,
-                positioned: DecoratorPositioned.inner,
-                widget: Text('inner')),
-            DecoratorEntry(
+          suffixes: [
+            ...const Text('inner')
+                .toDecoratorEntry(positioned: DecoratorPositioned.inner)
+                .toList(),
+            const DecoratorEntry(
                 mode: OverlayVisibilityMode.always,
                 positioned: DecoratorPositioned.outer,
                 widget: Text('outer')),
-            DecoratorEntry(
+            const DecoratorEntry(
                 mode: OverlayVisibilityMode.always,
                 positioned: DecoratorPositioned.outermost,
                 widget: Text('outer\nmost')),

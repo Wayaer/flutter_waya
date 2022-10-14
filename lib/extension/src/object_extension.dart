@@ -348,7 +348,6 @@ extension ExtensionFunction on Function {
   }
 }
 
-
 extension ExtensionT<T> on T {
   /// let是做了操作后返回新的类型
   ReturnType let<ReturnType>(ReturnType Function(T it) operation) {
@@ -360,4 +359,6 @@ extension ExtensionT<T> on T {
     operation(this);
     return this;
   }
+
+  List<T> toList() => [this];
 }
