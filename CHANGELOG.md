@@ -1,7 +1,7 @@
 ## 3.3.0+2
 
-* Add `WidgetDecoratorState()` and Example
-* Change `WidgetPendant()` to `WidgetDecorator()`
+* Add `DecoratorBoxState()` and Example
+* Change `WidgetPendant()` to `DecoratorBox()`
 
 ## 3.2.1+1
 

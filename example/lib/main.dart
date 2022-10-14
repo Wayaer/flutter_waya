@@ -1,6 +1,7 @@
 import 'package:app/module/anchor_scroll_builder_page.dart';
 import 'package:app/module/button_page.dart';
 import 'package:app/module/components_page.dart';
+import 'package:app/module/decorator_page.dart';
 import 'package:app/module/dio_page.dart';
 import 'package:app/module/extension_page.dart';
 import 'package:app/module/gesture_page.dart';
@@ -16,7 +17,6 @@ import 'package:app/module/scroll_page.dart';
 import 'package:app/module/state_components_page.dart';
 import 'package:app/module/swiper_page.dart';
 import 'package:app/module/universal_page.dart';
-import 'package:app/module/widget_decorator_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_curiosity/flutter_curiosity.dart';
 import 'package:flutter_waya/flutter_waya.dart';
@@ -161,8 +161,8 @@ class _Home extends StatelessWidget {
                   onTap: () => push(const EasyRefreshPage())),
               ElevatedText('Extension',
                   onTap: () => push(const ExtensionPage())),
-              ElevatedText('WidgetDecorator',
-                  onTap: () => push(const WidgetDecoratorPage())),
+              ElevatedText('DecoratorBox',
+                  onTap: () => push(const DecoratorBoxPage())),
               ElevatedText('ExtendedFutureBuilder',
                   onTap: () => push(const ExtendedFutureBuilderPage())),
             ]));

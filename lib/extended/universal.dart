@@ -61,7 +61,7 @@ class Universal extends StatelessWidget {
     this.direction = Axis.vertical,
     this.scrollDirection,
     this.behavior = HitTestBehavior.opaque,
-    this.borderRadius = BorderRadius.zero,
+    this.borderRadius,
     this.color,
     this.alignment,
     this.child,
@@ -188,7 +188,7 @@ class Universal extends StatelessWidget {
   /// [InkWell]飞溅半径
   /// [Material]圆角半径
   /// [ClipRRect]剪辑半径
-  final BorderRadius borderRadius;
+  final BorderRadius? borderRadius;
 
   /// ****** [child]、[children]、[builder] ****** ///
   /// child < children < builder
@@ -724,9 +724,7 @@ class Universal extends StatelessWidget {
         mShape: shape ??
             cardTheme.shape ??
             RoundedRectangleBorder(
-                borderRadius: borderRadius == BorderRadius.zero
-                    ? BorderRadius.circular(4)
-                    : borderRadius),
+                borderRadius: borderRadius ?? BorderRadius.circular(4)),
         mClipBehavior: clipBehavior ?? cardTheme.clipBehavior ?? Clip.none,
         mBorderOnForeground: true);
   }
