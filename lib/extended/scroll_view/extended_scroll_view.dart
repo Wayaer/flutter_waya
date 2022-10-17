@@ -149,7 +149,7 @@ class _ExtendedScrollViewState extends State<ExtendedScrollView> {
   void updateWidget() {
     _calculate(slivers);
     showScrollView = true;
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   void _calculate(List<Widget> slivers) {
@@ -245,11 +245,11 @@ class _ExtendedScrollViewState extends State<ExtendedScrollView> {
   @override
   void didUpdateWidget(covariant ExtendedScrollView oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.slivers.hashCode != widget.slivers.hashCode) {
+    if (oldWidget.slivers.length != widget.slivers.length) {
       sliverModel.clear();
       slivers = widget.slivers;
       showScrollView = false;
-      setState(() {});
+      if (mounted) setState(() {});
       1.seconds.delayed(updateWidget);
     }
   }
