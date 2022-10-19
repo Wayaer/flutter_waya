@@ -25,32 +25,17 @@ extension ExtensionWidget on Widget {
       this;
 
   PageRoute<T> buildPageRoute<T>(
-      {bool maintainState = true,
-      bool fullscreenDialog = false,
-      required RoutePushStyle? pushStyle,
-      RouteSettings? settings,
-      BuildContext? context}) {
-    switch (pushStyle) {
-      case RoutePushStyle.cupertino:
-        return CupertinoPageRoute<T>(
-            settings: settings,
-            maintainState: maintainState,
-            fullscreenDialog: fullscreenDialog,
-            builder: (_) => this);
-      case RoutePushStyle.material:
-        return MaterialPageRoute<T>(
-            settings: settings,
-            maintainState: maintainState,
-            fullscreenDialog: fullscreenDialog,
-            builder: (_) => this);
-      default:
-        return MaterialPageRoute<T>(
-            settings: settings,
-            maintainState: maintainState,
-            fullscreenDialog: fullscreenDialog,
-            builder: (_) => this);
-    }
-  }
+          {bool maintainState = true,
+          bool fullscreenDialog = false,
+          String? title,
+          required RoutePushStyle pushStyle,
+          RouteSettings? settings}) =>
+      pushStyle.pageRoute(
+          title: title,
+          settings: settings,
+          maintainState: maintainState,
+          fullscreenDialog: fullscreenDialog,
+          widget: this);
 
   BackdropFilter backdropFilter(
           {Key? key, ImageFilter? filter, double fuzzyDegree = 4}) =>

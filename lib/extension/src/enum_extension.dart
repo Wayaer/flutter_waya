@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 
 enum TextInputLimitFormatter {
   /// 字母和数字
@@ -132,6 +134,34 @@ extension ExtensionBorderType on BorderType {
         return Border(bottom: borderSide);
       case BorderType.none:
         return null;
+    }
+  }
+}
+
+extension ExtensionRoutePushStyle on RoutePushStyle {
+  /// Builds the primary contents of the route.
+  PageRoute<T> pageRoute<T>(
+      {WidgetBuilder? builder,
+      Widget? widget,
+      bool maintainState = true,
+      bool fullscreenDialog = false,
+      String? title,
+      RouteSettings? settings}) {
+    assert(widget != null || builder != null);
+    switch (this) {
+      case RoutePushStyle.cupertino:
+        return CupertinoPageRoute<T>(
+            title: title,
+            settings: settings,
+            maintainState: maintainState,
+            fullscreenDialog: fullscreenDialog,
+            builder: builder ?? widget!.toWidgetBuilder);
+      case RoutePushStyle.material:
+        return MaterialPageRoute<T>(
+            settings: settings,
+            maintainState: maintainState,
+            fullscreenDialog: fullscreenDialog,
+            builder: builder ?? widget!.toWidgetBuilder);
     }
   }
 }

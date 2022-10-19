@@ -21,6 +21,12 @@ extension ExtensionString on String {
 
   DateTime? get tryParseDateTime => DateTime.tryParse(this);
 
+  ///Removes first element
+  String get removeFirst => length > 1 ? substring(1, length) : '';
+
+  ///Removes last element
+  String get removeLast => length > 1 ? substring(0, length - 1) : '';
+
   String insert(int index, String element) =>
       '${substring(0, index)}$element${substring(index, length)}';
 
@@ -105,9 +111,55 @@ extension ExtensionString on String {
 
   /// 移出尾部指定长度
   String removeSuffixLength(int l) => substring(0, length - l);
+
+  /// Check whether a string is a number or not
+  /// ```dart
+  /// '123'.isNumber(); // true
+  /// '123.456'.isNumber(); // true
+  /// 'abc'.isNumber(); // false
+  /// '123abc'.isNumber(); // false
+  /// ```
+  bool isNumber() {
+    final isMatch = RegExp("[0-9]").hasMatch(this);
+    return isMatch;
+  }
+
+  /// Check  whether a string is digit or not
+  /// ```dart
+  /// '123'.isDigit(); // false
+  /// '123.456'.isDigit(); // false
+  /// 'abc'.isDigit(); // false
+  /// '123abc'.isDigit(); // false
+  /// ```
+  bool isDigit() {
+    final isMatch = RegExp(r'\d').hasMatch(this);
+    return isMatch && length == 1;
+  }
+
+  bool isLetter() => RegExp("[A-Za-z]").hasMatch(this);
+
+  /// Check if string is json decode
+  bool get isJsonDecode {
+    try {
+      jsonDecode(this) as Map<String, dynamic>;
+    } on FormatException catch (_) {
+      return false;
+    }
+    return true;
+  }
+
+  /// Format: 'aabbcc' or 'ffaabbcc' with an optional leading '#'.
+  Color fromHex() {
+    final StringBuffer buffer = StringBuffer();
+    if (length == 6 || length == 7) {
+      buffer.write('ff');
+    }
+    buffer.write(replaceFirst('#', ''));
+    return Color(int.parse(buffer.toString(), radix: 16));
+  }
 }
 
 extension ExtensionStringUnsafe on String? {
   /// null 或者 Empty 返回 true
-  bool checkNullOrEmpty() => this == null || this!.isEmpty;
+  bool isEmptyOrNull() => this == null || this!.isEmpty;
 }

@@ -13,19 +13,6 @@ extension ExtensionContext on BuildContext {
   void autoFocus([FocusNode? focusNode]) =>
       FocusScope.of(this).autofocus(focusNode ?? FocusNode());
 
-  /// The same of [MediaQuery.of(context).size]
-  Size get mediaQuerySize => MediaQuery.of(this).size;
-
-  /// The same of [MediaQuery.of(context).size.height]
-  /// Note: updates when you rezise your screen (like on a browser or
-  /// desktop window)
-  double get height => mediaQuerySize.height;
-
-  /// The same of [MediaQuery.of(context).size.width]
-  /// Note: updates when you rezise your screen (like on a browser or
-  /// desktop window)
-  double get width => mediaQuerySize.width;
-
   /// Gives you the power to get a portion of the height.
   /// Useful for responsive applications.
   ///
@@ -104,6 +91,19 @@ extension ExtensionContext on BuildContext {
 
   /// True if width be larger than 800
   bool get showNavBar => width > 800;
+
+  /// The same of [MediaQuery.of(context).size]
+  Size get mediaQuerySize => mediaQuery.size;
+
+  /// The same of [MediaQuery.of(context).size.height]
+  /// Note: updates when you rezise your screen (like on a browser or
+  /// desktop window)
+  double get height => mediaQuerySize.height;
+
+  /// The same of [MediaQuery.of(context).size.width]
+  /// Note: updates when you rezise your screen (like on a browser or
+  /// desktop window)
+  double get width => mediaQuerySize.width;
 
   /// True if the shortestSide is smaller than 600p
   bool get isPhone => mediaQueryShortestSide < 600;

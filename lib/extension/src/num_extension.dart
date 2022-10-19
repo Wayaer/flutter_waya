@@ -2,6 +2,7 @@ import 'dart:math' as math;
 import 'dart:math';
 
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 /// num 扩展
@@ -98,7 +99,7 @@ extension ExtensionNum on num {
   Duration get days => Duration(hours: (this * Duration.hoursPerDay).round());
 
   /// int 字节转 k MB GB
-  String getFileSize() {
+  String toFileSize() {
     num size = this;
     if (size < 1024) {
       return '$size字节';
@@ -147,6 +148,27 @@ extension ExtensionNum on num {
     }
     return toString();
   }
+
+  /// Returns if the number is even
+  bool get isEven => this % 2 == 0;
+
+  /// Returns if the number is odd
+  bool get isOdd => this % 2 != 0;
+
+  /// Returns if the number is positive
+  bool get isPositive => this > 0;
+
+  /// Returns if the number is negative
+  bool get isNegative => this < 0;
+
+  ///Converts the number into a [SizedBox] with the width as that number.
+  Widget get widthBox => SizedBox(width: toDouble());
+
+  ///Converts the number into a [SizedBox] with the height as that number.
+  Widget get heightBox => SizedBox(height: toDouble());
+
+  ///Converts the number into a [SizedBox] with the width & height as that number.
+  Widget get squareBox => SizedBox(height: toDouble(), width: toDouble());
 }
 
 /// int 扩展

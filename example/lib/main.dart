@@ -18,6 +18,7 @@ import 'package:app/module/state_components_page.dart';
 import 'package:app/module/swiper_page.dart';
 import 'package:app/module/text_field_page.dart';
 import 'package:app/module/universal_page.dart';
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_curiosity/flutter_curiosity.dart';
 import 'package:flutter_waya/flutter_waya.dart';
@@ -66,7 +67,10 @@ void main() {
       style: LoadingStyle.custom,
       options: ModalWindowsOptions(onTap: closeLoading)));
   des();
-  runApp(isCustomApp ? _CustomApp() : _App());
+  runApp(DevicePreview(
+      enabled: true,
+      defaultDevice: Devices.ios.iPhone13Mini,
+      builder: (context) => isCustomApp ? _CustomApp() : _App()));
 }
 
 class _CustomApp extends StatefulWidget {
@@ -78,10 +82,14 @@ class _CustomAppState extends State<_CustomApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        useInheritedMediaQuery: true,
         debugShowCheckedModeBanner: false,
         navigatorKey: GlobalOptions().globalNavigatorKey,
         title: 'Waya UI',
+        locale: DevicePreview.locale(context),
+        builder: DevicePreview.appBuilder,
         theme: ThemeData.light(),
+        darkTheme: ThemeData.dark(),
         home: _Home());
   }
 }
@@ -99,7 +107,7 @@ class _AppState extends State<_App> {
       if (isDebug && isDesktop) {
         await Curiosity().desktop.focusDesktop();
         final bool data =
-            await Curiosity().desktop.setDesktopSizeToIPad9P7(p: 1.5);
+            await Curiosity().desktop.setDesktopSizeToIPad11(p: 1.3);
         log('桌面端限制宽高:$data');
       }
     });
@@ -108,16 +116,18 @@ class _AppState extends State<_App> {
   @override
   Widget build(BuildContext context) {
     return ExtendedWidgetsApp(
+        useInheritedMediaQuery: true,
         theme: ThemeData.light(),
         darkTheme: ThemeData.dark(),
+        locale: DevicePreview.locale(context),
         title: 'Waya UI',
         home: _Home(),
-        builder: (_, Widget? child) {
-          if (isWeb) return child ?? const SizedBox();
-          return ScreenAdaptation(
-              designWidth: 430,
+        builder: (BuildContext context, Widget? child) {
+          final widget = ScreenAdaptation(
+              designWidth: 440,
               scaleType: ScreenAdaptationScaleType.auto,
               builder: (_, bool scaled) => child ?? const SizedBox());
+          return DevicePreview.appBuilder(context, widget);
         },
         pushStyle: RoutePushStyle.material);
   }
@@ -191,6 +201,7 @@ class ElevatedText extends StatelessWidget {
   Widget build(BuildContext context) => SimpleButton(
       isElastic: true,
       onTap: onTap,
+      addInkWell: true,
       margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 6),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(

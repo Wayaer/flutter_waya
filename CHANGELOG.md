@@ -1,3 +1,9 @@
+## 3.3.0+7
+
+* Add device preview for example
+* Add `ColorExtension`、`IterableExtension`
+* Change `checkNullOrEmpty` to `isEmptyOrNull`
+
 ## 3.3.0+6
 
 * Fix known issues with `ExtendedScrollView()`

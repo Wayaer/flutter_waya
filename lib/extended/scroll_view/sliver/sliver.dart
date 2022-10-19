@@ -3,7 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-/// 瀑布流 添加空数据视图
+/// 瀑布流 添加empty视图
 class SliverWaterfallFlow extends StatelessWidget {
   const SliverWaterfallFlow(
       {super.key,

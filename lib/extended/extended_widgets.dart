@@ -123,7 +123,7 @@ class ExtendedWidgetsApp extends StatelessWidget {
   final ThemeMode themeMode;
 
   /// 地点
-  final Locale locale;
+  final Locale? locale;
 
   /// 支持区域
   final Iterable<Locale> supportedLocales;
@@ -185,15 +185,8 @@ class ExtendedWidgetsApp extends StatelessWidget {
         onUnknownRoute: onUnknownRoute,
         navigatorObservers: navigatorObservers,
         initialRoute: initialRoute,
-        pageRouteBuilder: <T>(RouteSettings settings, WidgetBuilder builder) {
-          switch (pushStyle) {
-            case RoutePushStyle.cupertino:
-              return CupertinoPageRoute<T>(
-                  settings: settings, builder: builder);
-            case RoutePushStyle.material:
-              return MaterialPageRoute<T>(settings: settings, builder: builder);
-          }
-        },
+        pageRouteBuilder: <T>(RouteSettings settings, WidgetBuilder builder) =>
+            pushStyle.pageRoute(settings: settings, builder: builder),
         home: home,
         routes: routes,
         builder: builder,
@@ -292,12 +285,6 @@ class ExtendedWidgetsApp extends StatelessWidget {
       scrollBehavior: scrollBehavior);
 }
 
-/// 统一全局控制 是否可返回
-/// true 允许的返回
-/// false 不允许返回
-///  [ExtendedScaffold.onWillPop] 方法优先于 [scaffoldWillPop]
-bool scaffoldWillPop = true;
-
 /// ExtendedScaffold
 class ExtendedScaffold extends StatelessWidget {
   const ExtendedScaffold({
@@ -362,6 +349,7 @@ class ExtendedScaffold extends StatelessWidget {
     this.restorationId,
     this.backgroundColor,
     this.systemOverlayStyle,
+    this.persistentFooterAlignment = AlignmentDirectional.centerEnd,
   });
 
   /// 相当于给[body] 套用 [Column]、[Row]、[Stack]
@@ -402,15 +390,15 @@ class ExtendedScaffold extends StatelessWidget {
   /// 在不设置AppBar的时候 修改状态栏颜色
   final SystemUiOverlayStyle? systemOverlayStyle;
 
+  /// 限制 [appBar] 高度
+  final double? appBarHeight;
+
   /// Scaffold相关属性
   final Widget? body;
   final Color? backgroundColor;
-
   final bool extendBody;
   final bool extendBodyBehindAppBar;
-
   final Widget? appBar;
-  final double? appBarHeight;
   final Widget? floatingActionButton;
   final FloatingActionButtonAnimator? floatingActionButtonAnimator;
   final FloatingActionButtonLocation? floatingActionButtonLocation;
@@ -429,6 +417,9 @@ class ExtendedScaffold extends StatelessWidget {
   final bool? resizeToAvoidBottomInset;
   final bool primary;
   final String? restorationId;
+  final AlignmentDirectional persistentFooterAlignment;
+
+  /// ****** [SafeArea] ****** ///
   final bool safeLeft;
   final bool safeTop;
   final bool safeRight;
@@ -460,14 +451,17 @@ class ExtendedScaffold extends StatelessWidget {
         bottomNavigationBar: bottomNavigationBar,
         bottomSheet: bottomSheet,
         restorationId: restorationId,
-        body: universal);
+        body: universal,
+        persistentFooterAlignment: persistentFooterAlignment);
     return onWillPop != null || onWillPopOverlayClose
         ? WillPopScope(onWillPop: onWillPopFun, child: scaffold)
         : scaffold;
   }
 
   Future<bool> onWillPopFun() async {
-    if (!scaffoldWillPop) return (await onWillPop?.call()) ?? scaffoldWillPop;
+    if (!GlobalOptions().scaffoldWillPop) {
+      return (await onWillPop?.call()) ?? GlobalOptions().scaffoldWillPop;
+    }
     if (onWillPopOverlayClose &&
         ExtendedOverlay().overlayEntryList.isNotEmpty) {
       closeOverlay();
@@ -530,7 +524,6 @@ Future<T?> push<T extends Object?, TO extends Object?>(Widget widget,
         widget.buildPageRoute(
             maintainState: maintainState,
             fullscreenDialog: fullscreenDialog,
-            context: GlobalOptions().globalNavigatorKey.currentState!.context,
             settings: settings,
             pushStyle: pushStyle ?? GlobalOptions().pushStyle));
   }
@@ -546,7 +539,6 @@ Future<T?> pushReplacement<T extends Object?, TO extends Object?>(Widget widget,
     GlobalOptions().globalNavigatorKey.currentState!.pushReplacement(
         widget.buildPageRoute(
             settings: settings,
-            context: GlobalOptions().globalNavigatorKey.currentState!.context,
             maintainState: maintainState,
             fullscreenDialog: fullscreenDialog,
             pushStyle: pushStyle ?? GlobalOptions().pushStyle),
@@ -564,7 +556,6 @@ Future<T?> pushAndRemoveUntil<T extends Object?>(Widget widget,
             settings: settings,
             maintainState: maintainState,
             fullscreenDialog: fullscreenDialog,
-            context: GlobalOptions().globalNavigatorKey.currentState!.context,
             pushStyle: pushStyle ?? GlobalOptions().pushStyle),
         predicate ?? (_) => false);
 

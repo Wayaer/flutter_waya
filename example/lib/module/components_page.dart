@@ -119,7 +119,7 @@ class ComponentsPage extends StatelessWidget {
                   texts: const [
                     'RText',
                     ' = ',
-                    'RichText 魔改版',
+                    'RichText魔改版',
                   ],
                   styles: const [
                     BTextStyle(color: Color(0xFFD32F2F)),
@@ -127,7 +127,6 @@ class ComponentsPage extends StatelessWidget {
                     // BTextStyle(color: Color(0xFFFFC400)),
                   ])
             ]),
-
             const SizedBox(height: 100),
           ]);
 }

@@ -10,6 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_curiosity: ^4.0.0+1
+  device_preview: ^1.1.0
   flutter_localizations:
     sdk: flutter
   flutter_waya:
