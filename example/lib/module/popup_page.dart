@@ -15,7 +15,7 @@ class PopupPage extends StatelessWidget {
       },
       child: ExtendedScaffold(
           padding: const EdgeInsets.all(20),
-          appBar: AppBarText('Popup Demo'),
+          appBar: AppBarText('Popup'),
           isScroll: true,
           children: [
             ElevatedText('showBottomPopup', onTap: () {

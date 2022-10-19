@@ -11,7 +11,7 @@ class TextFieldPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ExtendedScaffold(
         isScroll: true,
-        appBar: AppBarText('TextField Demo'),
+        appBar: AppBarText('TextField'),
         padding: const EdgeInsets.all(20),
         children: [
           const Partition('PinBox'),

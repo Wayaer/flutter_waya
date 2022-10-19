@@ -9,7 +9,7 @@ class StateComponentsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ExtendedScaffold(
         isScroll: true,
-        appBar: AppBarText('State Components Demo'),
+        appBar: AppBarText('State Components'),
         padding: const EdgeInsets.all(20),
         children: <Widget>[
           const Partition('ValueBuilder'),

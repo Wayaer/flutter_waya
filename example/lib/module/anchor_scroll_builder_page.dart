@@ -28,7 +28,7 @@ class AnchorScrollBuilderPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ExtendedScaffold(
         isScroll: true,
-        appBar: AppBarText('ScrollList'),
+        appBar: AppBarText('AnchorScrollBuilder'),
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           const SizedBox(height: 20),

@@ -36,7 +36,7 @@ class _FlSwiperPageState extends State<FlSwiperPage> {
   Widget build(BuildContext context) {
     return ExtendedScaffold(
         isScroll: true,
-        appBar: AppBarText('FlSwiper Demo'),
+        appBar: AppBarText('FlSwiper'),
         children: <Widget>[
           SizedBox(
               height: 200,

@@ -17,7 +17,7 @@ class _RefreshPageState extends State<RefreshPage> {
   @override
   Widget build(BuildContext context) {
     return ExtendedScaffold(
-        appBar: AppBarText('SimpleRefresh Demo'),
+        appBar: AppBarText('SimpleRefresh'),
         body: SimpleRefresh(
           onRefresh: () async {
             await 2.seconds.delayed(() {});
@@ -68,7 +68,7 @@ class _EasyRefreshPageState extends State<EasyRefreshPage> {
   @override
   Widget build(BuildContext context) {
     return ExtendedScaffold(
-        appBar: AppBarText('EasyRefreshPage Demo'),
+        appBar: AppBarText('EasyRefreshPage'),
         bottomNavigationBar: Universal(
             direction: Axis.horizontal,
             mainAxisSize: MainAxisSize.min,

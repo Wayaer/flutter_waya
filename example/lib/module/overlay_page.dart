@@ -7,7 +7,7 @@ class OverlayPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ExtendedScaffold(
-          appBar: AppBarText('OverlayPage Demo'),
+          appBar: AppBarText('Overlay'),
           isScroll: true,
           padding: const EdgeInsets.all(20),
           children: [

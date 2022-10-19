@@ -26,7 +26,7 @@ class _GestureLockPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ExtendedScaffold(
-        appBar: AppBarText('GestureLock Demo'),
+        appBar: AppBarText('GestureLock'),
         mainAxisAlignment: MainAxisAlignment.center,
         children: const [
           GestureLock(
@@ -41,7 +41,7 @@ class _GestureZoomPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ExtendedScaffold(
-        appBar: AppBarText('GestureZoom Demo'),
+        appBar: AppBarText('GestureZoom'),
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           GestureZoom(

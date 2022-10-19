@@ -7,7 +7,7 @@ class PickerPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ExtendedScaffold(
-          appBar: AppBarText('Picker Demo'),
+          appBar: AppBarText('Picker'),
           padding: const EdgeInsets.all(20),
           isScroll: true,
           children: [

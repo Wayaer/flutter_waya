@@ -26,7 +26,7 @@ class _ProgressPageState extends State<ProgressPage>
     final double percentage = _animationController.value * 100;
     return ExtendedScaffold(
         isScroll: true,
-        appBar: AppBarText('Progress Demo'),
+        appBar: AppBarText('Progress'),
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           const SizedBox(height: 20),

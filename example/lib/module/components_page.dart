@@ -10,7 +10,7 @@ class ComponentsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ExtendedScaffold(
           isScroll: true,
-          appBar: AppBarText('Components Demo'),
+          appBar: AppBarText('Components'),
           padding: const EdgeInsets.all(20),
           children: [
             const Partition('ExpansionTiles'),

@@ -8,7 +8,7 @@ class ExtensionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ExtendedScaffold(
-        appBar: AppBarText('ExtensionPage'),
+        appBar: AppBarText('Extension'),
         padding: const EdgeInsets.all(20),
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[

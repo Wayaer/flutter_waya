@@ -17,7 +17,7 @@ class _DecoratorBoxPageState extends State<DecoratorBoxPage> {
   Widget build(BuildContext context) {
     return ExtendedScaffold(
         isScroll: true,
-        appBar: AppBarText('DecoratorBox Demo'),
+        appBar: AppBarText('DecoratorBox'),
         padding: const EdgeInsets.all(20),
         children: [
           const Partition('DecoratorBoxState'),
