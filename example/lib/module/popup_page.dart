@@ -59,6 +59,8 @@ class PopupPage extends StatelessWidget {
     const bool isOverlay = false;
     showDoubleChooseWindows<dynamic>(
         isOverlay: isOverlay,
+        decoration: BoxDecoration(
+            color: Colors.white, borderRadius: BorderRadius.circular(10)),
         right: SimpleButton(
             padding: const EdgeInsets.symmetric(vertical: 6),
             alignment: Alignment.center,

@@ -182,7 +182,7 @@ class PopupModalWindows extends StatelessWidget {
       top: options.isStack ? options.top : null,
       right: options.isStack ? options.right : null,
       bottom: options.isStack ? options.bottom : null,
-      padding: getEdgeInsets,
+      padding: edgeInsets,
       constraints: options.constraints,
       direction: options.direction,
       isScroll: options.isScroll,
@@ -193,7 +193,7 @@ class PopupModalWindows extends StatelessWidget {
       child: child,
       children: children);
 
-  EdgeInsets? get getEdgeInsets {
+  EdgeInsets? get edgeInsets {
     if (options.isStack == false &&
         (options.left != null ||
             options.top != null ||
@@ -246,8 +246,7 @@ class PopupDoubleChooseWindows extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> widgets = <Widget>[];
-    widgets.add(content);
+    final List<Widget> widgets = [content];
     if (left != null && right != null) widgets.add(leftAndRight);
     var options = this.options ?? GlobalOptions().modalWindowsOptions;
     if (context.mediaQuery.size.width > 400) {
@@ -257,16 +256,16 @@ class PopupDoubleChooseWindows extends StatelessWidget {
       options = options.copyWith(
           left: options.left ?? 30, right: options.right ?? 30);
     }
-    options = options.copyWith(mainAxisAlignment: MainAxisAlignment.center);
+    options = options.copyWith(
+        isScroll: false,
+        isStack: false,
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min);
     return PopupModalWindows(options: options, children: [
       Universal(
           width: width,
           height: height,
           constraints: options.constraints,
-          left: options.left,
-          right: options.right,
-          top: options.top,
-          bottom: options.bottom,
           onTap: () {},
           decoration: decoration ??
               BoxDecoration(
