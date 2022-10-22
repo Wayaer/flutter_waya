@@ -6,7 +6,7 @@ class ModalWindowsOptions {
       this.left,
       this.right,
       this.bottom,
-      this.alignment = Alignment.center,
+      this.alignment,
       this.gaussian = false,
       this.addMaterial = false,
       this.ignoring = false,
@@ -22,7 +22,8 @@ class ModalWindowsOptions {
       this.isScroll = false,
       this.isStack = false,
       this.blendMode = BlendMode.srcOver,
-      this.filter});
+      this.filter,
+      this.constraints});
 
   /// 背景点击事件
   final GestureTapCallback? onTap;
@@ -77,6 +78,8 @@ class ModalWindowsOptions {
   /// ****** Stack ******  ///
   final bool isStack;
 
+  final BoxConstraints? constraints;
+
   ModalWindowsOptions copyWith({
     GestureTapCallback? onTap,
     HitTestBehavior? behavior,
@@ -98,8 +101,10 @@ class ModalWindowsOptions {
     MainAxisSize? mainAxisSize,
     bool? isScroll,
     bool? isStack,
+    BoxConstraints? constraints,
   }) =>
       ModalWindowsOptions(
+          constraints: constraints ?? this.constraints,
           onTap: onTap ?? this.onTap,
           behavior: behavior ?? this.behavior,
           color: color ?? this.color,
@@ -178,13 +183,14 @@ class PopupModalWindows extends StatelessWidget {
       right: options.isStack ? options.right : null,
       bottom: options.isStack ? options.bottom : null,
       padding: getEdgeInsets,
-      child: child,
+      constraints: options.constraints,
       direction: options.direction,
       isScroll: options.isScroll,
       isStack: options.isStack,
       mainAxisSize: options.mainAxisSize,
       mainAxisAlignment: options.mainAxisAlignment,
       crossAxisAlignment: options.crossAxisAlignment,
+      child: child,
       children: children);
 
   EdgeInsets? get getEdgeInsets {
@@ -242,26 +248,37 @@ class PopupDoubleChooseWindows extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<Widget> widgets = <Widget>[];
     widgets.add(content);
-    if (left != null && right != null) widgets.add(doubleChoose);
+    if (left != null && right != null) widgets.add(leftAndRight);
     var options = this.options ?? GlobalOptions().modalWindowsOptions;
-    options =
-        options.copyWith(left: options.left ?? 30, right: options.right ?? 30);
-    return PopupModalWindows(
-        options: options,
-        child: Universal(
-            onTap: () {},
-            width: width,
-            height: height,
-            decoration: decoration ??
-                BoxDecoration(
-                    color:
-                        backgroundColor ?? context.theme.dialogBackgroundColor),
-            padding: padding,
-            mainAxisSize: MainAxisSize.min,
-            children: widgets));
+    if (context.mediaQuery.size.width > 400) {
+      options =
+          options.copyWith(constraints: const BoxConstraints(maxWidth: 350));
+    } else {
+      options = options.copyWith(
+          left: options.left ?? 30, right: options.right ?? 30);
+    }
+    options = options.copyWith(mainAxisAlignment: MainAxisAlignment.center);
+    return PopupModalWindows(options: options, children: [
+      Universal(
+          width: width,
+          height: height,
+          constraints: options.constraints,
+          left: options.left,
+          right: options.right,
+          top: options.top,
+          bottom: options.bottom,
+          onTap: () {},
+          decoration: decoration ??
+              BoxDecoration(
+                  color:
+                      backgroundColor ?? context.theme.dialogBackgroundColor),
+          padding: padding,
+          mainAxisSize: MainAxisSize.min,
+          children: widgets)
+    ]);
   }
 
-  Widget get doubleChoose =>
+  Widget get leftAndRight =>
       Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: <Widget>[
         Expanded(child: left!),
         Expanded(child: right!),

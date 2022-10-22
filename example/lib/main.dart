@@ -68,7 +68,7 @@ void main() {
       options: ModalWindowsOptions(onTap: closeLoading)));
   des();
   runApp(DevicePreview(
-      enabled: true,
+      enabled: isDesktop || isWeb,
       defaultDevice: Devices.ios.iPhone13Mini,
       builder: (context) => isCustomApp ? _CustomApp() : _App()));
 }
@@ -124,7 +124,7 @@ class _AppState extends State<_App> {
         home: _Home(),
         builder: (BuildContext context, Widget? child) {
           final widget = ScreenAdaptation(
-              designWidth: 440,
+              designWidth: context.width,
               scaleType: ScreenAdaptationScaleType.auto,
               builder: (_, bool scaled) => child ?? const SizedBox());
           return DevicePreview.appBuilder(context, widget);
