@@ -188,7 +188,7 @@ class _ScrollListBuilderPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ExtendedScaffold(
         appBar: AppBarText('ScrollList.builder'),
-        body: Column(children: <Widget>[
+        body: Column(children: [
           Container(
               height: 100,
               color: context.theme.primaryColor,

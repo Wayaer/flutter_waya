@@ -144,7 +144,7 @@ class _Home extends StatelessWidget {
             alignment: WrapAlignment.center,
             runSpacing: 10,
             spacing: 10,
-            children: <Widget>[
+            children: [
               ElevatedText('ExtendedDio',
                   onTap: () => push(const ExtendedDioPage())),
               ElevatedText('Components',

@@ -30,7 +30,7 @@ class AnchorScrollBuilderPage extends StatelessWidget {
         isScroll: true,
         appBar: AppBarText('AnchorScrollBuilder'),
         mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
+        children: [
           const SizedBox(height: 20),
           ElevatedText('AnchorScrollBuilder builder vertical',
               onTap: () => push(_AnchorScrollBuilderPage(

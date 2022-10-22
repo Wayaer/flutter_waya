@@ -64,11 +64,11 @@ class _SpinKitCubeGridState extends State<SpinKitCubeGrid>
         child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
-            children: <Widget>[
+            children: [
               Row(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
+                  children: [
                     _square(_anim3, 0),
                     _square(_anim4, 1),
                     _square(_anim5, 2),
@@ -76,7 +76,7 @@ class _SpinKitCubeGridState extends State<SpinKitCubeGrid>
               Row(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
+                  children: [
                     _square(_anim2, 3),
                     _square(_anim3, 4),
                     _square(_anim4, 5),
@@ -84,7 +84,7 @@ class _SpinKitCubeGridState extends State<SpinKitCubeGrid>
               Row(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
+                  children: [
                     _square(_anim1, 6),
                     _square(_anim2, 7),
                     _square(_anim3, 8),
@@ -164,7 +164,7 @@ class _SpinKitFoldingCubeState extends State<SpinKitFoldingCube>
             size: Size.square(widget.size),
             child: Transform.rotate(
                 angle: -45.0 * 0.0174533,
-                child: Stack(children: <Widget>[
+                child: Stack(children: [
                   _cube(1, animation: _rotate2),
                   _cube(2, animation: _rotate3),
                   _cube(3, animation: _rotate4),

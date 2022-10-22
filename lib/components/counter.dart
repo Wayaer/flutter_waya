@@ -96,8 +96,8 @@ class _CounterAnimationState extends State<CounterAnimation>
       child = AnimatedBuilder(
           animation: _controller,
           builder: (BuildContext b, Widget? w) =>
-              Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                Stack(fit: StackFit.passthrough, children: <Widget>[
+              Row(mainAxisSize: MainAxisSize.min, children: [
+                Stack(fit: StackFit.passthrough, children: [
                   Opacity(
                       opacity: _opacityAnimation.value,
                       child: currentSameWidget),
@@ -105,7 +105,7 @@ class _CounterAnimationState extends State<CounterAnimation>
                       opacity: 1.0 - _opacityAnimation.value,
                       child: preSameWidget),
                 ]),
-                Stack(fit: StackFit.passthrough, children: <Widget>[
+                Stack(fit: StackFit.passthrough, children: [
                   FractionalTranslation(
                       translation: _preCount > _count
                           ? _slideCurrentValueAnimation.value
@@ -123,7 +123,7 @@ class _CounterAnimationState extends State<CounterAnimation>
           animation: _controller,
           builder: (BuildContext b, Widget? w) => Stack(
                 fit: StackFit.passthrough,
-                children: <Widget>[
+                children: [
                   FractionalTranslation(
                       translation: _preCount > _count
                           ? _slideCurrentValueAnimation.value

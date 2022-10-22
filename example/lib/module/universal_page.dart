@@ -43,7 +43,7 @@ class _UniversalPageState extends State<UniversalPage>
           color: color.withOpacity(0.2),
           isStack: true,
           size: const Size(100, 100),
-          children: <Widget>[
+          children: [
             Universal(
                 left: 10, top: 10, color: color, size: const Size(50, 50)),
           ]),
@@ -155,7 +155,7 @@ class _ScrollUniversalPage extends StatelessWidget {
               color: Colors.red);
         },
         // isStack: true,
-        children: <Widget>[
+        children: [
           Container(
               margin: const EdgeInsets.all(10),
               width: 90,

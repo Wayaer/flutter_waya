@@ -37,6 +37,16 @@ class _ExtendedDioPageState extends State<ExtendedDioPage> {
         padding: const EdgeInsets.all(20),
         appBar: AppBarText('ExtendedDio'),
         children: [
+          const Partition('DebuggerInterceptorHelper'),
+          ElevatedText('showDebugIcon',
+              onTap: DebuggerInterceptorHelper().showDebugIcon),
+          ElevatedText('showDebugDataList',
+              onTap: DebuggerInterceptorHelper().showDebugDataList),
+          ElevatedText('toggleDebugIcon',
+              onTap: DebuggerInterceptorHelper().toggleDebugIcon),
+          ElevatedText('closeDebugIcon',
+              onTap: DebuggerInterceptorHelper().closeDebugIcon),
+          const Partition('ExtendedDio'),
           Wrap(alignment: WrapAlignment.center, children: [
             ElevatedText('get', onTap: get),
             ElevatedText('post', onTap: post),

@@ -196,7 +196,7 @@ class PickerSubject<T> extends StatelessWidget {
         direction: Axis.horizontal,
         padding: const EdgeInsets.all(10),
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
+        children: [
           options.cancel.onTap(() {
             final T? value = cancelTap?.call();
             final bool isPop = options.cancelTap.call(value);

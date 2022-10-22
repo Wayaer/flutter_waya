@@ -132,7 +132,7 @@ class _BubbleButtonState extends State<BubbleButton>
         animation: _controller,
         builder: (BuildContext c, Widget? w) {
           final Widget bubbleWidget = widget.bubbleBuilder.call(_value);
-          return Stack(clipBehavior: Clip.none, children: <Widget>[
+          return Stack(clipBehavior: Clip.none, children: [
             Positioned(
                 top: (widget.size - widget.bubblesSize) / 2.0,
                 left: (widget.size - widget.bubblesSize) / 2.0,

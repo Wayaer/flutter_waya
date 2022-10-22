@@ -123,7 +123,7 @@ class DraggableScrollbar extends StatefulWidget {
         : Row(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
+            children: [
                 _ScrollLabel(
                     animation: labelAnimation,
                     backgroundColor: backgroundColor,
@@ -265,7 +265,7 @@ class _DraggableScrollbarState extends State<DraggableScrollbar>
             changePosition(notification);
             return true;
           },
-          child: Stack(children: <Widget>[
+          child: Stack(children: [
             RepaintBoundary(child: widget.child),
             RepaintBoundary(
                 child: Universal(

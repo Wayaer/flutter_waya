@@ -186,7 +186,7 @@ class _LinearState extends _ProgressSubState {
     super.build(context);
     final double percentPositionedHorizontal =
         _containerWidth * percent - _indicatorWidth / 3;
-    final Stack bar = Stack(children: <Widget>[
+    final Stack bar = Stack(children: [
       CustomPaint(
           key: _containerKey,
           painter: _LinearPainter(

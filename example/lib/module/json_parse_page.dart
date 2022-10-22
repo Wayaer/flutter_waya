@@ -12,10 +12,7 @@ class JsonParsePage extends StatelessWidget {
     return ExtendedScaffold(
         appBar: AppBarText('JsonParse'),
         mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          ElevatedText('showDebuggerInterceptorHelper', onTap: () {
-            DebuggerInterceptorHelper().addData(DebuggerInterceptorDataModel());
-          }),
+        children: [
           ElevatedText('JsonParse', onTap: () => push(_JsonParsePage())),
           ElevatedText('JsonParse.list',
               onTap: () => push(_JsonParseListPage())),

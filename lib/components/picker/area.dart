@@ -114,8 +114,7 @@ class _AreaPickerState extends State<AreaPicker> {
 
   @override
   Widget build(BuildContext context) {
-    final Row row =
-        Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+    final Row row = Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       Expanded(
           child: wheelItem(province, controller: controllerProvince,
               onChanged: (int newIndex) {

@@ -11,7 +11,7 @@ class ExtensionPage extends StatelessWidget {
         appBar: AppBarText('Extension'),
         padding: const EdgeInsets.all(20),
         mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
+        children: [
           ElevatedText('ExtensionFunction',
               onTap: () => push(const _ExtensionFunctionPage())),
           ElevatedText('ExtensionContext',
@@ -157,11 +157,11 @@ class _ExtensionFunctionPage extends StatelessWidget {
     return ExtendedScaffold(
         appBar: AppBarText('ExtensionFunctionPage'),
         mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
+        children: [
           ValueBuilder<int>(
               initialValue: 0,
               builder: (_, int? value, ValueCallback<int> updater) {
-                return Column(children: <Widget>[
+                return Column(children: [
                   const Text('防抖函数'),
                   Padding(
                       padding: const EdgeInsets.symmetric(vertical: 2),
@@ -177,7 +177,7 @@ class _ExtensionFunctionPage extends StatelessWidget {
           ValueBuilder<int>(
               initialValue: 0,
               builder: (_, int? value, ValueCallback<int> updater) {
-                return Column(children: <Widget>[
+                return Column(children: [
                   const Text('未添加防抖'),
                   Padding(
                       padding: const EdgeInsets.symmetric(vertical: 2),
@@ -192,7 +192,7 @@ class _ExtensionFunctionPage extends StatelessWidget {
           ValueBuilder<int>(
               initialValue: 0,
               builder: (_, int? value, ValueCallback<int> updater) {
-                return Column(children: <Widget>[
+                return Column(children: [
                   const Text('节流函数'),
                   Padding(
                       padding: const EdgeInsets.symmetric(vertical: 2),
@@ -223,7 +223,7 @@ class _NoThrottleFunctionState extends State<_NoThrottleFunction> {
   int i = 0;
 
   @override
-  Widget build(BuildContext context) => Column(children: <Widget>[
+  Widget build(BuildContext context) => Column(children: [
         const Text('未节流函数'),
         Padding(
             padding: const EdgeInsets.symmetric(vertical: 2),

@@ -71,37 +71,35 @@ class _GestureLockState extends State<GestureLock> {
   }
 
   @override
-  Widget build(BuildContext context) => Universal(
-          isStack: true,
-          size: Size(widget.size, widget.size),
-          children: <Widget>[
-            CustomPaint(
-                size: Size.infinite,
-                painter: _CanvasPoint(
-                    ringWidth: widget.ringWidth,
-                    ringRadius: widget.ringRadius,
-                    showUnSelectRing: widget.showUnSelectRing,
-                    circleRadius: widget.circleRadius,
-                    selectColor:
-                        widget.selectColor ?? context.theme.selectedRowColor,
-                    unSelectColor: widget.unSelectColor ??
-                        context.theme.unselectedWidgetColor,
-                    points: points)),
-            GestureDetector(
-                onPanDown: onPanDown,
-                onPanUpdate: onPanUpdate,
-                onPanEnd: onPanEnd,
-                child: curPoint == null
-                    ? null
-                    : CustomPaint(
-                        size: Size.infinite,
-                        painter: _CanvasLine(
-                            pathPoints: pathPoints,
-                            selectColor: widget.selectColor ??
-                                context.theme.selectedRowColor,
-                            lineWidth: widget.lineWidth,
-                            curPoint: curPoint!)))
-          ]);
+  Widget build(BuildContext context) =>
+      Universal(isStack: true, size: Size(widget.size, widget.size), children: [
+        CustomPaint(
+            size: Size.infinite,
+            painter: _CanvasPoint(
+                ringWidth: widget.ringWidth,
+                ringRadius: widget.ringRadius,
+                showUnSelectRing: widget.showUnSelectRing,
+                circleRadius: widget.circleRadius,
+                selectColor:
+                    widget.selectColor ?? context.theme.selectedRowColor,
+                unSelectColor:
+                    widget.unSelectColor ?? context.theme.unselectedWidgetColor,
+                points: points)),
+        GestureDetector(
+            onPanDown: onPanDown,
+            onPanUpdate: onPanUpdate,
+            onPanEnd: onPanEnd,
+            child: curPoint == null
+                ? null
+                : CustomPaint(
+                    size: Size.infinite,
+                    painter: _CanvasLine(
+                        pathPoints: pathPoints,
+                        selectColor: widget.selectColor ??
+                            context.theme.selectedRowColor,
+                        lineWidth: widget.lineWidth,
+                        curPoint: curPoint!)))
+      ]);
 
   void onPanDown(DragDownDetails e) {
     clearAllData();

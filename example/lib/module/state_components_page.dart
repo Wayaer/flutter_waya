@@ -11,14 +11,14 @@ class StateComponentsPage extends StatelessWidget {
         isScroll: true,
         appBar: AppBarText('State Components'),
         padding: const EdgeInsets.all(20),
-        children: <Widget>[
+        children: [
           const Partition('ValueBuilder'),
           ValueBuilder<int>(
               initialValue: 0,
               builder: (_, int? value, ValueCallback<int> updater) {
                 return Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
+                    children: [
                       IconBox(
                           icon: Icons.remove_circle_outline,
                           onTap: () {
@@ -44,7 +44,7 @@ class StateComponentsPage extends StatelessWidget {
               builder: (_, ValueNotifier<int?> valueListenable) {
                 return Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
+                    children: [
                       IconBox(
                           icon: Icons.remove_circle_outline,
                           onTap: () {
@@ -93,44 +93,38 @@ class StateComponentsPage extends StatelessWidget {
                 }),
           ]),
           const Partition('Checkbox 官方附加状态版本'),
-          Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                CheckboxState(
-                    value: true, tristate: true, onChanged: (bool? value) {}),
-                CheckboxState(
-                    value: true,
-                    tristate: true,
-                    shape: const CircleBorder(),
-                    onWaitChanged: (bool? value) async {
-                      await 1.seconds.delayed();
-                      return value;
-                    }),
-              ]),
+          Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+            CheckboxState(
+                value: true, tristate: true, onChanged: (bool? value) {}),
+            CheckboxState(
+                value: true,
+                tristate: true,
+                shape: const CircleBorder(),
+                onWaitChanged: (bool? value) async {
+                  await 1.seconds.delayed();
+                  return value;
+                }),
+          ]),
           const Partition('SwitchState 官方附加状态版本'),
-          Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                SwitchState(value: true, onChanged: (bool? value) {}),
-                SwitchState.adaptive(
-                    value: true,
-                    onWaitChanged: (bool value) async {
-                      await 1.seconds.delayed();
-                      return value;
-                    }),
-              ]),
+          Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+            SwitchState(value: true, onChanged: (bool? value) {}),
+            SwitchState.adaptive(
+                value: true,
+                onWaitChanged: (bool value) async {
+                  await 1.seconds.delayed();
+                  return value;
+                }),
+          ]),
           const Partition('CupertinoSwitchState 官方附加状态版本'),
-          Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                CupertinoSwitchState(value: true, onChanged: (bool? value) {}),
-                CupertinoSwitchState(
-                    value: true,
-                    onWaitChanged: (bool value) async {
-                      await 1.seconds.delayed();
-                      return value;
-                    }),
-              ]),
+          Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+            CupertinoSwitchState(value: true, onChanged: (bool? value) {}),
+            CupertinoSwitchState(
+                value: true,
+                onWaitChanged: (bool value) async {
+                  await 1.seconds.delayed();
+                  return value;
+                }),
+          ]),
           const Partition('SendSMS'),
           SendSMS(
               duration: const Duration(seconds: 10),

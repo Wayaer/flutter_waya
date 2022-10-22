@@ -102,10 +102,10 @@ extension ExtensionNum on num {
   String toFileSize() {
     num size = this;
     if (size < 1024) {
-      return '$size字节';
+      return '${size}B';
     } else if (size >= 1024 && size < pow(1024, 2)) {
       size = (size / 10.24).round();
-      return '${size / 100}k';
+      return '${size / 100}KB';
     } else if (size >= pow(1024, 2) && size < pow(1024, 3)) {
       size = (size / (pow(1024, 2) * 0.01)).round();
       return '${size / 100}MB';
@@ -176,4 +176,54 @@ extension ExtensionInt on int {
   int rightShift32(int n) => ((toInt() & 0xFFFFFFFF) >> n).toSigned(32);
 
   int leftShift32(int n) => ((toInt() & 0xFFFFFFFF) << n).toSigned(32);
+
+  /// b KB MB GB TB PB
+  String toStorageUnit([int round = 2]) {
+    int divider = 1024;
+    if (this < divider) {
+      return '$this B';
+    }
+    if (this < divider * divider && this % divider == 0) {
+      return '${(this / divider).toStringAsFixed(0)} KB';
+    }
+
+    if (this < divider * divider) {
+      return '${(this / divider).toStringAsFixed(round)} KB';
+    }
+
+    if (this < divider * divider * divider && this % (divider * divider) == 0) {
+      return '${(this / (divider * divider)).toStringAsFixed(0)} MB';
+    }
+
+    if (this < divider * divider * divider) {
+      return '${(this / divider / divider).toStringAsFixed(round)} MB';
+    }
+
+    if (this < divider * divider * divider * divider &&
+        this % (divider * divider * divider) == 0) {
+      return '${(this / (divider * divider * divider)).toStringAsFixed(0)} GB';
+    }
+
+    if (this < divider * divider * divider * divider) {
+      return '${(this / divider / divider / divider).toStringAsFixed(round)} GB';
+    }
+
+    if (this < divider * divider * divider * divider * divider &&
+        this % (divider / divider / divider / divider) == 0) {
+      num r = this / divider / divider / divider / divider;
+      return '${r.toStringAsFixed(0)} TB';
+    }
+    if (this < divider * divider * divider * divider * divider) {
+      num r = this / divider / divider / divider / divider;
+      return '${r.toStringAsFixed(round)} TB';
+    }
+    if (this < divider * divider * divider * divider * divider * divider &&
+        this % (divider / divider / divider / divider / divider) == 0) {
+      num r = this / divider / divider / divider / divider / divider;
+      return '${r.toStringAsFixed(0)} PB';
+    } else {
+      num r = this / divider / divider / divider / divider / divider;
+      return '${r.toStringAsFixed(round)} PB';
+    }
+  }
 }

@@ -157,7 +157,7 @@ class _SpinKitWanderingCubesState extends State<SpinKitWanderingCubes>
   Widget build(BuildContext context) => Center(
       child: SizedBox.fromSize(
           size: Size.square(widget.size),
-          child: Stack(children: <Widget>[_cube(0), _cube(1, true)])));
+          child: Stack(children: [_cube(0), _cube(1, true)])));
 
   Widget _cube(int index, [bool offset = false]) {
     Matrix4 tTranslate;

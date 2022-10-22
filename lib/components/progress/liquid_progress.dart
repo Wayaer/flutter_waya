@@ -109,7 +109,7 @@ class _ProgressState extends State<LiquidProgress> {
               painter: _CustomPathPainter(
                   color: widget._getBackgroundColor(context),
                   path: widget.shapePath!),
-              child: Stack(children: <Widget>[
+              child: Stack(children: [
                 Positioned.fill(
                     left: pathBounds.left,
                     top: pathBounds.top,
@@ -131,7 +131,7 @@ class _ProgressState extends State<LiquidProgress> {
                     context.theme.progressIndicatorTheme.circularTrackColor ??
                     context.theme.primaryColor,
                 width: widget.borderWidth!),
-            child: Stack(children: <Widget>[
+            child: Stack(children: [
               Wave(
                   value: widget.value!,
                   color: widget._getValueColor(context),
@@ -150,7 +150,7 @@ class _ProgressState extends State<LiquidProgress> {
               color: widget.borderColor!,
               width: widget.borderWidth!,
               radius: widget.borderRadius),
-          child: Stack(children: <Widget>[
+          child: Stack(children: [
             Wave(
                 value: widget.value!,
                 color: widget._getValueColor(context),

@@ -623,7 +623,7 @@ class _ExpansionTilesState extends State<ExpansionTiles>
         builder: (_, Widget? child) => Universal(
                 color: _backgroundColor.value ?? Colors.transparent,
                 mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
+                children: [
                   ListTileTheme.merge(
                       iconColor: _iconColor.value,
                       textColor: _headerColor.value,

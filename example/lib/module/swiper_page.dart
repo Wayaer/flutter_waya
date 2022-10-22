@@ -37,7 +37,7 @@ class _FlSwiperPageState extends State<FlSwiperPage> {
     return ExtendedScaffold(
         isScroll: true,
         appBar: AppBarText('FlSwiper'),
-        children: <Widget>[
+        children: [
           SizedBox(
               height: 200,
               width: double.infinity,

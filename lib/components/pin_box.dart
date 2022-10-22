@@ -131,7 +131,7 @@ class _PinBoxState extends State<PinBox> {
           height: widget.boxSize.height,
           decoration: widget.decoration,
           onTap: onTap,
-          children: <Widget>[
+          children: [
             SizedBox(height: widget.boxSize.height, child: pinTextInput),
             ValueListenableBuilder(
                 valueListenable: text,

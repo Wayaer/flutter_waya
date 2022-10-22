@@ -28,7 +28,7 @@ class _ProgressPageState extends State<ProgressPage>
         isScroll: true,
         appBar: AppBarText('Progress'),
         mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
+        children: [
           const SizedBox(height: 20),
           Progress.linear(
               width: 300,

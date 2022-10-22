@@ -245,7 +245,7 @@ class _SpinKitRippleState extends State<SpinKitRipple>
   @override
   Widget build(BuildContext context) {
     return Center(
-        child: Stack(children: <Widget>[
+        child: Stack(children: [
       Opacity(
           opacity: 1.0 - _animation1.value,
           child: Transform.scale(

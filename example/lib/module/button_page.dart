@@ -73,42 +73,39 @@ class ButtonPage extends StatelessWidget {
             ElevatedText('ElasticButton',
                 onTap: () => showToast('ElasticButton')),
             const SizedBox(height: 20),
-            Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  DropdownMenuButton(
-                      defaultBuilder: (int? index) {
-                        return BText(index == null ? '请选择' : _colors[index],
-                            style: context.textTheme.bodyText1);
-                      },
-                      margin: const EdgeInsets.only(top: 2),
-                      itemCount: _colors.length,
-                      onChanged: (int index) {
-                        showToast('点击了${_colors[index]}');
-                      },
-                      toggle: const Icon(Icons.arrow_right_rounded),
-                      itemBuilder: (int index) => Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 4),
-                          child: BText(_colors[index],
-                              fontSize: 14,
-                              style: context.textTheme.bodyText1))),
-                  DropdownButton<String>(
-                      value: _colors[0],
-                      onChanged: (String? value) {},
-                      items: _colors.builder((String item) =>
-                          DropdownMenuItem<String>(
-                              value: item, child: Text(item)))),
-                  DropdownMenuButton.material(
-                      itemBuilder: (int index) => BText(_colors[index],
-                          style: context.textTheme.bodyText1),
-                      itemCount: _colors.length,
-                      defaultBuilder: (int? index) {
-                        return BText(index == null ? '请选择' : _colors[index],
-                                style: context.textTheme.bodyText1)
-                            .paddingSymmetric(vertical: 10);
-                      })
-                ]),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+              DropdownMenuButton(
+                  defaultBuilder: (int? index) {
+                    return BText(index == null ? '请选择' : _colors[index],
+                        style: context.textTheme.bodyText1);
+                  },
+                  margin: const EdgeInsets.only(top: 2),
+                  itemCount: _colors.length,
+                  onChanged: (int index) {
+                    showToast('点击了${_colors[index]}');
+                  },
+                  toggle: const Icon(Icons.arrow_right_rounded),
+                  itemBuilder: (int index) => Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 4),
+                      child: BText(_colors[index],
+                          fontSize: 14, style: context.textTheme.bodyText1))),
+              DropdownButton<String>(
+                  value: _colors[0],
+                  onChanged: (String? value) {},
+                  items: _colors.builder((String item) =>
+                      DropdownMenuItem<String>(
+                          value: item, child: Text(item)))),
+              DropdownMenuButton.material(
+                  itemBuilder: (int index) =>
+                      BText(_colors[index], style: context.textTheme.bodyText1),
+                  itemCount: _colors.length,
+                  defaultBuilder: (int? index) {
+                    return BText(index == null ? '请选择' : _colors[index],
+                            style: context.textTheme.bodyText1)
+                        .paddingSymmetric(vertical: 10);
+                  })
+            ]),
             const SizedBox(height: 40),
             SimpleButton(
                 padding:
@@ -132,7 +129,7 @@ class _BubbleButtonPage extends StatelessWidget {
         appBar: AppBarText('Bubble'),
         padding: const EdgeInsets.symmetric(vertical: 40),
         mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
+        children: [
           BubbleButton(
               size: size,
               onTap: (bool value) async => !value,

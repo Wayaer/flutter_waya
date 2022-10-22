@@ -10,7 +10,7 @@ class GesturePage extends StatelessWidget {
     return ExtendedScaffold(
         appBar: AppBarText('Gesture'),
         mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
+        children: [
           const SizedBox(height: 20),
           ElevatedText('GestureLock',
               onTap: () => push(const _GestureLockPage())),

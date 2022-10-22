@@ -1,3 +1,7 @@
+## 3.3.1
+
+* Fixed bugs in the `DebuggerInterceptor()`
+
 ## 3.3.0+9
 
 * Add device preview for example

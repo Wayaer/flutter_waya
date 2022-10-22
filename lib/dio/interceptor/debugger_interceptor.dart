@@ -4,44 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-class DebuggerInterceptor<T> extends InterceptorsWrapper {
-  DebuggerInterceptor({this.isShow = true});
-
-  bool isShow;
-  late DebuggerInterceptorDataModel data;
-
-  @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    data = DebuggerInterceptorDataModel();
-    data.requestTime = DateTime.now();
-    data.requestOptions = options;
-    super.onRequest(options, handler);
-  }
-
-  @override
-  void onResponse(
-      Response<dynamic> response, ResponseInterceptorHandler handler) {
-    data.response = response;
-    data.responseTime = DateTime.now();
-    DebuggerInterceptorHelper().addData(data);
-    super.onResponse(response, handler);
-  }
-
-  @override
-  void onError(DioError err, ErrorInterceptorHandler handler) {
-    data.error = err;
-    data.responseTime = DateTime.now();
-    DebuggerInterceptorHelper().addData(data);
-    super.onError(err, handler);
-  }
-}
-
 class DebuggerInterceptorDataModel {
   DebuggerInterceptorDataModel(
       {this.requestOptions, this.response, this.error});
 
   RequestOptions? requestOptions;
+
   Response<dynamic>? response;
+
   DioError? error;
 
   DateTime? requestTime;
@@ -121,6 +91,50 @@ class DebuggerInterceptorDataModel {
       };
 }
 
+class DebuggerInterceptor<T> extends InterceptorsWrapper {
+  DebuggerInterceptor({this.isShow = true});
+
+  bool isShow;
+
+  @override
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+    final dataModel = DebuggerInterceptorDataModel();
+    dataModel.requestTime = DateTime.now();
+    dataModel.requestOptions = options;
+    DebuggerInterceptorHelper().debugData.value[options.hashCode] = dataModel;
+    super.onRequest(options, handler);
+  }
+
+  @override
+  void onResponse(
+      Response<dynamic> response, ResponseInterceptorHandler handler) {
+    DebuggerInterceptorHelper()
+        .debugData
+        .value[response.requestOptions.hashCode]
+        ?.response = response;
+    DebuggerInterceptorHelper()
+        .debugData
+        .value[response.requestOptions.hashCode]
+        ?.responseTime = DateTime.now();
+    DebuggerInterceptorHelper().showDebugIcon();
+    super.onResponse(response, handler);
+  }
+
+  @override
+  void onError(DioError err, ErrorInterceptorHandler handler) {
+    DebuggerInterceptorHelper()
+        .debugData
+        .value[err.requestOptions.hashCode]
+        ?.error = err;
+    DebuggerInterceptorHelper()
+        .debugData
+        .value[err.requestOptions.hashCode]
+        ?.responseTime = DateTime.now();
+    DebuggerInterceptorHelper().showDebugIcon();
+    super.onError(err, handler);
+  }
+}
+
 class DebuggerInterceptorHelper {
   factory DebuggerInterceptorHelper() =>
       _singleton ??= DebuggerInterceptorHelper._();
@@ -129,34 +143,43 @@ class DebuggerInterceptorHelper {
 
   static DebuggerInterceptorHelper? _singleton;
 
-  ExtendedOverlayEntry? overlayEntry;
+  ExtendedOverlayEntry? _overlayEntry;
 
-  ValueNotifier<List<DebuggerInterceptorDataModel>> allData = ValueNotifier([]);
+  ValueNotifier<Map<int, DebuggerInterceptorDataModel>> debugData =
+      ValueNotifier({});
 
-  void addData(DebuggerInterceptorDataModel data) {
+  void toggleDebugIcon() {
+    if (_overlayEntry == null) {
+      showDebugIcon();
+    } else {
+      closeDebugIcon();
+    }
+  }
+
+  void closeDebugIcon() {
+    _overlayEntry?.remove();
+    _overlayEntry = null;
+  }
+
+  void showDebugIcon() {
     final widget = _DebuggerWindows(
-        showAllData: showAllData,
+        showAllData: showDebugDataList,
         onClose: () {
-          overlayEntry?.remove();
-          overlayEntry = null;
+          _overlayEntry?.remove();
+          _overlayEntry = null;
         });
-    overlayEntry ??= showOverlay(widget, autoOff: true);
-    allData.value.insert(0, data);
+    _overlayEntry ??= showOverlay(widget, autoOff: true);
   }
 
-  Future<void> showAllData() async {
-    await showBottomPopup(
-        options: GlobalOptions()
-            .bottomSheetOptions
-            .copyWith(backgroundColor: Colors.transparent, enableDrag: true),
-        widget: _HttpDataWindows(allData));
-  }
+  Future<void> showDebugDataList() => showBottomPopup(
+      options: GlobalOptions()
+          .bottomSheetOptions
+          .copyWith(backgroundColor: Colors.transparent, enableDrag: true),
+      widget: const _HttpDataWindows());
 }
 
 class _HttpDataWindows extends StatelessWidget {
-  const _HttpDataWindows(this.allData);
-
-  final ValueNotifier<List<DebuggerInterceptorDataModel>> allData;
+  const _HttpDataWindows();
 
   @override
   Widget build(BuildContext context) {
@@ -171,13 +194,14 @@ class _HttpDataWindows extends StatelessWidget {
         children: [
           const CloseButton().marginOnly(right: 10),
           ValueListenableBuilder(
-                  valueListenable: allData,
-                  builder: (_, List<DebuggerInterceptorDataModel> list, __) =>
-                      ScrollList.builder(
-                          itemCount: list.length,
-                          itemBuilder: (_, int index) =>
-                              _HttpDataEntry(list[index], canTap: true)))
-              .expandedNull
+              valueListenable: DebuggerInterceptorHelper().debugData,
+              builder: (_, Map<int, DebuggerInterceptorDataModel> map, __) {
+                final values = map.valuesList().reversed;
+                return ScrollList.builder(
+                    itemCount: values.length,
+                    itemBuilder: (_, int index) =>
+                        _HttpDataEntry(values.elementAt(index), canTap: true));
+              }).expandedNull
         ]);
   }
 }
@@ -203,10 +227,6 @@ class _DebuggerWindowsState extends State<_DebuggerWindows> {
     addPostFrameCallback((_) {
       iconOffSet.value = Offset(50, context.mediaQueryPadding.top + 20);
     });
-  }
-
-  void refreshData() {
-    listState?.call(() {});
   }
 
   @override
@@ -252,8 +272,6 @@ class _DebuggerWindowsState extends State<_DebuggerWindows> {
       iconOffSet.value = Offset(dx -= 12, dy -= 26);
     }
   }
-
-  StateSetter? listState;
 }
 
 class _HttpDataEntry extends StatelessWidget {
@@ -265,6 +283,8 @@ class _HttpDataEntry extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final statusCode =
+        model.response?.statusCode ?? model.error?.response?.statusCode;
     return Universal(
         onLongPress: () {
           model.toMap().toString().toClipboard;
@@ -286,10 +306,10 @@ class _HttpDataEntry extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
                 decoration: BoxDecoration(
-                    color: statusCodeColor(model.response?.statusCode ?? 0),
+                    color: statusCodeColor(statusCode ?? 0),
                     borderRadius: BorderRadius.circular(4)),
-                child: BText(model.response?.statusCode?.toString() ?? 'N/A',
-                    color: Colors.white))
+                child:
+                    BText(statusCode?.toString() ?? 'N/A', color: Colors.white))
           ]),
           const SizedBox(height: 10),
           Row(children: [
@@ -309,25 +329,22 @@ class _HttpDataEntry extends StatelessWidget {
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             BText(model.requestTime?.format(DateTimeDist.yearMillisecond) ??
                 'unknown'),
-            BText(
-                '${stringToBytes(model.response?.data?.toString() ?? '')} kb'),
+            BText(stringToBytes(model.response?.data?.toString() ?? '')),
             BText(
                 '${diffMillisecond(model.requestTime, model.responseTime)} ms'),
           ]),
         ]);
   }
 
-  int stringToBytes(String data) {
+  String stringToBytes(String data) {
     final bytes = utf8.encode(data);
     final size = Uint8List.fromList(bytes);
-    return size.lengthInBytes;
+    return size.lengthInBytes.toStorageUnit();
   }
 
   String diffMillisecond(DateTime? requestTime, DateTime? responseTime) {
-    if (requestTime != null && responseTime != null) {
-      return responseTime.difference(requestTime).inMilliseconds.toString();
-    }
-    return '';
+    if (requestTime == null || responseTime == null) return '';
+    return responseTime.difference(requestTime).inMilliseconds.toString();
   }
 
   void showDetailData() {
@@ -346,7 +363,7 @@ class _HttpDataEntry extends StatelessWidget {
       return Colors.green;
     } else if (statusCode >= 300 && statusCode < 400) {
       return Colors.yellow;
-    } else if (statusCode >= 300 && statusCode < 400) {
+    } else if (statusCode >= 400 && statusCode < 500) {
       return Colors.orange;
     } else if (statusCode >= 500) {
       return Colors.red;

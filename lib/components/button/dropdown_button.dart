@@ -82,9 +82,8 @@ class _DropdownMenuButtonState extends State<DropdownMenuButton> {
     if (widget.toggle != null) {
       return ToggleRotate(
           isRotate: isShow,
-          toggleBuilder: (Widget child) => Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[current, child]),
+          toggleBuilder: (Widget child) =>
+              Row(mainAxisSize: MainAxisSize.min, children: [current, child]),
           onTap: showItem,
           child: widget.toggle!);
     }
@@ -316,7 +315,7 @@ class _DropdownMenuState extends State<DropdownMenu> {
                 rad: pi,
                 isRotate: titleState[index],
                 toggleBuilder: (Widget child) =>
-                    Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                    Row(mainAxisSize: MainAxisSize.min, children: [
                       widget.titleBuilder(context, index, titleState[index]),
                       child
                     ]),

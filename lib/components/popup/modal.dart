@@ -278,7 +278,7 @@ class PopupDoubleChooseWindows extends StatelessWidget {
   }
 
   Widget get leftAndRight =>
-      Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: <Widget>[
+      Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
         Expanded(child: left!),
         Expanded(child: right!),
       ]);

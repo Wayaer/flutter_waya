@@ -11,7 +11,7 @@ class ExtendedFutureBuilderPage extends StatelessWidget {
     return ExtendedScaffold(
         padding: const EdgeInsets.all(20),
         appBar: AppBarText('ExtendedFutureBuilder'),
-        children: <Widget>[
+        children: [
           ExtendedFutureBuilder<String>(
             initialData: '初始的数据 点击刷新',
             future: () async {

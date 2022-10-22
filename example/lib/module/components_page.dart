@@ -50,40 +50,38 @@ class ComponentsPage extends StatelessWidget {
                 countBuilder: (int count, String text) =>
                     BText(text, fontSize: 30)).color(Colors.black12),
             const Partition('ToggleRotate'),
-            Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  ValueBuilder<bool>(
-                      initialValue: false,
-                      builder: (_, bool? value, ValueCallback<bool> updater) {
-                        return ToggleRotate(
-                            duration: const Duration(milliseconds: 800),
-                            rad: pi / 2,
-                            isRotate: value!,
-                            onTap: () => updater(!value),
-                            child: const Icon(Icons.chevron_left, size: 30));
-                      }),
-                  ValueBuilder<bool>(
-                      initialValue: false,
-                      builder: (_, bool? value, ValueCallback<bool> updater) {
-                        return ToggleRotate(
-                            duration: const Duration(milliseconds: 800),
-                            rad: pi,
-                            isRotate: value!,
-                            onTap: () => updater(!value),
-                            child: const Icon(Icons.chevron_left, size: 30));
-                      }),
-                  ValueBuilder<bool>(
-                      initialValue: false,
-                      builder: (_, bool? value, ValueCallback<bool> updater) {
-                        return ToggleRotate(
-                            duration: const Duration(milliseconds: 800),
-                            rad: pi * 2,
-                            isRotate: value!,
-                            onTap: () => updater(!value),
-                            child: const Icon(Icons.chevron_left, size: 30));
-                      }),
-                ]),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+              ValueBuilder<bool>(
+                  initialValue: false,
+                  builder: (_, bool? value, ValueCallback<bool> updater) {
+                    return ToggleRotate(
+                        duration: const Duration(milliseconds: 800),
+                        rad: pi / 2,
+                        isRotate: value!,
+                        onTap: () => updater(!value),
+                        child: const Icon(Icons.chevron_left, size: 30));
+                  }),
+              ValueBuilder<bool>(
+                  initialValue: false,
+                  builder: (_, bool? value, ValueCallback<bool> updater) {
+                    return ToggleRotate(
+                        duration: const Duration(milliseconds: 800),
+                        rad: pi,
+                        isRotate: value!,
+                        onTap: () => updater(!value),
+                        child: const Icon(Icons.chevron_left, size: 30));
+                  }),
+              ValueBuilder<bool>(
+                  initialValue: false,
+                  builder: (_, bool? value, ValueCallback<bool> updater) {
+                    return ToggleRotate(
+                        duration: const Duration(milliseconds: 800),
+                        rad: pi * 2,
+                        isRotate: value!,
+                        onTap: () => updater(!value),
+                        child: const Icon(Icons.chevron_left, size: 30));
+                  }),
+            ]),
 
             const Partition('DottedLine'),
             Container(

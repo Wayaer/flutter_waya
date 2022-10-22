@@ -140,7 +140,7 @@ class ArrowPagination extends FlSwiperPlugin {
         expand: true,
         direction: config.scrollDirection,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
+        children: [
           buildButton(config, prevColor, iconPrevious,
               config.scrollDirection == Axis.horizontal ? 0 : -3, true),
           buildButton(config, nextColor, iconNext,
@@ -181,7 +181,7 @@ class FractionPagination extends FlSwiperPlugin {
         key: key,
         direction: config.scrollDirection,
         mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
+        children: [
           BText('${config.activeIndex + 1}',
               style: BTextStyle(color: activeColor, fontSize: activeFontSize)),
           BText('/', style: BTextStyle(color: color, fontSize: fontSize)),

@@ -791,14 +791,14 @@ class _CustomSliverAppbarDelegate extends SliverPinnedPersistentHeaderDelegate {
         direction: Axis.horizontal,
         mainAxisAlignment: mainAxisAlignment,
         crossAxisAlignment: crossAxisAlignment,
-        children: <Widget>[
+        children: [
           leading ?? const BackButton(onPressed: null),
           titleWidget,
           actions ?? Container(width: 100)
         ]);
 
     return Material(
-        child: Universal(isClipRect: true, isStack: true, children: <Widget>[
+        child: Universal(isClipRect: true, isStack: true, children: [
       Positioned(
           top: -shrinkOffset,
           bottom: 0,
