@@ -261,17 +261,41 @@ class _ExtendedStatefulBuilderState extends State<ExtendedStatefulBuilder> {
   }
 }
 
-/// FutureBuilder 扩展
-class ExtendedFutureBuilder<T> extends StatefulWidget {
-  const ExtendedFutureBuilder({
+typedef CustomBuilderContext = Widget Function(BuildContext context);
+
+enum BuilderState {
+  /// 异步返回数据 为 null
+  none,
+
+  /// 等待中
+  waiting,
+
+  /// 异步有数据
+  done,
+
+  /// 异步错误
+  error,
+}
+
+typedef CustomFutureBuilderDone<T> = Widget Function(
+    BuildContext context, T data, Function() reset);
+
+typedef CustomFutureBuilderNone = Widget Function(
+    BuildContext context, Function() reset);
+
+typedef CustomFutureBuilderError = Widget Function(
+    BuildContext context, Object? error, Function() reset);
+
+/// 自定义版 FutureBuilder
+class CustomFutureBuilder<T> extends StatefulWidget {
+  const CustomFutureBuilder({
     super.key,
     this.initialData,
     required this.future,
+    required this.onDone,
     this.onNone,
     this.onWaiting,
-    this.onNull,
     this.onError,
-    required this.onDone,
     this.didUpdateWidgetCallFuture = false,
     this.initialCallFuture = false,
     this.initState,
@@ -287,20 +311,17 @@ class ExtendedFutureBuilder<T> extends StatefulWidget {
   /// 异步方法
   final Future<T> Function() future;
 
-  /// 没有数据时 UI回调
-  final Widget Function(BuildContext context, Function() reset)? onNone;
+  /// 没有数据时 为 null UI回调
+  final CustomFutureBuilderNone? onNone;
 
   /// 等待异步执行 UI回调
-  final Widget Function(BuildContext context)? onWaiting;
-
-  /// 异步执行返回null UI回调
-  final Widget Function(BuildContext context, Function() reset)? onNull;
+  final CustomBuilderContext? onWaiting;
 
   /// 异步错误时或者返回值为null时 UI回调
-  final ExtendedAsyncErrorWidgetBuilder? onError;
+  final CustomFutureBuilderError? onError;
 
   /// 完成时 UI回调 异步返回的数据一定不为null
-  final ExtendedAsyncWidgetBuilder<T> onDone;
+  final CustomFutureBuilderDone<T> onDone;
 
   /// 父组件update时 是否重新执行异步请求 默认为false
   final bool didUpdateWidgetCallFuture;
@@ -315,34 +336,10 @@ class ExtendedFutureBuilder<T> extends StatefulWidget {
   final ValueCallback<BuildContext>? dispose;
 
   @override
-  State<ExtendedFutureBuilder<T>> createState() =>
-      _ExtendedFutureBuilderState<T>();
+  State<CustomFutureBuilder<T>> createState() => _CustomFutureBuilderState<T>();
 }
 
-typedef ExtendedAsyncWidgetBuilder<T> = Widget Function(
-    BuildContext context, T data, Function() reset);
-
-typedef ExtendedAsyncErrorWidgetBuilder = Widget Function(
-    BuildContext context, Object? error, Function() reset);
-
-enum BuilderState {
-  /// 默认状态
-  none,
-
-  /// 等待中
-  waiting,
-
-  /// 异步错误
-  error,
-
-  /// 异步返回数据 为 null
-  isNull,
-
-  /// 异步完成
-  done,
-}
-
-class _ExtendedFutureBuilderState<T> extends State<ExtendedFutureBuilder<T>> {
+class _CustomFutureBuilderState<T> extends State<CustomFutureBuilder<T>> {
   BuilderState state = BuilderState.none;
   T? data;
   Object? _error;
@@ -370,12 +367,8 @@ class _ExtendedFutureBuilderState<T> extends State<ExtendedFutureBuilder<T>> {
     state = BuilderState.waiting;
     if (mounted && widget.onWaiting != null) setState(() {});
     widget.future.call().then((value) {
-      if (value != null) {
-        state = BuilderState.done;
-        data = value;
-      } else {
-        state = BuilderState.isNull;
-      }
+      state = BuilderState.done;
+      data = value;
       if (mounted) setState(() {});
     }, onError: (Object error, StackTrace stackTrace) {
       state = BuilderState.error;
@@ -402,11 +395,6 @@ class _ExtendedFutureBuilderState<T> extends State<ExtendedFutureBuilder<T>> {
           return widget.onError!.call(context, _error, _subscribe);
         }
         break;
-      case BuilderState.isNull:
-        if (widget.onNull != null) {
-          return widget.onNull!.call(context, _subscribe);
-        }
-        break;
       case BuilderState.done:
         return widget.onDone.call(context, data as T, _subscribe);
     }
@@ -414,7 +402,7 @@ class _ExtendedFutureBuilderState<T> extends State<ExtendedFutureBuilder<T>> {
   }
 
   @override
-  void didUpdateWidget(covariant ExtendedFutureBuilder<T> oldWidget) {
+  void didUpdateWidget(covariant CustomFutureBuilder<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
     widget.didUpdateWidget?.call(context);
     if (widget.didUpdateWidgetCallFuture) _subscribe();
@@ -422,13 +410,246 @@ class _ExtendedFutureBuilderState<T> extends State<ExtendedFutureBuilder<T>> {
 
   @override
   void deactivate() {
-    super.deactivate();
     widget.deactivate?.call(context);
+    super.deactivate();
   }
 
   @override
   void dispose() {
-    super.dispose();
     widget.dispose?.call(context);
+    super.dispose();
   }
+}
+
+typedef CustomStreamBuilderDone<T> = Widget Function(
+    BuildContext context, T data);
+
+typedef CustomStreamBuilderError = Widget Function(
+    BuildContext context, Object? error);
+
+/// 自定义版 StreamBuilder
+class CustomStreamBuilder<T> extends StatefulWidget {
+  const CustomStreamBuilder({
+    super.key,
+    this.initialData,
+    required this.stream,
+    required this.onDone,
+    this.onNone,
+    this.onWaiting,
+    this.onError,
+    this.didUpdateWidgetCallStream = false,
+    this.initialCallStream = false,
+    this.initState,
+    this.didChangeDependencies,
+    this.didUpdateWidget,
+    this.deactivate,
+    this.dispose,
+  });
+
+  /// 初始化数据
+  final T? initialData;
+
+  /// 异步方法
+  final Stream<T> stream;
+
+  /// 没有数据时 为 null UI回调
+  final CustomBuilderContext? onNone;
+
+  /// 等待异步执行 UI回调
+  final CustomBuilderContext? onWaiting;
+
+  /// 异步错误时或者返回值为null时 UI回调
+  final CustomStreamBuilderError? onError;
+
+  /// 完成时 UI回调 异步返回的数据一定不为null
+  final CustomStreamBuilderDone<T> onDone;
+
+  /// 父组件update时 是否重新执行异步请求 默认为false
+  final bool didUpdateWidgetCallStream;
+
+  /// 当 [initialData] !=null 时第一次渲染是否执行异步请求  默认为false
+  final bool initialCallStream;
+
+  final ValueCallback<BuildContext>? initState;
+  final ValueCallback<BuildContext>? didChangeDependencies;
+  final ValueCallback<BuildContext>? didUpdateWidget;
+  final ValueCallback<BuildContext>? deactivate;
+  final ValueCallback<BuildContext>? dispose;
+
+  @override
+  State<CustomStreamBuilder<T>> createState() => _CustomStreamBuilderState<T>();
+}
+
+class _CustomStreamBuilderState<T> extends State<CustomStreamBuilder<T>> {
+  BuilderState state = BuilderState.none;
+  StreamSubscription<T>? _subscription;
+  T? data;
+  Object? _error;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.initState?.call(context);
+    if (widget.initialData != null) {
+      state = BuilderState.done;
+      data = widget.initialData as T;
+    }
+    if (widget.initialData == null || widget.initialCallStream) {
+      addPostFrameCallback((duration) => _subscribe());
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    widget.didChangeDependencies?.call(context);
+  }
+
+  void _subscribe() {
+    state = BuilderState.waiting;
+    if (mounted && widget.onWaiting != null) setState(() {});
+    _subscription = widget.stream.listen((T value) {
+      if (value != null) {
+        state = BuilderState.done;
+        data = value;
+      }
+      if (mounted) setState(() {});
+    }, onError: (Object error, StackTrace stackTrace) {
+      state = BuilderState.error;
+      _error = error;
+      if (mounted) setState(() {});
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    switch (state) {
+      case BuilderState.none:
+        if (widget.onNone != null) {
+          return widget.onNone!.call(context);
+        }
+        break;
+      case BuilderState.waiting:
+        if (widget.onWaiting != null) {
+          return widget.onWaiting!.call(context);
+        }
+        break;
+      case BuilderState.error:
+        if (widget.onError != null) {
+          return widget.onError!.call(context, _error);
+        }
+        break;
+      case BuilderState.done:
+        return widget.onDone.call(context, data as T);
+    }
+    return const SizedBox();
+  }
+
+  @override
+  void didUpdateWidget(covariant CustomStreamBuilder<T> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    widget.didUpdateWidget?.call(context);
+    if (widget.didUpdateWidgetCallStream) {
+      _unsubscribe();
+      _subscribe();
+    }
+  }
+
+  @override
+  void deactivate() {
+    widget.deactivate?.call(context);
+    super.deactivate();
+  }
+
+  void _unsubscribe() {
+    _subscription?.cancel();
+    _subscription = null;
+  }
+
+  @override
+  void dispose() {
+    _unsubscribe();
+    widget.dispose?.call(context);
+    super.dispose();
+  }
+}
+
+typedef AsyncSnapshotBuilder<T> = Widget Function(BuildContext context, T data);
+
+/// 扩展 FutureBuilder
+class ExtendedFutureBuilder<T> extends FutureBuilder {
+  ExtendedFutureBuilder({
+    super.key,
+    super.initialData,
+    super.future,
+
+    /// [ConnectionState.none] 显示的内容
+    AsyncSnapshotBuilder<T>? onNone,
+
+    /// [ConnectionState.waiting] 显示的内容
+    AsyncSnapshotBuilder<T>? onWaiting,
+
+    /// [ConnectionState.active] 显示的内容
+    AsyncSnapshotBuilder<T>? onActive,
+
+    /// [ConnectionState.done] 显示的内容
+    AsyncSnapshotBuilder<T>? onDone,
+
+    /// [error] 显示的内容
+    AsyncSnapshotBuilder<Object?>? onError,
+  }) : super(builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          if (snapshot.hasError) {
+            return onError?.call(context, snapshot.error) ?? const SizedBox();
+          }
+          switch (snapshot.connectionState) {
+            case ConnectionState.none:
+              return onNone?.call(context, snapshot.data) ?? const SizedBox();
+            case ConnectionState.waiting:
+              return onWaiting?.call(context, snapshot.data) ??
+                  const SizedBox();
+            case ConnectionState.active:
+              return onActive?.call(context, snapshot.data) ?? const SizedBox();
+            case ConnectionState.done:
+              return onDone?.call(context, snapshot.data) ?? const SizedBox();
+          }
+        });
+}
+
+/// 扩展 StreamBuilder
+class ExtendedStreamBuilder<T> extends StreamBuilder {
+  ExtendedStreamBuilder({
+    super.key,
+    super.initialData,
+    super.stream,
+
+    /// [ConnectionState.none] 显示的内容
+    AsyncSnapshotBuilder<T>? onNone,
+
+    /// [ConnectionState.waiting] 显示的内容
+    AsyncSnapshotBuilder<T>? onWaiting,
+
+    /// [ConnectionState.active] 显示的内容
+    AsyncSnapshotBuilder<T>? onActive,
+
+    /// [ConnectionState.done] 显示的内容
+    AsyncSnapshotBuilder<T>? onDone,
+
+    /// [error] 显示的内容
+    AsyncSnapshotBuilder<Object?>? onError,
+  }) : super(builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          if (snapshot.hasError) {
+            return onError?.call(context, snapshot.error) ?? const SizedBox();
+          }
+          switch (snapshot.connectionState) {
+            case ConnectionState.none:
+              return onNone?.call(context, snapshot.data) ?? const SizedBox();
+            case ConnectionState.waiting:
+              return onWaiting?.call(context, snapshot.data) ??
+                  const SizedBox();
+            case ConnectionState.active:
+              return onActive?.call(context, snapshot.data) ?? const SizedBox();
+            case ConnectionState.done:
+              return onDone?.call(context, snapshot.data) ?? const SizedBox();
+          }
+        });
 }

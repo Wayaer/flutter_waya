@@ -1,3 +1,9 @@
+## 3.3.2
+
+* Change the original `ExtendedFutureBuilder()` to `CustomFutureBuilder()`
+* Added new `ExtendedFutureBuilder()` extension for `FutureBuilder()`
+* Added new `ExtendedStreamBuilder()` extension for `StreamBuilder()`
+
 ## 3.3.1
 
 * Fixed bugs in the `DebuggerInterceptor()`

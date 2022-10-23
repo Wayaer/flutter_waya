@@ -1,4 +1,5 @@
 import 'package:app/module/anchor_scroll_builder_page.dart';
+import 'package:app/module/builder_page.dart';
 import 'package:app/module/button_page.dart';
 import 'package:app/module/components_page.dart';
 import 'package:app/module/decorator_page.dart';
@@ -7,7 +8,6 @@ import 'package:app/module/extension_page.dart';
 import 'package:app/module/gesture_page.dart';
 import 'package:app/module/json_parse_page.dart';
 import 'package:app/module/overlay_page.dart';
-import 'package:app/module/pages.dart';
 import 'package:app/module/picker_page.dart';
 import 'package:app/module/popup_page.dart';
 import 'package:app/module/progress_page.dart';
@@ -176,8 +176,8 @@ class _Home extends StatelessWidget {
                   onTap: () => push(const DecoratorBoxPage())),
               ElevatedText('ExtendedTextField',
                   onTap: () => push(const TextFieldPage())),
-              ElevatedText('ExtendedFutureBuilder',
-                  onTap: () => push(const ExtendedFutureBuilderPage())),
+              ElevatedText('ExtendedBuilder',
+                  onTap: () => push(const ExtendedBuilderPage())),
             ]));
   }
 }
