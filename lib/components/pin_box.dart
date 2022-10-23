@@ -3,38 +3,27 @@ import 'package:flutter/services.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 typedef PinBoxTextFieldBuilder = Widget Function(
-    TextEditingController? controller,
-    InputDecoration decoration,
-    ValueChanged<String> onChanged,
-    FocusNode focusNode,
-    bool showCursor,
-    TextStyle style,
-    List<TextInputFormatter>? textInputFormatter);
+    PinTextFieldBuilderConfig builderConfig);
 
 class PinBox extends StatefulWidget {
-  const PinBox({
-    super.key,
-    this.onTap,
-    this.onChanged,
-    this.onDone,
-    this.autoFocus = true,
-    this.enabled = true,
-    this.disposeController = true,
-    this.needKeyBoard = true,
-    this.controller,
-    this.maxLength = 4,
-    this.inputFormatter,
-    this.focusNode,
-    this.decoration,
-    this.pinDecoration,
-    this.hasFocusPinDecoration,
-    this.textStyle,
-    this.boxSize = const Size(40, 40),
-    this.spaces = const <Widget>[],
-    this.keyboardType,
-    this.textFieldBuilder,
-    this.inputLimitFormatter = TextInputLimitFormatter.text,
-  });
+  const PinBox(
+      {super.key,
+      this.onTap,
+      this.onChanged,
+      this.onDone,
+      this.autoFocus = true,
+      this.needKeyBoard = true,
+      this.maxLength = 4,
+      this.inputFormatter,
+      this.focusNode,
+      this.decoration,
+      this.pinDecoration,
+      this.hasFocusPinDecoration,
+      this.textStyle,
+      this.boxSize = const Size(40, 40),
+      this.spaces = const <Widget>[],
+      this.inputLimitFormatter = TextInputLimitFormatter.text,
+      this.builder});
 
   final GestureTapCallback? onTap;
 
@@ -47,17 +36,8 @@ class PinBox extends StatefulWidget {
   /// 是否自动获取焦点
   final bool autoFocus;
 
-  /// 开启输入
-  final bool enabled;
-
-  /// [dispose] 时自动销户 controller
-  final bool disposeController;
-
   /// 是否需要自动弹出键盘
   final bool needKeyBoard;
-
-  /// 输入框控制器
-  final TextEditingController? controller;
 
   /// 输入框数量
   final int maxLength;
@@ -83,16 +63,13 @@ class PinBox extends StatefulWidget {
   /// box 中间添加 东西
   final List<Widget?> spaces;
 
-  /// 键盘弹出类型  限制输入类型
-  final TextInputType? keyboardType;
-
-  /// 限制文本输入类型
+  /// 限制文本输入类型 包括键盘类型
   final TextInputLimitFormatter inputLimitFormatter;
 
-  /// 输入框内容限制
+  /// 额外配置输入框内容限制
   final List<TextInputFormatter>? inputFormatter;
 
-  final PinBoxTextFieldBuilder? textFieldBuilder;
+  final PinBoxTextFieldBuilder? builder;
 
   @override
   State<PinBox> createState() => _PinBoxState();
@@ -194,34 +171,85 @@ class _PinBoxState extends State<PinBox> {
       }
     }
 
-    final inputFormatter = widget.inputLimitFormatter
-        .toTextInputFormatter()
-        .addAllT(widget.inputFormatter ?? []);
-    TextStyle style = const BTextStyle(color: Colors.transparent);
-    return widget.textFieldBuilder?.call(widget.controller, inputDecoration,
-            onChanged, focusNode, false, style, inputFormatter) ??
+    final builderConfig = PinTextFieldBuilderConfig(
+        focusNode: focusNode,
+        decoration: inputDecoration,
+        autofocus: widget.autoFocus,
+        onChanged: onChanged,
+        keyboardType: widget.inputLimitFormatter.toKeyboardType(),
+        maxLength: widget.maxLength,
+        style: const TextStyle(color: Colors.transparent),
+        inputFormatters: widget.inputLimitFormatter
+            .toTextInputFormatter()
+            .addAllT(widget.inputFormatter ?? []));
+
+    return widget.builder?.call(builderConfig) ??
         TextField(
-            focusNode: focusNode,
-            decoration: inputDecoration,
-            autofocus: widget.autoFocus,
-            maxLines: 1,
-            onChanged: onChanged,
-            keyboardType: widget.keyboardType ??
-                widget.inputLimitFormatter.toKeyboardType(),
-            enabled: widget.enabled,
-            maxLength: widget.maxLength,
-            controller: widget.controller,
-            style: style,
-            showCursor: false,
-            inputFormatters: inputFormatter,
-            textAlign: TextAlign.center);
+            focusNode: builderConfig.focusNode,
+            decoration: builderConfig.decoration,
+            autofocus: builderConfig.autofocus,
+            maxLines: builderConfig.maxLines,
+            minLines: builderConfig.minLines,
+            onChanged: builderConfig.onChanged,
+            keyboardType: builderConfig.keyboardType,
+            maxLength: builderConfig.maxLength,
+            style: builderConfig.style,
+            showCursor: builderConfig.showCursor,
+            inputFormatters: builderConfig.inputFormatters);
   }
 
   @override
   void dispose() {
     super.dispose();
     if (widget.focusNode == null) focusNode.dispose();
-    if (widget.disposeController) widget.controller?.dispose();
     text.dispose();
   }
+}
+
+class PinTextFieldBuilderConfig {
+  PinTextFieldBuilderConfig(
+      {required this.focusNode,
+      required this.decoration,
+      this.autofocus = true,
+      this.maxLines = 1,
+      this.minLines = 1,
+      required this.onChanged,
+      required this.maxLength,
+      required this.style,
+      this.showCursor = false,
+      required this.inputFormatters,
+      required this.keyboardType});
+
+  /// [TextField] 焦点管理
+  final FocusNode focusNode;
+
+  /// [TextField] 装饰器
+  final InputDecoration decoration;
+
+  /// [TextField] 自动获取焦点
+  final bool autofocus;
+
+  /// [TextField] 最大行数 默认 1
+  final int maxLines;
+
+  /// [TextField] 最小行数 默认 1
+  final int minLines;
+
+  /// [TextField] 输入内容变化
+  final ValueChanged<String> onChanged;
+
+  /// [TextField] 最大输入长度
+  final int maxLength;
+
+  /// [TextField] 输入文字样式
+  final TextStyle style;
+
+  /// [TextField] 是否显示光标 默认不显示
+  final bool showCursor;
+
+  /// [TextField] 输入文本格式显示
+  final List<TextInputFormatter> inputFormatters;
+
+  /// [TextField] 键盘弹出类型
+  final TextInputType keyboardType;
 }

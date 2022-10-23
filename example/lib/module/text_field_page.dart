@@ -15,7 +15,6 @@ class TextFieldPage extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         children: [
           const Partition('PinBox'),
-          const SizedBox(height: 20),
           PinBox(
               maxLength: 5,
               autoFocus: false,
@@ -36,6 +35,40 @@ class TextFieldPage extends StatelessWidget {
                   border: Border.all(color: Colors.yellow),
                   borderRadius: BorderRadius.circular(4)),
               textStyle: const TextStyle(color: Colors.white)),
+          const Partition('PinBox builder'),
+          PinBox(
+              builder: (PinTextFieldBuilderConfig builderConfig) => TextField(
+                  focusNode: builderConfig.focusNode,
+                  decoration: builderConfig.decoration,
+                  autofocus: builderConfig.autofocus,
+                  maxLines: builderConfig.maxLines,
+                  minLines: builderConfig.minLines,
+                  onChanged: builderConfig.onChanged,
+                  keyboardType: builderConfig.keyboardType,
+                  maxLength: builderConfig.maxLength,
+                  style: builderConfig.style,
+                  showCursor: builderConfig.showCursor,
+                  inputFormatters: builderConfig.inputFormatters),
+              maxLength: 5,
+              autoFocus: false,
+              spaces: const <Widget?>[
+                Icon(Icons.ac_unit, size: 12),
+                Icon(Icons.ac_unit, size: 12),
+                Icon(Icons.ac_unit, size: 12),
+                Icon(Icons.ac_unit, size: 12),
+                Icon(Icons.ac_unit, size: 12),
+                Icon(Icons.ac_unit, size: 12),
+              ],
+              hasFocusPinDecoration: BoxDecoration(
+                  color: Colors.purple,
+                  border: Border.all(color: Colors.purple),
+                  borderRadius: BorderRadius.circular(4)),
+              pinDecoration: BoxDecoration(
+                  color: Colors.yellow,
+                  border: Border.all(color: Colors.yellow),
+                  borderRadius: BorderRadius.circular(4)),
+              textStyle: const TextStyle(color: Colors.white)),
+          const SizedBox(height: 20),
           const Partition('ExtendedTextField with TextField'),
           builderExtendedTextFieldBuilder(
               builder: (TextInputType keyboardType,
