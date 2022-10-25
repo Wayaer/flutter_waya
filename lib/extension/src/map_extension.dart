@@ -30,5 +30,8 @@ extension ExtensionMap<K, V> on Map<K, V> {
 
 extension ExtensionMapUnsafe on Map? {
   /// null 或者 Empty 返回 true
-  bool isEmptyOrNull() => this == null || this!.isEmpty;
+  bool get isEmptyOrNull => this == null || this!.isEmpty;
+
+  /// 不为 null 且不为 empty 返回true
+  bool get isNotEmptyOrNull => !isEmptyOrNull;
 }

@@ -23,7 +23,10 @@ extension ExtensionUint8List on Uint8List {
 
 extension ExtensionListUnsafe on List? {
   /// null 或者 Empty 返回 true
-  bool isEmptyOrNull() => this == null || this!.isEmpty;
+  bool get isEmptyOrNull => this == null || this!.isEmpty;
+
+  /// 不为 null 且不为 empty 返回true
+  bool get isNotEmptyOrNull => !isEmptyOrNull;
 }
 
 extension ExtensionList<T> on List<T> {
