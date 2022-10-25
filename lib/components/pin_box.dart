@@ -13,6 +13,7 @@ class PinBox extends StatefulWidget {
       this.onDone,
       this.autoFocus = true,
       this.needKeyBoard = true,
+      this.obscureText = false,
       this.maxLength = 4,
       this.inputFormatter,
       this.focusNode,
@@ -35,6 +36,9 @@ class PinBox extends StatefulWidget {
 
   /// 是否自动获取焦点
   final bool autoFocus;
+
+  /// 是否隐藏文本
+  final bool obscureText;
 
   /// 是否需要自动弹出键盘
   final bool needKeyBoard;
@@ -188,6 +192,7 @@ class _PinBoxState extends State<PinBox> {
             focusNode: builderConfig.focusNode,
             decoration: builderConfig.decoration,
             autofocus: builderConfig.autofocus,
+            obscureText: builderConfig.obscureText,
             maxLines: builderConfig.maxLines,
             minLines: builderConfig.minLines,
             onChanged: builderConfig.onChanged,
@@ -217,6 +222,7 @@ class PinTextFieldBuilderConfig {
       required this.maxLength,
       required this.style,
       this.showCursor = false,
+      this.obscureText = false,
       required this.inputFormatters,
       required this.keyboardType});
 
@@ -228,6 +234,9 @@ class PinTextFieldBuilderConfig {
 
   /// [TextField] 自动获取焦点
   final bool autofocus;
+
+  /// [TextField] 自动获取焦点
+  final bool obscureText;
 
   /// [TextField] 最大行数 默认 1
   final int maxLines;
