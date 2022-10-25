@@ -156,8 +156,10 @@ class _ExtensionFunctionPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ExtendedScaffold(
         appBar: AppBarText('ExtensionFunctionPage'),
-        mainAxisAlignment: MainAxisAlignment.center,
+        padding: const EdgeInsets.all(12),
+        isScroll: true,
         children: [
+          const Partition('函数防抖'),
           ValueBuilder<int>(
               initialValue: 0,
               builder: (_, int? value, ValueCallback<int> updater) {
@@ -188,7 +190,26 @@ class _ExtensionFunctionPage extends StatelessWidget {
                   }),
                 ]);
               }),
-          const SizedBox(height: 30),
+          const Partition('同步节流'),
+          ValueBuilder<int>(
+              initialValue: 0,
+              builder: (_, int? value, ValueCallback<int> updater) {
+                return Column(children: [
+                  const Text('节流函数'),
+                  Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 2),
+                      child: Text(value.toString())),
+                  ElevatedText('点击+1',
+                      onTap: () {
+                        int v = value ?? 0;
+                        log('调用了同步节流函数');
+                        10000000.generate((index) => index.toString());
+                        log('同步节流函数结束');
+                        updater(v += 1);
+                      }.throttle(const Duration(seconds: 5))),
+                ]);
+              }),
+          const Partition('异步节流'),
           ValueBuilder<int>(
               initialValue: 0,
               builder: (_, int? value, ValueCallback<int> updater) {
@@ -199,11 +220,12 @@ class _ExtensionFunctionPage extends StatelessWidget {
                       child: Text(value.toString())),
                   ElevatedText('点击+1',
                       onTap: () async {
-                        await 2.seconds.delayed(() {
-                          int v = value ?? 0;
-                          updater(v += 1);
-                        });
-                      }.throttle()),
+                        log('调用了异步节流函数');
+                        await 5.seconds.delayed();
+                        int v = value ?? 0;
+                        log('异步5秒后更新数据');
+                        updater(v += 1);
+                      }.throttle),
                 ]);
               }),
           const SizedBox(height: 10),
