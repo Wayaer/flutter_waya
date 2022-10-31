@@ -24,7 +24,10 @@ class PinBox extends StatefulWidget {
       this.boxSize = const Size(40, 40),
       this.spaces = const <Widget>[],
       this.inputLimitFormatter = TextInputLimitFormatter.text,
-      this.builder});
+      this.builder,
+      this.controller});
+
+  final TextEditingController? controller;
 
   final GestureTapCallback? onTap;
 
@@ -177,6 +180,7 @@ class _PinBoxState extends State<PinBox> {
 
     final builderConfig = PinTextFieldBuilderConfig(
         focusNode: focusNode,
+        controller: widget.controller,
         decoration: inputDecoration,
         autofocus: widget.autoFocus,
         onChanged: onChanged,
@@ -189,6 +193,7 @@ class _PinBoxState extends State<PinBox> {
 
     return widget.builder?.call(builderConfig) ??
         TextField(
+            controller: builderConfig.controller,
             focusNode: builderConfig.focusNode,
             decoration: builderConfig.decoration,
             autofocus: builderConfig.autofocus,
@@ -223,6 +228,7 @@ class PinTextFieldBuilderConfig {
       required this.style,
       this.showCursor = false,
       this.obscureText = false,
+      this.controller,
       required this.inputFormatters,
       required this.keyboardType});
 
@@ -261,4 +267,7 @@ class PinTextFieldBuilderConfig {
 
   /// [TextField] 键盘弹出类型
   final TextInputType keyboardType;
+
+  /// [TextField] controller
+  final TextEditingController? controller;
 }

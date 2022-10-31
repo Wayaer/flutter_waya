@@ -6,7 +6,7 @@ class ModalWindowsOptions {
       this.left,
       this.right,
       this.bottom,
-      this.alignment,
+      this.alignment = Alignment.center,
       this.gaussian = false,
       this.addMaterial = false,
       this.ignoring = false,
