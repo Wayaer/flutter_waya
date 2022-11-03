@@ -20,6 +20,11 @@ class LoadingOptions {
           custom: custom ?? this.custom,
           style: style ?? this.style,
           options: options ?? this.options);
+
+  LoadingOptions merge([LoadingOptions? options]) => LoadingOptions(
+      custom: options?.custom ?? custom,
+      style: options?.style ?? style,
+      options: options?.options ?? this.options);
 }
 
 enum LoadingStyle {

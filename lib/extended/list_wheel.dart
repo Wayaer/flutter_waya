@@ -93,6 +93,20 @@ class WheelOptions {
           looping: looping ?? this.looping,
           onChanged: onChanged ?? this.onChanged,
           backgroundColor: backgroundColor ?? this.backgroundColor);
+
+  WheelOptions merge([WheelOptions? options]) => WheelOptions(
+      itemExtent: options?.itemExtent ?? itemExtent,
+      diameterRatio: options?.diameterRatio ?? diameterRatio,
+      offAxisFraction: options?.offAxisFraction ?? offAxisFraction,
+      perspective: options?.perspective ?? perspective,
+      magnification: options?.magnification ?? magnification,
+      useMagnifier: options?.useMagnifier ?? useMagnifier,
+      squeeze: options?.squeeze ?? squeeze,
+      isCupertino: options?.isCupertino ?? isCupertino,
+      physics: options?.physics ?? physics,
+      looping: options?.looping ?? looping,
+      onChanged: options?.onChanged ?? onChanged,
+      backgroundColor: options?.backgroundColor ?? backgroundColor);
 }
 
 class ListWheel extends StatelessWidget {

@@ -337,4 +337,21 @@ class ToastOptions {
           iconSize: iconSize ?? this.iconSize,
           spacing: spacing ?? this.spacing,
           direction: direction ?? this.direction);
+
+  ToastOptions merge([ToastOptions? options]) => ToastOptions(
+      modalWindowsOptions: options?.modalWindowsOptions ?? modalWindowsOptions,
+      positioned: options?.positioned ?? positioned,
+      ignoring: options?.ignoring ?? ignoring,
+      absorbing: options?.ignoring ?? absorbing,
+      backgroundColor: options?.backgroundColor ?? backgroundColor,
+      margin: options?.margin ?? margin,
+      padding: options?.padding ?? padding,
+      decoration: options?.decoration ?? decoration,
+      onTap: options?.onTap ?? onTap,
+      textStyle: options?.textStyle ?? textStyle,
+      duration: options?.duration ?? duration,
+      iconColor: options?.iconColor ?? iconColor,
+      iconSize: options?.iconSize ?? iconSize,
+      spacing: options?.spacing ?? spacing,
+      direction: options?.direction ?? direction);
 }

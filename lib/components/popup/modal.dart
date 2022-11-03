@@ -125,6 +125,30 @@ class ModalWindowsOptions {
           mainAxisSize: mainAxisSize ?? this.mainAxisSize,
           isScroll: isScroll ?? this.isScroll,
           isStack: isStack ?? this.isStack);
+
+  ModalWindowsOptions merge([ModalWindowsOptions? options]) =>
+      ModalWindowsOptions(
+          constraints: options?.constraints ?? constraints,
+          onTap: options?.onTap ?? onTap,
+          behavior: options?.behavior ?? behavior,
+          color: options?.color ?? color,
+          ignoring: options?.ignoring ?? ignoring,
+          absorbing: options?.absorbing ?? absorbing,
+          addMaterial: options?.addMaterial ?? addMaterial,
+          filter: options?.filter ?? filter,
+          gaussian: options?.gaussian ?? gaussian,
+          fuzzyDegree: options?.fuzzyDegree ?? fuzzyDegree,
+          left: options?.left ?? left,
+          top: options?.top ?? top,
+          right: options?.right ?? right,
+          bottom: options?.bottom ?? bottom,
+          alignment: options?.alignment ?? alignment,
+          mainAxisAlignment: options?.mainAxisAlignment ?? mainAxisAlignment,
+          crossAxisAlignment: options?.crossAxisAlignment ?? crossAxisAlignment,
+          direction: options?.direction ?? direction,
+          mainAxisSize: options?.mainAxisSize ?? mainAxisSize,
+          isScroll: options?.isScroll ?? isScroll,
+          isStack: options?.isStack ?? isStack);
 }
 
 /// 模态框背景

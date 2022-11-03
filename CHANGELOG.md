@@ -1,6 +1,7 @@
-## 3.3.2+3
+## 3.3.2+5
 
 * Add `ExtensionFutureFunction()`
+* Add the merge method for some Options
 
 ## 3.3.2
 

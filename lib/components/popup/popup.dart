@@ -305,6 +305,18 @@ class GeneralDialogOptions {
           transitionBuilder: transitionBuilder ?? this.transitionBuilder,
           useRootNavigator: useRootNavigator ?? this.useRootNavigator,
           routeSettings: routeSettings ?? this.routeSettings);
+
+  GeneralDialogOptions merge([GeneralDialogOptions? options]) =>
+      GeneralDialogOptions(
+          startOffset: options?.startOffset ?? startOffset,
+          fromStyle: options?.fromStyle ?? fromStyle,
+          barrierDismissible: options?.barrierDismissible ?? barrierDismissible,
+          barrierLabel: options?.barrierLabel ?? barrierLabel,
+          barrierColor: options?.barrierColor ?? barrierColor,
+          transitionDuration: options?.transitionDuration ?? transitionDuration,
+          transitionBuilder: options?.transitionBuilder ?? transitionBuilder,
+          useRootNavigator: options?.useRootNavigator ?? useRootNavigator,
+          routeSettings: options?.routeSettings ?? routeSettings);
 }
 
 class BottomSheetOptions {
@@ -376,4 +388,18 @@ class BottomSheetOptions {
           useRootNavigator: useRootNavigator ?? this.useRootNavigator,
           transitionAnimationController: transitionAnimationController ??
               this.transitionAnimationController);
+
+  BottomSheetOptions merge([BottomSheetOptions? options]) => BottomSheetOptions(
+      backgroundColor: options?.backgroundColor ?? backgroundColor,
+      elevation: options?.elevation ?? elevation,
+      shape: options?.shape ?? shape,
+      clipBehavior: options?.clipBehavior ?? clipBehavior,
+      barrierColor: options?.barrierColor ?? barrierColor,
+      isDismissible: options?.isDismissible ?? isDismissible,
+      enableDrag: options?.enableDrag ?? enableDrag,
+      isScrollControlled: options?.isScrollControlled ?? isScrollControlled,
+      routeSettings: options?.routeSettings ?? routeSettings,
+      useRootNavigator: options?.useRootNavigator ?? useRootNavigator,
+      transitionAnimationController: options?.transitionAnimationController ??
+          transitionAnimationController);
 }

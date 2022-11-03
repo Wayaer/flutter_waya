@@ -162,6 +162,19 @@ class PickerWheelOptions extends WheelOptions {
           physics: physics ?? this.physics,
           backgroundColor: backgroundColor ?? this.backgroundColor,
           itemWidth: itemWidth ?? this.itemWidth);
+
+  PickerWheelOptions mergePicker([PickerWheelOptions? options]) =>
+      PickerWheelOptions(
+          diameterRatio: options?.diameterRatio ?? diameterRatio,
+          offAxisFraction: options?.offAxisFraction ?? offAxisFraction,
+          perspective: options?.perspective ?? perspective,
+          magnification: options?.magnification ?? magnification,
+          useMagnifier: options?.useMagnifier ?? useMagnifier,
+          squeeze: options?.squeeze ?? squeeze,
+          isCupertino: options?.isCupertino ?? isCupertino,
+          physics: options?.physics ?? physics,
+          backgroundColor: options?.backgroundColor ?? backgroundColor,
+          itemWidth: options?.itemWidth ?? itemWidth);
 }
 
 abstract class _PickerConfig<T> extends StatefulWidget {
