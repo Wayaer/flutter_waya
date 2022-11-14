@@ -8,22 +8,18 @@ typedef SetCookieOnRequest = Map<String, dynamic> Function(
 typedef GetCookiesOnResponse = void Function(Response<dynamic> response);
 
 class CookiesInterceptor<T> extends InterceptorsWrapper {
-  CookiesInterceptor({this.setCookie, this.getCookies});
+  CookiesInterceptor({this.setCookies, this.getCookies});
 
   /// 拦截器中 请求回调添加 cookie 方法
-  final SetCookieOnRequest? setCookie;
+  final SetCookieOnRequest? setCookies;
 
   /// 拦截器中 返回回调添加 获取cookie 方法
   final GetCookiesOnResponse? getCookies;
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    final cookie = setCookie?.call(options);
-    if (cookie != null) {
-      cookie.builderEntry((entry) {
-        options.headers[entry.key] = entry.value;
-      });
-    }
+    final cookies = setCookies?.call(options);
+    if (cookies != null) options.headers.addAll(cookies);
     super.onRequest(options, handler);
   }
 
