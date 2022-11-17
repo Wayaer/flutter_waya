@@ -168,14 +168,13 @@ class DebuggerInterceptorHelper {
           _overlayEntry?.remove();
           _overlayEntry = null;
         });
-    _overlayEntry ??= showOverlay(widget, autoOff: true);
+    _overlayEntry ??= widget.showOverlay(autoOff: true);
   }
 
-  Future<void> showDebugDataList() => showBottomPopup(
+  Future<void> showDebugDataList() => const _HttpDataWindows().showBottomPopup(
       options: GlobalOptions()
           .bottomSheetOptions
-          .copyWith(backgroundColor: Colors.transparent, enableDrag: true),
-      widget: const _HttpDataWindows());
+          .copyWith(backgroundColor: Colors.transparent, enableDrag: true));
 }
 
 class _HttpDataWindows extends StatelessWidget {
@@ -349,11 +348,10 @@ class _HttpDataEntry extends StatelessWidget {
 
   void showDetailData() {
     if (!canTap) return;
-    showBottomPopup(
+    _HttpDetailDataWindows(model).showBottomPopup(
         options: GlobalOptions()
             .bottomSheetOptions
-            .copyWith(backgroundColor: Colors.transparent, enableDrag: true),
-        widget: _HttpDetailDataWindows(model));
+            .copyWith(backgroundColor: Colors.transparent, enableDrag: true));
   }
 
   Color statusCodeColor(int statusCode) {

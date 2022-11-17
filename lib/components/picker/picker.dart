@@ -177,11 +177,25 @@ class PickerWheelOptions extends WheelOptions {
           itemWidth: options?.itemWidth ?? itemWidth);
 }
 
-abstract class _PickerConfig<T> extends StatefulWidget {
-  const _PickerConfig(
+abstract class PickerStatelessWidget<T> extends StatelessWidget {
+  const PickerStatelessWidget(
       {super.key, required this.options, required this.wheelOptions});
 
+  /// 头部和背景色配置
   final PickerOptions<T> options;
+
+  /// Wheel配置信息
+  final PickerWheelOptions wheelOptions;
+}
+
+abstract class PickerStatefulWidget<T> extends StatefulWidget {
+  const PickerStatefulWidget(
+      {super.key, required this.options, required this.wheelOptions});
+
+  /// 头部和背景色配置
+  final PickerOptions<T> options;
+
+  /// Wheel配置信息
   final PickerWheelOptions wheelOptions;
 }
 
@@ -282,233 +296,26 @@ class _PickerListWheelState extends ListWheelState {
                 onChanged: onChanged));
 }
 
-/// 日期选择器
-/// 关闭 closePopup()
-Future<DateTime?> showDateTimePicker<T>({
-  /// 选择框内单位文字样式
-  TextStyle? unitStyle,
-
-  /// 开始时间
-  DateTime? startDate,
-
-  /// 默认选中时间
-  DateTime? defaultDate,
-
-  /// 结束时间
-  DateTime? endDate,
-
-  /// 补全双位数
-  bool dual = true,
-
-  /// 是否显示单位
-  bool showUnit = true,
-
-  /// 单位设置
-  DateTimePickerUnit unit = const DateTimePickerUnit.all(),
-
-  /// 头部和背景色配置
-  PickerOptions<DateTime>? options,
-
-  /// Wheel配置信息
-  PickerWheelOptions? wheelOptions,
-
-  /// BottomSheet 配置
-  BottomSheetOptions? bottomSheetOptions,
-}) {
-  GlobalOptions().globalNavigatorKey.currentContext!.focusNode();
-  final Widget widget = DateTimePicker(
-      options: options,
-      wheelOptions: wheelOptions,
-      unitStyle: unitStyle,
-      startDate: startDate,
-      endDate: endDate,
-      defaultDate: defaultDate,
-      dual: dual,
-      showUnit: showUnit,
-      unit: unit);
-  return showBottomPopup<DateTime?>(
-      widget: widget, options: bottomSheetOptions);
+extension ExtensionCustomPicker<T> on CustomPicker {
+  Future<T?> show({BottomSheetOptions? options}) =>showBottomPopup<T?>(options: options);
 }
 
-/// 地区选择器
-/// 关闭 closePopup()
-Future<String?> showAreaPicker<T>({
-  /// 默认选择的省
-  String? defaultProvince,
+class CustomPicker<T> extends PickerSubject {
+  CustomPicker({
+    super.key,
+    required Widget content,
 
-  /// 默认选择的市
-  String? defaultCity,
+    /// 自定义 确定 按钮 返回参数
+    PickerSubjectTapCallback<T>? confirmTap,
 
-  /// 默认选择的区
-  String? defaultDistrict,
+    /// 自定义 取消 按钮 返回参数
+    PickerSubjectTapCallback<T?>? cancelTap,
 
-  /// 头部和背景色配置
-  PickerOptions<String>? options,
-
-  /// Wheel配置信息
-  PickerWheelOptions? wheelOptions,
-
-  /// BottomSheet 配置
-  BottomSheetOptions? bottomSheetOptions,
-}) {
-  GlobalOptions().globalNavigatorKey.currentContext!.focusNode();
-  final Widget widget = AreaPicker(
-      defaultProvince: defaultProvince,
-      defaultCity: defaultCity,
-      defaultDistrict: defaultDistrict,
-      options: options,
-      wheelOptions: wheelOptions ?? GlobalOptions().pickerWheelOptions);
-  return showBottomPopup<String?>(widget: widget, options: bottomSheetOptions);
-}
-
-/// wheel 单列 取消确认 选择
-/// 关闭 closePopup()
-Future<int?> showSingleColumnPicker<T>({
-  /// 默认选中
-  int initialIndex = 0,
-
-  /// 渲染子组件
-  required int itemCount,
-  required IndexedWidgetBuilder itemBuilder,
-
-  /// 头部和背景色配置
-  PickerOptions<int>? options,
-
-  /// Wheel配置信息
-  PickerWheelOptions? wheelOptions,
-
-  /// BottomSheet 配置
-  BottomSheetOptions? bottomSheetOptions,
-}) {
-  GlobalOptions().globalNavigatorKey.currentContext!.focusNode();
-  final Widget widget = SingleColumnPicker(
-      itemCount: itemCount,
-      itemBuilder: itemBuilder,
-      options: options,
-      wheelOptions: wheelOptions,
-      initialIndex: initialIndex);
-  return showBottomPopup(widget: widget, options: bottomSheetOptions);
-}
-
-/// wheel 多列 取消 确认 选择 不联动
-/// 关闭 closePopup()
-Future<List<int>?> showMultiColumnPicker<T>({
-  required List<PickerEntry> entry,
-
-  /// 头部和背景色配置
-  PickerOptions<List<int>>? options,
-
-  /// Wheel配置信息
-  PickerWheelOptions? wheelOptions,
-
-  /// 是否可以横向滚动
-  /// [horizontalScroll]==true 使用[SingleChildScrollView]创建,[wheelOptions]中的[itemWidth]控制宽度，如果不设置则为[kPickerDefaultWidth]
-  /// [horizontalScroll]==false 使用[Row] 创建每个滚动，居中显示
-  bool horizontalScroll = false,
-
-  /// [horizontalScroll]==false
-  bool addExpanded = true,
-
-  /// BottomSheet 配置
-  BottomSheetOptions? bottomSheetOptions,
-}) {
-  GlobalOptions().globalNavigatorKey.currentContext!.focusNode();
-  final Widget widget = MultiColumnPicker(
-      horizontalScroll: horizontalScroll,
-      addExpanded: addExpanded,
-      entry: entry,
-      options: options,
-      wheelOptions: wheelOptions);
-  return showBottomPopup(widget: widget, options: bottomSheetOptions);
-}
-
-/// wheel 多列 取消 确认 选择 联动
-/// 关闭 closePopup()
-Future<List<int>?> showMultiColumnLinkagePicker<T>({
-  /// 头部和背景色配置
-  PickerOptions<List<int>>? options,
-
-  /// 要渲染的数据
-  required List<PickerLinkageEntry> entry,
-
-  /// 是否可以横向滚动
-  /// [horizontalScroll]==true 使用[SingleChildScrollView]创建,[wheelOptions]中的[itemWidth]控制宽度，如果不设置则为[kPickerDefaultWidth]
-  /// [horizontalScroll]==false 使用[Row] 创建每个滚动，居中显示
-  bool horizontalScroll = false,
-
-  /// [horizontalScroll]==false
-  bool addExpanded = true,
-
-  /// Wheel配置信息
-  PickerWheelOptions? wheelOptions,
-
-  /// BottomSheet 配置
-  BottomSheetOptions? bottomSheetOptions,
-}) {
-  GlobalOptions().globalNavigatorKey.currentContext!.focusNode();
-  final Widget widget = MultiColumnLinkagePicker(
-      horizontalScroll: horizontalScroll,
-      addExpanded: addExpanded,
-      entry: entry,
-      options: options,
-      wheelOptions: wheelOptions);
-  return showBottomPopup(widget: widget, options: bottomSheetOptions);
-}
-
-/// 关闭 closePopup()
-Future<T?> showCustomPicker<T>({
-  required Widget content,
-
-  /// 自定义 确定 按钮 返回参数
-  PickerSubjectTapCallback<T>? confirmTap,
-
-  /// 自定义 取消 按钮 返回参数
-  PickerSubjectTapCallback<T?>? cancelTap,
-
-  /// 头部和背景色配置
-  PickerOptions<T?>? options,
-
-  /// BottomSheet 配置
-  BottomSheetOptions? bottomSheetOptions,
-}) {
-  GlobalOptions().globalNavigatorKey.currentContext!.focusNode();
-  options ??= PickerOptions<T?>();
-  return showBottomPopup(
-      options: bottomSheetOptions,
-      widget: PickerSubject<T?>(
-          confirmTap: confirmTap,
-          cancelTap: cancelTap,
-          options: options,
-          child: content));
-}
-
-/// 多选或单选 取消 确认 选择
-/// 关闭 closePopup()
-Future<List<int>?> showSingleListPicker<T>({
-  /// 默认选中
-  int initialIndex = 0,
-
-  /// 渲染子组件
-  required int itemCount,
-  required SelectIndexedWidgetBuilder itemBuilder,
-
-  /// 头部和背景色配置
-  PickerOptions<List<int>>? options,
-
-  /// BottomSheet 配置
-  BottomSheetOptions? bottomSheetOptions,
-  SingleListPickerOptions singleListPickerOptions =
-      const SingleListPickerOptions(),
-  SelectScrollListBuilder? listBuilder,
-}) {
-  GlobalOptions().globalNavigatorKey.currentContext!.focusNode();
-  final Widget widget = SingleListPicker(
-      listBuilder: listBuilder,
-      singleListPickerOptions: singleListPickerOptions,
-      itemCount: itemCount,
-      itemBuilder: itemBuilder,
-      options: options);
-  final bottomSheet =
-      GlobalOptions().bottomSheetOptions.copyWith(isScrollControlled: false);
-  return showBottomPopup(widget: widget, options: bottomSheet);
+    /// 头部和背景色配置
+    PickerOptions<T?>? options,
+  }) : super(
+            confirmTap: confirmTap,
+            cancelTap: cancelTap,
+            options: options ?? PickerOptions<T?>(),
+            child: content);
 }

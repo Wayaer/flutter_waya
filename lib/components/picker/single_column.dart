@@ -1,24 +1,29 @@
 part of 'picker.dart';
 
+extension ExtensionSingleColumnPicker on SingleColumnPicker {
+  Future<int?> show({BottomSheetOptions? options}) =>
+      showBottomPopup<int?>(options: options);
+}
+
 /// 单列选择
-class SingleColumnPicker extends StatelessWidget {
+class SingleColumnPicker extends PickerStatelessWidget<int> {
   SingleColumnPicker({
     super.key,
+
+    /// 默认选中
     int initialIndex = 0,
     required this.itemCount,
     required this.itemBuilder,
-    PickerOptions<int>? options,
-    this.wheelOptions,
     FixedExtentScrollController? controller,
+    PickerOptions<int>? options,
+
+    /// Wheel配置信息
+    PickerWheelOptions? wheelOptions,
   })  : controller = controller ??
             FixedExtentScrollController(initialItem: initialIndex),
-        options = options ?? PickerOptions<int>();
-
-  /// 头部和背景色配置
-  final PickerOptions<int> options;
-
-  /// Wheel配置信息
-  final PickerWheelOptions? wheelOptions;
+        super(
+            options: options ?? PickerOptions<int>(),
+            wheelOptions: wheelOptions ?? GlobalOptions().pickerWheelOptions);
 
   /// 渲染子组件
   final int itemCount;
@@ -34,11 +39,20 @@ class SingleColumnPicker extends StatelessWidget {
           width: double.infinity,
           height: kPickerDefaultHeight,
           child: _PickerListWheel(
-              wheel: wheelOptions ?? GlobalOptions().pickerWheelOptions,
+              wheel: wheelOptions,
               controller: controller,
               itemBuilder: itemBuilder,
               itemCount: itemCount)),
       confirmTap: () => controller?.selectedItem ?? 0);
+}
+
+extension ExtensionSingleListPicker on SingleListPicker {
+  Future<List<int>?> show({BottomSheetOptions? options}) =>
+      showBottomPopup<List<int>?>(
+          options: GlobalOptions()
+              .bottomSheetOptions
+              .copyWith(isScrollControlled: false)
+              .merge(options));
 }
 
 /// list 单多项选择器

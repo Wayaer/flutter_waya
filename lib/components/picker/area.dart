@@ -1,7 +1,12 @@
 part of 'picker.dart';
 
+extension ExtensionAreaPicker on AreaPicker {
+  Future<String?> show({BottomSheetOptions? options}) =>
+      showBottomPopup<String?>(options: options);
+}
+
 /// 省市区三级联动
-class AreaPicker extends _PickerConfig<String> {
+class AreaPicker extends PickerStatefulWidget<String> {
   AreaPicker({
     super.key,
     this.defaultProvince,

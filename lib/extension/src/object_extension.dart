@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_waya/extended/extended.dart';
 
 extension ExtensionT<T> on T {
   /// let是做了操作后返回新的类型
@@ -22,6 +23,12 @@ extension ExtensionT<T> on T {
 
   /// 转为 ValueNotifier
   ValueNotifier<T> get notifier => ValueNotifier<T>(this);
+
+  /// toast 显示
+  Future<ExtendedOverlayEntry?> toast(
+          {ToastStyle? style, IconData? customIcon, ToastOptions? options}) =>
+      Toast(toString(), options: options, customIcon: customIcon, style: style)
+          .show();
 }
 
 extension ExtensionBool on bool {

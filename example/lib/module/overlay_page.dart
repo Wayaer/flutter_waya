@@ -18,9 +18,8 @@ class OverlayPage extends StatelessWidget {
             Wrap(
                 children: ToastStyle.values.builder((ToastStyle style) =>
                     ElevatedText(style.toString(), onTap: () async {
-                      await showToast(style.toString(),
-                          style: style, customIcon: Icons.ac_unit_sharp);
-                      showToast('添加await第一个Toast完了之后弹出第二个Toast');
+                      style.show(style.toString());
+                      '添加await第一个Toast完了之后弹出第二个Toast'.toast();
                     }))),
             Wrap(
                 children: [
@@ -33,18 +32,20 @@ class OverlayPage extends StatelessWidget {
               Alignment.center,
               Alignment.centerLeft,
               Alignment.centerRight,
-            ].builder((alignment) => ElevatedText(
-                        alignment.toString().split('.')[1], onTap: () async {
-                      showToast(alignment.toString(),
-                          positioned: alignment,
+            ].builder((positioned) => ElevatedText(
+                        positioned.toString().split('.')[1], onTap: () async {
+                      showToast(positioned.toString(),
                           customIcon: Icons.ac_unit_sharp,
-                          options: ToastOptions(onTap: () {
-                            log('点击了Toast');
-                          }, modalWindowsOptions: ModalWindowsOptions(
-                            onTap: () {
-                              log('点击了背景');
-                            },
-                          )));
+                          options: ToastOptions(
+                              positioned: positioned,
+                              onTap: () {
+                                log('点击了Toast');
+                              },
+                              modalWindowsOptions: ModalWindowsOptions(
+                                onTap: () {
+                                  log('点击了背景');
+                                },
+                              )));
                     }))),
             const Partition('Loading'),
             ElevatedText('showLoading', onTap: () {
@@ -55,8 +56,7 @@ class OverlayPage extends StatelessWidget {
                       showLoading(
                           style: style,
                           options: const ModalWindowsOptions(
-                              gaussian: true, onTap: closeOverlay),
-                          custom: const SpinKitThreeBounce(color: Colors.red));
+                              gaussian: true, onTap: closeOverlay));
                     })),
             const SizedBox(height: 60),
           ]);

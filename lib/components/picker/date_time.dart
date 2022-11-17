@@ -1,7 +1,12 @@
 part of 'picker.dart';
 
+extension ExtensionDateTimePicker on DateTimePicker {
+  Future<DateTime?> show({BottomSheetOptions? options}) =>
+      showBottomPopup<DateTime?>(options: options);
+}
+
 /// 日期时间选择器
-class DateTimePicker extends _PickerConfig<DateTime> {
+class DateTimePicker extends PickerStatefulWidget<DateTime> {
   DateTimePicker({
     super.key,
     this.unit = const DateTimePickerUnit.all(),
@@ -20,19 +25,23 @@ class DateTimePicker extends _PickerConfig<DateTime> {
   /// 补全双位数
   final bool dual;
 
-  /// 单位是否显示
+  /// 是否显示单位
   final bool showUnit;
 
   /// 时间选择器单位
   /// 通过单位参数确定是否显示对应的年月日时分秒
   final DateTimePickerUnit unit;
 
-  /// 字体样式
+  /// 选择框内单位文字样式
   final TextStyle? unitStyle;
 
-  /// 时间
+  /// 开始时间
   final DateTime? startDate;
+
+  /// 默认选中时间
   final DateTime? defaultDate;
+
+  /// 结束时间
   final DateTime? endDate;
 
   @override

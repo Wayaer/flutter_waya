@@ -64,7 +64,6 @@ void main() {
   globalOptions.setLogDottedLine(true);
   globalOptions.setLoadingOptions(const LoadingOptions(
       custom: BText('全局设置loading', fontSize: 20),
-      style: LoadingStyle.custom,
       options: ModalWindowsOptions(onTap: closeLoading)));
   des();
   runApp(DevicePreview(

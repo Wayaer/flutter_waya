@@ -4,15 +4,188 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 
-extension ExtensionContext on BuildContext {
-  /// 移出焦点 focusNode==null  移出焦点 （可用于关闭键盘） focusNode！!= null 获取焦点
-  void focusNode([FocusNode? focusNode]) =>
-      FocusScope.of(this).requestFocus(focusNode ?? FocusNode());
+extension ExtensionNavigatorStateContext on BuildContext {
+  /// [NavigatorState]
+  NavigatorState get navigator => Navigator.of(this);
+
+  /// [push]
+  // Future<T?> push<T extends Object?>(Route<T> route) => navigator.push(route);
+
+  /// [pushNamed]
+  Future<T?> pushNamed<T extends Object?>(String routeName,
+          {Object? arguments}) =>
+      navigator.pushNamed(routeName, arguments: arguments);
+
+  /// [restorablePush]
+  String restorablePush<T extends Object?>(
+          RestorableRouteBuilder<T> routeBuilder,
+          {Object? arguments}) =>
+      navigator.restorablePush(routeBuilder, arguments: arguments);
+
+  /// [restorablePushNamed]
+  String restorablePushNamed<T extends Object?>(String routeName,
+          {Object? arguments}) =>
+      navigator.restorablePushNamed(routeName, arguments: arguments);
+
+  /// [pushReplacement]
+  Future<T?> pushReplacement<T extends Object?, TO extends Object?>(
+          Route<T> newRoute,
+          {TO? result}) =>
+      navigator.pushReplacement(newRoute, result: result);
+
+  /// [pushReplacementNamed]
+  Future<T?> pushReplacementNamed<T extends Object?, TO extends Object?>(
+          String routeName,
+          {TO? result,
+          Object? arguments}) =>
+      navigator.pushReplacementNamed<T, TO>(routeName,
+          result: result, arguments: arguments);
+
+  /// [restorablePushReplacement]
+  String restorablePushReplacement<T extends Object?, TO extends Object?>(
+          RestorableRouteBuilder<T> routeBuilder,
+          {TO? result,
+          Object? arguments}) =>
+      navigator.restorablePushReplacement(routeBuilder,
+          result: result, arguments: arguments);
+
+  /// [restorablePushReplacementNamed]
+  String restorablePushReplacementNamed<T extends Object?, TO extends Object?>(
+          String routeName,
+          {TO? result,
+          Object? arguments}) =>
+      navigator.restorablePushReplacementNamed(routeName,
+          result: result, arguments: arguments);
+
+  /// [pushAndRemoveUntil]
+  Future<T?> pushAndRemoveUntil<T extends Object?>(
+          Route<T> newRoute, RoutePredicate predicate) =>
+      navigator.pushAndRemoveUntil(newRoute, predicate);
+
+  /// [pushNamedAndRemoveUntil]
+  Future<T?> pushNamedAndRemoveUntil<T extends Object?>(
+          String newRouteName, RoutePredicate predicate, {Object? arguments}) =>
+      navigator.pushNamedAndRemoveUntil(newRouteName, predicate,
+          arguments: arguments);
+
+  /// [restorablePushNamedAndRemoveUntil]
+  String restorablePushNamedAndRemoveUntil<T extends Object?>(
+          String newRouteName, RoutePredicate predicate, {Object? arguments}) =>
+      navigator.restorablePushNamedAndRemoveUntil(newRouteName, predicate,
+          arguments: arguments);
+
+  /// [popAndPushNamed]
+  Future<T?> popAndPushNamed<T extends Object?, TO extends Object?>(
+          String routeName,
+          {TO? result,
+          Object? arguments}) =>
+      navigator.popAndPushNamed(routeName,
+          result: result, arguments: arguments);
+
+  /// [restorablePopAndPushNamed]
+  String restorablePopAndPushNamed<T extends Object?, TO extends Object?>(
+          String routeName,
+          {TO? result,
+          Object? arguments}) =>
+      navigator.restorablePopAndPushNamed(routeName,
+          result: result, arguments: arguments);
+
+  /// [restorableReplace]
+  String restorableReplace<T extends Object?>(
+          {required Route<dynamic> oldRoute,
+          required RestorableRouteBuilder<T> newRouteBuilder,
+          Object? arguments}) =>
+      navigator.restorableReplace(
+          oldRoute: oldRoute,
+          newRouteBuilder: newRouteBuilder,
+          arguments: arguments);
+
+  /// [restorableReplaceRouteBelow]
+  String restorableReplaceRouteBelow<T extends Object?>(
+          {required Route<dynamic> anchorRoute,
+          required RestorableRouteBuilder<T> newRouteBuilder,
+          Object? arguments}) =>
+      navigator.restorableReplaceRouteBelow(
+          anchorRoute: anchorRoute,
+          newRouteBuilder: newRouteBuilder,
+          arguments: arguments);
+
+  /// [pop]
+  void pop<T extends Object?>([T? result]) => navigator.pop(result);
+
+  /// [maybePop]
+  Future<bool> maybePop<T extends Object?>([T? result]) => navigator.maybePop();
+
+  /// [popUntil]
+  void popUntil(RoutePredicate predicate) => navigator.popUntil(predicate);
+
+  /// [removeRoute]
+  void removeRoute(Route<dynamic> route) => navigator.removeRoute(route);
+
+  /// [removeRouteBelow]
+  void removeRouteBelow(Route<dynamic> route) =>
+      navigator.removeRouteBelow(route);
+
+  /// [canPop]
+  bool canPop() => navigator.canPop();
+
+  /// [mounted]
+  bool get mounted => navigator.mounted;
+
+  /// [userGestureInProgress]
+  bool get userGestureInProgress => navigator.userGestureInProgress;
+
+  /// [overlay]
+  OverlayState? get overlay => navigator.overlay;
+}
+
+extension ExtensionFocusScopeContext on BuildContext {
+  /// [FocusScope]
+  FocusScopeNode get focusScope => FocusScope.of(this);
+
+  FocusScopeNode get nearestScope => focusScope.nearestScope;
+
+  bool get isFirstFocus => focusScope.isFirstFocus;
+
+  bool get hasFocus => focusScope.hasFocus;
+
+  bool get canRequestFocus => focusScope.canRequestFocus;
+
+  bool get hasPrimaryFocus => focusScope.hasPrimaryFocus;
+
+  FocusNode? get parent => focusScope.parent;
+
+  /// focusNode==null  移出焦点 （可用于关闭键盘） focusNode！!= null 获取焦点
+  void requestFocus([FocusNode? focusNode]) =>
+      focusScope.requestFocus(focusNode ?? FocusNode());
 
   /// 自动获取焦点
-  void autoFocus([FocusNode? focusNode]) =>
-      FocusScope.of(this).autofocus(focusNode ?? FocusNode());
+  void autofocus([FocusNode? focusNode]) =>
+      focusScope.autofocus(focusNode ?? FocusNode());
 
+  bool nextFocus() => focusScope.nextFocus();
+
+  bool previousFocus() => focusScope.previousFocus();
+
+  bool focusInDirection(TraversalDirection direction) =>
+      focusScope.focusInDirection(direction);
+
+  void unfocus({UnfocusDisposition disposition = UnfocusDisposition.scope}) =>
+      focusScope.unfocus(disposition: disposition);
+
+  FocusAttachment attach(BuildContext? context,
+          {FocusOnKeyEventCallback? onKeyEvent, FocusOnKeyCallback? onKey}) =>
+      focusScope.attach(context, onKey: onKey, onKeyEvent: onKeyEvent);
+
+  void addListener(VoidCallback listener) => focusScope.addListener(listener);
+
+  void removeListener(VoidCallback listener) =>
+      focusScope.removeListener(listener);
+
+  void setFirstFocus(FocusScopeNode scope) => focusScope.setFirstFocus(scope);
+}
+
+extension ExtensionContext on BuildContext {
   /// Gives you the power to get a portion of the height.
   /// Useful for responsive applications.
   ///

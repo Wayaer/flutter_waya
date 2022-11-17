@@ -506,28 +506,19 @@ class ExtendedScaffold extends StatelessWidget {
 ///
 /// 打开新页面
 Future<T?> push<T extends Object?, TO extends Object?>(Widget widget,
-    {bool maintainState = true,
-    bool fullscreenDialog = false,
-    RoutePushStyle? pushStyle,
-    RouteSettings? settings,
-    bool replacement = false,
-    TO? result}) {
-  if (replacement) {
-    return pushReplacement(widget,
+        {bool maintainState = true,
+        bool fullscreenDialog = false,
+        RoutePushStyle? pushStyle,
+        RouteSettings? settings,
+        bool replacement = false,
+        TO? result}) =>
+    widget.push(
         settings: settings,
         maintainState: maintainState,
         fullscreenDialog: fullscreenDialog,
         pushStyle: pushStyle ?? GlobalOptions().pushStyle,
-        result: result);
-  } else {
-    return GlobalOptions().globalNavigatorKey.currentState!.push(
-        widget.buildPageRoute(
-            maintainState: maintainState,
-            fullscreenDialog: fullscreenDialog,
-            settings: settings,
-            pushStyle: pushStyle ?? GlobalOptions().pushStyle));
-  }
-}
+        result: result,
+        replacement: replacement);
 
 /// 打开新页面替换当前页面
 Future<T?> pushReplacement<T extends Object?, TO extends Object?>(Widget widget,
@@ -536,13 +527,11 @@ Future<T?> pushReplacement<T extends Object?, TO extends Object?>(Widget widget,
         RoutePushStyle? pushStyle,
         RouteSettings? settings,
         TO? result}) =>
-    GlobalOptions().globalNavigatorKey.currentState!.pushReplacement(
-        widget.buildPageRoute(
-            settings: settings,
-            maintainState: maintainState,
-            fullscreenDialog: fullscreenDialog,
-            pushStyle: pushStyle ?? GlobalOptions().pushStyle),
-        result: result);
+    widget.pushReplacement(
+        settings: settings,
+        maintainState: maintainState,
+        fullscreenDialog: fullscreenDialog,
+        pushStyle: pushStyle ?? GlobalOptions().pushStyle);
 
 /// 打开新页面 并移出堆栈所有页面
 Future<T?> pushAndRemoveUntil<T extends Object?>(Widget widget,
@@ -551,13 +540,11 @@ Future<T?> pushAndRemoveUntil<T extends Object?>(Widget widget,
         RoutePushStyle? pushStyle,
         RouteSettings? settings,
         RoutePredicate? predicate}) =>
-    GlobalOptions().globalNavigatorKey.currentState!.pushAndRemoveUntil(
-        widget.buildPageRoute(
-            settings: settings,
-            maintainState: maintainState,
-            fullscreenDialog: fullscreenDialog,
-            pushStyle: pushStyle ?? GlobalOptions().pushStyle),
-        predicate ?? (_) => false);
+    widget.pushAndRemoveUntil(
+        settings: settings,
+        maintainState: maintainState,
+        fullscreenDialog: fullscreenDialog,
+        pushStyle: pushStyle ?? GlobalOptions().pushStyle);
 
 /// 可能返回到上一个页面
 Future<bool> maybePop<T extends Object>([T? result]) =>

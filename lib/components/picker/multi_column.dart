@@ -8,22 +8,23 @@ class PickerEntry {
   final IndexedWidgetBuilder itemBuilder;
 }
 
+extension ExtensionMultiColumnPicker on MultiColumnPicker {
+  Future<List<int>?> show({BottomSheetOptions? options}) =>
+      showBottomPopup<List<int>?>(options: options);
+}
+
 /// 多列选择 不联动
-class MultiColumnPicker extends StatelessWidget {
+class MultiColumnPicker extends PickerStatelessWidget<List<int>> {
   MultiColumnPicker({
     super.key,
-    PickerOptions<List<int>>? options,
-    this.wheelOptions,
     required this.entry,
     this.horizontalScroll = false,
     this.addExpanded = true,
-  }) : options = options ?? PickerOptions<List<int>>();
-
-  /// 头部和背景色配置
-  final PickerOptions<List<int>> options;
-
-  /// Wheel配置信息
-  final PickerWheelOptions? wheelOptions;
+    PickerOptions<List<int>>? options,
+    PickerWheelOptions? wheelOptions,
+  }) : super(
+            options: options ?? PickerOptions<List<int>>(),
+            wheelOptions: wheelOptions ?? GlobalOptions().pickerWheelOptions);
 
   /// 要渲染的数据
   final List<PickerEntry> entry;
@@ -52,10 +53,10 @@ class MultiColumnPicker extends StatelessWidget {
               final value = item.value;
               final location = item.key;
               return Universal(
-                  width: wheelOptions?.itemWidth ?? kPickerDefaultWidth,
+                  width: wheelOptions.itemWidth ?? kPickerDefaultWidth,
                   expanded: horizontalScroll ? false : addExpanded,
                   child: _PickerListWheel(
-                      wheel: wheelOptions ?? GlobalOptions().pickerWheelOptions,
+                      wheel: wheelOptions,
                       itemBuilder: value.itemBuilder,
                       onChanged: (int index) {
                         position[location] = index;
@@ -74,22 +75,23 @@ class PickerLinkageEntry {
   final List<PickerLinkageEntry> children;
 }
 
+extension ExtensionMultiColumnLinkagePicker on MultiColumnLinkagePicker {
+  Future<List<int>?> show({BottomSheetOptions? options}) =>
+      showBottomPopup<List<int>?>(options: options);
+}
+
 /// 多列选择 联动
-class MultiColumnLinkagePicker extends StatefulWidget {
+class MultiColumnLinkagePicker extends PickerStatefulWidget<List<int>> {
   MultiColumnLinkagePicker({
     super.key,
-    PickerOptions<List<int>>? options,
-    this.wheelOptions,
     required this.entry,
     this.horizontalScroll = false,
     this.addExpanded = true,
-  }) : options = options ?? PickerOptions<List<int>>();
-
-  /// 头部和背景色配置
-  final PickerOptions<List<int>> options;
-
-  /// Wheel配置信息
-  final PickerWheelOptions? wheelOptions;
+    PickerOptions<List<int>>? options,
+    PickerWheelOptions? wheelOptions,
+  }) : super(
+            options: options ?? PickerOptions<List<int>>(),
+            wheelOptions: wheelOptions ?? GlobalOptions().pickerWheelOptions);
 
   /// 要渲染的数据
   final List<PickerLinkageEntry> entry;
@@ -178,7 +180,7 @@ class _MultiColumnLinkagePickerState extends State<MultiColumnLinkagePicker> {
         children: buildWheels.builder((item) => Universal(
             expanded: widget.horizontalScroll ? false : widget.addExpanded,
             height: kPickerDefaultHeight,
-            width: widget.wheelOptions?.itemWidth ?? kPickerDefaultWidth,
+            width: widget.wheelOptions.itemWidth ?? kPickerDefaultWidth,
             child: Center(child: item))),
       ));
 
@@ -201,5 +203,5 @@ class _MultiColumnLinkagePickerState extends State<MultiColumnLinkagePicker> {
           itemBuilder: (_, int index) => Center(
               child: index > list.length ? list.last.text : list[index].text),
           itemCount: list.length,
-          wheel: widget.wheelOptions ?? GlobalOptions().pickerWheelOptions);
+          wheel: widget.wheelOptions);
 }

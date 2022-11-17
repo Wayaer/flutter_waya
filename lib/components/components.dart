@@ -12,23 +12,23 @@ export 'button/dropdown_button.dart';
 export 'button/elastic_button.dart';
 export 'check_box.dart';
 export 'counter.dart';
+export 'decorator_box.dart';
 export 'dotted_line.dart';
 export 'draggable_scrollbar.dart';
 export 'gesture.dart';
 export 'json_parse.dart';
 export 'picker/picker.dart';
 export 'pin_box.dart';
-export 'popup/popup.dart';
 export 'progress/liquid_progress.dart';
 export 'progress/progress.dart';
 export 'progress/wave.dart';
 export 'refresh/simple_refresh.dart';
 export 'screen_adaptation.dart';
+export 'spinKit/spin_kit.dart';
 export 'swiper/indicator.dart';
 export 'swiper/pagination.dart';
 export 'swiper/swiper.dart';
 export 'switch.dart';
-export 'decorator_box.dart';
 
 class NoScrollBehavior extends ScrollBehavior {
   @override

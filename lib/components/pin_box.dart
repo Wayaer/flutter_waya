@@ -158,7 +158,7 @@ class _PinBoxState extends State<PinBox> {
     if (widget.needKeyBoard) {
       if (focusNode.hasFocus) focusNode.unfocus();
       100.milliseconds.delayed(() {
-        context.focusNode(focusNode);
+        context.requestFocus(focusNode);
       });
     }
     widget.onTap?.call();

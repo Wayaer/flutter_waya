@@ -95,37 +95,34 @@ class _DropdownMenuButtonState extends State<DropdownMenuButton> {
     final NavigatorState navigator = Navigator.of(context);
     final Rect? rect = context.getWidgetRectLocalToGlobal(
         ancestor: navigator.context.findRenderObject());
-    showDialogPopup<dynamic>(
+    PopupModalWindows(
+      options: GlobalOptions().modalWindowsOptions.copyWith(
+          top: rect?.top,
+          alignment: Alignment.topLeft,
+          left: rect?.left,
+          onTap: () {
+            isShow = false;
+            maybePop();
+            setState(() {});
+          }),
+      child: Universal(
+          margin: widget.margin,
+          padding: widget.padding,
+          decoration: widget.decoration ??
+              BoxDecoration(
+                  color: widget.backgroundColor ?? context.theme.canvasColor,
+                  boxShadow: getBoxShadow(
+                      color: context.theme.dividerColor,
+                      blurRadius: 2,
+                      spreadRadius: 2)),
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: widget.itemCount.generate((int index) => Universal(
+              onTap: () => tapItem(index), child: widget.itemBuilder(index)))),
+    ).showDialogPopup<dynamic>(
         options: const GeneralDialogOptions(
             fromStyle: PopupFromStyle.fromCenter,
-            barrierColor: Colors.transparent),
-        widget: PopupModalWindows(
-          options: GlobalOptions().modalWindowsOptions.copyWith(
-              top: rect?.top,
-              alignment: Alignment.topLeft,
-              left: rect?.left,
-              onTap: () {
-                isShow = false;
-                maybePop();
-                setState(() {});
-              }),
-          child: Universal(
-              margin: widget.margin,
-              padding: widget.padding,
-              decoration: widget.decoration ??
-                  BoxDecoration(
-                      color:
-                          widget.backgroundColor ?? context.theme.canvasColor,
-                      boxShadow: getBoxShadow(
-                          color: context.theme.dividerColor,
-                          blurRadius: 2,
-                          spreadRadius: 2)),
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: widget.itemCount.generate((int index) => Universal(
-                  onTap: () => tapItem(index),
-                  child: widget.itemBuilder(index)))),
-        ));
+            barrierColor: Colors.transparent));
     isShow = true;
     setState(() {});
   }
@@ -291,8 +288,7 @@ class _DropdownMenuState extends State<DropdownMenu> {
             width: widget.width,
             color: widget.backgroundColor,
             child: listBuilder));
-    showDialogPopup<dynamic>(
-        widget: popup,
+    popup.showDialogPopup<dynamic>(
         options: const GeneralDialogOptions(
             fromStyle: PopupFromStyle.fromCenter,
             barrierColor: Colors.transparent));
@@ -333,7 +329,7 @@ class _DropdownMenuState extends State<DropdownMenu> {
     widget.onTap?.call(index, null);
     final double keyboardHeight = getViewInsets.bottom;
     if (keyboardHeight > 0) {
-      context.focusNode();
+      context.unfocus();
       await 300.milliseconds.delayed(() {});
     }
     changeState(index);

@@ -18,24 +18,22 @@ class PopupPage extends StatelessWidget {
           appBar: AppBarText('Popup'),
           isScroll: true,
           children: [
-            ElevatedText('showBottomPopup', onTap: () {
-              showBottomPopup<dynamic>(
-                  widget: const _AlertDemo(),
+            ElevatedText('show BottomPopup', onTap: () {
+              const _AlertDemo().showBottomPopup<dynamic>(
                   options: const BottomSheetOptions(
                       backgroundColor: Colors.transparent));
             }),
-            ElevatedText('showBottomPopup - Full screen', onTap: () {
-              showBottomPopup<dynamic>(
-                  widget: Container(color: Colors.red.withOpacity(0.3)));
+            ElevatedText('show BottomPopup - Full screen', onTap: () {
+              Container(color: Colors.red.withOpacity(0.3))
+                  .showBottomPopup<dynamic>();
             }),
-            ElevatedText('showCupertinoBottomPopup', onTap: () {
-              showCupertinoBottomPopup<dynamic>(widget: const _AlertDemo());
+            ElevatedText('show CupertinoBottomPopup', onTap: () {
+              const _AlertDemo().showCupertinoBottomPopup<dynamic>();
             }),
-            ElevatedText('showDialogPopup', onTap: () {
-              showDialogPopup<dynamic>(
-                  widget: const Center(child: _AlertDemo()));
+            ElevatedText('show DialogPopup', onTap: () {
+              const Center(child: _AlertDemo()).showDialogPopup<dynamic>();
             }),
-            ElevatedText('showMenuPopup', onTap: () async {
+            ElevatedText('show MenuPopup', onTap: () async {
               final String? data = await showMenuPopup<String>(
                   position: RelativeRect.fromLTRB(
                       _details?.globalPosition.dx ?? 10,
@@ -51,35 +49,36 @@ class PopupPage extends StatelessWidget {
                   ]);
               showToast(data.toString());
             }),
-            ElevatedText('showDoubleChooseWindows',
+            ElevatedText('show DoubleChooseWindows',
                 onTap: () => doubleChooseWindows(context)),
           ]));
 
   void doubleChooseWindows(BuildContext context) {
-    const bool isOverlay = false;
-    showDoubleChooseWindows<dynamic>(
-        isOverlay: isOverlay,
-        decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(10)),
-        right: SimpleButton(
-            padding: const EdgeInsets.symmetric(vertical: 6),
-            alignment: Alignment.center,
-            child: Text('确定', style: context.textTheme.subtitle1),
-            onTap: () {
-              ///如果isOverlay=true; 必须先closeOverlay() 再toast或者loading
-              showToast('确定');
-            }),
-        left: SimpleButton(
-            alignment: Alignment.center,
-            padding: const EdgeInsets.symmetric(vertical: 6),
-            child: Text('取消', style: context.textTheme.subtitle1),
-            onTap: () {
-              ///如果isOverlay=true; 必须先closeOverlay() 再toast或者loading
-              showToast('取消');
-            }),
-        content: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 40),
-            child: Text('内容', style: context.textTheme.bodyText1)));
+    DoubleChooseWindows(
+            decoration: BoxDecoration(
+                color: Colors.white, borderRadius: BorderRadius.circular(10)),
+            right: SimpleButton(
+                padding: const EdgeInsets.symmetric(vertical: 6),
+                alignment: Alignment.center,
+                child: Text('确定', style: context.textTheme.subtitle1),
+                onTap: () {
+                  ///如果isOverlay=true; 必须先closeOverlay() 再toast或者loading
+                  showToast('确定');
+                }),
+            left: SimpleButton(
+                alignment: Alignment.center,
+                padding: const EdgeInsets.symmetric(vertical: 6),
+                child: Text('取消', style: context.textTheme.subtitle1),
+                onTap: () {
+                  ///如果isOverlay=true; 必须先closeOverlay() 再toast或者loading
+                  showToast('取消');
+                }),
+            content: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 40),
+                child: Text('内容', style: context.textTheme.bodyText1)))
+        .showBottomPopup(
+            options:
+                const BottomSheetOptions(backgroundColor: Colors.transparent));
   }
 }
 
