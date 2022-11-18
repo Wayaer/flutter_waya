@@ -16,12 +16,7 @@ class ExtendedOverlay {
 
   List<ExtendedOverlayEntry> get overlayEntryList => _overlayEntryList;
 
-  /// 关闭所有Overlay
-  void closeAllOverlay() {
-    for (final ExtendedOverlayEntry element in _overlayEntryList) {
-      element.removeEntry();
-    }
-  }
+  /// ********* [Overlay] ********* ///
 
   /// 自定义Overlay
   ExtendedOverlayEntry? showOverlay(Widget widget, {bool autoOff = false}) {
@@ -47,6 +42,14 @@ class ExtendedOverlay {
     return false;
   }
 
+  /// 关闭所有Overlay
+  void closeAllOverlay() {
+    for (final ExtendedOverlayEntry element in _overlayEntryList) {
+      element.removeEntry();
+    }
+  }
+
+  /// ********* [Toast] ********* ///
   /// Toast
   ExtendedOverlayEntry? _toast;
 
@@ -78,6 +81,7 @@ class ExtendedOverlay {
     return value;
   }
 
+  /// ********* [Loading] ********* ///
   ExtendedOverlayEntry? _loading;
 
   ExtendedOverlayEntry? get loading => _loading;

@@ -9,7 +9,7 @@ extension ExtensionNavigatorStateContext on BuildContext {
   NavigatorState get navigator => Navigator.of(this);
 
   /// [push]
-  // Future<T?> push<T extends Object?>(Route<T> route) => navigator.push(route);
+  Future<T?> push<T extends Object?>(Route<T> route) => navigator.push(route);
 
   /// [pushNamed]
   Future<T?> pushNamed<T extends Object?>(String routeName,

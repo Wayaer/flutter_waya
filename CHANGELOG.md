@@ -1,5 +1,20 @@
 ## 3.5.0
 
+* Refactor `Toast()` using `Toast().show()`, or `ToastStyle.show()`、`${value}.toast()`
+* Refactor `Loading()` using `Loading().show()`
+* Remove `showDateTimePicker()` and use `DateTimePicker().show()`
+* Remove `showAreaPicker()` and use `AreaPicker().show()`
+* Remove `showSingleColumnPicker()` and use `SingleColumnPicker().show()`
+* Remove `showMultiColumnPicker()` and use `MultiColumnPicker().show()`
+* Remove `showMultiColumnLinkagePicker()` and use `MultiColumnLinkagePicker().show()`
+* Remove `showSingleListPicker()` and use `SingleListPicker().show()`
+* Remove `showDialogPopup()` and use `$Widget().showDialogPopup()`
+* Remove `showBottomPopup()` and use `$Widget().showBottomPopup()`
+* Remove `showCupertinoBottomPopup()` and use `$Widget().showCupertinoBottomPopup()`
+* Add `ExtensionWidgetMethod` extension to the `Widget`,You can use `$Widget().push()`、`$Widget().pushReplacement()`、`$Widget().pushAndRemoveUntil()``$Widget().showOverlay()`、`$Widget().showLoading()`、`$Widget().showLoading()`,
+* Add `ExtensionNavigatorStateContext` extension to the `BuildContext`,You can use most of Navigator's methods
+* Add `ExtensionFocusScopeContext` extension to the `BuildContext`,You can use most of FocusScopeNode's methods
+
 ## 3.3.2+5
 
 * Add `ExtensionFutureFunction()`

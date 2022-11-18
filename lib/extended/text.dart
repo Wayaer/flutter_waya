@@ -6,7 +6,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-/// RichText 魔改版
+/// [RichText] 魔改版
 /// 建议使用 [BText.rich],动态配置字体颜色
 class RText extends RichText {
   RText({

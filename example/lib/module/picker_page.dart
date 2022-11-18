@@ -40,7 +40,7 @@ class PickerPage extends StatelessWidget {
             startDate: DateTime(2020, 8, 9, 9, 9, 9),
             defaultDate: DateTime(2021, 9, 21, 8, 8, 8),
             endDate: DateTime(2022, 10, 20, 10, 10, 10))
-        .showBottomPopup<DateTime?>();
+        .show();
     showToast(dateTime?.format(DateTimeDist.yearSecond) ?? 'null');
   }
 
