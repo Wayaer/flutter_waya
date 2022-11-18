@@ -2,7 +2,7 @@ part of 'picker.dart';
 
 extension ExtensionSingleColumnPicker on SingleColumnPicker {
   Future<int?> show({BottomSheetOptions? options}) =>
-      showBottomPopup<int?>(options: options);
+      popupBottomSheet<int?>(options: options);
 }
 
 /// 单列选择
@@ -48,7 +48,7 @@ class SingleColumnPicker extends PickerStatelessWidget<int> {
 
 extension ExtensionSingleListPicker on SingleListPicker {
   Future<List<int>?> show({BottomSheetOptions? options}) =>
-      showBottomPopup<List<int>?>(
+      popupBottomSheet<List<int>?>(
           options: GlobalOptions()
               .bottomSheetOptions
               .copyWith(isScrollControlled: false)

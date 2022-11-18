@@ -14,25 +14,39 @@ class PopupPage extends StatelessWidget {
         _details = details;
       },
       child: ExtendedScaffold(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           appBar: AppBarText('Popup'),
           isScroll: true,
           children: [
-            ElevatedText('show BottomPopup', onTap: () {
-              const _AlertDemo().showBottomPopup<dynamic>(
+            const Partition('Dialog'),
+            ElevatedText('popup Dialog', onTap: () {
+              const Center(child: _AlertDemo()).popupDialog<dynamic>();
+            }),
+            ElevatedText('popup MaterialDialog', onTap: () {
+              const Center(child: _AlertDemo()).popupMaterialDialog<dynamic>();
+            }),
+            ElevatedText('popup CupertinoDialog', onTap: () {
+              const Center(child: _AlertDemo()).popupCupertinoDialog<dynamic>();
+            }),
+            const Partition('Bottom Sheet'),
+            ElevatedText('popup BottomSheet', onTap: () {
+              const _AlertDemo().popupBottomSheet<dynamic>(
                   options: const BottomSheetOptions(
                       backgroundColor: Colors.transparent));
             }),
-            ElevatedText('show BottomPopup - Full screen', onTap: () {
-              Container(color: Colors.red.withOpacity(0.3))
-                  .showBottomPopup<dynamic>();
+            ElevatedText('popup BottomSheet - Full screen', onTap: () {
+              Container(
+                      color: Colors.blueGrey.withOpacity(0.4),
+                      alignment: Alignment.center,
+                      child: const _AlertDemo())
+                  .popupBottomSheet<dynamic>(
+                      options: const BottomSheetOptions(
+                          backgroundColor: Colors.transparent));
             }),
-            ElevatedText('show CupertinoBottomPopup', onTap: () {
-              const _AlertDemo().showCupertinoBottomPopup<dynamic>();
+            ElevatedText('popup CupertinoModal', onTap: () {
+              const _AlertDemo().popupCupertinoModal<dynamic>();
             }),
-            ElevatedText('show DialogPopup', onTap: () {
-              const Center(child: _AlertDemo()).showDialogPopup<dynamic>();
-            }),
+            const Partition('Menu Popup'),
             ElevatedText('show MenuPopup', onTap: () async {
               final String? data = await showMenuPopup<String>(
                   position: RelativeRect.fromLTRB(
@@ -49,7 +63,7 @@ class PopupPage extends StatelessWidget {
                   ]);
               showToast(data.toString());
             }),
-            ElevatedText('show DoubleChooseWindows',
+            ElevatedText('popup DoubleChooseWindows',
                 onTap: () => doubleChooseWindows(context)),
           ]));
 
@@ -76,9 +90,7 @@ class PopupPage extends StatelessWidget {
             content: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 40),
                 child: Text('内容', style: context.textTheme.bodyText1)))
-        .showBottomPopup(
-            options:
-                const BottomSheetOptions(backgroundColor: Colors.transparent));
+        .show();
   }
 }
 

@@ -55,8 +55,8 @@ void main() {
   globalOptions.setToastOptions(
       ToastOptions(positioned: Alignment.center, duration: 2.seconds));
   globalOptions.setBottomSheetOptions(const BottomSheetOptions());
-  globalOptions.setGeneralDialogOptions(
-      const GeneralDialogOptions(fromStyle: PopupFromStyle.fromTop));
+  globalOptions
+      .setDialogOptions(const DialogOptions(fromStyle: PopupFromStyle.fromTop));
   globalOptions.setWheelOptions(
       const WheelOptions(useMagnifier: true, magnification: 1.5));
   globalOptions.setPickerWheelOptions(
@@ -202,7 +202,7 @@ class ElevatedText extends StatelessWidget {
       isElastic: true,
       onTap: onTap,
       addInkWell: true,
-      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 6),
+      margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 6),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
           boxShadow: getBoxShadow(color: context.theme.canvasColor),
@@ -222,9 +222,9 @@ class Partition extends StatelessWidget {
         width: double.infinity,
         color: Colors.grey.withOpacity(0.2),
         alignment: Alignment.center,
-        padding: const EdgeInsets.symmetric(vertical: 15),
-        margin: const EdgeInsets.symmetric(vertical: 25),
-        child: BText(title));
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        margin: const EdgeInsets.symmetric(vertical: 20),
+        child: BText(title, fontWeight: FontWeight.bold));
   }
 }
 

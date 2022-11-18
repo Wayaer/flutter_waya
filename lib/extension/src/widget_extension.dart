@@ -70,13 +70,13 @@ extension ExtensionWidgetMethod on Widget {
   ExtendedOverlayEntry? showLoading({ModalWindowsOptions? options}) =>
       Loading(custom: this, options: options).show();
 
-  /// [showDialogPopup]
-  Future<T?> showDialogPopup<T>({
+  /// [showGeneralDialog]
+  Future<T?> popupDialog<T>({
     /// 这个参数是一个方法,入参是 context,animation,secondaryAnimation,返回一个 Widget
     RoutePageBuilder? builder,
 
     /// GeneralDialog 配置
-    GeneralDialogOptions? options,
+    DialogOptions? options,
   }) {
     options = GlobalOptions().dialogOptions.merge(options);
     RouteTransitionsBuilder? transitionBuilder;
@@ -114,12 +114,47 @@ extension ExtensionWidgetMethod on Widget {
         transitionDuration: options.transitionDuration,
         transitionBuilder: transitionBuilder,
         useRootNavigator: options.useRootNavigator,
-        routeSettings: options.routeSettings);
+        routeSettings: options.routeSettings,
+        anchorPoint: options.anchorPoint);
   }
 
-  /// showModalBottomSheet
+  ///  Cupertino 风格的 Dialog  [showCupertinoDialog]
+  Future<T?> popupCupertinoDialog<T>({
+    WidgetBuilder? builder,
+    DialogOptions? options,
+  }) {
+    options = GlobalOptions().dialogOptions.merge(options);
+    return showCupertinoDialog(
+        context: GlobalOptions().globalNavigatorKey.currentContext!,
+        builder: builder ?? toWidgetBuilder,
+        barrierLabel: options.barrierLabel,
+        barrierDismissible: options.barrierDismissible,
+        useRootNavigator: options.useRootNavigator,
+        routeSettings: options.routeSettings,
+        anchorPoint: options.anchorPoint);
+  }
+
+  /// Material 风格的 Dialog [showDialog]
+  Future<T?> popupMaterialDialog<T>({
+    WidgetBuilder? builder,
+    DialogOptions? options,
+  }) {
+    options = GlobalOptions().dialogOptions.merge(options);
+    return showDialog(
+        context: GlobalOptions().globalNavigatorKey.currentContext!,
+        builder: builder ?? toWidgetBuilder,
+        barrierColor: options.barrierColor,
+        barrierLabel: options.barrierLabel,
+        barrierDismissible: options.barrierDismissible,
+        useRootNavigator: options.useRootNavigator,
+        routeSettings: options.routeSettings,
+        anchorPoint: options.anchorPoint,
+        useSafeArea: options.useSafeArea);
+  }
+
+  /// [showModalBottomSheet]
   /// 关闭 closePopup()
-  Future<T?> showBottomPopup<T>(
+  Future<T?> popupBottomSheet<T>(
       {WidgetBuilder? builder, BottomSheetOptions? options}) {
     options = GlobalOptions().bottomSheetOptions.merge(options);
     return showModalBottomSheet(
@@ -134,31 +169,29 @@ extension ExtensionWidgetMethod on Widget {
         transitionAnimationController: options.transitionAnimationController,
         isScrollControlled: options.isScrollControlled,
         useRootNavigator: options.useRootNavigator,
-        isDismissible: options.isDismissible,
+        isDismissible: options.barrierDismissible,
+        anchorPoint: options.anchorPoint,
         enableDrag: options.enableDrag);
   }
 
-  /// showCupertinoModalPopup
-  /// 关闭 closePopup()
+  /// [showCupertinoModalPopup]
   /// 全屏显示
-  Future<T?> showCupertinoBottomPopup<T>({
+  Future<T?> popupCupertinoModal<T>({
     WidgetBuilder? builder,
-    bool useRootNavigator = true,
-    ImageFilter? filter,
-    Color barrierColor = kCupertinoModalBarrierColor,
-    bool barrierDismissible = true,
-    bool? semanticsDismissible,
-    RouteSettings? routeSettings,
-  }) =>
-      showCupertinoModalPopup(
-          context: GlobalOptions().globalNavigatorKey.currentContext!,
-          builder: builder ?? toWidgetBuilder,
-          filter: filter,
-          barrierColor: barrierColor,
-          barrierDismissible: barrierDismissible,
-          semanticsDismissible: semanticsDismissible,
-          routeSettings: routeSettings,
-          useRootNavigator: useRootNavigator);
+    CupertinoModalPopupOptions? options,
+  }) {
+    options = GlobalOptions().cupertinoModalPopupOptions.merge(options);
+    return showCupertinoModalPopup(
+        context: GlobalOptions().globalNavigatorKey.currentContext!,
+        builder: builder ?? toWidgetBuilder,
+        filter: options.filter,
+        barrierColor: options.barrierColor,
+        barrierDismissible: options.barrierDismissible,
+        semanticsDismissible: options.semanticsDismissible,
+        routeSettings: options.routeSettings,
+        useRootNavigator: options.useRootNavigator,
+        anchorPoint: options.anchorPoint);
+  }
 }
 
 extension ExtensionWidget on Widget {

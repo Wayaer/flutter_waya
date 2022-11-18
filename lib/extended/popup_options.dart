@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
@@ -58,19 +59,73 @@ enum PopupFromStyle {
   fromCenter,
 }
 
-/// 关闭 [closePopup]
-class GeneralDialogOptions {
-  const GeneralDialogOptions({
-    this.startOffset,
-    this.barrierLabel = '',
-    this.barrierDismissible = true,
-    this.transitionBuilder,
-    this.routeSettings,
-    this.barrierColor = const Color(0x80000000),
-    this.transitionDuration = const Duration(milliseconds: 200),
+abstract class GeneralModalOptions {
+  const GeneralModalOptions({
     this.useRootNavigator = true,
+    this.barrierColor = kCupertinoModalBarrierColor,
+    this.barrierDismissible = true,
+    this.anchorPoint,
+    this.routeSettings,
+  });
+
+  final bool useRootNavigator;
+  final RouteSettings? routeSettings;
+
+  /// 背景颜色
+  final Color barrierColor;
+
+  /// [barrierDismissible] = true  默认为 true 可关闭
+  final bool barrierDismissible;
+
+  final Offset? anchorPoint;
+}
+
+/// 关闭 [closePopup]
+class DialogOptions extends GeneralModalOptions {
+  const DialogOptions({
+    super.barrierDismissible,
+    super.useRootNavigator,
+    super.routeSettings,
+    super.barrierColor,
+    super.anchorPoint,
+    this.barrierLabel = '',
+    this.useSafeArea = true,
+    this.startOffset,
+    this.transitionBuilder,
+    this.transitionDuration = const Duration(milliseconds: 200),
     this.fromStyle = PopupFromStyle.fromCenter,
   });
+
+  const DialogOptions.cupertino({
+    super.barrierDismissible,
+    super.useRootNavigator,
+    super.routeSettings,
+    super.barrierColor,
+    super.anchorPoint,
+    this.barrierLabel = '',
+  })  : useSafeArea = true,
+        startOffset = null,
+        fromStyle = PopupFromStyle.fromCenter,
+        transitionDuration = const Duration(milliseconds: 200),
+        transitionBuilder = null;
+
+  const DialogOptions.material({
+    super.barrierDismissible,
+    super.useRootNavigator,
+    super.routeSettings,
+    super.anchorPoint,
+    this.barrierLabel = '',
+    this.useSafeArea = true,
+  })  : startOffset = null,
+        fromStyle = PopupFromStyle.fromCenter,
+        transitionDuration = const Duration(milliseconds: 200),
+        transitionBuilder = null,
+        super(barrierColor: kCupertinoModalBarrierColor);
+
+  /// 语义化
+  final String barrierLabel;
+
+  final bool useSafeArea;
 
   /// 进入方向的距离
   final double? startOffset;
@@ -78,26 +133,13 @@ class GeneralDialogOptions {
   /// popup 进入的方向
   final PopupFromStyle fromStyle;
 
-  /// 是否可以点击背景关闭 默认为 true 可关闭
-  final bool barrierDismissible;
-
-  /// 语义化
-  final String barrierLabel;
-
-  /// 背景颜色
-  final Color barrierColor;
-
   /// 这个是从开始到完全显示的时间
   final Duration transitionDuration;
 
   /// 路由显示和隐藏的过程 这里入参是 animation,secondaryAnimation 和 child, 其中 child 是 是 pageBuilder 构建的 widget
   final RouteTransitionsBuilder? transitionBuilder;
 
-  final bool useRootNavigator;
-
-  final RouteSettings? routeSettings;
-
-  GeneralDialogOptions copyWith({
+  DialogOptions copyWith({
     double? startOffset,
     PopupFromStyle? fromStyle,
     bool? barrierDismissible,
@@ -107,8 +149,12 @@ class GeneralDialogOptions {
     RouteTransitionsBuilder? transitionBuilder,
     bool? useRootNavigator,
     RouteSettings? routeSettings,
+    Offset? anchorPoint,
+    bool? useSafeArea,
   }) =>
-      GeneralDialogOptions(
+      DialogOptions(
+          useSafeArea: useSafeArea ?? this.useSafeArea,
+          anchorPoint: anchorPoint ?? this.anchorPoint,
           startOffset: startOffset ?? this.startOffset,
           fromStyle: fromStyle ?? this.fromStyle,
           barrierDismissible: barrierDismissible ?? this.barrierDismissible,
@@ -119,32 +165,35 @@ class GeneralDialogOptions {
           useRootNavigator: useRootNavigator ?? this.useRootNavigator,
           routeSettings: routeSettings ?? this.routeSettings);
 
-  GeneralDialogOptions merge([GeneralDialogOptions? options]) =>
-      GeneralDialogOptions(
-          startOffset: options?.startOffset ?? startOffset,
-          fromStyle: options?.fromStyle ?? fromStyle,
-          barrierDismissible: options?.barrierDismissible ?? barrierDismissible,
-          barrierLabel: options?.barrierLabel ?? barrierLabel,
-          barrierColor: options?.barrierColor ?? barrierColor,
-          transitionDuration: options?.transitionDuration ?? transitionDuration,
-          transitionBuilder: options?.transitionBuilder ?? transitionBuilder,
-          useRootNavigator: options?.useRootNavigator ?? useRootNavigator,
-          routeSettings: options?.routeSettings ?? routeSettings);
+  DialogOptions merge([DialogOptions? options]) => DialogOptions(
+      useSafeArea: options?.useSafeArea ?? useSafeArea,
+      anchorPoint: options?.anchorPoint ?? anchorPoint,
+      startOffset: options?.startOffset ?? startOffset,
+      fromStyle: options?.fromStyle ?? fromStyle,
+      barrierDismissible: options?.barrierDismissible ?? barrierDismissible,
+      barrierLabel: options?.barrierLabel ?? barrierLabel,
+      barrierColor: options?.barrierColor ?? barrierColor,
+      transitionDuration: options?.transitionDuration ?? transitionDuration,
+      transitionBuilder: options?.transitionBuilder ?? transitionBuilder,
+      useRootNavigator: options?.useRootNavigator ?? useRootNavigator,
+      routeSettings: options?.routeSettings ?? routeSettings);
 }
 
-class BottomSheetOptions {
+class BottomSheetOptions extends GeneralModalOptions {
   const BottomSheetOptions({
+    super.barrierDismissible,
+    super.useRootNavigator,
+    super.routeSettings,
+    super.barrierColor,
+    super.anchorPoint,
     this.backgroundColor,
     this.elevation,
     this.shape,
     this.clipBehavior,
-    this.barrierColor,
-    this.routeSettings,
     this.transitionAnimationController,
-    this.useRootNavigator = false,
-    this.isDismissible = true,
     this.enableDrag = true,
     this.isScrollControlled = true,
+    this.constraints,
   });
 
   /// BottomSheet 背景色
@@ -157,21 +206,13 @@ class BottomSheetOptions {
 
   final Clip? clipBehavior;
 
-  /// 整个背景弹窗背景色 默认[Colors.black54]
-  final Color? barrierColor;
-
-  /// [isDismissible] = true 背景点击可关闭弹窗 默认 [true]
-  final bool isDismissible;
-
   /// 开启滑动关闭 默认[true]
   final bool enableDrag;
 
   /// [isScrollControlled] = true 可全屏显示 默认 [true]
   final bool isScrollControlled;
 
-  final RouteSettings? routeSettings;
-
-  final bool useRootNavigator;
+  final BoxConstraints? constraints;
 
   final AnimationController? transitionAnimationController;
 
@@ -181,20 +222,24 @@ class BottomSheetOptions {
     ShapeBorder? shape,
     Clip? clipBehavior,
     Color? barrierColor,
-    bool? isDismissible,
+    bool? barrierDismissible,
     bool? enableDrag,
     bool? isScrollControlled,
     RouteSettings? routeSettings,
     bool? useRootNavigator,
     AnimationController? transitionAnimationController,
+    BoxConstraints? constraints,
+    Offset? anchorPoint,
   }) =>
       BottomSheetOptions(
+          anchorPoint: anchorPoint ?? this.anchorPoint,
+          constraints: constraints ?? this.constraints,
           backgroundColor: backgroundColor ?? this.backgroundColor,
           elevation: elevation ?? this.elevation,
           shape: shape ?? this.shape,
           clipBehavior: clipBehavior ?? this.clipBehavior,
           barrierColor: barrierColor ?? this.barrierColor,
-          isDismissible: isDismissible ?? this.isDismissible,
+          barrierDismissible: barrierDismissible ?? this.barrierDismissible,
           enableDrag: enableDrag ?? this.enableDrag,
           isScrollControlled: isScrollControlled ?? this.isScrollControlled,
           routeSettings: routeSettings ?? this.routeSettings,
@@ -203,18 +248,66 @@ class BottomSheetOptions {
               this.transitionAnimationController);
 
   BottomSheetOptions merge([BottomSheetOptions? options]) => BottomSheetOptions(
+      anchorPoint: options?.anchorPoint ?? anchorPoint,
+      constraints: options?.constraints ?? constraints,
       backgroundColor: options?.backgroundColor ?? backgroundColor,
       elevation: options?.elevation ?? elevation,
       shape: options?.shape ?? shape,
       clipBehavior: options?.clipBehavior ?? clipBehavior,
       barrierColor: options?.barrierColor ?? barrierColor,
-      isDismissible: options?.isDismissible ?? isDismissible,
+      barrierDismissible: options?.barrierDismissible ?? barrierDismissible,
       enableDrag: options?.enableDrag ?? enableDrag,
       isScrollControlled: options?.isScrollControlled ?? isScrollControlled,
       routeSettings: options?.routeSettings ?? routeSettings,
       useRootNavigator: options?.useRootNavigator ?? useRootNavigator,
       transitionAnimationController: options?.transitionAnimationController ??
           transitionAnimationController);
+}
+
+class CupertinoModalPopupOptions extends GeneralModalOptions {
+  const CupertinoModalPopupOptions({
+    super.barrierDismissible,
+    super.useRootNavigator,
+    super.routeSettings,
+    super.barrierColor,
+    super.anchorPoint,
+    this.filter,
+    this.semanticsDismissible,
+  });
+
+  final ImageFilter? filter;
+
+  final bool? semanticsDismissible;
+
+  CupertinoModalPopupOptions copyWith({
+    Color? barrierColor,
+    bool? barrierDismissible,
+    RouteSettings? routeSettings,
+    bool? useRootNavigator,
+    Offset? anchorPoint,
+    ImageFilter? filter,
+    bool? semanticsDismissible,
+  }) =>
+      CupertinoModalPopupOptions(
+          barrierDismissible: barrierDismissible ?? this.barrierDismissible,
+          useRootNavigator: useRootNavigator ?? this.useRootNavigator,
+          routeSettings: routeSettings ?? this.routeSettings,
+          barrierColor: barrierColor ?? this.barrierColor,
+          anchorPoint: anchorPoint ?? this.anchorPoint,
+          filter: filter ?? this.filter,
+          semanticsDismissible:
+              semanticsDismissible ?? this.semanticsDismissible);
+
+  CupertinoModalPopupOptions merge([CupertinoModalPopupOptions? options]) =>
+      CupertinoModalPopupOptions(
+          barrierDismissible: options?.barrierDismissible ?? barrierDismissible,
+          useRootNavigator: options?.useRootNavigator ?? useRootNavigator,
+          routeSettings: options?.routeSettings ?? routeSettings,
+          barrierColor: options?.barrierColor ?? barrierColor,
+          anchorPoint: options?.anchorPoint ?? anchorPoint,
+          filter: options?.filter ?? filter,
+          semanticsDismissible:
+              options?.semanticsDismissible ?? semanticsDismissible);
 }
 
 class ModalWindowsOptions {
@@ -369,8 +462,8 @@ class ModalWindowsOptions {
 }
 
 /// 模态框背景
-class PopupModalWindows extends StatelessWidget {
-  PopupModalWindows(
+class ModalWindows extends StatelessWidget {
+  ModalWindows(
       {super.key,
       this.onWillPop,
       this.children,
@@ -447,6 +540,12 @@ class PopupModalWindows extends StatelessWidget {
   }
 }
 
+extension ExtensionDoubleChooseWindows on DoubleChooseWindows {
+  Future<T?> show<T>({DialogOptions? options}) => popupDialog<T>(
+      options: const DialogOptions(fromStyle: PopupFromStyle.fromCenter)
+          .merge(options));
+}
+
 class DoubleChooseWindows extends StatelessWidget {
   const DoubleChooseWindows({
     super.key,
@@ -502,7 +601,7 @@ class DoubleChooseWindows extends StatelessWidget {
         isStack: false,
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min);
-    return PopupModalWindows(options: options, children: [
+    return ModalWindows(options: options, children: [
       Universal(
           width: width,
           height: height,

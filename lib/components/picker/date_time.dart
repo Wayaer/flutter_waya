@@ -2,7 +2,7 @@ part of 'picker.dart';
 
 extension ExtensionDateTimePicker on DateTimePicker {
   Future<DateTime?> show({BottomSheetOptions? options}) =>
-      showBottomPopup<DateTime?>(options: options);
+      popupBottomSheet<DateTime?>(options: options);
 }
 
 /// 日期时间选择器

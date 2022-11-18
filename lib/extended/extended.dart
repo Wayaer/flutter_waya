@@ -133,13 +133,25 @@ class GlobalOptions {
     _bottomSheetOptions = options;
   }
 
-  GeneralDialogOptions _dialogOptions = const GeneralDialogOptions();
+  CupertinoModalPopupOptions _cupertinoModalPopupOptions =
+      const CupertinoModalPopupOptions();
 
-  GeneralDialogOptions get dialogOptions => _dialogOptions;
+  CupertinoModalPopupOptions get cupertinoModalPopupOptions =>
+      _cupertinoModalPopupOptions;
 
-  /// 设置全局 [GeneralDialogOptions] 配置
-  /// Set the global [GeneralDialogOptions] configuration
-  void setGeneralDialogOptions(GeneralDialogOptions options) {
+  /// 设置全局 [CupertinoBottomSheet] 配置
+  /// Set the global [BottomSheet] configuration
+  void setCupertinoModalPopupOptions(CupertinoModalPopupOptions options) {
+    _cupertinoModalPopupOptions = options;
+  }
+
+  DialogOptions _dialogOptions = const DialogOptions();
+
+  DialogOptions get dialogOptions => _dialogOptions;
+
+  /// 设置全局 [DialogOptions] 配置
+  /// Set the global [DialogOptions] configuration
+  void setDialogOptions(DialogOptions options) {
     _dialogOptions = options;
   }
 

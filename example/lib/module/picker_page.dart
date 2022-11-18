@@ -79,7 +79,7 @@ class PickerPage extends StatelessWidget {
   Future<void> selectCity() async {
     final String? data =
         await AreaPicker(defaultProvince: '四川省', defaultCity: '绵阳市')
-            .showBottomPopup<String>();
+            .popupBottomSheet<String>();
     showToast(data.toString());
   }
 

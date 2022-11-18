@@ -298,7 +298,7 @@ class _PickerListWheelState extends ListWheelState {
 
 extension ExtensionCustomPicker on CustomPicker {
   Future<T?> show<T>({BottomSheetOptions? options}) =>
-      showBottomPopup<T>(options: options);
+      popupBottomSheet<T>(options: options);
 }
 
 class CustomPicker<T> extends PickerSubject {

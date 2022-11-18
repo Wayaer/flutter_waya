@@ -680,7 +680,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
   @override
   Widget build(BuildContext context) => ConstrainedBox(
       constraints: BoxConstraints(maxWidth: widget.width),
-      child: PopupModalWindows(options: widget.options, child: widget.child));
+      child: ModalWindows(options: widget.options, child: widget.child));
 }
 
 /// 暂无数据

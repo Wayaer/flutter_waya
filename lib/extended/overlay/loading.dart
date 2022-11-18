@@ -120,7 +120,7 @@ class Loading extends StatelessWidget {
         loadingOptions.custom ??
         buildLoadingStyle(loadingOptions.style) ??
         const SizedBox();
-    return PopupModalWindows(options: loadingOptions.options, child: windows);
+    return ModalWindows(options: loadingOptions.options, child: windows);
   }
 
   Widget? buildLoadingStyle(LoadingStyle? style) {

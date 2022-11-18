@@ -95,32 +95,32 @@ class _DropdownMenuButtonState extends State<DropdownMenuButton> {
     final NavigatorState navigator = Navigator.of(context);
     final Rect? rect = context.getWidgetRectLocalToGlobal(
         ancestor: navigator.context.findRenderObject());
-    PopupModalWindows(
-      options: GlobalOptions().modalWindowsOptions.copyWith(
-          top: rect?.top,
-          alignment: Alignment.topLeft,
-          left: rect?.left,
-          onTap: () {
-            isShow = false;
-            maybePop();
-            setState(() {});
-          }),
-      child: Universal(
-          margin: widget.margin,
-          padding: widget.padding,
-          decoration: widget.decoration ??
-              BoxDecoration(
-                  color: widget.backgroundColor ?? context.theme.canvasColor,
-                  boxShadow: getBoxShadow(
-                      color: context.theme.dividerColor,
-                      blurRadius: 2,
-                      spreadRadius: 2)),
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: widget.itemCount.generate((int index) => Universal(
-              onTap: () => tapItem(index), child: widget.itemBuilder(index)))),
-    ).showDialogPopup<dynamic>(
-        options: const GeneralDialogOptions(
+    ModalWindows(
+        options: GlobalOptions().modalWindowsOptions.copyWith(
+            top: rect?.top,
+            alignment: Alignment.topLeft,
+            left: rect?.left,
+            onTap: () {
+              isShow = false;
+              maybePop();
+              setState(() {});
+            }),
+        child: Universal(
+            margin: widget.margin,
+            padding: widget.padding,
+            decoration: widget.decoration ??
+                BoxDecoration(
+                    color: widget.backgroundColor ?? context.theme.canvasColor,
+                    boxShadow: getBoxShadow(
+                        color: context.theme.dividerColor,
+                        blurRadius: 2,
+                        spreadRadius: 2)),
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: widget.itemCount.generate((int index) => Universal(
+                onTap: () => tapItem(index),
+                child: widget.itemBuilder(index))))).popupDialog<dynamic>(
+        options: const DialogOptions(
             fromStyle: PopupFromStyle.fromCenter,
             barrierColor: Colors.transparent));
     isShow = true;
@@ -273,25 +273,25 @@ class _DropdownMenuState extends State<DropdownMenu> {
               if (widget.onTap != null) widget.onTap!(index, i);
             },
             child: widget.valueBuilder(context, index, i)));
-    final Widget popup = PopupModalWindows(
-        options: GlobalOptions().modalWindowsOptions.copyWith(
-            top: (rect?.top ?? 0) + context.size!.height,
-            alignment: Alignment.topLeft,
-            color: Colors.transparent,
-            onTap: widget.isModal
-                ? null
-                : () {
-                    changeState(index);
-                    pop();
-                  }),
-        child: Universal(
-            width: widget.width,
-            color: widget.backgroundColor,
-            child: listBuilder));
-    popup.showDialogPopup<dynamic>(
-        options: const GeneralDialogOptions(
-            fromStyle: PopupFromStyle.fromCenter,
-            barrierColor: Colors.transparent));
+    ModalWindows(
+            options: GlobalOptions().modalWindowsOptions.copyWith(
+                top: (rect?.top ?? 0) + context.size!.height,
+                alignment: Alignment.topLeft,
+                color: Colors.transparent,
+                onTap: widget.isModal
+                    ? null
+                    : () {
+                        changeState(index);
+                        pop();
+                      }),
+            child: Universal(
+                width: widget.width,
+                color: widget.backgroundColor,
+                child: listBuilder))
+        .popupDialog<dynamic>(
+            options: const DialogOptions(
+                fromStyle: PopupFromStyle.fromCenter,
+                barrierColor: Colors.transparent));
   }
 
   @override

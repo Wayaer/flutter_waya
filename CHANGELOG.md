@@ -8,9 +8,10 @@
 * Remove `showMultiColumnPicker()` and use `MultiColumnPicker().show()`
 * Remove `showMultiColumnLinkagePicker()` and use `MultiColumnLinkagePicker().show()`
 * Remove `showSingleListPicker()` and use `SingleListPicker().show()`
-* Remove `showDialogPopup()` and use `$Widget().showDialogPopup()`
-* Remove `showBottomPopup()` and use `$Widget().showBottomPopup()`
-* Remove `showCupertinoBottomPopup()` and use `$Widget().showCupertinoBottomPopup()`
+* Remove `showDialogPopup()` and use `$Widget().popupDialog()`
+* Add `$Widget().popupCupertinoDialog()`、`$Widget().popupMaterialDialog()`
+* Remove `showBottomPopup()` and use `$Widget().popupBottomSheet()`
+* Remove `showCupertinoBottomPopup()` and use `$Widget().popupCupertinoModal()`
 * Add `ExtensionWidgetMethod` extension to the `Widget`,You can use `$Widget().push()`、`$Widget().pushReplacement()`、`$Widget().pushAndRemoveUntil()``$Widget().showOverlay()`、`$Widget().showLoading()`、`$Widget().showLoading()`,
 * Add `ExtensionNavigatorStateContext` extension to the `BuildContext`,You can use most of Navigator's methods
 * Add `ExtensionFocusScopeContext` extension to the `BuildContext`,You can use most of FocusScopeNode's methods
@@ -190,7 +191,7 @@
 * Remove the default background color for `showBottomPopup`
 * Add positioned for `showToast` and Add the global `setToastPositioned()`
 * Modify all `widgetMode` to `pushStyle` and Change all `WidgetMode` to `RoutePushStyle`
-* Add the `GlobalOptions()` class to set all `ToastOptions` `WheelOptions` `BottomSheetOptions` `GeneralDialogOptions` `PickerWheelOptions` `ModalWindowsOptions`
+* Add the `GlobalOptions()` class to set all `ToastOptions` `WheelOptions` `BottomSheetOptions` `DialogOptions` `PickerWheelOptions` `ModalWindowsOptions`
   configuration information
 * After modifying `showToast`, you may need to modify some of your own code
 * Add `ExtendedOverlay`
@@ -213,7 +214,7 @@
 
 * Fix bug for `showCustomPicker`
 * Remove `height` for `PickerOptions`
-* Fix bug for `GeneralDialogOptions`
+* Fix bug for `DialogOptions`
 
 ## 1.15.5
 
@@ -221,7 +222,7 @@
 * Add `needKeyBoard` for `PinBox`
 * Add `onTap` for `PinBox`
 * Add `BottomSheetOptions` for `showBottomPopup`
-* Add `GeneralDialogOptions` for `showDialogPopup`
+* Add `DialogOptions` for `showDialogPopup`
 
 ## 1.15.1
 

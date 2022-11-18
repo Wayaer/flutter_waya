@@ -10,7 +10,7 @@ class PickerEntry {
 
 extension ExtensionMultiColumnPicker on MultiColumnPicker {
   Future<List<int>?> show({BottomSheetOptions? options}) =>
-      showBottomPopup<List<int>?>(options: options);
+      popupBottomSheet<List<int>?>(options: options);
 }
 
 /// 多列选择 不联动
@@ -77,7 +77,7 @@ class PickerLinkageEntry {
 
 extension ExtensionMultiColumnLinkagePicker on MultiColumnLinkagePicker {
   Future<List<int>?> show({BottomSheetOptions? options}) =>
-      showBottomPopup<List<int>?>(options: options);
+      popupBottomSheet<List<int>?>(options: options);
 }
 
 /// 多列选择 联动

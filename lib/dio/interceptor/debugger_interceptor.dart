@@ -171,7 +171,7 @@ class DebuggerInterceptorHelper {
     _overlayEntry ??= widget.showOverlay(autoOff: true);
   }
 
-  Future<void> showDebugDataList() => const _HttpDataWindows().showBottomPopup(
+  Future<void> showDebugDataList() => const _HttpDataWindows().popupBottomSheet(
       options: GlobalOptions()
           .bottomSheetOptions
           .copyWith(backgroundColor: Colors.transparent, enableDrag: true));
@@ -348,7 +348,7 @@ class _HttpDataEntry extends StatelessWidget {
 
   void showDetailData() {
     if (!canTap) return;
-    _HttpDetailDataWindows(model).showBottomPopup(
+    _HttpDetailDataWindows(model).popupBottomSheet(
         options: GlobalOptions()
             .bottomSheetOptions
             .copyWith(backgroundColor: Colors.transparent, enableDrag: true));

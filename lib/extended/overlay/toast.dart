@@ -31,8 +31,7 @@ class Toast extends StatelessWidget {
     Widget toast = BText(message,
         color: toastOptions.iconColor, maxLines: 5, fontSize: 14);
     toast = buildIconToast(toast, toastOptions);
-
-    return PopupModalWindows(
+    return ModalWindows(
         options: toastOptions.modalWindowsOptions.copyWith(
             absorbing: toastOptions.absorbing,
             ignoring: toastOptions.ignoring,
