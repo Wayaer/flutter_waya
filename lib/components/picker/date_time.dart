@@ -81,8 +81,8 @@ class _DateTimePickerState extends State<DateTimePicker> {
   @override
   void initState() {
     super.initState();
-    unit = widget.unit;
     wheelOptions = widget.wheelOptions;
+    unit = widget.unit;
     itemWidth = wheelOptions.itemWidth ?? (deviceWidth - 20) / unit.getLength();
 
     startDate = widget.startDate ?? DateTime.now();

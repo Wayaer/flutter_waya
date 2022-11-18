@@ -240,7 +240,7 @@ class ExtendedDio {
       final DioError error = e;
       responseModel = ResponseModel.mergeError(error);
     } catch (e) {
-      log('Dio catch error : $e', hasDottedLine: false);
+      log('Dio catch error : $e', crossLine: false);
       responseModel = ResponseModel.constResponseModel(error: e);
     }
     responseModel.baseOptions = baseOptions;

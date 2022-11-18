@@ -61,7 +61,7 @@ void main() {
       const WheelOptions(useMagnifier: true, magnification: 1.5));
   globalOptions.setPickerWheelOptions(
       const PickerWheelOptions(useMagnifier: true, magnification: 1.5));
-  globalOptions.setLogDottedLine(true);
+  globalOptions.setLogCrossLine(true);
   globalOptions.setLoadingOptions(const LoadingOptions(
       custom: BText('全局设置loading', fontSize: 20),
       options: ModalWindowsOptions(onTap: closeLoading)));

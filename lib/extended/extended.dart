@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -164,11 +163,11 @@ class GlobalOptions {
     _pickerWheelOptions = options;
   }
 
-  bool _logHasDottedLine = true;
+  bool _logCrossLine = true;
 
-  bool get logHasDottedLine => _logHasDottedLine;
+  bool get logCrossLine => _logCrossLine;
 
-  void setLogDottedLine(bool has) => _logHasDottedLine = has;
+  void setLogCrossLine(bool has) => _logCrossLine = has;
 
   Header globalRefreshHeader = const ClassicHeader(
       dragText: '请尽情拉我',

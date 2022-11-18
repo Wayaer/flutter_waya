@@ -14,6 +14,7 @@
 * Add `ExtensionWidgetMethod` extension to the `Widget`,You can use `$Widget().push()`、`$Widget().pushReplacement()`、`$Widget().pushAndRemoveUntil()``$Widget().showOverlay()`、`$Widget().showLoading()`、`$Widget().showLoading()`,
 * Add `ExtensionNavigatorStateContext` extension to the `BuildContext`,You can use most of Navigator's methods
 * Add `ExtensionFocusScopeContext` extension to the `BuildContext`,You can use most of FocusScopeNode's methods
+* Change the `setLogDottedLine()` to `setLogCrossLine()`
 
 ## 3.3.2+5
 

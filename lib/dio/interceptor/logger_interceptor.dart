@@ -12,11 +12,11 @@ class LoggerInterceptor<T> extends InterceptorsWrapper {
       headers += ' | $key: $value';
     });
     log('┌------------------------------------------------------------------------------',
-        hasDottedLine: false);
+        crossLine: false);
     log('''| [DIO] Request: ${options.method} ${options.uri}\n| QueryParameters:${options.queryParameters}\n| Data:${options.data}\n| Headers:$headers''',
-        hasDottedLine: false);
+        crossLine: false);
     log('├------------------------------------------------------------------------------',
-        hasDottedLine: false);
+        crossLine: false);
     super.onRequest(options, handler);
   }
 
@@ -32,25 +32,25 @@ class LoggerInterceptor<T> extends InterceptorsWrapper {
       }
     }
     log('| [DIO] Response [statusCode : ${response.statusCode}] [statusMessage : ${response.statusMessage}]',
-        hasDottedLine: false);
-    log('| [DIO] Request uri ($requestUri)', hasDottedLine: false);
+        crossLine: false);
+    log('| [DIO] Request uri ($requestUri)', crossLine: false);
     log('| [DIO] Response data: ${forbidPrint ? 'This data is not printed' : '\n${response.data}'}',
-        hasDottedLine: false);
+        crossLine: false);
     log('└------------------------------------------------------------------------------',
-        hasDottedLine: false);
+        crossLine: false);
     super.onResponse(response, handler);
   }
 
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) {
     log('| [DIO] Response [statusCode : ${err.response?.statusCode}] [statusMessage : ${err.response?.statusMessage}]',
-        hasDottedLine: false);
+        crossLine: false);
     log('| [DIO] Error: ${err.error}: ${err.response?.toString()}',
-        hasDottedLine: false);
+        crossLine: false);
     log('|            : ${err.type}: ${err.message.toString()}',
-        hasDottedLine: false);
+        crossLine: false);
     log('└------------------------------------------------------------------------------',
-        hasDottedLine: false);
+        crossLine: false);
     super.onError(err, handler);
   }
 }

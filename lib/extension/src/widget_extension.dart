@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 extension ExtensionWidgetMethod on Widget {
+  /// [push] or [pushReplacement]
   Future<T?> push<T extends Object?, TO extends Object?>(
       {bool maintainState = true,
       bool fullscreenDialog = false,
@@ -31,7 +32,7 @@ extension ExtensionWidgetMethod on Widget {
     }
   }
 
-  /// 打开新页面替换当前页面
+  /// [pushReplacement]
   Future<T?> pushReplacement<T extends Object?, TO extends Object?>(
           {bool maintainState = true,
           bool fullscreenDialog = false,
@@ -46,7 +47,7 @@ extension ExtensionWidgetMethod on Widget {
               pushStyle: pushStyle),
           result: result);
 
-  /// 打开新页面 并移出堆栈所有页面
+  /// [pushAndRemoveUntil]
   Future<T?> pushAndRemoveUntil<T extends Object?>(
           {bool maintainState = true,
           bool fullscreenDialog = false,
@@ -77,7 +78,7 @@ extension ExtensionWidgetMethod on Widget {
     /// GeneralDialog 配置
     GeneralDialogOptions? options,
   }) {
-    options ??= GlobalOptions().dialogOptions;
+    options = GlobalOptions().dialogOptions.merge(options);
     RouteTransitionsBuilder? transitionBuilder;
     if (options.fromStyle != PopupFromStyle.fromCenter) {
       transitionBuilder = options.transitionBuilder ??
@@ -120,7 +121,7 @@ extension ExtensionWidgetMethod on Widget {
   /// 关闭 closePopup()
   Future<T?> showBottomPopup<T>(
       {WidgetBuilder? builder, BottomSheetOptions? options}) {
-    options ??= GlobalOptions().bottomSheetOptions;
+    options = GlobalOptions().bottomSheetOptions.merge(options);
     return showModalBottomSheet(
         context: GlobalOptions().globalNavigatorKey.currentContext!,
         builder: builder ?? toWidgetBuilder,

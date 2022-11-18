@@ -10,11 +10,11 @@ export 'src/media_query.dart';
 
 void logDebug(dynamic msg) => debugPrint(msg.toString());
 
-void log(dynamic msg, {bool? hasDottedLine}) {
-  hasDottedLine ??= GlobalOptions().logHasDottedLine;
+void log(dynamic msg, {bool? crossLine}) {
+  crossLine ??= GlobalOptions().logCrossLine;
   if (!(kDebugMode || kProfileMode)) return;
   final String message = msg.toString();
-  if (hasDottedLine) {
+  if (crossLine) {
     debugPrint(
         '┌------------------------------------------------------------------------------');
   }
@@ -38,7 +38,7 @@ void log(dynamic msg, {bool? hasDottedLine}) {
       }
     }
   }
-  if (hasDottedLine) {
+  if (crossLine) {
     debugPrint(
         '└------------------------------------------------------------------------------');
   }
