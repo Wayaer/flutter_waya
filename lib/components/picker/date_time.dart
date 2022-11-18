@@ -67,7 +67,6 @@ class _DateTimePickerState extends State<DateTimePicker> {
   late DateTime startDate, defaultDate, endDate;
 
   late DateTimePickerUnit unit;
-  late double itemWidth;
 
   int yearIndex = 0,
       monthIndex = 0,
@@ -83,7 +82,6 @@ class _DateTimePickerState extends State<DateTimePicker> {
     super.initState();
     wheelOptions = widget.wheelOptions;
     unit = widget.unit;
-    itemWidth = wheelOptions.itemWidth ?? (deviceWidth - 20) / unit.getLength();
 
     startDate = widget.startDate ?? DateTime.now();
     endDate = initEndDate;
@@ -294,10 +292,11 @@ class _DateTimePickerState extends State<DateTimePicker> {
           bool startZero = true,
           ValueChanged<int>? onChanged}) =>
       Universal(
+          expanded: wheelOptions.itemWidth == null,
           direction: Axis.horizontal,
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
-          width: itemWidth,
+          width: wheelOptions.itemWidth,
           children: !widget.showUnit
               ? null
               : <Widget>[
