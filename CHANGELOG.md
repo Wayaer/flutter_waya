@@ -1,4 +1,4 @@
-## 3.5.0
+## 3.5.0+1
 
 * Refactor `Toast()` using `Toast().show()`, or `ToastStyle.show()`、`${value}.toast()`
 * Refactor `Loading()` using `Loading().show()`
