@@ -1,6 +1,6 @@
 # flutter_waya
 
-## [Example Demo](https://wayaer.github.io/flutter_waya/example/app/web/index.html#/) 运行 Example 查看使用
+## [Example](https://wayaer.github.io/flutter_waya/example/app/web/index.html#/) 运行 Example 查看使用
 
 ### 初始化 navigatorKey 两种方式
 
