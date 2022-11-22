@@ -1,3 +1,7 @@
+## 3.5.1
+
+* `ExtendedDio` Adds more methods
+
 ## 3.5.0+1
 
 * Refactor `Toast()` using `Toast().show()`, or `ToastStyle.show()`、`${value}.toast()`

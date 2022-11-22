@@ -48,6 +48,8 @@ class ExtendedDioOptions extends BaseOptions {
 }
 
 /// 全局只会存在2个Dio实例 一个常规网络请求  一个下载dio
+/// 统一了返回结果 [正常返回 、 DioError catch 、 catch] 均返回 ResponseModel
+/// 全局统一设置 BaseOptions 分 [常规网络请求的 ExtendedDioOptions 和 downloadOptions]
 class ExtendedDio {
   factory ExtendedDio() => _singleton ??= ExtendedDio._();
 
@@ -92,7 +94,7 @@ class ExtendedDio {
   }
 
   /// get
-  Future<ResponseModel> get(
+  Future<ResponseModel<T>> get<T>(
     String url, {
     Map<String, dynamic>? params,
     dynamic data,
@@ -101,9 +103,9 @@ class ExtendedDio {
     CancelToken? cancelToken,
   }) async {
     _dio ??= _createDio(this.options);
-    if (options != null) _mergeOptions(_dio!, options: options);
-    return await _handle(
-        () => _dio!.get<dynamic>(url,
+    if (options != null) _dio!.options = _dio!.options.mergeOptions(options);
+    return await _handle<T>(
+        _dio!.get<T>(url,
             options: options,
             onReceiveProgress: onReceiveProgress,
             queryParameters: params,
@@ -111,8 +113,26 @@ class ExtendedDio {
         baseOptions: dio!.options);
   }
 
+  /// getUri
+  Future<ResponseModel<T>> getUri<T>(
+    Uri uri, {
+    dynamic data,
+    Options? options,
+    ProgressCallback? onReceiveProgress,
+    CancelToken? cancelToken,
+  }) async {
+    _dio ??= _createDio(this.options);
+    if (options != null) _dio!.options = _dio!.options.mergeOptions(options);
+    return await _handle<T>(
+        _dio!.getUri<T>(uri,
+            options: options,
+            onReceiveProgress: onReceiveProgress,
+            cancelToken: cancelToken ?? _cancelToken),
+        baseOptions: dio!.options);
+  }
+
   /// post
-  Future<ResponseModel> post(
+  Future<ResponseModel<T>> post<T>(
     String url, {
     Map<String, dynamic>? params,
     dynamic data,
@@ -122,12 +142,33 @@ class ExtendedDio {
     CancelToken? cancelToken,
   }) async {
     _dio ??= _createDio(this.options);
-    if (options != null) _mergeOptions(_dio!, options: options);
-    return await _handle(
-        () => _dio!.post<dynamic>(url,
+    if (options != null) _dio!.options = _dio!.options.mergeOptions(options);
+    return await _handle<T>(
+        _dio!.post<T>(url,
             onSendProgress: onSendProgress,
             onReceiveProgress: onReceiveProgress,
             queryParameters: params,
+            options: options,
+            data: data,
+            cancelToken: cancelToken ?? _cancelToken),
+        baseOptions: dio!.options);
+  }
+
+  /// postUri
+  Future<ResponseModel<T>> postUri<T>(
+    Uri uri, {
+    dynamic data,
+    Options? options,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
+    CancelToken? cancelToken,
+  }) async {
+    _dio ??= _createDio(this.options);
+    if (options != null) _dio!.options = _dio!.options.mergeOptions(options);
+    return await _handle<T>(
+        _dio!.postUri<T>(uri,
+            onSendProgress: onSendProgress,
+            onReceiveProgress: onReceiveProgress,
             options: options,
             data: data,
             cancelToken: cancelToken ?? _cancelToken),
@@ -135,7 +176,7 @@ class ExtendedDio {
   }
 
   /// put
-  Future<ResponseModel> put(
+  Future<ResponseModel<T>> put<T>(
     String url, {
     Map<String, dynamic>? params,
     dynamic data,
@@ -145,12 +186,69 @@ class ExtendedDio {
     CancelToken? cancelToken,
   }) async {
     _dio ??= _createDio(this.options);
-    if (options != null) _mergeOptions(_dio!, options: options);
-    return await _handle(
-        () => _dio!.put<dynamic>(url,
+    if (options != null) _dio!.options = _dio!.options.mergeOptions(options);
+    return await _handle<T>(
+        _dio!.put<T>(url,
             onSendProgress: onSendProgress,
             onReceiveProgress: onReceiveProgress,
             queryParameters: params,
+            options: options,
+            data: data,
+            cancelToken: cancelToken ?? _cancelToken),
+        baseOptions: dio!.options);
+  }
+
+  /// putUri
+  Future<ResponseModel<T>> putUri<T>(
+    Uri uri, {
+    dynamic data,
+    Options? options,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
+    CancelToken? cancelToken,
+  }) async {
+    _dio ??= _createDio(this.options);
+    if (options != null) _dio!.options = _dio!.options.mergeOptions(options);
+    return await _handle<T>(
+        _dio!.putUri<T>(uri,
+            onSendProgress: onSendProgress,
+            onReceiveProgress: onReceiveProgress,
+            options: options,
+            data: data,
+            cancelToken: cancelToken ?? _cancelToken),
+        baseOptions: dio!.options);
+  }
+
+  /// head
+  Future<ResponseModel<T>> head<T>(
+    String url, {
+    Map<String, dynamic>? params,
+    dynamic data,
+    Options? options,
+    CancelToken? cancelToken,
+  }) async {
+    _dio ??= _createDio(this.options);
+    if (options != null) _dio!.options = _dio!.options.mergeOptions(options);
+    return await _handle<T>(
+        _dio!.head<T>(url,
+            queryParameters: params,
+            options: options,
+            data: data,
+            cancelToken: cancelToken ?? _cancelToken),
+        baseOptions: dio!.options);
+  }
+
+  /// headUri
+  Future<ResponseModel<T>> headUri<T>(
+    Uri uri, {
+    dynamic data,
+    Options? options,
+    CancelToken? cancelToken,
+  }) async {
+    _dio ??= _createDio(this.options);
+    if (options != null) _dio!.options = _dio!.options.mergeOptions(options);
+    return await _handle<T>(
+        _dio!.headUri<T>(uri,
             options: options,
             data: data,
             cancelToken: cancelToken ?? _cancelToken),
@@ -158,7 +256,7 @@ class ExtendedDio {
   }
 
   /// delete
-  Future<ResponseModel> delete(
+  Future<ResponseModel<T>> delete<T>(
     String url, {
     Map<String, dynamic>? params,
     dynamic data,
@@ -166,9 +264,9 @@ class ExtendedDio {
     CancelToken? cancelToken,
   }) async {
     _dio ??= _createDio(this.options);
-    if (options != null) _mergeOptions(_dio!, options: options);
-    return await _handle(
-        () => _dio!.delete<dynamic>(url,
+    if (options != null) _dio!.options = _dio!.options.mergeOptions(options);
+    return await _handle<T>(
+        _dio!.delete<T>(url,
             data: data,
             queryParameters: params,
             options: options,
@@ -176,8 +274,25 @@ class ExtendedDio {
         baseOptions: dio!.options);
   }
 
+  /// deleteUri
+  Future<ResponseModel<T>> deleteUri<T>(
+    Uri uri, {
+    dynamic data,
+    Options? options,
+    CancelToken? cancelToken,
+  }) async {
+    _dio ??= _createDio(this.options);
+    if (options != null) _dio!.options = _dio!.options.mergeOptions(options);
+    return await _handle<T>(
+        _dio!.deleteUri<T>(uri,
+            data: data,
+            options: options,
+            cancelToken: cancelToken ?? _cancelToken),
+        baseOptions: dio!.options);
+  }
+
   /// patch
-  Future<ResponseModel> patch(
+  Future<ResponseModel<T>> patch<T>(
     String url, {
     Map<String, dynamic>? params,
     dynamic data,
@@ -187,9 +302,9 @@ class ExtendedDio {
     CancelToken? cancelToken,
   }) async {
     _dio ??= _createDio(this.options);
-    if (options != null) _mergeOptions(_dio!, options: options);
-    return await _handle(
-        () => _dio!.patch<dynamic>(url,
+    if (options != null) _dio!.options = _dio!.options.mergeOptions(options);
+    return await _handle<T>(
+        _dio!.patch<T>(url,
             onSendProgress: onSendProgress,
             onReceiveProgress: onReceiveProgress,
             queryParameters: params,
@@ -197,6 +312,71 @@ class ExtendedDio {
             data: data,
             cancelToken: cancelToken ?? _cancelToken),
         baseOptions: dio!.options);
+  }
+
+  /// patchUri
+  Future<ResponseModel<T>> patchUri<T>(
+    Uri uri, {
+    dynamic data,
+    Options? options,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
+    CancelToken? cancelToken,
+  }) async {
+    _dio ??= _createDio(this.options);
+    if (options != null) _dio!.options = _dio!.options.mergeOptions(options);
+    return await _handle<T>(
+        _dio!.patchUri<T>(uri,
+            onSendProgress: onSendProgress,
+            onReceiveProgress: onReceiveProgress,
+            options: options,
+            data: data,
+            cancelToken: cancelToken ?? _cancelToken),
+        baseOptions: dio!.options);
+  }
+
+  /// request
+  Future<ResponseModel<T>> request<T>(
+    String url, {
+    dynamic data,
+    Map<String, dynamic>? params,
+    Options? options,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
+    CancelToken? cancelToken,
+  }) async {
+    _dio ??= _createDio(this.options);
+    if (options != null) _dio!.options = _dio!.options.mergeOptions(options);
+    return await _handle<T>(
+        _dio!.request<T>(url,
+            data: data,
+            queryParameters: params,
+            options: options,
+            cancelToken: cancelToken ?? _cancelToken,
+            onSendProgress: onSendProgress,
+            onReceiveProgress: onReceiveProgress),
+        baseOptions: _dio!.options);
+  }
+
+  /// requestUri
+  Future<ResponseModel<T>> requestUri<T>(
+    Uri uri, {
+    dynamic data,
+    Options? options,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
+    CancelToken? cancelToken,
+  }) async {
+    _dio ??= _createDio(this.options);
+    if (options != null) _dio!.options = _dio!.options.mergeOptions(options);
+    return await _handle<T>(
+        _dio!.requestUri<T>(uri,
+            data: data,
+            options: options,
+            cancelToken: cancelToken ?? _cancelToken,
+            onSendProgress: onSendProgress,
+            onReceiveProgress: onReceiveProgress),
+        baseOptions: _dio!.options);
   }
 
   /// download
@@ -212,10 +392,39 @@ class ExtendedDio {
     String lengthHeader = Headers.contentLengthHeader,
   }) async {
     _dioDownload ??= _createDio(downloadOptions);
+    if (options != null) {
+      _dioDownload!.options = _dioDownload!.options.mergeOptions(options);
+    }
     return await _handle(
-        () => _dioDownload!.download(url, savePath,
+        _dioDownload!.download(url, savePath,
             data: data,
             queryParameters: params,
+            options: options,
+            deleteOnError: deleteOnError,
+            lengthHeader: lengthHeader,
+            cancelToken: cancelToken ?? _cancelToken,
+            onReceiveProgress: onReceiveProgress),
+        baseOptions: _dioDownload!.options);
+  }
+
+  /// downloadUri
+  Future<ResponseModel> downloadUri(
+    Uri uri,
+    String savePath, {
+    dynamic data,
+    Options? options,
+    ProgressCallback? onReceiveProgress,
+    bool deleteOnError = true,
+    CancelToken? cancelToken,
+    String lengthHeader = Headers.contentLengthHeader,
+  }) async {
+    _dioDownload ??= _createDio(downloadOptions);
+    if (options != null) {
+      _dioDownload!.options = _dioDownload!.options.mergeOptions(options);
+    }
+    return await _handle(
+        _dioDownload!.downloadUri(uri, savePath,
+            data: data,
             options: options,
             deleteOnError: deleteOnError,
             lengthHeader: lengthHeader,
@@ -230,43 +439,63 @@ class ExtendedDio {
     _cancelToken = CancelToken();
   }
 
-  Future<ResponseModel> _handle(Future<Response<dynamic>> Function() func,
+  Future<ResponseModel<T>> _handle<T>(Future<Response<T>> func,
       {BaseOptions? baseOptions}) async {
     assert(_singleton != null, 'Please call initialize');
-    ResponseModel? responseModel;
+    ResponseModel<T>? responseModel;
     try {
-      responseModel = ResponseModel.formResponse(await func.call());
+      responseModel = ResponseModel.formResponse<T>(await func);
     } on DioError catch (e) {
       final DioError error = e;
-      responseModel = ResponseModel.mergeError(error);
+      responseModel = ResponseModel.mergeError<T>(error);
     } catch (e) {
-      log('Dio catch error : $e', crossLine: false);
-      responseModel = ResponseModel.constResponseModel(error: e);
+      responseModel = ResponseModel.constResponseModel<T>(error: e);
     }
     responseModel.baseOptions = baseOptions;
     return responseModel;
   }
-
-  void _mergeOptions(Dio dio, {Options? options}) {
-    dio.options = dio.options.copyWith(
-        method: options?.method,
-        receiveTimeout: options?.receiveTimeout,
-        sendTimeout: options?.sendTimeout,
-        extra: options?.extra,
-        headers: options?.headers,
-        responseType: options?.responseType,
-        contentType: options?.contentType,
-        validateStatus: options?.validateStatus,
-        receiveDataWhenStatusError: options?.receiveDataWhenStatusError,
-        followRedirects: options?.followRedirects,
-        maxRedirects: options?.maxRedirects,
-        requestEncoder: options?.requestEncoder,
-        responseDecoder: options?.responseDecoder,
-        listFormat: options?.listFormat);
-  }
 }
 
-class ResponseModel extends Response<dynamic> {
+extension ExtensionBaseOptions on BaseOptions {
+  BaseOptions merge([BaseOptions? options]) => copyWith(
+      method: options?.method,
+      connectTimeout: options?.connectTimeout,
+      receiveTimeout: options?.receiveTimeout,
+      sendTimeout: options?.sendTimeout,
+      extra: options?.extra,
+      headers: options?.headers,
+      responseType: options?.responseType,
+      contentType: options?.contentType,
+      validateStatus: options?.validateStatus,
+      receiveDataWhenStatusError: options?.receiveDataWhenStatusError,
+      followRedirects: options?.followRedirects,
+      maxRedirects: options?.maxRedirects,
+      requestEncoder: options?.requestEncoder,
+      responseDecoder: options?.responseDecoder,
+      listFormat: options?.listFormat,
+      baseUrl: options?.baseUrl,
+      queryParameters: options?.queryParameters,
+      setRequestContentTypeWhenNoPayload:
+          options?.setRequestContentTypeWhenNoPayload);
+
+  BaseOptions mergeOptions([Options? options]) => copyWith(
+      method: options?.method,
+      receiveTimeout: options?.receiveTimeout,
+      sendTimeout: options?.sendTimeout,
+      extra: options?.extra,
+      headers: options?.headers,
+      responseType: options?.responseType,
+      contentType: options?.contentType,
+      validateStatus: options?.validateStatus,
+      receiveDataWhenStatusError: options?.receiveDataWhenStatusError,
+      followRedirects: options?.followRedirects,
+      maxRedirects: options?.maxRedirects,
+      requestEncoder: options?.requestEncoder,
+      responseDecoder: options?.responseDecoder,
+      listFormat: options?.listFormat);
+}
+
+class ResponseModel<T> extends Response<T> {
   ResponseModel({
     this.type,
     super.data,
@@ -307,9 +536,9 @@ class ResponseModel extends Response<dynamic> {
         'error': error,
       };
 
-  static ResponseModel formResponse(Response<dynamic> response,
+  static ResponseModel<T> formResponse<T>(Response<T> response,
           {DioErrorType? type, BaseOptions? baseOptions}) =>
-      ResponseModel(
+      ResponseModel<T>(
           baseOptions: baseOptions,
           requestOptions: response.requestOptions,
           type: type.toString(),
@@ -321,9 +550,9 @@ class ResponseModel extends Response<dynamic> {
           redirects: response.redirects,
           response: response);
 
-  static ResponseModel mergeError(DioError err,
-      [ResponseModel? responseModel]) {
-    responseModel ??= ResponseModel(requestOptions: err.requestOptions);
+  static ResponseModel<T> mergeError<T>(DioError err,
+      [ResponseModel<T>? responseModel]) {
+    responseModel ??= ResponseModel<T>(requestOptions: err.requestOptions);
     responseModel.type = err.type.toString();
     final Response<dynamic>? errResponse = err.response;
     responseModel.requestOptions = err.requestOptions;
@@ -340,12 +569,13 @@ class ResponseModel extends Response<dynamic> {
     return responseModel;
   }
 
-  static ResponseModel constResponseModel({dynamic error}) => ResponseModel(
-      error: error,
-      requestOptions: RequestOptions(path: ''),
-      statusCode: 0,
-      statusMessage: 'unknown exception',
-      type: DioErrorType.other.toString());
+  static ResponseModel<T> constResponseModel<T>({dynamic error}) =>
+      ResponseModel<T>(
+          error: error,
+          requestOptions: RequestOptions(path: ''),
+          statusCode: 0,
+          statusMessage: 'unknown exception',
+          type: DioErrorType.other.toString());
 
   String toJson() =>
       '{"type":"${type.toString()}","data":$data,"cookie":$cookie,"statusCode'
