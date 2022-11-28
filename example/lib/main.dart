@@ -28,7 +28,7 @@ bool isCustomApp = false;
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   GlobalOptions globalOptions = GlobalOptions();
-
+  PaintingBinding.instance.imageCache.maximumSizeBytes = 1024 * 1024 * 40;
   void des() {
     const String str =
         'CfAmqOiIYz6NkH0Te32Uz6obXELPspz1pDj+oOUNNbsmptHP0Jwvdg==';

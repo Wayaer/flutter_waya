@@ -11,8 +11,8 @@ class SliverWaterfallFlow extends StatelessWidget {
       this.itemCount,
       this.findChildIndexCallback,
       this.semanticIndexCallback,
-      this.addAutomaticKeepALives = true,
-      this.addRepaintBoundaries = true,
+      this.addAutomaticKeepALives = false,
+      this.addRepaintBoundaries = false,
       this.addSemanticIndexes = true,
       this.mainAxisSpacing = 0,
       this.crossAxisSpacing = 0,
@@ -27,8 +27,8 @@ class SliverWaterfallFlow extends StatelessWidget {
       {super.key,
       this.children,
       this.semanticIndexCallback,
-      this.addAutomaticKeepALives = true,
-      this.addRepaintBoundaries = true,
+      this.addAutomaticKeepALives = false,
+      this.addRepaintBoundaries = false,
       this.addSemanticIndexes = true,
       this.mainAxisSpacing = 0,
       this.crossAxisSpacing = 0,
@@ -47,8 +47,8 @@ class SliverWaterfallFlow extends StatelessWidget {
       this.itemCount,
       this.findChildIndexCallback,
       this.semanticIndexCallback,
-      this.addAutomaticKeepALives = true,
-      this.addRepaintBoundaries = true,
+      this.addAutomaticKeepALives = false,
+      this.addRepaintBoundaries = false,
       this.addSemanticIndexes = true,
       this.mainAxisSpacing = 0,
       this.maxCrossAxisExtent,
@@ -176,8 +176,8 @@ class SliverListGrid extends StatelessWidget {
     this.findChildIndexCallback,
     this.semanticIndexCallback,
     this.itemExtent,
-    this.addAutomaticKeepALives = true,
-    this.addRepaintBoundaries = true,
+    this.addAutomaticKeepALives = false,
+    this.addRepaintBoundaries = false,
     this.addSemanticIndexes = true,
     this.placeholder = const PlaceholderChild(),
     this.prototypeItem,
@@ -209,8 +209,8 @@ class SliverListGrid extends StatelessWidget {
     this.mainAxisExtent,
     this.children,
     this.semanticIndexCallback,
-    this.addAutomaticKeepALives = true,
-    this.addRepaintBoundaries = true,
+    this.addAutomaticKeepALives = false,
+    this.addRepaintBoundaries = false,
     this.addSemanticIndexes = true,
     this.placeholder = const PlaceholderChild(),
     this.prototypeItem,
@@ -323,14 +323,14 @@ class SliverListGrid extends StatelessWidget {
                   crossAxisCount: crossAxisCount,
                   mainAxisExtent: mainAxisExtent));
     } else {
-      if (itemExtent == null && prototypeItem == null) {
-        current = SliverList(delegate: delegate);
-      } else if (itemExtent != null) {
+      if (itemExtent != null) {
         current =
             SliverFixedExtentList(delegate: delegate, itemExtent: itemExtent!);
       } else if (prototypeItem != null) {
         current = SliverPrototypeExtentList(
             delegate: delegate, prototypeItem: prototypeItem!);
+      } else {
+        current = SliverList(delegate: delegate);
       }
     }
     return current;

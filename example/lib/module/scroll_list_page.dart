@@ -189,14 +189,6 @@ class _ScrollListBuilderPage extends StatelessWidget {
     return ExtendedScaffold(
         appBar: AppBarText('ScrollList.builder'),
         body: Column(children: [
-          Container(
-              height: 100,
-              color: context.theme.primaryColor,
-              alignment: Alignment.center,
-              child: const BText('这里是头部',
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20)),
           ScrollList.builder(
               header: SliverToBoxAdapter(
                   child: Container(
