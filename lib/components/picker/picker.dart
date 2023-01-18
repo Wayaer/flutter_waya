@@ -22,6 +22,7 @@ class PickerOptions<T> {
     this.bottom,
     this.title,
     this.padding = const EdgeInsets.symmetric(horizontal: 10),
+    this.contentPadding,
     this.confirm = const BText('confirm'),
     this.cancel = const BText('cancel'),
     this.backgroundColor,
@@ -53,6 +54,9 @@ class PickerOptions<T> {
 
   /// 字体样式
   TextStyle? contentStyle;
+
+  /// 对内容
+  EdgeInsetsGeometry? contentPadding;
 
   /// 确定点击事件 picker 关闭前，返回 false 不关闭弹窗
   /// 默认 为 true;
@@ -237,7 +241,9 @@ class PickerSubject<T> extends StatelessWidget {
           }),
         ]));
     if (options.bottom != null) column.add(options.bottom!);
-    column.add(child);
+    column.add(options.contentPadding == null
+        ? child
+        : child.padding(options.contentPadding!));
     return Universal(
         onTap: () {},
         padding: EdgeInsets.only(bottom: context.mediaQueryPadding.bottom),

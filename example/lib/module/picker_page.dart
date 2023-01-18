@@ -14,6 +14,8 @@ class PickerPage extends StatelessWidget {
             ElevatedText('show CustomPicker', onTap: customPicker),
             ElevatedText('show AreaPicker', onTap: selectCity),
             ElevatedText('show DateTimePicker', onTap: selectTime),
+            ElevatedText('show DateTimePicker with date',
+                onTap: () => selectTime(const DateTimePickerUnit.date())),
             ElevatedText('show SingleColumnPicker', onTap: singleColumnPicker),
             const Partition('MultiColumnPicker'),
             ElevatedText('show MultiColumnPicker', onTap: multiColumnPicker),
@@ -27,16 +29,21 @@ class PickerPage extends StatelessWidget {
                 onTap: customSingleListPicker),
           ]);
 
-  Future<void> selectTime() async {
+  Future<void> selectTime([DateTimePickerUnit? unit]) async {
     final DateTime? dateTime = await DateTimePicker(
             dual: true,
-            options: PickerOptions<DateTime>(confirmTap: (DateTime? dateTime) {
-              showToast(dateTime!.format(DateTimeDist.yearSecond));
-              return true;
-            }, cancelTap: (DateTime? dateTime) {
-              showToast(dateTime?.format(DateTimeDist.yearSecond) ?? 'cancel');
-              return true;
-            }),
+            unit: unit ?? const DateTimePickerUnit.all(),
+            options: PickerOptions<DateTime>(
+                contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+                confirmTap: (DateTime? dateTime) {
+                  showToast(dateTime!.format(DateTimeDist.yearSecond));
+                  return true;
+                },
+                cancelTap: (DateTime? dateTime) {
+                  showToast(
+                      dateTime?.format(DateTimeDist.yearSecond) ?? 'cancel');
+                  return true;
+                }),
             startDate: DateTime(2020, 8, 9, 9, 9, 9),
             defaultDate: DateTime(2021, 9, 21, 8, 8, 8),
             endDate: DateTime(2022, 10, 20, 10, 10, 10))

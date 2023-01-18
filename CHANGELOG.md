@@ -1,7 +1,8 @@
-## 3.5.2+1
+## 3.5.2+2
 
 * Fixed an issue with ineffective `backgroundColor` for `ExpansionTiles()`
 * Add extension methods for `Options`
+* Add `contentPadding` to the `PickerOptions()`
 
 ## 3.5.1
 
