@@ -1,3 +1,8 @@
+## 3.5.2
+
+* Fixed an issue with ineffective `backgroundColor` for `ExpansionTiles()`
+* Add extension methods for `Options`
+
 ## 3.5.1
 
 * `ExtendedDio` Adds more methods

@@ -495,6 +495,40 @@ extension ExtensionBaseOptions on BaseOptions {
       listFormat: options?.listFormat);
 }
 
+extension ExtensionOptions on Options {
+  Options mergeBaseOptions([BaseOptions? options]) => copyWith(
+      method: options?.method,
+      receiveTimeout: options?.receiveTimeout,
+      sendTimeout: options?.sendTimeout,
+      extra: options?.extra,
+      headers: options?.headers,
+      responseType: options?.responseType,
+      contentType: options?.contentType,
+      validateStatus: options?.validateStatus,
+      receiveDataWhenStatusError: options?.receiveDataWhenStatusError,
+      followRedirects: options?.followRedirects,
+      maxRedirects: options?.maxRedirects,
+      requestEncoder: options?.requestEncoder,
+      responseDecoder: options?.responseDecoder,
+      listFormat: options?.listFormat);
+
+  Options merge([Options? options]) => copyWith(
+      method: options?.method,
+      receiveTimeout: options?.receiveTimeout,
+      sendTimeout: options?.sendTimeout,
+      extra: options?.extra,
+      headers: options?.headers,
+      responseType: options?.responseType,
+      contentType: options?.contentType,
+      validateStatus: options?.validateStatus,
+      receiveDataWhenStatusError: options?.receiveDataWhenStatusError,
+      followRedirects: options?.followRedirects,
+      maxRedirects: options?.maxRedirects,
+      requestEncoder: options?.requestEncoder,
+      responseDecoder: options?.responseDecoder,
+      listFormat: options?.listFormat);
+}
+
 class ResponseModel<T> extends Response<T> {
   ResponseModel({
     this.type,
