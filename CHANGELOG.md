@@ -1,4 +1,4 @@
-## 3.5.2
+## 3.5.2+1
 
 * Fixed an issue with ineffective `backgroundColor` for `ExpansionTiles()`
 * Add extension methods for `Options`
