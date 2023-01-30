@@ -129,9 +129,6 @@ extension ExtensionNavigatorStateContext on BuildContext {
   /// [canPop]
   bool canPop() => navigator.canPop();
 
-  /// [mounted]
-  bool get mounted => navigator.mounted;
-
   /// [userGestureInProgress]
   bool get userGestureInProgress => navigator.userGestureInProgress;
 
