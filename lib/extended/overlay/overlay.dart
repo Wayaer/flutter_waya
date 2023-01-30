@@ -59,7 +59,7 @@ class ExtendedOverlay {
   Future<ExtendedOverlayEntry?> showToast(Toast toast) async {
     if (_toast != null) return _toast;
     _toast = showOverlay(toast, autoOff: true);
-    _toast!.addListener(_toastListener);
+    _toast?.addListener(_toastListener);
     final duration =
         toast.options?.duration ?? GlobalOptions().toastOptions.duration;
     await duration.delayed<dynamic>();
@@ -90,7 +90,7 @@ class ExtendedOverlay {
   ExtendedOverlayEntry? showLoading(Loading loading) {
     if (_loading != null) return _loading;
     _loading = ExtendedOverlay().showOverlay(loading);
-    _loading!.addListener(_loadingListener);
+    _loading?.addListener(_loadingListener);
     return _loading;
   }
 
