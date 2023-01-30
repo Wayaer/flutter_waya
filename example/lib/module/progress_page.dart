@@ -88,6 +88,13 @@ class _ProgressPageState extends State<ProgressPage>
                   direction: Axis.vertical,
                   shapePath: _buildHeartPath()),
               const SizedBox(height: 20),
+              const SizedBox(
+                  width: double.infinity,
+                  height: 100,
+                  child: Wave(
+                      value: 0.5,
+                      color: Colors.deepPurpleAccent,
+                      direction: Axis.vertical))
             ]);
           })
         ]);
