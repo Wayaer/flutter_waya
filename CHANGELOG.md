@@ -1,3 +1,11 @@
+## 4.0.0
+
+* Compatible with Flutter 3.7.0
+* Remove `GestureLock()`
+* Modify `LiquidProgress()` to `LiquidProgressIndicator()`
+* Modify `FlSwiper.builder()` to `FlSwiper()`
+* Change the name of the `FlSwiperPagination()` component
+
 ## 3.5.2+2
 
 * Fixed an issue with ineffective `backgroundColor` for `ExpansionTiles()`
@@ -90,9 +98,7 @@
 
 ## 3.0.0+2
 
-* Update Flutter version 3.3.0
-* Update Refresh to 3.0.4
-* Update Dart to 2.18.0
+* Compatible with Flutter 3.3.0
 
 ## 2.3.2
 

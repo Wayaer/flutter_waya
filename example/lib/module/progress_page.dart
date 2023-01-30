@@ -12,18 +12,21 @@ class ProgressPage extends StatefulWidget {
 class _ProgressPageState extends State<ProgressPage>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
+  StateSetter? liquidProgressState;
 
   @override
   void initState() {
     super.initState();
     _animationController =
-        AnimationController(duration: const Duration(seconds: 10), vsync: this);
+        AnimationController(duration: 10.seconds, vsync: this);
     _animationController.repeat();
+    _animationController.addListener(() {
+      if (mounted) liquidProgressState?.call(() {});
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final double percentage = _animationController.value * 100;
     return ExtendedScaffold(
         isScroll: true,
         appBar: AppBarText('Progress'),
@@ -36,7 +39,7 @@ class _ProgressPageState extends State<ProgressPage>
               percent: 1,
               animation: true,
               restartAnimation: true,
-              animationDuration: const Duration(seconds: 2),
+              animationDuration: const Duration(seconds: 10),
               linearGradient: LinearGradient(colors: <Color>[
                 Colors.red,
                 context.theme.progressIndicatorTheme.color ??
@@ -48,65 +51,45 @@ class _ProgressPageState extends State<ProgressPage>
               progressColor: Colors.lightGreen,
               backgroundColor: Colors.black12),
           const SizedBox(height: 20),
-          SizedBox.fromSize(
-              size: const Size(150, 30),
-              child: const LiquidProgress.linear(value: 0.4, borderWidth: 1.0)),
-          const SizedBox(height: 20),
-          SizedBox.fromSize(
-              size: const Size(150, 30),
-              child: LiquidProgress.linear(
+          StatefulBuilder(builder: (context, setState) {
+            liquidProgressState ??= setState;
+            return Column(children: [
+              SizedBox.fromSize(
+                  size: const Size(150, 30),
+                  child: LiquidProgressIndicator.linear(
+                      borderColor: Colors.blue,
+                      borderWidth: 2,
+                      borderRadius: 10,
+                      color: Colors.deepPurpleAccent,
+                      value: _animationController.value)),
+              const SizedBox(height: 20),
+              LiquidProgressIndicator.circular(
+                      borderColor: Colors.blue,
+                      borderWidth: 2,
+                      value: _animationController.value,
+                      color: Colors.deepPurpleAccent)
+                  .setSize(const Size(150, 150)),
+              const SizedBox(height: 20),
+              LiquidProgressIndicator.custom(
                   value: _animationController.value,
-                  center: BText('${percentage.toStringAsFixed(0)}%',
-                      style: const BTextStyle(
-                          color: Colors.lightBlueAccent,
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.bold)))),
-          const SizedBox(height: 20),
-          SizedBox.fromSize(
-            size: const Size(80, 80),
-            child: LiquidProgress.circular(
-                value: _animationController.value,
-                center: BText('${percentage.toStringAsFixed(0)}%',
-                    style: const BTextStyle(
-                        color: Colors.lightBlueAccent,
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold))),
-          ),
-          const SizedBox(height: 20),
-          SizedBox.fromSize(
-              size: const Size(150, 150),
-              child: LiquidProgress.circular(
+                  color: Colors.deepPurpleAccent,
+                  direction: Axis.vertical,
+                  shapePath: _buildBoatPath()),
+              const SizedBox(height: 20),
+              LiquidProgressIndicator.custom(
+                  value: _animationController.value,
+                  direction: Axis.horizontal,
+                  color: Colors.deepPurpleAccent,
+                  shapePath: _buildSpeechBubblePath()),
+              const SizedBox(height: 20),
+              LiquidProgressIndicator.custom(
                   color: Colors.deepPurpleAccent,
                   value: _animationController.value,
-                  center: BText('${percentage.toStringAsFixed(0)}%',
-                      style: const BTextStyle(
-                          color: Colors.lightBlueAccent,
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.bold)))),
-          const SizedBox(height: 20),
-          LiquidProgress.custom(
-              color: Colors.deepPurpleAccent,
-              direction: Axis.vertical,
-              value: 0.2,
-              shapePath: _buildBoatPath()),
-          const SizedBox(height: 20),
-          LiquidProgress.custom(
-              direction: Axis.horizontal,
-              color: Colors.deepPurpleAccent,
-              backgroundColor: Colors.grey[300],
-              shapePath: _buildSpeechBubblePath()),
-          const SizedBox(height: 20),
-          LiquidProgress.custom(
-              color: Colors.deepPurpleAccent,
-              value: _animationController.value,
-              direction: Axis.vertical,
-              shapePath: _buildHeartPath(),
-              center: BText('${percentage.toStringAsFixed(0)}%',
-                  style: const BTextStyle(
-                      color: Colors.lightBlueAccent,
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold))),
-          const SizedBox(height: 20),
+                  direction: Axis.vertical,
+                  shapePath: _buildHeartPath()),
+              const SizedBox(height: 20),
+            ]);
+          })
         ]);
   }
 

@@ -314,7 +314,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
                       child: BText(unit!,
                           style: widget.unitStyle ??
                               widget.options.contentStyle ??
-                              context.textTheme.bodyText1))
+                              context.textTheme.bodyLarge))
                 ],
           child: widget.showUnit
               ? null
@@ -339,7 +339,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
                   valuePadLeft(startZero ? list[index] : list[index] + 1),
                   fontSize: 12,
                   style: widget.options.contentStyle ??
-                      context.textTheme.bodyText1)),
+                      context.textTheme.bodyLarge)),
           onScrollEnd: onChanged,
           wheel: wheelOptions);
 

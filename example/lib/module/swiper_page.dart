@@ -32,31 +32,27 @@ class _FlSwiperPageState extends State<FlSwiperPage> {
     position.value = pageController.page!;
   }
 
+  List<FlSwiperPlugin> pagination = [
+    const FlSwiperPagination(
+        alignment: Alignment.bottomCenter, builder: FlSwiperDotPagination()),
+    const FlSwiperArrowPagination(),
+    const FlSwiperPagination(
+        alignment: Alignment.topCenter, builder: FlSwiperFractionPagination()),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return ExtendedScaffold(
         isScroll: true,
         appBar: AppBarText('FlSwiper'),
         children: [
-          SizedBox(
-              height: 200,
-              width: double.infinity,
-              child: FlSwiper.builder(
+          const Partition('FlSwiper FlSwiperLayout.tinder'),
+          FlSwiper(
                   autoPlay: true,
                   duration: const Duration(seconds: 3),
-                  pagination: const <FlSwiperPagination>[
-                    FlSwiperPagination(
-                        alignment: Alignment.bottomCenter,
-                        builder: DotFlSwiperPagination()),
-                    FlSwiperPagination(
-                        alignment: Alignment.bottomCenter,
-                        builder: ArrowPagination()),
-                    FlSwiperPagination(
-                        alignment: Alignment.center,
-                        builder: FractionPagination()),
-                  ],
+                  pagination: pagination,
                   controller: controller,
-                  itemWidth: 340,
+                  itemWidth: 330,
                   onChanged: (int i) {
                     pageController.animateToPage(i,
                         duration: const Duration(milliseconds: 300),
@@ -66,22 +62,34 @@ class _FlSwiperPageState extends State<FlSwiperPage> {
                   itemHeight: double.infinity,
                   itemBuilder: (BuildContext context, int index) => Container(
                       alignment: Alignment.center, color: list[index]),
-                  itemCount: list.length)),
+                  itemCount: list.length)
+              .setHeight(150),
+          const Partition('FlSwiper FlSwiperLayout.stack'),
+          FlSwiper(
+                  autoPlay: true,
+                  duration: const Duration(seconds: 3),
+                  pagination: pagination,
+                  controller: controller,
+                  itemWidth: 280,
+                  layout: FlSwiperLayout.stack,
+                  itemHeight: double.infinity,
+                  itemBuilder: (BuildContext context, int index) => Container(
+                      alignment: Alignment.center, color: list[index]),
+                  itemCount: list.length)
+              .setHeight(150),
+          const Partition('PageView.builder'),
+          PageView.builder(
+              controller: pageController,
+              itemCount: list.length,
+              itemBuilder: (_, int index) {
+                return Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                    width: double.infinity,
+                    height: 20,
+                    color: list[index]);
+              }).setHeight(60),
           const SizedBox(height: 20),
-          SizedBox(
-              height: 40,
-              width: double.infinity,
-              child: PageView.builder(
-                  controller: pageController,
-                  itemCount: list.length,
-                  itemBuilder: (_, int index) {
-                    return Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 20),
-                        width: double.infinity,
-                        height: 20,
-                        color: list[index]);
-                  })),
-          const SizedBox(height: 20),
+          const Partition('Indicator'),
           ValueListenableBuilder<double>(
               valueListenable: position,
               builder: (_, double position, __) {
@@ -130,30 +138,6 @@ class _FlSwiperPageState extends State<FlSwiperPage> {
                 ]);
               }),
           const SizedBox(height: 20),
-          SizedBox(
-              height: 200,
-              width: double.infinity,
-              child: FlSwiper.builder(
-                  autoPlay: true,
-                  duration: const Duration(seconds: 3),
-                  pagination: const <FlSwiperPagination>[
-                    FlSwiperPagination(
-                        alignment: Alignment.bottomCenter,
-                        builder: DotFlSwiperPagination()),
-                    FlSwiperPagination(
-                        alignment: Alignment.bottomCenter,
-                        builder: ArrowPagination()),
-                    FlSwiperPagination(
-                        alignment: Alignment.center,
-                        builder: FractionPagination()),
-                  ],
-                  controller: controller,
-                  itemWidth: 340,
-                  layout: FlSwiperLayout.stack,
-                  itemHeight: double.infinity,
-                  itemBuilder: (BuildContext context, int index) => Container(
-                      alignment: Alignment.center, color: list[index]),
-                  itemCount: list.length)),
         ]);
   }
 
@@ -161,6 +145,7 @@ class _FlSwiperPageState extends State<FlSwiperPage> {
   void dispose() {
     super.dispose();
     position.dispose();
+    controller.dispose();
     pageController.removeListener(listener);
     pageController.dispose();
   }

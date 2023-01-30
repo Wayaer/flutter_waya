@@ -347,18 +347,18 @@ class _Item extends StatelessWidget {
             'use :   ',
             func,
           ], styles: [
-            context.textTheme.subtitle1!
+            context.textTheme.bodyLarge!
                 .copyWith(fontWeight: FontWeight.bold, fontSize: 16),
-            context.textTheme.bodyText2!,
+            context.textTheme.bodyMedium!,
           ]).sizedBox(width: double.infinity),
           const SizedBox(height: 5),
           RText(maxLines: 3, textAlign: TextAlign.start, texts: [
             'description :   ',
             description,
           ], styles: [
-            context.textTheme.subtitle1!
+            context.textTheme.titleLarge!
                 .copyWith(fontWeight: FontWeight.bold, fontSize: 16),
-            context.textTheme.bodyText2!.copyWith(),
+            context.textTheme.titleMedium!.copyWith(),
           ]).sizedBox(width: double.infinity),
         ]);
   }

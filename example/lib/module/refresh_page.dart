@@ -2,41 +2,6 @@ import 'package:app/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-class RefreshPage extends StatefulWidget {
-  const RefreshPage({super.key});
-
-  @override
-  State<RefreshPage> createState() => _RefreshPageState();
-}
-
-class _RefreshPageState extends State<RefreshPage> {
-  List<Color> colors = <Color>[
-    ...Colors.accents,
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return ExtendedScaffold(
-        appBar: AppBarText('SimpleRefresh'),
-        body: SimpleRefresh(
-          onRefresh: () async {
-            await 2.seconds.delayed(() {});
-            showToast('刷新完成');
-            return true;
-          },
-          onLoading: () async {
-            await 2.seconds.delayed(() {});
-            showToast('加载完成');
-            return true;
-          },
-          child: ScrollList.builder(
-              padding: const EdgeInsets.all(10),
-              itemBuilder: (_, int index) =>
-                  _Item(index, colors[index]).paddingOnly(bottom: 10),
-              itemCount: colors.length),
-        ));
-  }
-}
 
 class _Item extends StatelessWidget {
   const _Item(this.index, this.color);
@@ -57,7 +22,6 @@ class EasyRefreshPage extends StatefulWidget {
 
 class _EasyRefreshPageState extends State<EasyRefreshPage> {
   List<Color> colors = <Color>[];
-  final RefreshController controller = RefreshController();
 
   @override
   void initState() {

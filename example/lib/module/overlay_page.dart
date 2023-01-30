@@ -18,7 +18,7 @@ class OverlayPage extends StatelessWidget {
             Wrap(
                 children: ToastStyle.values.builder((ToastStyle style) =>
                     ElevatedText(style.toString(), onTap: () async {
-                      style.show(style.toString());
+                      await style.show(style.toString());
                       '添加await第一个Toast完了之后弹出第二个Toast'.toast();
                     }))),
             Wrap(

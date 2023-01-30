@@ -19,7 +19,7 @@ class ButtonPage extends StatelessWidget {
           padding: const EdgeInsets.all(20),
           appBar: AppBarText('Button'),
           children: [
-            DropdownMenu(
+            DropdownMenus(
                 isModal: true,
                 onTap: (int title, int? value) {
                   if (value == null) {
@@ -31,25 +31,25 @@ class ButtonPage extends StatelessWidget {
                   }
                 },
                 decoration: BoxDecoration(
-                    color: context.theme.backgroundColor,
+                    color: context.theme.colorScheme.background,
                     borderRadius: BorderRadius.circular(10)),
                 margin:
                     const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                 value:
                     _dropdownValue.values.builder((List<String> item) => item),
                 title: _dropdownValue.keys.toList()),
-            DropdownMenu.custom(
+            DropdownMenus.custom(
                 margin:
                     const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                 decoration: BoxDecoration(
-                    color: context.theme.backgroundColor,
+                    color: context.theme.colorScheme.background,
                     borderRadius: BorderRadius.circular(10)),
                 titleCount: _dropdownValue.keys.length,
                 titleBuilder: (_, int index, bool visible) {
                   return Padding(
                       padding: const EdgeInsets.only(right: 8),
                       child: BText(_dropdownValue.keys.elementAt(index),
-                          style: context.textTheme.subtitle1));
+                          style: context.textTheme.titleMedium));
                 },
                 valueCount: _dropdownValue.values
                     .builder((List<String> item) => item.length),
@@ -67,7 +67,7 @@ class ButtonPage extends StatelessWidget {
                       child: BText(
                           _dropdownValue.values
                               .elementAt(titleIndex)[valueIndex],
-                          style: context.textTheme.bodyText1));
+                          style: context.textTheme.bodyLarge));
                 }),
             const SizedBox(height: 20),
             ElevatedText('ElasticButton',
@@ -77,7 +77,7 @@ class ButtonPage extends StatelessWidget {
               DropdownMenuButton(
                   defaultBuilder: (int? index) {
                     return BText(index == null ? '请选择' : _colors[index],
-                        style: context.textTheme.bodyText1);
+                        style: context.textTheme.labelLarge);
                   },
                   margin: const EdgeInsets.only(top: 2),
                   itemCount: _colors.length,
@@ -89,7 +89,7 @@ class ButtonPage extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           vertical: 10, horizontal: 4),
                       child: BText(_colors[index],
-                          fontSize: 14, style: context.textTheme.bodyText1))),
+                          fontSize: 14, style: context.textTheme.bodyMedium))),
               DropdownButton<String>(
                   value: _colors[0],
                   onChanged: (String? value) {},
@@ -97,12 +97,12 @@ class ButtonPage extends StatelessWidget {
                       DropdownMenuItem<String>(
                           value: item, child: Text(item)))),
               DropdownMenuButton.material(
-                  itemBuilder: (int index) =>
-                      BText(_colors[index], style: context.textTheme.bodyText1),
+                  itemBuilder: (int index) => BText(_colors[index],
+                      style: context.textTheme.bodyMedium),
                   itemCount: _colors.length,
                   defaultBuilder: (int? index) {
                     return BText(index == null ? '请选择' : _colors[index],
-                            style: context.textTheme.bodyText1)
+                            style: context.textTheme.labelLarge)
                         .paddingSymmetric(vertical: 10);
                   })
             ]),

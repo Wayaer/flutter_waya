@@ -77,7 +77,7 @@ class Indicator extends StatelessWidget {
         height: size,
         child: CustomPaint(
             painter: createPainter(
-                activeColor ?? context.theme.selectedRowColor,
+                activeColor ?? context.theme.colorScheme.primary,
                 color ?? context.theme.unselectedWidgetColor)));
     return IgnorePointer(
         child: layout == IndicatorType.scale || layout == IndicatorType.color

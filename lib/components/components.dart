@@ -21,7 +21,6 @@ export 'pin_box.dart';
 export 'progress/liquid_progress.dart';
 export 'progress/progress.dart';
 export 'progress/wave.dart';
-export 'refresh/simple_refresh.dart';
 export 'screen_adaptation.dart';
 export 'spinKit/spin_kit.dart';
 export 'swiper/indicator.dart';
@@ -34,8 +33,8 @@ export 'toggle_rotate.dart';
 
 class NoScrollBehavior extends ScrollBehavior {
   @override
-  Widget buildViewportChrome(
-          BuildContext context, Widget child, AxisDirection axisDirection) =>
+  Widget buildOverscrollIndicator(
+          BuildContext context, Widget child, ScrollableDetails details) =>
       child;
 }
 

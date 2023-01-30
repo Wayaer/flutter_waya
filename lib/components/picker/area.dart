@@ -170,7 +170,7 @@ class _AreaPickerState extends State<AreaPicker> {
       child: BText(value,
           fontSize: 12,
           overflow: TextOverflow.ellipsis,
-          style: widget.options.contentStyle ?? context.textTheme.bodyText1));
+          style: widget.options.contentStyle ?? context.textTheme.bodyLarge));
 
   void jumpToIndex(int index, FixedExtentScrollController controller,
           {Duration? duration}) =>

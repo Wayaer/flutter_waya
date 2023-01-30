@@ -75,7 +75,7 @@ class Progress extends StatefulWidget {
   /// Display a widget indicator at the end of the progress. It only works when `animation` is true
   final Widget? widgetIndicator;
 
-  //// linear
+  /// linear
 
   /// Percent value between 0.0 and 1.0
   final double? width;
@@ -196,8 +196,8 @@ class _LinearState extends _ProgressSubState {
                   context.theme.progressIndicatorTheme.color ??
                   context.theme.primaryColor,
               linearGradient: widget.linearGradient,
-              backgroundColor:
-                  widget.backgroundColor ?? context.theme.backgroundColor,
+              backgroundColor: widget.backgroundColor ??
+                  context.theme.colorScheme.background,
               linearStrokeCap: widget.linearStrokeCap,
               lineWidth: widget.lineHeight,
               maskFilter: widget.maskFilter,

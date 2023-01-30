@@ -14,7 +14,7 @@ const Duration kDefaultAutoPlayDelay = Duration(seconds: 3);
 enum FlSwiperLayout { stack, tinder }
 
 class FlSwiper extends StatefulWidget {
-  const FlSwiper.builder({
+  const FlSwiper({
     super.key,
     required this.itemBuilder,
     required this.itemCount,
@@ -152,7 +152,7 @@ abstract class _FlSwiperTimerMixin extends State<FlSwiper> {
   @override
   void dispose() {
     _stopAutoPlay();
-    _controller.dispose();
+    if (widget.controller == null) _controller.dispose();
     super.dispose();
   }
 }
@@ -181,23 +181,42 @@ class _FlSwiperState extends _FlSwiperTimerMixin {
             behavior: HitTestBehavior.opaque,
             onTap: () => widget.onTap!(index),
             child: widget.itemBuilder(context, index));
-    return _SubFlSwiper(
-        loop: widget.loop,
-        layout: widget.layout,
-        itemWidth: widget.itemWidth,
-        itemHeight: widget.itemHeight,
-        itemCount: widget.itemCount,
-        itemBuilder: itemBuilder,
-        index: _activeIndex,
-        curve: widget.curve,
-        duration: widget.transitionDuration,
-        onChanged: (int index) {
-          _activeIndex = index;
-          setState(() {});
-          widget.onChanged?.call(index);
-        },
-        controller: _controller,
-        scrollDirection: widget.scrollDirection);
+    switch (widget.layout) {
+      case FlSwiperLayout.stack:
+        return _StackFlSwiper(
+            loop: widget.loop,
+            itemWidth: widget.itemWidth,
+            itemHeight: widget.itemHeight,
+            itemCount: widget.itemCount,
+            itemBuilder: itemBuilder,
+            index: _activeIndex,
+            curve: widget.curve,
+            duration: widget.transitionDuration,
+            onChanged: (int index) {
+              _activeIndex = index;
+              setState(() {});
+              widget.onChanged?.call(index);
+            },
+            controller: _controller,
+            scrollDirection: widget.scrollDirection);
+      case FlSwiperLayout.tinder:
+        return _TinderFlSwiper(
+            loop: widget.loop,
+            itemWidth: widget.itemWidth,
+            itemHeight: widget.itemHeight,
+            itemCount: widget.itemCount,
+            itemBuilder: itemBuilder,
+            index: _activeIndex,
+            curve: widget.curve,
+            duration: widget.transitionDuration,
+            onChanged: (int index) {
+              _activeIndex = index;
+              setState(() {});
+              widget.onChanged?.call(index);
+            },
+            controller: _controller,
+            scrollDirection: widget.scrollDirection);
+    }
   }
 
   @override
@@ -218,11 +237,11 @@ class _FlSwiperState extends _FlSwiperTimerMixin {
   }
 }
 
-class _SubFlSwiper extends StatefulWidget {
+abstract class _SubFlSwiper extends StatefulWidget {
   const _SubFlSwiper(
-      {this.loop = false,
-      required this.itemHeight,
+      {required this.itemHeight,
       required this.itemWidth,
+      this.loop = false,
       this.duration = const Duration(seconds: 3),
       this.curve,
       this.itemBuilder,
@@ -230,8 +249,7 @@ class _SubFlSwiper extends StatefulWidget {
       this.index = 0,
       this.itemCount = 0,
       this.scrollDirection = Axis.horizontal,
-      this.onChanged,
-      this.layout = FlSwiperLayout.tinder});
+      this.onChanged});
 
   final IndexedWidgetBuilder? itemBuilder;
   final int itemCount;
@@ -244,11 +262,6 @@ class _SubFlSwiper extends StatefulWidget {
   final double itemHeight;
   final bool loop;
   final Axis scrollDirection;
-  final FlSwiperLayout layout;
-
-  @override
-  State<StatefulWidget> createState() =>
-      layout == FlSwiperLayout.tinder ? _TinderState() : _StackState();
 
   int getCorrectIndex(int indexNeedsFix) {
     if (itemCount == 0) return 0;
@@ -256,6 +269,42 @@ class _SubFlSwiper extends StatefulWidget {
     if (value < 0) value += itemCount;
     return value;
   }
+}
+
+class _TinderFlSwiper extends _SubFlSwiper {
+  const _TinderFlSwiper(
+      {required super.itemHeight,
+      required super.itemWidth,
+      super.loop,
+      super.duration,
+      super.curve,
+      super.itemBuilder,
+      super.controller,
+      super.index,
+      super.itemCount,
+      super.scrollDirection,
+      super.onChanged});
+
+  @override
+  State<StatefulWidget> createState() => _TinderState();
+}
+
+class _StackFlSwiper extends _SubFlSwiper {
+  const _StackFlSwiper(
+      {required super.itemHeight,
+      required super.itemWidth,
+      super.loop,
+      super.duration,
+      super.curve,
+      super.itemBuilder,
+      super.controller,
+      super.index,
+      super.itemCount,
+      super.scrollDirection,
+      super.onChanged});
+
+  @override
+  State<StatefulWidget> createState() => _StackState();
 }
 
 class _TinderState extends _LayoutState<_SubFlSwiper> {

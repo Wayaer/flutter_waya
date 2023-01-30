@@ -74,7 +74,7 @@ class PopupPage extends StatelessWidget {
             right: SimpleButton(
                 padding: const EdgeInsets.symmetric(vertical: 6),
                 alignment: Alignment.center,
-                child: Text('确定', style: context.textTheme.subtitle1),
+                child: Text('确定', style: context.textTheme.titleMedium),
                 onTap: () {
                   ///如果isOverlay=true; 必须先closeOverlay() 再toast或者loading
                   showToast('确定');
@@ -82,14 +82,14 @@ class PopupPage extends StatelessWidget {
             left: SimpleButton(
                 alignment: Alignment.center,
                 padding: const EdgeInsets.symmetric(vertical: 6),
-                child: Text('取消', style: context.textTheme.subtitle1),
+                child: Text('取消', style: context.textTheme.titleMedium),
                 onTap: () {
                   ///如果isOverlay=true; 必须先closeOverlay() 再toast或者loading
                   showToast('取消');
                 }),
             content: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 40),
-                child: Text('内容', style: context.textTheme.bodyText1)))
+                child: Text('内容', style: context.textTheme.bodyLarge)))
         .show();
   }
 }

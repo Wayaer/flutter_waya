@@ -136,19 +136,19 @@ class _DropdownMenuButtonState extends State<DropdownMenuButton> {
   }
 }
 
-typedef DropdownMenuTitleBuilder = Widget Function(
+typedef DropdownMenusTitleBuilder = Widget Function(
     BuildContext context, int index, bool visible);
 
-typedef DropdownMenuLabelBuilder = Widget Function(bool visible);
+typedef DropdownMenusLabelBuilder = Widget Function(bool visible);
 
-typedef DropdownMenuValueCallback = void Function(
+typedef DropdownMenusValueCallback = void Function(
     int titleIndex, int? valueIndex);
 
-typedef DropdownMenuValueBuilder = Widget Function(
+typedef DropdownMenusValueBuilder = Widget Function(
     BuildContext context, int titleIndex, int valueIndex);
 
-class DropdownMenu extends StatefulWidget {
-  DropdownMenu({
+class DropdownMenus extends StatefulWidget {
+  DropdownMenus({
     super.key,
     TextStyle? titleStyle,
     TextStyle? valueStyle,
@@ -158,7 +158,7 @@ class DropdownMenu extends StatefulWidget {
     this.width,
     this.decoration,
     this.hasRotateLabel = true,
-    DropdownMenuLabelBuilder? label,
+    DropdownMenusLabelBuilder? label,
     this.mainAxisAlignment = MainAxisAlignment.spaceAround,
     this.margin,
     this.padding = const EdgeInsets.symmetric(vertical: 10),
@@ -175,7 +175,7 @@ class DropdownMenu extends StatefulWidget {
             Padding(
                 padding: const EdgeInsets.only(right: 6),
                 child: BText(title[index],
-                    style: titleStyle ?? context.textTheme.subtitle2))),
+                    style: titleStyle ?? context.textTheme.titleSmall))),
         valueBuilder = ((BuildContext context, int titleIndex,
                 int valueIndex) =>
             Container(
@@ -187,9 +187,9 @@ class DropdownMenu extends StatefulWidget {
                     border: Border(
                         top: BorderSide(color: context.theme.dividerColor))),
                 child: BText(value[titleIndex][valueIndex],
-                    style: valueStyle ?? context.textTheme.bodyText1)));
+                    style: valueStyle ?? context.textTheme.bodyLarge)));
 
-  DropdownMenu.custom({
+  DropdownMenus.custom({
     super.key,
     required this.titleCount,
     required this.titleBuilder,
@@ -199,7 +199,7 @@ class DropdownMenu extends StatefulWidget {
     this.decoration,
     this.hasRotateLabel = true,
     this.backgroundColor = const Color(0x80000000),
-    DropdownMenuLabelBuilder? label,
+    DropdownMenusLabelBuilder? label,
     this.mainAxisAlignment = MainAxisAlignment.spaceAround,
     this.margin,
     this.padding = const EdgeInsets.symmetric(vertical: 10),
@@ -213,22 +213,22 @@ class DropdownMenu extends StatefulWidget {
   final int titleCount;
 
   /// title 每个item
-  final DropdownMenuTitleBuilder titleBuilder;
+  final DropdownMenusTitleBuilder titleBuilder;
 
   /// value 长度
   final List<int> valueCount;
 
   /// value 每个item
-  final DropdownMenuValueBuilder valueBuilder;
+  final DropdownMenusValueBuilder valueBuilder;
 
   /// 是否在title 右边添加 label 默认添加箭头
   final bool hasRotateLabel;
 
   /// 自定义label
-  late final DropdownMenuLabelBuilder label;
+  late final DropdownMenusLabelBuilder label;
 
   /// 点击回调 valueIndex == null 表示 只是点击了title
-  final DropdownMenuValueCallback? onTap;
+  final DropdownMenusValueCallback? onTap;
 
   /// value 显示时 的背景色
   final Color backgroundColor;
@@ -246,10 +246,10 @@ class DropdownMenu extends StatefulWidget {
   final EdgeInsetsGeometry? padding;
 
   @override
-  State<DropdownMenu> createState() => _DropdownMenuState();
+  State<DropdownMenus> createState() => _DropdownMenusState();
 }
 
-class _DropdownMenuState extends State<DropdownMenu> {
+class _DropdownMenusState extends State<DropdownMenus> {
   List<bool> titleState = <bool>[];
   late GlobalKey titleKey = GlobalKey();
 

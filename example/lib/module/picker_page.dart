@@ -182,7 +182,7 @@ class PickerPage extends StatelessWidget {
         itemCount: list.length,
         options: PickerOptions(
             bottom: Universal(
-          child: DropdownMenu(
+          child: DropdownMenus(
               onTap: (int title, int? value) {
                 showToast(
                     '${type[title]}  ${value == null ? '' : list[value]}');
@@ -284,7 +284,7 @@ class PickerPage extends StatelessWidget {
     final int? index = await SingleColumnPicker(
             itemBuilder: (BuildContext context, int index) => Container(
                 alignment: Alignment.center,
-                child: Text(list[index], style: context.textTheme.bodyText1)),
+                child: Text(list[index], style: context.textTheme.bodyLarge)),
             itemCount: list.length)
         .show();
     showToast(index == null ? 'null' : list[index].toString());

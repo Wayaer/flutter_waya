@@ -384,7 +384,10 @@ class BText extends StatelessWidget {
     if (inherit && (style?.inherit ?? true)) {
       effectiveTextStyle = defaultTextStyle.style.merge(effectiveTextStyle);
     }
-    effectiveTextStyle.merge(style);
+    if (MediaQuery.boldTextOverride(context)) {
+      effectiveTextStyle = effectiveTextStyle
+          .merge(const TextStyle(fontWeight: FontWeight.bold));
+    }
     final SelectionRegistrar? registrar = SelectionContainer.maybeOf(context);
     Widget result = RText(
         texts: isRich ? texts : [text],
@@ -406,10 +409,11 @@ class BText extends StatelessWidget {
         textWidthBasis: textWidthBasis ?? defaultTextStyle.textWidthBasis,
         textHeightBehavior: textHeightBehavior ??
             defaultTextStyle.textHeightBehavior ??
-            DefaultTextHeightBehavior.of(context),
+            DefaultTextHeightBehavior.maybeOf(context),
         selectionRegistrar: registrar,
-        selectionColor:
-            selectionColor ?? DefaultSelectionStyle.of(context).selectionColor);
+        selectionColor: selectionColor ??
+            DefaultSelectionStyle.of(context).selectionColor ??
+            DefaultSelectionStyle.defaultColor);
     if (registrar != null) {
       result = MouseRegion(cursor: SystemMouseCursors.text, child: result);
     }
@@ -459,7 +463,6 @@ class BText extends StatelessWidget {
 class BTextStyle extends TextStyle {
   const BTextStyle(
       {
-
       /// 默认样式会继承层级最为接近的 DefaultTextStyle，为true 表示继承，false 表示完全重写
       super.inherit = true,
 

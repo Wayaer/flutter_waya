@@ -5,14 +5,14 @@ import 'package:flutter_waya/flutter_waya.dart';
 
 const double _sweep = (math.pi * 2.0) - .001;
 
-enum LiquidProgressType {
+enum LiquidProgressIndicatorType {
   linear,
   circular,
   custom,
 }
 
-class LiquidProgress extends ProgressIndicator {
-  const LiquidProgress.linear({
+class LiquidProgressIndicator extends ProgressIndicator {
+  const LiquidProgressIndicator.linear({
     super.key,
     super.value = 0.5,
     super.backgroundColor,
@@ -24,9 +24,9 @@ class LiquidProgress extends ProgressIndicator {
     this.center,
     this.direction = Axis.horizontal,
   })  : shapePath = null,
-        type = LiquidProgressType.linear;
+        type = LiquidProgressIndicatorType.linear;
 
-  const LiquidProgress.circular(
+  const LiquidProgressIndicator.circular(
       {super.key,
       super.value = 0.5,
       super.backgroundColor,
@@ -38,9 +38,9 @@ class LiquidProgress extends ProgressIndicator {
       this.direction = Axis.vertical})
       : borderRadius = 0,
         shapePath = null,
-        type = LiquidProgressType.circular;
+        type = LiquidProgressIndicatorType.circular;
 
-  const LiquidProgress.custom(
+  const LiquidProgressIndicator.custom(
       {super.key,
       super.value = 0.5,
       super.backgroundColor,
@@ -49,10 +49,11 @@ class LiquidProgress extends ProgressIndicator {
       this.center,
       required this.direction,
       required this.shapePath})
-      : borderWidth = null,
+      : assert(shapePath != null),
+        borderWidth = null,
         borderColor = null,
         borderRadius = 0,
-        type = LiquidProgressType.custom;
+        type = LiquidProgressIndicatorType.custom;
 
   /// The width of the border, if this is set [borderColor] must also be set.
   final double? borderWidth;
@@ -73,10 +74,10 @@ class LiquidProgress extends ProgressIndicator {
   /// the progress indicator is controlled by the bounds of this path.
   final Path? shapePath;
 
-  final LiquidProgressType type;
+  final LiquidProgressIndicatorType type;
 
   Color _getBackgroundColor(BuildContext context) =>
-      backgroundColor ?? Theme.of(context).backgroundColor;
+      backgroundColor ?? Theme.of(context).colorScheme.background;
 
   Color _getValueColor(BuildContext context) =>
       color ?? valueColor?.value ?? Theme.of(context).colorScheme.secondary;
@@ -85,78 +86,66 @@ class LiquidProgress extends ProgressIndicator {
   State<StatefulWidget> createState() => _ProgressState();
 }
 
-class _ProgressState extends State<LiquidProgress> {
+class _ProgressState extends State<LiquidProgressIndicator> {
   @override
   Widget build(BuildContext context) {
     switch (widget.type) {
-      case LiquidProgressType.linear:
-        return linear;
-      case LiquidProgressType.circular:
-        return circular;
-      case LiquidProgressType.custom:
-        return custom;
-    }
-  }
-
-  Widget get custom {
-    final Rect pathBounds = widget.shapePath!.getBounds();
-    return SizedBox(
-        width: pathBounds.width + pathBounds.left,
-        height: pathBounds.height + pathBounds.top,
-        child: ClipPath(
-            clipper: _CustomPathClipper(path: widget.shapePath!),
-            child: CustomPaint(
-              painter: _CustomPathPainter(
-                  color: widget._getBackgroundColor(context),
-                  path: widget.shapePath!),
-              child: Stack(children: [
-                Positioned.fill(
-                    left: pathBounds.left,
-                    top: pathBounds.top,
-                    child: Wave(
-                        value: widget.value!,
-                        color: widget._getValueColor(context),
-                        direction: widget.direction)),
-                if (widget.center != null) Center(child: widget.center),
-              ]),
-            )));
-  }
-
-  Widget get circular => ClipPath(
-        clipper: _CircleClipper(),
-        child: CustomPaint(
+      case LiquidProgressIndicatorType.linear:
+        return buildCustomPaint(
+            clipper: _LinearClipper(radius: widget.borderRadius),
+            painter: _LinearPainter(
+                color: widget._getBackgroundColor(context),
+                radius: widget.borderRadius),
+            foregroundPainter: _LinearBorderPainter(
+                color: widget.borderColor!,
+                width: widget.borderWidth!,
+                radius: widget.borderRadius));
+      case LiquidProgressIndicatorType.circular:
+        return buildCustomPaint(
+            clipper: _CircleClipper(),
             painter: _CirclePainter(color: widget._getBackgroundColor(context)),
             foregroundPainter: _CircleBorderPainter(
                 color: widget.borderColor ??
                     context.theme.progressIndicatorTheme.circularTrackColor ??
                     context.theme.primaryColor,
-                width: widget.borderWidth!),
-            child: Stack(children: [
-              Wave(
-                  value: widget.value!,
-                  color: widget._getValueColor(context),
-                  direction: widget.direction),
-              if (widget.center != null) Center(child: widget.center),
-            ])),
-      );
+                width: widget.borderWidth!));
+      case LiquidProgressIndicatorType.custom:
+        final Rect pathBounds = widget.shapePath!.getBounds();
+        return SizedBox(
+            width: pathBounds.width + pathBounds.left,
+            height: pathBounds.height + pathBounds.top,
+            child: buildCustomPaint(
+                pathBounds: pathBounds,
+                clipper: _CustomPathClipper(path: widget.shapePath!),
+                painter: _CustomPathPainter(
+                    color: widget._getBackgroundColor(context),
+                    path: widget.shapePath!)));
+    }
+  }
 
-  Widget get linear => ClipPath(
-      clipper: _LinearClipper(radius: widget.borderRadius),
-      child: CustomPaint(
-          painter: _LinearPainter(
-              color: widget._getBackgroundColor(context),
-              radius: widget.borderRadius),
-          foregroundPainter: _LinearBorderPainter(
-              color: widget.borderColor!,
-              width: widget.borderWidth!,
-              radius: widget.borderRadius),
-          child: Stack(children: [
-            Wave(
-                value: widget.value!,
-                color: widget._getValueColor(context),
-                direction: widget.direction),
-            if (widget.center != null) Center(child: widget.center),
-          ])));
+  Widget buildCustomPaint(
+      {CustomClipper<Path>? clipper,
+      CustomPainter? painter,
+      CustomPainter? foregroundPainter,
+      Rect? pathBounds}) {
+    final wave = Wave(
+        value: widget.value!,
+        color: widget._getValueColor(context),
+        direction: widget.direction);
+    return ClipPath(
+        clipper: clipper,
+        child: CustomPaint(
+            painter: painter,
+            foregroundPainter: foregroundPainter,
+            child: Stack(children: [
+              if (pathBounds != null)
+                Positioned.fill(
+                    left: pathBounds.left, top: pathBounds.top, child: wave)
+              else
+                wave,
+              if (widget.center != null) Center(child: widget.center),
+            ])));
+  }
 }
 
 class _LinearPainter extends CustomPainter {
@@ -192,12 +181,13 @@ class _LinearBorderPainter extends CustomPainter {
       ..color = color
       ..style = PaintingStyle.stroke
       ..strokeWidth = width;
-    final double alteredRadius = radius;
+    double alteredRadius = radius - width;
+    if (alteredRadius < 0) alteredRadius = 0;
     canvas.drawRRect(
         RRect.fromRectAndRadius(
             Rect.fromLTWH(
                 width / 2, width / 2, size.width - width, size.height - width),
-            Radius.circular(alteredRadius - width)),
+            Radius.circular(alteredRadius)),
         paint);
   }
 

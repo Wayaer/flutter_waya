@@ -1,5 +1,4 @@
 import 'package:app/main.dart';
-import 'package:app/module/refresh_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
@@ -29,8 +28,6 @@ class ScrollViewPage extends StatelessWidget {
               onTap: () => push(const _RefreshScrollViewPage())),
           ElevatedText('DraggableScrollbar',
               onTap: () => push(_DraggableScrollbar(scrollController))),
-          const Partition('Refresh'),
-          ElevatedText('SimpleRefresh', onTap: () => push(const RefreshPage())),
         ]);
   }
 

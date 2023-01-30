@@ -7,14 +7,14 @@ environment:
   sdk: '>=2.18.0 <3.0.0'
 
 dependencies:
+  flutter_web_plugins:
+    sdk: flutter
   flutter:
     sdk: flutter
-  flutter_curiosity: ^4.0.0+1
+  flutter_curiosity: ^4.2.0
   device_preview: ^1.1.0
   flutter_waya:
     path: ../
-  flutter_web_plugins:
-    sdk: flutter
 
 dev_dependencies:
   flutter_lints: ^2.0.1

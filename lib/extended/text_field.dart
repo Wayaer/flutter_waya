@@ -48,7 +48,7 @@ class InputBorderStyle {
     this.width = 1,
     this.gapPadding = 4,
     this.style = BorderStyle.solid,
-    this.strokeAlign = StrokeAlign.inside,
+    this.strokeAlign = BorderSide.strokeAlignInside,
   });
 
   /// 边框类型
@@ -70,7 +70,7 @@ class InputBorderStyle {
   final BorderStyle style;
 
   /// strokeAlign
-  final StrokeAlign strokeAlign;
+  final double strokeAlign;
 
   InputBorderStyle copyWith({
     BorderType? borderType,
@@ -79,7 +79,7 @@ class InputBorderStyle {
     double? width,
     double? gapPadding,
     BorderStyle? style,
-    StrokeAlign? strokeAlign,
+    double? strokeAlign,
   }) =>
       InputBorderStyle(
           borderType: borderType ?? this.borderType,

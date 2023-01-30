@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
+/// 波浪动画
 class Wave extends StatefulWidget {
   const Wave({
     super.key,
@@ -19,32 +20,31 @@ class Wave extends StatefulWidget {
 }
 
 class _WaveState extends State<Wave> with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
+  late AnimationController controller;
 
   @override
   void initState() {
     super.initState();
-    _animationController =
+    controller =
         AnimationController(vsync: this, duration: const Duration(seconds: 2));
-    _animationController.repeat();
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
+    controller.repeat();
   }
 
   @override
   Widget build(BuildContext context) => AnimatedBuilder(
-      animation: CurvedAnimation(
-          parent: _animationController, curve: Curves.easeInOut),
+      animation: CurvedAnimation(parent: controller, curve: Curves.easeInOut),
       builder: (BuildContext context, Widget? child) => ClipPath(
           clipper: _WaveClipper(
-              animationValue: _animationController.value,
+              animationValue: controller.value,
               value: widget.value,
               direction: widget.direction),
           child: Container(color: widget.color)));
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
 }
 
 class _WaveClipper extends CustomClipper<Path> {
@@ -59,18 +59,20 @@ class _WaveClipper extends CustomClipper<Path> {
 
   @override
   Path getClip(Size size) {
-    if (direction == Axis.horizontal) {
-      return Path()
-        ..addPolygon(_generateHorizontalWavePath(size), false)
-        ..lineTo(0.0, size.height)
-        ..lineTo(0.0, 0.0)
-        ..close();
+    switch (direction) {
+      case Axis.horizontal:
+        return Path()
+          ..addPolygon(_generateHorizontalWavePath(size), false)
+          ..lineTo(0.0, size.height)
+          ..lineTo(0.0, 0.0)
+          ..close();
+      case Axis.vertical:
+        return Path()
+          ..addPolygon(_generateVerticalWavePath(size), false)
+          ..lineTo(size.width, size.height)
+          ..lineTo(0.0, size.height)
+          ..close();
     }
-    return Path()
-      ..addPolygon(_generateVerticalWavePath(size), false)
-      ..lineTo(size.width, size.height)
-      ..lineTo(0.0, size.height)
-      ..close();
   }
 
   List<Offset> _generateHorizontalWavePath(Size size) {

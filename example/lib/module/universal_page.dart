@@ -130,7 +130,7 @@ class _ScrollUniversalPage extends StatelessWidget {
         margin: const EdgeInsets.all(30),
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-            color: context.theme.backgroundColor,
+            color: context.theme.colorScheme.background,
             borderRadius: BorderRadius.circular(20),
             boxShadow: const <BoxShadow>[
               BoxShadow(color: Colors.red, blurRadius: 20),

@@ -69,8 +69,9 @@ abstract class FlSwiperPlugin {
   Widget build(BuildContext context, FlSwiperPluginConfig config);
 }
 
-class ArrowPagination extends FlSwiperPlugin {
-  const ArrowPagination(
+/// 箭头指示器
+class FlSwiperArrowPagination extends FlSwiperPlugin {
+  const FlSwiperArrowPagination(
       {this.iconPrevious = Icons.arrow_back_ios,
       this.iconNext = Icons.arrow_forward_ios,
       this.color,
@@ -149,9 +150,9 @@ class ArrowPagination extends FlSwiperPlugin {
   }
 }
 
-/// 底部指示器
-class FractionPagination extends FlSwiperPlugin {
-  const FractionPagination(
+/// 页码数字指示器
+class FlSwiperFractionPagination extends FlSwiperPlugin {
+  const FlSwiperFractionPagination(
       {this.color,
       this.fontSize = 20.0,
       this.key,
@@ -191,9 +192,9 @@ class FractionPagination extends FlSwiperPlugin {
   }
 }
 
-/// 底部指示器
-class DotFlSwiperPagination extends FlSwiperPlugin {
-  const DotFlSwiperPagination(
+/// 圆点指示器
+class FlSwiperDotPagination extends FlSwiperPlugin {
+  const FlSwiperDotPagination(
       {this.activeColor,
       this.color,
       this.key,
@@ -221,14 +222,14 @@ class DotFlSwiperPagination extends FlSwiperPlugin {
   @override
   Widget build(BuildContext context, FlSwiperPluginConfig config) {
     if (config.itemCount > 20) {
-      log('The itemCount is too big, we suggest use FractionPaginationBuilder instead of DotFlSwiperPaginationBuilder in this sitituation');
+      log('The itemCount is too big, we suggest use FlSwiperFractionPaginationBuilder instead of FlSwiperDotPaginationBuilder in this sitituation');
     }
     Color? activeColor = this.activeColor;
     Color? color = this.color;
 
     if (activeColor == null || color == null) {
       final ThemeData themeData = Theme.of(context);
-      activeColor = this.activeColor ?? themeData.selectedRowColor;
+      activeColor = this.activeColor ?? themeData.colorScheme.primary;
       color = this.color ?? themeData.unselectedWidgetColor;
     }
 
@@ -251,13 +252,27 @@ class DotFlSwiperPagination extends FlSwiperPlugin {
   }
 }
 
+typedef FlSwiperPaginationBuilder = Widget Function(
+    BuildContext context, FlSwiperPluginConfig config);
+
+/// 自定义 [FlSwiperPagination]
+class FlSwiperCustomPagination extends FlSwiperPlugin {
+  FlSwiperCustomPagination({required this.builder});
+
+  final FlSwiperPaginationBuilder builder;
+
+  @override
+  Widget build(BuildContext context, FlSwiperPluginConfig config) =>
+      builder(context, config);
+}
+
 /// 底部指示器组件
 class FlSwiperPagination extends FlSwiperPlugin {
   const FlSwiperPagination(
       {this.alignment,
       this.key,
       this.margin = const EdgeInsets.all(10.0),
-      this.builder = const DotFlSwiperPagination()});
+      required this.builder});
 
   /// Alignment.bottomCenter by default when scrollDirection== Axis.horizontal
   /// Alignment.centerRight by default when scrollDirection== Axis.vertical
@@ -283,17 +298,4 @@ class FlSwiperPagination extends FlSwiperPlugin {
         alignment: alignment,
         child: builder.build(context, config));
   }
-}
-
-typedef FlSwiperPaginationBuilder = Widget Function(
-    BuildContext context, FlSwiperPluginConfig config);
-
-class FlSwiperCustomPagination extends FlSwiperPlugin {
-  FlSwiperCustomPagination({required this.builder});
-
-  final FlSwiperPaginationBuilder builder;
-
-  @override
-  Widget build(BuildContext context, FlSwiperPluginConfig config) =>
-      builder(context, config);
 }

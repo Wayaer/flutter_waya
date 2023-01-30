@@ -117,15 +117,11 @@ class SwitchState extends StatelessWidget {
 
   /// The color to use when this switch is on.
   ///
-  /// Defaults to [ThemeData.toggleableActiveColor].
-  ///
   /// If [thumbColor] returns a non-null color in the [MaterialState.selected]
   /// state, it will be used instead of this color.
   final Color? activeColor;
 
   /// The color to use on the track when this switch is on.
-  ///
-  /// Defaults to [ThemeData.toggleableActiveColor] with the opacity set at 50%.
   ///
   /// Ignored if this switch is created with [Switch.adaptive].
   ///
@@ -204,12 +200,7 @@ class SwitchState extends StatelessWidget {
   /// state and [inactiveThumbColor] in the default state. If that is also null,
   /// then the value of [SwitchThemeData.thumbColor] is used. If that is also
   /// null, then the following colors are used:
-  ///
-  /// | State    | Light theme                       | Dark theme                        |
-  /// |----------|-----------------------------------|-----------------------------------|
-  /// | Default  | `Colors.grey.shade50`             | `Colors.grey.shade400`            |
-  /// | Selected | [ThemeData.toggleableActiveColor] | [ThemeData.toggleableActiveColor] |
-  /// | Disabled | `Colors.grey.shade400`            | `Colors.grey.shade800`            |
+
   final MaterialStateProperty<Color?>? thumbColor;
 
   /// {@template flutter.material.switch.trackColor}
@@ -245,12 +236,7 @@ class SwitchState extends StatelessWidget {
   /// state and [inactiveTrackColor] in the default state. If that is also null,
   /// then the value of [SwitchThemeData.trackColor] is used. If that is also
   /// null, then the following colors are used:
-  ///
-  /// | State    | Light theme                     | Dark theme                      |
-  /// |----------|---------------------------------|---------------------------------|
-  /// | Default  | `Color(0x52000000)`             | `Colors.white30`                |
-  /// | Selected | [activeColor] with alpha `0x80` | [activeColor] with alpha `0x80` |
-  /// | Disabled | `Colors.black12`                | `Colors.white10`                |
+
   final MaterialStateProperty<Color?>? trackColor;
 
   /// {@template flutter.material.switch.materialTapTargetSize}
@@ -323,14 +309,6 @@ class SwitchState extends StatelessWidget {
   ///  * [MaterialState.hovered].
   ///  * [MaterialState.focused].
   /// {@endtemplate}
-  ///
-  /// If null, then the value of [activeColor] with alpha
-  /// [kRadialReactionAlpha], [focusColor] and [hoverColor] is used in the
-  /// pressed, focused and hovered state. If that is also null,
-  /// the value of [SwitchThemeData.overlayColor] is used. If that is
-  /// also null, then the value of [ThemeData.toggleableActiveColor] with alpha
-  /// [kRadialReactionAlpha], [ThemeData.focusColor] and [ThemeData.hoverColor]
-  /// is used in the pressed, focused and hovered state.
   final MaterialStateProperty<Color?>? overlayColor;
 
   /// {@template flutter.material.switch.splashRadius}
@@ -449,44 +427,15 @@ class CupertinoSwitchState extends StatelessWidget {
       this.didUpdateWidget});
 
   /// Whether this switch is on or off.
-  ///
-  /// Must not be null.
+
   final bool value;
 
-  /// Called when the user toggles with switch on or off.
-  ///
-  /// The switch passes the new value to the callback but does not actually
-  /// change state until the parent widget rebuilds the switch with the new
-  /// value.
-  ///
-  /// If null, the switch will be displayed as disabled, which has a reduced opacity.
-  ///
-  /// The callback provided to onChanged should update the state of the parent
-  /// [StatefulWidget] using the [State.setState] method, so that the parent
-  /// gets rebuilt; for example:
-  ///
-  /// ```dart
-  /// CupertinoSwitch(
-  ///   value: _giveVerse,
-  ///   onChanged: (bool newValue) {
-  ///     setState(() {
-  ///       _giveVerse = newValue;
-  ///     });
-  ///   },
-  /// )
-  /// ```
   final ValueChanged<bool>? onChanged;
 
   final SwitchStateChanged? onWaitChanged;
 
-  /// The color to use when this switch is on.
-  ///
-  /// Defaults to [CupertinoColors.systemGreen] when null and ignores
-  /// the [CupertinoTheme] in accordance to native iOS behavior.
   final Color? activeColor;
 
-  /// The color to use for the background when the switch is off.
-  ///
   /// Defaults to [CupertinoColors.secondarySystemFill] when null.
   final Color? trackColor;
 
@@ -495,26 +444,6 @@ class CupertinoSwitchState extends StatelessWidget {
   /// Defaults to [CupertinoColors.white] when null.
   final Color? thumbColor;
 
-  /// {@template flutter.cupertino.CupertinoSwitch.dragStartBehavior}
-  /// Determines the way that drag start behavior is handled.
-  ///
-  /// If set to [DragStartBehavior.start], the drag behavior used to move the
-  /// switch from on to off will begin at the position where the drag gesture won
-  /// the arena. If set to [DragStartBehavior.down] it will begin at the position
-  /// where a down event was first detected.
-  ///
-  /// In general, setting this to [DragStartBehavior.start] will make drag
-  /// animation smoother and setting it to [DragStartBehavior.down] will make
-  /// drag behavior feel slightly more reactive.
-  ///
-  /// By default, the drag start behavior is [DragStartBehavior.start].
-  ///
-  /// See also:
-  ///
-  ///  * [DragGestureRecognizer.dragStartBehavior], which gives an example for
-  ///    the different behaviors.
-  ///
-  /// {@endtemplate}
   final DragStartBehavior dragStartBehavior;
 
   /// initState
