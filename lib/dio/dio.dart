@@ -114,7 +114,7 @@ class ExtendedDio {
   Future<ResponseModel<T>> get<T>(
     String url, {
     Map<String, dynamic>? params,
-    dynamic data,
+    Object? data,
     Options? options,
     ProgressCallback? onReceiveProgress,
     CancelToken? cancelToken,
@@ -124,6 +124,7 @@ class ExtendedDio {
     return await _handle<T>(
         _dio!.get<T>(url,
             options: options,
+            data: data,
             onReceiveProgress: onReceiveProgress,
             queryParameters: params,
             cancelToken: cancelToken ?? _cancelToken),
@@ -133,7 +134,7 @@ class ExtendedDio {
   /// getUri
   Future<ResponseModel<T>> getUri<T>(
     Uri uri, {
-    dynamic data,
+    Object? data,
     Options? options,
     ProgressCallback? onReceiveProgress,
     CancelToken? cancelToken,
@@ -144,6 +145,7 @@ class ExtendedDio {
     return await _handle<T>(
         _dio!.getUri<T>(uri,
             options: options,
+            data: data,
             onReceiveProgress: onReceiveProgress,
             cancelToken: cancelToken ?? _cancelToken),
         baseOptions: dio!.options);
@@ -153,7 +155,7 @@ class ExtendedDio {
   Future<ResponseModel<T>> post<T>(
     String url, {
     Map<String, dynamic>? params,
-    dynamic data,
+    Object? data,
     Options? options,
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
@@ -175,7 +177,7 @@ class ExtendedDio {
   /// postUri
   Future<ResponseModel<T>> postUri<T>(
     Uri uri, {
-    dynamic data,
+    Object? data,
     Options? options,
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
@@ -197,7 +199,7 @@ class ExtendedDio {
   Future<ResponseModel<T>> put<T>(
     String url, {
     Map<String, dynamic>? params,
-    dynamic data,
+    Object? data,
     Options? options,
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
@@ -219,7 +221,7 @@ class ExtendedDio {
   /// putUri
   Future<ResponseModel<T>> putUri<T>(
     Uri uri, {
-    dynamic data,
+    Object? data,
     Options? options,
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
@@ -241,7 +243,7 @@ class ExtendedDio {
   Future<ResponseModel<T>> head<T>(
     String url, {
     Map<String, dynamic>? params,
-    dynamic data,
+    Object? data,
     Options? options,
     CancelToken? cancelToken,
   }) async {
@@ -259,7 +261,7 @@ class ExtendedDio {
   /// headUri
   Future<ResponseModel<T>> headUri<T>(
     Uri uri, {
-    dynamic data,
+    Object? data,
     Options? options,
     CancelToken? cancelToken,
   }) async {
@@ -277,7 +279,7 @@ class ExtendedDio {
   Future<ResponseModel<T>> delete<T>(
     String url, {
     Map<String, dynamic>? params,
-    dynamic data,
+    Object? data,
     Options? options,
     CancelToken? cancelToken,
   }) async {
@@ -295,7 +297,7 @@ class ExtendedDio {
   /// deleteUri
   Future<ResponseModel<T>> deleteUri<T>(
     Uri uri, {
-    dynamic data,
+    Object? data,
     Options? options,
     CancelToken? cancelToken,
   }) async {
@@ -313,7 +315,7 @@ class ExtendedDio {
   Future<ResponseModel<T>> patch<T>(
     String url, {
     Map<String, dynamic>? params,
-    dynamic data,
+    Object? data,
     Options? options,
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
@@ -335,7 +337,7 @@ class ExtendedDio {
   /// patchUri
   Future<ResponseModel<T>> patchUri<T>(
     Uri uri, {
-    dynamic data,
+    Object? data,
     Options? options,
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
@@ -356,7 +358,7 @@ class ExtendedDio {
   /// request
   Future<ResponseModel<T>> request<T>(
     String url, {
-    dynamic data,
+    Object? data,
     Map<String, dynamic>? params,
     Options? options,
     ProgressCallback? onSendProgress,
@@ -379,7 +381,7 @@ class ExtendedDio {
   /// requestUri
   Future<ResponseModel<T>> requestUri<T>(
     Uri uri, {
-    dynamic data,
+    Object? data,
     Options? options,
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
@@ -401,7 +403,7 @@ class ExtendedDio {
   Future<ResponseModel> download(
     String url,
     String savePath, {
-    dynamic data,
+    Object? data,
     Map<String, dynamic>? params,
     Options? options,
     ProgressCallback? onReceiveProgress,
@@ -429,7 +431,7 @@ class ExtendedDio {
   Future<ResponseModel> downloadUri(
     Uri uri,
     String savePath, {
-    dynamic data,
+    Object? data,
     Options? options,
     ProgressCallback? onReceiveProgress,
     bool deleteOnError = true,
