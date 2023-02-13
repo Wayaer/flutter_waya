@@ -4,37 +4,30 @@ export 'interceptor/cookies_interceptor.dart';
 export 'interceptor/debugger_interceptor.dart';
 export 'interceptor/logger_interceptor.dart';
 
-/// 请求数据类型 (4种): application/x-www-form-urlencoded 、multipart/form-data、application/json、text/xml
-const List<String> httpContentType = <String>[
-  'application/x-www-form-urlencoded',
-  'multipart/form-data',
-  'application/json',
-  'text/xml'
-];
-
 class ExtendedDioOptions extends BaseOptions {
-  ExtendedDioOptions(
-      {this.interceptors = const [],
-      this.httpClientAdapter,
-      this.transformer,
-      super.method,
-      super.connectTimeout = 5000,
-      super.receiveTimeout = 5000,
-      super.sendTimeout = 5000,
-      super.baseUrl = '',
-      super.queryParameters,
-      super.extra,
-      super.headers,
-      super.responseType = ResponseType.json,
-      super.contentType,
-      super.validateStatus,
-      super.receiveDataWhenStatusError,
-      super.followRedirects,
-      super.maxRedirects,
-      super.requestEncoder,
-      super.responseDecoder,
-      super.listFormat,
-      super.setRequestContentTypeWhenNoPayload = false});
+  ExtendedDioOptions({
+    String? contentType,
+    this.interceptors = const [],
+    this.httpClientAdapter,
+    this.transformer,
+    super.method,
+    super.connectTimeout = const Duration(seconds: 5),
+    super.receiveTimeout = const Duration(seconds: 5),
+    super.sendTimeout = const Duration(seconds: 5),
+    super.baseUrl = '',
+    super.queryParameters,
+    super.extra,
+    super.headers,
+    super.responseType = ResponseType.json,
+    super.validateStatus,
+    super.receiveDataWhenStatusError,
+    super.followRedirects,
+    super.maxRedirects,
+    super.requestEncoder,
+    super.responseDecoder,
+    super.listFormat,
+    super.persistentConnection,
+  }) : super(contentType: contentType ?? Headers.jsonContentType);
 
   /// 添加自定义拦截器
   /// [LoggerInterceptor] 日志打印
@@ -45,6 +38,30 @@ class ExtendedDioOptions extends BaseOptions {
   HttpClientAdapter? httpClientAdapter;
 
   Transformer? transformer;
+
+  Map<String, dynamic> toMap() => {
+        'interceptors': interceptors,
+        'httpClientAdapter': httpClientAdapter,
+        'transformer': transformer,
+        'method': method,
+        'connectTimeout': connectTimeout,
+        'receiveTimeout': receiveTimeout,
+        'sendTimeout': sendTimeout,
+        'baseUrl': baseUrl,
+        'queryParameters': queryParameters,
+        'extra': extra,
+        'headers': headers,
+        'responseType': responseType,
+        'contentType': contentType,
+        'validateStatus': validateStatus,
+        'receiveDataWhenStatusError': receiveDataWhenStatusError,
+        'followRedirects': followRedirects,
+        'maxRedirects': maxRedirects,
+        'requestEncoder': requestEncoder,
+        'responseDecoder': responseDecoder,
+        'listFormat': listFormat,
+        'persistentConnection': persistentConnection,
+      };
 }
 
 /// 全局只会存在2个Dio实例 一个常规网络请求  一个下载dio
@@ -123,6 +140,7 @@ class ExtendedDio {
   }) async {
     _dio ??= _createDio(this.options);
     if (options != null) _dio!.options = _dio!.options.mergeOptions(options);
+
     return await _handle<T>(
         _dio!.getUri<T>(uri,
             options: options,
@@ -475,8 +493,7 @@ extension ExtensionBaseOptions on BaseOptions {
       listFormat: options?.listFormat,
       baseUrl: options?.baseUrl,
       queryParameters: options?.queryParameters,
-      setRequestContentTypeWhenNoPayload:
-          options?.setRequestContentTypeWhenNoPayload);
+      persistentConnection: options?.persistentConnection);
 
   BaseOptions mergeOptions([Options? options]) => copyWith(
       method: options?.method,
@@ -493,6 +510,27 @@ extension ExtensionBaseOptions on BaseOptions {
       requestEncoder: options?.requestEncoder,
       responseDecoder: options?.responseDecoder,
       listFormat: options?.listFormat);
+
+  Map<String, dynamic> toMap() => {
+        'method': method,
+        'connectTimeout': connectTimeout,
+        'receiveTimeout': receiveTimeout,
+        'sendTimeout': sendTimeout,
+        'baseUrl': baseUrl,
+        'queryParameters': queryParameters,
+        'extra': extra,
+        'headers': headers,
+        'responseType': responseType,
+        'contentType': contentType,
+        'validateStatus': validateStatus,
+        'receiveDataWhenStatusError': receiveDataWhenStatusError,
+        'followRedirects': followRedirects,
+        'maxRedirects': maxRedirects,
+        'requestEncoder': requestEncoder,
+        'responseDecoder': responseDecoder,
+        'listFormat': listFormat,
+        'persistentConnection': persistentConnection,
+      };
 }
 
 extension ExtensionOptions on Options {
@@ -527,6 +565,24 @@ extension ExtensionOptions on Options {
       requestEncoder: options?.requestEncoder,
       responseDecoder: options?.responseDecoder,
       listFormat: options?.listFormat);
+
+  Map<String, dynamic> toMap() => {
+        'method': method,
+        'receiveTimeout': receiveTimeout,
+        'sendTimeout': sendTimeout,
+        'extra': extra,
+        'headers': headers,
+        'responseType': responseType,
+        'contentType': contentType,
+        'validateStatus': validateStatus,
+        'receiveDataWhenStatusError': receiveDataWhenStatusError,
+        'followRedirects': followRedirects,
+        'maxRedirects': maxRedirects,
+        'requestEncoder': requestEncoder,
+        'responseDecoder': responseDecoder,
+        'listFormat': listFormat,
+        'persistentConnection': persistentConnection,
+      };
 }
 
 class ResponseModel<T> extends Response<T> {
@@ -609,11 +665,7 @@ class ResponseModel<T> extends Response<T> {
           requestOptions: RequestOptions(path: ''),
           statusCode: 0,
           statusMessage: 'unknown exception',
-          type: DioErrorType.other.toString());
-
-  String toJson() =>
-      '{"type":"${type.toString()}","data":$data,"cookie":$cookie,"statusCode'
-      '":$statusCode,"statusMessage":"$statusMessage","extra":$extra"}';
+          type: DioErrorType.unknown.toString());
 
   Map<String, dynamic> requestOptionsToMap() => <String, dynamic>{
         'uri': requestOptions.uri.path,
