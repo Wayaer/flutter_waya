@@ -73,12 +73,12 @@ class _ExtendedDioPageState extends State<ExtendedDioPage> {
   }
 
   void post() async {
-    await ExtendedDio().post(
-        'http://huayang2.zd.simingkuai.com:45929/api/paymentSwitch',
-        options: Options(contentType: null, headers: {
-          Headers.contentTypeHeader: Headers.formUrlEncodedContentType
-        }),
-        data: {"channel": "android", "code": 2022080300});
+    await ExtendedDio()
+        .post('http://huayang2.zd.simingkuai.com:45929/api/paymentSwitch',
+            options: Options(contentType: Headers.jsonContentType, headers: {
+              Headers.contentTypeHeader: Headers.jsonMimeType,
+            }),
+            data: {"channel": "android", "code": 2022080300});
   }
 
   void put() async {

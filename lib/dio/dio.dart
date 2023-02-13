@@ -475,41 +475,47 @@ class ExtendedDio {
 }
 
 extension ExtensionBaseOptions on BaseOptions {
-  BaseOptions merge([BaseOptions? options]) => copyWith(
-      method: options?.method,
-      connectTimeout: options?.connectTimeout,
-      receiveTimeout: options?.receiveTimeout,
-      sendTimeout: options?.sendTimeout,
-      extra: options?.extra,
-      headers: options?.headers,
-      responseType: options?.responseType,
-      contentType: options?.contentType,
-      validateStatus: options?.validateStatus,
-      receiveDataWhenStatusError: options?.receiveDataWhenStatusError,
-      followRedirects: options?.followRedirects,
-      maxRedirects: options?.maxRedirects,
-      requestEncoder: options?.requestEncoder,
-      responseDecoder: options?.responseDecoder,
-      listFormat: options?.listFormat,
-      baseUrl: options?.baseUrl,
-      queryParameters: options?.queryParameters,
-      persistentConnection: options?.persistentConnection);
+  BaseOptions merge([BaseOptions? options]) {
+    options?.headers.remove(Headers.contentTypeHeader);
+    return copyWith(
+        method: options?.method,
+        connectTimeout: options?.connectTimeout,
+        receiveTimeout: options?.receiveTimeout,
+        sendTimeout: options?.sendTimeout,
+        extra: options?.extra,
+        headers: options?.headers,
+        responseType: options?.responseType,
+        contentType: options?.contentType,
+        validateStatus: options?.validateStatus,
+        receiveDataWhenStatusError: options?.receiveDataWhenStatusError,
+        followRedirects: options?.followRedirects,
+        maxRedirects: options?.maxRedirects,
+        requestEncoder: options?.requestEncoder,
+        responseDecoder: options?.responseDecoder,
+        listFormat: options?.listFormat,
+        baseUrl: options?.baseUrl,
+        queryParameters: options?.queryParameters,
+        persistentConnection: options?.persistentConnection);
+  }
 
-  BaseOptions mergeOptions([Options? options]) => copyWith(
-      method: options?.method,
-      receiveTimeout: options?.receiveTimeout,
-      sendTimeout: options?.sendTimeout,
-      extra: options?.extra,
-      headers: options?.headers,
-      responseType: options?.responseType,
-      contentType: options?.contentType,
-      validateStatus: options?.validateStatus,
-      receiveDataWhenStatusError: options?.receiveDataWhenStatusError,
-      followRedirects: options?.followRedirects,
-      maxRedirects: options?.maxRedirects,
-      requestEncoder: options?.requestEncoder,
-      responseDecoder: options?.responseDecoder,
-      listFormat: options?.listFormat);
+  BaseOptions mergeOptions([Options? options]) {
+    options?.headers?.remove(Headers.contentTypeHeader);
+    return copyWith(
+        method: options?.method,
+        receiveTimeout: options?.receiveTimeout,
+        sendTimeout: options?.sendTimeout,
+        extra: options?.extra,
+        headers: options?.headers,
+        responseType: options?.responseType,
+        contentType: options?.contentType,
+        validateStatus: options?.validateStatus,
+        receiveDataWhenStatusError: options?.receiveDataWhenStatusError,
+        followRedirects: options?.followRedirects,
+        maxRedirects: options?.maxRedirects,
+        requestEncoder: options?.requestEncoder,
+        responseDecoder: options?.responseDecoder,
+        listFormat: options?.listFormat);
+  }
 
   Map<String, dynamic> toMap() => {
         'method': method,
