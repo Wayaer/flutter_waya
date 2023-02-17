@@ -1,3 +1,8 @@
+## 5.0.0
+
+* Updated dio to 5.0.0
+* Fixed an issue with duplicate setting of contentType
+
 ## 4.0.0
 
 * Compatible with Flutter 3.7.0

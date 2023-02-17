@@ -141,7 +141,6 @@ class ExtendedDio {
   }) async {
     _dio ??= _createDio(this.options);
     if (options != null) _dio!.options = _dio!.options.mergeOptions(options);
-
     return await _handle<T>(
         _dio!.getUri<T>(uri,
             options: options,

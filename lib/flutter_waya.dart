@@ -1,7 +1,7 @@
 library flutter_waya;
 
 export 'package:crypto/crypto.dart';
-export 'package:diox/diox.dart';
+export 'package:dio/dio.dart';
 export 'package:easy_refresh/easy_refresh.dart' hide Indicator;
 
 export 'package:flutter_localizations/flutter_localizations.dart';
