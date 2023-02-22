@@ -1,3 +1,7 @@
+## 5.0.0+2
+
+* Change the `filteredUrls` to `filteredApi`
+
 ## 5.0.0+1
 
 * Update dependencies

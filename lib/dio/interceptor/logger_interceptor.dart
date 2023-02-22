@@ -1,9 +1,9 @@
 import 'package:flutter_waya/flutter_waya.dart';
 
 class LoggerInterceptor<T> extends InterceptorsWrapper {
-  LoggerInterceptor({this.filteredUrls = const []});
+  LoggerInterceptor({this.filteredApi = const []});
 
-  final List<String> filteredUrls;
+  final List<String> filteredApi;
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
@@ -25,7 +25,7 @@ class LoggerInterceptor<T> extends InterceptorsWrapper {
       Response<dynamic> response, ResponseInterceptorHandler handler) {
     bool forbidPrint = false;
     String requestUri = response.requestOptions.uri.toString();
-    for (var element in filteredUrls) {
+    for (var element in filteredApi) {
       if (requestUri.toString().contains(element)) {
         forbidPrint = true;
         break;
