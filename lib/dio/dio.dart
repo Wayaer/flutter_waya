@@ -112,7 +112,7 @@ class ExtendedDio {
 
   /// get
   Future<ResponseModel<T>> get<T>(
-    String url, {
+    String path, {
     Map<String, dynamic>? params,
     Object? data,
     Options? options,
@@ -122,7 +122,7 @@ class ExtendedDio {
     _dio ??= _createDio(this.options);
     if (options != null) _dio!.options = _dio!.options.mergeOptions(options);
     return await _handle<T>(
-        _dio!.get<T>(url,
+        _dio!.get<T>(path,
             options: options,
             data: data,
             onReceiveProgress: onReceiveProgress,
@@ -152,7 +152,7 @@ class ExtendedDio {
 
   /// post
   Future<ResponseModel<T>> post<T>(
-    String url, {
+    String path, {
     Map<String, dynamic>? params,
     Object? data,
     Options? options,
@@ -163,7 +163,7 @@ class ExtendedDio {
     _dio ??= _createDio(this.options);
     if (options != null) _dio!.options = _dio!.options.mergeOptions(options);
     return await _handle<T>(
-        _dio!.post<T>(url,
+        _dio!.post<T>(path,
             onSendProgress: onSendProgress,
             onReceiveProgress: onReceiveProgress,
             queryParameters: params,
@@ -196,7 +196,7 @@ class ExtendedDio {
 
   /// put
   Future<ResponseModel<T>> put<T>(
-    String url, {
+    String path, {
     Map<String, dynamic>? params,
     Object? data,
     Options? options,
@@ -207,7 +207,7 @@ class ExtendedDio {
     _dio ??= _createDio(this.options);
     if (options != null) _dio!.options = _dio!.options.mergeOptions(options);
     return await _handle<T>(
-        _dio!.put<T>(url,
+        _dio!.put<T>(path,
             onSendProgress: onSendProgress,
             onReceiveProgress: onReceiveProgress,
             queryParameters: params,
@@ -240,7 +240,7 @@ class ExtendedDio {
 
   /// head
   Future<ResponseModel<T>> head<T>(
-    String url, {
+    String path, {
     Map<String, dynamic>? params,
     Object? data,
     Options? options,
@@ -249,7 +249,7 @@ class ExtendedDio {
     _dio ??= _createDio(this.options);
     if (options != null) _dio!.options = _dio!.options.mergeOptions(options);
     return await _handle<T>(
-        _dio!.head<T>(url,
+        _dio!.head<T>(path,
             queryParameters: params,
             options: options,
             data: data,
@@ -276,7 +276,7 @@ class ExtendedDio {
 
   /// delete
   Future<ResponseModel<T>> delete<T>(
-    String url, {
+    String path, {
     Map<String, dynamic>? params,
     Object? data,
     Options? options,
@@ -285,7 +285,7 @@ class ExtendedDio {
     _dio ??= _createDio(this.options);
     if (options != null) _dio!.options = _dio!.options.mergeOptions(options);
     return await _handle<T>(
-        _dio!.delete<T>(url,
+        _dio!.delete<T>(path,
             data: data,
             queryParameters: params,
             options: options,
@@ -312,7 +312,7 @@ class ExtendedDio {
 
   /// patch
   Future<ResponseModel<T>> patch<T>(
-    String url, {
+    String path, {
     Map<String, dynamic>? params,
     Object? data,
     Options? options,
@@ -323,7 +323,7 @@ class ExtendedDio {
     _dio ??= _createDio(this.options);
     if (options != null) _dio!.options = _dio!.options.mergeOptions(options);
     return await _handle<T>(
-        _dio!.patch<T>(url,
+        _dio!.patch<T>(path,
             onSendProgress: onSendProgress,
             onReceiveProgress: onReceiveProgress,
             queryParameters: params,
@@ -356,7 +356,7 @@ class ExtendedDio {
 
   /// request
   Future<ResponseModel<T>> request<T>(
-    String url, {
+    String path, {
     Object? data,
     Map<String, dynamic>? params,
     Options? options,
@@ -367,7 +367,7 @@ class ExtendedDio {
     _dio ??= _createDio(this.options);
     if (options != null) _dio!.options = _dio!.options.mergeOptions(options);
     return await _handle<T>(
-        _dio!.request<T>(url,
+        _dio!.request<T>(path,
             data: data,
             queryParameters: params,
             options: options,
@@ -400,7 +400,7 @@ class ExtendedDio {
 
   /// download
   Future<ResponseModel> download(
-    String url,
+    String path,
     String savePath, {
     Object? data,
     Map<String, dynamic>? params,
@@ -415,7 +415,7 @@ class ExtendedDio {
       _dioDownload!.options = _dioDownload!.options.mergeOptions(options);
     }
     return await _handle(
-        _dioDownload!.download(url, savePath,
+        _dioDownload!.download(path, savePath,
             data: data,
             queryParameters: params,
             options: options,
