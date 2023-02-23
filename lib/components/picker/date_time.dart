@@ -16,11 +16,9 @@ class DateTimePicker extends PickerStatefulWidget<DateTime> {
     this.startDate,
     this.defaultDate,
     this.endDate,
-    PickerOptions<DateTime>? options,
+    super.options = const PickerOptions<DateTime>(),
     PickerWheelOptions? wheelOptions,
-  }) : super(
-            options: options ?? PickerOptions<DateTime>(),
-            wheelOptions: wheelOptions ?? GlobalOptions().pickerWheelOptions);
+  }) : super(wheelOptions: wheelOptions ?? GlobalOptions().pickerWheelOptions);
 
   /// 补全双位数
   final bool dual;
@@ -162,7 +160,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
         : addList(30);
   }
 
-  DateTime confirmTapVoid() => DateTime(
+  DateTime confirmTap() => DateTime(
       unit.year == null ? defaultDate.year : yearData[yearIndex],
       unit.month == null ? defaultDate.month : (monthData[monthIndex] + 1),
       unit.day == null ? defaultDate.day : (dayData[dayIndex] + 1),
@@ -277,7 +275,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
     }
     return PickerSubject<DateTime>(
         options: widget.options,
-        confirmTap: confirmTapVoid,
+        confirmTap: confirmTap,
         child: Universal(
             width: double.infinity,
             direction: Axis.horizontal,
@@ -299,7 +297,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
           width: wheelOptions.itemWidth,
           children: !widget.showUnit
               ? null
-              : <Widget>[
+              : [
                   Expanded(
                       child: listWheel(
                           list: list,

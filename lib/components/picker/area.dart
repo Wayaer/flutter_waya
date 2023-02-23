@@ -12,11 +12,9 @@ class AreaPicker extends PickerStatefulWidget<String> {
     this.defaultProvince,
     this.defaultCity,
     this.defaultDistrict,
-    PickerOptions<String>? options,
+    super.options = const PickerOptions<String>(),
     PickerWheelOptions? wheelOptions,
-  }) : super(
-            options: options ?? PickerOptions<String>(),
-            wheelOptions: wheelOptions ?? GlobalOptions().pickerWheelOptions);
+  }) : super(wheelOptions: wheelOptions ?? GlobalOptions().pickerWheelOptions);
 
   /// 默认选择的省
   final String? defaultProvince;
@@ -91,10 +89,6 @@ class _AreaPickerState extends State<AreaPicker> {
         FixedExtentScrollController(initialItem: districtIndex);
   }
 
-  /// 点击确定返回选择的地区
-  String confirmTapVoid() =>
-      '${province[provinceIndex]} ${city[cityIndex]} ${district[districtIndex]}';
-
   void refreshCity() {
     final Map<dynamic, dynamic> provinceData =
         areaData[province[provinceIndex]] as Map<dynamic, dynamic>;
@@ -147,10 +141,14 @@ class _AreaPickerState extends State<AreaPicker> {
     ]);
     return PickerSubject<String>(
         options: widget.options,
-        confirmTap: confirmTapVoid,
+        confirmTap: confirmTap,
         child: SizedBox(
             width: double.infinity, height: kPickerDefaultHeight, child: row));
   }
+
+  /// 点击确定返回选择的地区
+  String confirmTap() =>
+      '${province[provinceIndex]} ${city[cityIndex]} ${district[districtIndex]}';
 
   Widget wheelItem(List<String> list,
           {FixedExtentScrollController? controller,

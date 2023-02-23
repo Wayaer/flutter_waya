@@ -22,7 +22,7 @@ class SingleColumnPicker extends PickerStatelessWidget<int> {
   })  : controller = controller ??
             FixedExtentScrollController(initialItem: initialIndex),
         super(
-            options: options ?? PickerOptions<int>(),
+            options: options ?? const PickerOptions<int>(),
             wheelOptions: wheelOptions ?? GlobalOptions().pickerWheelOptions);
 
   /// 渲染子组件
@@ -57,14 +57,14 @@ extension ExtensionSingleListPicker on SingleListPicker {
 
 /// list 单多项选择器
 class SingleListPicker extends StatelessWidget {
-  SingleListPicker({
+  const SingleListPicker({
     super.key,
     required this.itemCount,
     required this.itemBuilder,
-    PickerOptions<List<int>>? options,
+    this.options = const PickerOptions<List<int>>(),
     this.singleListPickerOptions = const SingleListPickerOptions(),
     this.listBuilder,
-  }) : options = options ?? PickerOptions<List<int>>();
+  });
 
   /// 头部和背景色配置
   final PickerOptions<List<int>> options;

@@ -30,64 +30,78 @@ class PickerPage extends StatelessWidget {
           ]);
 
   Future<void> selectTime([DateTimePickerUnit? unit]) async {
-    final DateTime? dateTime = await DateTimePicker(
+    await DateTimePicker(
             dual: true,
             unit: unit ?? const DateTimePickerUnit.all(),
             options: PickerOptions<DateTime>(
                 contentPadding: const EdgeInsets.symmetric(horizontal: 12),
-                confirmTap: (DateTime? dateTime) {
-                  showToast(dateTime!.format(DateTimeDist.yearSecond));
+                verifyConfirm: (DateTime? dateTime) {
+                  showToast(dateTime?.format(DateTimeDist.yearSecond) ??
+                      'verifyConfirm');
                   return true;
                 },
-                cancelTap: (DateTime? dateTime) {
-                  showToast(
-                      dateTime?.format(DateTimeDist.yearSecond) ?? 'cancel');
+                verifyCancel: (DateTime? dateTime) {
+                  showToast(dateTime?.format(DateTimeDist.yearSecond) ??
+                      'verifyCancel');
                   return true;
                 }),
             startDate: DateTime(2020, 8, 9, 9, 9, 9),
             defaultDate: DateTime(2021, 9, 21, 8, 8, 8),
             endDate: DateTime(2022, 10, 20, 10, 10, 10))
         .show();
-    showToast(dateTime?.format(DateTimeDist.yearSecond) ?? 'null');
   }
 
   Future<void> customPicker() async {
-    final String? data = await CustomPicker<String?>(
-            options: PickerOptions<String?>(
-                confirmTap: (String? value) {
-                  return true;
-                },
-                cancelTap: (String? value) {
-                  return true;
-                },
-                title: Container(
-                    alignment: Alignment.center,
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-                    decoration: BoxDecoration(
-                        color: Colors.lightBlue,
-                        borderRadius: BorderRadius.circular(6)),
-                    child: const BText('Title')),
-                backgroundColor: Colors.red),
-            content: Container(
-                height: 300,
+    final String? data = await CustomPicker<String>(
+        options: PickerOptions<String>(
+            decoration: const BoxDecoration(
+                color: Colors.red,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(10))),
+            verifyConfirm: (String? value) {
+              log('verifyConfirm $value');
+              return true;
+            },
+            verifyCancel: (String? value) {
+              log('verifyCancel $value');
+              return true;
+            },
+            title: Container(
                 alignment: Alignment.center,
-                color: Colors.blue.withOpacity(0.2),
-                child: const BText('showCustomPicker', color: Colors.black)),
-            cancelTap: () {
-              return 'Cancel';
-            })
-        .show(
-            options:
-                BottomSheetOptions(barrierColor: Colors.red.withOpacity(0.3)));
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+                decoration: BoxDecoration(
+                    color: Colors.lightBlue,
+                    borderRadius: BorderRadius.circular(6)),
+                child: const BText('Title'))),
+        content: Container(
+            height: 300,
+            alignment: Alignment.center,
+            color: Colors.blue.withOpacity(0.2),
+            child: const BText('showCustomPicker', color: Colors.black)),
+        confirmTap: () {
+          return 'Confirm';
+        },
+        cancelTap: () {
+          return 'Cancel';
+        }).show<
+            String>(
+        options: BottomSheetOptions(
+            backgroundColor: Colors.transparent,
+            barrierColor: Colors.red.withOpacity(0.3)));
     showToast(data.toString());
   }
 
   Future<void> selectCity() async {
-    final String? data =
-        await AreaPicker(defaultProvince: '四川省', defaultCity: '绵阳市')
-            .popupBottomSheet<String>();
-    showToast(data.toString());
+    await AreaPicker(
+        defaultProvince: '四川省',
+        defaultCity: '绵阳市',
+        options: PickerOptions(verifyConfirm: (String? value) {
+          showToast(value ?? 'verifyConfirm');
+          return true;
+        }, verifyCancel: (String? value) {
+          showToast(value ?? 'verifyCancel');
+          return true;
+        })).show();
   }
 
   Future<void> multiColumnPicker() async {

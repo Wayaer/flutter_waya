@@ -1,10 +1,9 @@
-## 5.0.0+2
+## 5.1.0
 
+* Fixed `CustomPicker` issues
+* Change the `confirmTap` in `PickerOptions` to `verifyConfirm`
+* Change the `cancelTap` in `PickerOptions` to `verifyCancel`
 * Change the `filteredUrls` to `filteredApi`
-
-## 5.0.0+1
-
-* Update dependencies
 
 ## 5.0.0
 

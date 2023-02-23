@@ -17,7 +17,7 @@ const double kPickerDefaultHeight = 180;
 const double kPickerDefaultWidth = 90;
 
 class PickerOptions<T> {
-  PickerOptions({
+  const PickerOptions({
     this.top,
     this.bottom,
     this.title,
@@ -26,48 +26,52 @@ class PickerOptions<T> {
     this.confirm = const BText('confirm'),
     this.cancel = const BText('cancel'),
     this.backgroundColor,
+    this.decoration,
     this.contentStyle,
-    PickerTapConfirmCallback<T>? confirmTap,
-    PickerTapCancelCallback<T>? cancelTap,
-  })  : confirmTap = confirmTap ?? ((T? value) => true),
-        cancelTap = cancelTap ?? ((T? value) => true);
+    this.verifyConfirm,
+    this.verifyCancel,
+  });
 
   /// 容器属性
   /// 整个Picker的背景色
-  Color? backgroundColor;
+  final Color? backgroundColor;
 
   /// [title]底部内容
-  Widget? bottom;
+  final Widget? bottom;
 
   /// [title]顶部内容
-  Widget? top;
-  EdgeInsetsGeometry padding;
+  final Widget? top;
+  final EdgeInsetsGeometry padding;
 
   /// right
-  Widget confirm;
+  final Widget confirm;
 
   /// left
-  Widget cancel;
+  final Widget cancel;
 
   /// center
-  Widget? title;
+  final Widget? title;
 
   /// 字体样式
-  TextStyle? contentStyle;
+  final TextStyle? contentStyle;
 
   /// 对内容
-  EdgeInsetsGeometry? contentPadding;
+  final EdgeInsetsGeometry? contentPadding;
 
-  /// 确定点击事件 picker 关闭前，返回 false 不关闭弹窗
-  /// 默认 为 true;
-  PickerTapConfirmCallback<T> confirmTap;
+  /// 点击 [confirm] 后校验 [confirmTap] 数据，
+  /// 返回 false 不关闭弹窗 默认 为 true;
+  final PickerTapConfirmCallback<T>? verifyConfirm;
 
-  /// 取消点击事件 picker 关闭前，返回 false 不关闭弹窗
-  /// 默认 为 true;
-  PickerTapCancelCallback<T> cancelTap;
+  /// 点击 [cancel] 后校验 [cancelTap] 数据，
+  /// 返回 false 不关闭弹窗 默认 为 true;
+  final PickerTapCancelCallback<T>? verifyCancel;
+
+  /// Decoration
+  final Decoration? decoration;
 
   PickerOptions copyWith({
     Color? backgroundColor,
+    Decoration? decoration,
     Widget? bottom,
     Widget? top,
     EdgeInsetsGeometry? padding,
@@ -75,23 +79,24 @@ class PickerOptions<T> {
     Widget? cancel,
     Widget? title,
     TextStyle? contentStyle,
-    PickerTapConfirmCallback<T>? confirmTap,
-    PickerTapCancelCallback<T>? cancelTap,
-  }) {
-    if (backgroundColor != null) this.backgroundColor = backgroundColor;
-    if (bottom != null) this.bottom = bottom;
-    if (top != null) this.top = top;
-    if (padding != null) this.padding = padding;
-    if (confirm != null) this.confirm = confirm;
-    if (cancel != null) this.cancel = cancel;
-    if (title != null) this.title = title;
-    if (contentStyle != null) this.contentStyle = contentStyle;
-    if (confirmTap != null) this.confirmTap = confirmTap;
-    if (cancelTap != null) this.cancelTap = cancelTap;
-    return this;
-  }
+    PickerTapConfirmCallback<T>? verifyConfirm,
+    PickerTapCancelCallback<T>? verifyCancel,
+  }) =>
+      PickerOptions<T>(
+          decoration: decoration ?? this.decoration,
+          backgroundColor: backgroundColor ?? this.backgroundColor,
+          bottom: bottom ?? this.bottom,
+          top: top ?? this.top,
+          padding: padding ?? this.padding,
+          title: title ?? this.title,
+          confirm: confirm ?? this.confirm,
+          cancel: cancel ?? this.cancel,
+          contentStyle: contentStyle ?? this.contentStyle,
+          verifyConfirm: verifyConfirm ?? this.verifyConfirm,
+          verifyCancel: verifyCancel ?? this.verifyCancel);
 
   PickerOptions merge(PickerOptions? options) => copyWith(
+      decoration: options?.decoration,
       backgroundColor: options?.backgroundColor,
       top: options?.top,
       bottom: options?.bottom,
@@ -100,8 +105,8 @@ class PickerOptions<T> {
       cancel: options?.cancel,
       title: options?.title,
       contentStyle: options?.contentStyle,
-      confirmTap: options?.confirmTap,
-      cancelTap: options?.cancelTap);
+      verifyConfirm: options?.verifyConfirm,
+      verifyCancel: options?.verifyCancel);
 }
 
 class PickerWheelOptions extends WheelOptions {
@@ -230,13 +235,13 @@ class PickerSubject<T> extends StatelessWidget {
         children: [
           options.cancel.onTap(() {
             final T? value = cancelTap?.call();
-            final bool isPop = options.cancelTap.call(value);
+            final bool isPop = options.verifyCancel?.call(value) ?? true;
             if (isPop) closePopup(value);
           }),
           if (options.title != null) options.title!.expandedNull,
           options.confirm.onTap(() {
             final T? value = confirmTap?.call();
-            final bool isPop = options.confirmTap.call(value);
+            final bool isPop = options.verifyConfirm?.call(value) ?? true;
             if (isPop) closePopup(value);
           }),
         ]));
@@ -246,6 +251,7 @@ class PickerSubject<T> extends StatelessWidget {
         : child.padding(options.contentPadding!));
     return Universal(
         onTap: () {},
+        decoration: options.decoration,
         padding: EdgeInsets.only(bottom: context.mediaQueryPadding.bottom),
         mainAxisSize: MainAxisSize.min,
         color: options.backgroundColor,
@@ -304,10 +310,10 @@ class _PickerListWheelState extends ListWheelState {
 
 extension ExtensionCustomPicker on CustomPicker {
   Future<T?> show<T>({BottomSheetOptions? options}) =>
-      popupBottomSheet<T>(options: options);
+      popupBottomSheet<T?>(options: options);
 }
 
-class CustomPicker<T> extends PickerSubject {
+class CustomPicker<T> extends PickerSubject<T> {
   CustomPicker({
     super.key,
     required Widget content,
@@ -316,13 +322,13 @@ class CustomPicker<T> extends PickerSubject {
     PickerSubjectTapCallback<T>? confirmTap,
 
     /// 自定义 取消 按钮 返回参数
-    PickerSubjectTapCallback<T?>? cancelTap,
+    PickerSubjectTapCallback<T>? cancelTap,
 
     /// 头部和背景色配置
-    PickerOptions<T?>? options,
+    PickerOptions<T>? options,
   }) : super(
             confirmTap: confirmTap,
             cancelTap: cancelTap,
-            options: options ?? PickerOptions<T?>(),
+            options: options ?? PickerOptions<T>(),
             child: content);
 }

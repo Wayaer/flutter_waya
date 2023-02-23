@@ -20,11 +20,9 @@ class MultiColumnPicker extends PickerStatelessWidget<List<int>> {
     required this.entry,
     this.horizontalScroll = false,
     this.addExpanded = true,
-    PickerOptions<List<int>>? options,
+    super.options = const PickerOptions<List<int>>(),
     PickerWheelOptions? wheelOptions,
-  }) : super(
-            options: options ?? PickerOptions<List<int>>(),
-            wheelOptions: wheelOptions ?? GlobalOptions().pickerWheelOptions);
+  }) : super(wheelOptions: wheelOptions ?? GlobalOptions().pickerWheelOptions);
 
   /// 要渲染的数据
   final List<PickerEntry> entry;
@@ -87,11 +85,9 @@ class MultiColumnLinkagePicker extends PickerStatefulWidget<List<int>> {
     required this.entry,
     this.horizontalScroll = false,
     this.addExpanded = true,
-    PickerOptions<List<int>>? options,
+    super.options = const PickerOptions<List<int>>(),
     PickerWheelOptions? wheelOptions,
-  }) : super(
-            options: options ?? PickerOptions<List<int>>(),
-            wheelOptions: wheelOptions ?? GlobalOptions().pickerWheelOptions);
+  }) : super(wheelOptions: wheelOptions ?? GlobalOptions().pickerWheelOptions);
 
   /// 要渲染的数据
   final List<PickerLinkageEntry> entry;
