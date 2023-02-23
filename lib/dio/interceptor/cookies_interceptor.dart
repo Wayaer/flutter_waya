@@ -7,7 +7,7 @@ typedef SetCookieOnRequest = Map<String, dynamic> Function(
 /// 获取cookie
 typedef GetCookiesOnResponse = void Function(Response<dynamic> response);
 
-class CookiesInterceptor<T> extends InterceptorsWrapper {
+class CookiesInterceptor extends InterceptorsWrapper {
   CookiesInterceptor({this.setCookies, this.getCookies});
 
   /// 拦截器中 请求回调添加 cookie 方法

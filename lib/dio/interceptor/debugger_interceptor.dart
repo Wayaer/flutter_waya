@@ -91,7 +91,7 @@ class DebuggerInterceptorDataModel {
       };
 }
 
-class DebuggerInterceptor<T> extends InterceptorsWrapper {
+class DebuggerInterceptor extends InterceptorsWrapper {
   DebuggerInterceptor({this.isShow = true});
 
   bool isShow;

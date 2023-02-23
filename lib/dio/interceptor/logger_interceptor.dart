@@ -1,6 +1,6 @@
 import 'package:flutter_waya/flutter_waya.dart';
 
-class LoggerInterceptor<T> extends InterceptorsWrapper {
+class LoggerInterceptor extends InterceptorsWrapper {
   LoggerInterceptor({this.filteredApi = const []});
 
   final List<String> filteredApi;
