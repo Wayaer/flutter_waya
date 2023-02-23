@@ -345,13 +345,12 @@ extension ExtensionContext on BuildContext {
 extension ExtensionGlobalKey on GlobalKey {
   /// 截屏
   /// format 图片格式
-  /// pixelRatio 截图分辨率比例
+  /// pixelRatio 截图分辨率比例 [ui.window.devicePixelRatio]
   Future<ByteData?> screenshots(
-      {ui.ImageByteFormat? format, double? pixelRatio}) async {
+      {ui.ImageByteFormat? format, double pixelRatio = 1.0}) async {
     final RenderRepaintBoundary boundary =
         currentContext!.findRenderObject() as RenderRepaintBoundary;
-    final ui.Image image = await boundary.toImage(
-        pixelRatio: pixelRatio ?? ui.window.devicePixelRatio);
+    final ui.Image image = await boundary.toImage(pixelRatio: pixelRatio);
     final ByteData? byteData =
         await image.toByteData(format: format ?? ui.ImageByteFormat.rawRgba);
 
