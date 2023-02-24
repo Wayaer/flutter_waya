@@ -30,6 +30,7 @@ export 'switch.dart';
 export 'count_down.dart';
 export 'expansion_tiles.dart';
 export 'toggle_rotate.dart';
+export 'rating_stars.dart';
 
 class NoScrollBehavior extends ScrollBehavior {
   @override

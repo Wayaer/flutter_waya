@@ -126,6 +126,19 @@ class ComponentsPage extends StatelessWidget {
                     // BTextStyle(color: Color(0xFFFFC400)),
                   ])
             ]),
+            const Partition('RatingStars'),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+              RatingStars(
+                  value: 2.2,
+                  starSpacing: 4,
+                  builder: (bool selected) => Icon(Icons.star,
+                      color: selected ? Colors.yellow : Colors.grey)),
+              RatingStars(
+                  value: 3.3,
+                  starSpacing: 4,
+                  builder: (bool selected) => Icon(Icons.star,
+                      color: selected ? Colors.yellow : Colors.grey)),
+            ]),
             const SizedBox(height: 100),
           ]);
 }
