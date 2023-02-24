@@ -1,3 +1,7 @@
+## 5.1.1
+
+* Add `RatingStars()`
+
 ## 5.1.0
 
 * Fixed `CustomPicker` issues

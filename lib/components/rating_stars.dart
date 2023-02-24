@@ -71,19 +71,12 @@ class _RatingStarsState extends State<RatingStars> {
   void initState() {
     super.initState();
 
-    /// 限制0.01 <= step <= 1.0
+    /// 0.01 <= step <= 1.0
     _step = min(1.0, widget.step);
     _step = max(0.01, widget.step);
-
-    /// 限制最低星不高于最高星
     _minStars = min(widget.minStars, widget.starCount * 1.0);
-
-    /// 限制当前星不高于最高星
     _currentStars = min(widget.value, widget.starCount * 1.0);
-
-    /// 限制当前星不低于最低星
     _currentStars = max(widget.value, widget.minStars);
-
     setStars(_currentStars, false, false, false);
   }
 
