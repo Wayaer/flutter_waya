@@ -61,7 +61,7 @@ class ButtonPage extends StatelessWidget {
             const SizedBox(height: 20),
             Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
               DropdownMenuButton(
-                  defaultBuilder: (int? index) {
+                  builder: (int? index) {
                     return BText(index == null ? '请选择' : _colors[index],
                         style: context.textTheme.labelLarge);
                   },
@@ -70,7 +70,7 @@ class ButtonPage extends StatelessWidget {
                   onChanged: (int index) {
                     showToast('点击了${_colors[index]}');
                   },
-                  toggle: const Icon(Icons.arrow_right_rounded),
+                  icon: const Icon(Icons.arrow_right_rounded),
                   itemBuilder: (int index) => Padding(
                       padding: const EdgeInsets.symmetric(
                           vertical: 10, horizontal: 4),
@@ -86,7 +86,7 @@ class ButtonPage extends StatelessWidget {
                   itemBuilder: (int index) => BText(_colors[index],
                       style: context.textTheme.bodyMedium),
                   itemCount: _colors.length,
-                  defaultBuilder: (int? index) {
+                  builder: (int? index) {
                     return BText(index == null ? '请选择' : _colors[index],
                             style: context.textTheme.labelLarge)
                         .paddingSymmetric(vertical: 10);

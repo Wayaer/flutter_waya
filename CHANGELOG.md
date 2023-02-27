@@ -1,4 +1,4 @@
-## 5.1.2
+## 5.2.0
 
 * Change the `Indicator()` to `FlIndicator()`
 * Change the `Wave()` to `FlWave()`
