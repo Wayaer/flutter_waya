@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-enum IndicatorType { none, slide, warm, color, scale, drop }
+enum FlIndicatorType { none, slide, warm, color, scale, drop }
 
 /// 指示器
-class Indicator extends StatelessWidget {
-  const Indicator(
+class FlIndicator extends StatelessWidget {
+  const FlIndicator(
       {super.key,
       required this.count,
       this.size = 20.0,
       this.space = 5.0,
       this.activeSize = 20.0,
       this.color,
-      this.layout = IndicatorType.slide,
+      this.layout = FlIndicatorType.slide,
       this.activeColor,
       this.scale = 0.6,
       this.dropHeight = 20.0,
@@ -39,31 +39,31 @@ class Indicator extends StatelessWidget {
   /// normal color
   final Color? color;
 
-  /// layout of the dots,default is [IndicatorType.slide]
-  final IndicatorType layout;
+  /// layout of the dots,default is [FlIndicatorType.slide]
+  final FlIndicatorType layout;
 
-  /// Only valid when layout==IndicatorType.scale
+  /// Only valid when layout==FlIndicatorType.scale
   final double scale;
 
-  /// Only valid when layout==IndicatorType.drop
+  /// Only valid when layout==FlIndicatorType.drop
   final double dropHeight;
 
   final double activeSize;
 
-  IndicatorPainter createPainter(Color activeColor, Color color) {
+  FlIndicatorPainter createPainter(Color activeColor, Color color) {
     final Paint paint = Paint();
     switch (layout) {
-      case IndicatorType.none:
+      case FlIndicatorType.none:
         return _NonePainter(this, position, index, paint, activeColor, color);
-      case IndicatorType.slide:
+      case FlIndicatorType.slide:
         return _SlidePainter(this, position, index, paint, activeColor, color);
-      case IndicatorType.warm:
+      case FlIndicatorType.warm:
         return _WarmPainter(this, position, index, paint, activeColor, color);
-      case IndicatorType.color:
+      case FlIndicatorType.color:
         return _ColorPainter(this, position, index, paint, activeColor, color);
-      case IndicatorType.scale:
+      case FlIndicatorType.scale:
         return _ScalePainter(this, position, index, paint, activeColor, color);
-      case IndicatorType.drop:
+      case FlIndicatorType.drop:
         return _DropPainter(this, position, index, paint, activeColor, color);
       default:
         throw Exception('Not a valid layout');
@@ -80,13 +80,14 @@ class Indicator extends StatelessWidget {
                 activeColor ?? context.theme.colorScheme.primary,
                 color ?? context.theme.unselectedWidgetColor)));
     return IgnorePointer(
-        child: layout == IndicatorType.scale || layout == IndicatorType.color
-            ? ClipRect(child: child)
-            : child);
+        child:
+            layout == FlIndicatorType.scale || layout == FlIndicatorType.color
+                ? ClipRect(child: child)
+                : child);
   }
 }
 
-class _WarmPainter extends IndicatorPainter {
+class _WarmPainter extends FlIndicatorPainter {
   _WarmPainter(super.widget, super.page, super.index, super.paint,
       super.activeColor, super.color);
 
@@ -112,7 +113,7 @@ class _WarmPainter extends IndicatorPainter {
   }
 }
 
-class _DropPainter extends IndicatorPainter {
+class _DropPainter extends FlIndicatorPainter {
   _DropPainter(super.widget, super.page, super.index, super.paint,
       super.activeColor, super.color);
 
@@ -130,7 +131,7 @@ class _DropPainter extends IndicatorPainter {
   }
 }
 
-class _NonePainter extends IndicatorPainter {
+class _NonePainter extends FlIndicatorPainter {
   _NonePainter(super.widget, super.page, super.index, super.paint,
       super.activeColor, super.color);
 
@@ -149,7 +150,7 @@ class _NonePainter extends IndicatorPainter {
   }
 }
 
-class _SlidePainter extends IndicatorPainter {
+class _SlidePainter extends FlIndicatorPainter {
   _SlidePainter(super.widget, super.page, super.index, super.paint,
       super.activeColor, super.color);
 
@@ -159,7 +160,7 @@ class _SlidePainter extends IndicatorPainter {
           Offset(radius + (page * (size + space)), radius), radius, _paint);
 }
 
-class _ScalePainter extends IndicatorPainter {
+class _ScalePainter extends FlIndicatorPainter {
   _ScalePainter(super.widget, super.page, super.index, super.paint,
       super.activeColor, super.color);
 
@@ -204,7 +205,7 @@ class _ScalePainter extends IndicatorPainter {
   }
 }
 
-class _ColorPainter extends IndicatorPainter {
+class _ColorPainter extends FlIndicatorPainter {
   _ColorPainter(super.widget, super.page, super.index, super.paint,
       super.activeColor, super.color);
 
@@ -232,11 +233,11 @@ class _ColorPainter extends IndicatorPainter {
   }
 }
 
-abstract class IndicatorPainter extends CustomPainter {
-  IndicatorPainter(this.widget, this.page, this.index, this._paint,
+abstract class FlIndicatorPainter extends CustomPainter {
+  FlIndicatorPainter(this.widget, this.page, this.index, this._paint,
       this._activeColor, this._color);
 
-  final Indicator widget;
+  final FlIndicator widget;
   final double page;
   final int index;
   final Paint _paint;
@@ -269,5 +270,6 @@ abstract class IndicatorPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(IndicatorPainter oldDelegate) => oldDelegate.page != page;
+  bool shouldRepaint(FlIndicatorPainter oldDelegate) =>
+      oldDelegate.page != page;
 }

@@ -37,15 +37,15 @@ class ButtonPage extends StatelessWidget {
                     const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                 value:
                     _dropdownValue.values.builder((List<String> item) => item),
-                title: _dropdownValue.keys.toList()),
+                label: _dropdownValue.keys.toList()),
             DropdownMenus.custom(
                 margin:
                     const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                 decoration: BoxDecoration(
                     color: context.theme.colorScheme.background,
                     borderRadius: BorderRadius.circular(10)),
-                titleCount: _dropdownValue.keys.length,
-                titleBuilder: (_, int index, bool visible) {
+                labelCount: _dropdownValue.keys.length,
+                labelBuilder: (_, int index, bool visible) {
                   return Padding(
                       padding: const EdgeInsets.only(right: 8),
                       child: BText(_dropdownValue.keys.elementAt(index),
@@ -53,7 +53,7 @@ class ButtonPage extends StatelessWidget {
                 },
                 valueCount: _dropdownValue.values
                     .builder((List<String> item) => item.length),
-                label: (bool visible) =>
+                icon: (bool visible) =>
                     const Icon(Icons.arrow_circle_up, size: 16),
                 valueBuilder: (_, int titleIndex, int valueIndex) {
                   return Container(

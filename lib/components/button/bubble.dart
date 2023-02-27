@@ -214,8 +214,6 @@ class _BubbleButtonState extends State<BubbleButton>
   }
 }
 
-num _degToRad(num deg) => deg * (math.pi / 180.0);
-
 double _mapValueFromRangeToRange(double value, double fromLow, double fromHigh,
         double toLow, double toHigh) =>
     toLow + ((value - fromLow) / (fromHigh - fromLow) * (toHigh - toLow));
@@ -336,6 +334,8 @@ class _BubblesPainter extends CustomPainter {
     _drawOuterBubblesFrame(canvas);
     _drawInnerBubblesFrame(canvas);
   }
+
+  num _degToRad(num deg) => deg * (math.pi / 180.0);
 
   void _drawOuterBubblesFrame(Canvas canvas) {
     final double start = _outerBubblesPositionAngle / 4.0 * 3.0;

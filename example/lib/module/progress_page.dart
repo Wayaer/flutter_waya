@@ -33,7 +33,7 @@ class _ProgressPageState extends State<ProgressPage>
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const SizedBox(height: 20),
-          Progress.linear(
+          FlProgress.linear(
               width: 300,
               lineHeight: 20,
               percent: 1,
@@ -91,7 +91,7 @@ class _ProgressPageState extends State<ProgressPage>
               const SizedBox(
                   width: double.infinity,
                   height: 100,
-                  child: Wave(
+                  child: FlWave(
                       value: 0.5,
                       color: Colors.deepPurpleAccent,
                       direction: Axis.vertical))

@@ -1,10 +1,16 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
+part 'wave.dart';
+
+part 'liquid_progress.dart';
+
 enum LinearStrokeCap { butt, round, roundAll }
 
-class Progress extends StatefulWidget {
-  const Progress.linear({
+class FlProgress extends StatefulWidget {
+  const FlProgress.linear({
     super.key,
     this.percent = 0.0,
     this.lineHeight = 5.0,
@@ -101,7 +107,7 @@ class Progress extends StatefulWidget {
   State<StatefulWidget> createState() => _LinearState();
 }
 
-abstract class _ProgressSubState extends State<Progress>
+abstract class _FlProgressSubState extends State<FlProgress>
     with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   AnimationController? animationController;
   Animation<double>? animation;
@@ -132,7 +138,7 @@ abstract class _ProgressSubState extends State<Progress>
   }
 
   @override
-  void didUpdateWidget(Progress oldWidget) {
+  void didUpdateWidget(FlProgress oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.percent != widget.percent) {
       if (animationController != null && widget.percent > 0) {
@@ -161,7 +167,7 @@ abstract class _ProgressSubState extends State<Progress>
   }
 }
 
-class _LinearState extends _ProgressSubState {
+class _LinearState extends _FlProgressSubState {
   final GlobalKey<State<StatefulWidget>> _containerKey = GlobalKey();
   final GlobalKey<State<StatefulWidget>> _keyIndicator = GlobalKey();
   double _containerWidth = 0.0;
@@ -189,7 +195,7 @@ class _LinearState extends _ProgressSubState {
     final Stack bar = Stack(children: [
       CustomPaint(
           key: _containerKey,
-          painter: _LinearPainter(
+          painter: _LinearProgressPainter(
               isRTL: widget.isRTL,
               progress: percent,
               progressColor: widget.progressColor ??
@@ -224,8 +230,8 @@ class _LinearState extends _ProgressSubState {
   }
 }
 
-class _LinearPainter extends CustomPainter {
-  _LinearPainter({
+class _LinearProgressPainter extends CustomPainter {
+  _LinearProgressPainter({
     required this.lineWidth,
     required this.progress,
     required this.isRTL,
@@ -276,31 +282,31 @@ class _LinearPainter extends CustomPainter {
     if (maskFilter != null) _paintLine.maskFilter = maskFilter;
 
     if (isRTL) {
-      final double xProgress = size.width - size.width * progress;
+      final double xFlProgress = size.width - size.width * progress;
       if (linearGradient != null) {
-        _paintLine.shader = _createGradientShaderRightToLeft(size, xProgress);
+        _paintLine.shader = _createGradientShaderRightToLeft(size, xFlProgress);
       }
-      canvas.drawLine(end, Offset(xProgress, size.height / 2), _paintLine);
+      canvas.drawLine(end, Offset(xFlProgress, size.height / 2), _paintLine);
     } else {
-      final double xProgress = size.width * progress;
+      final double xFlProgress = size.width * progress;
       if (linearGradient != null) {
-        _paintLine.shader = _createGradientShaderLeftToRight(size, xProgress);
+        _paintLine.shader = _createGradientShaderLeftToRight(size, xFlProgress);
       }
-      canvas.drawLine(start, Offset(xProgress, size.height / 2), _paintLine);
+      canvas.drawLine(start, Offset(xFlProgress, size.height / 2), _paintLine);
     }
   }
 
-  Shader _createGradientShaderRightToLeft(Size size, double xProgress) {
+  Shader _createGradientShaderRightToLeft(Size size, double xFlProgress) {
     final Offset shaderEndPoint =
-        clipLinearGradient ? Offset.zero : Offset(xProgress, size.height);
+        clipLinearGradient ? Offset.zero : Offset(xFlProgress, size.height);
     return linearGradient!.createShader(
         Rect.fromPoints(Offset(size.width, size.height), shaderEndPoint));
   }
 
-  Shader _createGradientShaderLeftToRight(Size size, double xProgress) {
+  Shader _createGradientShaderLeftToRight(Size size, double x) {
     final Offset shaderEndPoint = clipLinearGradient
         ? Offset(size.width, size.height)
-        : Offset(xProgress, size.height);
+        : Offset(x, size.height);
     return linearGradient!
         .createShader(Rect.fromPoints(Offset.zero, shaderEndPoint));
   }

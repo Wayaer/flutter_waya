@@ -89,51 +89,51 @@ class _FlSwiperPageState extends State<FlSwiperPage> {
                     color: list[index]);
               }).setHeight(60),
           const SizedBox(height: 20),
-          const Partition('Indicator'),
+          const Partition('FlIndicator'),
           ValueListenableBuilder<double>(
               valueListenable: position,
               builder: (_, double position, __) {
                 return Column(children: [
-                  Indicator(
+                  FlIndicator(
                       space: 40,
                       count: list.length,
                       index: position.floor(),
-                      layout: IndicatorType.slide,
+                      layout: FlIndicatorType.slide,
                       position: position),
                   const SizedBox(height: 20),
-                  Indicator(
+                  FlIndicator(
                       space: 40,
                       count: list.length,
                       index: position.floor(),
-                      layout: IndicatorType.color,
+                      layout: FlIndicatorType.color,
                       position: position),
                   const SizedBox(height: 20),
-                  Indicator(
+                  FlIndicator(
                       space: 40,
                       count: list.length,
                       index: position.floor(),
-                      layout: IndicatorType.none,
+                      layout: FlIndicatorType.none,
                       position: position),
                   const SizedBox(height: 20),
-                  Indicator(
+                  FlIndicator(
                       space: 40,
                       count: list.length,
                       index: position.floor(),
-                      layout: IndicatorType.scale,
+                      layout: FlIndicatorType.scale,
                       position: position),
                   const SizedBox(height: 20),
-                  Indicator(
+                  FlIndicator(
                       space: 40,
                       count: list.length,
                       index: position.floor(),
-                      layout: IndicatorType.drop,
+                      layout: FlIndicatorType.drop,
                       position: position),
                   const SizedBox(height: 20),
-                  Indicator(
+                  FlIndicator(
                       space: 40,
                       count: list.length,
                       index: position.floor(),
-                      layout: IndicatorType.warm,
+                      layout: FlIndicatorType.warm,
                       position: position),
                 ]);
               }),

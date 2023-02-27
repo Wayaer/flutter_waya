@@ -207,7 +207,7 @@ class PickerPage extends StatelessWidget {
                   screen.clear();
                 }
               },
-              title: type,
+              label: type,
               value: [list, list, list]),
         )),
         singleListPickerOptions: const SingleListPickerOptions(

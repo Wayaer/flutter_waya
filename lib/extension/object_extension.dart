@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_waya/extended/extended.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 
 extension ExtensionT<T> on T {
   /// let是做了操作后返回新的类型

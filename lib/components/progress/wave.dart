@@ -1,10 +1,8 @@
-import 'dart:math' as math;
-
-import 'package:flutter/material.dart';
+part of 'progress.dart';
 
 /// 波浪动画
-class Wave extends StatefulWidget {
-  const Wave({
+class FlWave extends StatefulWidget {
+  const FlWave({
     super.key,
     required this.value,
     required this.color,
@@ -16,10 +14,10 @@ class Wave extends StatefulWidget {
   final Axis direction;
 
   @override
-  State<Wave> createState() => _WaveState();
+  State<FlWave> createState() => _FlWaveState();
 }
 
-class _WaveState extends State<Wave> with SingleTickerProviderStateMixin {
+class _FlWaveState extends State<FlWave> with SingleTickerProviderStateMixin {
   late AnimationController controller;
 
   @override
@@ -34,7 +32,7 @@ class _WaveState extends State<Wave> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) => AnimatedBuilder(
       animation: CurvedAnimation(parent: controller, curve: Curves.easeInOut),
       builder: (BuildContext context, Widget? child) => ClipPath(
-          clipper: _WaveClipper(
+          clipper: _FlWaveClipper(
               animationValue: controller.value,
               value: widget.value,
               direction: widget.direction),
@@ -47,8 +45,8 @@ class _WaveState extends State<Wave> with SingleTickerProviderStateMixin {
   }
 }
 
-class _WaveClipper extends CustomClipper<Path> {
-  _WaveClipper(
+class _FlWaveClipper extends CustomClipper<Path> {
+  _FlWaveClipper(
       {required this.animationValue,
       required this.value,
       required this.direction});
@@ -62,39 +60,37 @@ class _WaveClipper extends CustomClipper<Path> {
     switch (direction) {
       case Axis.horizontal:
         return Path()
-          ..addPolygon(_generateHorizontalWavePath(size), false)
+          ..addPolygon(_generateHorizontalFlWavePath(size), false)
           ..lineTo(0.0, size.height)
           ..lineTo(0.0, 0.0)
           ..close();
       case Axis.vertical:
         return Path()
-          ..addPolygon(_generateVerticalWavePath(size), false)
+          ..addPolygon(_generateVerticalFlWavePath(size), false)
           ..lineTo(size.width, size.height)
           ..lineTo(0.0, size.height)
           ..close();
     }
   }
 
-  List<Offset> _generateHorizontalWavePath(Size size) {
+  List<Offset> _generateHorizontalFlWavePath(Size size) {
     final List<Offset> waveList = <Offset>[];
     for (int i = -2; i <= size.height.toInt() + 2; i++) {
       final double waveHeight = size.width / 20;
       final double dx =
-          math.sin((animationValue * 360 - i) % 360 * (math.pi / 180)) *
-                  waveHeight +
+          sin((animationValue * 360 - i) % 360 * (pi / 180)) * waveHeight +
               (size.width * value);
       waveList.add(Offset(dx, i.toDouble()));
     }
     return waveList;
   }
 
-  List<Offset> _generateVerticalWavePath(Size size) {
+  List<Offset> _generateVerticalFlWavePath(Size size) {
     final List<Offset> waveList = <Offset>[];
     for (int i = -2; i <= size.width.toInt() + 2; i++) {
       final double waveHeight = size.height / 20;
       final double dy =
-          math.sin((animationValue * 360 - i) % 360 * (math.pi / 180)) *
-                  waveHeight +
+          sin((animationValue * 360 - i) % 360 * (pi / 180)) * waveHeight +
               (size.height - (size.height * value));
       waveList.add(Offset(i.toDouble(), dy));
     }
@@ -102,6 +98,6 @@ class _WaveClipper extends CustomClipper<Path> {
   }
 
   @override
-  bool shouldReclip(_WaveClipper oldClipper) =>
+  bool shouldReclip(_FlWaveClipper oldClipper) =>
       animationValue != oldClipper.animationValue;
 }

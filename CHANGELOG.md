@@ -1,3 +1,9 @@
+## 5.1.2
+
+* Change the `Indicator()` to `FlIndicator()`
+* Change the `Wave()` to `FlWave()`
+* Change the `Progress()` to `FlProgress()`
+
 ## 5.1.1
 
 * Add `RatingStars()`

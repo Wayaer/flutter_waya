@@ -1,8 +1,5 @@
 import 'package:flutter_waya/flutter_waya.dart';
 
-export 'interceptor/cookies_interceptor.dart';
-export 'interceptor/debugger_interceptor.dart';
-export 'interceptor/logger_interceptor.dart';
 
 class ExtendedDioOptions extends BaseOptions {
   ExtendedDioOptions({
