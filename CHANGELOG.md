@@ -3,6 +3,7 @@
 * Change the `Indicator()` to `FlIndicator()`
 * Change the `Wave()` to `FlWave()`
 * Change the `Progress()` to `FlProgress()`
+* Refactoring the `DropdownMenus()`
 
 ## 5.1.1
 

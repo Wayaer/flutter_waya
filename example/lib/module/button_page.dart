@@ -5,9 +5,9 @@ import 'package:flutter_waya/flutter_waya.dart';
 const List<String> _colors = <String>['红色', '黄色黄色', '蓝色'];
 
 const Map<String, List<String>> _dropdownValue = <String, List<String>>{
-  '性别': <String>['男', '女'],
-  '年龄': <String>['12岁', '13岁', '14岁'],
-  '地区': <String>['湖北', '四川', '重庆']
+  '性别': ['男', '女'],
+  '年龄': ['12岁', '13岁', '14岁'],
+  '地区': ['湖北', '四川', '重庆']
 };
 
 class ButtonPage extends StatelessWidget {
@@ -19,56 +19,42 @@ class ButtonPage extends StatelessWidget {
           padding: const EdgeInsets.all(20),
           appBar: AppBarText('Button'),
           children: [
-            DropdownMenus(
-                isModal: true,
-                onTap: (int title, int? value) {
-                  if (value == null) {
-                    showToast(
-                        '点击了title：${_dropdownValue.keys.elementAt(title)}');
-                  } else {
-                    showToast(
-                        '点击了title：${_dropdownValue.keys.elementAt(title)} value: ${_dropdownValue.values.elementAt(title)[value]}');
-                  }
-                },
-                decoration: BoxDecoration(
-                    color: context.theme.colorScheme.background,
-                    borderRadius: BorderRadius.circular(10)),
-                margin:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                value:
-                    _dropdownValue.values.builder((List<String> item) => item),
-                label: _dropdownValue.keys.toList()),
-            DropdownMenus.custom(
+            DropdownMenus<String, String>(
                 margin:
                     const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                 decoration: BoxDecoration(
                     color: context.theme.colorScheme.background,
                     borderRadius: BorderRadius.circular(10)),
-                labelCount: _dropdownValue.keys.length,
-                labelBuilder: (_, int index, bool visible) {
-                  return Padding(
-                      padding: const EdgeInsets.only(right: 8),
-                      child: BText(_dropdownValue.keys.elementAt(index),
-                          style: context.textTheme.titleMedium));
+                onChanged: (String label, String? value) {
+                  showToast('label：$label    item: $value');
                 },
-                valueCount: _dropdownValue.values
-                    .builder((List<String> item) => item.length),
-                icon: (bool visible) =>
-                    const Icon(Icons.arrow_circle_up, size: 16),
-                valueBuilder: (_, int titleIndex, int valueIndex) {
-                  return Container(
-                      alignment: Alignment.center,
-                      width: double.infinity,
-                      padding: const EdgeInsets.symmetric(vertical: 6),
-                      decoration: BoxDecoration(
-                          color: context.theme.dialogBackgroundColor,
-                          border: const Border(
-                              top: BorderSide(color: Colors.black12))),
-                      child: BText(
-                          _dropdownValue.values
-                              .elementAt(titleIndex)[valueIndex],
-                          style: context.textTheme.bodyLarge));
-                }),
+                menus: _dropdownValue.builderEntry((item) {
+                  return DropdownMenusKeyItem<String, String>(
+                      value: item.key,
+                      enabled: item.key != '地区',
+                      icon: const Icon(Icons.arrow_circle_up_rounded),
+                      child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 12, horizontal: 10),
+                          child: BText(item.key,
+                              style: context.textTheme.titleMedium)),
+                      items: item.value.builder((valueItem) {
+                        return DropdownMenusValueItem<String>(
+                            value: valueItem,
+                            child: Container(
+                                alignment: Alignment.center,
+                                width: double.infinity,
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 6),
+                                decoration: BoxDecoration(
+                                    color: context.theme.dialogBackgroundColor,
+                                    border: const Border(
+                                        top:
+                                            BorderSide(color: Colors.black12))),
+                                child: BText(valueItem,
+                                    style: context.textTheme.bodyLarge)));
+                      }));
+                })),
             const SizedBox(height: 20),
             ElevatedText('ElasticButton',
                 onTap: () => showToast('ElasticButton')),

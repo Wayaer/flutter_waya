@@ -24,7 +24,7 @@ class PickerPage extends StatelessWidget {
             const Partition('SingleListPicker'),
             ElevatedText('show SingleListPicker', onTap: singleListPicker),
             ElevatedText('show SingleListPicker with screen',
-                onTap: singleListPickerWithScreen),
+                onTap: () => singleListPickerWithScreen(context)),
             ElevatedText('show SingleListPicker custom',
                 onTap: customSingleListPicker),
           ]);
@@ -187,7 +187,7 @@ class PickerPage extends StatelessWidget {
     showToast(value.toString());
   }
 
-  Future<void> singleListPickerWithScreen() async {
+  Future<void> singleListPickerWithScreen(BuildContext context) async {
     final list = 40.generate((index) => index.toString());
     final type = ['筛选1', '筛选2', '筛选3'];
     SelectIndexedChangedFunction? change;
@@ -196,19 +196,27 @@ class PickerPage extends StatelessWidget {
         itemCount: list.length,
         options: PickerOptions(
             bottom: Universal(
-          child: DropdownMenus(
-              onTap: (int title, int? value) {
-                showToast(
-                    '${type[title]}  ${value == null ? '' : list[value]}');
+          child: DropdownMenus<String, String>(
+              onChanged: (String key, String? value) {
+                showToast('$key : $value');
                 if (value != null) {
-                  screen = [list[value]];
+                  screen = [list[type.indexOf(value) + 1]];
                   change?.call();
                 } else {
                   screen.clear();
                 }
               },
-              label: type,
-              value: [list, list, list]),
+              backgroundColor: Colors.black12,
+              menus: type.builder((item) => DropdownMenusKeyItem<String,
+                      String>(
+                  icon: const Icon(Icons.arrow_circle_up_rounded, size: 13),
+                  value: item,
+                  child: BText(item).marginAll(4),
+                  items: type.builder((value) => DropdownMenusValueItem<String>(
+                        value: value,
+                        child: BText(value, style: context.textTheme.bodyLarge)
+                            .paddingSymmetric(vertical: 10),
+                      ))))),
         )),
         singleListPickerOptions: const SingleListPickerOptions(
             isCustomGestureTap: true, allowedMultipleChoice: false),
