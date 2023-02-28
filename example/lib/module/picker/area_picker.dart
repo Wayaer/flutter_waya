@@ -7,7 +7,7 @@ class _AreaPickerPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ExtendedScaffold(
         appBar: AppBarText('AreaPicker'),
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(10),
         isScroll: true,
         children: [
           ElevatedText('show AreaPicker', onTap: pick),

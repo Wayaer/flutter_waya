@@ -7,7 +7,7 @@ class _SinglePickerPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ExtendedScaffold(
         appBar: AppBarText('SinglePicker'),
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         isScroll: true,
         children: [
           const Partition('SingleListPicker'),

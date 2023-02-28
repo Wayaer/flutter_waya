@@ -130,6 +130,8 @@ class PickerWheelOptions extends WheelOptions {
 
     /// [isCupertino]=true生效
     super.backgroundColor,
+
+    /// physics
     super.physics = const FixedExtentScrollPhysics(),
     this.itemWidth,
   });

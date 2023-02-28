@@ -7,7 +7,7 @@ class _DateTimePickerPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ExtendedScaffold(
         appBar: AppBarText('DateTimePicker'),
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(10),
         isScroll: true,
         children: [
           ElevatedText('show DateTimePicker', onTap: pick),
@@ -31,6 +31,10 @@ class _DateTimePickerPage extends StatelessWidget {
               options: null)),
           10.heightBox,
           _addBackboard(DateTimePicker(
+              wheelOptions: GlobalOptions()
+                  .pickerWheelOptions
+                  .copyWith(isCupertino: false, squeeze: 0.8),
+              contentStyle: const TextStyle(fontSize: 13),
               onChanged: (DateTime dateTime) {
                 log(dateTime);
               },
