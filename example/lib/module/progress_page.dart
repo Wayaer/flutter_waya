@@ -2,14 +2,14 @@ import 'package:app/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-class ProgressPage extends StatefulWidget {
-  const ProgressPage({super.key});
+class FlProgressPage extends StatefulWidget {
+  const FlProgressPage({super.key});
 
   @override
-  State<ProgressPage> createState() => _ProgressPageState();
+  State<FlProgressPage> createState() => _FlProgressPageState();
 }
 
-class _ProgressPageState extends State<ProgressPage>
+class _FlProgressPageState extends State<FlProgressPage>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   StateSetter? liquidProgressState;
@@ -29,7 +29,7 @@ class _ProgressPageState extends State<ProgressPage>
   Widget build(BuildContext context) {
     return ExtendedScaffold(
         isScroll: true,
-        appBar: AppBarText('Progress'),
+        appBar: AppBarText('FlProgress'),
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const SizedBox(height: 20),
