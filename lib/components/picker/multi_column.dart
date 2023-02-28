@@ -13,6 +13,8 @@ extension ExtensionMultiColumnPicker on MultiColumnPicker {
       popupBottomSheet<List<int>?>(options: options);
 }
 
+typedef PickerPositionChanged = void Function(List<int> index);
+
 /// 多列选择 不联动
 class MultiColumnPicker extends PickerStatelessWidget<List<int>> {
   MultiColumnPicker({
@@ -20,6 +22,9 @@ class MultiColumnPicker extends PickerStatelessWidget<List<int>> {
     required this.entry,
     this.horizontalScroll = false,
     this.addExpanded = true,
+    this.onChanged,
+    this.height = kPickerDefaultHeight,
+    this.width = double.infinity,
     super.options = const PickerOptions<List<int>>(),
     PickerWheelOptions? wheelOptions,
   }) : super(wheelOptions: wheelOptions ?? GlobalOptions().pickerWheelOptions);
@@ -35,33 +40,51 @@ class MultiColumnPicker extends PickerStatelessWidget<List<int>> {
   /// [horizontalScroll]==false
   final bool addExpanded;
 
+  /// onChanged
+  final PickerPositionChanged? onChanged;
+
+  /// height
+  final double height;
+
+  /// width
+  final double width;
+
   @override
   Widget build(BuildContext context) {
     List<int> position = [];
+    String lastPosition = '';
+    void onChanged() {
+      if (position.toString() != lastPosition) {
+        lastPosition = position.toString();
+        this.onChanged?.call(position);
+      }
+    }
+
+    final multiColumn = Universal(
+        direction: Axis.horizontal,
+        mainAxisAlignment: MainAxisAlignment.center,
+        width: width,
+        isScroll: horizontalScroll,
+        height: height,
+        children: entry.builderEntry((item) {
+          position.add(0);
+          final value = item.value;
+          final location = item.key;
+          return Universal(
+              width: wheelOptions.itemWidth ?? kPickerDefaultWidth,
+              expanded: horizontalScroll ? false : addExpanded,
+              child: _PickerListWheel(
+                  wheel: wheelOptions,
+                  itemBuilder: value.itemBuilder,
+                  onChanged: (int index) {
+                    position[location] = index;
+                    onChanged();
+                  },
+                  itemCount: value.itemCount));
+        }));
+    if (options == null) return multiColumn;
     return PickerSubject<List<int>>(
-        options: options,
-        child: Universal(
-            direction: Axis.horizontal,
-            mainAxisAlignment: MainAxisAlignment.center,
-            width: double.infinity,
-            isScroll: horizontalScroll,
-            height: kPickerDefaultHeight,
-            children: entry.builderEntry((item) {
-              position.add(0);
-              final value = item.value;
-              final location = item.key;
-              return Universal(
-                  width: wheelOptions.itemWidth ?? kPickerDefaultWidth,
-                  expanded: horizontalScroll ? false : addExpanded,
-                  child: _PickerListWheel(
-                      wheel: wheelOptions,
-                      itemBuilder: value.itemBuilder,
-                      onChanged: (int index) {
-                        position[location] = index;
-                      },
-                      itemCount: value.itemCount));
-            })),
-        confirmTap: () => position);
+        options: options!, child: multiColumn, confirmTap: () => position);
   }
 }
 
@@ -85,6 +108,9 @@ class MultiColumnLinkagePicker extends PickerStatefulWidget<List<int>> {
     required this.entry,
     this.horizontalScroll = false,
     this.addExpanded = true,
+    this.onChanged,
+    this.height = kPickerDefaultHeight,
+    this.width = double.infinity,
     super.options = const PickerOptions<List<int>>(),
     PickerWheelOptions? wheelOptions,
   }) : super(wheelOptions: wheelOptions ?? GlobalOptions().pickerWheelOptions);
@@ -99,6 +125,15 @@ class MultiColumnLinkagePicker extends PickerStatefulWidget<List<int>> {
 
   /// [horizontalScroll]==false
   final bool addExpanded;
+
+  /// onChanged
+  final PickerPositionChanged? onChanged;
+
+  /// height
+  final double height;
+
+  /// width
+  final double width;
 
   @override
   State<MultiColumnLinkagePicker> createState() =>
@@ -161,24 +196,37 @@ class _MultiColumnLinkagePickerState extends State<MultiColumnLinkagePicker> {
   @override
   void didUpdateWidget(covariant MultiColumnLinkagePicker oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.entry != widget.entry) setState(() {});
+    entry = widget.entry;
+    setState(() {});
   }
 
   @override
-  Widget build(BuildContext context) => PickerSubject<List<int>>(
-      options: widget.options,
-      confirmTap: () => position,
-      child: Universal(
-        width: double.infinity,
-        height: kPickerDefaultHeight,
+  Widget build(BuildContext context) {
+    final multiColumn = Universal(
+        width: widget.width,
+        height: widget.height,
         direction: Axis.horizontal,
         isScroll: widget.horizontalScroll,
         children: buildWheels.builder((item) => Universal(
             expanded: widget.horizontalScroll ? false : widget.addExpanded,
-            height: kPickerDefaultHeight,
             width: widget.wheelOptions.itemWidth ?? kPickerDefaultWidth,
-            child: Center(child: item))),
-      ));
+            child: Center(child: item))));
+    onChanged();
+    if (widget.options == null) return multiColumn;
+    return PickerSubject<List<int>>(
+        options: widget.options!,
+        confirmTap: () => position,
+        child: multiColumn);
+  }
+
+  String lastPosition = '';
+
+  void onChanged() {
+    if (position.toString() != lastPosition) {
+      lastPosition = position.toString();
+      widget.onChanged?.call(position);
+    }
+  }
 
   Widget listStateWheel(
           {required List<PickerLinkageEntry> list, required int location}) =>

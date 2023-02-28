@@ -1,4 +1,6 @@
-const Map<String, dynamic> area = <String, dynamic>{
+
+
+const Map<String, dynamic> areaDataMap = <String, dynamic>{
   '北京市': {
     '市辖区': {
       '东城区': [

@@ -5,6 +5,8 @@ extension ExtensionSingleColumnPicker on SingleColumnPicker {
       popupBottomSheet<int?>(options: options);
 }
 
+typedef SingleColumnPickerChanged = void Function(int index);
+
 /// 单列选择
 class SingleColumnPicker extends PickerStatelessWidget<int> {
   SingleColumnPicker({
@@ -14,36 +16,56 @@ class SingleColumnPicker extends PickerStatelessWidget<int> {
     int initialIndex = 0,
     required this.itemCount,
     required this.itemBuilder,
+    this.height = kPickerDefaultHeight,
+    this.width = double.infinity,
     FixedExtentScrollController? controller,
-    PickerOptions<int>? options,
+    super.options = const PickerOptions<int>(),
+    this.onChanged,
 
     /// Wheel配置信息
     PickerWheelOptions? wheelOptions,
   })  : controller = controller ??
             FixedExtentScrollController(initialItem: initialIndex),
-        super(
-            options: options ?? const PickerOptions<int>(),
-            wheelOptions: wheelOptions ?? GlobalOptions().pickerWheelOptions);
+        super(wheelOptions: wheelOptions ?? GlobalOptions().pickerWheelOptions);
 
   /// 渲染子组件
   final int itemCount;
   final IndexedWidgetBuilder itemBuilder;
 
+  /// height
+  final double height;
+
+  /// width
+  final double width;
+
   /// 控制器
   final FixedExtentScrollController? controller;
 
+  /// onChanged
+  final SingleColumnPickerChanged? onChanged;
+
   @override
-  Widget build(BuildContext context) => PickerSubject<int>(
-      options: options,
-      child: SizedBox(
-          width: double.infinity,
-          height: kPickerDefaultHeight,
-          child: _PickerListWheel(
-              wheel: wheelOptions,
-              controller: controller,
-              itemBuilder: itemBuilder,
-              itemCount: itemCount)),
-      confirmTap: () => controller?.selectedItem ?? 0);
+  Widget build(BuildContext context) {
+    int? index;
+    final singleColumn = SizedBox(
+        width: width,
+        height: height,
+        child: _PickerListWheel(
+            onChanged: (int i) {
+              if (index == i) return;
+              index = i;
+              onChanged?.call(i);
+            },
+            wheel: wheelOptions,
+            controller: controller,
+            itemBuilder: itemBuilder,
+            itemCount: itemCount));
+    if (options == null) return singleColumn;
+    return PickerSubject<int>(
+        options: options!,
+        child: singleColumn,
+        confirmTap: () => controller?.selectedItem ?? 0);
+  }
 }
 
 extension ExtensionSingleListPicker on SingleListPicker {
@@ -61,13 +83,22 @@ class SingleListPicker extends StatelessWidget {
     super.key,
     required this.itemCount,
     required this.itemBuilder,
+    this.height = kPickerDefaultHeight,
+    this.width = double.infinity,
     this.options = const PickerOptions<List<int>>(),
     this.singleListPickerOptions = const SingleListPickerOptions(),
     this.listBuilder,
+    this.onChanged,
   });
 
   /// 头部和背景色配置
-  final PickerOptions<List<int>> options;
+  final PickerOptions<List<int>>? options;
+
+  /// height
+  final double height;
+
+  /// width
+  final double width;
 
   /// 渲染子组件
   final int itemCount;
@@ -79,21 +110,35 @@ class SingleListPicker extends StatelessWidget {
   /// 自定义渲染 list
   final SelectScrollListBuilder? listBuilder;
 
+  /// onChanged
+  final PickerPositionChanged? onChanged;
+
   @override
   Widget build(BuildContext context) {
-    List<int> selectIndex = [];
-    return PickerSubject<List<int>>(
-        options: options,
+    List<int> position = [];
+    String lastPosition = '';
+    void onChanged() {
+      if (position.toString() != lastPosition) {
+        lastPosition = position.toString();
+        this.onChanged?.call(position);
+      }
+    }
+
+    final singleList = SizedBox(
+        width: width,
+        height: height,
         child: _SingleListPickerContent(
-                listBuilder: listBuilder,
-                singleListPickerOptions: singleListPickerOptions,
-                onChanged: (List<int> index) {
-                  selectIndex = index;
-                },
-                itemBuilder: itemBuilder,
-                itemCount: itemCount)
-            .expandedNull,
-        confirmTap: () => selectIndex);
+            listBuilder: listBuilder,
+            singleListPickerOptions: singleListPickerOptions,
+            onChanged: (List<int> index) {
+              position = index;
+              onChanged();
+            },
+            itemBuilder: itemBuilder,
+            itemCount: itemCount));
+    if (options == null) return singleList;
+    return PickerSubject<List<int>>(
+        options: options!, child: singleList, confirmTap: () => position);
   }
 }
 

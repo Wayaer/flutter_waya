@@ -5,6 +5,8 @@ extension ExtensionDateTimePicker on DateTimePicker {
       popupBottomSheet<DateTime?>(options: options);
 }
 
+typedef DateTimePickerChanged = void Function(DateTime dateTime);
+
 /// 日期时间选择器
 class DateTimePicker extends PickerStatefulWidget<DateTime> {
   DateTimePicker({
@@ -13,9 +15,13 @@ class DateTimePicker extends PickerStatefulWidget<DateTime> {
     this.showUnit = true,
     this.dual = true,
     this.unitStyle,
+    this.contentStyle,
     this.startDate,
     this.defaultDate,
     this.endDate,
+    this.onChanged,
+    this.height = kPickerDefaultHeight,
+    this.width = double.infinity,
     super.options = const PickerOptions<DateTime>(),
     PickerWheelOptions? wheelOptions,
   }) : super(wheelOptions: wheelOptions ?? GlobalOptions().pickerWheelOptions);
@@ -33,6 +39,9 @@ class DateTimePicker extends PickerStatefulWidget<DateTime> {
   /// 选择框内单位文字样式
   final TextStyle? unitStyle;
 
+  /// 内容字体样式
+  final TextStyle? contentStyle;
+
   /// 开始时间
   final DateTime? startDate;
 
@@ -41,6 +50,15 @@ class DateTimePicker extends PickerStatefulWidget<DateTime> {
 
   /// 结束时间
   final DateTime? endDate;
+
+  /// onChanged
+  final DateTimePickerChanged? onChanged;
+
+  /// height
+  final double height;
+
+  /// width
+  final double width;
 
   @override
   State<DateTimePicker> createState() => _DateTimePickerState();
@@ -77,15 +95,17 @@ class _DateTimePickerState extends State<DateTimePicker> {
 
   @override
   void initState() {
+    initialize();
     super.initState();
+  }
+
+  void initialize() {
     wheelOptions = widget.wheelOptions;
     unit = widget.unit;
-
     startDate = widget.startDate ?? DateTime.now();
     endDate = initEndDate;
     defaultDate = initDefaultDate();
     if (unit.year != null) {
-      /// 初始化每个Wheel数组
       final int year = (endDate.year - startDate.year) + 1;
       yearData = year.generate((int index) => startDate.year + index);
       yearIndex = defaultDate.year - startDate.year;
@@ -117,6 +137,24 @@ class _DateTimePickerState extends State<DateTimePicker> {
     secondIndex = defaultDate.second;
     if (unit.second != null) {
       controllerSecond = FixedExtentScrollController(initialItem: secondIndex);
+    }
+    onChanged();
+  }
+
+  @override
+  void didUpdateWidget(covariant DateTimePicker oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    initialize();
+    setState(() {});
+  }
+
+  String lastDateTime = '';
+
+  void onChanged() {
+    final current = confirmTap();
+    if (current.toString() != lastDateTime) {
+      lastDateTime = current.toString();
+      widget.onChanged?.call(current);
     }
   }
 
@@ -159,14 +197,6 @@ class _DateTimePickerState extends State<DateTimePicker> {
             .inDays)
         : addList(30);
   }
-
-  DateTime confirmTap() => DateTime(
-      unit.year == null ? defaultDate.year : yearData[yearIndex],
-      unit.month == null ? defaultDate.month : (monthData[monthIndex] + 1),
-      unit.day == null ? defaultDate.day : (dayData[dayIndex] + 1),
-      unit.hour == null ? defaultDate.hour : (hourData[hourIndex]),
-      unit.minute == null ? defaultDate.minute : (minuteData[minuteIndex]),
-      unit.second == null ? defaultDate.second : (secondData[secondIndex]));
 
   void refreshPosition() {
     if (isScrolling) return;
@@ -224,6 +254,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
           unit: unit.year, onChanged: (int newIndex) {
         yearIndex = newIndex;
         refreshPosition();
+        onChanged();
       }));
     }
 
@@ -234,6 +265,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
           unit: unit.month, onChanged: (int newIndex) {
         monthIndex = newIndex;
         refreshPosition();
+        onChanged();
       }));
     }
 
@@ -244,6 +276,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
           unit: unit.day, onChanged: (int newIndex) {
         dayIndex = newIndex;
         refreshPosition();
+        onChanged();
       }));
     }
 
@@ -253,6 +286,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
           controller: controllerHour, onChanged: (int newIndex) {
         hourIndex = newIndex;
         refreshPosition();
+        onChanged();
       }));
     }
 
@@ -262,6 +296,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
           controller: controllerMinute, onChanged: (int newIndex) {
         minuteIndex = newIndex;
         refreshPosition();
+        onChanged();
       }));
     }
 
@@ -271,18 +306,27 @@ class _DateTimePickerState extends State<DateTimePicker> {
           controller: controllerSecond, onChanged: (int newIndex) {
         secondIndex = newIndex;
         refreshPosition();
+        onChanged();
       }));
     }
+    final dateTime = Universal(
+        width: widget.width,
+        direction: Axis.horizontal,
+        height: widget.height,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: rowChildren);
+    if (widget.options == null) return dateTime;
     return PickerSubject<DateTime>(
-        options: widget.options,
-        confirmTap: confirmTap,
-        child: Universal(
-            width: double.infinity,
-            direction: Axis.horizontal,
-            height: kPickerDefaultHeight,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: rowChildren));
+        options: widget.options!, confirmTap: confirmTap, child: dateTime);
   }
+
+  DateTime confirmTap() => DateTime(
+      unit.year == null ? defaultDate.year : yearData[yearIndex],
+      unit.month == null ? defaultDate.month : (monthData[monthIndex] + 1),
+      unit.day == null ? defaultDate.day : (dayData[dayIndex] + 1),
+      unit.hour == null ? defaultDate.hour : (hourData[hourIndex]),
+      unit.minute == null ? defaultDate.minute : (minuteData[minuteIndex]),
+      unit.second == null ? defaultDate.second : (secondData[secondIndex]));
 
   Widget wheelItem(List<int> list,
           {FixedExtentScrollController? controller,
@@ -311,7 +355,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
                       height: double.infinity,
                       child: BText(unit!,
                           style: widget.unitStyle ??
-                              widget.options.contentStyle ??
+                              widget.contentStyle ??
                               context.textTheme.bodyLarge))
                 ],
           child: widget.showUnit
@@ -336,8 +380,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
               child: BText(
                   valuePadLeft(startZero ? list[index] : list[index] + 1),
                   fontSize: 12,
-                  style: widget.options.contentStyle ??
-                      context.textTheme.bodyLarge)),
+                  style: widget.contentStyle ?? context.textTheme.bodyLarge)),
           onScrollEnd: onChanged,
           wheel: wheelOptions);
 
@@ -348,13 +391,13 @@ class _DateTimePickerState extends State<DateTimePicker> {
 
   @override
   void dispose() {
-    super.dispose();
     controllerYear?.dispose();
     controllerMonth?.dispose();
     controllerDay?.dispose();
     controllerHour?.dispose();
     controllerMinute?.dispose();
     controllerSecond?.dispose();
+    super.dispose();
   }
 }
 

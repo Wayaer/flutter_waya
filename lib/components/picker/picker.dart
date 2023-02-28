@@ -27,7 +27,6 @@ class PickerOptions<T> {
     this.cancel = const BText('cancel'),
     this.backgroundColor,
     this.decoration,
-    this.contentStyle,
     this.verifyConfirm,
     this.verifyCancel,
   });
@@ -52,9 +51,6 @@ class PickerOptions<T> {
   /// center
   final Widget? title;
 
-  /// 字体样式
-  final TextStyle? contentStyle;
-
   /// 对内容
   final EdgeInsetsGeometry? contentPadding;
 
@@ -78,7 +74,6 @@ class PickerOptions<T> {
     Widget? confirm,
     Widget? cancel,
     Widget? title,
-    TextStyle? contentStyle,
     PickerTapConfirmCallback<T>? verifyConfirm,
     PickerTapCancelCallback<T>? verifyCancel,
   }) =>
@@ -91,7 +86,6 @@ class PickerOptions<T> {
           title: title ?? this.title,
           confirm: confirm ?? this.confirm,
           cancel: cancel ?? this.cancel,
-          contentStyle: contentStyle ?? this.contentStyle,
           verifyConfirm: verifyConfirm ?? this.verifyConfirm,
           verifyCancel: verifyCancel ?? this.verifyCancel);
 
@@ -104,7 +98,6 @@ class PickerOptions<T> {
       confirm: options?.confirm,
       cancel: options?.cancel,
       title: options?.title,
-      contentStyle: options?.contentStyle,
       verifyConfirm: options?.verifyConfirm,
       verifyCancel: options?.verifyCancel);
 }
@@ -191,7 +184,7 @@ abstract class PickerStatelessWidget<T> extends StatelessWidget {
       {super.key, required this.options, required this.wheelOptions});
 
   /// 头部和背景色配置
-  final PickerOptions<T> options;
+  final PickerOptions<T>? options;
 
   /// Wheel配置信息
   final PickerWheelOptions wheelOptions;
@@ -202,7 +195,7 @@ abstract class PickerStatefulWidget<T> extends StatefulWidget {
       {super.key, required this.options, required this.wheelOptions});
 
   /// 头部和背景色配置
-  final PickerOptions<T> options;
+  final PickerOptions<T>? options;
 
   /// Wheel配置信息
   final PickerWheelOptions wheelOptions;

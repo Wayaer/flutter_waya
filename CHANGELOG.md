@@ -1,3 +1,8 @@
+## 5.3.0
+
+* Modified the `AreaPicker()` `DateTimePicker()` `MultiColumnPicker()` `MultiColumnLinkagePicker()` `SingleListPicker()` `SingleColumnPicker()`,Added width and height and onChanged attributes for them,And you can remove the header component by setting options to null,
+* Add examples for the above components
+
 ## 5.2.0
 
 * Change the `Indicator()` to `FlIndicator()`

@@ -8,7 +8,7 @@ import 'package:app/module/extension_page.dart';
 import 'package:app/module/gesture_page.dart';
 import 'package:app/module/json_parse_page.dart';
 import 'package:app/module/overlay_page.dart';
-import 'package:app/module/picker_page.dart';
+import 'package:app/module/picker/picker_page.dart';
 import 'package:app/module/popup_page.dart';
 import 'package:app/module/progress_page.dart';
 import 'package:app/module/refresh_page.dart';
@@ -212,13 +212,15 @@ class ElevatedText extends StatelessWidget {
 }
 
 class Partition extends StatelessWidget {
-  const Partition(this.title, {super.key});
+  const Partition(this.title, {super.key, this.onTap});
 
   final String title;
+  final GestureTapCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     return Universal(
+        onTap: onTap,
         width: double.infinity,
         color: Colors.grey.withOpacity(0.2),
         alignment: Alignment.center,

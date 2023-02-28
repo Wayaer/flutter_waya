@@ -1,29 +1,56 @@
 part of 'picker.dart';
 
 extension ExtensionAreaPicker on AreaPicker {
-  Future<String?> show({BottomSheetOptions? options}) =>
-      popupBottomSheet<String?>(options: options);
+  Future<List<String>?> show({BottomSheetOptions? options}) =>
+      popupBottomSheet<List<String>?>(options: options);
 }
 
+typedef AreaPickerChanged = void Function(List<String> value);
+
 /// 省市区三级联动
-class AreaPicker extends PickerStatefulWidget<String> {
+class AreaPicker extends PickerStatefulWidget<List<String>> {
   AreaPicker({
     super.key,
-    this.defaultProvince,
-    this.defaultCity,
-    this.defaultDistrict,
-    super.options = const PickerOptions<String>(),
+    this.province,
+    this.city,
+    this.district,
+    this.contentStyle,
+    this.enableCity = true,
+    this.enableDistrict = true,
+    super.options = const PickerOptions<List<String>>(),
     PickerWheelOptions? wheelOptions,
-  }) : super(wheelOptions: wheelOptions ?? GlobalOptions().pickerWheelOptions);
+    this.onChanged,
+    this.height = kPickerDefaultHeight,
+    this.width = double.infinity,
+  })  : assert(enableDistrict == enableCity || enableCity,
+            'To enable district, city must be enabled first'),
+        super(wheelOptions: wheelOptions ?? GlobalOptions().pickerWheelOptions);
 
   /// 默认选择的省
-  final String? defaultProvince;
+  final String? province;
 
   /// 默认选择的市
-  final String? defaultCity;
+  final String? city;
+
+  final bool enableCity;
 
   /// 默认选择的区
-  final String? defaultDistrict;
+  final String? district;
+
+  /// 是否开启区
+  final bool enableDistrict;
+
+  /// 内容字体样式
+  final TextStyle? contentStyle;
+
+  /// onChanged
+  final AreaPickerChanged? onChanged;
+
+  /// height
+  final double height;
+
+  /// width
+  final double width;
 
   @override
   State<AreaPicker> createState() => _AreaPickerState();
@@ -35,120 +62,163 @@ class _AreaPickerState extends State<AreaPicker> {
   List<String> district = <String>[];
 
   /// List<String> street = <String>[];
-  late Map<String, dynamic> areaData = area;
+  Map<String, dynamic> areaData = areaDataMap;
 
   int provinceIndex = 0;
   int cityIndex = 0;
   int districtIndex = 0;
   int streetIndex = 0;
 
-  late FixedExtentScrollController controllerProvince,
+  FixedExtentScrollController? controllerProvince,
       controllerCity,
       controllerDistrict;
 
-  late StateSetter cityState;
-  late StateSetter districtState;
+  StateSetter? cityState;
+  StateSetter? districtState;
   late PickerWheelOptions wheelOptions;
 
   @override
   void initState() {
+    initialize();
     super.initState();
+  }
+
+  void initialize() {
     wheelOptions = GlobalOptions().pickerWheelOptions;
 
     /// 省
     province = areaData.keys.toList();
-    if (province.contains(widget.defaultProvince)) {
-      provinceIndex = province.indexOf(widget.defaultProvince!);
+    if (province.contains(widget.province)) {
+      provinceIndex = province.indexOf(widget.province!);
     }
-    final Map<dynamic, dynamic> provinceData =
-        areaData[province[provinceIndex]] as Map<dynamic, dynamic>;
+    controllerProvince =
+        FixedExtentScrollController(initialItem: provinceIndex);
+    if (widget.enableCity) {
+      final Map<dynamic, dynamic> provinceData =
+          areaData[province[provinceIndex]] as Map<dynamic, dynamic>;
 
-    /// 市
-    city = provinceData.keys.toList() as List<String>;
-    if (city.contains(widget.defaultCity)) {
-      cityIndex = city.indexOf(widget.defaultCity!);
-    }
-    final Map<dynamic, dynamic> cityData =
-        provinceData[city[cityIndex]] as Map<dynamic, dynamic>;
+      /// 市
+      city = provinceData.keys.toList() as List<String>;
+      if (city.contains(widget.city)) {
+        cityIndex = city.indexOf(widget.city!);
+      }
+      controllerCity = FixedExtentScrollController(initialItem: cityIndex);
+      if (widget.enableDistrict) {
+        final Map<dynamic, dynamic> cityData =
+            provinceData[city[cityIndex]] as Map<dynamic, dynamic>;
 
-    /// 区
-    district = cityData.keys.toList() as List<String>;
-    if (district.contains(widget.defaultDistrict)) {
-      districtIndex = district.indexOf(widget.defaultDistrict!);
+        /// 区
+        district = cityData.keys.toList() as List<String>;
+        if (district.contains(widget.district)) {
+          districtIndex = district.indexOf(widget.district!);
+        }
+        controllerDistrict =
+            FixedExtentScrollController(initialItem: districtIndex);
+      }
     }
+    onChanged();
 
     ///  var districtData = cityData[districtIndex];
 
     /// 街道
     ///  street = districtData[districtIndex];
-
-    controllerProvince =
-        FixedExtentScrollController(initialItem: provinceIndex);
-    controllerCity = FixedExtentScrollController(initialItem: cityIndex);
-    controllerDistrict =
-        FixedExtentScrollController(initialItem: districtIndex);
   }
 
   void refreshCity() {
     final Map<dynamic, dynamic> provinceData =
         areaData[province[provinceIndex]] as Map<dynamic, dynamic>;
     city = provinceData.keys.toList() as List<String>;
-    cityState(() {});
+    cityState?.call(() {});
     final Map<dynamic, dynamic> cityData =
         provinceData[city[city.length < cityIndex ? 0 : cityIndex]]
             as Map<dynamic, dynamic>;
     district = cityData.keys.toList() as List<String>;
-    districtState(() {});
-    controllerCity.jumpTo(0);
-    controllerDistrict.jumpTo(0);
+    districtState?.call(() {});
+    controllerCity?.jumpTo(0);
+    controllerDistrict?.jumpTo(0);
   }
 
   void refreshDistrict() {
     final Map<dynamic, dynamic> cityData = areaData[province[provinceIndex]]
         [city[cityIndex]] as Map<dynamic, dynamic>;
     district = cityData.keys.toList() as List<String>;
-    districtState(() {});
-    controllerDistrict.jumpTo(0);
+    districtState?.call(() {});
+    controllerDistrict?.jumpTo(0);
+  }
+
+  @override
+  void didUpdateWidget(covariant AreaPicker oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    initialize();
+    setState(() {});
+  }
+
+  String lastArea = '';
+
+  void onChanged() {
+    final current = confirmTap();
+    if (current.toString() != lastArea) {
+      lastArea = current.toString();
+      widget.onChanged?.call(current);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final Row row = Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-      Expanded(
-          child: wheelItem(province, controller: controllerProvince,
-              onChanged: (int newIndex) {
+    final rowChildren = [
+      wheelItem(province, controller: controllerProvince,
+          onChanged: (int newIndex) {
         provinceIndex = newIndex;
-        refreshCity();
-      })),
-      Expanded(child: StatefulBuilder(
+        if (widget.enableCity) refreshCity();
+        onChanged();
+      }).expandedNull,
+    ];
+
+    if (widget.enableCity) {
+      rowChildren.add(StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
         cityState = setState;
         return wheelItem(city,
             childDelegateType: ListWheelChildDelegateType.list,
             controller: controllerCity, onChanged: (int newIndex) {
           cityIndex = newIndex;
-          refreshDistrict();
+          if (widget.enableDistrict) refreshDistrict();
+          onChanged();
         });
-      })),
-      Expanded(child: StatefulBuilder(
-          builder: (BuildContext context, StateSetter setState) {
-        districtState = setState;
-        return wheelItem(district,
-            childDelegateType: ListWheelChildDelegateType.list,
-            controller: controllerDistrict,
-            onChanged: (int newIndex) => districtIndex = newIndex);
-      })),
-    ]);
-    return PickerSubject<String>(
-        options: widget.options,
-        confirmTap: confirmTap,
-        child: SizedBox(
-            width: double.infinity, height: kPickerDefaultHeight, child: row));
+      }).expandedNull);
+      if (widget.enableDistrict) {
+        rowChildren.add(StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+          districtState = setState;
+          return wheelItem(district,
+              childDelegateType: ListWheelChildDelegateType.list,
+              controller: controllerDistrict, onChanged: (int newIndex) {
+            districtIndex = newIndex;
+            onChanged();
+          });
+        }).expandedNull);
+      }
+    }
+
+    final area = Universal(
+        direction: Axis.horizontal,
+        width: widget.width,
+        height: widget.height,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: rowChildren);
+    if (widget.options == null) return area;
+    return PickerSubject<List<String>>(
+        options: widget.options!, confirmTap: confirmTap, child: area);
   }
 
   /// 点击确定返回选择的地区
-  String confirmTap() =>
-      '${province[provinceIndex]} ${city[cityIndex]} ${district[districtIndex]}';
+  List<String> confirmTap() => [
+        province[provinceIndex],
+        if (widget.enableCity) ...[
+          city[cityIndex],
+          if (widget.enableDistrict) district[districtIndex]
+        ]
+      ];
 
   Widget wheelItem(List<String> list,
           {FixedExtentScrollController? controller,
@@ -168,7 +238,7 @@ class _AreaPickerState extends State<AreaPicker> {
       child: BText(value,
           fontSize: 12,
           overflow: TextOverflow.ellipsis,
-          style: widget.options.contentStyle ?? context.textTheme.bodyLarge));
+          style: widget.contentStyle ?? context.textTheme.bodyLarge));
 
   void jumpToIndex(int index, FixedExtentScrollController controller,
           {Duration? duration}) =>
@@ -176,9 +246,9 @@ class _AreaPickerState extends State<AreaPicker> {
 
   @override
   void dispose() {
+    controllerProvince?.dispose();
+    controllerCity?.dispose();
+    controllerDistrict?.dispose();
     super.dispose();
-    controllerProvince.dispose();
-    controllerCity.dispose();
-    controllerDistrict.dispose();
   }
 }
