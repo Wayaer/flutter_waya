@@ -78,6 +78,8 @@ class MultiColumnPicker extends PickerStatelessWidget<List<int>> {
                   itemBuilder: value.itemBuilder,
                   onChanged: (int index) {
                     position[location] = index;
+                  },
+                  onScrollEnd: (_) {
                     onChanged();
                   },
                   itemCount: value.itemCount));

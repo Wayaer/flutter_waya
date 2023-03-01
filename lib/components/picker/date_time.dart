@@ -254,7 +254,6 @@ class _DateTimePickerState extends State<DateTimePicker> {
           unit: unit.year, onChanged: (int newIndex) {
         yearIndex = newIndex;
         refreshPosition();
-        onChanged();
       }));
     }
 
@@ -265,7 +264,6 @@ class _DateTimePickerState extends State<DateTimePicker> {
           unit: unit.month, onChanged: (int newIndex) {
         monthIndex = newIndex;
         refreshPosition();
-        onChanged();
       }));
     }
 
@@ -276,7 +274,6 @@ class _DateTimePickerState extends State<DateTimePicker> {
           unit: unit.day, onChanged: (int newIndex) {
         dayIndex = newIndex;
         refreshPosition();
-        onChanged();
       }));
     }
 
@@ -286,7 +283,6 @@ class _DateTimePickerState extends State<DateTimePicker> {
           controller: controllerHour, onChanged: (int newIndex) {
         hourIndex = newIndex;
         refreshPosition();
-        onChanged();
       }));
     }
 
@@ -296,7 +292,6 @@ class _DateTimePickerState extends State<DateTimePicker> {
           controller: controllerMinute, onChanged: (int newIndex) {
         minuteIndex = newIndex;
         refreshPosition();
-        onChanged();
       }));
     }
 
@@ -306,7 +301,6 @@ class _DateTimePickerState extends State<DateTimePicker> {
           controller: controllerSecond, onChanged: (int newIndex) {
         secondIndex = newIndex;
         refreshPosition();
-        onChanged();
       }));
     }
     final dateTime = Universal(
@@ -329,43 +323,37 @@ class _DateTimePickerState extends State<DateTimePicker> {
       unit.second == null ? defaultDate.second : (secondData[secondIndex]));
 
   Widget wheelItem(List<int> list,
-          {FixedExtentScrollController? controller,
-          String? unit,
-          bool startZero = true,
-          ValueChanged<int>? onChanged}) =>
-      Universal(
-          expanded: wheelOptions.itemWidth == null,
-          direction: Axis.horizontal,
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          width: wheelOptions.itemWidth,
-          children: !widget.showUnit
-              ? null
-              : [
-                  Expanded(
-                      child: listWheel(
-                          list: list,
-                          startZero: startZero,
-                          // initialIndex: initialIndex,
-                          controller: controller,
-                          onChanged: onChanged)),
-                  Container(
-                      margin: const EdgeInsets.only(left: 2),
-                      alignment: Alignment.center,
-                      height: double.infinity,
-                      child: BText(unit!,
-                          style: widget.unitStyle ??
-                              widget.contentStyle ??
-                              context.textTheme.bodyLarge))
-                ],
-          child: widget.showUnit
-              ? null
-              : listWheel(
-                  list: list,
-                  startZero: startZero,
-                  // initialIndex: initialIndex,
-                  controller: controller,
-                  onChanged: onChanged));
+      {FixedExtentScrollController? controller,
+      String? unit,
+      bool startZero = true,
+      ValueChanged<int>? onChanged}) {
+    final wheel = listWheel(
+        list: list,
+        startZero: startZero,
+        // initialIndex: initialIndex,
+        controller: controller,
+        onChanged: onChanged);
+    return Universal(
+        expanded: wheelOptions.itemWidth == null,
+        direction: Axis.horizontal,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        width: wheelOptions.itemWidth,
+        children: !widget.showUnit
+            ? null
+            : [
+                wheel.expandedNull,
+                Container(
+                    margin: const EdgeInsets.only(left: 2),
+                    alignment: Alignment.center,
+                    height: double.infinity,
+                    child: BText(unit!,
+                        style: widget.unitStyle ??
+                            widget.contentStyle ??
+                            context.textTheme.bodyLarge))
+              ],
+        child: widget.showUnit ? null : wheel);
+  }
 
   Widget listWheel(
           {List<int>? list,
@@ -381,7 +369,10 @@ class _DateTimePickerState extends State<DateTimePicker> {
                   valuePadLeft(startZero ? list[index] : list[index] + 1),
                   fontSize: 12,
                   style: widget.contentStyle ?? context.textTheme.bodyLarge)),
-          onScrollEnd: onChanged,
+          onScrollEnd: (int index) {
+            onChanged?.call(index);
+            this.onChanged();
+          },
           wheel: wheelOptions);
 
   void jumpToIndex(int index, FixedExtentScrollController? controller,

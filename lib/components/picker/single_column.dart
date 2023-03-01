@@ -54,8 +54,8 @@ class SingleColumnPicker extends PickerStatelessWidget<int> {
             onChanged: (int i) {
               if (index == i) return;
               index = i;
-              onChanged?.call(i);
             },
+            onScrollEnd: onChanged,
             wheel: wheelOptions,
             controller: controller,
             itemBuilder: itemBuilder,

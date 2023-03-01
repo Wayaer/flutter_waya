@@ -170,7 +170,6 @@ class _AreaPickerState extends State<AreaPicker> {
           onChanged: (int newIndex) {
         provinceIndex = newIndex;
         if (widget.enableCity) refreshCity();
-        onChanged();
       }).expandedNull,
     ];
 
@@ -183,7 +182,6 @@ class _AreaPickerState extends State<AreaPicker> {
             controller: controllerCity, onChanged: (int newIndex) {
           cityIndex = newIndex;
           if (widget.enableDistrict) refreshDistrict();
-          onChanged();
         });
       }).expandedNull);
       if (widget.enableDistrict) {
@@ -194,7 +192,6 @@ class _AreaPickerState extends State<AreaPicker> {
               childDelegateType: ListWheelChildDelegateType.list,
               controller: controllerDistrict, onChanged: (int newIndex) {
             districtIndex = newIndex;
-            onChanged();
           });
         }).expandedNull);
       }
@@ -231,6 +228,9 @@ class _AreaPickerState extends State<AreaPicker> {
           childDelegateType: childDelegateType,
           itemBuilder: (BuildContext context, int index) => item(list[index]),
           onChanged: onChanged,
+          onScrollEnd: (_) {
+            this.onChanged();
+          },
           itemCount: list.length,
           children: list.builder((String value) => item(value)));
 
