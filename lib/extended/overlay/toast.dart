@@ -84,15 +84,15 @@ extension ExtensionToastStyle on ToastStyle {
   IconData get value {
     switch (this) {
       case ToastStyle.success:
-        return ConstIcon.success;
+        return WayIcons.success;
       case ToastStyle.fail:
-        return ConstIcon.fail;
+        return WayIcons.fail;
       case ToastStyle.info:
-        return ConstIcon.info;
+        return WayIcons.info;
       case ToastStyle.warning:
-        return ConstIcon.warning;
+        return WayIcons.warning;
       case ToastStyle.smile:
-        return ConstIcon.smile;
+        return WayIcons.smile;
     }
   }
 }

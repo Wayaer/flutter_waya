@@ -2,7 +2,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-
 class NoScrollBehavior extends ScrollBehavior {
   @override
   Widget buildOverscrollIndicator(
@@ -172,7 +171,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
       child: ModalWindows(options: widget.options, child: widget.child));
 }
 
-/// 暂无数据
+/// no data
 class PlaceholderChild extends StatelessWidget {
   const PlaceholderChild(
       {super.key,

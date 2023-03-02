@@ -671,7 +671,7 @@ class ListEntry extends StatelessWidget {
       : null;
 
   Widget get arrowWidget =>
-      Icon(ConstIcon.arrowRight, size: arrowSize, color: arrowColor);
+      Icon(WayIcons.arrowRight, size: arrowSize, color: arrowColor);
 
   Widget get listTile => Expanded(
       child: ListTile(

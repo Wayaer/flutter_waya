@@ -1,3 +1,8 @@
+## 5.3.1
+
+* Create `WayIcons`
+* Optimized the toast style icon
+
 ## 5.3.0
 
 * Modified the `AreaPicker()` `DateTimePicker()` `MultiColumnPicker()` `MultiColumnLinkagePicker()` `SingleListPicker()` `SingleColumnPicker()`,Added width and height and onChanged attributes for them,And you can remove the header component by setting options to null,
