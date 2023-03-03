@@ -111,7 +111,7 @@ class SingleListPicker extends StatelessWidget {
   final SelectScrollListBuilder? listBuilder;
 
   /// onChanged
-  final PickerPositionChanged? onChanged;
+  final PickerPositionIndexChanged? onChanged;
 
   @override
   Widget build(BuildContext context) {

@@ -15,37 +15,72 @@ class _MultiColumnPicker extends StatelessWidget {
           10.heightBox,
           _addBackboard(MultiColumnPicker(
               options: null,
-              height: 210,
+              height: 150,
               onChanged: (List<int> index) {
-                log(index);
+                log('MultiColumnPicker onChanged= $index');
               },
-              entry: multiColumnListEntry,
+              entry: multiColumnList,
               horizontalScroll: false)),
           const Partition('MultiColumnLinkagePicker'),
           ElevatedText('show MultiColumnLinkagePicker',
               onTap: multiColumnLinkagePicker),
           10.heightBox,
-          _addBackboard(MultiColumnLinkagePicker(
+          _addBackboard(MultiColumnLinkagePicker<String>(
               options: null,
-              height: 210,
+              height: 150,
               onChanged: (List<int> index) {
-                log(index);
+                log('MultiColumnLinkagePicker onChanged= $index');
+              },
+              onValueChanged: (List<String> list) {
+                log('MultiColumnLinkagePicker onValueChanged= $list');
+              },
+              entry: mapToLinkageEntry(areaDataMap),
+              horizontalScroll: false)),
+          10.heightBox,
+          _addBackboard(MultiColumnLinkagePicker<String>(
+              options: null,
+              height: 150,
+              onChanged: (List<int> index) {
+                log('MultiColumnLinkagePicker onChanged= $index');
+              },
+              onValueChanged: (List<String> list) {
+                log('MultiColumnLinkagePicker onValueChanged= $list');
               },
               entry: multiColumnLinkageList,
               horizontalScroll: true)),
         ]);
   }
 
+  List<PickerLinkageEntry<String>> mapToLinkageEntry(Map<String, dynamic> map) {
+    List<PickerLinkageEntry<String>> buildEntry(Map<String, dynamic> map) =>
+        map.builderEntry((entry) {
+          final value = entry.value;
+          List<PickerLinkageEntry<String>> valueList = [];
+          if (value is Map<String, dynamic>) {
+            valueList = buildEntry(value);
+          } else if (value is List) {
+            valueList = value.builder((item) => PickerLinkageEntry<String>(
+                value: item,
+                text: Text(item, style: const TextStyle(fontSize: 10))));
+          }
+          return PickerLinkageEntry<String>(
+              value: entry.key,
+              text: Text(entry.key, style: const TextStyle(fontSize: 10)),
+              children: valueList);
+        });
+    return buildEntry(map);
+  }
+
   final List<String> letterList = ['A', 'B', 'C', 'D', 'E', 'F'];
 
-  List<PickerEntry> get multiColumnListEntry => 5.generate((_) => PickerEntry(
+  List<PickerEntry> get multiColumnList => 5.generate((_) => PickerEntry(
       itemCount: letterList.length,
       itemBuilder: (_, int index) => Text(letterList[index])));
 
   Future<void> multiColumnPicker() async {
-    final List<int>? index = await MultiColumnPicker(
-            entry: multiColumnListEntry, horizontalScroll: true)
-        .show();
+    final List<int>? index =
+        await MultiColumnPicker(entry: multiColumnList, horizontalScroll: true)
+            .show();
     if (index != null) {
       String result =
           '${letterList[index.first]}-${letterList[index.last]}${letterList[index.last]}';
@@ -53,49 +88,49 @@ class _MultiColumnPicker extends StatelessWidget {
     }
   }
 
-  List<PickerLinkageEntry> get multiColumnLinkageList => <PickerLinkageEntry>[
-        const PickerLinkageEntry(text: Text('A1'), children: [
-          PickerLinkageEntry(text: Text('A2')),
-        ]),
-        const PickerLinkageEntry(text: Text('B1'), children: [
-          PickerLinkageEntry(text: Text('B2'), children: [
-            PickerLinkageEntry(text: Text('B3')),
-            PickerLinkageEntry(text: Text('B3')),
-            PickerLinkageEntry(text: Text('B3')),
-          ]),
-          PickerLinkageEntry(text: Text('B2')),
-        ]),
-        const PickerLinkageEntry(text: Text('C1'), children: [
-          PickerLinkageEntry(text: Text('C2'), children: [
-            PickerLinkageEntry(text: Text('C3'), children: [
-              PickerLinkageEntry(text: Text('C4'), children: [
-                PickerLinkageEntry(text: Text('C5'), children: [
-                  PickerLinkageEntry(text: Text('C6'), children: [
-                    PickerLinkageEntry(text: Text('C7'), children: [
-                      PickerLinkageEntry(text: Text('C8')),
-                      PickerLinkageEntry(text: Text('C8')),
-                      PickerLinkageEntry(text: Text('C8')),
-                    ]),
-                    PickerLinkageEntry(text: Text('C7')),
-                    PickerLinkageEntry(text: Text('C7')),
-                  ]),
-                  PickerLinkageEntry(text: Text('C6')),
-                  PickerLinkageEntry(text: Text('C6')),
-                ]),
-                PickerLinkageEntry(text: Text('C5')),
-                PickerLinkageEntry(text: Text('C5')),
-              ]),
-              PickerLinkageEntry(text: Text('C4')),
-              PickerLinkageEntry(text: Text('C4')),
-            ]),
-            PickerLinkageEntry(text: Text('C3')),
-            PickerLinkageEntry(text: Text('C3')),
-          ]),
-          PickerLinkageEntry(text: Text('C2')),
-          PickerLinkageEntry(text: Text('C2')),
-        ]),
-        const PickerLinkageEntry(text: Text('D1'), children: [])
-      ];
+  List<PickerLinkageEntry<String>> get multiColumnLinkageList =>
+      mapToLinkageEntry({
+        'A1': ['A2'],
+        'B1': {
+          'B2': [
+            'B3',
+            'B3',
+            'B3',
+          ],
+          'B2-1': {
+            'B3': [
+              'B4',
+              'B4',
+              'B4',
+            ]
+          }
+        },
+        'C1': {
+          'C2': {
+            'C3': {
+              'C4': {
+                'C5': [
+                  'C6',
+                  'C6',
+                  'C6',
+                  'C6',
+                  'C6',
+                ]
+              }
+            }
+          },
+          'C21': [
+            'C3',
+            'C3',
+            'C3',
+          ],
+          'C22': [
+            'C3',
+            'C3',
+            'C3',
+          ]
+        }
+      });
 
   Future<void> multiColumnLinkagePicker() async {
     final List<int>? index = await MultiColumnLinkagePicker(

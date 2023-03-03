@@ -13,7 +13,9 @@ extension ExtensionMultiColumnPicker on MultiColumnPicker {
       popupBottomSheet<List<int>?>(options: options);
 }
 
-typedef PickerPositionChanged = void Function(List<int> index);
+typedef PickerPositionIndexChanged = void Function(List<int> index);
+
+typedef PickerPositionValueChanged<T> = void Function(List<T> value);
 
 /// 多列选择 不联动
 class MultiColumnPicker extends PickerStatelessWidget<List<int>> {
@@ -40,8 +42,8 @@ class MultiColumnPicker extends PickerStatelessWidget<List<int>> {
   /// [horizontalScroll]==false
   final bool addExpanded;
 
-  /// onChanged
-  final PickerPositionChanged? onChanged;
+  /// onIndexChanged
+  final PickerPositionIndexChanged? onChanged;
 
   /// height
   final double height;
@@ -90,12 +92,15 @@ class MultiColumnPicker extends PickerStatelessWidget<List<int>> {
   }
 }
 
-class PickerLinkageEntry {
-  const PickerLinkageEntry({required this.text, this.children = const []});
+class PickerLinkageEntry<T> {
+  const PickerLinkageEntry(
+      {required this.value, required this.text, this.children = const []});
 
   final Widget text;
 
-  final List<PickerLinkageEntry> children;
+  final T value;
+
+  final List<PickerLinkageEntry<T>> children;
 }
 
 extension ExtensionMultiColumnLinkagePicker on MultiColumnLinkagePicker {
@@ -104,13 +109,15 @@ extension ExtensionMultiColumnLinkagePicker on MultiColumnLinkagePicker {
 }
 
 /// 多列选择 联动
-class MultiColumnLinkagePicker extends PickerStatefulWidget<List<int>> {
+class MultiColumnLinkagePicker<T> extends PickerStatefulWidget<List<int>> {
   MultiColumnLinkagePicker({
     super.key,
     required this.entry,
+    this.value,
     this.horizontalScroll = false,
     this.addExpanded = true,
     this.onChanged,
+    this.onValueChanged,
     this.height = kPickerDefaultHeight,
     this.width = double.infinity,
     super.options = const PickerOptions<List<int>>(),
@@ -118,18 +125,24 @@ class MultiColumnLinkagePicker extends PickerStatefulWidget<List<int>> {
   }) : super(wheelOptions: wheelOptions ?? GlobalOptions().pickerWheelOptions);
 
   /// 要渲染的数据
-  final List<PickerLinkageEntry> entry;
+  final List<PickerLinkageEntry<T>> entry;
 
   /// 是否可以横向滚动
   /// [horizontalScroll]==true 使用[SingleChildScrollView]创建,[wheelOptions]中的[itemWidth]控制宽度，如果不设置则为[kPickerDefaultWidth]
   /// [horizontalScroll]==false 使用[Row] 创建每个滚动，居中显示
   final bool horizontalScroll;
 
-  /// [horizontalScroll]==false
+  /// [horizontalScroll]==false 有效
   final bool addExpanded;
 
+  /// 初始默认显示的位置
+  final List<int>? value;
+
   /// onChanged
-  final PickerPositionChanged? onChanged;
+  final PickerPositionIndexChanged? onChanged;
+
+  /// onValueChanged
+  final PickerPositionValueChanged<T>? onValueChanged;
 
   /// height
   final double height;
@@ -138,12 +151,13 @@ class MultiColumnLinkagePicker extends PickerStatefulWidget<List<int>> {
   final double width;
 
   @override
-  State<MultiColumnLinkagePicker> createState() =>
-      _MultiColumnLinkagePickerState();
+  State<MultiColumnLinkagePicker<T>> createState() =>
+      _MultiColumnLinkagePickerState<T>();
 }
 
-class _MultiColumnLinkagePickerState extends State<MultiColumnLinkagePicker> {
-  List<PickerLinkageEntry> entry = [];
+class _MultiColumnLinkagePickerState<T>
+    extends State<MultiColumnLinkagePicker<T>> {
+  List<PickerLinkageEntry<T>> entry = [];
   List<int> position = [];
   int currentListLength = 0;
 
@@ -196,10 +210,10 @@ class _MultiColumnLinkagePickerState extends State<MultiColumnLinkagePicker> {
   }
 
   @override
-  void didUpdateWidget(covariant MultiColumnLinkagePicker oldWidget) {
+  void didUpdateWidget(covariant MultiColumnLinkagePicker<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
     entry = widget.entry;
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   @override
@@ -213,7 +227,6 @@ class _MultiColumnLinkagePickerState extends State<MultiColumnLinkagePicker> {
             expanded: widget.horizontalScroll ? false : widget.addExpanded,
             width: widget.wheelOptions.itemWidth ?? kPickerDefaultWidth,
             child: Center(child: item))));
-    onChanged();
     if (widget.options == null) return multiColumn;
     return PickerSubject<List<int>>(
         options: widget.options!,
@@ -227,6 +240,17 @@ class _MultiColumnLinkagePickerState extends State<MultiColumnLinkagePicker> {
     if (position.toString() != lastPosition) {
       lastPosition = position.toString();
       widget.onChanged?.call(position);
+      if (widget.onValueChanged != null) {
+        List<T> value = [];
+        List<PickerLinkageEntry> resultList = entry;
+        position.builder((index) {
+          if (index < resultList.length) {
+            value.add(resultList[index].value);
+            resultList = resultList[index].children;
+          }
+        });
+        widget.onValueChanged!(value);
+      }
     }
   }
 
@@ -237,14 +261,14 @@ class _MultiColumnLinkagePickerState extends State<MultiColumnLinkagePicker> {
           onChanged: (int index) {
             position[location] = index;
           },
-          onScrollEnd: (int index) {
+          onScrollEnd: (int index) async {
             final builder =
                 list.length > index && list[index].children.isNotEmpty;
             if (location != position.length - 1 || builder) {
-              50.milliseconds.delayed(() {
-                setState(() {});
-              });
+              await 50.milliseconds.delayed();
+              if (mounted) setState(() {});
             }
+            onChanged();
           },
           itemBuilder: (_, int index) => Center(
               child: index > list.length ? list.last.text : list[index].text),
