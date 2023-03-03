@@ -90,8 +90,12 @@ class _DateTimePickerState extends State<DateTimePicker> {
       hourIndex = 0,
       minuteIndex = 0,
       secondIndex = 0;
+
   bool isScrolling = false;
+
   late PickerWheelOptions wheelOptions;
+
+  StateSetter? dayState;
 
   @override
   void initState() {
@@ -99,43 +103,53 @@ class _DateTimePickerState extends State<DateTimePicker> {
     super.initState();
   }
 
+  DateTime get initDefaultDate {
+    if (widget.defaultDate == null) return startDate;
+    if (widget.defaultDate!.isBefore(startDate)) return startDate;
+    if (widget.defaultDate!.isAfter(endDate)) return endDate;
+    return widget.defaultDate!;
+  }
+
+  DateTime get initEndDate =>
+      (widget.endDate != null && startDate.isBefore(widget.endDate!))
+          ? widget.endDate!
+          : startDate.add(const Duration(seconds: 1));
+
   void initialize() {
     wheelOptions = widget.wheelOptions;
     unit = widget.unit;
     startDate = widget.startDate ?? DateTime.now();
     endDate = initEndDate;
-    defaultDate = initDefaultDate();
-    if (unit.year != null) {
-      final int year = (endDate.year - startDate.year) + 1;
-      yearData = year.generate((int index) => startDate.year + index);
-      yearIndex = defaultDate.year - startDate.year;
+    defaultDate = initDefaultDate;
+    final int year = (endDate.year - startDate.year) + 1;
+    yearData = year.generate((int index) => startDate.year + index);
+    yearIndex = defaultDate.year - startDate.year;
+    if (unit.year != null && controllerYear == null) {
       controllerYear = FixedExtentScrollController(initialItem: yearIndex);
-    } else {
-      yearData = [defaultDate.year];
     }
     monthData = addList(12);
     monthIndex = defaultDate.month - 1;
-    if (unit.month != null) {
+    if (unit.month != null && controllerMonth == null) {
       controllerMonth = FixedExtentScrollController(initialItem: monthIndex);
     }
     dayData = calculateDayNumber(isFirst: true);
     dayIndex = defaultDate.day - 1;
-    if (unit.day != null) {
+    if (unit.day != null && controllerDay == null) {
       controllerDay = FixedExtentScrollController(initialItem: dayIndex);
     }
     hourData = addList(24);
     hourIndex = defaultDate.hour;
-    if (unit.hour != null) {
+    if (unit.hour != null && controllerHour == null) {
       controllerHour = FixedExtentScrollController(initialItem: hourIndex);
     }
     minuteData = addList(60);
     minuteIndex = defaultDate.minute;
-    if (unit.minute != null) {
+    if (unit.minute != null && controllerMinute == null) {
       controllerMinute = FixedExtentScrollController(initialItem: minuteIndex);
     }
     secondData = addList(60);
     secondIndex = defaultDate.second;
-    if (unit.second != null) {
+    if (unit.second != null && controllerSecond == null) {
       controllerSecond = FixedExtentScrollController(initialItem: secondIndex);
     }
     onChanged();
@@ -146,29 +160,28 @@ class _DateTimePickerState extends State<DateTimePicker> {
     super.didUpdateWidget(oldWidget);
     initialize();
     setState(() {});
+    jumpToIndex(yearIndex, controllerYear);
+    jumpToIndex(monthIndex, controllerMonth);
+    jumpToIndex(dayIndex, controllerDay);
+    jumpToIndex(hourIndex, controllerHour);
+    jumpToIndex(minuteIndex, controllerMinute);
+    jumpToIndex(secondIndex, controllerSecond);
   }
 
-  String lastDateTime = '';
+  int lastDateTime = 0;
 
   void onChanged() {
-    final current = confirmTap();
-    if (current.toString() != lastDateTime) {
-      lastDateTime = current.toString();
+    final current = currentDateTime();
+    final microseconds = current.microsecondsSinceEpoch;
+    if ((current.isAfter(startDate) ||
+            microseconds == startDate.microsecondsSinceEpoch) &&
+        (current.isBefore(endDate) ||
+            microseconds == endDate.microsecondsSinceEpoch) &&
+        microseconds != lastDateTime) {
+      lastDateTime = microseconds;
       widget.onChanged?.call(current);
     }
   }
-
-  DateTime initDefaultDate() {
-    if (widget.defaultDate == null) return startDate;
-    if (widget.defaultDate!.isBefore(startDate)) return startDate;
-    if (widget.defaultDate!.isAfter(endDate)) return endDate;
-    return widget.defaultDate!;
-  }
-
-  DateTime get initEndDate =>
-      (widget.endDate != null && startDate.isBefore(widget.endDate!))
-          ? widget.endDate!
-          : startDate.add(const Duration(days: 3650));
 
   /// 显示双数还是单数
   String valuePadLeft(int value) =>
@@ -182,63 +195,46 @@ class _DateTimePickerState extends State<DateTimePicker> {
     final int selectYearItem =
         isFirst ? (defaultDate.year - startDate.year) : yearIndex;
     final int selectMonthItem = isFirst ? defaultDate.month : monthIndex + 1;
-    if (selectMonthItem == 1 ||
-        selectMonthItem == 3 ||
-        selectMonthItem == 5 ||
-        selectMonthItem == 7 ||
-        selectMonthItem == 8 ||
-        selectMonthItem == 10 ||
-        selectMonthItem == 12) {
-      return addList(31);
-    }
-    return selectMonthItem == 2
-        ? addList(DateTime(yearData[selectYearItem], 3)
-            .difference(DateTime(yearData[selectYearItem], 2))
-            .inDays)
-        : addList(30);
+    return addList(DateTime(yearData[selectYearItem], selectMonthItem + 1)
+        .difference(DateTime(yearData[selectYearItem], selectMonthItem))
+        .inDays);
   }
 
   void refreshPosition() {
     if (isScrolling) return;
     isScrolling = true;
-    final DateTime currentDate = DateTime(
-        yearData[yearIndex],
-        monthData[monthIndex] + 1,
-        dayData[dayIndex] + 1,
-        hourData[hourIndex],
-        minuteData[minuteIndex],
-        secondData[secondIndex]);
-    if (currentDate.millisecondsSinceEpoch < startDate.millisecondsSinceEpoch) {
-      if (currentDate.month < startDate.month) {
+    final DateTime currentDate = currentDateTime();
+    final milliseconds = currentDate.millisecondsSinceEpoch;
+    if (milliseconds < startDate.millisecondsSinceEpoch) {
+      if (startDate.month - 1 != monthIndex) {
         jumpToIndex(startDate.month - 1, controllerMonth);
       }
-      if (currentDate.day < startDate.day) {
+      if (startDate.day - 1 != dayIndex) {
         jumpToIndex(startDate.day - 1, controllerDay);
       }
-      if (currentDate.hour < startDate.hour) {
+      if (startDate.hour != hourIndex) {
         jumpToIndex(startDate.hour, controllerHour);
       }
-      if (currentDate.minute < startDate.minute) {
+      if (startDate.minute != minuteIndex) {
         jumpToIndex(startDate.minute, controllerMinute);
       }
-      if (currentDate.second < startDate.second) {
+      if (startDate.second != secondIndex) {
         jumpToIndex(startDate.second, controllerSecond);
       }
-    } else if (currentDate.millisecondsSinceEpoch >
-        endDate.millisecondsSinceEpoch) {
-      if (currentDate.month > endDate.month) {
+    } else if (milliseconds > endDate.millisecondsSinceEpoch) {
+      if (startDate.month - 1 != monthIndex) {
         jumpToIndex(endDate.month - 1, controllerMonth);
       }
-      if (currentDate.day > endDate.day) {
+      if (startDate.day - 1 != dayIndex) {
         jumpToIndex(endDate.day - 1, controllerDay);
       }
-      if (currentDate.hour > endDate.hour) {
+      if (startDate.hour != hourIndex) {
         jumpToIndex(endDate.hour, controllerHour);
       }
-      if (currentDate.minute > endDate.minute) {
+      if (startDate.minute != minuteIndex) {
         jumpToIndex(endDate.minute, controllerMinute);
       }
-      if (currentDate.second > endDate.second) {
+      if (startDate.second != secondIndex) {
         jumpToIndex(endDate.second, controllerSecond);
       }
     }
@@ -253,7 +249,10 @@ class _DateTimePickerState extends State<DateTimePicker> {
           controller: controllerYear,
           unit: unit.year, onChanged: (int newIndex) {
         yearIndex = newIndex;
-        refreshPosition();
+        if (monthIndex == 1) {
+          dayData = calculateDayNumber();
+          dayState?.call(() {});
+        }
       }));
     }
 
@@ -263,17 +262,20 @@ class _DateTimePickerState extends State<DateTimePicker> {
           controller: controllerMonth,
           unit: unit.month, onChanged: (int newIndex) {
         monthIndex = newIndex;
-        refreshPosition();
+        dayData = calculateDayNumber();
+        dayState?.call(() {});
       }));
     }
 
     if (unit.day != null) {
-      rowChildren.add(wheelItem(dayData,
-          startZero: false,
-          controller: controllerDay,
-          unit: unit.day, onChanged: (int newIndex) {
-        dayIndex = newIndex;
-        refreshPosition();
+      rowChildren.add(StatefulBuilder(builder: (_, StateSetter setState) {
+        dayState = setState;
+        return wheelItem(dayData,
+            startZero: false,
+            controller: controllerDay,
+            unit: unit.day, onChanged: (int newIndex) {
+          dayIndex = newIndex;
+        });
       }));
     }
 
@@ -282,7 +284,6 @@ class _DateTimePickerState extends State<DateTimePicker> {
           unit: unit.hour,
           controller: controllerHour, onChanged: (int newIndex) {
         hourIndex = newIndex;
-        refreshPosition();
       }));
     }
 
@@ -291,7 +292,6 @@ class _DateTimePickerState extends State<DateTimePicker> {
           unit: unit.minute,
           controller: controllerMinute, onChanged: (int newIndex) {
         minuteIndex = newIndex;
-        refreshPosition();
       }));
     }
 
@@ -300,7 +300,6 @@ class _DateTimePickerState extends State<DateTimePicker> {
           unit: unit.second,
           controller: controllerSecond, onChanged: (int newIndex) {
         secondIndex = newIndex;
-        refreshPosition();
       }));
     }
     final dateTime = Universal(
@@ -311,16 +310,23 @@ class _DateTimePickerState extends State<DateTimePicker> {
         children: rowChildren);
     if (widget.options == null) return dateTime;
     return PickerSubject<DateTime>(
-        options: widget.options!, confirmTap: confirmTap, child: dateTime);
+        options: widget.options!, confirmTap: currentDateTime, child: dateTime);
   }
 
-  DateTime confirmTap() => DateTime(
-      unit.year == null ? defaultDate.year : yearData[yearIndex],
-      unit.month == null ? defaultDate.month : (monthData[monthIndex] + 1),
-      unit.day == null ? defaultDate.day : (dayData[dayIndex] + 1),
-      unit.hour == null ? defaultDate.hour : (hourData[hourIndex]),
-      unit.minute == null ? defaultDate.minute : (minuteData[minuteIndex]),
-      unit.second == null ? defaultDate.second : (secondData[secondIndex]));
+  DateTime currentDateTime() => DateTime(
+        unit.year == null ? defaultDate.year : yearData[yearIndex],
+        unit.month == null ? defaultDate.month : (monthData[monthIndex] + 1),
+        unit.day == null
+            ? defaultDate.day
+            : (dayIndex >= dayData.length
+                ? dayData.last
+                : dayData[dayIndex] + 1),
+        unit.hour == null ? defaultDate.hour : (hourData[hourIndex]),
+        unit.minute == null ? defaultDate.minute : (minuteData[minuteIndex]),
+        unit.second == null ? defaultDate.second : (secondData[secondIndex]),
+        defaultDate.millisecond,
+        defaultDate.microsecond,
+      );
 
   Widget wheelItem(List<int> list,
       {FixedExtentScrollController? controller,
@@ -332,7 +338,10 @@ class _DateTimePickerState extends State<DateTimePicker> {
         startZero: startZero,
         // initialIndex: initialIndex,
         controller: controller,
-        onChanged: onChanged);
+        onChanged: (_) {
+          onChanged?.call(_);
+          refreshPosition();
+        });
     return Universal(
         expanded: wheelOptions.itemWidth == null,
         direction: Axis.horizontal,
@@ -375,9 +384,10 @@ class _DateTimePickerState extends State<DateTimePicker> {
           },
           wheel: wheelOptions);
 
-  void jumpToIndex(int index, FixedExtentScrollController? controller,
-      {Duration? duration}) {
-    controller?.jumpToItem(index);
+  void jumpToIndex(int index, FixedExtentScrollController? controller) {
+    if (index != controller?.selectedItem) {
+      controller?.jumpToItem(index);
+    }
   }
 
   @override

@@ -1,5 +1,3 @@
-
-
 const Map<String, dynamic> areaDataMap = <String, dynamic>{
   '北京市': {
     '市辖区': {

@@ -1,7 +1,8 @@
 part of 'picker_page.dart';
 
 class _DateTimePickerPage extends StatelessWidget {
-  const _DateTimePickerPage({Key? key}) : super(key: key);
+  _DateTimePickerPage({Key? key}) : super(key: key);
+  final DateTime defaultDate = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +16,9 @@ class _DateTimePickerPage extends StatelessWidget {
               onTap: () => pick(const DateTimePickerUnit.date())),
           10.heightBox,
           _addBackboard(DateTimePicker(
+              startDate: defaultDate.subtract(const Duration(days: 365)),
+              defaultDate: defaultDate,
+              endDate: defaultDate.add(const Duration(days: 365)),
               onChanged: (DateTime dateTime) {
                 log(dateTime);
               },
@@ -23,6 +27,9 @@ class _DateTimePickerPage extends StatelessWidget {
               options: null)),
           10.heightBox,
           _addBackboard(DateTimePicker(
+              startDate: defaultDate,
+              defaultDate: defaultDate,
+              endDate: defaultDate,
               onChanged: (DateTime dateTime) {
                 log(dateTime);
               },
@@ -31,6 +38,9 @@ class _DateTimePickerPage extends StatelessWidget {
               options: null)),
           10.heightBox,
           _addBackboard(DateTimePicker(
+              startDate: defaultDate.subtract(const Duration(days: 365)),
+              defaultDate: defaultDate,
+              endDate: defaultDate.add(const Duration(days: 365)),
               wheelOptions: GlobalOptions()
                   .pickerWheelOptions
                   .copyWith(isCupertino: false, squeeze: 0.8),
@@ -59,9 +69,9 @@ class _DateTimePickerPage extends StatelessWidget {
                       'verifyCancel');
                   return true;
                 }),
-            startDate: DateTime(2020, 8, 9, 9, 9, 9),
-            defaultDate: DateTime(2021, 9, 21, 8, 8, 8),
-            endDate: DateTime(2022, 10, 20, 10, 10, 10))
+            startDate: defaultDate.subtract(const Duration(days: 365)),
+            defaultDate: defaultDate,
+            endDate: defaultDate.add(const Duration(days: 365)))
         .show();
   }
 }

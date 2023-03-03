@@ -30,7 +30,7 @@ class PickerPage extends StatelessWidget {
             }),
             10.heightBox,
             ElevatedText('DateTimePicker', onTap: () {
-              push(const _DateTimePickerPage());
+              push(_DateTimePickerPage());
             }),
             10.heightBox,
             ElevatedText('SingleListPicker', onTap: () {

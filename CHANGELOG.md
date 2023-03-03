@@ -1,3 +1,7 @@
+## 5.3.2
+
+* Fixed some issues with `DateTimePicker` and `AreaPicker`
+
 ## 5.3.1
 
 * Create `WayIcons`
