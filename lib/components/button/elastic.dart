@@ -233,6 +233,12 @@ class _ElasticButtonState extends State<ElasticButton>
   }
 
   @override
+  void didUpdateWidget(covariant ElasticButton oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    setState(() {});
+  }
+
+  @override
   Widget build(BuildContext context) => AnimatedBuilder(
       animation: animation,
       child: widget.useCache ? uiChild : null,
