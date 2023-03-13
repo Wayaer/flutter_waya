@@ -1,6 +1,5 @@
 import 'package:flutter_waya/flutter_waya.dart';
 
-
 class ExtendedDioOptions extends BaseOptions {
   ExtendedDioOptions({
     String? contentType,

@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-
 void logDebug(dynamic msg) => debugPrint(msg.toString());
 
 void log(dynamic msg, {bool? crossLine}) {

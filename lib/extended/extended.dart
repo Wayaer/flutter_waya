@@ -5,8 +5,6 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-
-
 class SystemUiOverlayStyleLight extends SystemUiOverlayStyle {
   const SystemUiOverlayStyleLight(
       {super.systemNavigationBarColor = Colors.transparent,
