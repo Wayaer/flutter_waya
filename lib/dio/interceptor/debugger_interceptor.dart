@@ -405,28 +405,29 @@ class _HttpDetailDataWindowsState extends State<_HttpDetailDataWindows>
           const CloseButton().marginOnly(right: 10),
           _HttpDataEntry(widget.model),
           TabBarMerge(
-              controller: tabController,
               tabBar: TabBar(
                   labelColor: context.theme.indicatorColor,
                   labelStyle: const BTextStyle(fontWeight: FontWeight.bold),
                   indicatorSize: TabBarIndicatorSize.label,
                   controller: tabController,
                   tabs: tabs.builder((item) => Tab(child: BText(item)))),
-              tabView: tabs.builder((item) {
-                Widget entry = const SizedBox();
-                if (item == tabs.first) {
-                  entry = JsonParse(widget.model.requestOptionsToMap());
-                } else if (item == tabs[1]) {
-                  entry = JsonParse(widget.model.responseToMap());
-                } else if (item == tabs.last) {
-                  entry = JsonParse(widget.model.errorToMap());
-                }
-                return Universal(
-                    isScroll: true,
-                    safeBottom: true,
-                    padding: const EdgeInsets.symmetric(vertical: 15),
-                    child: entry);
-              })).expandedNull
+              tabBarView: TabBarView(
+                  controller: tabController,
+                  children: tabs.builder((item) {
+                    Widget entry = const SizedBox();
+                    if (item == tabs.first) {
+                      entry = JsonParse(widget.model.requestOptionsToMap());
+                    } else if (item == tabs[1]) {
+                      entry = JsonParse(widget.model.responseToMap());
+                    } else if (item == tabs.last) {
+                      entry = JsonParse(widget.model.errorToMap());
+                    }
+                    return Universal(
+                        isScroll: true,
+                        safeBottom: true,
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        child: entry);
+                  }))).expandedNull
         ]);
   }
 
