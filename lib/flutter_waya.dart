@@ -39,7 +39,6 @@ export 'components/rating_stars.dart';
 export 'components/send_sms.dart';
 
 /// const
-export 'const/area.dart';
 export 'const/const.dart';
 export 'const/styles.dart';
 

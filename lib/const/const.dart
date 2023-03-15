@@ -51,7 +51,7 @@ class _IconData extends IconData {
       : super(fontFamily: 'WayIcons', fontPackage: 'flutter_waya');
 }
 
-typedef Callback<T> = void Function();
+typedef Callback = void Function();
 
 typedef CallbackT<T> = T Function();
 

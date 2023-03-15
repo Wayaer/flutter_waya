@@ -61,11 +61,11 @@ class _MultiColumnPicker extends StatelessWidget {
           } else if (value is List) {
             valueList = value.builder((item) => PickerLinkageEntry<String>(
                 value: item,
-                text: Text(item, style: const TextStyle(fontSize: 10))));
+                child: Text(item, style: const TextStyle(fontSize: 10))));
           }
           return PickerLinkageEntry<String>(
               value: entry.key,
-              text: Text(entry.key, style: const TextStyle(fontSize: 10)),
+              child: Text(entry.key, style: const TextStyle(fontSize: 10)),
               children: valueList);
         });
     return buildEntry(map);
@@ -82,8 +82,10 @@ class _MultiColumnPicker extends StatelessWidget {
         await MultiColumnPicker(entry: multiColumnList, horizontalScroll: true)
             .show();
     if (index != null) {
-      String result =
-          '${letterList[index.first]}-${letterList[index.last]}${letterList[index.last]}';
+      String result = '';
+      for (var element in index) {
+        result += letterList[element];
+      }
       if (result.isNotEmpty) showToast(result);
     }
   }
@@ -139,7 +141,7 @@ class _MultiColumnPicker extends StatelessWidget {
     List<PickerLinkageEntry> resultList = multiColumnLinkageList;
     String result = '';
     index?.builder((item) {
-      result += (resultList[item].text as Text).data!;
+      result += resultList[item].value;
       resultList = resultList[item].children;
     });
     if (result.isNotEmpty) showToast(result);

@@ -94,9 +94,9 @@ class MultiColumnPicker extends PickerStatelessWidget<List<int>> {
 
 class PickerLinkageEntry<T> {
   const PickerLinkageEntry(
-      {required this.value, required this.text, this.children = const []});
+      {required this.value, required this.child, this.children = const []});
 
-  final Widget text;
+  final Widget child;
 
   final T value;
 
@@ -271,7 +271,7 @@ class _MultiColumnLinkagePickerState<T>
             onChanged();
           },
           itemBuilder: (_, int index) => Center(
-              child: index > list.length ? list.last.text : list[index].text),
+              child: index > list.length ? list.last.child : list[index].child),
           itemCount: list.length,
           wheel: widget.wheelOptions);
 }

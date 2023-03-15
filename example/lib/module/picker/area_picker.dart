@@ -12,42 +12,62 @@ class _AreaPickerPage extends StatelessWidget {
         children: [
           ElevatedText('show AreaPicker', onTap: pick),
           10.heightBox,
-          _addBackboard(AreaPicker(
+          _addBackboard(MultiColumnLinkagePicker<String>(
               options: null,
               height: 210,
-              onChanged: (List<String> list) {
-                log(list.toString());
-              })),
-          10.heightBox,
-          _addBackboard(AreaPicker(
-              enableDistrict: false,
-              options: null,
-              height: 210,
-              onChanged: (List<String> list) {
-                log(list.toString());
-              })),
-          10.heightBox,
-          _addBackboard(AreaPicker(
-              enableCity: false,
-              enableDistrict: false,
-              options: null,
-              height: 210,
-              onChanged: (List<String> list) {
-                log(list.toString());
-              })),
+              onChanged: (List<int> index) {
+                log('MultiColumnLinkagePicker onChanged= $index');
+              },
+              onValueChanged: (List<String> list) {
+                log('MultiColumnLinkagePicker onValueChanged= $list');
+              },
+              entry: mapToLinkageEntry(areaDataMap),
+              horizontalScroll: false)),
         ]);
   }
 
   Future<void> pick() async {
-    await AreaPicker(
-        province: '四川省',
-        city: '绵阳市',
-        options: PickerOptions(verifyConfirm: (List<String>? list) {
-          showToast(list.toString());
-          return true;
-        }, verifyCancel: (List<String>? list) {
-          showToast(list.toString());
-          return true;
-        })).show();
+    final entry = mapToLinkageEntry(areaDataMap);
+    final position = await MultiColumnLinkagePicker<String>(
+            height: 200,
+            onChanged: (List<int> index) {
+              log('AreaPicker onChanged= $index');
+            },
+            onValueChanged: (List<String> list) {
+              log('AreaPicker onValueChanged= $list');
+            },
+            entry: entry,
+            horizontalScroll: false)
+        .show();
+    if (position == null) return;
+    List<String> value = [];
+    List<PickerLinkageEntry> resultList = entry;
+    position.builder((index) {
+      if (index < resultList.length) {
+        value.add(resultList[index].value);
+        resultList = resultList[index].children;
+      }
+    });
+    showToast(value.toString());
+  }
+
+  List<PickerLinkageEntry<String>> mapToLinkageEntry(Map<String, dynamic> map) {
+    List<PickerLinkageEntry<String>> buildEntry(Map<String, dynamic> map) =>
+        map.builderEntry((entry) {
+          final value = entry.value;
+          List<PickerLinkageEntry<String>> valueList = [];
+          if (value is Map<String, dynamic>) {
+            valueList = buildEntry(value);
+          } else if (value is List) {
+            valueList = value.builder((item) => PickerLinkageEntry<String>(
+                value: item,
+                child: Text(item, style: const TextStyle(fontSize: 10))));
+          }
+          return PickerLinkageEntry<String>(
+              value: entry.key,
+              child: Text(entry.key, style: const TextStyle(fontSize: 10)),
+              children: valueList);
+        });
+    return buildEntry(map);
   }
 }

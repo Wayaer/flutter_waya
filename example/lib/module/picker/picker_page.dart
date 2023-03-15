@@ -1,4 +1,5 @@
 import 'package:app/main.dart';
+import 'package:app/module/picker/area.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
@@ -7,6 +8,8 @@ part 'date_time_picker.dart';
 part 'area_picker.dart';
 
 part 'multi_column_picker.dart';
+
+part 'multi_list_picker.dart';
 
 part 'single_picker.dart';
 
@@ -39,6 +42,10 @@ class PickerPage extends StatelessWidget {
             10.heightBox,
             ElevatedText('MultiColumnPicker', onTap: () {
               push(_MultiColumnPicker());
+            }),
+            10.heightBox,
+            ElevatedText('MultiListLinkagePicker', onTap: () {
+              push(const _MultiListLinkagePicker());
             }),
             10.heightBox,
             ElevatedText('show CustomPicker', onTap: customPicker),

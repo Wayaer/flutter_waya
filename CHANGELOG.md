@@ -1,9 +1,10 @@
 ## 5.5.0
 
-* Add the value argument for `PickerLinkageEntry`, so `MultiColumnLinkagePicker` gets the `onValueChanged` method
+* Added the value argument for `PickerLinkageEntry`, so `MultiColumnLinkagePicker` gets the `onValueChanged` method
 * `AreaPicker` removed. Use `MultiColumnLinkagePicker`, as shown in the `MultiColumnLinkagePicker` component in the example,
 * In `example/lib/module/picker/area.dart` The regional data in the dart
 * Rewrite `TabBarBox()` and `TabBarMerge()`
+* Added the `MultiListLinkagePicker()` and added the example
 
 ## 5.3.2
 

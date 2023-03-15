@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-part 'area.dart';
-
 part 'date_time.dart';
 
 part 'multi_column.dart';
+
+part 'multi_list.dart';
 
 part 'single_column.dart';
 
@@ -260,11 +260,10 @@ class _PickerListWheel extends ListWheel {
     required super.itemCount,
     required PickerWheelOptions wheel,
     super.controller,
-    super.childDelegateType = ListWheelChildDelegateType.builder,
-    super.children,
     super.itemBuilder,
     super.onScrollEnd,
   }) : super(
+            childDelegateType: ListWheelChildDelegateType.builder,
             options: WheelOptions(
                 backgroundColor: wheel.backgroundColor,
                 isCupertino: wheel.isCupertino,
