@@ -23,7 +23,7 @@ class MultiListLinkagePicker<T> extends PickerStatefulWidget<List<int>> {
   MultiListLinkagePicker({
     super.key,
     required this.entry,
-    this.value,
+    this.value = const [],
     this.horizontalScroll = true,
     this.addExpanded = false,
     this.onChanged,
@@ -46,7 +46,7 @@ class MultiListLinkagePicker<T> extends PickerStatefulWidget<List<int>> {
   final bool addExpanded;
 
   /// 初始默认显示的位置
-  final List<int>? value;
+  final List<int> value;
 
   /// onChanged
   final PickerPositionIndexChanged? onChanged;

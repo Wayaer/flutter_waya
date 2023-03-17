@@ -11,8 +11,6 @@ typedef SingleColumnPickerChanged = void Function(int index);
 class SingleColumnPicker extends PickerStatelessWidget<int> {
   SingleColumnPicker({
     super.key,
-
-    /// 默认选中
     int initialIndex = 0,
     required this.itemCount,
     required this.itemBuilder,
@@ -83,6 +81,7 @@ class SingleListPicker extends StatelessWidget {
     super.key,
     required this.itemCount,
     required this.itemBuilder,
+    this.initialIndex = const [],
     this.height = kPickerDefaultHeight,
     this.width = double.infinity,
     this.options = const PickerOptions<List<int>>(),
@@ -93,6 +92,9 @@ class SingleListPicker extends StatelessWidget {
 
   /// 头部和背景色配置
   final PickerOptions<List<int>>? options;
+
+  /// 初始默认选择的位置
+  final List<int> initialIndex;
 
   /// height
   final double height;
@@ -128,6 +130,7 @@ class SingleListPicker extends StatelessWidget {
         width: width,
         height: height,
         child: _SingleListPickerContent(
+            initialIndex: initialIndex,
             listBuilder: listBuilder,
             singleListPickerOptions: singleListPickerOptions,
             onChanged: (List<int> index) {
@@ -166,6 +169,7 @@ class _SingleListPickerContent extends StatefulWidget {
       required this.itemBuilder,
       required this.onChanged,
       required this.singleListPickerOptions,
+      this.initialIndex = const [],
       this.listBuilder});
 
   final int itemCount;
@@ -173,6 +177,7 @@ class _SingleListPickerContent extends StatefulWidget {
   final SelectIndexedChanged onChanged;
   final SelectScrollListBuilder? listBuilder;
   final SingleListPickerOptions singleListPickerOptions;
+  final List<int> initialIndex;
 
   @override
   State<_SingleListPickerContent> createState() =>
@@ -195,6 +200,19 @@ class _SingleListPickerContentState extends State<_SingleListPickerContent> {
       }
       widget.onChanged(selectIndex);
     }
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    selectIndex = widget.initialIndex;
+  }
+
+  @override
+  void didUpdateWidget(covariant _SingleListPickerContent oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    selectIndex = widget.initialIndex;
     setState(() {});
   }
 

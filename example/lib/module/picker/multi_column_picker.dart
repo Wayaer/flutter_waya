@@ -16,18 +16,21 @@ class _MultiColumnPicker extends StatelessWidget {
           _addBackboard(MultiColumnPicker(
               options: null,
               height: 150,
+              value: const [2, 3, 4, 6, 6],
               onChanged: (List<int> index) {
                 log('MultiColumnPicker onChanged= $index');
               },
               entry: multiColumnList,
               horizontalScroll: false)),
+          20.heightBox,
           const Partition('MultiColumnLinkagePicker'),
-          ElevatedText('show MultiColumnLinkagePicker',
+          ElevatedText('show MultiColumnLinkagePicker with area',
               onTap: multiColumnLinkagePicker),
           10.heightBox,
           _addBackboard(MultiColumnLinkagePicker<String>(
               options: null,
               height: 150,
+              value: const [1, 2, 4, 4, 5],
               onChanged: (List<int> index) {
                 log('MultiColumnLinkagePicker onChanged= $index');
               },
@@ -36,6 +39,9 @@ class _MultiColumnPicker extends StatelessWidget {
               },
               entry: mapToLinkageEntry(areaDataMap),
               horizontalScroll: false)),
+          20.heightBox,
+          ElevatedText('show MultiColumnLinkagePicker',
+              onTap: multiColumnLinkagePicker),
           10.heightBox,
           _addBackboard(MultiColumnLinkagePicker<String>(
               options: null,
