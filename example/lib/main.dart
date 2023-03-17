@@ -219,16 +219,14 @@ class Partition extends StatelessWidget {
   final GestureTapCallback? onTap;
 
   @override
-  Widget build(BuildContext context) {
-    return Universal(
-        onTap: onTap,
-        width: double.infinity,
-        color: Colors.grey.withOpacity(0.2),
-        alignment: Alignment.center,
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        margin: const EdgeInsets.symmetric(vertical: 20),
-        child: BText(title, fontWeight: FontWeight.bold));
-  }
+  Widget build(BuildContext context) => Universal(
+      onTap: onTap,
+      width: double.infinity,
+      color: Colors.grey.withOpacity(0.2),
+      alignment: Alignment.center,
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      margin: const EdgeInsets.symmetric(vertical: 20),
+      child: BText(title, fontWeight: FontWeight.bold));
 }
 
 const List<Color> colors = <Color>[

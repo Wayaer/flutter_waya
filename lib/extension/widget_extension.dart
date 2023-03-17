@@ -433,7 +433,7 @@ extension ExtensionWidget on Widget {
           decoration: decoration,
           child: this);
 
-  List<Widget> asList() => <Widget>[this];
+  List<Widget> asList() => [this];
 
   Align align(
           {Key? key,

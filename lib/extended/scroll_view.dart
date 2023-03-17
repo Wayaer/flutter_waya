@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
@@ -11,7 +10,7 @@ class RefreshScrollView extends StatelessWidget {
       {super.key,
       this.refreshConfig,
       this.padding,
-      this.slivers = const <Widget>[],
+      this.slivers = const [],
       this.noScrollBehavior = false,
       this.shrinkWrap = false,
       this.reverse = false,

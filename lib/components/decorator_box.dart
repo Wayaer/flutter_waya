@@ -318,7 +318,7 @@ class DecoratorBox extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget current = buildCurrent;
     if (extraPrefix != null || extraSuffix != null) {
-      final List<Widget> row = <Widget>[];
+      final List<Widget> row = [];
       if (extraPrefix != null) row.add(extraPrefix!);
       row.add(Expanded(child: current));
       if (extraSuffix != null) row.add(extraSuffix!);
@@ -326,7 +326,7 @@ class DecoratorBox extends StatelessWidget {
     }
 
     if (header != null || footer != null) {
-      final List<Widget> children = <Widget>[];
+      final List<Widget> children = [];
       if (header != null) children.add(header!);
       children.add(current);
       if (footer != null) children.add(footer!);

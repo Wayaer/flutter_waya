@@ -103,7 +103,7 @@ class IconBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> listWidget = <Widget>[];
+    final List<Widget> listWidget = [];
     if (isChildren) {
       if (reversal) {
         listWidget.add(titleWidget);
@@ -162,7 +162,7 @@ class IconBox extends StatelessWidget {
           imageProvider != null);
 
   List<Widget> get iconWidget {
-    final List<Widget> listWidget = <Widget>[];
+    final List<Widget> listWidget = [];
     if (icon != null) {
       listWidget.add(Icon(icon,
           color: color,

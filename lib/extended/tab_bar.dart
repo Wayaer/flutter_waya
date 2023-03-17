@@ -46,7 +46,7 @@ class TabBarMerge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> children = <Widget>[];
+    final List<Widget> children = [];
     if (header != null) children.add(header!);
     children.add(reverse ? buildTabBarView : tabBar);
     if (among != null) children.add(among!);
@@ -102,7 +102,7 @@ class TabBarBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> children = <Widget>[];
+    final List<Widget> children = [];
     if (level != null) {
       switch (levelPosition) {
         case TabBarLevelPosition.right:

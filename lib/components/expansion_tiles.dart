@@ -6,7 +6,7 @@ class ExpansionTiles extends StatefulWidget {
     super.key,
     this.leading,
     required this.title,
-    this.children = const <Widget>[],
+    this.children = const [],
     this.child,
     this.initial = false,
     this.subtitle,

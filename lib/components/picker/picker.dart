@@ -221,7 +221,7 @@ class PickerSubject<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> column = <Widget>[];
+    final List<Widget> column = [];
     if (options.top != null) column.add(options.top!);
     column.add(Universal(
         direction: Axis.horizontal,

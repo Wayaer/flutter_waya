@@ -644,7 +644,7 @@ class ListEntry extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> children = <Widget>[];
+    final List<Widget> children = [];
     if (prefix != null) children.add(prefix!);
     children.add(listTile);
     if (arrow || arrowIcon != null) children.add(arrowIcon ?? arrowWidget);

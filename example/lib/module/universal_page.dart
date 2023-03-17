@@ -24,7 +24,7 @@ class _UniversalPageState extends State<UniversalPage>
   @override
   Widget build(BuildContext context) {
     Color color = context.theme.primaryColor;
-    List<Widget> children = <Widget>[
+    List<Widget> children = [
       Universal(
           width: 200,
           height: 50,
@@ -52,7 +52,7 @@ class _UniversalPageState extends State<UniversalPage>
           size: const Size(300, 20),
           direction: Axis.horizontal,
           color: Colors.green.withOpacity(0.2),
-          children: const <Widget>[
+          children: const [
             Universal(flex: 1, color: Colors.red),
             Universal(flex: 2, color: Colors.greenAccent),
           ]),

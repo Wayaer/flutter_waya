@@ -1,9 +1,8 @@
 import 'dart:math' as math;
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/extended/scroll_view/sliver/element.dart';
-import 'package:flutter_waya/extended/scroll_view/sliver/render.dart';
+import 'package:flutter_waya/extended/sliver/element.dart';
+import 'package:flutter_waya/extended/sliver/render.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 typedef BuilderScrollView = Widget Function(
@@ -22,7 +21,7 @@ class ExtendedScrollView extends StatefulWidget {
     this.dragStartBehavior = DragStartBehavior.start,
     this.controller,
     this.restorationId,
-    this.slivers = const <Widget>[],
+    this.slivers = const [],
     this.primary,
     this.shrinkWrap = false,
     this.center,
@@ -51,7 +50,7 @@ class ExtendedScrollView extends StatefulWidget {
     this.body,
     this.controller,
     this.restorationId,
-    this.slivers = const <Widget>[],
+    this.slivers = const [],
     this.scrollBehavior,
   })  : isNestedScrollView = true,
         builderScrollView = null,
@@ -430,7 +429,7 @@ class _Calculate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> column = <Widget>[];
+    final List<Widget> column = [];
     if (slivers.isNotEmpty) {
       for (final Widget element in slivers) {
         final _SliverModel sliver = _SliverModel();
@@ -439,7 +438,7 @@ class _Calculate extends StatelessWidget {
           final Widget flexibleSpace = element.flexibleSpace!;
           final GlobalKey flexibleSpaceKey = GlobalKey();
           if (flexibleSpace is FlexibleSpaceBar) {
-            final List<Widget> stack = <Widget>[];
+            final List<Widget> stack = [];
             final FlexibleSpaceBar space = flexibleSpace;
             if (space.title != null) stack.add(space.title!);
             if (space.background != null) stack.add(space.background!);
@@ -812,7 +811,6 @@ class _CustomSliverAppbarDelegate extends SliverPinnedPersistentHeaderDelegate {
   @override
   bool shouldRebuild(SliverPinnedPersistentHeaderDelegate oldDelegate) {
     if (oldDelegate.runtimeType != runtimeType) return true;
-
     return oldDelegate is _CustomSliverAppbarDelegate &&
         (oldDelegate.minExtentProtoType != minExtentProtoType ||
             oldDelegate.maxExtentProtoType != maxExtentProtoType ||

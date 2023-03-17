@@ -31,11 +31,11 @@ class _JsonParseState extends State<JsonParse> {
       children: children);
 
   List<Widget> get children {
-    final List<Widget> list = <Widget>[];
+    final List<Widget> list = [];
     widget.json.builderEntry((MapEntry<dynamic, dynamic> entry) {
       final dynamic key = entry.key;
       final dynamic content = entry.value;
-      final List<Widget> row = <Widget>[];
+      final List<Widget> row = [];
       if (isTap(content)) {
         row.add(ToggleRotate(
             rad: pi / 2,
@@ -45,7 +45,7 @@ class _JsonParseState extends State<JsonParse> {
       } else {
         row.add(const SizedBox(width: 14));
       }
-      row.addAll(<Widget>[
+      row.addAll([
         BText(widget.isList || isTap(content) ? '[$key]:' : ' $key :',
                 fontWeight: FontWeight.w400,
                 color: content == null ? Colors.grey : Colors.purple)

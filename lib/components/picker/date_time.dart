@@ -243,7 +243,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> rowChildren = <Widget>[];
+    final List<Widget> rowChildren = [];
     if (unit.year != null) {
       rowChildren.add(wheelItem(yearData,
           controller: controllerYear,

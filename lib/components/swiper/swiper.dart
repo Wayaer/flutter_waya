@@ -522,7 +522,7 @@ abstract class _LayoutState<T extends _SubFlSwiper> extends State<T>
     return AnimatedBuilder(
         animation: _animationController,
         builder: (BuildContext context, Widget? w) {
-          final List<Widget> list = <Widget>[];
+          final List<Widget> list = [];
           final double animationValue = _animation.value;
           for (int i = 0; i < _animationCount!; ++i) {
             int realIndex = _currentIndex + i + _startIndex;

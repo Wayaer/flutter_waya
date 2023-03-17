@@ -110,12 +110,14 @@ class _MultiListLinkagePicker extends StatelessWidget {
 
   Widget buildChild(String value, bool selected) => Universal(
       padding: const EdgeInsets.symmetric(vertical: 8),
-      color: selected ? Colors.amber : null,
       width: 30,
-      child: Center(
-          child: Text(value,
-              style: TextStyle(
-                  fontSize: 10, color: selected ? Colors.blue : null))));
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+          color: selected ? Colors.blue : null,
+          border: const Border(right: BorderSide(color: Colors.blue))),
+      child: Text(value,
+          style:
+              TextStyle(fontSize: 10, color: selected ? Colors.white : null)));
 
   Future<void> multiListLinkagePicker(
       List<PickerListLinkageEntry<String>> multiListLinkage) async {

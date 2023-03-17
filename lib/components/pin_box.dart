@@ -22,7 +22,7 @@ class PinBox extends StatefulWidget {
       this.hasFocusPinDecoration,
       this.textStyle,
       this.boxSize = const Size(40, 40),
-      this.spaces = const <Widget>[],
+      this.spaces = const [],
       this.inputLimitFormatter = TextInputLimitFormatter.text,
       this.builder,
       this.controller});
@@ -123,7 +123,7 @@ class _PinBoxState extends State<PinBox> {
           ]);
 
   Widget boxRow(String text) {
-    final List<Widget> box = <Widget>[];
+    final List<Widget> box = [];
     List<String> texts = text.trim().split('');
     (widget.maxLength - texts.length).generate((index) => texts.add(''));
     bool hasFocus = false;
@@ -137,7 +137,7 @@ class _PinBoxState extends State<PinBox> {
           alignment: Alignment.center,
           child: BText(texts[i], style: widget.textStyle)));
     }
-    final List<Widget> children = <Widget>[];
+    final List<Widget> children = [];
     if (spaces.isNotEmpty) {
       (box.length + 1).generate((int index) {
         if (index < spaces.length) {

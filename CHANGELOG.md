@@ -1,10 +1,11 @@
 ## 5.5.0
 
 * Added the value argument for `PickerLinkageEntry`, so `MultiColumnLinkagePicker` gets the `onValueChanged` method
-* `AreaPicker` removed. Use `MultiColumnLinkagePicker`, as shown in the `MultiColumnLinkagePicker` component in the example,
-* In `example/lib/module/picker/area.dart` The regional data in the dart
+* `AreaPicker` removed. Use `MultiColumnLinkagePicker`, as shown in the `MultiColumnLinkagePicker` component in the example, In `example/lib/module/picker/area.dart` The regional data in the dart
 * Rewrite `TabBarBox()` and `TabBarMerge()`
 * Added the `MultiListLinkagePicker()` and added the example
+* `ScrollList.waterfall()` and `ScrollList.separator()` removed , Use `ScrollList.builder()`.
+* Remove the `SliverWaterfallFlow()`,`SliverListGrid` adds the `gridStyle` parameter
 
 ## 5.3.2
 

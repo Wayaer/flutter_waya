@@ -530,8 +530,7 @@ class Universal extends StatelessWidget {
           current = refreshedWidget(children!
               .builder((Widget item) => SliverToBoxAdapter(child: item)));
         } else {
-          current =
-              refreshedWidget(<Widget>[SliverToBoxAdapter(child: current)]);
+          current = refreshedWidget([SliverToBoxAdapter(child: current)]);
         }
       }
     } else {

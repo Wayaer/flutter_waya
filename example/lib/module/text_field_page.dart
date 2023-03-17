@@ -128,8 +128,8 @@ class TextFieldPage extends StatelessWidget {
           decorator: DecoratorBoxStyle(
               padding: const EdgeInsets.symmetric(vertical: 10),
               gradient: const LinearGradient(colors: Colors.accents),
-              header: Row(children: const <Widget>[Text(' header')]),
-              footer: Row(children: const <Widget>[Text(' footer')]),
+              header: Row(children: const [Text(' header')]),
+              footer: Row(children: const [Text(' footer')]),
               fillColor: Colors.blue.withOpacity(0.2),
               borderType: BorderType.outline,
               borderSide: const BorderSide(color: Colors.yellow),

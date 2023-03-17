@@ -251,8 +251,9 @@ class _AnchorScrollBuilderWaterfallPage extends StatelessWidget {
                   bool reverse,
                   Axis scrollDirection,
                   List<GlobalKey<State<StatefulWidget>>> entryKey) {
-                return ScrollList.waterfall(
+                return ScrollList.builder(
                     key: scrollKey,
+                    gridStyle: GridStyle.masonry,
                     controller: scrollController,
                     itemCount: _colors.length,
                     reverse: reverse,

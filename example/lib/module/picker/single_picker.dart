@@ -25,7 +25,8 @@ class _SinglePickerPage extends StatelessWidget {
               },
               itemCount: numberList.length,
               listBuilder: (int itemCount, IndexedWidgetBuilder itemBuilder) {
-                return ScrollList.waterfall(
+                return ScrollList.builder(
+                    gridStyle: GridStyle.masonry,
                     maxCrossAxisExtent: 100,
                     mainAxisSpacing: 12,
                     crossAxisSpacing: 12,
@@ -77,7 +78,8 @@ class _SinglePickerPage extends StatelessWidget {
     final value = await SingleListPicker(
         itemCount: list.length,
         listBuilder: (int itemCount, IndexedWidgetBuilder itemBuilder) {
-          return ScrollList.waterfall(
+          return ScrollList.builder(
+              gridStyle: GridStyle.masonry,
               maxCrossAxisExtent: 100,
               mainAxisSpacing: 12,
               crossAxisSpacing: 12,

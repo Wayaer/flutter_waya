@@ -158,6 +158,7 @@ class _MultiListLinkagePickerState<T> extends State<MultiListLinkagePicker<T>> {
           required int positionIndex,
           required int? positionValue}) =>
       ScrollList.builder(
+          itemCount: list.length,
           itemBuilder: (_, int index) {
             bool selected = position[positionIndex] == index;
             return Universal(
@@ -176,6 +177,5 @@ class _MultiListLinkagePickerState<T> extends State<MultiListLinkagePicker<T>> {
                 child: index > list.length
                     ? list.last.child(selected)
                     : list[index].child(selected));
-          },
-          itemCount: list.length);
+          });
 }

@@ -102,7 +102,7 @@ class _AlertDemo extends StatelessWidget {
     return const CupertinoActionSheet(
         title: Text('提示'),
         message: Text('是否要删除当前项？'),
-        actions: <Widget>[
+        actions: [
           CupertinoActionSheetAction(
               onPressed: closePopup, isDefaultAction: true, child: Text('删除')),
           CupertinoActionSheetAction(

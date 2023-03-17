@@ -41,7 +41,7 @@ class _ExtensionDurationPage extends StatelessWidget {
         appBar: AppBarText('ExtensionDurationPage'),
         padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: const <Widget>[
+        children: const [
           _Item('\$ duration.delayed()', '转换指定长度的字符串'),
           _Item('\$ duration.timer()', 'Timer'),
           _Item('\$ duration.timerPeriodic()', '定时器 需要手动释放timer'),
@@ -62,7 +62,7 @@ class _ExtensionDateTimePage extends StatelessWidget {
         appBar: AppBarText('ExtensionDateTimePage'),
         padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: const <Widget>[
+        children: const [
           _Item('\$ dateTime.format()', '转换指定长度的字符串'),
           _Item('\$ dateTime.isLeapYearByYear', '是否是闰年'),
         ]);
@@ -79,7 +79,7 @@ class _ExtensionMapPage extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
         isScroll: true,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: const <Widget>[
+        children: const [
           _Item('\$ map.keysList()', ''),
           _Item('\$ map.valuesList()', ''),
           _Item('\$ map.builderEntry()', ''),
@@ -100,7 +100,7 @@ class _ExtensionListPage extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
         isScroll: true,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: const <Widget>[
+        children: const [
           _Item('\$ list.builder()', 'list.map.toList()'),
           _Item('\$ list.builderEntry()', 'list.asMap().entries.map.toList()'),
           _Item('\$ list.generate()', ''),
@@ -127,7 +127,7 @@ class _ExtensionStringPage extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
         isScroll: true,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: const <Widget>[
+        children: const [
           _Item('\$ string.parseInt', '转换为int'),
           _Item('\$ string.parseDouble', '转换为Double'),
           _Item('\$ string.toMd5', 'md5 加密'),
@@ -268,7 +268,7 @@ class _ExtensionNumPage extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
         isScroll: true,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: const <Widget>[
+        children: const [
           _Item('\$ num.generate()', '创建指定长度的List'),
           _Item('\$ num.length', 'num 长'),
           _Item('\$ num.fromMicrosecondsSinceEpoch()', '微秒时间戳转换 DateTime'),
@@ -295,7 +295,7 @@ class _ExtensionContextPage extends StatelessWidget {
         isScroll: true,
         appBar: AppBarText('ExtensionContextPage'),
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: const <Widget>[
+        children: const [
           _Item('context.focusNode()',
               '移出焦点 focusNode==null  移出焦点 （可用于关闭键盘） focusNode！!= null 获取焦点'),
           _Item('context.autoFocus()', '自动获取焦点'),

@@ -31,7 +31,7 @@ class ScrollViewPage extends StatelessWidget {
         ]);
   }
 
-  List<Widget> get slivers => <Widget>[
+  List<Widget> get slivers => [
         ExtendedSliverAppBar(
             pinned: true,
             snap: true,
@@ -87,10 +87,9 @@ class _RefreshScrollViewPage extends StatelessWidget {
               RefreshControllers().call(EasyRefreshType.loadingSuccess);
             });
           }),
-          slivers: <Widget>[
-            SliverListGrid(
+          slivers: [
+            SliverListGrid.builder(
                 itemCount: colors.length,
-                crossAxisFlex: true,
                 maxCrossAxisExtent: 30,
                 separatorBuilder: (_, int index) {
                   return Text('s$index');
@@ -112,7 +111,7 @@ class _CustomScrollViewPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ExtendedScaffold(
-          body: CustomScrollView(slivers: <Widget>[
+          body: CustomScrollView(slivers: [
         const CustomSliverAppBar(
             title: BText('CustomScrollViewPage', color: Colors.white)),
         SliverPinnedToBoxAdapter(
@@ -179,7 +178,7 @@ class _ExtendedCustomScrollViewPage extends StatelessWidget {
             /// 结束刷新
             return Future<dynamic>.value(true);
           },
-          child: ExtendedScrollView.custom(slivers: <Widget>[
+          child: ExtendedScrollView.custom(slivers: [
             ...slivers,
             ...List<Widget>.generate(
                 100,

@@ -104,7 +104,7 @@ class Badge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> children = <Widget>[child];
+    final List<Widget> children = [child];
     if (!hide) {
       Widget current = dot(context);
       if (alignment != null) {

@@ -114,8 +114,8 @@ class _DecoratorBoxPageState extends State<DecoratorBoxPage> {
               extraSuffix: const Text('extra'),
               prefix: const Text('prefix'),
               suffix: const Text('suffix'),
-              header: Row(children: const <Widget>[Text('header')]),
-              footer: Row(children: const <Widget>[Text('footer')]),
+              header: Row(children: const [Text('header')]),
+              footer: Row(children: const [Text('footer')]),
               child: CupertinoTextField.borderless(
                   prefixMode: OverlayVisibilityMode.always,
                   prefix: Container(color: Colors.green, width: 20, height: 20),
