@@ -1,4 +1,4 @@
-## 5.5.0
+## 6.0.0
 
 * Added the value argument for `PickerLinkageEntry`, so `MultiColumnLinkagePicker` gets the `onValueChanged` method
 * `AreaPicker` removed. Use `MultiColumnLinkagePicker`, as shown in the `MultiColumnLinkagePicker` component in the example, In `example/lib/module/picker/area.dart` The regional data in the dart
@@ -6,6 +6,8 @@
 * Added the `MultiListLinkagePicker()` and added the example
 * `ScrollList.waterfall()` and `ScrollList.separator()` removed , Use `ScrollList.builder()`.
 * Remove the `SliverWaterfallFlow()`,`SliverListGrid` adds the `gridStyle` parameter
+* Modify `ListWheel()` and `ListWheelState()`
+* Split des engine to [des_engine](https://pub.dev/packages/des_engine)
 
 ## 5.3.2
 

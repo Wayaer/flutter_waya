@@ -105,25 +105,40 @@ class PickerOptions<T> {
 class PickerWheelOptions extends WheelOptions {
   const PickerWheelOptions({
     /// 高度
-    super.itemExtent = 22,
+    super.itemExtent,
 
     /// 半径大小,越大则越平面,越小则间距越大
     super.diameterRatio = 1.3,
 
     /// 选中item偏移
-    super.offAxisFraction = 0,
+    super.offAxisFraction,
 
-    /// 表示ListWheel水平偏离中心的程度  范围[0,0.01]
+    /// 表示ListWheel水平偏离中心的程度
     super.perspective = 0.01,
 
     /// 是否启用放大
     super.useMagnifier = true,
 
     /// 放大倍率
-    super.magnification = 1.1,
+    super.magnification,
 
     /// 上下间距默认为1 数越小 间距越大
-    super.squeeze = 1,
+    super.squeeze,
+
+    /// [isCupertino]=false生效
+    super.clipBehavior,
+
+    /// [isCupertino]=false生效
+    super.overAndUnderCenterOpacity,
+
+    /// [isCupertino]=false生效
+    super.renderChildrenOutsideViewport,
+
+    /// [isCupertino]=false生效
+    super.restorationId,
+
+    /// [isCupertino]=false生效
+    super.scrollBehavior,
 
     /// 使用ios Cupertino 风格
     super.isCupertino = true,
@@ -131,8 +146,11 @@ class PickerWheelOptions extends WheelOptions {
     /// [isCupertino]=true生效
     super.backgroundColor,
 
+    /// [isCupertino]=true生效
+    super.selectionOverlay,
+
     /// physics
-    super.physics = const FixedExtentScrollPhysics(),
+    super.physics,
     this.itemWidth,
   });
 
@@ -258,47 +276,22 @@ class _PickerListWheel extends ListWheel {
   _PickerListWheel({
     ValueChanged<int>? onChanged,
     required super.itemCount,
-    required PickerWheelOptions wheel,
+    required super.itemBuilder,
+    required PickerWheelOptions options,
     super.controller,
-    super.itemBuilder,
     super.onScrollEnd,
-  }) : super(
-            childDelegateType: ListWheelChildDelegateType.builder,
+  }) : super.builder(
             options: WheelOptions(
-                backgroundColor: wheel.backgroundColor,
-                isCupertino: wheel.isCupertino,
-                itemExtent: wheel.itemExtent,
-                diameterRatio: wheel.diameterRatio,
-                offAxisFraction: wheel.offAxisFraction,
-                perspective: wheel.perspective,
-                magnification: wheel.magnification,
-                useMagnifier: wheel.useMagnifier,
-                squeeze: wheel.squeeze,
-                physics: wheel.physics,
-                onChanged: onChanged));
-}
-
-class _PickerListWheelState extends ListWheelState {
-  _PickerListWheelState({
-    ValueChanged<int>? onChanged,
-    required super.itemCount,
-    required PickerWheelOptions wheel,
-    super.itemBuilder,
-    super.onScrollEnd,
-    super.initialItem = 0,
-  }) : super(
-            childDelegateType: ListWheelChildDelegateType.builder,
-            options: WheelOptions(
-                backgroundColor: wheel.backgroundColor,
-                isCupertino: wheel.isCupertino,
-                itemExtent: wheel.itemExtent,
-                diameterRatio: wheel.diameterRatio,
-                offAxisFraction: wheel.offAxisFraction,
-                perspective: wheel.perspective,
-                magnification: wheel.magnification,
-                useMagnifier: wheel.useMagnifier,
-                squeeze: wheel.squeeze,
-                physics: wheel.physics,
+                backgroundColor: options.backgroundColor,
+                isCupertino: options.isCupertino,
+                itemExtent: options.itemExtent,
+                diameterRatio: options.diameterRatio,
+                offAxisFraction: options.offAxisFraction,
+                perspective: options.perspective,
+                magnification: options.magnification,
+                useMagnifier: options.useMagnifier,
+                squeeze: options.squeeze,
+                physics: options.physics,
                 onChanged: onChanged));
 }
 

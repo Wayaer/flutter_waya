@@ -80,8 +80,5 @@ export 'extension/widget_extension.dart';
 /// utils
 export 'utils/utils.dart';
 export 'utils/ali_oss.dart';
-export 'utils/des/des.dart';
-export 'utils/des/des_engine.dart';
-export 'utils/des/permuted.dart';
 export 'utils/event.dart';
 export 'utils/media_query.dart';

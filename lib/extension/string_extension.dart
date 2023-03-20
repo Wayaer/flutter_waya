@@ -49,7 +49,7 @@ extension ExtensionString on String {
 
   /// 手机号验证
   bool get isChinaPhone =>
-      RegExp(r'^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$')
+      RegExp(r'^1([38]\d|4[579]|5[0-3,5-9]|66|7[0135678]|9[89])\d{8}$')
           .hasMatch(this);
 
   /// utf8ToList
@@ -107,10 +107,10 @@ extension ExtensionString on String {
   }
 
   /// 移出头部指定长度
-  String removePrefixLength(int l) => substring(l, length);
+  String removePrefixLength(int i) => substring(i, length);
 
   /// 移出尾部指定长度
-  String removeSuffixLength(int l) => substring(0, length - l);
+  String removeSuffixLength(int i) => substring(0, length - i);
 
   /// Check whether a string is a number or not
   /// ```dart
@@ -136,6 +136,10 @@ extension ExtensionString on String {
     return isMatch && length == 1;
   }
 
+  /// 是否包含中文
+  bool get isChinese => RegExp('[\u4e00-\u9fa5]').hasMatch(this);
+
+  /// 是否是小数
   bool isLetter() => RegExp("[A-Za-z]").hasMatch(this);
 
   /// Check if string is json decode

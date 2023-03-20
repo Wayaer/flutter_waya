@@ -7,6 +7,7 @@ import 'package:app/module/dio_page.dart';
 import 'package:app/module/extension_page.dart';
 import 'package:app/module/gesture_page.dart';
 import 'package:app/module/json_parse_page.dart';
+import 'package:app/module/list_wheel_page.dart';
 import 'package:app/module/overlay_page.dart';
 import 'package:app/module/picker/picker_page.dart';
 import 'package:app/module/popup_page.dart';
@@ -29,15 +30,6 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   GlobalOptions globalOptions = GlobalOptions();
   PaintingBinding.instance.imageCache.maximumSizeBytes = 1024 * 1024 * 40;
-  void des() {
-    const String str =
-        'CfAmqOiIYz6NkH0Te32Uz6obXELPspz1pDj+oOUNNbsmptHP0Jwvdg==';
-    const String key = 'a51d3484ad8445df9d9e7aa5e8';
-    log('des解密==>\nkey = $key \nString = $str');
-    final DES des = DES(DESEngine(), 'a51d3484ad8445df9d9e7aa5e8');
-    final String? decoded = des.decodeBase64(str);
-    log('des解密完成==> $decoded');
-  }
 
   ExtendedDio().initialize(
       options: ExtendedDioOptions(interceptors: [
@@ -65,7 +57,6 @@ void main() {
   globalOptions.setLoadingOptions(const LoadingOptions(
       custom: BText('全局设置loading', fontSize: 20),
       options: ModalWindowsOptions(onTap: closeLoading)));
-  des();
   runApp(DevicePreview(
       enabled: isDesktop || isWeb,
       defaultDevice: Devices.ios.iPhone13Mini,
@@ -167,6 +158,8 @@ class _Home extends StatelessWidget {
                   onTap: () => push(const ScrollViewPage())),
               ElevatedText('ScrollList',
                   onTap: () => push(const ScrollListPage())),
+              ElevatedText('ListWheel',
+                  onTap: () => push(const ListWheelPage())),
               ElevatedText('AnchorScroll',
                   onTap: () => push(const AnchorScrollBuilderPage())),
               ElevatedText('EasyRefreshed',

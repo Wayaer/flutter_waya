@@ -173,10 +173,6 @@ extension ExtensionNum on num {
 
 /// int 扩展
 extension ExtensionInt on int {
-  int rightShift32(int n) => ((toInt() & 0xFFFFFFFF) >> n).toSigned(32);
-
-  int leftShift32(int n) => ((toInt() & 0xFFFFFFFF) << n).toSigned(32);
-
   /// b KB MB GB TB PB
   String toStorageUnit([int round = 2]) {
     int divider = 1024;

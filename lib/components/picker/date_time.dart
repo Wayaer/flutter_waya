@@ -382,7 +382,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
             onChanged?.call(index);
             this.onChanged();
           },
-          wheel: wheelOptions);
+          options: wheelOptions);
 
   void jumpToIndex(int index, FixedExtentScrollController? controller) {
     if (index != controller?.selectedItem) {

@@ -79,20 +79,26 @@ class MultiColumnPicker extends PickerStatelessWidget<List<int>> {
           if (entry.length > position.length) position.add(0);
           final value = item.value;
           final location = item.key;
-          return Universal(
-              width: wheelOptions.itemWidth ?? kPickerDefaultWidth,
-              expanded: horizontalScroll ? false : addExpanded,
-              child: _PickerListWheelState(
-                  initialItem: position[item.key],
-                  wheel: wheelOptions,
+          ListWheel buildWheel([FixedExtentScrollController? controller]) =>
+              _PickerListWheel(
+                  controller: controller,
+                  options: wheelOptions,
                   itemBuilder: value.itemBuilder,
                   itemCount: value.itemCount,
                   onChanged: (int index) {
                     position[location] = index;
                   },
-                  onScrollEnd: (_) {
-                    onChanged();
-                  }));
+                  onScrollEnd: (_) => onChanged());
+
+          return Universal(
+              width: wheelOptions.itemWidth ?? kPickerDefaultWidth,
+              expanded: horizontalScroll ? false : addExpanded,
+              child: this.value.isEmpty
+                  ? buildWheel()
+                  : ListWheelState(
+                      initialItem: position[item.key],
+                      builder: buildWheel,
+                      count: value.itemCount));
         }));
 
     if (options == null) return multiColumn;
@@ -184,6 +190,8 @@ class _MultiColumnLinkagePickerState<T>
       if (currentListLength >= position.length) {
         if (position.length > entry.length) {
           position.removeRange(entry.length, position.length);
+        } else if (entry.length > position.length) {
+          position.add(0);
         }
         subsetList = list.first.children;
       } else if (currentListLength < position.length) {
@@ -271,22 +279,27 @@ class _MultiColumnLinkagePickerState<T>
 
   Widget listStateWheel(
           {required List<PickerLinkageEntry> list, required int location}) =>
-      _PickerListWheelState(
+      ListWheelState(
+          count: list.length,
           initialItem: position[location],
-          onChanged: (int index) {
-            position[location] = index;
-          },
-          onScrollEnd: (int index) async {
-            final builder =
-                list.length > index && list[index].children.isNotEmpty;
-            if (location != position.length - 1 || builder) {
-              await 50.milliseconds.delayed();
-              if (mounted) setState(() {});
-            }
-            onChanged();
-          },
-          itemBuilder: (_, int index) => Center(
-              child: index > list.length ? list.last.child : list[index].child),
-          itemCount: list.length,
-          wheel: widget.wheelOptions);
+          builder: (_) => _PickerListWheel(
+              controller: _,
+              onChanged: (int index) {
+                position[location] = index;
+              },
+              onScrollEnd: (int index) async {
+                final builder =
+                    list.length > index && list[index].children.isNotEmpty;
+                if (location != position.length - 1 || builder) {
+                  await 50.milliseconds.delayed();
+                  if (mounted) setState(() {});
+                }
+                onChanged();
+              },
+              itemBuilder: (_, int index) => Center(
+                  child: index > list.length
+                      ? list.last.child
+                      : list[index].child),
+              itemCount: list.length,
+              options: widget.wheelOptions));
 }
