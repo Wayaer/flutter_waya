@@ -148,10 +148,14 @@ class ScrollList extends RefreshScrollView {
     double crossAxisSpacing = 0,
 
     /// 子元素在横轴长度和主轴长度的比例
+    /// [gridStyle] == [GridStyle.none] 生效
     double childAspectRatio = 1,
 
     /// 子元素在主轴上的长度。[mainAxisExtent] 优先 [childAspectRatio]
+    /// [gridStyle] == [GridStyle.none] 生效
     double? mainAxisExtent,
+
+    /// 占位
     Widget placeholder = const PlaceholderChild(),
     this.header,
     this.footer,
@@ -264,9 +268,11 @@ class SliverListGrid extends StatelessWidget {
   final double crossAxisSpacing;
 
   /// 子元素在横轴长度和主轴长度的比例
+  /// [gridStyle] == [GridStyle.none] 生效
   final double childAspectRatio;
 
   /// 子元素在主轴上的长度。[mainAxisExtent] 优先 [childAspectRatio]
+  /// [gridStyle] == [GridStyle.none] 生效
   final double? mainAxisExtent;
 
   /// 大量子组件
@@ -289,7 +295,7 @@ class SliverListGrid extends StatelessWidget {
   final bool addRepaintBoundaries;
   final bool addSemanticIndexes;
 
-  /// itemCount==0 || children.isisEmpty 时 显示的组件
+  /// itemCount==0 || children.isisEmpty 时 占位
   final Widget placeholder;
 
   final GridStyle gridStyle;

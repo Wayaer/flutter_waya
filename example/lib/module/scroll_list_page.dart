@@ -54,6 +54,7 @@ class _ScrollListGridPage extends StatelessWidget {
           crossAxisSpacing: 10,
           maxCrossAxisExtent: gridStyle == GridStyle.aligned ? null : 100,
           crossAxisCount: 2,
+          childAspectRatio: 0.7,
           header: const _Header(),
           footer: const _Footer(),
           padding: const EdgeInsets.all(10),
