@@ -20,7 +20,7 @@ class JsonParse extends StatefulWidget {
   State<JsonParse> createState() => _JsonParseState();
 }
 
-class _JsonParseState extends State<JsonParse> {
+class _JsonParseState extends ExtendedState<JsonParse> {
   Map<String, bool> mapFlag = <String, bool>{};
 
   @override

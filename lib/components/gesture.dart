@@ -31,7 +31,7 @@ class GestureZoom extends StatefulWidget {
   State<GestureZoom> createState() => _GestureZoomState();
 }
 
-class _GestureZoomState extends State<GestureZoom>
+class _GestureZoomState extends ExtendedState<GestureZoom>
     with TickerProviderStateMixin {
   /// 缩放动画控制器
   AnimationController? _scaleAnimController;
@@ -98,10 +98,8 @@ class _GestureZoomState extends State<GestureZoom>
 
   /// 处理缩放变化 [details]
   void _onScaleUpdate(ScaleUpdateDetails details) {
-    if (mounted) {
-      details.scale != 1.0 ? _scaling(details) : _dragging(details);
-      setState(() {});
-    }
+    details.scale != 1.0 ? _scaling(details) : _dragging(details);
+    setState(() {});
   }
 
   /// 执行缩放
@@ -272,17 +270,14 @@ class _GestureZoomState extends State<GestureZoom>
         Tween<double>(begin: _scale, end: targetScale)
             .animate(_scaleAnimController!);
     anim.addListener(() {
-      if (mounted) {
-        setState(() {
-          _scaling(ScaleUpdateDetails(
-            focalPoint: _doubleTapPosition,
-            localFocalPoint: _doubleTapPosition,
-            scale: anim.value as double,
-            horizontalScale: anim.value as double,
-            verticalScale: anim.value as double,
-          ));
-        });
-      }
+      _scaling(ScaleUpdateDetails(
+        focalPoint: _doubleTapPosition,
+        localFocalPoint: _doubleTapPosition,
+        scale: anim.value as double,
+        horizontalScale: anim.value as double,
+        verticalScale: anim.value as double,
+      ));
+      setState(() {});
     });
     anim.addStatusListener((AnimationStatus status) {
       if (status == AnimationStatus.completed) _onScaleEnd(ScaleEndDetails());
@@ -298,11 +293,8 @@ class _GestureZoomState extends State<GestureZoom>
     final Animation<dynamic> anim = _offsetAnimController!
         .drive<dynamic>(Tween<Offset>(begin: _offset, end: targetOffset));
     anim.addListener(() {
-      if (mounted) {
-        setState(() {
-          _offset = anim.value as Offset;
-        });
-      }
+      _offset = anim.value as Offset;
+      setState(() {});
     });
     _offsetAnimController?.fling();
   }

@@ -241,7 +241,7 @@ class _NoThrottleFunction extends StatefulWidget {
   _NoThrottleFunctionState createState() => _NoThrottleFunctionState();
 }
 
-class _NoThrottleFunctionState extends State<_NoThrottleFunction> {
+class _NoThrottleFunctionState extends ExtendedState<_NoThrottleFunction> {
   int i = 0;
 
   @override

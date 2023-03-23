@@ -9,7 +9,7 @@ class FlProgressPage extends StatefulWidget {
   State<FlProgressPage> createState() => _FlProgressPageState();
 }
 
-class _FlProgressPageState extends State<FlProgressPage>
+class _FlProgressPageState extends ExtendedState<FlProgressPage>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   StateSetter? liquidProgressState;

@@ -20,7 +20,7 @@ class SpinKitRing extends StatefulWidget {
   State<SpinKitRing> createState() => _SpinKitRingState();
 }
 
-class _SpinKitRingState extends State<SpinKitRing>
+class _SpinKitRingState extends ExtendedState<SpinKitRing>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation1, _animation2, _animation3;
@@ -127,7 +127,7 @@ class SpinKitDualRing extends StatefulWidget {
   State<SpinKitDualRing> createState() => _SpinKitDualRingState();
 }
 
-class _SpinKitDualRingState extends State<SpinKitDualRing>
+class _SpinKitDualRingState extends ExtendedState<SpinKitDualRing>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;

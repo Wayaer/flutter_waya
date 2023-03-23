@@ -9,7 +9,7 @@ class FlSwiperPage extends StatefulWidget {
   State<FlSwiperPage> createState() => _FlSwiperPageState();
 }
 
-class _FlSwiperPageState extends State<FlSwiperPage> {
+class _FlSwiperPageState extends ExtendedState<FlSwiperPage> {
   FlSwiperController controller = FlSwiperController();
   PageController pageController = PageController();
   ValueNotifier<double> position = ValueNotifier(0);

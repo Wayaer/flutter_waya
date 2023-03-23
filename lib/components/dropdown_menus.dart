@@ -89,7 +89,7 @@ class DropdownMenus<K, V> extends StatefulWidget {
   State<DropdownMenus<K, V>> createState() => _DropdownMenusState<K, V>();
 }
 
-class _DropdownMenusState<K, V> extends State<DropdownMenus<K, V>> {
+class _DropdownMenusState<K, V> extends ExtendedState<DropdownMenus<K, V>> {
   late List<DropdownMenusKeyItem<K, V>> menus;
 
   late GlobalKey labelKey = GlobalKey();

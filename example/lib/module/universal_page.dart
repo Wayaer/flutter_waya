@@ -9,7 +9,7 @@ class UniversalPage extends StatefulWidget {
   State<UniversalPage> createState() => _UniversalPageState();
 }
 
-class _UniversalPageState extends State<UniversalPage>
+class _UniversalPageState extends ExtendedState<UniversalPage>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
 

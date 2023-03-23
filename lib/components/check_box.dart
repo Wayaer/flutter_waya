@@ -348,7 +348,7 @@ class CheckBox extends StatefulWidget {
   State<CheckBox> createState() => _CheckBoxState();
 }
 
-class _CheckBoxState extends State<CheckBox> {
+class _CheckBoxState extends ExtendedState<CheckBox> {
   bool? value = false;
 
   @override
@@ -363,7 +363,7 @@ class _CheckBoxState extends State<CheckBox> {
     if (oldWidget.value != widget.value ||
         oldWidget.stateBuilder != widget.stateBuilder) {
       value = widget.value;
-      if (mounted) setState(() {});
+      setState(() {});
     }
   }
 

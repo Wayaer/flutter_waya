@@ -25,7 +25,7 @@ class SpinKitFadingFour extends StatefulWidget {
   State<SpinKitFadingFour> createState() => _SpinKitFadingFourState();
 }
 
-class _SpinKitFadingFourState extends State<SpinKitFadingFour>
+class _SpinKitFadingFourState extends ExtendedState<SpinKitFadingFour>
     with SingleTickerProviderStateMixin {
   final List<double> delays = <double>[.0, -0.9, -0.6, -0.3];
   late AnimationController _controller;
@@ -102,7 +102,7 @@ class SpinKitWanderingCubes extends StatefulWidget {
   State<SpinKitWanderingCubes> createState() => _SpinKitWanderingCubesState();
 }
 
-class _SpinKitWanderingCubesState extends State<SpinKitWanderingCubes>
+class _SpinKitWanderingCubesState extends ExtendedState<SpinKitWanderingCubes>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scale1, _scale2, _scale3, _scale4, _rotate;

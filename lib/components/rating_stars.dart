@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 
 typedef RatingStarsChanged = void Function(
     double realStars, double selectedStars);
@@ -60,7 +61,7 @@ class RatingStars extends StatefulWidget {
   State<RatingStars> createState() => _RatingStarsState();
 }
 
-class _RatingStarsState extends State<RatingStars> {
+class _RatingStarsState extends ExtendedState<RatingStars> {
   late double _minStars;
 
   late double _currentStars;

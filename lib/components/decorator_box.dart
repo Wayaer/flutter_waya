@@ -128,7 +128,7 @@ class DecoratorBoxState extends StatefulWidget {
   State<DecoratorBoxState> createState() => _DecoratorBoxStateState();
 }
 
-class _DecoratorBoxStateState extends State<DecoratorBoxState> {
+class _DecoratorBoxStateState extends ExtendedState<DecoratorBoxState> {
   late FocusNode focusNode;
   late BorderSide borderSide;
   bool hasFocus = false;
@@ -166,7 +166,7 @@ class _DecoratorBoxStateState extends State<DecoratorBoxState> {
     if (widget.focusBorderSide != null) {
       borderSide = hasFocus ? widget.focusBorderSide! : widget.borderSide;
     }
-    if (mounted) setState(() {});
+    setState(() {});
   }
 
   @override

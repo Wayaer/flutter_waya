@@ -10,7 +10,7 @@ class ExtendedDioPage extends StatefulWidget {
   State<ExtendedDioPage> createState() => _ExtendedDioPageState();
 }
 
-class _ExtendedDioPageState extends State<ExtendedDioPage> {
+class _ExtendedDioPageState extends ExtendedState<ExtendedDioPage> {
   String? cachePath;
   Map<String, dynamic> res = {};
 

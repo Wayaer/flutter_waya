@@ -171,7 +171,7 @@ class MultiColumnLinkagePicker<T> extends PickerStatefulWidget<List<int>> {
 }
 
 class _MultiColumnLinkagePickerState<T>
-    extends State<MultiColumnLinkagePicker<T>> {
+    extends ExtendedState<MultiColumnLinkagePicker<T>> {
   List<PickerLinkageEntry<T>> entry = [];
   List<int> position = [];
   int currentListLength = 0;
@@ -233,7 +233,7 @@ class _MultiColumnLinkagePickerState<T>
   void didUpdateWidget(covariant MultiColumnLinkagePicker<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
     entry = widget.entry;
-    if (mounted) setState(() {});
+    setState(() {});
   }
 
   @override
@@ -292,7 +292,7 @@ class _MultiColumnLinkagePickerState<T>
                     list.length > index && list[index].children.isNotEmpty;
                 if (location != position.length - 1 || builder) {
                   await 50.milliseconds.delayed();
-                  if (mounted) setState(() {});
+                  setState(() {});
                 }
                 onChanged();
               },

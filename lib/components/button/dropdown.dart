@@ -63,7 +63,7 @@ class DropdownMenuButton extends StatefulWidget {
   State<DropdownMenuButton> createState() => _DropdownMenuButtonState();
 }
 
-class _DropdownMenuButtonState extends State<DropdownMenuButton> {
+class _DropdownMenuButtonState extends ExtendedState<DropdownMenuButton> {
   int? selectIndex;
   bool isShow = false;
 

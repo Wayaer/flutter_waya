@@ -46,7 +46,7 @@ class ToggleRotate extends StatefulWidget {
   State<ToggleRotate> createState() => _ToggleRotateState();
 }
 
-class _ToggleRotateState extends State<ToggleRotate>
+class _ToggleRotateState extends ExtendedState<ToggleRotate>
     with SingleTickerProviderStateMixin {
   double _rad = 0;
   bool _rotated = false;
@@ -67,10 +67,8 @@ class _ToggleRotateState extends State<ToggleRotate>
   }
 
   void listener() {
-    if (mounted) {
-      setState(() =>
-          _rad = (_rotated ? (1 - _rotate.value) : _rotate.value) * widget.rad);
-    }
+    setState(() =>
+        _rad = (_rotated ? (1 - _rotate.value) : _rotate.value) * widget.rad);
   }
 
   @override

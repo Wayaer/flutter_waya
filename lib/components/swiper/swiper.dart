@@ -92,7 +92,7 @@ class FlSwiper extends StatefulWidget {
   State<StatefulWidget> createState() => _FlSwiperState();
 }
 
-abstract class _FlSwiperTimerMixin extends State<FlSwiper> {
+abstract class _FlSwiperTimerMixin extends ExtendedState<FlSwiper> {
   Timer? _timer;
 
   late FlSwiperController _controller;
@@ -453,7 +453,7 @@ class _StackState extends _LayoutState<_SubFlSwiper> {
 }
 
 /// _LayoutState
-abstract class _LayoutState<T extends _SubFlSwiper> extends State<T>
+abstract class _LayoutState<T extends _SubFlSwiper> extends ExtendedState<T>
     with SingleTickerProviderStateMixin {
   late double _swiperWidth;
   late double _swiperHeight;
@@ -485,7 +485,7 @@ abstract class _LayoutState<T extends _SubFlSwiper> extends State<T>
     final Size size = renderObject.paintBounds.size;
     _swiperWidth = size.width;
     _swiperHeight = size.height;
-    if (mounted) setState(() {});
+    setState(() {});
   }
 
   @override

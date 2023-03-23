@@ -43,7 +43,7 @@ class CountDown extends StatefulWidget {
   State<CountDown> createState() => _CountDownState();
 }
 
-class _CountDownState extends State<CountDown> {
+class _CountDownState extends ExtendedState<CountDown> {
   late int i;
   Timer? timer;
 
@@ -87,7 +87,7 @@ class _CountDownState extends State<CountDown> {
       if (i > 0) {
         timer = periodic.timerPeriodic((Timer time) {
           i -= widget.periodic;
-          if (mounted) setState(() {});
+          setState(() {});
           widget.onChanged?.call(i);
           if (i == 0) disposeTime();
         });

@@ -68,7 +68,7 @@ class _CustomApp extends StatefulWidget {
   State<_CustomApp> createState() => _CustomAppState();
 }
 
-class _CustomAppState extends State<_CustomApp> {
+class _CustomAppState extends ExtendedState<_CustomApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -89,7 +89,7 @@ class _App extends StatefulWidget {
   State<_App> createState() => _AppState();
 }
 
-class _AppState extends State<_App> {
+class _AppState extends ExtendedState<_App> {
   @override
   void initState() {
     super.initState();

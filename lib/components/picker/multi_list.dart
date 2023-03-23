@@ -68,7 +68,8 @@ class MultiListLinkagePicker<T> extends PickerStatefulWidget<List<int>> {
       _MultiListLinkagePickerState<T>();
 }
 
-class _MultiListLinkagePickerState<T> extends State<MultiListLinkagePicker<T>> {
+class _MultiListLinkagePickerState<T>
+    extends ExtendedState<MultiListLinkagePicker<T>> {
   List<PickerListLinkageEntry<T>> entry = [];
   List<int?> position = [null];
   int currentListLength = 0;
@@ -83,7 +84,7 @@ class _MultiListLinkagePickerState<T> extends State<MultiListLinkagePicker<T>> {
   void didUpdateWidget(covariant MultiListLinkagePicker<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
     entry = widget.entry;
-    if (mounted) setState(() {});
+    setState(() {});
   }
 
   @override

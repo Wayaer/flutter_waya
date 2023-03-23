@@ -44,7 +44,7 @@ class ValueBuilder<T> extends StatefulWidget {
   State<ValueBuilder<T>> createState() => _ValueBuilderState<T>();
 }
 
-class _ValueBuilderState<T> extends State<ValueBuilder<T>> {
+class _ValueBuilderState<T> extends ExtendedState<ValueBuilder<T>> {
   T? value;
 
   @override
@@ -64,11 +64,9 @@ class _ValueBuilderState<T> extends State<ValueBuilder<T>> {
   Widget build(BuildContext context) => widget.builder(context, value, updater);
 
   void updater(T? newValue) {
-    if (mounted) {
-      widget.onUpdate?.call(newValue);
-      value = newValue;
-      setState(() {});
-    }
+    widget.onUpdate?.call(newValue);
+    value = newValue;
+    setState(() {});
   }
 
   @override
@@ -77,7 +75,7 @@ class _ValueBuilderState<T> extends State<ValueBuilder<T>> {
     widget.didUpdateWidget?.call(context);
     if (widget.initialValue != null && widget.initialValue != value) {
       value = widget.initialValue;
-      if (mounted) setState(() {});
+      setState(() {});
     }
   }
 
@@ -140,7 +138,7 @@ class ValueListenBuilder<T> extends StatefulWidget {
   State<ValueListenBuilder<T>> createState() => _ValueListenBuilderState<T>();
 }
 
-class _ValueListenBuilderState<T> extends State<ValueListenBuilder<T>> {
+class _ValueListenBuilderState<T> extends ExtendedState<ValueListenBuilder<T>> {
   T? value;
   late ValueNotifier<T?> valueListenable;
 
@@ -169,11 +167,9 @@ class _ValueListenBuilderState<T> extends State<ValueListenBuilder<T>> {
   }
 
   void _valueChanged() {
-    if (mounted) {
-      value = valueListenable.value;
-      widget.onUpdate?.call(value);
-      setState(() {});
-    }
+    value = valueListenable.value;
+    widget.onUpdate?.call(value);
+    setState(() {});
   }
 
   @override
@@ -226,7 +222,8 @@ class ExtendedStatefulBuilder extends StatefulWidget {
       _ExtendedStatefulBuilderState();
 }
 
-class _ExtendedStatefulBuilderState extends State<ExtendedStatefulBuilder> {
+class _ExtendedStatefulBuilderState
+    extends ExtendedState<ExtendedStatefulBuilder> {
   @override
   void initState() {
     super.initState();
@@ -339,7 +336,8 @@ class CustomFutureBuilder<T> extends StatefulWidget {
   State<CustomFutureBuilder<T>> createState() => _CustomFutureBuilderState<T>();
 }
 
-class _CustomFutureBuilderState<T> extends State<CustomFutureBuilder<T>> {
+class _CustomFutureBuilderState<T>
+    extends ExtendedState<CustomFutureBuilder<T>> {
   BuilderState state = BuilderState.none;
   T? data;
   Object? _error;
@@ -369,11 +367,11 @@ class _CustomFutureBuilderState<T> extends State<CustomFutureBuilder<T>> {
     widget.future.call().then((value) {
       state = BuilderState.done;
       data = value;
-      if (mounted) setState(() {});
+      setState(() {});
     }, onError: (Object error, StackTrace stackTrace) {
       state = BuilderState.error;
       _error = error;
-      if (mounted) setState(() {});
+      setState(() {});
     });
   }
 
@@ -480,7 +478,8 @@ class CustomStreamBuilder<T> extends StatefulWidget {
   State<CustomStreamBuilder<T>> createState() => _CustomStreamBuilderState<T>();
 }
 
-class _CustomStreamBuilderState<T> extends State<CustomStreamBuilder<T>> {
+class _CustomStreamBuilderState<T>
+    extends ExtendedState<CustomStreamBuilder<T>> {
   BuilderState state = BuilderState.none;
   StreamSubscription<T>? _subscription;
   T? data;
@@ -513,11 +512,11 @@ class _CustomStreamBuilderState<T> extends State<CustomStreamBuilder<T>> {
         state = BuilderState.done;
         data = value;
       }
-      if (mounted) setState(() {});
+      setState(() {});
     }, onError: (Object error, StackTrace stackTrace) {
       state = BuilderState.error;
       _error = error;
-      if (mounted) setState(() {});
+      setState(() {});
     });
   }
 

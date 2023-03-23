@@ -17,7 +17,8 @@ class FlWave extends StatefulWidget {
   State<FlWave> createState() => _FlWaveState();
 }
 
-class _FlWaveState extends State<FlWave> with SingleTickerProviderStateMixin {
+class _FlWaveState extends ExtendedState<FlWave>
+    with SingleTickerProviderStateMixin {
   late AnimationController controller;
 
   @override

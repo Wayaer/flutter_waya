@@ -64,7 +64,7 @@ class DateTimePicker extends PickerStatefulWidget<DateTime> {
   State<DateTimePicker> createState() => _DateTimePickerState();
 }
 
-class _DateTimePickerState extends State<DateTimePicker> {
+class _DateTimePickerState extends ExtendedState<DateTimePicker> {
   late List<int> yearData = <int>[],
       monthData = <int>[],
       dayData = <int>[],

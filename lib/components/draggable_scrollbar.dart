@@ -205,7 +205,7 @@ class _ScrollLabel extends StatelessWidget {
                   child: child))));
 }
 
-class _DraggableScrollbarState extends State<DraggableScrollbar>
+class _DraggableScrollbarState extends ExtendedState<DraggableScrollbar>
     with TickerProviderStateMixin {
   late double _barOffset;
   late double _viewOffset;
@@ -320,7 +320,7 @@ class _DraggableScrollbarState extends State<DraggableScrollbar>
         _fadeoutTimer = null;
       });
     }
-    if (mounted) setState(() {});
+    setState(() {});
   }
 
   double getBarDelta(double scrollViewDelta, double barMaxScrollExtent,
@@ -335,7 +335,7 @@ class _DraggableScrollbarState extends State<DraggableScrollbar>
     _isDragInProcess = true;
     _labelAnimationController.forward();
     _fadeoutTimer?.cancel();
-    if (mounted) setState(() {});
+    setState(() {});
   }
 
   void _onVerticalDragUpdate(DragUpdateDetails details) {
@@ -360,7 +360,7 @@ class _DraggableScrollbarState extends State<DraggableScrollbar>
 
       widget.controller.jumpTo(_viewOffset);
     }
-    if (mounted) setState(() {});
+    setState(() {});
   }
 
   void _onVerticalDragEnd(DragEndDetails details) {
@@ -370,7 +370,7 @@ class _DraggableScrollbarState extends State<DraggableScrollbar>
       _fadeoutTimer = null;
     });
     _isDragInProcess = false;
-    if (mounted) setState(() {});
+    setState(() {});
   }
 }
 

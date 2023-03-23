@@ -215,7 +215,7 @@ class _DebuggerWindows extends StatefulWidget {
   State<_DebuggerWindows> createState() => _DebuggerWindowsState();
 }
 
-class _DebuggerWindowsState extends State<_DebuggerWindows> {
+class _DebuggerWindowsState extends ExtendedState<_DebuggerWindows> {
   bool hasWindows = false;
   ValueNotifier<Offset> iconOffSet =
       ValueNotifier<Offset>(const Offset(10, 10));
@@ -380,7 +380,7 @@ class _HttpDetailDataWindows extends StatefulWidget {
   State<_HttpDetailDataWindows> createState() => _HttpDetailDataWindowsState();
 }
 
-class _HttpDetailDataWindowsState extends State<_HttpDetailDataWindows>
+class _HttpDetailDataWindowsState extends ExtendedState<_HttpDetailDataWindows>
     with SingleTickerProviderStateMixin {
   late TabController tabController;
   List<String> tabs = ['request', 'response', 'error'];

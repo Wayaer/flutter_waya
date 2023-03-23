@@ -23,7 +23,7 @@ class SpinKitDoubleBounce extends StatefulWidget {
   State<SpinKitDoubleBounce> createState() => _SpinKitDoubleBounceState();
 }
 
-class _SpinKitDoubleBounceState extends State<SpinKitDoubleBounce>
+class _SpinKitDoubleBounceState extends ExtendedState<SpinKitDoubleBounce>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
@@ -88,7 +88,7 @@ class SpinKitThreeBounce extends StatefulWidget {
   State<SpinKitThreeBounce> createState() => _SpinKitThreeBounceState();
 }
 
-class _SpinKitThreeBounceState extends State<SpinKitThreeBounce>
+class _SpinKitThreeBounceState extends ExtendedState<SpinKitThreeBounce>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
@@ -151,7 +151,7 @@ class SpinKitPulse extends StatefulWidget {
   State<SpinKitPulse> createState() => _SpinKitPulseState();
 }
 
-class _SpinKitPulseState extends State<SpinKitPulse>
+class _SpinKitPulseState extends ExtendedState<SpinKitPulse>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
@@ -216,7 +216,7 @@ class SpinKitRipple extends StatefulWidget {
   State<SpinKitRipple> createState() => _SpinKitRippleState();
 }
 
-class _SpinKitRippleState extends State<SpinKitRipple>
+class _SpinKitRippleState extends ExtendedState<SpinKitRipple>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation1, _animation2;

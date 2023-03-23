@@ -192,7 +192,7 @@ class SpinKitWave extends StatefulWidget {
   State<SpinKitWave> createState() => _SpinKitWaveState();
 }
 
-class _SpinKitWaveState extends State<SpinKitWave>
+class _SpinKitWaveState extends ExtendedState<SpinKitWave>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 

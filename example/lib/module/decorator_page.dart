@@ -10,7 +10,7 @@ class DecoratorBoxPage extends StatefulWidget {
   State<DecoratorBoxPage> createState() => _DecoratorBoxPageState();
 }
 
-class _DecoratorBoxPageState extends State<DecoratorBoxPage> {
+class _DecoratorBoxPageState extends ExtendedState<DecoratorBoxPage> {
   FocusNode focusNode = FocusNode();
 
   @override

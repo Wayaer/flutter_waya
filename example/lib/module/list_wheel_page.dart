@@ -9,7 +9,7 @@ class ListWheelPage extends StatefulWidget {
   State<ListWheelPage> createState() => _ListWheelPageState();
 }
 
-class _ListWheelPageState extends State<ListWheelPage> {
+class _ListWheelPageState extends ExtendedState<ListWheelPage> {
   final numberList = ['一', '二', '三', '四', '五', '六', '七', '八', '十'];
 
   @override

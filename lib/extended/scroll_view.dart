@@ -287,13 +287,15 @@ class EasyRefreshed extends StatefulWidget {
 
   /// 用于 ScrollView
   final ERChildBuilder? builder;
+
+  /// 刷新组件配置信息
   final RefreshConfig config;
 
   @override
   State<EasyRefreshed> createState() => _EasyRefreshedState();
 }
 
-class _EasyRefreshedState extends State<EasyRefreshed> {
+class _EasyRefreshedState extends ExtendedState<EasyRefreshed> {
   late EasyRefreshController controller;
   late RefreshConfig config;
 

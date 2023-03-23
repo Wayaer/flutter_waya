@@ -56,7 +56,7 @@ class SendSMS extends StatefulWidget {
   State<SendSMS> createState() => _SendSMSState();
 }
 
-class _SendSMSState extends State<SendSMS> {
+class _SendSMSState extends ExtendedState<SendSMS> {
   int seconds = -1;
   Timer? timer;
   SendState sendState = SendState.none;
@@ -84,7 +84,7 @@ class _SendSMSState extends State<SendSMS> {
         oldWidget.onTap != widget.onTap ||
         oldWidget.decoration != widget.decoration ||
         oldWidget.stateBuilder != widget.stateBuilder) {
-      if (mounted) setState(() {});
+      setState(() {});
     }
   }
 
@@ -92,7 +92,7 @@ class _SendSMSState extends State<SendSMS> {
     sendState = SendState.sending;
     lastState = sendState;
     widget.onStateChanged?.call(sendState);
-    if (mounted) setState(() {});
+    setState(() {});
     widget.onTap?.call(send);
   }
 
@@ -104,7 +104,7 @@ class _SendSMSState extends State<SendSMS> {
       sendState = SendState.resend;
       lastState = sendState;
       widget.onStateChanged?.call(sendState);
-      if (mounted) setState(() {});
+      setState(() {});
     }
   }
 
@@ -122,7 +122,7 @@ class _SendSMSState extends State<SendSMS> {
         widget.onStateChanged?.call(sendState);
         lastState = sendState;
       }
-      if (mounted) setState(() {});
+      setState(() {});
     });
   }
 

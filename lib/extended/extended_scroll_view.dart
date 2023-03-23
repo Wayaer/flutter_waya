@@ -133,7 +133,7 @@ class ExtendedScrollView extends StatefulWidget {
   State<ExtendedScrollView> createState() => _ExtendedScrollViewState();
 }
 
-class _ExtendedScrollViewState extends State<ExtendedScrollView> {
+class _ExtendedScrollViewState extends ExtendedState<ExtendedScrollView> {
   bool showScrollView = false;
   late List<Widget> slivers;
   List<_SliverModel> sliverModel = <_SliverModel>[];
@@ -148,7 +148,7 @@ class _ExtendedScrollViewState extends State<ExtendedScrollView> {
   void updateWidget() {
     _calculate(slivers);
     showScrollView = true;
-    if (mounted) setState(() {});
+    setState(() {});
   }
 
   void _calculate(List<Widget> slivers) {
@@ -248,7 +248,7 @@ class _ExtendedScrollViewState extends State<ExtendedScrollView> {
       sliverModel.clear();
       slivers = widget.slivers;
       showScrollView = false;
-      if (mounted) setState(() {});
+      setState(() {});
       1.seconds.delayed(updateWidget);
     }
   }

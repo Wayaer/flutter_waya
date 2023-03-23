@@ -184,7 +184,8 @@ class _SingleListPickerContent extends StatefulWidget {
       _SingleListPickerContentState();
 }
 
-class _SingleListPickerContentState extends State<_SingleListPickerContent> {
+class _SingleListPickerContentState
+    extends ExtendedState<_SingleListPickerContent> {
   List<int> selectIndex = [];
 
   void changeSelect([int? index]) {

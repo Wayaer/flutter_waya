@@ -19,7 +19,7 @@ class EasyRefreshPage extends StatefulWidget {
   State<EasyRefreshPage> createState() => _EasyRefreshPageState();
 }
 
-class _EasyRefreshPageState extends State<EasyRefreshPage> {
+class _EasyRefreshPageState extends ExtendedState<EasyRefreshPage> {
   List<Color> colors = <Color>[];
 
   @override

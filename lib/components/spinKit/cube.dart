@@ -23,7 +23,7 @@ class SpinKitCubeGrid extends StatefulWidget {
   State<SpinKitCubeGrid> createState() => _SpinKitCubeGridState();
 }
 
-class _SpinKitCubeGridState extends State<SpinKitCubeGrid>
+class _SpinKitCubeGridState extends ExtendedState<SpinKitCubeGrid>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _anim1, _anim2, _anim3, _anim4, _anim5;
@@ -125,7 +125,7 @@ class SpinKitFoldingCube extends StatefulWidget {
   State<SpinKitFoldingCube> createState() => _SpinKitFoldingCubeState();
 }
 
-class _SpinKitFoldingCubeState extends State<SpinKitFoldingCube>
+class _SpinKitFoldingCubeState extends ExtendedState<SpinKitFoldingCube>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _rotate1, _rotate2, _rotate3, _rotate4;

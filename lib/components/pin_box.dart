@@ -82,7 +82,7 @@ class PinBox extends StatefulWidget {
   State<PinBox> createState() => _PinBoxState();
 }
 
-class _PinBoxState extends State<PinBox> {
+class _PinBoxState extends ExtendedState<PinBox> {
   late FocusNode focusNode;
   List<Widget?> spaces = <Widget?>[];
 

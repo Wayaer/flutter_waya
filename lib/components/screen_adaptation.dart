@@ -25,7 +25,7 @@ class ScreenAdaptation extends StatefulWidget {
   State<ScreenAdaptation> createState() => _ScreenAdaptationState();
 }
 
-class _ScreenAdaptationState extends State<ScreenAdaptation>
+class _ScreenAdaptationState extends ExtendedState<ScreenAdaptation>
     with WidgetsBindingObserver {
   @override
   void initState() {

@@ -11,7 +11,7 @@ void setGlobalNavigatorKey() {
 }
 
 /// 使用自己的 MaterialApp
-class _CustomAppState extends State<_App> {
+class _CustomAppState extends ExtendedState<_App> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -23,7 +23,7 @@ class _CustomAppState extends State<_App> {
 }
 
 /// 根组件使用  ExtendedWidgetsApp , 默认 移出 banner
-class _AppState extends State<_App> {
+class _AppState extends ExtendedState<_App> {
   @override
   Widget build(BuildContext context) {
     return ExtendedWidgetsApp(

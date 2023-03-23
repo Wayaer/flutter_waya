@@ -23,7 +23,7 @@ class SpinKitCircle extends StatefulWidget {
   State<SpinKitCircle> createState() => _SpinKitCircleState();
 }
 
-class _SpinKitCircleState extends State<SpinKitCircle>
+class _SpinKitCircleState extends ExtendedState<SpinKitCircle>
     with SingleTickerProviderStateMixin {
   final List<double> delays = <double>[
     .0,
@@ -111,7 +111,7 @@ class SpinKitFadingCircle extends StatefulWidget {
   State<SpinKitFadingCircle> createState() => _SpinKitFadingCircleState();
 }
 
-class _SpinKitFadingCircleState extends State<SpinKitFadingCircle>
+class _SpinKitFadingCircleState extends ExtendedState<SpinKitFadingCircle>
     with SingleTickerProviderStateMixin {
   final List<double> delays = <double>[
     .0,
@@ -203,7 +203,7 @@ class SpinKitSquareCircle extends StatefulWidget {
   State<SpinKitSquareCircle> createState() => _SpinKitSquareCircleState();
 }
 
-class _SpinKitSquareCircleState extends State<SpinKitSquareCircle>
+class _SpinKitSquareCircleState extends ExtendedState<SpinKitSquareCircle>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
   late Animation<double> animationCurve;

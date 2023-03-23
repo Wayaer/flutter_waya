@@ -88,7 +88,7 @@ class LiquidProgressIndicator extends ProgressIndicator {
   State<StatefulWidget> createState() => _ProgressState();
 }
 
-class _ProgressState extends State<LiquidProgressIndicator> {
+class _ProgressState extends ExtendedState<LiquidProgressIndicator> {
   @override
   Widget build(BuildContext context) {
     switch (widget.type) {

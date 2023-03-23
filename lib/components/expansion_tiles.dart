@@ -50,7 +50,7 @@ class ExpansionTiles extends StatefulWidget {
   State<ExpansionTiles> createState() => _ExpansionTilesState();
 }
 
-class _ExpansionTilesState extends State<ExpansionTiles>
+class _ExpansionTilesState extends ExtendedState<ExpansionTiles>
     with SingleTickerProviderStateMixin {
   static final Animatable<double> _easeOutTween =
       CurveTween(curve: Curves.easeOut);
@@ -93,18 +93,16 @@ class _ExpansionTilesState extends State<ExpansionTiles>
   }
 
   void _handleTap() {
-    if (mounted) {
-      _isExpanded = !_isExpanded;
-      if (_isExpanded) {
-        _controller.forward();
-      } else {
-        _controller.reverse().then<void>((void value) {
-          if (mounted) setState(() {});
-        });
-      }
-      setState(() {});
-      widget.onExpansionChanged?.call(_isExpanded);
+    _isExpanded = !_isExpanded;
+    if (_isExpanded) {
+      _controller.forward();
+    } else {
+      _controller.reverse().then<void>((void value) {
+        setState(() {});
+      });
     }
+    setState(() {});
+    widget.onExpansionChanged?.call(_isExpanded);
   }
 
   @override

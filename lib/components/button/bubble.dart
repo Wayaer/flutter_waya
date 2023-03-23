@@ -92,7 +92,7 @@ class BubbleButton extends StatefulWidget {
   State<StatefulWidget> createState() => _BubbleButtonState();
 }
 
-class _BubbleButtonState extends State<BubbleButton>
+class _BubbleButtonState extends ExtendedState<BubbleButton>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _outerCircleAnimation;
@@ -185,11 +185,9 @@ class _BubbleButtonState extends State<BubbleButton>
 
   void handleChanged(bool value) {
     _value = value;
-    if (mounted) {
-      _controller.reset();
-      _controller.forward();
-      setState(() {});
-    }
+    _controller.reset();
+    _controller.forward();
+    setState(() {});
     return;
   }
 

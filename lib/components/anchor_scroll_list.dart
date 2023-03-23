@@ -170,7 +170,7 @@ class AnchorScrollBuilder extends StatefulWidget {
   State<AnchorScrollBuilder> createState() => _AnchorScrollBuilderState();
 }
 
-class _AnchorScrollBuilderState extends State<AnchorScrollBuilder> {
+class _AnchorScrollBuilderState extends ExtendedState<AnchorScrollBuilder> {
   GlobalKey scrollKey = GlobalKey();
   late AnchorScrollController controller;
 

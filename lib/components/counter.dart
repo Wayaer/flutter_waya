@@ -31,7 +31,7 @@ class CounterAnimation extends StatefulWidget {
   State<CounterAnimation> createState() => _CounterAnimationState();
 }
 
-class _CounterAnimationState extends State<CounterAnimation>
+class _CounterAnimationState extends ExtendedState<CounterAnimation>
     with SingleTickerProviderStateMixin {
   late Animation<double> _opacityAnimation;
   late Animation<Offset> _slidePreValueAnimation;
@@ -146,11 +146,9 @@ class _CounterAnimationState extends State<CounterAnimation>
   void animation() {
     _preCount = _count;
     _count++;
-    if (mounted) {
-      _controller.reset();
-      _controller.forward();
-      setState(() {});
-    }
+    _controller.reset();
+    _controller.forward();
+    setState(() {});
     widget.onTap?.call(_count);
   }
 

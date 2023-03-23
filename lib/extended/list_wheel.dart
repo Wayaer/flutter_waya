@@ -290,6 +290,8 @@ class ListWheelState extends StatefulWidget {
 
   /// animateToItem
   final Duration animateDuration;
+
+  /// curve
   final Curve curve;
 
   final ListWheelStateBuilder builder;
@@ -298,7 +300,7 @@ class ListWheelState extends StatefulWidget {
   State<ListWheelState> createState() => _ListWheelStateState();
 }
 
-class _ListWheelStateState extends State<ListWheelState> {
+class _ListWheelStateState extends ExtendedState<ListWheelState> {
   late FixedExtentScrollController controller;
 
   @override
@@ -376,7 +378,7 @@ class AutoScrollEntry extends StatefulWidget {
   State<AutoScrollEntry> createState() => _AutoScrollEntryState();
 }
 
-class _AutoScrollEntryState extends State<AutoScrollEntry> {
+class _AutoScrollEntryState extends ExtendedState<AutoScrollEntry> {
   late FixedExtentScrollController controller;
   Timer? timer;
   int index = 0;

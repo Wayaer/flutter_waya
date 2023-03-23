@@ -107,7 +107,7 @@ class FlProgress extends StatefulWidget {
   State<StatefulWidget> createState() => _LinearState();
 }
 
-abstract class _FlProgressSubState extends State<FlProgress>
+abstract class _FlProgressSubState extends ExtendedState<FlProgress>
     with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   AnimationController? animationController;
   Animation<double>? animation;
@@ -123,7 +123,7 @@ abstract class _FlProgressSubState extends State<FlProgress>
         CurvedAnimation(parent: animationController!, curve: widget.curve),
       )..addListener(() {
           percent = animation!.value;
-          if (mounted) setState(() {});
+          setState(() {});
           if (widget.restartAnimation && percent == 1.0) {
             animationController!.repeat(min: 0, max: 1.0);
           }
@@ -151,7 +151,7 @@ abstract class _FlProgressSubState extends State<FlProgress>
         animationController!.forward(from: 0.0);
       } else {
         percent = widget.percent;
-        if (mounted) setState(() {});
+        setState(() {});
       }
     }
     if (oldWidget.animation && !widget.animation) animationController?.stop();
@@ -176,13 +176,11 @@ class _LinearState extends _FlProgressSubState {
   @override
   void initState() {
     addPostFrameCallback((_) {
-      if (mounted) {
-        _containerWidth = _containerKey.currentContext!.size!.width;
-        if (_keyIndicator.currentContext != null) {
-          _indicatorWidth = _keyIndicator.currentContext!.size!.width;
-        }
-        if (mounted) setState(() {});
+      _containerWidth = _containerKey.currentContext!.size!.width;
+      if (_keyIndicator.currentContext != null) {
+        _indicatorWidth = _keyIndicator.currentContext!.size!.width;
       }
+      setState(() {});
     });
     super.initState();
   }

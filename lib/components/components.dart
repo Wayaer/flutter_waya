@@ -152,7 +152,7 @@ class CustomDrawer extends StatefulWidget {
   State<CustomDrawer> createState() => _CustomDrawerState();
 }
 
-class _CustomDrawerState extends State<CustomDrawer> {
+class _CustomDrawerState extends ExtendedState<CustomDrawer> {
   @override
   void initState() {
     widget.callback?.call(true);

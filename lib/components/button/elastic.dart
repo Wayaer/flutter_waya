@@ -101,7 +101,7 @@ class ElasticButton extends StatefulWidget {
   State<ElasticButton> createState() => _ElasticButtonState();
 }
 
-class _ElasticButtonState extends State<ElasticButton>
+class _ElasticButtonState extends ExtendedState<ElasticButton>
     with SingleTickerProviderStateMixin {
   Widget? uiChild;
   late double scaleCoefficient;

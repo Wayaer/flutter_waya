@@ -1,3 +1,7 @@
+## 6.0.2
+
+* Add `ExtendedState` to replace the `State`
+
 ## 6.0.1
 
 * Added the value argument for `PickerLinkageEntry`, so `MultiColumnLinkagePicker` gets the `onValueChanged` method
