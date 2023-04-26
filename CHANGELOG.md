@@ -1,3 +1,10 @@
+## 6.1.0
+
+* Change the `MultiColumnPicker()` to `MultiListWheelPicker()`
+* Change the `MultiColumnLinkagePicker()` to `MultiListWheelLinkagePicker()`
+* Change the `SingleColumnPicker()` to `SingleListWheelPicker()`
+* Add `CupertinoListWheelScrollView()` in `CupertinoPicker` inheritance
+
 ## 6.0.1
 
 * Add `ExtendedState` to replace the `State`

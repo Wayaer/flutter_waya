@@ -7,11 +7,13 @@ part 'date_time_picker.dart';
 
 part 'area_picker.dart';
 
-part 'multi_column_picker.dart';
-
 part 'multi_list_picker.dart';
 
-part 'single_picker.dart';
+part 'multi_list_wheel_picker.dart';
+
+part 'single_list_picker.dart';
+
+part 'single_list_wheel_picker.dart';
 
 Widget _addBackboard(Widget child) => Container(
     padding: const EdgeInsets.all(12),
@@ -36,12 +38,16 @@ class PickerPage extends StatelessWidget {
               push(_DateTimePickerPage());
             }),
             10.heightBox,
-            ElevatedText('SinglePicker', onTap: () {
-              push(_SinglePickerPage());
+            ElevatedText('SingleListPicker', onTap: () {
+              push(_SingleListPickerPage());
             }),
             10.heightBox,
-            ElevatedText('MultiColumnPicker', onTap: () {
-              push(_MultiColumnPicker());
+            ElevatedText('SingleListWheelPicker', onTap: () {
+              push(_SingleListWheelPickerPage());
+            }),
+            10.heightBox,
+            ElevatedText('MultiListWheelPicker', onTap: () {
+              push(_MultiListWheelPicker());
             }),
             10.heightBox,
             ElevatedText('MultiListLinkagePicker', onTap: () {

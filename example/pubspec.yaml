@@ -11,7 +11,7 @@ dependencies:
     sdk: flutter
   flutter:
     sdk: flutter
-  flutter_curiosity: ^4.2.1
+  flutter_curiosity: ^4.3.0
   device_preview: ^1.1.0
   flutter_waya:
     path: ../

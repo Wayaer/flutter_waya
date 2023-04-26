@@ -3,11 +3,11 @@ import 'package:flutter_waya/flutter_waya.dart';
 
 part 'date_time.dart';
 
-part 'multi_column.dart';
+part 'multi_list_wheel.dart';
 
 part 'multi_list.dart';
 
-part 'single_column.dart';
+part 'single_list.dart';
 
 /// 返回 false 不关闭弹窗;
 typedef PickerTapConfirmCallback<T> = bool Function(T? value);
@@ -198,6 +198,10 @@ class PickerWheelOptions extends WheelOptions {
           backgroundColor: options?.backgroundColor ?? backgroundColor,
           itemWidth: options?.itemWidth ?? itemWidth);
 }
+
+typedef PickerPositionIndexChanged = void Function(List<int> index);
+
+typedef PickerPositionValueChanged<T> = void Function(List<T> value);
 
 abstract class PickerStatelessWidget<T> extends StatelessWidget {
   const PickerStatelessWidget(

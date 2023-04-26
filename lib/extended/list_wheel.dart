@@ -117,8 +117,9 @@ class WheelOptions {
       backgroundColor: options?.backgroundColor ?? backgroundColor);
 }
 
-class _CupertinoPicker extends CupertinoPicker {
-  _CupertinoPicker.useDelegate({
+class CupertinoListWheelScrollView extends CupertinoPicker {
+  CupertinoListWheelScrollView.useDelegate({
+    super.key,
     required super.itemExtent,
     required super.onSelectedItemChanged,
     required this.delegate,
@@ -201,7 +202,7 @@ class ListWheel extends StatelessWidget {
     final wheelOptions = GlobalOptions().wheelOptions.merge(options);
     Widget child;
     if (wheelOptions.isCupertino) {
-      child = _CupertinoPicker.useDelegate(
+      child = CupertinoListWheelScrollView.useDelegate(
           scrollController: controller,
           backgroundColor: wheelOptions.backgroundColor,
           delegate: delegate,

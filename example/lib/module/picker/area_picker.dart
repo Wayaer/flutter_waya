@@ -12,14 +12,16 @@ class _AreaPickerPage extends StatelessWidget {
         children: [
           ElevatedText('show AreaPicker', onTap: pick),
           10.heightBox,
-          _addBackboard(MultiColumnLinkagePicker<String>(
+          _addBackboard(MultiListWheelLinkagePicker<String>(
               options: null,
+              wheelOptions:
+                  const PickerWheelOptions(backgroundColor: Colors.red),
               height: 210,
               onChanged: (List<int> index) {
-                log('MultiColumnLinkagePicker onChanged= $index');
+                log('AreaPicker onChanged= $index');
               },
               onValueChanged: (List<String> list) {
-                log('MultiColumnLinkagePicker onValueChanged= $list');
+                log('AreaPicker onValueChanged= $list');
               },
               entry: mapToLinkageEntry(areaDataMap),
               horizontalScroll: false)),
@@ -28,7 +30,7 @@ class _AreaPickerPage extends StatelessWidget {
 
   Future<void> pick() async {
     final entry = mapToLinkageEntry(areaDataMap);
-    final position = await MultiColumnLinkagePicker<String>(
+    final position = await MultiListWheelLinkagePicker<String>(
             height: 200,
             onChanged: (List<int> index) {
               log('AreaPicker onChanged= $index');
