@@ -14,7 +14,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   # 网络请求
-  dio: ^5.1.1
+  dio: ^5.1.2
   # md5 加密 Hmac
   crypto: ^3.0.2
   # HTTP相关处理
