@@ -14,7 +14,6 @@ class WheelOptions {
     this.squeeze = 1,
     this.itemExtent = 22,
     this.physics,
-    this.onChanged,
     this.overAndUnderCenterOpacity = 0.447,
     this.renderChildrenOutsideViewport = false,
     this.clipBehavior = Clip.hardEdge,
@@ -45,9 +44,6 @@ class WheelOptions {
 
   /// ScrollPhysics
   final ScrollPhysics? physics;
-
-  /// 回调监听
-  final ValueChanged<int>? onChanged;
 
   /// 表示车轮水平偏离中心的程度  范围[0,0.01]
   /// [isCupertino]=false生效
@@ -87,7 +83,6 @@ class WheelOptions {
     double? squeeze,
     bool? isCupertino,
     ScrollPhysics? physics,
-    ValueChanged<int>? onChanged,
     Color? backgroundColor,
   }) =>
       WheelOptions(
@@ -100,7 +95,6 @@ class WheelOptions {
           squeeze: squeeze ?? this.squeeze,
           isCupertino: isCupertino ?? this.isCupertino,
           physics: physics ?? this.physics,
-          onChanged: onChanged ?? this.onChanged,
           backgroundColor: backgroundColor ?? this.backgroundColor);
 
   WheelOptions merge([WheelOptions? options]) => WheelOptions(
@@ -113,7 +107,6 @@ class WheelOptions {
       squeeze: options?.squeeze ?? squeeze,
       isCupertino: options?.isCupertino ?? isCupertino,
       physics: options?.physics ?? physics,
-      onChanged: options?.onChanged ?? onChanged,
       backgroundColor: options?.backgroundColor ?? backgroundColor);
 }
 
@@ -149,6 +142,7 @@ class ListWheel extends StatelessWidget {
     this.onScrollStart,
     this.onScrollUpdate,
     this.options,
+    required this.onSelectedItemChanged,
   });
 
   ListWheel.builder({
@@ -161,6 +155,7 @@ class ListWheel extends StatelessWidget {
     this.onScrollStart,
     this.onScrollUpdate,
     this.options,
+    required this.onSelectedItemChanged,
   }) : delegate = ListWheelChildBuilderDelegate(
             builder: itemBuilder, childCount: itemCount);
 
@@ -174,6 +169,7 @@ class ListWheel extends StatelessWidget {
     this.onScrollUpdate,
     this.options,
     bool looping = false,
+    required this.onSelectedItemChanged,
   }) : delegate = looping
             ? ListWheelChildLoopingListDelegate(children: children)
             : ListWheelChildListDelegate(children: children);
@@ -184,6 +180,9 @@ class ListWheel extends StatelessWidget {
 
   /// 控制器
   final FixedExtentScrollController? controller;
+
+  /// 回调监听
+  final ValueChanged<int>? onSelectedItemChanged;
 
   /// 滚动监听 添加此方法  [onScrollStart],[onScrollUpdate],[onScrollEnd] 无效
   final NotificationListenerCallback<ScrollNotification>? onNotification;
@@ -208,7 +207,7 @@ class ListWheel extends StatelessWidget {
           delegate: delegate,
           itemExtent: wheelOptions.itemExtent,
           diameterRatio: wheelOptions.diameterRatio,
-          onSelectedItemChanged: wheelOptions.onChanged,
+          onSelectedItemChanged: onSelectedItemChanged,
           offAxisFraction: wheelOptions.offAxisFraction,
           useMagnifier: wheelOptions.useMagnifier,
           squeeze: wheelOptions.squeeze,
@@ -220,7 +219,7 @@ class ListWheel extends StatelessWidget {
           itemExtent: wheelOptions.itemExtent,
           physics: wheelOptions.physics,
           diameterRatio: wheelOptions.diameterRatio,
-          onSelectedItemChanged: wheelOptions.onChanged,
+          onSelectedItemChanged: onSelectedItemChanged,
           offAxisFraction: wheelOptions.offAxisFraction,
           perspective: wheelOptions.perspective,
           useMagnifier: wheelOptions.useMagnifier,
@@ -425,9 +424,9 @@ class _AutoScrollEntryState extends ExtendedState<AutoScrollEntry> {
         child: ListWheel.count(
             looping: true,
             controller: controller,
+            onSelectedItemChanged: widget.onChanged ?? (int index) {},
             options: WheelOptions(
                 physics: const NeverScrollableScrollPhysics(),
-                onChanged: widget.onChanged ?? (int index) {},
                 itemExtent: itemHeight,
                 magnification: 1,
                 useMagnifier: false,

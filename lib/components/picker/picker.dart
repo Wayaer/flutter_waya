@@ -285,6 +285,7 @@ class _PickerListWheel extends ListWheel {
     super.controller,
     super.onScrollEnd,
   }) : super.builder(
+            onSelectedItemChanged: onChanged,
             options: WheelOptions(
                 backgroundColor: options.backgroundColor,
                 isCupertino: options.isCupertino,
@@ -295,8 +296,7 @@ class _PickerListWheel extends ListWheel {
                 magnification: options.magnification,
                 useMagnifier: options.useMagnifier,
                 squeeze: options.squeeze,
-                physics: options.physics,
-                onChanged: onChanged));
+                physics: options.physics));
 }
 
 extension ExtensionCustomPicker on CustomPicker {
