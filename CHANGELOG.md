@@ -1,3 +1,8 @@
+## 7.0.0
+
+* Compatible with 3.10.0
+* Removed `MediaQueryData.fromWindow(ui.window)`
+
 ## 6.1.0
 
 * Change the `MultiColumnPicker()` to `MultiListWheelPicker()`

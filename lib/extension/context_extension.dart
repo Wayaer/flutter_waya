@@ -325,6 +325,12 @@ extension ExtensionContextWithMediaQuery on BuildContext {
   /// padding → EdgeInsets 显示器的部分被系统UI部分遮挡，通常由硬件显示“凹槽”或系统状态栏
   EdgeInsets get padding => mediaQuery.padding;
 
+  /// viewInsets → EdgeInsets 显示器的各个部分完全被系统UI遮挡，通常是设备的键盘
+  EdgeInsets get viewInsets => mediaQuery.viewInsets;
+
+  /// viewPadding → EdgeInsets 显示器的部分被系统UI部分遮挡，通常由硬件显示“凹槽”或系统状态栏
+  EdgeInsets get viewPadding => mediaQuery.viewPadding;
+
   /// platformBrightness → Brightness 当前的亮度模式
   Brightness get platformBrightness => mediaQuery.platformBrightness;
 
@@ -333,12 +339,6 @@ extension ExtensionContextWithMediaQuery on BuildContext {
 
   /// textScaleFactor → double 每个逻辑像素的字体像素数
   double get textScaleFactor => mediaQuery.textScaleFactor;
-
-  /// viewInsets → EdgeInsets 显示器的各个部分完全被系统UI遮挡，通常是设备的键盘
-  EdgeInsets get viewInsets => mediaQuery.viewInsets;
-
-  /// viewPadding → EdgeInsets 显示器的部分被系统UI部分遮挡，通常由硬件显示“凹槽”或系统状态栏
-  EdgeInsets get viewPadding => mediaQuery.viewPadding;
 
   /// 手机屏幕的宽分辨率
   double get widthPixel => mediaQuery.size.width * devicePixelRatio;
