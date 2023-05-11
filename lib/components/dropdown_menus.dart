@@ -140,7 +140,7 @@ class _DropdownMenusState<K, V> extends ExtendedState<DropdownMenus<K, V>> {
     widget.onChanged?.call(entry.value, null);
     entry.onTap?.call();
     if (entry.items.isEmpty) return;
-    final double keyboardHeight = getViewInsets.bottom;
+    final double keyboardHeight = context.viewInsets.bottom;
     if (keyboardHeight > 0) {
       context.unfocus();
       await 200.milliseconds.delayed(() {});

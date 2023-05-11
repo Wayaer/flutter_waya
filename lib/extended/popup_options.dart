@@ -272,12 +272,12 @@ class CupertinoModalPopupOptions extends GeneralModalOptions {
     super.barrierColor,
     super.anchorPoint,
     this.filter,
-    this.semanticsDismissible,
+    this.semanticsDismissible = false,
   });
 
   final ImageFilter? filter;
 
-  final bool? semanticsDismissible;
+  final bool semanticsDismissible;
 
   CupertinoModalPopupOptions copyWith({
     Color? barrierColor,
@@ -489,7 +489,7 @@ class ModalWindows extends StatelessWidget {
       child = Material(
           color: Colors.transparent,
           child: MediaQuery(
-              data: MediaQueryData.fromWindow(window), child: child));
+              data: context.mediaQuery, child: child));
     }
     if (options.ignoring) {
       child = IgnorePointer(child: child);

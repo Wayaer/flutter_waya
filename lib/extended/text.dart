@@ -384,7 +384,7 @@ class BText extends StatelessWidget {
     if (inherit && (style?.inherit ?? true)) {
       effectiveTextStyle = defaultTextStyle.style.merge(effectiveTextStyle);
     }
-    if (MediaQuery.boldTextOverride(context)) {
+    if (MediaQuery.boldTextOf(context)) {
       effectiveTextStyle = effectiveTextStyle
           .merge(const TextStyle(fontWeight: FontWeight.bold));
     }

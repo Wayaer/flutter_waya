@@ -72,7 +72,6 @@ class _CustomAppState extends ExtendedState<_CustomApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        useInheritedMediaQuery: true,
         debugShowCheckedModeBanner: false,
         navigatorKey: GlobalOptions().globalNavigatorKey,
         title: 'Waya UI',
@@ -106,7 +105,6 @@ class _AppState extends ExtendedState<_App> {
   @override
   Widget build(BuildContext context) {
     return ExtendedWidgetsApp(
-        useInheritedMediaQuery: true,
         theme: ThemeData.light(),
         darkTheme: ThemeData.dark(),
         locale: DevicePreview.locale(context),

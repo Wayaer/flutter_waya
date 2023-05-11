@@ -135,13 +135,13 @@ class Badge extends StatelessWidget {
 }
 
 class CustomDrawer extends StatefulWidget {
-  CustomDrawer({
+  const CustomDrawer({
     super.key,
-    double? width,
+    this.width = 200,
     required this.child,
     this.callback,
     this.options,
-  }) : width = width ?? deviceWidth * 0.7;
+  });
 
   final Widget child;
   final DrawerCallback? callback;

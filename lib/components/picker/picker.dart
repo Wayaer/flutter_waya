@@ -269,7 +269,7 @@ class PickerSubject<T> extends StatelessWidget {
     return Universal(
         onTap: () {},
         decoration: options.decoration,
-        padding: EdgeInsets.only(bottom: context.mediaQueryPadding.bottom),
+        padding: EdgeInsets.only(bottom: context.padding.bottom),
         mainAxisSize: MainAxisSize.min,
         color: options.backgroundColor,
         children: column);

@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
@@ -47,14 +45,15 @@ class _ScreenAdaptationState extends ExtendedState<ScreenAdaptation>
 
   @override
   Widget build(BuildContext context) {
-    if (window.physicalSize.isEmpty) {
+    if (context.view.physicalSize.isEmpty) {
       return ScreenAdaptationScope._(
           designWidth: widget.designWidth,
           scaleType: widget.scaleType,
           scaleRatio: 1,
           child: const SizedBox());
     }
-    final Size sceneSize = window.physicalSize / window.devicePixelRatio;
+    final Size sceneSize =
+        context.view.physicalSize / context.view.devicePixelRatio;
     if (widget.scaleType == ScreenAdaptationScaleType.none ||
         (widget.scaleType == ScreenAdaptationScaleType.auto &&
             sceneSize.width >= sceneSize.height * 1.1)) {
@@ -101,11 +100,11 @@ class ScreenAdaptationScope extends InheritedWidget {
   static ScreenAdaptationScope? maybeOf(BuildContext context) =>
       context.dependOnInheritedWidgetOfExactType();
 
-  double toPhysicalWidth(double width) =>
-      width * scaleRatio * window.devicePixelRatio;
-
-  double toPhysicalHeight(double height) =>
-      height * scaleRatio * window.devicePixelRatio;
+  // double toPhysicalWidth(double width) =>
+  //     width * scaleRatio * window.devicePixelRatio;
+  //
+  // double toPhysicalHeight(double height) =>
+  //     height * scaleRatio * window.devicePixelRatio;
 
   @override
   bool updateShouldNotify(covariant ScreenAdaptationScope oldWidget) =>
@@ -122,8 +121,7 @@ class _MediaQueryDataProvider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ScreenAdaptationScope data = ScreenAdaptationScope.of(context);
-    final MediaQueryData parent =
-        MediaQuery.maybeOf(context) ?? MediaQueryData.fromWindow(window);
+    final MediaQueryData parent = context.mediaQuery;
     return MediaQuery(
         data: parent.copyWith(
             size: parent.size / data.scaleRatio,

@@ -26,7 +26,7 @@ extension ExtensionColor on Color {
 
   Color get withBrightness {
     final Brightness brightness =
-        WidgetsBinding.instance.window.platformBrightness;
+        WidgetsBinding.instance.platformDispatcher.platformBrightness;
     if (brightness == Brightness.light) {
       return this;
     } else {

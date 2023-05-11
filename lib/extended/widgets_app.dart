@@ -62,7 +62,6 @@ class ExtendedWidgetsApp extends StatelessWidget {
     this.scrollBehavior,
     this.restorationScopeId,
     this.textStyle,
-    this.useInheritedMediaQuery = false,
   });
 
   /// 风格
@@ -150,7 +149,6 @@ class ExtendedWidgetsApp extends StatelessWidget {
   final String? restorationScopeId;
   final bool debugShowWidgetInspector;
   final TextStyle? textStyle;
-  final bool useInheritedMediaQuery;
 
   @override
   Widget build(BuildContext context) {
@@ -208,7 +206,6 @@ class ExtendedWidgetsApp extends StatelessWidget {
         inspectorSelectButtonBuilder: inspectorSelectButtonBuilder,
         shortcuts: shortcuts,
         actions: actions,
-        useInheritedMediaQuery: useInheritedMediaQuery,
         restorationScopeId: restorationScopeId);
   }
 
@@ -249,7 +246,6 @@ class ExtendedWidgetsApp extends StatelessWidget {
         shortcuts: shortcuts,
         actions: actions,
         restorationScopeId: restorationScopeId,
-        useInheritedMediaQuery: useInheritedMediaQuery,
         scrollBehavior: scrollBehavior);
   }
 
@@ -281,7 +277,6 @@ class ExtendedWidgetsApp extends StatelessWidget {
       shortcuts: shortcuts,
       actions: actions,
       restorationScopeId: restorationScopeId,
-      useInheritedMediaQuery: useInheritedMediaQuery,
       scrollBehavior: scrollBehavior);
 }
 
@@ -447,7 +442,7 @@ class ExtendedScaffold extends StatelessWidget {
         floatingActionButton: floatingActionButton,
         floatingActionButtonAnimator: floatingActionButtonAnimator,
         backgroundColor: backgroundColor,
-        appBar: appBarFun,
+        appBar: buildAppBar(context),
         bottomNavigationBar: bottomNavigationBar,
         bottomSheet: bottomSheet,
         restorationId: restorationId,
@@ -471,13 +466,13 @@ class ExtendedScaffold extends StatelessWidget {
     }
   }
 
-  PreferredSizeWidget? get appBarFun {
+  PreferredSizeWidget? buildAppBar(BuildContext context) {
     if (appBar is AppBar && appBarHeight == null) return appBar as AppBar;
     return appBar == null
         ? null
         : PreferredSize(
             preferredSize:
-                Size.fromHeight(getStatusBarHeight + (appBarHeight ?? 30)),
+                Size.fromHeight(context.padding.top + (appBarHeight ?? 30)),
             child: appBar!);
   }
 

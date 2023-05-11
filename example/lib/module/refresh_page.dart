@@ -37,7 +37,7 @@ class _EasyRefreshPageState extends ExtendedState<EasyRefreshPage> {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             padding: EdgeInsets.fromLTRB(
-                10, 10, 10, getBottomNavigationBarHeight + 10),
+                10, 10, 10, context.bottomNavigationBarHeight + 10),
             children: [
               ElevatedText('Refresh', onTap: () {
                 RefreshControllers().current?.callRefresh();

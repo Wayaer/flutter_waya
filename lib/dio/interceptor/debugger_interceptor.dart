@@ -185,7 +185,7 @@ class _HttpDataWindows extends StatelessWidget {
     return Universal(
         width: double.infinity,
         crossAxisAlignment: CrossAxisAlignment.end,
-        margin: EdgeInsets.only(top: context.mediaQueryPadding.top + 60),
+        margin: EdgeInsets.only(top: context.padding.top + 60),
         decoration: BoxDecoration(
             color: context.theme.cardColor,
             borderRadius:
@@ -224,7 +224,7 @@ class _DebuggerWindowsState extends ExtendedState<_DebuggerWindows> {
   void initState() {
     super.initState();
     addPostFrameCallback((_) {
-      iconOffSet.value = Offset(50, context.mediaQueryPadding.top + 20);
+      iconOffSet.value = Offset(50, context.padding.top + 20);
     });
   }
 
@@ -263,9 +263,10 @@ class _DebuggerWindowsState extends ExtendedState<_DebuggerWindows> {
 
   void updatePositioned(Offset offset) {
     if (offset.dx > 1 &&
-        offset.dx < deviceWidth - 24 &&
-        offset.dy > getStatusBarHeight &&
-        offset.dy < deviceHeight - getBottomNavigationBarHeight - 24) {
+        offset.dx < context.height - 24 &&
+        offset.dy > context.statusBarHeight &&
+        offset.dy <
+            context.deviceHeight - context.bottomNavigationBarHeight - 24) {
       double dy = offset.dy;
       double dx = offset.dx;
       iconOffSet.value = Offset(dx -= 12, dy -= 26);
@@ -396,7 +397,7 @@ class _HttpDetailDataWindowsState extends ExtendedState<_HttpDetailDataWindows>
     return Universal(
         width: double.infinity,
         crossAxisAlignment: CrossAxisAlignment.end,
-        margin: EdgeInsets.only(top: context.mediaQueryPadding.top + 80),
+        margin: EdgeInsets.only(top: context.padding.top + 80),
         decoration: BoxDecoration(
             color: context.theme.cardColor,
             borderRadius:

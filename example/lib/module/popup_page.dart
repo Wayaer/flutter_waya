@@ -52,8 +52,9 @@ class PopupPage extends StatelessWidget {
                   position: RelativeRect.fromLTRB(
                       _details?.globalPosition.dx ?? 10,
                       _details?.globalPosition.dy ?? 10,
-                      deviceWidth - (_details?.globalPosition.dx ?? 10),
-                      deviceHeight - (_details?.globalPosition.dy ?? 10)),
+                      context.deviceWidth - (_details?.globalPosition.dx ?? 10),
+                      context.deviceHeight -
+                          (_details?.globalPosition.dy ?? 10)),
                   items: const <PopupMenuEntry<String>>[
                     CheckedPopupMenuItem<String>(
                         value: '111', child: Text('111')),

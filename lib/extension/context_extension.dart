@@ -1,5 +1,6 @@
 import 'dart:ui' as ui;
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -220,72 +221,26 @@ extension ExtensionContext on BuildContext {
   /// similar to [MediaQuery.of(context).padding]
   ThemeData get theme => Theme.of(this);
 
+  /// similar to [MediaQuery.of(context).padding]
+  TextTheme get textTheme => Theme.of(this).textTheme;
+
+  IconThemeData get iconTheme => Theme.of(this).iconTheme;
+
+  IconButtonThemeData get iconButtonTheme => Theme.of(this).iconButtonTheme;
+
+  TabBarTheme get tabBarTheme => Theme.of(this).tabBarTheme;
+
   /// Check if dark mode theme is enable
   bool get isDarkMode => theme.brightness == Brightness.dark;
 
   /// give access to Theme.of(context).iconTheme.color
   Color? get iconColor => theme.iconTheme.color;
 
-  /// similar to [MediaQuery.of(context).padding]
-  TextTheme get textTheme => Theme.of(this).textTheme;
+  /// Returns the [FlutterView] that the provided `context` will render into.
+  FlutterView get view => View.of(this);
 
-  /// similar to [MediaQuery.of(context).padding]
-  MediaQueryData get mediaQuery => MediaQuery.of(this);
-
-  /// similar to [MediaQuery.of(context).padding]
-  EdgeInsets get mediaQueryPadding => mediaQuery.padding;
-
-  /// similar to [MediaQuery.of(context).viewPadding]
-  EdgeInsets get mediaQueryViewPadding => mediaQuery.viewPadding;
-
-  /// similar to [MediaQuery.of(context).viewInsets]
-  EdgeInsets get mediaQueryViewInsets => mediaQuery.viewInsets;
-
-  /// similar to [MediaQuery.of(context).orientation]
-  Orientation get orientation => mediaQuery.orientation;
-
-  /// check if device is on landscape mode
-  bool get isLandscape => orientation == Orientation.landscape;
-
-  /// check if device is on portrait mode
-  bool get isPortrait => orientation == Orientation.portrait;
-
-  /// similar to [MediaQuery.of(this).devicePixelRatio]
-  double get devicePixelRatio => mediaQuery.devicePixelRatio;
-
-  /// similar to [MediaQuery.of(this).textScaleFactor]
-  double get textScaleFactor => mediaQuery.textScaleFactor;
-
-  /// get the shortestSide from screen
-  double get mediaQueryShortestSide => mediaQuerySize.shortestSide;
-
-  /// True if width be larger than 800
-  bool get showNavBar => width > 800;
-
-  /// The same of [MediaQuery.of(context).size]
-  Size get mediaQuerySize => mediaQuery.size;
-
-  /// The same of [MediaQuery.of(context).size.height]
-  /// Note: updates when you rezise your screen (like on a browser or
-  /// desktop window)
-  double get height => mediaQuerySize.height;
-
-  /// The same of [MediaQuery.of(context).size.width]
-  /// Note: updates when you rezise your screen (like on a browser or
-  /// desktop window)
-  double get width => mediaQuerySize.width;
-
-  /// True if the shortestSide is smaller than 600p
-  bool get isPhone => mediaQueryShortestSide < 600;
-
-  /// True if the shortestSide is largest than 600p
-  bool get isSmallTablet => mediaQueryShortestSide >= 600;
-
-  /// True if the shortestSide is largest than 720p
-  bool get isLargeTablet => mediaQueryShortestSide >= 720;
-
-  /// True if the current device is Tablet
-  bool get isTablet => isSmallTablet || isLargeTablet;
+  /// Returns the [FlutterView] that the provided `context` will render into.
+  FlutterView? get maybeView => View.maybeOf(this);
 
   /// get Widget Bounds (width, height, left, top, right, bottom and so on).Widgets must be rendered completely.
   /// 获取widget Rect
@@ -342,10 +297,106 @@ extension ExtensionContext on BuildContext {
   }
 }
 
+extension ExtensionContextWithMediaQuery on BuildContext {
+  /// 获取状态栏高度
+  double get statusBarHeight => mediaQuery.padding.top;
+
+  /// 获取导航栏高度
+  double get bottomNavigationBarHeight => mediaQuery.padding.bottom;
+
+  /// orientation → Orientation 屏幕方向（横向/纵向）
+  Orientation get orientation => mediaQuery.orientation;
+
+  /// accessibleNavigation → bool 用户是否使用TalkBack或VoiceOver等辅助功能服务与应用程序进行交互。
+  bool get accessibleNavigation => mediaQuery.accessibleNavigation;
+
+  /// alwaysUse24HourFormat → bool 格式化时间时是否使用24小时格式。
+  bool get boldText => mediaQuery.boldText;
+
+  /// devicePixelRatio → double 单位逻辑像素的设备像素数量，即设备像素比。这个数字可能不是2的幂，实际上它甚至也可能不是整数。例如，Nexus 6的设备像素比为3.5。
+  double get devicePixelRatio => mediaQuery.devicePixelRatio;
+
+  /// disableAnimations → bool 平台是否要求尽可能禁用或减少使用动画。
+  bool get disableAnimations => mediaQuery.disableAnimations;
+
+  /// invertColors → bool 设备是否反转平台的颜色
+  bool get invertColors => mediaQuery.invertColors;
+
+  /// padding → EdgeInsets 显示器的部分被系统UI部分遮挡，通常由硬件显示“凹槽”或系统状态栏
+  EdgeInsets get padding => mediaQuery.padding;
+
+  /// platformBrightness → Brightness 当前的亮度模式
+  Brightness get platformBrightness => mediaQuery.platformBrightness;
+
+  /// size → Size 设备尺寸信息，如屏幕的大小，单位 pixels
+  Size get deviceSize => mediaQuery.size;
+
+  /// textScaleFactor → double 每个逻辑像素的字体像素数
+  double get textScaleFactor => mediaQuery.textScaleFactor;
+
+  /// viewInsets → EdgeInsets 显示器的各个部分完全被系统UI遮挡，通常是设备的键盘
+  EdgeInsets get viewInsets => mediaQuery.viewInsets;
+
+  /// viewPadding → EdgeInsets 显示器的部分被系统UI部分遮挡，通常由硬件显示“凹槽”或系统状态栏
+  EdgeInsets get viewPadding => mediaQuery.viewPadding;
+
+  /// 手机屏幕的宽分辨率
+  double get widthPixel => mediaQuery.size.width * devicePixelRatio;
+
+  /// 手机屏幕高分辨率
+  double get heightPixel => mediaQuery.size.height * devicePixelRatio;
+
+  /// 手机屏幕的宽
+  double get deviceWidth => mediaQuery.size.width;
+
+  /// 手机屏幕高
+  double get deviceHeight => mediaQuery.size.height;
+
+  /// similar to [MediaQuery.of(context).padding]
+  MediaQueryData get mediaQuery => MediaQuery.of(this);
+
+  /// The same of [MediaQuery.of(context).size]
+  Size get mediaQuerySize => mediaQuery.size;
+
+  /// check if device is on landscape mode
+  bool get isLandscape => orientation == Orientation.landscape;
+
+  /// check if device is on portrait mode
+  bool get isPortrait => orientation == Orientation.portrait;
+
+  /// get the shortestSide from screen
+  double get mediaQueryShortestSide => mediaQuerySize.shortestSide;
+
+  /// True if width be larger than 800
+  bool get showNavBar => width > 800;
+
+  /// The same of [MediaQuery.of(context).size.height]
+  /// Note: updates when you rezise your screen (like on a browser or
+  /// desktop window)
+  double get height => mediaQuerySize.height;
+
+  /// The same of [MediaQuery.of(context).size.width]
+  /// Note: updates when you rezise your screen (like on a browser or
+  /// desktop window)
+  double get width => mediaQuerySize.width;
+
+  /// True if the shortestSide is smaller than 600p
+  bool get isPhone => mediaQueryShortestSide < 600;
+
+  /// True if the shortestSide is largest than 600p
+  bool get isSmallTablet => mediaQueryShortestSide >= 600;
+
+  /// True if the shortestSide is largest than 720p
+  bool get isLargeTablet => mediaQueryShortestSide >= 720;
+
+  /// True if the current device is Tablet
+  bool get isTablet => isSmallTablet || isLargeTablet;
+}
+
 extension ExtensionGlobalKey on GlobalKey {
   /// 截屏
   /// format 图片格式
-  /// pixelRatio 截图分辨率比例 [ui.window.devicePixelRatio]
+  /// pixelRatio 截图分辨率比例
   Future<ByteData?> screenshots(
       {ui.ImageByteFormat? format, double pixelRatio = 1.0}) async {
     final RenderRepaintBoundary boundary =

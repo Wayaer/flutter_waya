@@ -496,8 +496,8 @@ class Universal extends StatelessWidget {
   final bool safeBottom;
 
   EdgeInsetsGeometry? get _paddingIncludingDecoration {
-    if (decoration == null || decoration!.padding == null) return padding;
-    final EdgeInsetsGeometry decorationPadding = decoration!.padding!;
+    if (decoration == null) return padding;
+    final EdgeInsetsGeometry decorationPadding = decoration!.padding;
     if (padding == null) return decorationPadding;
     return padding!.add(decorationPadding);
   }

@@ -173,7 +173,7 @@ class _GestureZoomState extends ExtendedState<GestureZoom>
 
     /// 处理 Y 轴边界
     final double scaleOffsetY =
-        (context.size!.height * _scale - deviceHeight) / 2;
+        (context.size!.height * _scale - context.deviceHeight) / 2;
     if (scaleOffsetY <= 0) {
       offsetYIncrement = 0;
     } else if (_offset.dy > scaleOffsetY) {
@@ -219,7 +219,7 @@ class _GestureZoomState extends ExtendedState<GestureZoom>
 
       /// 处理 Y 轴边界
       final double scaleOffsetY =
-          (context.size!.height * realScale - deviceHeight) / 2;
+          (context.size!.height * realScale - context.deviceHeight) / 2;
       if (scaleOffsetY < 0) {
         targetOffsetY = 0;
       } else if (_offset.dy > scaleOffsetY) {
