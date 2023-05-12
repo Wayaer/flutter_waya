@@ -242,6 +242,10 @@ extension ExtensionContext on BuildContext {
   /// Returns the [FlutterView] that the provided `context` will render into.
   FlutterView? get maybeView => View.maybeOf(this);
 
+  OverlayState? get overlay => Overlay.of(this);
+
+  OverlayState? get maybeOverlay => Overlay.maybeOf(this);
+
   /// get Widget Bounds (width, height, left, top, right, bottom and so on).Widgets must be rendered completely.
   /// 获取widget Rect
   Rect get getWidgetBounds {

@@ -1,7 +1,9 @@
 ## 7.0.0
 
 * Compatible with 3.10.0
-* Removed `MediaQueryData.fromWindow(ui.window)`
+* Removes the method associated with `MediaQueryData.fromWindow(ui.window)`, but can be obtained from context
+* `ListWheel` added `onSelectedItemChanged` callback,
+* Removes the `onChanged` callback for `WheelOptions()`
 
 ## 6.1.0
 

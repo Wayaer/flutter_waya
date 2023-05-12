@@ -207,13 +207,13 @@ class _SingleListPickerContentState
   @override
   void initState() {
     super.initState();
-    selectIndex = widget.initialIndex;
+    selectIndex = List.from(widget.initialIndex);
   }
 
   @override
   void didUpdateWidget(covariant _SingleListPickerContent oldWidget) {
     super.didUpdateWidget(oldWidget);
-    selectIndex = widget.initialIndex;
+    selectIndex = List.from(widget.initialIndex);
     setState(() {});
   }
 

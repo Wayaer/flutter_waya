@@ -62,6 +62,8 @@ export 'extended/text.dart';
 export 'extended/text_field.dart';
 export 'extended/universal.dart';
 export 'extended/widgets_app.dart';
+export 'extended/navigator.dart';
+export 'extended/scaffold.dart';
 
 /// extension
 export 'extension/color_extension.dart';

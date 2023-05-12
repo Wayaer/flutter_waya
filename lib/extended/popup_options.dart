@@ -488,8 +488,7 @@ class ModalWindows extends StatelessWidget {
     if (options.addMaterial) {
       child = Material(
           color: Colors.transparent,
-          child: MediaQuery(
-              data: context.mediaQuery, child: child));
+          child: MediaQuery(data: context.mediaQuery, child: child));
     }
     if (options.ignoring) {
       child = IgnorePointer(child: child);
