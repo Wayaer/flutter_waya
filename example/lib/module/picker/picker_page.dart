@@ -7,9 +7,11 @@ part 'date_time_picker.dart';
 
 part 'area_picker.dart';
 
-part 'multi_list_picker.dart';
+part 'multi_list_linkage_picker.dart';
 
 part 'multi_list_wheel_picker.dart';
+
+part 'multi_list_wheel_linkage_picker.dart';
 
 part 'single_list_picker.dart';
 
@@ -46,12 +48,16 @@ class PickerPage extends StatelessWidget {
               push(_SingleListWheelPickerPage());
             }),
             10.heightBox,
+            ElevatedText('MultiListLinkagePicker', onTap: () {
+              push(const _MultiListLinkagePicker());
+            }),
+            10.heightBox,
             ElevatedText('MultiListWheelPicker', onTap: () {
               push(_MultiListWheelPicker());
             }),
             10.heightBox,
-            ElevatedText('MultiListLinkagePicker', onTap: () {
-              push(const _MultiListLinkagePicker());
+            ElevatedText('MultiListWheelLinkagePicker', onTap: () {
+              push(_MultiListWheelLinkagePicker());
             }),
             10.heightBox,
             ElevatedText('show CustomPicker', onTap: customPicker),

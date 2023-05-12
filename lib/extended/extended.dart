@@ -144,7 +144,7 @@ class GlobalOptions {
     _dialogOptions = options;
   }
 
-  WheelOptions _wheelOptions = const WheelOptions();
+  WheelOptions _wheelOptions = const WheelOptions.cupertino();
 
   WheelOptions get wheelOptions => _wheelOptions;
 
@@ -152,16 +152,6 @@ class GlobalOptions {
   /// Set the global [ListWheel] configuration
   void setWheelOptions(WheelOptions options) {
     _wheelOptions = options;
-  }
-
-  PickerWheelOptions _pickerWheelOptions = const PickerWheelOptions();
-
-  PickerWheelOptions get pickerWheelOptions => _pickerWheelOptions;
-
-  /// 设置全局 [PickerWheelOptions] 配置
-  /// Set the global [PickerWheelOptions] configuration
-  void setPickerWheelOptions(PickerWheelOptions options) {
-    _pickerWheelOptions = options;
   }
 
   bool _logCrossLine = true;

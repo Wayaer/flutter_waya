@@ -19,46 +19,42 @@ class _ListWheelPageState extends ExtendedState<ListWheelPage> {
         isScroll: true,
         padding: const EdgeInsets.all(20),
         children: [
+          const Partition('ListWheel.builder'),
           addBackboard(ListWheel.builder(
               onSelectedItemChanged: (_) {
                 log('ListWheel.builder : $_');
               },
               itemBuilder: (_, int index) => BText(numberList[index]),
               itemCount: numberList.length)),
-          // const Partition('ListWheel.builder'),
-          // addBackboard(ListWheel.builder(
-          //     onSelectedItemChanged: (_) {
-          //       log('ListWheel.builder : $_');
-          //     },
-          //     itemBuilder: (_, int index) => BText(numberList[index]),
-          //     itemCount: numberList.length)),
-          // const Partition('ListWheel.builder'),
-          // addBackboard(ListWheel.count(
-          //     onSelectedItemChanged: (_) {
-          //       log('ListWheel.count : $_');
-          //     },
-          //     children: numberList.builder((item) => BText(item)))),
-          // const Partition('ListWheelState.builder'),
-          // addBackboard(ListWheelState(
-          //     count: numberList.length,
-          //     initialItem: 5,
-          //     builder: (_) => ListWheel.builder(
-          //         controller: _,
-          //         onSelectedItemChanged: (_) {
-          //           log('ListWheelState.builder : $_');
-          //         },
-          //         itemBuilder: (_, int index) => BText(numberList[index]),
-          //         itemCount: numberList.length))),
-          // const Partition('ListWheelState.builder'),
-          // addBackboard(ListWheelState(
-          //     initialItem: 5,
-          //     count: numberList.length,
-          //     builder: (_) => ListWheel.count(
-          //         controller: _,
-          //         onSelectedItemChanged: (_) {
-          //           log('ListWheelState.builder : $_');
-          //         },
-          //         children: numberList.builder((item) => BText(item))))),
+          const Partition('ListWheel.count'),
+          addBackboard(ListWheel.count(
+              options: const WheelOptions(),
+              onSelectedItemChanged: (_) {
+                log('ListWheel.count : $_');
+              },
+              children: numberList.builder((item) => BText(item)))),
+          const Partition('ListWheelState.builder'),
+          addBackboard(ListWheelState(
+              count: numberList.length,
+              initialItem: 5,
+              builder: (_) => ListWheel.builder(
+                  controller: _,
+                  onSelectedItemChanged: (_) {
+                    log('ListWheelState.builder : $_');
+                  },
+                  itemBuilder: (_, int index) => BText(numberList[index]),
+                  itemCount: numberList.length))),
+          const Partition('ListWheelState.builder'),
+          addBackboard(ListWheelState(
+              initialItem: 5,
+              count: numberList.length,
+              builder: (_) => ListWheel.count(
+                  controller: _,
+                  options: const WheelOptions(),
+                  onSelectedItemChanged: (_) {
+                    log('ListWheelState.builder : $_');
+                  },
+                  children: numberList.builder((item) => BText(item))))),
         ]);
   }
 

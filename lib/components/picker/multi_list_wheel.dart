@@ -24,9 +24,10 @@ class MultiListWheelPicker extends PickerStatelessWidget<List<int>> {
     this.height = kPickerDefaultHeight,
     this.width = double.infinity,
     this.value = const [],
+    this.itemWidth = kPickerDefaultWidth,
     super.options = const PickerOptions<List<int>>(),
-    PickerWheelOptions? wheelOptions,
-  }) : super(wheelOptions: wheelOptions ?? GlobalOptions().pickerWheelOptions);
+    WheelOptions? wheelOptions,
+  }) : super(wheelOptions: wheelOptions ?? GlobalOptions().wheelOptions);
 
   /// 要渲染的数据
   final List<PickerEntry> entry;
@@ -50,6 +51,9 @@ class MultiListWheelPicker extends PickerStatelessWidget<List<int>> {
 
   /// width
   final double width;
+
+  /// wheel width
+  final double itemWidth;
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +91,7 @@ class MultiListWheelPicker extends PickerStatelessWidget<List<int>> {
                   onScrollEnd: (_) => onChanged());
 
           return Universal(
-              width: wheelOptions.itemWidth ?? kPickerDefaultWidth,
+              width: itemWidth,
               expanded: horizontalScroll ? false : addExpanded,
               child: this.value.isEmpty
                   ? buildWheel()
@@ -131,9 +135,10 @@ class MultiListWheelLinkagePicker<T> extends PickerStatefulWidget<List<int>> {
     this.onValueChanged,
     this.height = kPickerDefaultHeight,
     this.width = double.infinity,
+    this.itemWidth = kPickerDefaultWidth,
     super.options = const PickerOptions<List<int>>(),
-    PickerWheelOptions? wheelOptions,
-  }) : super(wheelOptions: wheelOptions ?? GlobalOptions().pickerWheelOptions);
+    WheelOptions? wheelOptions,
+  }) : super(wheelOptions: wheelOptions ?? GlobalOptions().wheelOptions);
 
   /// 要渲染的数据
   final List<PickerLinkageEntry<T>> entry;
@@ -160,6 +165,9 @@ class MultiListWheelLinkagePicker<T> extends PickerStatefulWidget<List<int>> {
 
   /// width
   final double width;
+
+  /// wheel item width
+  final double itemWidth;
 
   @override
   State<MultiListWheelLinkagePicker<T>> createState() =>
@@ -241,7 +249,7 @@ class _MultiListWheelLinkagePickerState<T>
         isScroll: widget.horizontalScroll,
         children: buildWheels.builder((item) => Universal(
             expanded: widget.horizontalScroll ? false : widget.addExpanded,
-            width: widget.wheelOptions.itemWidth ?? kPickerDefaultWidth,
+            width: widget.itemWidth,
             child: Center(child: item))));
     if (widget.options == null) return multi;
     return PickerSubject<List<int>>(

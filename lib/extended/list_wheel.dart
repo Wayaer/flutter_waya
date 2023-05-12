@@ -5,24 +5,59 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 class WheelOptions {
+  const WheelOptions.custom(
+      {this.physics,
+      this.diameterRatio = 2.0,
+      this.perspective = 0.003,
+      this.offAxisFraction = 0.0,
+      this.useMagnifier = false,
+      this.magnification = 1.0,
+      this.overAndUnderCenterOpacity = 1.0,
+      this.itemExtent = 30,
+      this.squeeze = 1.0,
+      this.renderChildrenOutsideViewport = false,
+      this.clipBehavior = Clip.hardEdge,
+      this.restorationId,
+      this.scrollBehavior,
+      this.selectionOverlay,
+      this.backgroundColor,
+      this.isCupertino = false});
+
   const WheelOptions({
-    this.diameterRatio = 1,
-    this.offAxisFraction = 0,
-    this.perspective = 0.01,
-    this.magnification = 1.1,
-    this.useMagnifier = false,
-    this.squeeze = 1,
-    this.itemExtent = 22,
     this.physics,
-    this.overAndUnderCenterOpacity = 0.447,
+    this.diameterRatio = 2.0,
+    this.perspective = 0.003,
+    this.offAxisFraction = 0.0,
+    this.useMagnifier = true,
+    this.magnification = 1.2,
+    this.overAndUnderCenterOpacity = 1.0,
+    this.itemExtent = 30,
+    this.squeeze = 1.0,
     this.renderChildrenOutsideViewport = false,
     this.clipBehavior = Clip.hardEdge,
     this.restorationId,
     this.scrollBehavior,
-    this.isCupertino = true,
+  })  : selectionOverlay = null,
+        backgroundColor = null,
+        isCupertino = false;
+
+  const WheelOptions.cupertino({
+    this.diameterRatio = 1.07,
     this.backgroundColor,
+    this.offAxisFraction = 0.0,
+    this.useMagnifier = false,
+    this.magnification = 1.0,
+    this.squeeze = 1.45,
+    this.itemExtent = 30,
     this.selectionOverlay = const CupertinoPickerDefaultSelectionOverlay(),
-  });
+  })  : physics = null,
+        overAndUnderCenterOpacity = 0.447,
+        renderChildrenOutsideViewport = false,
+        clipBehavior = Clip.hardEdge,
+        perspective = 0.003,
+        restorationId = null,
+        scrollBehavior = null,
+        isCupertino = true;
 
   /// wheel子item高度
   final double itemExtent;
@@ -39,7 +74,7 @@ class WheelOptions {
   /// 是否启用放大镜
   final bool useMagnifier;
 
-  /// 上下间距默认为1 数越小 间距越大
+  /// 上下间距默认为1.45 数越小 间距越大
   final double squeeze;
 
   /// ScrollPhysics
@@ -73,31 +108,45 @@ class WheelOptions {
   /// [isCupertino]=true生效
   final Widget? selectionOverlay;
 
-  WheelOptions copyWith({
-    double? itemExtent,
-    double? diameterRatio,
-    double? offAxisFraction,
-    double? perspective,
-    double? magnification,
-    bool? useMagnifier,
-    double? squeeze,
-    bool? isCupertino,
-    ScrollPhysics? physics,
-    Color? backgroundColor,
-  }) =>
-      WheelOptions(
-          itemExtent: itemExtent ?? this.itemExtent,
-          diameterRatio: diameterRatio ?? this.diameterRatio,
-          offAxisFraction: offAxisFraction ?? this.offAxisFraction,
-          perspective: perspective ?? this.perspective,
-          magnification: magnification ?? this.magnification,
-          useMagnifier: useMagnifier ?? this.useMagnifier,
-          squeeze: squeeze ?? this.squeeze,
-          isCupertino: isCupertino ?? this.isCupertino,
-          physics: physics ?? this.physics,
-          backgroundColor: backgroundColor ?? this.backgroundColor);
+  WheelOptions copyWith(
+          {double? itemExtent,
+          double? diameterRatio,
+          double? offAxisFraction,
+          double? perspective,
+          double? magnification,
+          bool? useMagnifier,
+          double? squeeze,
+          ScrollPhysics? physics,
+          Widget? selectionOverlay,
+          Color? backgroundColor,
+          bool? isCupertino,
+          double? overAndUnderCenterOpacity,
+          bool? renderChildrenOutsideViewport,
+          Clip? clipBehavior,
+          ScrollBehavior? scrollBehavior,
+          String? restorationId}) =>
+      WheelOptions.custom(
+        isCupertino: isCupertino ?? this.isCupertino,
+        itemExtent: itemExtent ?? this.itemExtent,
+        diameterRatio: diameterRatio ?? this.diameterRatio,
+        offAxisFraction: offAxisFraction ?? this.offAxisFraction,
+        perspective: perspective ?? this.perspective,
+        magnification: magnification ?? this.magnification,
+        useMagnifier: useMagnifier ?? this.useMagnifier,
+        squeeze: squeeze ?? this.squeeze,
+        physics: physics ?? this.physics,
+        selectionOverlay: selectionOverlay ?? this.selectionOverlay,
+        backgroundColor: backgroundColor ?? this.backgroundColor,
+        clipBehavior: clipBehavior ?? this.clipBehavior,
+        overAndUnderCenterOpacity:
+            overAndUnderCenterOpacity ?? this.overAndUnderCenterOpacity,
+        renderChildrenOutsideViewport:
+            renderChildrenOutsideViewport ?? this.renderChildrenOutsideViewport,
+        scrollBehavior: scrollBehavior ?? this.scrollBehavior,
+        restorationId: restorationId ?? this.restorationId,
+      );
 
-  WheelOptions merge([WheelOptions? options]) => WheelOptions(
+  WheelOptions merge([WheelOptions? options]) => WheelOptions.custom(
       itemExtent: options?.itemExtent ?? itemExtent,
       diameterRatio: options?.diameterRatio ?? diameterRatio,
       offAxisFraction: options?.offAxisFraction ?? offAxisFraction,
@@ -105,9 +154,17 @@ class WheelOptions {
       magnification: options?.magnification ?? magnification,
       useMagnifier: options?.useMagnifier ?? useMagnifier,
       squeeze: options?.squeeze ?? squeeze,
-      isCupertino: options?.isCupertino ?? isCupertino,
       physics: options?.physics ?? physics,
-      backgroundColor: options?.backgroundColor ?? backgroundColor);
+      selectionOverlay: options?.selectionOverlay ?? selectionOverlay,
+      backgroundColor: options?.backgroundColor ?? backgroundColor,
+      isCupertino: options?.isCupertino ?? isCupertino,
+      clipBehavior: options?.clipBehavior ?? clipBehavior,
+      overAndUnderCenterOpacity:
+          options?.overAndUnderCenterOpacity ?? overAndUnderCenterOpacity,
+      renderChildrenOutsideViewport: options?.renderChildrenOutsideViewport ??
+          renderChildrenOutsideViewport,
+      scrollBehavior: options?.scrollBehavior ?? scrollBehavior,
+      restorationId: options?.restorationId ?? restorationId);
 }
 
 class CupertinoListWheelScrollView extends CupertinoPicker {
@@ -203,19 +260,20 @@ class ListWheel extends StatelessWidget {
     if (wheelOptions.isCupertino) {
       child = CupertinoListWheelScrollView.useDelegate(
           scrollController: controller,
-          backgroundColor: wheelOptions.backgroundColor,
           delegate: delegate,
-          itemExtent: wheelOptions.itemExtent,
-          diameterRatio: wheelOptions.diameterRatio,
           onSelectedItemChanged: onSelectedItemChanged,
+          diameterRatio: wheelOptions.diameterRatio,
+          backgroundColor: wheelOptions.backgroundColor,
           offAxisFraction: wheelOptions.offAxisFraction,
           useMagnifier: wheelOptions.useMagnifier,
-          squeeze: wheelOptions.squeeze,
           magnification: wheelOptions.magnification,
+          squeeze: wheelOptions.squeeze,
+          itemExtent: wheelOptions.itemExtent,
           selectionOverlay: wheelOptions.selectionOverlay);
     } else {
       child = ListWheelScrollView.useDelegate(
           controller: controller,
+          childDelegate: delegate,
           itemExtent: wheelOptions.itemExtent,
           physics: wheelOptions.physics,
           diameterRatio: wheelOptions.diameterRatio,
@@ -230,8 +288,7 @@ class ListWheel extends StatelessWidget {
           overAndUnderCenterOpacity: wheelOptions.overAndUnderCenterOpacity,
           clipBehavior: wheelOptions.clipBehavior,
           restorationId: wheelOptions.restorationId,
-          scrollBehavior: wheelOptions.scrollBehavior,
-          childDelegate: delegate);
+          scrollBehavior: wheelOptions.scrollBehavior);
     }
     if (onNotification == null &&
         onScrollStart == null &&
@@ -431,7 +488,6 @@ class _AutoScrollEntryState extends ExtendedState<AutoScrollEntry> {
                 magnification: 1,
                 useMagnifier: false,
                 squeeze: 2,
-                isCupertino: false,
                 perspective: 0.00001),
             children: widget.children));
   }

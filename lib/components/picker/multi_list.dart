@@ -32,7 +32,7 @@ class MultiListLinkagePicker<T> extends PickerStatefulWidget<List<int>> {
     this.width = double.infinity,
     this.itemWidth = kPickerDefaultWidth,
     super.options = const PickerOptions<List<int>>(),
-  }) : super(wheelOptions: GlobalOptions().pickerWheelOptions);
+  }) : super(wheelOptions: GlobalOptions().wheelOptions);
 
   /// 要渲染的数据
   final List<PickerListLinkageEntry<T>> entry;

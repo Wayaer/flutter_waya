@@ -102,102 +102,102 @@ class PickerOptions<T> {
       verifyCancel: options?.verifyCancel);
 }
 
-class PickerWheelOptions extends WheelOptions {
-  const PickerWheelOptions({
-    /// 高度
-    super.itemExtent,
-
-    /// 半径大小,越大则越平面,越小则间距越大
-    super.diameterRatio = 1.3,
-
-    /// 选中item偏移
-    super.offAxisFraction,
-
-    /// 表示ListWheel水平偏离中心的程度
-    super.perspective = 0.01,
-
-    /// 是否启用放大
-    super.useMagnifier = true,
-
-    /// 放大倍率
-    super.magnification,
-
-    /// 上下间距默认为1 数越小 间距越大
-    super.squeeze,
-
-    /// [isCupertino]=false生效
-    super.clipBehavior,
-
-    /// [isCupertino]=false生效
-    super.overAndUnderCenterOpacity,
-
-    /// [isCupertino]=false生效
-    super.renderChildrenOutsideViewport,
-
-    /// [isCupertino]=false生效
-    super.restorationId,
-
-    /// [isCupertino]=false生效
-    super.scrollBehavior,
-
-    /// 使用ios Cupertino 风格
-    super.isCupertino = true,
-
-    /// [isCupertino]=true生效
-    super.backgroundColor,
-
-    /// [isCupertino]=true生效
-    super.selectionOverlay,
-
-    /// physics
-    super.physics,
-    this.itemWidth,
-  });
-
-  /// 不设置 [itemWidth] 默认均分
-  final double? itemWidth;
-
-  @override
-  PickerWheelOptions copyWith({
-    double? itemExtent,
-    double? diameterRatio,
-    double? offAxisFraction,
-    double? perspective,
-    double? magnification,
-    bool? useMagnifier,
-    double? squeeze,
-    bool? isCupertino,
-    ScrollPhysics? physics,
-    Color? backgroundColor,
-    double? itemWidth,
-    bool? looping,
-    ValueChanged<int>? onChanged,
-  }) =>
-      PickerWheelOptions(
-          diameterRatio: diameterRatio ?? this.diameterRatio,
-          offAxisFraction: offAxisFraction ?? this.offAxisFraction,
-          perspective: perspective ?? this.perspective,
-          magnification: magnification ?? this.magnification,
-          useMagnifier: useMagnifier ?? this.useMagnifier,
-          squeeze: squeeze ?? this.squeeze,
-          isCupertino: isCupertino ?? this.isCupertino,
-          physics: physics ?? this.physics,
-          backgroundColor: backgroundColor ?? this.backgroundColor,
-          itemWidth: itemWidth ?? this.itemWidth);
-
-  PickerWheelOptions mergePicker([PickerWheelOptions? options]) =>
-      PickerWheelOptions(
-          diameterRatio: options?.diameterRatio ?? diameterRatio,
-          offAxisFraction: options?.offAxisFraction ?? offAxisFraction,
-          perspective: options?.perspective ?? perspective,
-          magnification: options?.magnification ?? magnification,
-          useMagnifier: options?.useMagnifier ?? useMagnifier,
-          squeeze: options?.squeeze ?? squeeze,
-          isCupertino: options?.isCupertino ?? isCupertino,
-          physics: options?.physics ?? physics,
-          backgroundColor: options?.backgroundColor ?? backgroundColor,
-          itemWidth: options?.itemWidth ?? itemWidth);
-}
+// class PickerWheelOptions extends WheelOptions {
+//   const PickerWheelOptions({
+//     /// 高度
+//     super.itemExtent,
+//
+//     /// 半径大小,越大则越平面,越小则间距越大
+//     super.diameterRatio = 1.3,
+//
+//     /// 选中item偏移
+//     super.offAxisFraction,
+//
+//     /// 表示ListWheel水平偏离中心的程度
+//     super.perspective = 0.01,
+//
+//     /// 是否启用放大
+//     super.useMagnifier = true,
+//
+//     /// 放大倍率
+//     super.magnification,
+//
+//     /// 上下间距默认为1 数越小 间距越大
+//     super.squeeze,
+//
+//     /// [isCupertino]=false生效
+//     super.clipBehavior,
+//
+//     /// [isCupertino]=false生效
+//     super.overAndUnderCenterOpacity,
+//
+//     /// [isCupertino]=false生效
+//     super.renderChildrenOutsideViewport,
+//
+//     /// [isCupertino]=false生效
+//     super.restorationId,
+//
+//     /// [isCupertino]=false生效
+//     super.scrollBehavior,
+//
+//     /// 使用ios Cupertino 风格
+//     super.isCupertino = true,
+//
+//     /// [isCupertino]=true生效
+//     super.backgroundColor,
+//
+//     /// [isCupertino]=true生效
+//     super.selectionOverlay,
+//
+//     /// physics
+//     super.physics,
+//     this.itemWidth,
+//   });
+//
+//   /// 不设置 [itemWidth] 默认均分
+//   final double? itemWidth;
+//
+//   @override
+//   PickerWheelOptions copyWith({
+//     double? itemExtent,
+//     double? diameterRatio,
+//     double? offAxisFraction,
+//     double? perspective,
+//     double? magnification,
+//     bool? useMagnifier,
+//     double? squeeze,
+//     bool? isCupertino,
+//     ScrollPhysics? physics,
+//     Color? backgroundColor,
+//     double? itemWidth,
+//     bool? looping,
+//     ValueChanged<int>? onChanged,
+//   }) =>
+//       PickerWheelOptions(
+//           diameterRatio: diameterRatio ?? this.diameterRatio,
+//           offAxisFraction: offAxisFraction ?? this.offAxisFraction,
+//           perspective: perspective ?? this.perspective,
+//           magnification: magnification ?? this.magnification,
+//           useMagnifier: useMagnifier ?? this.useMagnifier,
+//           squeeze: squeeze ?? this.squeeze,
+//           isCupertino: isCupertino ?? this.isCupertino,
+//           physics: physics ?? this.physics,
+//           backgroundColor: backgroundColor ?? this.backgroundColor,
+//           itemWidth: itemWidth ?? this.itemWidth);
+//
+//   PickerWheelOptions mergePicker([PickerWheelOptions? options]) =>
+//       PickerWheelOptions(
+//           diameterRatio: options?.diameterRatio ?? diameterRatio,
+//           offAxisFraction: options?.offAxisFraction ?? offAxisFraction,
+//           perspective: options?.perspective ?? perspective,
+//           magnification: options?.magnification ?? magnification,
+//           useMagnifier: options?.useMagnifier ?? useMagnifier,
+//           squeeze: options?.squeeze ?? squeeze,
+//           isCupertino: options?.isCupertino ?? isCupertino,
+//           physics: options?.physics ?? physics,
+//           backgroundColor: options?.backgroundColor ?? backgroundColor,
+//           itemWidth: options?.itemWidth ?? itemWidth);
+// }
 
 typedef PickerPositionIndexChanged = void Function(List<int> index);
 
@@ -211,7 +211,7 @@ abstract class PickerStatelessWidget<T> extends StatelessWidget {
   final PickerOptions<T>? options;
 
   /// Wheel配置信息
-  final PickerWheelOptions wheelOptions;
+  final WheelOptions wheelOptions;
 }
 
 abstract class PickerStatefulWidget<T> extends StatefulWidget {
@@ -222,7 +222,7 @@ abstract class PickerStatefulWidget<T> extends StatefulWidget {
   final PickerOptions<T>? options;
 
   /// Wheel配置信息
-  final PickerWheelOptions wheelOptions;
+  final WheelOptions wheelOptions;
 }
 
 typedef PickerSubjectTapCallback<T> = T Function();
@@ -281,22 +281,10 @@ class _PickerListWheel extends ListWheel {
     ValueChanged<int>? onChanged,
     required super.itemCount,
     required super.itemBuilder,
-    required PickerWheelOptions options,
+    required super.options,
     super.controller,
     super.onScrollEnd,
-  }) : super.builder(
-            onSelectedItemChanged: onChanged,
-            options: WheelOptions(
-                backgroundColor: options.backgroundColor,
-                isCupertino: options.isCupertino,
-                itemExtent: options.itemExtent,
-                diameterRatio: options.diameterRatio,
-                offAxisFraction: options.offAxisFraction,
-                perspective: options.perspective,
-                magnification: options.magnification,
-                useMagnifier: options.useMagnifier,
-                squeeze: options.squeeze,
-                physics: options.physics));
+  }) : super.builder(onSelectedItemChanged: onChanged);
 }
 
 extension ExtensionCustomPicker on CustomPicker {

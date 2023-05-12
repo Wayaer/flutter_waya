@@ -44,16 +44,22 @@ void main() {
   ]));
 
   globalOptions.setGlobalPushMode(RoutePushStyle.cupertino);
+
+  /// 设置全局Toast配置
   globalOptions.setToastOptions(
       ToastOptions(positioned: Alignment.center, duration: 2.seconds));
+
+  /// 设置全局BottomSheet配置
   globalOptions.setBottomSheetOptions(const BottomSheetOptions());
   globalOptions
       .setDialogOptions(const DialogOptions(fromStyle: PopupFromStyle.fromTop));
-  globalOptions.setWheelOptions(
-      const WheelOptions(useMagnifier: true, magnification: 1.5));
-  globalOptions.setPickerWheelOptions(
-      const PickerWheelOptions(useMagnifier: true, magnification: 1.5));
+
+  /// 设置全局Wheel配置
+  globalOptions.setWheelOptions(const WheelOptions.cupertino());
+
   globalOptions.setLogCrossLine(true);
+
+  /// 设置全局Loading配置
   globalOptions.setLoadingOptions(const LoadingOptions(
       custom: BText('全局设置loading', fontSize: 20),
       options: ModalWindowsOptions(onTap: closeLoading)));

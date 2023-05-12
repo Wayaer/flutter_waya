@@ -10,7 +10,8 @@ class _SingleListWheelPickerPage extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 10),
         isScroll: true,
         children: [
-          ElevatedText('show SingleListWheelPicker', onTap: singleColumnPicker),
+          ElevatedText('show SingleListWheelPicker',
+              onTap: singleListWheelPicker),
           10.heightBox,
           _addBackboard(SingleListWheelPicker(
               options: null,
@@ -28,7 +29,7 @@ class _SingleListWheelPickerPage extends StatelessWidget {
 
   final numberList = ['一', '二', '三', '四', '五', '六', '七', '八', '十'];
 
-  Future<void> singleColumnPicker() async {
+  Future<void> singleListWheelPicker() async {
     final int? index = await SingleListWheelPicker(
             itemBuilder: (BuildContext context, int index) => Container(
                 alignment: Alignment.center,

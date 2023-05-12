@@ -22,9 +22,10 @@ class DateTimePicker extends PickerStatefulWidget<DateTime> {
     this.onChanged,
     this.height = kPickerDefaultHeight,
     this.width = double.infinity,
+    this.itemWidth,
     super.options = const PickerOptions<DateTime>(),
-    PickerWheelOptions? wheelOptions,
-  }) : super(wheelOptions: wheelOptions ?? GlobalOptions().pickerWheelOptions);
+    WheelOptions? wheelOptions,
+  }) : super(wheelOptions: wheelOptions ?? GlobalOptions().wheelOptions);
 
   /// 补全双位数
   final bool dual;
@@ -60,6 +61,9 @@ class DateTimePicker extends PickerStatefulWidget<DateTime> {
   /// width
   final double width;
 
+  /// wheel width
+  final double? itemWidth;
+
   @override
   State<DateTimePicker> createState() => _DateTimePickerState();
 }
@@ -93,7 +97,7 @@ class _DateTimePickerState extends ExtendedState<DateTimePicker> {
 
   bool isScrolling = false;
 
-  late PickerWheelOptions wheelOptions;
+  late WheelOptions wheelOptions;
 
   StateSetter? dayState;
 
@@ -343,11 +347,11 @@ class _DateTimePickerState extends ExtendedState<DateTimePicker> {
           refreshPosition();
         });
     return Universal(
-        expanded: wheelOptions.itemWidth == null,
+        expanded: widget.itemWidth == null,
         direction: Axis.horizontal,
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
-        width: wheelOptions.itemWidth,
+        width: widget.itemWidth,
         children: !widget.showUnit
             ? null
             : [
@@ -372,6 +376,7 @@ class _DateTimePickerState extends ExtendedState<DateTimePicker> {
       _PickerListWheel(
           controller: controller,
           itemCount: list!.length,
+          onChanged: (_) {},
           itemBuilder: (_, int index) => Container(
               alignment: Alignment.center,
               child: BText(

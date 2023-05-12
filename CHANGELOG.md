@@ -4,6 +4,8 @@
 * Removes the method associated with `MediaQueryData.fromWindow(ui.window)`, but can be obtained from context
 * `ListWheel` added `onSelectedItemChanged` callback,
 * Removes the `onChanged` callback for `WheelOptions()`
+* `PickerWheelOptions` removed. Please use `WheelOptions`
+* `WheelOptions` added `WheelOptions.cupertino()` and `WheelOptions.custom()`
 
 ## 6.1.0
 

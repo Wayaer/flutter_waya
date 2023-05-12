@@ -21,10 +21,10 @@ class SingleListWheelPicker extends PickerStatelessWidget<int> {
     this.onChanged,
 
     /// Wheel配置信息
-    PickerWheelOptions? wheelOptions,
+    WheelOptions? wheelOptions,
   })  : controller = controller ??
             FixedExtentScrollController(initialItem: initialIndex),
-        super(wheelOptions: wheelOptions ?? GlobalOptions().pickerWheelOptions);
+        super(wheelOptions: wheelOptions ?? GlobalOptions().wheelOptions);
 
   /// 渲染子组件
   final int itemCount;

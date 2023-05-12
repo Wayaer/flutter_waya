@@ -14,7 +14,7 @@ class _AreaPickerPage extends StatelessWidget {
           10.heightBox,
           _addBackboard(MultiListWheelLinkagePicker<String>(
               options: null,
-              wheelOptions: const PickerWheelOptions(),
+              wheelOptions: const WheelOptions(),
               height: 210,
               onChanged: (List<int> index) {
                 log('AreaPicker onChanged= $index');

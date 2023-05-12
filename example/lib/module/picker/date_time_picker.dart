@@ -41,9 +41,7 @@ class _DateTimePickerPage extends StatelessWidget {
               startDate: defaultDate.subtract(const Duration(days: 365)),
               defaultDate: defaultDate,
               endDate: defaultDate.add(const Duration(days: 365)),
-              wheelOptions: GlobalOptions()
-                  .pickerWheelOptions
-                  .copyWith(isCupertino: false, squeeze: 0.8),
+              wheelOptions: GlobalOptions().wheelOptions,
               contentStyle: const TextStyle(fontSize: 13),
               onChanged: (DateTime dateTime) {
                 log(dateTime);

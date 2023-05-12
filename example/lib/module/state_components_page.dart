@@ -66,32 +66,36 @@ class StateComponentsPage extends StatelessWidget {
                     ]);
               }),
           const Partition('CheckBox 自定义版'),
-          Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: <
-              Widget>[
-            CheckBox(
-                value: true,
-                margin: const EdgeInsets.only(left: 20),
-                padding: const EdgeInsets.all(6),
-                decoration: BoxDecoration(color: Colors.grey.withOpacity(0.4)),
-                useNull: true,
-                stateBuilder: (bool? value) {
-                  if (value != null) {
-                    return Icon(value
-                        ? Icons.check_box
-                        : Icons.check_box_outline_blank);
-                  }
-                  return const Icon(Icons.check_box_outlined);
-                }),
-            CheckBox(
-                value: false,
-                padding: const EdgeInsets.all(6),
-                margin: const EdgeInsets.only(right: 20),
-                decoration: BoxDecoration(color: Colors.grey.withOpacity(0.4)),
-                stateBuilder: (bool? value) {
-                  return Icon(
-                      value! ? Icons.check_box : Icons.check_box_outline_blank);
-                }),
-          ]),
+          Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                CheckBox(
+                    value: true,
+                    margin: const EdgeInsets.only(left: 20),
+                    padding: const EdgeInsets.all(6),
+                    decoration:
+                        BoxDecoration(color: Colors.grey.withOpacity(0.4)),
+                    useNull: true,
+                    stateBuilder: (bool? value) {
+                      if (value != null) {
+                        return Icon(value
+                            ? Icons.check_box
+                            : Icons.check_box_outline_blank);
+                      }
+                      return const Icon(Icons.check_box_outlined);
+                    }),
+                CheckBox(
+                    value: false,
+                    padding: const EdgeInsets.all(6),
+                    margin: const EdgeInsets.only(right: 20),
+                    decoration:
+                        BoxDecoration(color: Colors.grey.withOpacity(0.4)),
+                    stateBuilder: (bool? value) {
+                      return Icon(value!
+                          ? Icons.check_box
+                          : Icons.check_box_outline_blank);
+                    }),
+              ]),
           const Partition('Checkbox 官方附加状态版本'),
           Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
             CheckboxState(
