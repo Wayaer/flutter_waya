@@ -83,4 +83,3 @@ export 'extension/widget_extension.dart';
 export 'utils/utils.dart';
 export 'utils/ali_oss.dart';
 export 'utils/event.dart';
-export 'utils/media_query.dart';
