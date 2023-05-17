@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:app/main.dart';
+import 'package:app/module/flip_card_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
@@ -13,6 +14,7 @@ class ComponentsPage extends StatelessWidget {
           appBar: AppBarText('Components'),
           padding: const EdgeInsets.all(20),
           children: [
+            ElevatedText('FlipCard', onTap: () => push(const FlipCardPage())),
             const Partition('ExpansionTiles'),
             ExpansionTiles(
                 backgroundColor: Colors.amber,

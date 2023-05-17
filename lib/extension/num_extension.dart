@@ -222,4 +222,7 @@ extension ExtensionInt on int {
       return '${r.toStringAsFixed(round)} PB';
     }
   }
+
+  /// 返回 随机数 为0~(max-1)的随机数
+  int get random => Random().nextInt(this);
 }
