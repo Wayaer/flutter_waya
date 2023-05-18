@@ -1,4 +1,5 @@
 import 'package:app/main.dart';
+import 'package:app/module/flip_card_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
@@ -12,6 +13,7 @@ class StateComponentsPage extends StatelessWidget {
         appBar: AppBarText('State Components'),
         padding: const EdgeInsets.all(20),
         children: [
+          ElevatedText('FlipCard', onTap: () => push(const FlipCardPage())),
           const Partition('ValueBuilder'),
           ValueBuilder<int>(
               initialValue: 0,

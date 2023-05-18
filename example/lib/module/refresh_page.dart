@@ -61,6 +61,10 @@ class _EasyRefreshPageState extends ExtendedState<EasyRefreshPage> {
                     });
                   }, onLoading: () async {
                     2.seconds.delayed(() {
+                      if (colors.length > 30) {
+                        RefreshControllers().call(EasyRefreshType.loadNoMore);
+                        return;
+                      }
                       colors.addAll(Colors.accents);
                       setState(() {});
                       RefreshControllers().call(EasyRefreshType.loadingSuccess);

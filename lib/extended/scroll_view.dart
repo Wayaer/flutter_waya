@@ -64,7 +64,7 @@ class RefreshScrollView extends StatelessWidget {
     }
     if (refreshConfig != null) {
       widget = EasyRefreshed(
-          config: refreshConfig!..scrollController = controller,
+          config: refreshConfig!.copyWith(scrollController: controller),
           builder: (_, ScrollPhysics physics) =>
               buildCustomScrollView(physics));
     }
@@ -95,7 +95,7 @@ class RefreshScrollView extends StatelessWidget {
 }
 
 class RefreshConfig {
-  RefreshConfig(
+  const RefreshConfig(
       {this.controller,
       this.onRefresh,
       this.onLoading,
@@ -104,8 +104,8 @@ class RefreshConfig {
       this.spring,
       this.frictionFactor,
       this.simultaneously = false,
-      this.noMoreRefresh = false,
-      this.noMoreLoad = false,
+      this.canRefreshAfterNoMore = false,
+      this.canLoadAfterNoMore = false,
       this.resetAfterRefresh = true,
       this.refreshOnStart = false,
       this.refreshOnStartHeader,
@@ -115,80 +115,138 @@ class RefreshConfig {
       this.clipBehavior = Clip.hardEdge,
       this.scrollController,
       this.notLoadFooter,
-      this.notRefreshHeader});
+      this.notRefreshHeader,
+      this.triggerAxis,
+      this.scrollBehaviorBuilder});
 
   /// 可不传controller，
   /// 若想关闭刷新组件可以通过发送消息
   /// sendRefreshType(RefreshCompletedType.refresh);
-  EasyRefreshController? controller;
+  final EasyRefreshController? controller;
 
   /// 下拉刷新回调(null为不开启刷新)
-  FutureOr Function()? onRefresh;
+  final FutureOr Function()? onRefresh;
 
   /// 上拉加载回调(null为不开启加载)
-  FutureOr Function()? onLoading;
+  final FutureOr Function()? onLoading;
 
   /// CustomHeader
-  Header? header;
+  final Header? header;
 
   /// CustomFooter
-  Footer? footer;
+  final Footer? footer;
 
   /// Structure that describes a spring's constants.
   /// When spring is not set in [Header] and [Footer].
-  SpringDescription? spring;
+  final SpringDescription? spring;
 
   /// Friction factor when list is out of bounds.
-  FrictionFactor? frictionFactor;
+  final FrictionFactor? frictionFactor;
 
   /// Refresh and load can be performed simultaneously.
-  bool simultaneously;
+  final bool simultaneously;
 
   /// Is it possible to refresh after there is no more.
-  bool noMoreRefresh;
+  final bool canRefreshAfterNoMore;
 
-  /// Is it loadable after no more.
-  bool noMoreLoad;
+  /// Is it possible to load after there is no more.
+  final bool canLoadAfterNoMore;
+
+  /// Direction of execution.
+  /// Other scroll directions will not show indicators and perform task.
+  final Axis? triggerAxis;
+
+  /// use [ERScrollBehavior] by default.
+  final ERScrollBehaviorBuilder? scrollBehaviorBuilder;
 
   /// Reset after refresh when no more deactivation is loaded.
-  bool resetAfterRefresh;
+  final bool resetAfterRefresh;
 
   /// Refresh on start.
   /// When the EasyRefresh build is complete, trigger the refresh.
-  bool refreshOnStart;
+  final bool refreshOnStart;
 
   /// Header for refresh on start.
   /// Use [header] when null.
-  Header? refreshOnStartHeader;
+  final Header? refreshOnStartHeader;
 
   /// Offset beyond trigger offset when calling refresh.
   /// Used when refreshOnStart is true and [EasyRefreshController.callRefresh].
-  double callRefreshOverOffset;
+  final double callRefreshOverOffset;
 
   /// Offset beyond trigger offset when calling load.
   /// Used when [EasyRefreshController.callLoad].
-  double callLoadOverOffset;
+  final double callLoadOverOffset;
 
   /// See [Stack.StackFit]
-  StackFit fit;
+  final StackFit fit;
 
   /// See [Stack.clipBehavior].
-  Clip clipBehavior;
+  final Clip clipBehavior;
 
   /// When the position cannot be determined, such as [NestedScrollView].
   /// Mainly used to trigger events.
-  ScrollController? scrollController;
+  final ScrollController? scrollController;
 
   /// Overscroll behavior when [onRefresh] is null.
   /// Won't build widget.
-  NotRefreshHeader? notRefreshHeader;
+  final NotRefreshHeader? notRefreshHeader;
 
   /// Overscroll behavior when [onLoad] is null.
   /// Won't build widget.
-  NotLoadFooter? notLoadFooter;
+  final NotLoadFooter? notLoadFooter;
 
-  /// get Controller
-  EasyRefreshControllerCallback? onController;
+  RefreshConfig copyWith({
+    EasyRefreshController? controller,
+    FutureOr Function()? onRefresh,
+    FutureOr Function()? onLoading,
+    Header? header,
+    Footer? footer,
+    SpringDescription? spring,
+    FrictionFactor? frictionFactor,
+    bool? simultaneously,
+    bool? canRefreshAfterNoMore,
+    bool? canLoadAfterNoMore,
+    Axis? triggerAxis,
+    ERScrollBehaviorBuilder? scrollBehaviorBuilder,
+    bool? resetAfterRefresh,
+    bool? refreshOnStart,
+    Header? refreshOnStartHeader,
+    double? callRefreshOverOffset,
+    double? callLoadOverOffset,
+    StackFit? fit,
+    Clip? clipBehavior,
+    ScrollController? scrollController,
+    NotRefreshHeader? notRefreshHeader,
+    NotLoadFooter? notLoadFooter,
+  }) =>
+      RefreshConfig(
+          controller: controller ?? this.controller,
+          onRefresh: onRefresh ?? this.onRefresh,
+          onLoading: onLoading ?? this.onLoading,
+          header: header ?? this.header,
+          footer: footer ?? this.footer,
+          spring: spring ?? this.spring,
+          frictionFactor: frictionFactor ?? this.frictionFactor,
+          simultaneously: simultaneously ?? this.simultaneously,
+          canRefreshAfterNoMore:
+              canRefreshAfterNoMore ?? this.canRefreshAfterNoMore,
+          canLoadAfterNoMore: canLoadAfterNoMore ?? this.canLoadAfterNoMore,
+          resetAfterRefresh: resetAfterRefresh ?? this.resetAfterRefresh,
+          refreshOnStart: refreshOnStart ?? this.refreshOnStart,
+          refreshOnStartHeader:
+              refreshOnStartHeader ?? this.refreshOnStartHeader,
+          callRefreshOverOffset:
+              callRefreshOverOffset ?? this.callRefreshOverOffset,
+          callLoadOverOffset: callLoadOverOffset ?? this.callLoadOverOffset,
+          fit: fit ?? this.fit,
+          clipBehavior: clipBehavior ?? this.clipBehavior,
+          scrollController: scrollController ?? this.scrollController,
+          notLoadFooter: notLoadFooter ?? this.notLoadFooter,
+          notRefreshHeader: notRefreshHeader ?? this.notRefreshHeader,
+          triggerAxis: triggerAxis ?? this.triggerAxis,
+          scrollBehaviorBuilder:
+              scrollBehaviorBuilder ?? this.scrollBehaviorBuilder);
 }
 
 class RefreshControllers {
@@ -200,7 +258,7 @@ class RefreshControllers {
 
   final Map<int, EasyRefreshController> _controllers = {};
 
-  void set(EasyRefreshController controller) {
+  void _set(EasyRefreshController controller) {
     _controllers[controller.hashCode] = controller;
   }
 
@@ -311,8 +369,7 @@ class _EasyRefreshedState extends ExtendedState<EasyRefreshed> {
         EasyRefreshController(
             controlFinishRefresh: config.onRefresh != null,
             controlFinishLoad: config.onLoading != null);
-    widget.config.onController?.call(controller);
-    RefreshControllers().set(controller);
+    RefreshControllers()._set(controller);
   }
 
   @override
@@ -351,8 +408,6 @@ class _EasyRefreshedState extends ExtendedState<EasyRefreshed> {
         notRefreshHeader: config.notRefreshHeader,
         notLoadFooter: config.notLoadFooter,
         simultaneously: config.simultaneously,
-        noMoreRefresh: config.noMoreRefresh,
-        noMoreLoad: config.noMoreLoad,
         resetAfterRefresh: config.resetAfterRefresh,
         refreshOnStart: config.refreshOnStart,
         refreshOnStartHeader: config.refreshOnStartHeader,
@@ -360,7 +415,11 @@ class _EasyRefreshedState extends ExtendedState<EasyRefreshed> {
         callLoadOverOffset: config.callLoadOverOffset,
         fit: config.fit,
         clipBehavior: config.clipBehavior,
-        childBuilder: widget.builder ?? (_, __) => widget.child!);
+        childBuilder: widget.builder ?? (_, __) => widget.child!,
+        canLoadAfterNoMore: config.canLoadAfterNoMore,
+        canRefreshAfterNoMore: config.canRefreshAfterNoMore,
+        triggerAxis: config.triggerAxis,
+        scrollBehaviorBuilder: config.scrollBehaviorBuilder);
   }
 
   @override

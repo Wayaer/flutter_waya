@@ -36,8 +36,8 @@ export 'components/count_down.dart';
 export 'components/expansion_tiles.dart';
 export 'components/toggle_rotate.dart';
 export 'components/rating_stars.dart';
-export 'components/send_sms.dart';
 export 'components/flip_card.dart';
+export 'components/send_sms.dart';
 
 /// const
 export 'const/const.dart';

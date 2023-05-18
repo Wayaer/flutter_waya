@@ -1,6 +1,8 @@
-## 7.0.1
+## 7.1.0
 
 * Add `FlipCard()`
+* Updated the `easy_refresh` package
+* Modify `RefreshConfig`
 
 ## 7.0.0
 
