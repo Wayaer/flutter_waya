@@ -23,8 +23,38 @@ class AnchorScrollController extends ScrollController {
   int jumpTimes = 0;
 
   /// 跳转至指定 index
+  /// [delayedDuration]和[animateDuration]一起为总的跳转时间
+  Future<void> animateToIndex(int index,
+          {
+          /// 延迟计算跳转
+          Duration delayedDuration = const Duration(milliseconds: 1),
+
+          /// animateTo 滚动时间
+          Duration animateDuration = const Duration(milliseconds: 10),
+          double ruleOutSpacing = 0,
+          Curve curve = Curves.linear}) =>
+      _jumpToIndex(index,
+          delayedDuration: delayedDuration,
+          animateDuration: animateDuration,
+          useAnimateTo: true,
+          ruleOutSpacing: ruleOutSpacing,
+          curve: curve);
+
+  /// 跳转至指定 index
   Future<void> jumpToIndex(int index,
-      {Duration duration = const Duration(milliseconds: 20),
+          {
+          /// 延迟计算跳转
+          Duration duration = const Duration(microseconds: 1),
+          double ruleOutSpacing = 0}) =>
+      _jumpToIndex(index,
+          delayedDuration: duration,
+          useAnimateTo: false,
+          ruleOutSpacing: ruleOutSpacing);
+
+  /// 跳转至指定 index
+  Future<void> _jumpToIndex(int index,
+      {Duration delayedDuration = const Duration(milliseconds: 20),
+      Duration animateDuration = const Duration(milliseconds: 20),
       bool useAnimateTo = false,
       double ruleOutSpacing = 0,
       Curve curve = Curves.linear}) async {
@@ -35,25 +65,33 @@ class AnchorScrollController extends ScrollController {
     final targetKey = _keyList[index];
     GlobalKey? jumpKey;
     if (targetKey.currentContext == null) {
+      final keys = _keyList.where((e) => e.currentContext != null);
+      if (keys.isEmpty) return;
       if (index < lastIndex) {
-        jumpKey = _keyList.where((e) => e.currentContext != null).first;
+        jumpKey = keys.first;
       } else {
-        jumpKey = _keyList.where((e) => e.currentContext != null).last;
+        jumpKey = keys.last;
       }
       final jumpIndex = _keyList.indexOf(jumpKey);
       final value = useAnimateTo
           ? await _animateTo(jumpKey.currentContext!,
-              duration: duration, curve: curve, ruleOutSpacing: ruleOutSpacing)
+              duration: animateDuration,
+              curve: curve,
+              ruleOutSpacing: ruleOutSpacing)
           : _jumpTo(jumpKey.currentContext!, ruleOutSpacing: ruleOutSpacing);
       if (value) {
         lastIndex = jumpIndex;
-        await duration.delayed(() async => await jumpToIndex(index));
+        await delayedDuration.delayed(() async => await _jumpToIndex(index,
+            animateDuration: animateDuration,
+            useAnimateTo: useAnimateTo,
+            delayedDuration: delayedDuration,
+            curve: curve));
       }
     } else {
       lastIndex = index;
       useAnimateTo
           ? await _animateTo(targetKey.currentContext!,
-              duration: duration,
+              duration: animateDuration,
               curve: curve,
               isEnd: true,
               ruleOutSpacing: ruleOutSpacing)

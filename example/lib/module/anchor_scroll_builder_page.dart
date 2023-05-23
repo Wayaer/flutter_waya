@@ -389,22 +389,22 @@ class _BottomNavigationBar extends StatelessWidget {
           const BText('animateToIndex').marginOnly(top: 12),
           Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
             ElevatedText('0', onTap: () {
-              controller.jumpToIndex(0, useAnimateTo: true);
+              controller.animateToIndex(0);
             }),
             ElevatedText('50', onTap: () {
-              controller.jumpToIndex(50, useAnimateTo: true);
+              controller.animateToIndex(50);
             }),
             ElevatedText('100', onTap: () {
-              controller.jumpToIndex(100, useAnimateTo: true);
+              controller.animateToIndex(100);
             }),
             ElevatedText('150', onTap: () {
-              controller.jumpToIndex(150, useAnimateTo: true);
+              controller.animateToIndex(150);
             }),
             ElevatedText('200', onTap: () {
-              controller.jumpToIndex(200, useAnimateTo: true);
+              controller.animateToIndex(200);
             }),
             ElevatedText('237', onTap: () {
-              controller.jumpToIndex(237, useAnimateTo: true);
+              controller.animateToIndex(237);
             }),
           ]),
           const BText('jumpToIndex').marginOnly(top: 12),

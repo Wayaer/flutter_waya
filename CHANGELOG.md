@@ -1,3 +1,7 @@
+## 7.1.1
+
+* Fix the `AnchorScrollController` jump problem
+
 ## 7.1.0
 
 * Add `FlipCard()`
