@@ -162,13 +162,13 @@ class StateComponentsPage extends StatelessWidget {
               onChanged: (int i) {},
               periodic: 1,
               duration: const Duration(seconds: 100),
-              builder: (int i) => SimpleButton(
-                  text: i.toString(),
+              builder: (int i) => Universal(
                   padding:
                       const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
                   decoration: BoxDecoration(
                       color: Colors.blue,
-                      borderRadius: BorderRadius.circular(4)))),
+                      borderRadius: BorderRadius.circular(4)),
+                  child: BText(i.toString()))),
           const SizedBox(height: 100),
         ]);
   }

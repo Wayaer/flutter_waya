@@ -47,15 +47,17 @@ class _ExtendedDioPageState extends ExtendedState<ExtendedDioPage> {
           ElevatedText('closeDebugIcon',
               onTap: DebuggerInterceptorHelper().closeDebugIcon),
           const Partition('ExtendedDio'),
-          Wrap(alignment: WrapAlignment.center, children: [
-            ElevatedText('get', onTap: get),
-            ElevatedText('post', onTap: post),
-            ElevatedText('put', onTap: put),
-            ElevatedText('delete', onTap: delete),
-            ElevatedText('patch', onTap: patch),
-            ElevatedText('download', onTap: download),
-            ElevatedText('upload', onTap: upload),
-          ]),
+          IntrinsicWidth(
+            child: Column(children: [
+              ElevatedText('get', onTap: get),
+              ElevatedText('post', onTap: post),
+              ElevatedText('put', onTap: put),
+              ElevatedText('delete', onTap: delete),
+              ElevatedText('patch', onTap: patch),
+              ElevatedText('download', onTap: download),
+              ElevatedText('upload', onTap: upload),
+            ]),
+          ),
           StatefulBuilder(builder: (_, state) {
             progressState = state;
             return count == null && total == null

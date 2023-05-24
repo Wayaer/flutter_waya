@@ -56,8 +56,7 @@ class ButtonPage extends StatelessWidget {
                       }));
                 })),
             const SizedBox(height: 20),
-            ElevatedText('ElasticButton',
-                onTap: () => showToast('ElasticButton')),
+            ElevatedText('ElasticButton', onTap: () {}),
             const SizedBox(height: 20),
             Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
               DropdownMenuButton(
@@ -92,14 +91,6 @@ class ButtonPage extends StatelessWidget {
                         .paddingSymmetric(vertical: 10);
                   })
             ]),
-            const SizedBox(height: 40),
-            SimpleButton(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
-                text: 'SimpleButton',
-                textStyle: const BTextStyle(),
-                borderRadius: BorderRadius.circular(4),
-                onTap: () {}),
             const SizedBox(height: 20),
             ElevatedText('BubbleButton',
                 onTap: () => push(_BubbleButtonPage())),

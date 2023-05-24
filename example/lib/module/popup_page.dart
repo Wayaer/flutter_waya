@@ -72,7 +72,7 @@ class PopupPage extends StatelessWidget {
     DoubleChooseWindows(
             decoration: BoxDecoration(
                 color: Colors.white, borderRadius: BorderRadius.circular(10)),
-            right: SimpleButton(
+            right: Universal(
                 padding: const EdgeInsets.symmetric(vertical: 6),
                 alignment: Alignment.center,
                 child: Text('确定', style: context.textTheme.titleMedium),
@@ -80,7 +80,7 @@ class PopupPage extends StatelessWidget {
                   ///如果isOverlay=true; 必须先closeOverlay() 再toast或者loading
                   showToast('确定');
                 }),
-            left: SimpleButton(
+            left: Universal(
                 alignment: Alignment.center,
                 padding: const EdgeInsets.symmetric(vertical: 6),
                 child: Text('取消', style: context.textTheme.titleMedium),

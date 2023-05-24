@@ -131,52 +131,52 @@ class _Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ExtendedScaffold(
-        onWillPopOverlayClose: true,
-        appBar: AppBarText('Flutter Waya Example'),
-        padding: const EdgeInsets.all(10),
-        body: Wrap(
-            alignment: WrapAlignment.center,
-            runSpacing: 10,
-            spacing: 10,
-            children: [
-              ElevatedText('ExtendedDio',
-                  onTap: () => push(const ExtendedDioPage())),
-              ElevatedText('Components',
-                  onTap: () => push(const ComponentsPage())),
-              ElevatedText('State Components',
-                  onTap: () => push(const StateComponentsPage())),
-              ElevatedText('Button', onTap: () => push(const ButtonPage())),
-              ElevatedText('Popup', onTap: () => push(const PopupPage())),
-              ElevatedText('Picker', onTap: () => push(const PickerPage())),
-              ElevatedText('Overlay', onTap: () => push(const OverlayPage())),
-              ElevatedText('FlSwiper', onTap: () => push(const FlSwiperPage())),
-              ElevatedText('FlProgress',
-                  onTap: () => push(const FlProgressPage())),
-              ElevatedText('GestureZoom',
-                  onTap: () => push(const GestureZoomPage())),
-              ElevatedText('Universal',
-                  onTap: () => push(const UniversalPage())),
-              ElevatedText('JsonParse',
-                  onTap: () => push(const JsonParsePage())),
-              ElevatedText('ScrollView',
-                  onTap: () => push(const ScrollViewPage())),
-              ElevatedText('ScrollList',
-                  onTap: () => push(const ScrollListPage())),
-              ElevatedText('ListWheel',
-                  onTap: () => push(const ListWheelPage())),
-              ElevatedText('AnchorScroll',
-                  onTap: () => push(const AnchorScrollBuilderPage())),
-              ElevatedText('EasyRefreshed',
-                  onTap: () => push(const EasyRefreshPage())),
-              ElevatedText('Extension',
-                  onTap: () => push(const ExtensionPage())),
-              ElevatedText('DecoratorBox',
-                  onTap: () => push(const DecoratorBoxPage())),
-              ElevatedText('ExtendedTextField',
-                  onTap: () => push(const TextFieldPage())),
-              ElevatedText('ExtendedBuilder',
-                  onTap: () => push(const ExtendedBuilderPage())),
-            ]));
+      onWillPopOverlayClose: true,
+      appBar: AppBarText('Flutter Waya Example'),
+      padding: const EdgeInsets.all(10),
+      isScroll: true,
+      body: Universal(
+          isWrap: true,
+          runSpacing: 10,
+          wrapSpacing: 10,
+          wrapAlignment: WrapAlignment.center,
+          direction: Axis.horizontal,
+          children: [
+            ElevatedText('ExtendedDio',
+                onTap: () => push(const ExtendedDioPage())),
+            ElevatedText('Components',
+                onTap: () => push(const ComponentsPage())),
+            ElevatedText('State Components',
+                onTap: () => push(const StateComponentsPage())),
+            ElevatedText('Button', onTap: () => push(const ButtonPage())),
+            ElevatedText('Popup', onTap: () => push(const PopupPage())),
+            ElevatedText('Picker', onTap: () => push(const PickerPage())),
+            ElevatedText('Overlay', onTap: () => push(const OverlayPage())),
+            ElevatedText('FlSwiper', onTap: () => push(const FlSwiperPage())),
+            ElevatedText('FlProgress',
+                onTap: () => push(const FlProgressPage())),
+            ElevatedText('GestureZoom',
+                onTap: () => push(const GestureZoomPage())),
+            ElevatedText('Universal', onTap: () => push(const UniversalPage())),
+            ElevatedText('JsonParse', onTap: () => push(const JsonParsePage())),
+            ElevatedText('ScrollView',
+                onTap: () => push(const ScrollViewPage())),
+            ElevatedText('ScrollList',
+                onTap: () => push(const ScrollListPage())),
+            ElevatedText('ListWheel', onTap: () => push(const ListWheelPage())),
+            ElevatedText('AnchorScroll',
+                onTap: () => push(const AnchorScrollBuilderPage())),
+            ElevatedText('EasyRefreshed',
+                onTap: () => push(const EasyRefreshPage())),
+            ElevatedText('Extension', onTap: () => push(const ExtensionPage())),
+            ElevatedText('DecoratorBox',
+                onTap: () => push(const DecoratorBoxPage())),
+            ElevatedText('ExtendedTextField',
+                onTap: () => push(const TextFieldPage())),
+            ElevatedText('ExtendedBuilder',
+                onTap: () => push(const ExtendedBuilderPage())),
+          ]),
+    );
   }
 }
 
@@ -196,17 +196,41 @@ class ElevatedText extends StatelessWidget {
   final VoidCallback? onTap;
 
   @override
-  Widget build(BuildContext context) => SimpleButton(
-      isElastic: true,
-      onTap: onTap,
-      addInkWell: true,
-      margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 6),
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-      decoration: BoxDecoration(
-          boxShadow: getBoxShadow(color: context.theme.canvasColor),
-          color: context.theme.primaryColor,
-          borderRadius: BorderRadius.circular(4)),
-      child: BText(text, color: Colors.white));
+  Widget build(BuildContext context) => ElasticBuilder(
+      withOpacity: true,
+      builder: (_, elasticUp, elastic, elasticDown) => MouseRegion(
+            onEnter: (_) {
+              elasticUp();
+            },
+            onExit: (_) {
+              elasticDown();
+            },
+            child: Universal(
+                onTap: onTap,
+                onTapDown: (_) {
+                  elasticDown();
+                },
+                onTapUp: (_) {
+                  elasticUp();
+                },
+                onDoubleTap: () {
+                  elastic(50.milliseconds);
+                },
+                onLongPressDown: (_) {
+                  elasticDown();
+                },
+                onLongPressUp: () {
+                  elasticUp();
+                },
+                margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 6),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                decoration: BoxDecoration(
+                    boxShadow: getBoxShadow(color: context.theme.canvasColor),
+                    color: context.theme.primaryColor,
+                    borderRadius: BorderRadius.circular(4)),
+                child: BText(text, color: Colors.white)),
+          ));
 }
 
 class Partition extends StatelessWidget {

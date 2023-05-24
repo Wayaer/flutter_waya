@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:app/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
@@ -35,10 +37,6 @@ class _UniversalPageState extends ExtendedState<UniversalPage>
           alignment: Alignment.center,
           child: const BText('ScrollUniversal', color: Colors.white),
           onTap: () => push(_ScrollUniversalPage())),
-      Universal(width: 50, height: 50, color: color),
-      const SizedBox(height: 10),
-      Universal(width: 50, height: 50, color: color, size: const Size(60, 60)),
-      const SizedBox(height: 10),
       Universal(
           color: color.withOpacity(0.2),
           isStack: true,
@@ -58,33 +56,11 @@ class _UniversalPageState extends ExtendedState<UniversalPage>
           ]),
       const SizedBox(height: 10),
       Universal(
-        padding: const EdgeInsets.all(10),
-        borderRadius: BorderRadius.circular(10),
-        decoration: BoxDecoration(
-          color: Colors.green.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        addInkWell: true,
-        radius: 100,
-        margin: const EdgeInsets.all(10),
-        splashColor: color,
-        highlightColor: Colors.red,
-        hoverColor: Colors.black,
-        elevation: 5,
-        child: const BText('InkWell'),
-        onLongPress: () => showToast('InkWell onLongPress'),
-        onDoubleTap: () => showToast('InkWell onDoubleTap'),
-        onTap: () => showToast('InkWell onTap'),
-      ),
-      const SizedBox(height: 10),
-      Universal(
-          size: const Size(200, 50),
-          shadowColor: Colors.red,
-          borderRadius: BorderRadius.circular(10),
-          color: Colors.green.withOpacity(0.3),
-          elevation: 5,
-          addCard: true,
-          onDoubleTap: () => showToast('Card onDoubleTap')),
+          size: const Size(200, 100),
+          alignment: Alignment.center,
+          decoration: const BoxDecoration(
+              gradient: LinearGradient(colors: Colors.primaries)),
+          child: Universal(filter: ImageFilter.blur())),
       const SizedBox(height: 10),
       Universal(
           decoration: const BoxDecoration(color: Colors.red),
@@ -100,15 +76,14 @@ class _UniversalPageState extends ExtendedState<UniversalPage>
     children = children.builder((Widget item) => SizeTransition(
         sizeFactor: controller, axis: Axis.horizontal, child: item));
     return ExtendedScaffold(
-      appBar: AppBarText('Universal'),
-      mainAxisAlignment: MainAxisAlignment.center,
-      isScroll: true,
-      refreshConfig: RefreshConfig(onRefresh: () async {
-        await showToast('onRefresh');
-        RefreshControllers().call(EasyRefreshType.refreshSuccess);
-      }),
-      children: children,
-    );
+        appBar: AppBarText('Universal'),
+        mainAxisAlignment: MainAxisAlignment.center,
+        isScroll: true,
+        refreshConfig: RefreshConfig(onRefresh: () async {
+          await showToast('onRefresh');
+          RefreshControllers().call(EasyRefreshType.refreshSuccess);
+        }),
+        children: children);
   }
 }
 
@@ -147,13 +122,6 @@ class _ScrollUniversalPage extends StatelessWidget {
             width: 130,
             height: 130,
             color: Colors.greenAccent),
-        builder: (BuildContext context, StateSetter setState) {
-          return Container(
-              margin: const EdgeInsets.all(10),
-              width: 110,
-              height: 110,
-              color: Colors.red);
-        },
         // isStack: true,
         children: [
           Container(

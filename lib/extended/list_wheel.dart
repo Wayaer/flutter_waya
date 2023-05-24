@@ -45,8 +45,8 @@ class WheelOptions {
     this.diameterRatio = 1.07,
     this.backgroundColor,
     this.offAxisFraction = 0.0,
-    this.useMagnifier = false,
-    this.magnification = 1.0,
+    this.useMagnifier = true,
+    this.magnification = 1.1,
     this.squeeze = 1.45,
     this.itemExtent = 30,
     this.selectionOverlay = const CupertinoPickerDefaultSelectionOverlay(),
@@ -126,25 +126,24 @@ class WheelOptions {
           ScrollBehavior? scrollBehavior,
           String? restorationId}) =>
       WheelOptions.custom(
-        isCupertino: isCupertino ?? this.isCupertino,
-        itemExtent: itemExtent ?? this.itemExtent,
-        diameterRatio: diameterRatio ?? this.diameterRatio,
-        offAxisFraction: offAxisFraction ?? this.offAxisFraction,
-        perspective: perspective ?? this.perspective,
-        magnification: magnification ?? this.magnification,
-        useMagnifier: useMagnifier ?? this.useMagnifier,
-        squeeze: squeeze ?? this.squeeze,
-        physics: physics ?? this.physics,
-        selectionOverlay: selectionOverlay ?? this.selectionOverlay,
-        backgroundColor: backgroundColor ?? this.backgroundColor,
-        clipBehavior: clipBehavior ?? this.clipBehavior,
-        overAndUnderCenterOpacity:
-            overAndUnderCenterOpacity ?? this.overAndUnderCenterOpacity,
-        renderChildrenOutsideViewport:
-            renderChildrenOutsideViewport ?? this.renderChildrenOutsideViewport,
-        scrollBehavior: scrollBehavior ?? this.scrollBehavior,
-        restorationId: restorationId ?? this.restorationId,
-      );
+          isCupertino: isCupertino ?? this.isCupertino,
+          itemExtent: itemExtent ?? this.itemExtent,
+          diameterRatio: diameterRatio ?? this.diameterRatio,
+          offAxisFraction: offAxisFraction ?? this.offAxisFraction,
+          perspective: perspective ?? this.perspective,
+          magnification: magnification ?? this.magnification,
+          useMagnifier: useMagnifier ?? this.useMagnifier,
+          squeeze: squeeze ?? this.squeeze,
+          physics: physics ?? this.physics,
+          selectionOverlay: selectionOverlay ?? this.selectionOverlay,
+          backgroundColor: backgroundColor ?? this.backgroundColor,
+          clipBehavior: clipBehavior ?? this.clipBehavior,
+          overAndUnderCenterOpacity:
+              overAndUnderCenterOpacity ?? this.overAndUnderCenterOpacity,
+          renderChildrenOutsideViewport: renderChildrenOutsideViewport ??
+              this.renderChildrenOutsideViewport,
+          scrollBehavior: scrollBehavior ?? this.scrollBehavior,
+          restorationId: restorationId ?? this.restorationId);
 
   WheelOptions merge([WheelOptions? options]) => WheelOptions.custom(
       itemExtent: options?.itemExtent ?? itemExtent,
@@ -507,7 +506,6 @@ class ListEntry extends StatelessWidget {
       this.enabled = true,
       this.dense = true,
       this.arrow = false,
-      this.inkWell = false,
       this.titleText = '',
       this.arrowSize = 15,
       this.onTap,
@@ -581,7 +579,6 @@ class ListEntry extends StatelessWidget {
 
   final EdgeInsetsGeometry? padding;
   final EdgeInsetsGeometry? margin;
-  final bool inkWell;
   final Color? underlineColor;
   final Color? color;
 
@@ -599,7 +596,6 @@ class ListEntry extends StatelessWidget {
     if (arrow || arrowIcon != null) children.add(arrowIcon ?? arrowWidget);
     return Universal(
         height: height,
-        addInkWell: inkWell,
         margin: margin,
         padding: padding,
         onLongPress: enabled ? onLongPress : null,

@@ -58,7 +58,6 @@ class _JsonParseState extends ExtendedState<JsonParse> {
       ]);
       list.add(Universal(
           direction: Axis.horizontal,
-          addInkWell: true,
           crossAxisAlignment: CrossAxisAlignment.start,
           onTap: !isTap(content)
               ? null

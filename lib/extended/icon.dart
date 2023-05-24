@@ -20,7 +20,6 @@ class IconBox extends StatelessWidget {
     this.semanticLabel,
     this.textDirection,
     this.titleText,
-    this.addInkWell = false,
     this.titleStyle,
     this.onTap,
     this.padding,
@@ -54,9 +53,6 @@ class IconBox extends StatelessWidget {
   final int maxLines;
 
   final Widget? title;
-
-  /// 点击添加水波纹 [InkWell]
-  final bool addInkWell;
 
   final EdgeInsetsGeometry? padding;
   final EdgeInsetsGeometry? margin;
@@ -122,7 +118,6 @@ class IconBox extends StatelessWidget {
 
   Widget universal({List<Widget>? children, Widget? child}) => Universal(
       heroTag: heroTag,
-      addInkWell: addInkWell,
       child: child,
       visible: visible,
       direction: direction,

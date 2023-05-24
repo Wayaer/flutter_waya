@@ -1,6 +1,9 @@
-## 7.1.1
+## 7.2.0
 
 * Fix the `AnchorScrollController` jump problem
+* To remove `SimpleButton`, use `Universal`
+* To remove `ElasticButton`, use `ElasticBuilder`
+* Remove `card` `inkwell` `shrink` and `gaussian` from `Universal`
 
 ## 7.1.0
 
