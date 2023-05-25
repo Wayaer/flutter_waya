@@ -71,7 +71,7 @@ class CheckBox extends StatefulWidget {
   const CheckBox({
     super.key,
     this.value = false,
-    required this.stateBuilder,
+    required this.builder,
     this.useNull = false,
     this.onChanged,
     this.decoration,
@@ -80,7 +80,7 @@ class CheckBox extends StatefulWidget {
   });
 
   /// 不同状态时 显示的组件
-  final CheckBoxStateBuilder stateBuilder;
+  final CheckBoxStateBuilder builder;
 
   /// bool 类型是否使用后null
   final bool useNull;
@@ -142,5 +142,5 @@ class _CheckBoxState extends ExtendedState<CheckBox> {
       margin: widget.margin,
       padding: widget.padding,
       onTap: changeState,
-      child: widget.stateBuilder(value));
+      child: widget.builder(value));
 }

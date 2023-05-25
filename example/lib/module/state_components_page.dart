@@ -79,7 +79,7 @@ class StateComponentsPage extends StatelessWidget {
                     decoration:
                         BoxDecoration(color: Colors.grey.withOpacity(0.4)),
                     useNull: true,
-                    stateBuilder: (bool? value) {
+                    builder: (bool? value) {
                       if (value != null) {
                         return Icon(value
                             ? Icons.check_box
@@ -93,7 +93,7 @@ class StateComponentsPage extends StatelessWidget {
                     margin: const EdgeInsets.only(right: 20),
                     decoration:
                         BoxDecoration(color: Colors.grey.withOpacity(0.4)),
-                    stateBuilder: (bool? value) {
+                    builder: (bool? value) {
                       return Icon(value!
                           ? Icons.check_box
                           : Icons.check_box_outline_blank);
