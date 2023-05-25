@@ -1,3 +1,7 @@
+## 7.2.1
+
+* Removed `AutoScrollEntry`
+
 ## 7.2.0
 
 * Fix the `AnchorScrollController` jump problem
