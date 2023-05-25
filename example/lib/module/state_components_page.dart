@@ -1,5 +1,6 @@
 import 'package:app/main.dart';
 import 'package:app/module/flip_card_page.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
@@ -101,35 +102,55 @@ class StateComponentsPage extends StatelessWidget {
           const Partition('Checkbox 官方附加状态版本'),
           Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
             CheckboxState(
-                value: true, tristate: true, onChanged: (bool? value) {}),
+                value: true,
+                onChanged: (bool? value) {},
+                builder: (bool? value, CheckboxStateChanged onChanged) =>
+                    Checkbox(
+                        tristate: true, value: value, onChanged: onChanged)),
             CheckboxState(
                 value: true,
-                tristate: true,
-                shape: const CircleBorder(),
                 onWaitChanged: (bool? value) async {
                   await 1.seconds.delayed();
                   return value;
-                }),
+                },
+                builder: (bool? value, CheckboxStateChanged onChanged) =>
+                    Checkbox(
+                        shape: const CircleBorder(),
+                        tristate: true,
+                        value: value,
+                        onChanged: onChanged)),
           ]),
           const Partition('SwitchState 官方附加状态版本'),
           Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-            SwitchState(value: true, onChanged: (bool? value) {}),
-            SwitchState.adaptive(
+            SwitchState(
+                value: true,
+                onChanged: (bool value) {},
+                builder: (bool value, SwitchStateChanged onChanged) =>
+                    Switch(value: value, onChanged: onChanged)),
+            SwitchState(
                 value: true,
                 onWaitChanged: (bool value) async {
                   await 1.seconds.delayed();
                   return value;
-                }),
+                },
+                builder: (bool value, SwitchStateChanged onChanged) =>
+                    Switch.adaptive(value: value, onChanged: onChanged)),
           ]),
-          const Partition('CupertinoSwitchState 官方附加状态版本'),
+          const Partition('CupertinoSwitch SwitchState 官方附加状态版本'),
           Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-            CupertinoSwitchState(value: true, onChanged: (bool? value) {}),
-            CupertinoSwitchState(
+            SwitchState(
+                value: true,
+                onChanged: (bool value) {},
+                builder: (bool value, SwitchStateChanged onChanged) =>
+                    CupertinoSwitch(value: value, onChanged: onChanged)),
+            SwitchState(
                 value: true,
                 onWaitChanged: (bool value) async {
                   await 1.seconds.delayed();
                   return value;
-                }),
+                },
+                builder: (bool value, SwitchStateChanged onChanged) =>
+                    CupertinoSwitch(value: value, onChanged: onChanged)),
           ]),
           const Partition('SendSMS'),
           SendSMS(
@@ -145,7 +166,7 @@ class StateComponentsPage extends StatelessWidget {
                   sending(true);
                 });
               },
-              stateBuilder: (SendState state, int i) {
+              builder: (SendState state, int i) {
                 switch (state) {
                   case SendState.none:
                     return const BText('发送验证码');

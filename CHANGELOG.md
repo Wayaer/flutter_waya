@@ -1,6 +1,10 @@
-## 7.2.1
+## 7.3.0
 
 * Removed `AutoScrollEntry`
+* Example Change the `stateBuilder` of `SendSMS` to `builder`
+* Fixed a `CheckBox` refresh issue
+* The way `SwitchState` and `CheckboxState` are built has been changed , the `builder` must be used
+* Remove `CupertinoSwitchState` , use `SwitchState`
 
 ## 7.2.0
 

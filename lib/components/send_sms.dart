@@ -31,11 +31,11 @@ class SendSMS extends StatefulWidget {
       this.duration = const Duration(seconds: 60),
       this.margin,
       this.padding,
-      required this.stateBuilder,
+      required this.builder,
       this.onStateChanged});
 
   /// 状态回调
-  final SendStateBuilder stateBuilder;
+  final SendStateBuilder builder;
 
   /// 默认计时秒
   final Duration duration;
@@ -75,15 +75,12 @@ class _SendSMSState extends ExtendedState<SendSMS> {
       padding: widget.padding,
       onTap: (seconds < 0) ? onTap : null,
       decoration: widget.decoration,
-      child: widget.stateBuilder(sendState, seconds));
+      child: widget.builder(sendState, seconds));
 
   @override
   void didUpdateWidget(covariant SendSMS oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.duration != widget.duration ||
-        oldWidget.onTap != widget.onTap ||
-        oldWidget.decoration != widget.decoration ||
-        oldWidget.stateBuilder != widget.stateBuilder) {
+    if (oldWidget.onTap != widget.onTap) {
       setState(() {});
     }
   }
