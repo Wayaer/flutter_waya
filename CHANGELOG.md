@@ -1,4 +1,4 @@
-## 7.5.1
+## 7.5.2
 
 * Update dio
 * Remove `ExtendedDioOptions`

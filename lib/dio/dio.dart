@@ -375,9 +375,8 @@ class ExtendedResponse<T> extends Response<T> {
   List<String> cookie = <String>[];
 
   static ExtendedResponse<T> mergeError<T>(DioException err) {
-    final errResponse = err.response;
     late ExtendedResponse<T> response;
-    response = (errResponse as ExtendedResponse<T>?) ??
+    response = (err.response?.toExtendedResponse()) ??
         ExtendedResponse<T>(requestOptions: err.requestOptions);
     response.type = err.type.toString();
     response.error = err.error;
