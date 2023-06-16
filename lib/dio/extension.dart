@@ -49,6 +49,16 @@ extension ExtensionResponse on Response {
               'method': item.method,
             })
       };
+
+  ExtendedResponse<T> toExtendedResponse<T>() => ExtendedResponse<T>(
+      requestOptions: requestOptions,
+      data: data,
+      statusCode: statusCode,
+      statusMessage: statusMessage,
+      isRedirect: isRedirect,
+      redirects: redirects,
+      extra: extra,
+      headers: headers);
 }
 
 extension ExtensionRequestOptions on RequestOptions {

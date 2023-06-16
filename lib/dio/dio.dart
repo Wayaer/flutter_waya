@@ -337,11 +337,10 @@ class ExtendedDio {
   }
 
   Future<ExtendedResponse<T>> _handle<T>(
-      String path, Future<Response<T>> func) async {
+      String path, Future<Response<T>> call) async {
     late ExtendedResponse<T> extendedResponse;
     try {
-      Response<T> response = await func;
-      extendedResponse = response as ExtendedResponse<T>;
+      extendedResponse = (await call).toExtendedResponse<T>();
     } on DioException catch (error) {
       extendedResponse = ExtendedResponse.mergeError<T>(error);
     } catch (error) {
