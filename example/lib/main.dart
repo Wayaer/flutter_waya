@@ -31,8 +31,7 @@ void main() {
   GlobalOptions globalOptions = GlobalOptions();
   PaintingBinding.instance.imageCache.maximumSizeBytes = 1024 * 1024 * 40;
 
-  ExtendedDio().initialize(
-      options: ExtendedDioOptions(interceptors: [
+  ExtendedDio().initialize(interceptors: [
     /// 日志打印
     LoggerInterceptor(),
 
@@ -41,7 +40,7 @@ void main() {
 
     /// cooker 管理
     CookiesInterceptor()
-  ]));
+  ]);
 
   globalOptions.setGlobalPushMode(RoutePushStyle.cupertino);
 

@@ -31,7 +31,7 @@ class CookiesInterceptor extends InterceptorsWrapper {
   }
 
   @override
-  void onError(DioError err, ErrorInterceptorHandler handler) {
+  void onError(DioException err, ErrorInterceptorHandler handler) {
     if (err.response != null) getCookies?.call(err.response!);
     super.onError(err, handler);
   }

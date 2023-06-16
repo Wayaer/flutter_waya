@@ -41,9 +41,9 @@ class _JsonParseState extends ExtendedState<JsonParse> {
             rad: pi / 2,
             clockwise: true,
             isRotate: (mapFlag[key.toString()]) ?? false,
-            child: const Icon(Icons.arrow_right_rounded, size: 18)));
+            child: const Icon(Icons.arrow_right_rounded, size: 22)));
       } else {
-        row.add(const SizedBox(width: 14));
+        row.add(const SizedBox(width: 18));
       }
       row.addAll([
         BText(widget.isList || isTap(content) ? '[$key]:' : ' $key :',
@@ -51,12 +51,13 @@ class _JsonParseState extends ExtendedState<JsonParse> {
                 color: content == null ? Colors.grey : Colors.purple)
             .onDoubleTap(() {
           key.toString().toClipboard;
-          showToast('已经复制$key');
+          showToast('已复制$key');
         }),
         const SizedBox(width: 4),
         getValueWidget(content)
       ]);
       list.add(Universal(
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
           direction: Axis.horizontal,
           crossAxisAlignment: CrossAxisAlignment.start,
           onTap: !isTap(content)
@@ -83,37 +84,43 @@ class _JsonParseState extends ExtendedState<JsonParse> {
   Widget getValueWidget(dynamic content) {
     String text = '';
     Color color = Colors.transparent;
+    bool isToClipboard = false;
     if (content == null) {
       text = 'null';
       color = Colors.grey;
     } else if (content is num) {
       text = content.toString();
       color = Colors.teal;
+      isToClipboard = true;
     } else if (content is String) {
-      text = '"$content"';
+      text = content;
       color = Colors.redAccent;
+      isToClipboard = true;
     } else if (content is bool) {
       text = content.toString();
       color = Colors.blue;
+      isToClipboard = true;
     } else if (content is List) {
       text = content.isEmpty
-          ? 'Array[0]'
-          : 'Array<${content.runtimeType.toString()}>[${content.length}]';
+          ? '[0]'
+          : '<${content.runtimeType.toString()}>[${content.length}]';
       color = Colors.grey;
+    } else if (content is Map) {
+      text = 'Map';
+      color = Colors.grey;
+      isToClipboard = true;
     } else {
       text = 'Object';
       color = Colors.grey;
     }
     return Universal(
         expanded: true,
-        onTap: () {
-          text.toClipboard;
-          showToast('已复制');
-        },
-        onLongPress: () {
-          text.toClipboard;
-          showToast('已复制');
-        },
+        onTap: isToClipboard
+            ? () {
+                content.toString().toClipboard;
+                showToast('已复制');
+              }
+            : null,
         child: BText(text,
             color: color,
             fontWeight: FontWeight.w400,

@@ -42,7 +42,7 @@ class LoggerInterceptor extends InterceptorsWrapper {
   }
 
   @override
-  void onError(DioError err, ErrorInterceptorHandler handler) {
+  void onError(DioException err, ErrorInterceptorHandler handler) {
     log('| [DIO] Response [statusCode : ${err.response?.statusCode}] [statusMessage : ${err.response?.statusMessage}]',
         crossLine: false);
     log('| [DIO] Error: ${err.error}: ${err.response?.toString()}',

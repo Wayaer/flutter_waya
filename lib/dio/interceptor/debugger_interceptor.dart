@@ -12,83 +12,31 @@ class DebuggerInterceptorDataModel {
 
   Response<dynamic>? response;
 
-  DioError? error;
+  DioException? error;
 
   DateTime? requestTime;
 
   DateTime? responseTime;
 
+  DateTime? errorTime;
+
   Map<String, dynamic> toMap() => {
-        'requestOptions': requestOptionsToMap(requestOptions).addAllT({
-          'requestTime': requestTime?.format(DateTimeDist.yearMillisecond),
-        }),
-        'response': responseToMap(response).addAllT({
-          'requestOptions': requestOptionsToMap(response?.requestOptions),
-          'responseTime': responseTime?.format(DateTimeDist.yearMillisecond),
-        }),
-        'error': {
-          'error': error?.error,
-          'type': error?.type,
-          'message': error?.message,
-          'requestOptions': requestOptionsToMap(error?.requestOptions),
-          'response': responseToMap(error?.response),
-          'stackTrace': error?.stackTrace.toString(),
-          'errorTime': responseTime?.format(DateTimeDist.yearMillisecond),
-        }
+        'requestOptions': requestOptionsToMap(),
+        'response': responseToMap(),
+        'error': errorToMap(),
       };
 
-  Map<String, dynamic> requestOptionsToMap([RequestOptions? requestOptions]) =>
-      {
-        'baseUrl': (requestOptions ?? this.requestOptions)?.baseUrl,
-        'path': (requestOptions ?? this.requestOptions)?.path,
-        'uri': (requestOptions ?? this.requestOptions)?.uri.path,
-        'method': (requestOptions ?? this.requestOptions)?.method,
-        'requestHeaders': (requestOptions ?? this.requestOptions)?.headers,
-        'data': (requestOptions ?? this.requestOptions)?.data,
-        'queryParameters':
-            (requestOptions ?? this.requestOptions)?.queryParameters,
-        'contentType': (requestOptions ?? this.requestOptions)?.contentType,
-        'receiveTimeout':
-            (requestOptions ?? this.requestOptions)?.receiveTimeout,
-        'sendTimeout': (requestOptions ?? this.requestOptions)?.sendTimeout,
-        'connectTimeout':
-            (requestOptions ?? this.requestOptions)?.connectTimeout,
-        'extra': (requestOptions ?? this.requestOptions)?.extra,
-        'responseType':
-            (requestOptions ?? this.requestOptions)?.responseType.toString(),
-        'receiveDataWhenStatusError':
-            (requestOptions ?? this.requestOptions)?.receiveDataWhenStatusError,
-        'followRedirects':
-            (requestOptions ?? this.requestOptions)?.followRedirects,
-        'maxRedirects': (requestOptions ?? this.requestOptions)?.maxRedirects,
-        'hashCode': (requestOptions ?? this.requestOptions)?.hashCode,
-      };
+  Map<String, dynamic> requestOptionsToMap() =>
+      (requestOptions?.toMap() ?? {}).addAllT(
+          {'requestTime': requestTime?.format(DateTimeDist.yearMillisecond)});
 
-  Map<String, dynamic> responseToMap([Response? response]) => {
-        'data': (response ?? this.response)?.data,
-        'statusCode': (response ?? this.response)?.statusCode,
-        'statusMessage': (response ?? this.response)?.statusMessage,
-        'extra': (response ?? this.response)?.extra,
-        'headers': (response ?? this.response)?.headers,
-        'isRedirect': (response ?? this.response)?.isRedirect,
-        'realUri': (response ?? this.response)?.realUri.toString(),
-        'redirects': (response ?? this.response)?.redirects.builder((item) => {
-              'location': item.location,
-              'statusCode': item.statusCode,
-              'method': item.method,
-            })
-      };
+  Map<String, dynamic> responseToMap() => (response?.toMap() ?? {}).addAllT({
+        'responseTime': responseTime?.format(DateTimeDist.yearMillisecond),
+      });
 
-  Map<String, dynamic> errorToMap([DioError? error]) => {
-        'error': (error ?? this.error)?.error,
-        'type': (error ?? this.error)?.type,
-        'message': (error ?? this.error)?.message,
-        'requestOptions':
-            requestOptionsToMap((error ?? this.error)?.requestOptions),
-        'response': responseToMap((error ?? this.error)?.response),
-        'stackTrace': (error ?? this.error)?.stackTrace.toString(),
-        'errorTime': responseTime?.format(DateTimeDist.yearMillisecond),
-      };
+  Map<String, dynamic> errorToMap() => (error?.toMap() ?? {}).addAllT({
+        'errorTime': errorTime?.format(DateTimeDist.yearMillisecond),
+      });
 }
 
 class DebuggerInterceptor extends InterceptorsWrapper {
@@ -121,7 +69,7 @@ class DebuggerInterceptor extends InterceptorsWrapper {
   }
 
   @override
-  void onError(DioError err, ErrorInterceptorHandler handler) {
+  void onError(DioException err, ErrorInterceptorHandler handler) {
     DebuggerInterceptorHelper()
         .debugData
         .value[err.requestOptions.hashCode]
@@ -129,7 +77,7 @@ class DebuggerInterceptor extends InterceptorsWrapper {
     DebuggerInterceptorHelper()
         .debugData
         .value[err.requestOptions.hashCode]
-        ?.responseTime = DateTime.now();
+        ?.errorTime = DateTime.now();
     DebuggerInterceptorHelper().showDebugIcon();
     super.onError(err, handler);
   }
@@ -328,10 +276,15 @@ class _HttpDataEntry extends StatelessWidget {
           const SizedBox(height: 10),
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             BText(model.requestTime?.format(DateTimeDist.yearMillisecond) ??
-                'unknown'),
-            BText(stringToBytes(model.response?.data?.toString() ?? '')),
+                    'unknown')
+                .expandedNull,
+            BText(stringToBytes(model.response?.data?.toString() ?? ''),
+                    textAlign: TextAlign.center)
+                .expandedNull,
             BText(
-                '${diffMillisecond(model.requestTime, model.responseTime)} ms'),
+              '${diffMillisecond(model.requestTime, model.responseTime)} ms',
+              textAlign: TextAlign.end,
+            ).expandedNull,
           ]),
         ]);
   }

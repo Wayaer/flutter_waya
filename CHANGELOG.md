@@ -1,3 +1,9 @@
+## 7.5.0
+
+* Update dio
+* Remove `ExtendedDioOptions`
+* Remove `ExtensionOptions`
+
 ## 7.3.1
 
 * Removed `AutoScrollEntry`
