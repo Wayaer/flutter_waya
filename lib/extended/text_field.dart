@@ -109,6 +109,107 @@ class InputBorderStyle {
   }
 }
 
+enum TextInputLimitFormatter {
+  /// 字母和数字
+  lettersNumbers('[a-zA-Z0-9]'),
+
+  /// 密码 字母和数字和.
+  password('[a-zA-Z0-9.]'),
+
+  /// 整数
+  number('[0-9]'),
+
+  /// 文本
+  text(''),
+
+  /// 小数
+  decimal('[0-9.]'),
+
+  /// 字母
+  letter('[a-zA-Z]'),
+
+  /// 中文
+  chinese('[\u4e00-\u9fa5]'),
+
+  /// 邮箱
+  email('[a-zA-Z0-9.@]'),
+
+  /// 电话号码
+  phone('[0-9-+]'),
+
+  /// 身份证
+  idCard('[0-9Xx]'),
+
+  /// 正数
+  positive('[+0-9.]'),
+
+  /// 负数
+  negative('[-0-9.]'),
+  ;
+
+  const TextInputLimitFormatter(this.regExp);
+
+  final String regExp;
+
+  /// TextInputLimitFormatter 转换为  List<TextInputFormatter>
+  List<TextInputFormatter> toTextInputFormatter() {
+    if (this == TextInputLimitFormatter.text) return [];
+    final RegExp regExp = RegExp(this.regExp);
+    return [FilteringTextInputFormatter.allow(regExp)];
+  }
+
+  /// TextInputLimitFormatter 转换为 TextInputType
+  TextInputType toKeyboardType() {
+    switch (this) {
+      case TextInputLimitFormatter.lettersNumbers:
+        return TextInputType.name;
+      case TextInputLimitFormatter.password:
+        return TextInputType.visiblePassword;
+      case TextInputLimitFormatter.number:
+        return TextInputType.number;
+      case TextInputLimitFormatter.text:
+        return TextInputType.text;
+      case TextInputLimitFormatter.decimal:
+        return const TextInputType.numberWithOptions(decimal: true);
+      case TextInputLimitFormatter.letter:
+        return TextInputType.name;
+      case TextInputLimitFormatter.chinese:
+        return TextInputType.text;
+      case TextInputLimitFormatter.email:
+        return TextInputType.emailAddress;
+      case TextInputLimitFormatter.phone:
+        return TextInputType.phone;
+      case TextInputLimitFormatter.idCard:
+        return TextInputType.name;
+      case TextInputLimitFormatter.positive:
+        return const TextInputType.numberWithOptions(
+            decimal: true, signed: true);
+      case TextInputLimitFormatter.negative:
+        return const TextInputType.numberWithOptions(
+            decimal: true, signed: true);
+    }
+  }
+}
+
+enum BorderType {
+  outline,
+  underline,
+  none,
+  ;
+
+  /// BorderType to Border
+  Border? value([BorderSide borderSide = const BorderSide()]) {
+    switch (this) {
+      case BorderType.outline:
+        return Border.fromBorderSide(borderSide);
+      case BorderType.underline:
+        return Border(bottom: borderSide);
+      case BorderType.none:
+        return null;
+    }
+  }
+}
+
 class DecoratorBoxStyle {
   const DecoratorBoxStyle({
     this.borderType = BorderType.none,
@@ -256,7 +357,7 @@ class NumberLimitFormatter extends TextInputFormatter {
   final int decimalLength;
   final int numberLength;
 
-  RegExp exp = RegExp(TextInputLimitFormatter.decimal.value);
+  RegExp exp = RegExp(TextInputLimitFormatter.decimal.regExp);
 
   @override
   TextEditingValue formatEditUpdate(

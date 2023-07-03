@@ -70,7 +70,6 @@ export 'extended/scaffold.dart';
 export 'extension/color_extension.dart';
 export 'extension/context_extension.dart';
 export 'extension/date_time_extension.dart';
-export 'extension/enum_extension.dart';
 export 'extension/function_extension.dart';
 export 'extension/iterable_extension.dart';
 export 'extension/list_extension.dart';
