@@ -16,9 +16,9 @@ class _DateTimePickerPage extends StatelessWidget {
               onTap: () => pick(const DateTimePickerUnit.date())),
           10.heightBox,
           _addBackboard(DateTimePicker(
-              startDate: defaultDate.subtract(const Duration(days: 365)),
+              startDate: defaultDate.subtract(const Duration(days: 303)),
               defaultDate: defaultDate,
-              endDate: defaultDate.add(const Duration(days: 365)),
+              endDate: defaultDate,
               onChanged: (DateTime dateTime) {
                 log(dateTime);
               },

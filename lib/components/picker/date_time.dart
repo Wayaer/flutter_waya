@@ -226,19 +226,19 @@ class _DateTimePickerState extends ExtendedState<DateTimePicker> {
         jumpToIndex(startDate.second, controllerSecond);
       }
     } else if (milliseconds > endDate.millisecondsSinceEpoch) {
-      if (startDate.month - 1 != monthIndex) {
+      if (endDate.month - 1 != monthIndex) {
         jumpToIndex(endDate.month - 1, controllerMonth);
       }
-      if (startDate.day - 1 != dayIndex) {
+      if (endDate.day - 1 != dayIndex) {
         jumpToIndex(endDate.day - 1, controllerDay);
       }
-      if (startDate.hour != hourIndex) {
+      if (endDate.hour != hourIndex) {
         jumpToIndex(endDate.hour, controllerHour);
       }
-      if (startDate.minute != minuteIndex) {
+      if (endDate.minute != minuteIndex) {
         jumpToIndex(endDate.minute, controllerMinute);
       }
-      if (startDate.second != secondIndex) {
+      if (endDate.second != secondIndex) {
         jumpToIndex(endDate.second, controllerSecond);
       }
     }

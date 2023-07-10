@@ -1,3 +1,7 @@
+## 7.5.3
+
+* Fix `DateTimePicker` issue
+
 ## 7.5.2
 
 * Update dio
