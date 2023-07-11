@@ -18,8 +18,7 @@ class MultiListWheelPicker extends PickerStatelessWidget<List<int>> {
   MultiListWheelPicker({
     super.key,
     required this.entry,
-    this.horizontalScroll = false,
-    this.addExpanded = true,
+    this.isScrollable = false,
     this.onChanged,
     this.height = kPickerDefaultHeight,
     this.width = double.infinity,
@@ -36,12 +35,9 @@ class MultiListWheelPicker extends PickerStatelessWidget<List<int>> {
   final List<int> value;
 
   /// 是否可以横向滚动
-  /// [horizontalScroll]==true 使用[SingleChildScrollView]创建,[wheelOptions]中的[itemWidth]控制宽度，如果不设置则为[kPickerDefaultWidth]
-  /// [horizontalScroll]==false 使用[Row] 创建每个滚动，居中显示
-  final bool horizontalScroll;
-
-  /// [horizontalScroll]==false
-  final bool addExpanded;
+  /// [isScrollable]==true 使用[SingleChildScrollView]创建,[wheelOptions]中的[itemWidth]控制宽度，如果不设置则为[kPickerDefaultWidth]
+  /// [isScrollable]==false 使用[Row] 创建每个滚动，居中显示
+  final bool isScrollable;
 
   /// onIndexChanged
   final PickerPositionIndexChanged? onChanged;
@@ -73,7 +69,7 @@ class MultiListWheelPicker extends PickerStatelessWidget<List<int>> {
         direction: Axis.horizontal,
         mainAxisAlignment: MainAxisAlignment.center,
         width: width,
-        isScroll: horizontalScroll,
+        isScroll: isScrollable,
         height: height,
         children: entry.builderEntry((item) {
           if (entry.length > position.length) position.add(0);
@@ -92,7 +88,7 @@ class MultiListWheelPicker extends PickerStatelessWidget<List<int>> {
 
           return Universal(
               width: itemWidth,
-              expanded: horizontalScroll ? false : addExpanded,
+              expanded: !isScrollable,
               child: this.value.isEmpty
                   ? buildWheel()
                   : ListWheelState(
@@ -116,6 +112,12 @@ class PickerLinkageEntry<T> {
   final T value;
 
   final List<PickerLinkageEntry<T>> children;
+
+  Map<String, dynamic> toMap() => {
+        'child': child.runtimeType.toString(),
+        'value': value.toString(),
+        'children': children.builder((item) => item.toMap()),
+      };
 }
 
 extension ExtensionMultiListWheelLinkagePicker on MultiListWheelLinkagePicker {
@@ -129,8 +131,7 @@ class MultiListWheelLinkagePicker<T> extends PickerStatefulWidget<List<int>> {
     super.key,
     required this.entry,
     this.value = const [],
-    this.horizontalScroll = false,
-    this.addExpanded = true,
+    this.isScrollable = false,
     this.onChanged,
     this.onValueChanged,
     this.height = kPickerDefaultHeight,
@@ -144,12 +145,9 @@ class MultiListWheelLinkagePicker<T> extends PickerStatefulWidget<List<int>> {
   final List<PickerLinkageEntry<T>> entry;
 
   /// 是否可以横向滚动
-  /// [horizontalScroll]==true 使用[SingleChildScrollView]创建,[wheelOptions]中的[itemWidth]控制宽度，如果不设置则为[kPickerDefaultWidth]
-  /// [horizontalScroll]==false 使用[Row] 创建每个滚动，居中显示
-  final bool horizontalScroll;
-
-  /// [horizontalScroll]==false 有效
-  final bool addExpanded;
+  /// [isScrollable]==true 使用[SingleChildScrollView]创建,[wheelOptions]中的[itemWidth]控制宽度，如果不设置则为[kPickerDefaultWidth]
+  /// [isScrollable]==false 使用[Row] 创建每个滚动，居中显示
+  final bool isScrollable;
 
   /// 初始默认显示的位置
   final List<int> value;
@@ -178,58 +176,46 @@ class _MultiListWheelLinkagePickerState<T>
     extends ExtendedState<MultiListWheelLinkagePicker<T>> {
   List<PickerLinkageEntry<T>> entry = [];
   List<int> position = [];
-  int currentListLength = 0;
 
   @override
   void initState() {
     super.initState();
     position = [...widget.value];
-    entry = widget.entry;
+    entry = [...widget.entry];
   }
 
-  void calculateListLength(List<PickerLinkageEntry> list, bool isFirst) {
-    if (isFirst) currentListLength = 0;
-    if (list.isNotEmpty) {
-      List<PickerLinkageEntry> subsetList = [];
-      if (currentListLength >= position.length) {
-        if (position.length > entry.length) {
-          position.removeRange(entry.length, position.length);
-        } else if (entry.length > position.length) {
-          position.add(0);
-        }
-        subsetList = list.first.children;
-      } else if (currentListLength < position.length) {
-        final index = position[currentListLength];
-        if (list.length > index) {
-          subsetList = list[index].children;
-        } else {
-          subsetList = list.first.children;
-        }
-      }
-      currentListLength += 1;
-      calculateListLength(subsetList, false);
-    } else {
-      while (position.length > currentListLength) {
-        position.removeLast();
+  int calculateDimension(List<PickerLinkageEntry> list) {
+    int highest = 0;
+    if (list.isEmpty) return highest;
+    for (var element in list) {
+      int dimension = calculateDimension(element.children);
+      if (dimension > highest) {
+        highest = dimension;
       }
     }
+    return highest + 1;
   }
 
   List<Widget> get buildWheels {
-    calculateListLength(entry, true);
+    final dimension = calculateDimension(entry);
     List<Widget> list = [];
-    List<PickerLinkageEntry> currentEntry = entry;
-    position.length.generate((index) {
-      final itemPosition = position[index];
-      if (currentEntry.isNotEmpty) {
-        list.add(listStateWheel(location: index, list: currentEntry));
-        if (itemPosition < currentEntry.length) {
-          currentEntry = currentEntry[itemPosition].children;
-        } else {
-          currentEntry = currentEntry.last.children;
+    List<PickerLinkageEntry> entryList = entry;
+    if (dimension > position.length) {
+      (dimension - position.length).generate((index) => position.add(0));
+    }
+    for (int i = 0; i < position.length; i++) {
+      int e = position[i];
+      if (entryList.isNotEmpty) {
+        if (e >= entryList.length) {
+          e = entryList.length - 1;
         }
+        position[i] = e;
+        list.add(listStateWheel(list: entryList, location: i));
+        entryList = entryList[e].children;
+      } else {
+        break;
       }
-    });
+    }
     return list;
   }
 
@@ -246,29 +232,46 @@ class _MultiListWheelLinkagePickerState<T>
         width: widget.width,
         height: widget.height,
         direction: Axis.horizontal,
-        isScroll: widget.horizontalScroll,
+        isScroll: widget.isScrollable,
         children: buildWheels.builder((item) => Universal(
-            expanded: widget.horizontalScroll ? false : widget.addExpanded,
+            expanded: !widget.isScrollable,
             width: widget.itemWidth,
             child: Center(child: item))));
     if (widget.options == null) return multi;
     return PickerSubject<List<int>>(
-        options: widget.options!, confirmTap: () => position, child: multi);
+        options: widget.options!,
+        confirmTap: () => calculatePosition,
+        child: multi);
   }
 
   String lastPosition = '';
 
+  List<int> get calculatePosition {
+    final p = [...position];
+    List<PickerLinkageEntry> resultList = entry;
+    p.removeWhere((element) {
+      if (resultList.isEmpty) {
+        return true;
+      } else {
+        resultList = (element >= resultList.length
+                ? resultList.last
+                : resultList[element])
+            .children;
+        return false;
+      }
+    });
+    return p;
+  }
+
   void onChanged() {
-    if (position.length > entry.length) {
-      position.removeRange(entry.length, position.length);
-    }
-    if (position.toString() != lastPosition) {
-      lastPosition = position.toString();
-      widget.onChanged?.call(position);
+    final p = calculatePosition;
+    if (p.toString() != lastPosition) {
+      lastPosition = p.toString();
+      widget.onChanged?.call(p);
       if (widget.onValueChanged != null) {
         List<T> value = [];
         List<PickerLinkageEntry> resultList = entry;
-        position.builder((index) {
+        p.builder((index) {
           if (index < resultList.length) {
             value.add(resultList[index].value);
             resultList = resultList[index].children;

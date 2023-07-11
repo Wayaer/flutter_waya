@@ -7,50 +7,50 @@ extension ExtensionDateTimePicker on DateTimePicker {
 
 typedef DateTimePickerChanged = void Function(DateTime dateTime);
 
+typedef DateTimePickerUnitBuilder = Widget Function(String? unit);
+
+typedef DateTimePickerContentBuilder = Widget Function(String content);
+
 /// 日期时间选择器
 class DateTimePicker extends PickerStatefulWidget<DateTime> {
   DateTimePicker({
     super.key,
     this.unit = const DateTimePickerUnit.all(),
-    this.showUnit = true,
     this.dual = true,
-    this.unitStyle,
-    this.contentStyle,
-    this.startDate,
-    this.defaultDate,
-    this.endDate,
+    this.contentBuilder,
     this.onChanged,
     this.height = kPickerDefaultHeight,
     this.width = double.infinity,
     this.itemWidth,
     super.options = const PickerOptions<DateTime>(),
+    DateTime? startDate,
+    DateTime? defaultDate,
+    DateTime? endDate,
     WheelOptions? wheelOptions,
-  }) : super(wheelOptions: wheelOptions ?? GlobalOptions().wheelOptions);
+  })  : startDate =
+            startDate ?? DateTime.now().subtract(const Duration(days: 1)),
+        defaultDate = defaultDate ?? DateTime.now(),
+        endDate = endDate ?? DateTime.now(),
+        super(wheelOptions: wheelOptions ?? GlobalOptions().wheelOptions);
 
   /// 补全双位数
   final bool dual;
-
-  /// 是否显示单位
-  final bool showUnit;
 
   /// 时间选择器单位
   /// 通过单位参数确定是否显示对应的年月日时分秒
   final DateTimePickerUnit unit;
 
-  /// 选择框内单位文字样式
-  final TextStyle? unitStyle;
-
-  /// 内容字体样式
-  final TextStyle? contentStyle;
+  /// content builder
+  final DateTimePickerContentBuilder? contentBuilder;
 
   /// 开始时间
-  final DateTime? startDate;
+  final DateTime startDate;
 
   /// 默认选中时间
-  final DateTime? defaultDate;
+  final DateTime defaultDate;
 
   /// 结束时间
-  final DateTime? endDate;
+  final DateTime endDate;
 
   /// onChanged
   final DateTimePickerChanged? onChanged;
@@ -108,21 +108,19 @@ class _DateTimePickerState extends ExtendedState<DateTimePicker> {
   }
 
   DateTime get initDefaultDate {
-    if (widget.defaultDate == null) return startDate;
-    if (widget.defaultDate!.isBefore(startDate)) return startDate;
-    if (widget.defaultDate!.isAfter(endDate)) return endDate;
-    return widget.defaultDate!;
+    if (widget.defaultDate.isBefore(startDate)) return startDate;
+    if (widget.defaultDate.isAfter(endDate)) return endDate;
+    return widget.defaultDate;
   }
 
-  DateTime get initEndDate =>
-      (widget.endDate != null && startDate.isBefore(widget.endDate!))
-          ? widget.endDate!
-          : startDate.add(const Duration(seconds: 1));
+  DateTime get initEndDate => startDate.isBefore(widget.endDate)
+      ? widget.endDate
+      : startDate.add(const Duration(days: 1));
 
   void initialize() {
     wheelOptions = widget.wheelOptions;
     unit = widget.unit;
-    startDate = widget.startDate ?? DateTime.now();
+    startDate = widget.startDate;
     endDate = initEndDate;
     defaultDate = initDefaultDate;
     final int year = (endDate.year - startDate.year) + 1;
@@ -337,10 +335,9 @@ class _DateTimePickerState extends ExtendedState<DateTimePicker> {
       String? unit,
       bool startZero = true,
       ValueChanged<int>? onChanged}) {
-    final wheel = listWheel(
+    final wheel = buildListWheel(
         list: list,
         startZero: startZero,
-        // initialIndex: initialIndex,
         controller: controller,
         onChanged: (_) {
           onChanged?.call(_);
@@ -352,23 +349,23 @@ class _DateTimePickerState extends ExtendedState<DateTimePicker> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         width: widget.itemWidth,
-        children: !widget.showUnit
+        children: this.unit.length == 0
             ? null
-            : [
-                wheel.expandedNull,
-                Container(
-                    margin: const EdgeInsets.only(left: 2),
-                    alignment: Alignment.center,
-                    height: double.infinity,
-                    child: BText(unit!,
-                        style: widget.unitStyle ??
-                            widget.contentStyle ??
-                            context.textTheme.bodyLarge))
-              ],
-        child: widget.showUnit ? null : wheel);
+            : [wheel.expandedNull, buildUnit(unit)],
+        child: this.unit.length != 0 ? null : wheel);
   }
 
-  Widget listWheel(
+  Widget buildUnit(String? unit) =>
+      this.unit.builder?.call(unit) ??
+      Center(child: BText(unit!, style: context.textTheme.bodyLarge));
+
+  Widget buildContent(String content) =>
+      widget.contentBuilder?.call(content) ??
+      Center(
+          child:
+              BText(content, fontSize: 12, style: context.textTheme.bodyLarge));
+
+  Widget buildListWheel(
           {List<int>? list,
           bool startZero = true,
           FixedExtentScrollController? controller,
@@ -377,12 +374,8 @@ class _DateTimePickerState extends ExtendedState<DateTimePicker> {
           controller: controller,
           itemCount: list!.length,
           onChanged: (_) {},
-          itemBuilder: (_, int index) => Container(
-              alignment: Alignment.center,
-              child: BText(
-                  valuePadLeft(startZero ? list[index] : list[index] + 1),
-                  fontSize: 12,
-                  style: widget.contentStyle ?? context.textTheme.bodyLarge)),
+          itemBuilder: (_, int index) => buildContent(
+              valuePadLeft(startZero ? list[index] : list[index] + 1)),
           onScrollEnd: (int index) {
             onChanged?.call(index);
             this.onChanged();
@@ -408,28 +401,44 @@ class _DateTimePickerState extends ExtendedState<DateTimePicker> {
 }
 
 class DateTimePickerUnit {
-  /// 设置 null 不显示
-  /// [year] == null 不显示年
-  const DateTimePickerUnit(
-      {this.year, this.month, this.day, this.hour, this.minute, this.second});
-
-  const DateTimePickerUnit.md({
-    this.month = 'M',
-    this.day = 'D',
-  })  : year = null,
+  const DateTimePickerUnit.none()
+      : builder = null,
+        year = null,
+        month = null,
+        day = null,
         hour = null,
         minute = null,
         second = null;
 
-  const DateTimePickerUnit.ym({
+  const DateTimePickerUnit.all(
+      {this.builder,
+      this.year = 'Y',
+      this.month = 'M',
+      this.day = 'D',
+      this.hour = 'H',
+      this.minute = 'M',
+      this.second = 'S'});
+
+  const DateTimePickerUnit.ydm({
+    this.builder,
     this.year = 'Y',
     this.month = 'M',
-  })  : day = null,
-        hour = null,
-        minute = null,
+    this.day = 'D',
+    this.hour = 'H',
+    this.minute = 'M',
+  }) : second = null;
+
+  const DateTimePickerUnit.yh({
+    this.builder,
+    this.year = 'Y',
+    this.month = 'M',
+    this.day = 'D',
+    this.hour = 'H',
+  })  : minute = null,
         second = null;
 
-  const DateTimePickerUnit.date({
+  const DateTimePickerUnit.yd({
+    this.builder,
     this.year = 'Y',
     this.month = 'M',
     this.day = 'D',
@@ -437,33 +446,97 @@ class DateTimePickerUnit {
         minute = null,
         second = null;
 
-  const DateTimePickerUnit.time(
-      {this.hour = 'H', this.minute = 'M', this.second = 'S'})
+  const DateTimePickerUnit.ym({
+    this.builder,
+    this.year = 'Y',
+    this.month = 'M',
+  })  : day = null,
+        hour = null,
+        minute = null,
+        second = null;
+
+  const DateTimePickerUnit.md({
+    this.builder,
+    this.month = 'M',
+    this.day = 'D',
+  })  : year = null,
+        hour = null,
+        minute = null,
+        second = null;
+
+  const DateTimePickerUnit.mh({
+    this.builder,
+    this.month = 'M',
+    this.day = 'D',
+    this.hour = 'H',
+  })  : year = null,
+        minute = null,
+        second = null;
+
+  const DateTimePickerUnit.mm({
+    this.builder,
+    this.month = 'M',
+    this.day = 'D',
+    this.hour = 'H',
+    this.minute = 'M',
+  })  : year = null,
+        second = null;
+
+  const DateTimePickerUnit.mhs({
+    this.builder,
+    this.month = 'M',
+    this.day = 'D',
+    this.hour = 'H',
+    this.minute = 'M',
+    this.second = 'S',
+  }) : year = null;
+
+  const DateTimePickerUnit.ds({
+    this.builder,
+    this.day = 'D',
+    this.hour = 'H',
+    this.minute = 'M',
+    this.second = 'S',
+  })  : month = null,
+        year = null;
+
+  const DateTimePickerUnit.dm({
+    this.builder,
+    this.day = 'D',
+    this.hour = 'H',
+    this.minute = 'M',
+  })  : second = null,
+        month = null,
+        year = null;
+
+  const DateTimePickerUnit.dh({
+    this.builder,
+    this.day = 'D',
+    this.hour = 'H',
+  })  : minute = null,
+        second = null,
+        month = null,
+        year = null;
+
+  const DateTimePickerUnit.hs(
+      {this.builder, this.hour = 'H', this.minute = 'M', this.second = 'S'})
       : year = null,
         month = null,
         day = null;
 
   const DateTimePickerUnit.hm(
-      {this.hour = 'H', this.minute = 'M', this.second = 'S'})
-      : year = null,
+      {this.builder, this.hour = 'H', this.minute = 'M'})
+      : second = null,
+        year = null,
         month = null,
         day = null;
 
-  const DateTimePickerUnit.all(
-      {this.year = 'Y',
-      this.month = 'M',
-      this.day = 'D',
-      this.hour = 'H',
-      this.minute = 'M',
-      this.second = 'S'});
-
-  const DateTimePickerUnit.yhm({
-    this.year = 'Y',
-    this.month = 'M',
-    this.day = 'D',
-    this.hour = 'H',
-    this.minute = 'M',
-  }) : second = null;
+  const DateTimePickerUnit.ms(
+      {this.builder, this.minute = 'M', this.second = 'S'})
+      : hour = null,
+        year = null,
+        month = null,
+        day = null;
 
   final String? year;
   final String? month;
@@ -472,7 +545,10 @@ class DateTimePickerUnit {
   final String? minute;
   final String? second;
 
-  int getLength() {
+  /// builder unit
+  final DateTimePickerUnitBuilder? builder;
+
+  int get length {
     int i = 0;
     if (year != null) i += 1;
     if (month != null) i += 1;

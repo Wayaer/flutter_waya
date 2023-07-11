@@ -12,8 +12,7 @@ class _SingleListWheelPickerPage extends StatelessWidget {
         children: [
           ElevatedText('show SingleListWheelPicker',
               onTap: singleListWheelPicker),
-          10.heightBox,
-          _addBackboard(SingleListWheelPicker(
+          Backboard(SingleListWheelPicker(
               options: null,
               height: 210,
               onChanged: (int index) {

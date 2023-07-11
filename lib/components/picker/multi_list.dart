@@ -24,8 +24,7 @@ class MultiListLinkagePicker<T> extends PickerStatefulWidget<List<int>> {
     super.key,
     required this.entry,
     this.value = const [],
-    this.horizontalScroll = true,
-    this.addExpanded = false,
+    this.isScrollable = true,
     this.onChanged,
     this.onValueChanged,
     this.height = kPickerDefaultHeight,
@@ -38,12 +37,9 @@ class MultiListLinkagePicker<T> extends PickerStatefulWidget<List<int>> {
   final List<PickerListLinkageEntry<T>> entry;
 
   /// 是否可以横向滚动
-  /// [horizontalScroll]==true 使用[SingleChildScrollView]创建
-  /// [horizontalScroll]==false 使用[Row] 创建每个滚动，居中显示
-  final bool horizontalScroll;
-
-  /// [horizontalScroll]==false 有效
-  final bool addExpanded;
+  /// [isScrollable]==true 使用[SingleChildScrollView]创建
+  /// [isScrollable]==false 使用[Row] 创建每个滚动，居中显示
+  final bool isScrollable;
 
   /// 初始默认显示的位置
   final List<int> value;
@@ -93,9 +89,9 @@ class _MultiListLinkagePickerState<T>
         width: widget.width,
         height: widget.height,
         direction: Axis.horizontal,
-        isScroll: widget.horizontalScroll,
+        isScroll: widget.isScrollable,
         children: buildList.builder((item) => Universal(
-            expanded: widget.horizontalScroll ? false : widget.addExpanded,
+            expanded: !widget.isScrollable,
             width: widget.itemWidth,
             child: item)));
     if (widget.options == null) return multiList;

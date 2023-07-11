@@ -14,35 +14,21 @@ class _MultiListWheelLinkagePicker extends StatelessWidget {
           ElevatedText('show MultiListWheelLinkagePicker with area',
               onTap: () =>
                   multiListWheelLinkagePicker(mapToLinkageEntry(areaDataMap))),
-          10.heightBox,
-          _addBackboard(MultiListWheelLinkagePicker<String>(
-              options: null,
-              height: 150,
-              value: const [1, 2, 4, 4, 5],
-              onChanged: (List<int> index) {
-                log('MultiListWheelLinkagePicker onChanged= $index');
-              },
-              onValueChanged: (List<String> list) {
-                log('MultiListWheelLinkagePicker onValueChanged= $list');
-              },
-              entry: mapToLinkageEntry(areaDataMap),
-              horizontalScroll: false)),
           20.heightBox,
           ElevatedText('show MultiListWheelLinkagePicker',
               onTap: () =>
                   multiListWheelLinkagePicker(multiListWheelLinkageList)),
-          10.heightBox,
-          _addBackboard(MultiListWheelLinkagePicker<String>(
+          Backboard(MultiListWheelLinkagePicker<String>(
               options: null,
               height: 150,
-              onChanged: (List<int> index) {
-                log('MultiListWheelLinkagePicker onChanged= $index');
-              },
-              onValueChanged: (List<String> list) {
-                log('MultiListWheelLinkagePicker onValueChanged= $list');
-              },
+              // onChanged: (List<int> index) {
+              //   log('MultiListWheelLinkagePicker onChanged= $index');
+              // },
+              // onValueChanged: (List<String> list) {
+              //   log('MultiListWheelLinkagePicker onValueChanged= $list');
+              // },
               entry: multiListWheelLinkageList,
-              horizontalScroll: true)),
+              isScrollable: true)),
         ]);
   }
 
@@ -56,11 +42,13 @@ class _MultiListWheelLinkagePicker extends StatelessWidget {
           } else if (value is List) {
             valueList = value.builder((item) => PickerLinkageEntry<String>(
                 value: item,
-                child: Text(item, style: const TextStyle(fontSize: 10))));
+                child: Text(item,
+                    maxLines: 1, style: const TextStyle(fontSize: 10))));
           }
           return PickerLinkageEntry<String>(
               value: entry.key,
-              child: Text(entry.key, style: const TextStyle(fontSize: 10)),
+              child: Text(entry.key,
+                  maxLines: 1, style: const TextStyle(fontSize: 10)),
               children: valueList);
         });
     return buildEntry(map);
@@ -74,7 +62,7 @@ class _MultiListWheelLinkagePicker extends StatelessWidget {
 
   Future<void> multiListWheelPicker() async {
     final List<int>? index = await MultiListWheelPicker(
-            entry: multiListWheelList, horizontalScroll: true)
+            entry: multiListWheelList, isScrollable: true)
         .show();
     if (index != null) {
       String result = '';
@@ -132,7 +120,7 @@ class _MultiListWheelLinkagePicker extends StatelessWidget {
   Future<void> multiListWheelLinkagePicker<T>(
       List<PickerLinkageEntry<T>> entry) async {
     final List<int>? index =
-        await MultiListWheelLinkagePicker(entry: entry, horizontalScroll: false)
+        await MultiListWheelLinkagePicker(entry: entry, isScrollable: false)
             .show();
     List<PickerLinkageEntry> resultList = entry;
     String result = '';

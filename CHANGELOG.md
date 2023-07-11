@@ -1,6 +1,10 @@
-## 7.5.3
+## 7.6.0
 
 * Fix `DateTimePicker` issue
+* Delete `showUnit`, `unitStyle`,`contentStyle`, and add `contentBuilder` to DateTimePicker
+* Add `builder` to DateTimePickerUnit
+* Add a new component, `DatePicker`
+* Remove `horizontalScroll` and `addExpanded`, add `isScrollable`, in `MultiListWheelLinkagePicker` and `MultiListWheelPicker` and related components
 
 ## 7.5.2
 

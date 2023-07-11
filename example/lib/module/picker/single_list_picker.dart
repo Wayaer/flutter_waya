@@ -15,8 +15,7 @@ class _SingleListPickerPage extends StatelessWidget {
               onTap: () => singleListPickerWithScreen(context)),
           ElevatedText('show SingleListPicker custom',
               onTap: customSingleListPicker),
-          10.heightBox,
-          _addBackboard(SingleListPicker(
+          Backboard(SingleListPicker(
               options: null,
               height: 210,
               onChanged: (List<int> index) {

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
+part 'date.dart';
+
 part 'date_time.dart';
 
 part 'multi_list_wheel.dart';
@@ -19,12 +21,12 @@ const double kPickerDefaultWidth = 90;
 class PickerOptions<T> {
   const PickerOptions({
     this.top,
-    this.bottom,
+    this.cancel = const BText('cancel'),
     this.title,
+    this.confirm = const BText('confirm'),
+    this.bottom,
     this.padding = const EdgeInsets.symmetric(horizontal: 10),
     this.contentPadding,
-    this.confirm = const BText('confirm'),
-    this.cancel = const BText('cancel'),
     this.backgroundColor,
     this.decoration,
     this.verifyConfirm,
@@ -38,18 +40,19 @@ class PickerOptions<T> {
   /// [title]底部内容
   final Widget? bottom;
 
-  /// [title]顶部内容
-  final Widget? top;
-  final EdgeInsetsGeometry padding;
-
-  /// right
-  final Widget confirm;
-
   /// left
   final Widget cancel;
 
   /// center
   final Widget? title;
+
+  /// right
+  final Widget confirm;
+
+  /// [title]顶部内容
+  final Widget? top;
+
+  final EdgeInsetsGeometry padding;
 
   /// 对内容
   final EdgeInsetsGeometry? contentPadding;
@@ -101,103 +104,6 @@ class PickerOptions<T> {
       verifyConfirm: options?.verifyConfirm,
       verifyCancel: options?.verifyCancel);
 }
-
-// class PickerWheelOptions extends WheelOptions {
-//   const PickerWheelOptions({
-//     /// 高度
-//     super.itemExtent,
-//
-//     /// 半径大小,越大则越平面,越小则间距越大
-//     super.diameterRatio = 1.3,
-//
-//     /// 选中item偏移
-//     super.offAxisFraction,
-//
-//     /// 表示ListWheel水平偏离中心的程度
-//     super.perspective = 0.01,
-//
-//     /// 是否启用放大
-//     super.useMagnifier = true,
-//
-//     /// 放大倍率
-//     super.magnification,
-//
-//     /// 上下间距默认为1 数越小 间距越大
-//     super.squeeze,
-//
-//     /// [isCupertino]=false生效
-//     super.clipBehavior,
-//
-//     /// [isCupertino]=false生效
-//     super.overAndUnderCenterOpacity,
-//
-//     /// [isCupertino]=false生效
-//     super.renderChildrenOutsideViewport,
-//
-//     /// [isCupertino]=false生效
-//     super.restorationId,
-//
-//     /// [isCupertino]=false生效
-//     super.scrollBehavior,
-//
-//     /// 使用ios Cupertino 风格
-//     super.isCupertino = true,
-//
-//     /// [isCupertino]=true生效
-//     super.backgroundColor,
-//
-//     /// [isCupertino]=true生效
-//     super.selectionOverlay,
-//
-//     /// physics
-//     super.physics,
-//     this.itemWidth,
-//   });
-//
-//   /// 不设置 [itemWidth] 默认均分
-//   final double? itemWidth;
-//
-//   @override
-//   PickerWheelOptions copyWith({
-//     double? itemExtent,
-//     double? diameterRatio,
-//     double? offAxisFraction,
-//     double? perspective,
-//     double? magnification,
-//     bool? useMagnifier,
-//     double? squeeze,
-//     bool? isCupertino,
-//     ScrollPhysics? physics,
-//     Color? backgroundColor,
-//     double? itemWidth,
-//     bool? looping,
-//     ValueChanged<int>? onChanged,
-//   }) =>
-//       PickerWheelOptions(
-//           diameterRatio: diameterRatio ?? this.diameterRatio,
-//           offAxisFraction: offAxisFraction ?? this.offAxisFraction,
-//           perspective: perspective ?? this.perspective,
-//           magnification: magnification ?? this.magnification,
-//           useMagnifier: useMagnifier ?? this.useMagnifier,
-//           squeeze: squeeze ?? this.squeeze,
-//           isCupertino: isCupertino ?? this.isCupertino,
-//           physics: physics ?? this.physics,
-//           backgroundColor: backgroundColor ?? this.backgroundColor,
-//           itemWidth: itemWidth ?? this.itemWidth);
-//
-//   PickerWheelOptions mergePicker([PickerWheelOptions? options]) =>
-//       PickerWheelOptions(
-//           diameterRatio: options?.diameterRatio ?? diameterRatio,
-//           offAxisFraction: options?.offAxisFraction ?? offAxisFraction,
-//           perspective: options?.perspective ?? perspective,
-//           magnification: options?.magnification ?? magnification,
-//           useMagnifier: options?.useMagnifier ?? useMagnifier,
-//           squeeze: options?.squeeze ?? squeeze,
-//           isCupertino: options?.isCupertino ?? isCupertino,
-//           physics: options?.physics ?? physics,
-//           backgroundColor: options?.backgroundColor ?? backgroundColor,
-//           itemWidth: options?.itemWidth ?? itemWidth);
-// }
 
 typedef PickerPositionIndexChanged = void Function(List<int> index);
 

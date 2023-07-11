@@ -207,13 +207,10 @@ class ElevatedText extends StatelessWidget {
             child: Universal(
                 onTap: onTap,
                 onTapDown: (_) {
-                  elasticDown();
-                },
-                onTapUp: (_) {
-                  elasticUp();
+                  elastic();
                 },
                 onDoubleTap: () {
-                  elastic(50.milliseconds);
+                  elastic(10.milliseconds);
                 },
                 onLongPressDown: (_) {
                   elasticDown();

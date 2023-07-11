@@ -11,8 +11,7 @@ class _AreaPickerPage extends StatelessWidget {
         isScroll: true,
         children: [
           ElevatedText('show AreaPicker', onTap: pick),
-          10.heightBox,
-          _addBackboard(MultiListWheelLinkagePicker<String>(
+          Backboard(MultiListWheelLinkagePicker<String>(
               options: null,
               wheelOptions: const WheelOptions.cupertino(),
               height: 210,
@@ -22,8 +21,7 @@ class _AreaPickerPage extends StatelessWidget {
               onValueChanged: (List<String> list) {
                 log('AreaPicker onValueChanged= $list');
               },
-              entry: mapToLinkageEntry(areaDataMap),
-              horizontalScroll: false)),
+              entry: mapToLinkageEntry(areaDataMap))),
         ]);
   }
 
@@ -38,7 +36,7 @@ class _AreaPickerPage extends StatelessWidget {
               log('AreaPicker onValueChanged= $list');
             },
             entry: entry,
-            horizontalScroll: false)
+            isScrollable: false)
         .show();
     if (position == null) return;
     List<String> value = [];

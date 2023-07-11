@@ -14,8 +14,7 @@ class _MultiListLinkagePicker extends StatelessWidget {
           ElevatedText('show MultiListLinkagePicker',
               onTap: () =>
                   multiListLinkagePicker(mapToLinkageEntry(areaDataMap))),
-          10.heightBox,
-          _addBackboard(MultiListLinkagePicker<String>(
+          Backboard(MultiListLinkagePicker<String>(
               options: null,
               height: 300,
               onChanged: (List<int> index) {
@@ -28,8 +27,7 @@ class _MultiListLinkagePicker extends StatelessWidget {
           20.heightBox,
           ElevatedText('show MultiListLinkagePicker',
               onTap: () => multiListLinkagePicker(multiListLinkage)),
-          10.heightBox,
-          _addBackboard(MultiListLinkagePicker<String>(
+          Backboard(MultiListLinkagePicker<String>(
               options: null,
               height: 150,
               onChanged: (List<int> index) {
@@ -38,9 +36,7 @@ class _MultiListLinkagePicker extends StatelessWidget {
               onValueChanged: (List<String> list) {
                 log('MultiListLinkagePicker onValueChanged= $list');
               },
-              entry: multiListLinkage,
-              addExpanded: true,
-              horizontalScroll: false)),
+              entry: multiListLinkage)),
         ]);
   }
 
@@ -121,9 +117,8 @@ class _MultiListLinkagePicker extends StatelessWidget {
 
   Future<void> multiListLinkagePicker(
       List<PickerListLinkageEntry<String>> multiListLinkage) async {
-    final List<int>? index = await MultiListLinkagePicker(
-            entry: multiListLinkage, horizontalScroll: false)
-        .show();
+    final List<int>? index =
+        await MultiListLinkagePicker(entry: multiListLinkage).show();
     List<PickerListLinkageEntry> resultList = multiListLinkage;
     String result = '';
     index?.builder((item) {

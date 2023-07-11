@@ -12,16 +12,15 @@ class _MultiListWheelPicker extends StatelessWidget {
         children: [
           ElevatedText('show MultiListWheelPicker',
               onTap: multiListWheelPicker),
-          30.heightBox,
-          _addBackboard(MultiListWheelPicker(
+          20.heightBox,
+          Backboard(MultiListWheelPicker(
               options: null,
               height: 150,
               value: const [2, 3, 4, 6, 6],
               onChanged: (List<int> index) {
                 log('MultiListWheelPicker onChanged= $index');
               },
-              entry: multiListWheelList,
-              horizontalScroll: false)),
+              entry: multiListWheelList)),
         ]);
   }
 
@@ -33,7 +32,7 @@ class _MultiListWheelPicker extends StatelessWidget {
 
   Future<void> multiListWheelPicker() async {
     final List<int>? index = await MultiListWheelPicker(
-            entry: multiListWheelList, horizontalScroll: true)
+            entry: multiListWheelList, isScrollable: true)
         .show();
     if (index != null) {
       String result = '';

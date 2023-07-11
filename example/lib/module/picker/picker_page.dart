@@ -5,6 +5,8 @@ import 'package:flutter_waya/flutter_waya.dart';
 
 part 'date_time_picker.dart';
 
+part 'date_picker.dart';
+
 part 'area_picker.dart';
 
 part 'multi_list_linkage_picker.dart';
@@ -17,11 +19,21 @@ part 'single_list_picker.dart';
 
 part 'single_list_wheel_picker.dart';
 
-Widget _addBackboard(Widget child) => Container(
-    padding: const EdgeInsets.all(12),
-    decoration: BoxDecoration(
-        boxShadow: getBoxShadow(), borderRadius: BorderRadius.circular(12)),
-    child: child);
+class Backboard extends StatelessWidget {
+  const Backboard(this.child, {super.key});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        margin: const EdgeInsets.only(top: 10),
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+            boxShadow: getBoxShadow(), borderRadius: BorderRadius.circular(12)),
+        child: child);
+  }
+}
 
 class PickerPage extends StatelessWidget {
   const PickerPage({super.key});
@@ -32,12 +44,16 @@ class PickerPage extends StatelessWidget {
           padding: const EdgeInsets.all(20),
           isScroll: true,
           children: [
-            ElevatedText('AreaPicker', onTap: () {
-              push(const _AreaPickerPage());
+            ElevatedText('DatePicker', onTap: () {
+              push(_DatePickerPage());
             }),
             10.heightBox,
             ElevatedText('DateTimePicker', onTap: () {
               push(_DateTimePickerPage());
+            }),
+            10.heightBox,
+            ElevatedText('AreaPicker', onTap: () {
+              push(const _AreaPickerPage());
             }),
             10.heightBox,
             ElevatedText('SingleListPicker', onTap: () {

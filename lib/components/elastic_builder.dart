@@ -12,7 +12,7 @@ class ElasticBuilder extends StatefulWidget {
       this.alignment = Alignment.center,
       this.scale = 0.93,
       required this.builder,
-      this.duration = const Duration(milliseconds: 600)})
+      this.duration = const Duration(milliseconds: 100)})
       : assert(scale <= 1.0);
 
   final bool withOpacity;
@@ -47,6 +47,7 @@ class _ElasticBuilderState extends ExtendedState<ElasticBuilder>
         vsync: this,
         lowerBound: 0.0,
         upperBound: 1.0,
+        reverseDuration: widget.duration,
         duration: widget.duration);
     controller.value = 1;
   }
@@ -73,11 +74,10 @@ class _ElasticBuilderState extends ExtendedState<ElasticBuilder>
   @override
   void didUpdateWidget(covariant ElasticBuilder oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.duration != oldWidget.duration) {
+    if (widget.duration != oldWidget.duration ||
+        widget.scale != oldWidget.scale) {
       controller.dispose();
       initController();
-    }
-    if (widget.scale != oldWidget.scale) {
       initAnimation();
     }
     setState(() {});

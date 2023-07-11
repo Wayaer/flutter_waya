@@ -13,43 +13,36 @@ class _DateTimePickerPage extends StatelessWidget {
         children: [
           ElevatedText('show DateTimePicker', onTap: pick),
           ElevatedText('show DateTimePicker with date',
-              onTap: () => pick(const DateTimePickerUnit.date())),
-          10.heightBox,
-          _addBackboard(DateTimePicker(
-              startDate: defaultDate.subtract(const Duration(days: 303)),
-              defaultDate: defaultDate,
-              endDate: defaultDate,
-              onChanged: (DateTime dateTime) {
-                log(dateTime);
-              },
-              height: 210,
-              unit: const DateTimePickerUnit.date(),
-              options: null)),
-          10.heightBox,
-          _addBackboard(DateTimePicker(
-              startDate: defaultDate,
-              defaultDate: defaultDate,
-              endDate: defaultDate,
-              onChanged: (DateTime dateTime) {
-                log(dateTime);
-              },
-              height: 210,
-              unit: const DateTimePickerUnit.time(),
-              options: null)),
-          10.heightBox,
-          _addBackboard(DateTimePicker(
-              startDate: defaultDate.subtract(const Duration(days: 365)),
-              defaultDate: defaultDate,
-              endDate: defaultDate.add(const Duration(days: 365)),
-              wheelOptions: GlobalOptions().wheelOptions,
-              contentStyle: const TextStyle(fontSize: 13),
-              onChanged: (DateTime dateTime) {
-                log(dateTime);
-              },
-              height: 210,
-              options: null)),
+              onTap: () => pick(const DateTimePickerUnit.yd())),
+          buildDateTimePicker(const DateTimePickerUnit.all()),
+          buildDateTimePicker(const DateTimePickerUnit.ydm()),
+          buildDateTimePicker(const DateTimePickerUnit.yh()),
+          buildDateTimePicker(const DateTimePickerUnit.yd()),
+          buildDateTimePicker(const DateTimePickerUnit.ym()),
+          buildDateTimePicker(const DateTimePickerUnit.mhs()),
+          buildDateTimePicker(const DateTimePickerUnit.mm()),
+          buildDateTimePicker(const DateTimePickerUnit.mh()),
+          buildDateTimePicker(const DateTimePickerUnit.md()),
+          buildDateTimePicker(const DateTimePickerUnit.ds()),
+          buildDateTimePicker(const DateTimePickerUnit.dm()),
+          buildDateTimePicker(const DateTimePickerUnit.dh()),
+          buildDateTimePicker(const DateTimePickerUnit.hs()),
+          buildDateTimePicker(const DateTimePickerUnit.hm()),
+          buildDateTimePicker(const DateTimePickerUnit.ms()),
         ]);
   }
+
+  Widget buildDateTimePicker(DateTimePickerUnit unit) =>
+      Backboard(DateTimePicker(
+          startDate: defaultDate.subtract(const Duration(days: 365)),
+          defaultDate: defaultDate,
+          endDate: defaultDate,
+          onChanged: (DateTime dateTime) {
+            log(dateTime);
+          },
+          height: 210,
+          unit: unit,
+          options: null));
 
   Future<void> pick([DateTimePickerUnit? unit]) async {
     await DateTimePicker(
