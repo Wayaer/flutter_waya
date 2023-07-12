@@ -14,49 +14,44 @@ class _DateTimePickerPage extends StatelessWidget {
           ElevatedText('show DateTimePicker', onTap: pick),
           ElevatedText('show DateTimePicker with date',
               onTap: () => pick(const DateTimePickerUnit.yd())),
-          buildDateTimePicker(DateTimePickerUnit.all(
+          BackCard(buildDateTimePicker(DateTimePickerUnit.all(
               builder: (value) => Text(
                     value ?? '',
                     style: const TextStyle(fontSize: 9),
-                  ))),
-          buildDateTimePicker(
-              const DateTimePickerUnit.yd(year: '年', month: '', day: '')),
-          buildDateTimePicker(const DateTimePickerUnit.dh()),
+                  )))),
+          BackCard(buildDateTimePicker(
+              const DateTimePickerUnit.yd(year: '年', month: '', day: ''))),
+          BackCard(buildDateTimePicker(const DateTimePickerUnit.dh())),
         ]);
   }
 
-  Widget buildDateTimePicker(DateTimePickerUnit unit) =>
-      BackCard(DateTimePicker(
+  DateTimePicker buildDateTimePicker(DateTimePickerUnit unit,
+          {PickerOptions<DateTime>? options}) =>
+      DateTimePicker(
+        options: options,
         startDate: defaultDate.subtract(const Duration(days: 365)),
         defaultDate: defaultDate,
-        endDate: defaultDate,
+        endDate: defaultDate.add(const Duration(days: 365)),
         onChanged: (DateTime dateTime) {
           log(dateTime);
         },
         height: 210,
         unit: unit,
-      ));
+      );
 
   Future<void> pick([DateTimePickerUnit? unit]) async {
-    await DateTimePicker(
-            dual: true,
-            unit: unit ?? const DateTimePickerUnit.all(),
-            options:
-                BasePickerOptions<DateTime>().merge(PickerOptions<DateTime>(
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 12),
-                    verifyConfirm: (DateTime? dateTime) {
-                      showToast(dateTime?.format(DateTimeDist.yearSecond) ??
-                          'verifyConfirm');
-                      return true;
-                    },
-                    verifyCancel: (DateTime? dateTime) {
-                      showToast(dateTime?.format(DateTimeDist.yearSecond) ??
-                          'verifyCancel');
-                      return true;
-                    })),
-            startDate: defaultDate.subtract(const Duration(days: 365)),
-            defaultDate: defaultDate,
-            endDate: defaultDate.add(const Duration(days: 365)))
-        .show();
+    await buildDateTimePicker(unit ?? const DateTimePickerUnit.all(),
+        options: BasePickerOptions<DateTime>().merge(PickerOptions<DateTime>(
+            contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+            verifyConfirm: (DateTime? dateTime) {
+              showToast(
+                  dateTime?.format(DateTimeDist.yearSecond) ?? 'verifyConfirm');
+              return true;
+            },
+            verifyCancel: (DateTime? dateTime) {
+              showToast(
+                  dateTime?.format(DateTimeDist.yearSecond) ?? 'verifyCancel');
+              return true;
+            }))).show();
   }
 }
