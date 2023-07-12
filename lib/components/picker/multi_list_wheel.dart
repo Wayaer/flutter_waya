@@ -1,7 +1,7 @@
 part of 'picker.dart';
 
-class PickerEntry {
-  const PickerEntry({required this.itemCount, required this.itemBuilder});
+class PickerItem {
+  const PickerItem({required this.itemCount, required this.itemBuilder});
 
   /// 渲染子组件
   final int itemCount;
@@ -15,21 +15,21 @@ extension ExtensionMultiListWheelPicker on MultiListWheelPicker {
 
 /// 多列滚轮选择 不联动
 class MultiListWheelPicker extends PickerStatelessWidget<List<int>> {
-  MultiListWheelPicker({
+  const MultiListWheelPicker({
     super.key,
-    required this.entry,
+    super.height = kPickerDefaultHeight,
+    super.width = double.infinity,
+    super.itemWidth,
+    super.options,
+    super.wheelOptions,
+    required this.items,
     this.isScrollable = false,
     this.onChanged,
-    this.height = kPickerDefaultHeight,
-    this.width = double.infinity,
     this.value = const [],
-    this.itemWidth = kPickerDefaultWidth,
-    super.options = const PickerOptions<List<int>>(),
-    WheelOptions? wheelOptions,
-  }) : super(wheelOptions: wheelOptions ?? GlobalOptions().wheelOptions);
+  });
 
   /// 要渲染的数据
-  final List<PickerEntry> entry;
+  final List<PickerItem> items;
 
   /// 初始默认显示的位置
   final List<int> value;
@@ -42,22 +42,13 @@ class MultiListWheelPicker extends PickerStatelessWidget<List<int>> {
   /// onIndexChanged
   final PickerPositionIndexChanged? onChanged;
 
-  /// height
-  final double height;
-
-  /// width
-  final double width;
-
-  /// wheel width
-  final double itemWidth;
-
   @override
   Widget build(BuildContext context) {
     List<int> position = [...value];
     String lastPosition = '';
     void onChanged() {
-      if (position.length > entry.length) {
-        position.removeRange(entry.length, position.length);
+      if (position.length > items.length) {
+        position.removeRange(items.length, position.length);
       }
       if (position.toString() != lastPosition) {
         lastPosition = position.toString();
@@ -71,8 +62,8 @@ class MultiListWheelPicker extends PickerStatelessWidget<List<int>> {
         width: width,
         isScroll: isScrollable,
         height: height,
-        children: entry.builderEntry((item) {
-          if (entry.length > position.length) position.add(0);
+        children: items.builderEntry((item) {
+          if (items.length > position.length) position.add(0);
           final value = item.value;
           final location = item.key;
           ListWheel buildWheel([FixedExtentScrollController? controller]) =>
@@ -87,8 +78,10 @@ class MultiListWheelPicker extends PickerStatelessWidget<List<int>> {
                   onScrollEnd: (_) => onChanged());
 
           return Universal(
-              width: itemWidth,
-              expanded: !isScrollable,
+              expanded: !isScrollable && itemWidth == null,
+              width: isScrollable && itemWidth == null
+                  ? kPickerDefaultItemWidth
+                  : itemWidth,
               child: this.value.isEmpty
                   ? buildWheel()
                   : ListWheelState(
@@ -103,15 +96,15 @@ class MultiListWheelPicker extends PickerStatelessWidget<List<int>> {
   }
 }
 
-class PickerLinkageEntry<T> {
-  const PickerLinkageEntry(
+class PickerLinkageItem<T> {
+  const PickerLinkageItem(
       {required this.value, required this.child, this.children = const []});
 
   final Widget child;
 
   final T value;
 
-  final List<PickerLinkageEntry<T>> children;
+  final List<PickerLinkageItem<T>> children;
 
   Map<String, dynamic> toMap() => {
         'child': child.runtimeType.toString(),
@@ -127,22 +120,22 @@ extension ExtensionMultiListWheelLinkagePicker on MultiListWheelLinkagePicker {
 
 /// 多列滚轮选择 联动
 class MultiListWheelLinkagePicker<T> extends PickerStatefulWidget<List<int>> {
-  MultiListWheelLinkagePicker({
+  const MultiListWheelLinkagePicker({
     super.key,
-    required this.entry,
+    super.height = kPickerDefaultHeight,
+    super.width = double.infinity,
+    super.itemWidth,
+    super.options,
+    super.wheelOptions,
+    required this.items,
     this.value = const [],
     this.isScrollable = false,
     this.onChanged,
     this.onValueChanged,
-    this.height = kPickerDefaultHeight,
-    this.width = double.infinity,
-    this.itemWidth = kPickerDefaultWidth,
-    super.options = const PickerOptions<List<int>>(),
-    WheelOptions? wheelOptions,
-  }) : super(wheelOptions: wheelOptions ?? GlobalOptions().wheelOptions);
+  });
 
   /// 要渲染的数据
-  final List<PickerLinkageEntry<T>> entry;
+  final List<PickerLinkageItem<T>> items;
 
   /// 是否可以横向滚动
   /// [isScrollable]==true 使用[SingleChildScrollView]创建,[wheelOptions]中的[itemWidth]控制宽度，如果不设置则为[kPickerDefaultWidth]
@@ -158,15 +151,6 @@ class MultiListWheelLinkagePicker<T> extends PickerStatefulWidget<List<int>> {
   /// onValueChanged
   final PickerPositionValueChanged<T>? onValueChanged;
 
-  /// height
-  final double height;
-
-  /// width
-  final double width;
-
-  /// wheel item width
-  final double itemWidth;
-
   @override
   State<MultiListWheelLinkagePicker<T>> createState() =>
       _MultiListWheelLinkagePickerState<T>();
@@ -174,17 +158,17 @@ class MultiListWheelLinkagePicker<T> extends PickerStatefulWidget<List<int>> {
 
 class _MultiListWheelLinkagePickerState<T>
     extends ExtendedState<MultiListWheelLinkagePicker<T>> {
-  List<PickerLinkageEntry<T>> entry = [];
+  List<PickerLinkageItem<T>> items = [];
   List<int> position = [];
 
   @override
   void initState() {
     super.initState();
     position = [...widget.value];
-    entry = [...widget.entry];
+    items = [...widget.items];
   }
 
-  int calculateDimension(List<PickerLinkageEntry> list) {
+  int calculateDimension(List<PickerLinkageItem> list) {
     int highest = 0;
     if (list.isEmpty) return highest;
     for (var element in list) {
@@ -197,21 +181,21 @@ class _MultiListWheelLinkagePickerState<T>
   }
 
   List<Widget> get buildWheels {
-    final dimension = calculateDimension(entry);
+    final dimension = calculateDimension(items);
     List<Widget> list = [];
-    List<PickerLinkageEntry> entryList = entry;
+    List<PickerLinkageItem> itemsList = items;
     if (dimension > position.length) {
       (dimension - position.length).generate((index) => position.add(0));
     }
     for (int i = 0; i < position.length; i++) {
       int e = position[i];
-      if (entryList.isNotEmpty) {
-        if (e >= entryList.length) {
-          e = entryList.length - 1;
+      if (itemsList.isNotEmpty) {
+        if (e >= itemsList.length) {
+          e = itemsList.length - 1;
         }
         position[i] = e;
-        list.add(listStateWheel(list: entryList, location: i));
-        entryList = entryList[e].children;
+        list.add(listStateWheel(list: itemsList, location: i));
+        itemsList = itemsList[e].children;
       } else {
         break;
       }
@@ -222,7 +206,8 @@ class _MultiListWheelLinkagePickerState<T>
   @override
   void didUpdateWidget(covariant MultiListWheelLinkagePicker<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
-    entry = widget.entry;
+    position = [...widget.value];
+    items = [...widget.items];
     setState(() {});
   }
 
@@ -233,10 +218,14 @@ class _MultiListWheelLinkagePickerState<T>
         height: widget.height,
         direction: Axis.horizontal,
         isScroll: widget.isScrollable,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: buildWheels.builder((item) => Universal(
-            expanded: !widget.isScrollable,
-            width: widget.itemWidth,
-            child: Center(child: item))));
+            expanded: !widget.isScrollable && widget.itemWidth == null,
+            width: widget.isScrollable && widget.itemWidth == null
+                ? kPickerDefaultItemWidth
+                : widget.itemWidth,
+            alignment: Alignment.center,
+            child: item)));
     if (widget.options == null) return multi;
     return PickerSubject<List<int>>(
         options: widget.options!,
@@ -248,7 +237,7 @@ class _MultiListWheelLinkagePickerState<T>
 
   List<int> get calculatePosition {
     final p = [...position];
-    List<PickerLinkageEntry> resultList = entry;
+    List<PickerLinkageItem> resultList = items;
     p.removeWhere((element) {
       if (resultList.isEmpty) {
         return true;
@@ -270,20 +259,20 @@ class _MultiListWheelLinkagePickerState<T>
       widget.onChanged?.call(p);
       if (widget.onValueChanged != null) {
         List<T> value = [];
-        List<PickerLinkageEntry> resultList = entry;
-        p.builder((index) {
+        List<PickerLinkageItem> resultList = items;
+        for (var index in p) {
           if (index < resultList.length) {
             value.add(resultList[index].value);
             resultList = resultList[index].children;
           }
-        });
+        }
         widget.onValueChanged!(value);
       }
     }
   }
 
   Widget listStateWheel(
-          {required List<PickerLinkageEntry> list, required int location}) =>
+          {required List<PickerLinkageItem> list, required int location}) =>
       ListWheelState(
           count: list.length,
           initialItem: position[location],

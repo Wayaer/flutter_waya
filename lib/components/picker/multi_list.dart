@@ -20,21 +20,21 @@ extension ExtensionMultiListLinkagePicker on MultiListLinkagePicker {
 
 /// 多列选择 联动
 class MultiListLinkagePicker<T> extends PickerStatefulWidget<List<int>> {
-  MultiListLinkagePicker({
+  const MultiListLinkagePicker({
     super.key,
-    required this.entry,
+    super.options,
+    super.height = kPickerDefaultHeight,
+    super.width = double.infinity,
+    super.itemWidth,
+    required this.items,
     this.value = const [],
     this.isScrollable = true,
     this.onChanged,
     this.onValueChanged,
-    this.height = kPickerDefaultHeight,
-    this.width = double.infinity,
-    this.itemWidth = kPickerDefaultWidth,
-    super.options = const PickerOptions<List<int>>(),
-  }) : super(wheelOptions: GlobalOptions().wheelOptions);
+  }) : super(wheelOptions: null);
 
   /// 要渲染的数据
-  final List<PickerListLinkageEntry<T>> entry;
+  final List<PickerListLinkageEntry<T>> items;
 
   /// 是否可以横向滚动
   /// [isScrollable]==true 使用[SingleChildScrollView]创建
@@ -50,15 +50,6 @@ class MultiListLinkagePicker<T> extends PickerStatefulWidget<List<int>> {
   /// onValueChanged
   final PickerPositionValueChanged<T>? onValueChanged;
 
-  /// height
-  final double height;
-
-  /// width
-  final double width;
-
-  /// itemWidth
-  final double itemWidth;
-
   @override
   State<MultiListLinkagePicker<T>> createState() =>
       _MultiListLinkagePickerState<T>();
@@ -66,33 +57,37 @@ class MultiListLinkagePicker<T> extends PickerStatefulWidget<List<int>> {
 
 class _MultiListLinkagePickerState<T>
     extends ExtendedState<MultiListLinkagePicker<T>> {
-  List<PickerListLinkageEntry<T>> entry = [];
+  List<PickerListLinkageEntry<T>> items = [];
   List<int?> position = [null];
   int currentListLength = 0;
 
   @override
   void initState() {
     super.initState();
-    entry = widget.entry;
+    items = widget.items;
   }
 
   @override
   void didUpdateWidget(covariant MultiListLinkagePicker<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
-    entry = widget.entry;
+    items = widget.items;
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
+    log(!widget.isScrollable);
     final multiList = Universal(
         width: widget.width,
         height: widget.height,
         direction: Axis.horizontal,
         isScroll: widget.isScrollable,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: buildList.builder((item) => Universal(
-            expanded: !widget.isScrollable,
-            width: widget.itemWidth,
+            expanded: !widget.isScrollable && widget.itemWidth == null,
+            width: widget.isScrollable && widget.itemWidth == null
+                ? kPickerDefaultItemWidth
+                : widget.itemWidth,
             child: item)));
     if (widget.options == null) return multiList;
     return PickerSubject<List<int>>(
@@ -118,7 +113,7 @@ class _MultiListLinkagePickerState<T>
       widget.onChanged?.call(getPosition);
       if (widget.onValueChanged != null) {
         List<T> value = [];
-        List<PickerListLinkageEntry> resultList = entry;
+        List<PickerListLinkageEntry> resultList = items;
         getPosition.builder((index) {
           if (index < resultList.length) {
             value.add(resultList[index].value);
@@ -132,7 +127,7 @@ class _MultiListLinkagePickerState<T>
 
   List<Widget> get buildList {
     List<Widget> list = [];
-    List<PickerListLinkageEntry> currentEntry = entry;
+    List<PickerListLinkageEntry> currentEntry = items;
     position.length.generate((index) {
       var itemPosition = position[index] ?? 0;
       if (currentEntry.isNotEmpty) {

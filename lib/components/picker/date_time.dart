@@ -15,23 +15,22 @@ typedef DateTimePickerContentBuilder = Widget Function(String content);
 class DateTimePicker extends PickerStatefulWidget<DateTime> {
   DateTimePicker({
     super.key,
+    super.options,
+    super.wheelOptions,
+    super.height = kPickerDefaultHeight,
+    super.width = double.infinity,
+    super.itemWidth,
     this.unit = const DateTimePickerUnit.all(),
     this.dual = true,
-    this.contentBuilder,
+    this.itemBuilder,
     this.onChanged,
-    this.height = kPickerDefaultHeight,
-    this.width = double.infinity,
-    this.itemWidth,
-    super.options = const PickerOptions<DateTime>(),
     DateTime? startDate,
     DateTime? defaultDate,
     DateTime? endDate,
-    WheelOptions? wheelOptions,
   })  : startDate =
             startDate ?? DateTime.now().subtract(const Duration(days: 1)),
         defaultDate = defaultDate ?? DateTime.now(),
-        endDate = endDate ?? DateTime.now(),
-        super(wheelOptions: wheelOptions ?? GlobalOptions().wheelOptions);
+        endDate = endDate ?? DateTime.now();
 
   /// 补全双位数
   final bool dual;
@@ -41,7 +40,7 @@ class DateTimePicker extends PickerStatefulWidget<DateTime> {
   final DateTimePickerUnit unit;
 
   /// content builder
-  final DateTimePickerContentBuilder? contentBuilder;
+  final DateTimePickerContentBuilder? itemBuilder;
 
   /// 开始时间
   final DateTime startDate;
@@ -54,15 +53,6 @@ class DateTimePicker extends PickerStatefulWidget<DateTime> {
 
   /// onChanged
   final DateTimePickerChanged? onChanged;
-
-  /// height
-  final double height;
-
-  /// width
-  final double width;
-
-  /// wheel width
-  final double? itemWidth;
 
   @override
   State<DateTimePicker> createState() => _DateTimePickerState();
@@ -97,8 +87,6 @@ class _DateTimePickerState extends ExtendedState<DateTimePicker> {
 
   bool isScrolling = false;
 
-  late WheelOptions wheelOptions;
-
   StateSetter? dayState;
 
   @override
@@ -118,7 +106,6 @@ class _DateTimePickerState extends ExtendedState<DateTimePicker> {
       : startDate.add(const Duration(days: 1));
 
   void initialize() {
-    wheelOptions = widget.wheelOptions;
     unit = widget.unit;
     startDate = widget.startDate;
     endDate = initEndDate;
@@ -184,10 +171,6 @@ class _DateTimePickerState extends ExtendedState<DateTimePicker> {
       widget.onChanged?.call(current);
     }
   }
-
-  /// 显示双数还是单数
-  String valuePadLeft(int value) =>
-      widget.dual ? value.toString().padLeft(2, '0') : value.toString();
 
   /// wheel数组添加数据
   List<int> addList(int maxNumber) => maxNumber.generate((int index) => index);
@@ -316,19 +299,16 @@ class _DateTimePickerState extends ExtendedState<DateTimePicker> {
   }
 
   DateTime currentDateTime() => DateTime(
-        unit.year == null ? defaultDate.year : yearData[yearIndex],
-        unit.month == null ? defaultDate.month : (monthData[monthIndex] + 1),
-        unit.day == null
-            ? defaultDate.day
-            : (dayIndex >= dayData.length
-                ? dayData.last
-                : dayData[dayIndex] + 1),
-        unit.hour == null ? defaultDate.hour : (hourData[hourIndex]),
-        unit.minute == null ? defaultDate.minute : (minuteData[minuteIndex]),
-        unit.second == null ? defaultDate.second : (secondData[secondIndex]),
-        defaultDate.millisecond,
-        defaultDate.microsecond,
-      );
+      unit.year == null ? defaultDate.year : yearData[yearIndex],
+      unit.month == null ? defaultDate.month : (monthData[monthIndex] + 1),
+      unit.day == null
+          ? defaultDate.day
+          : (dayIndex >= dayData.length ? dayData.last : dayData[dayIndex] + 1),
+      unit.hour == null ? defaultDate.hour : (hourData[hourIndex]),
+      unit.minute == null ? defaultDate.minute : (minuteData[minuteIndex]),
+      unit.second == null ? defaultDate.second : (secondData[secondIndex]),
+      defaultDate.millisecond,
+      defaultDate.microsecond);
 
   Widget wheelItem(List<int> list,
       {FixedExtentScrollController? controller,
@@ -349,21 +329,23 @@ class _DateTimePickerState extends ExtendedState<DateTimePicker> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         width: widget.itemWidth,
-        children: this.unit.length == 0
-            ? null
-            : [wheel.expandedNull, buildUnit(unit)],
-        child: this.unit.length != 0 ? null : wheel);
+        children:
+            unit.isEmptyOrNull ? null : [wheel.expandedNull, buildUnit(unit)],
+        child: unit.isNotEmptyOrNull ? null : wheel);
   }
 
   Widget buildUnit(String? unit) =>
       this.unit.builder?.call(unit) ??
       Center(child: BText(unit!, style: context.textTheme.bodyLarge));
 
-  Widget buildContent(String content) =>
-      widget.contentBuilder?.call(content) ??
-      Center(
-          child:
-              BText(content, fontSize: 12, style: context.textTheme.bodyLarge));
+  Widget itemBuilder(int value) {
+    final content =
+        widget.dual ? value.toString().padLeft(2, '0') : value.toString();
+    return widget.itemBuilder?.call(content) ??
+        Center(
+            child: BText(content,
+                fontSize: 12, style: context.textTheme.bodyLarge));
+  }
 
   Widget buildListWheel(
           {List<int>? list,
@@ -374,13 +356,13 @@ class _DateTimePickerState extends ExtendedState<DateTimePicker> {
           controller: controller,
           itemCount: list!.length,
           onChanged: (_) {},
-          itemBuilder: (_, int index) => buildContent(
-              valuePadLeft(startZero ? list[index] : list[index] + 1)),
+          itemBuilder: (_, int index) =>
+              itemBuilder(startZero ? list[index] : list[index] + 1),
           onScrollEnd: (int index) {
             onChanged?.call(index);
             this.onChanged();
           },
-          options: wheelOptions);
+          options: widget.wheelOptions);
 
   void jumpToIndex(int index, FixedExtentScrollController? controller) {
     if (index != controller?.selectedItem) {
@@ -401,14 +383,14 @@ class _DateTimePickerState extends ExtendedState<DateTimePicker> {
 }
 
 class DateTimePickerUnit {
-  const DateTimePickerUnit.none()
-      : builder = null,
-        year = null,
-        month = null,
-        day = null,
-        hour = null,
-        minute = null,
-        second = null;
+  const DateTimePickerUnit.none(
+      {this.builder,
+      this.year = '',
+      this.month = '',
+      this.day = '',
+      this.hour = '',
+      this.minute = '',
+      this.second = ''});
 
   const DateTimePickerUnit.all(
       {this.builder,
@@ -538,6 +520,7 @@ class DateTimePickerUnit {
         month = null,
         day = null;
 
+  /// 设置为 null 则不显示wheel，设置为空字符串 者不显示unit
   final String? year;
   final String? month;
   final String? day;

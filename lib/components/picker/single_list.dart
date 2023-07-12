@@ -1,71 +1,5 @@
 part of 'picker.dart';
 
-extension ExtensionSingleListWheelPicker on SingleListWheelPicker {
-  Future<int?> show({BottomSheetOptions? options}) =>
-      popupBottomSheet<int?>(options: options);
-}
-
-typedef SingleListWheelPickerChanged = void Function(int index);
-
-/// 单列滚轮选择
-class SingleListWheelPicker extends PickerStatelessWidget<int> {
-  SingleListWheelPicker({
-    super.key,
-    int initialIndex = 0,
-    required this.itemCount,
-    required this.itemBuilder,
-    this.height = kPickerDefaultHeight,
-    this.width = double.infinity,
-    FixedExtentScrollController? controller,
-    super.options = const PickerOptions<int>(),
-    this.onChanged,
-
-    /// Wheel配置信息
-    WheelOptions? wheelOptions,
-  })  : controller = controller ??
-            FixedExtentScrollController(initialItem: initialIndex),
-        super(wheelOptions: wheelOptions ?? GlobalOptions().wheelOptions);
-
-  /// 渲染子组件
-  final int itemCount;
-  final IndexedWidgetBuilder itemBuilder;
-
-  /// height
-  final double height;
-
-  /// width
-  final double width;
-
-  /// 控制器
-  final FixedExtentScrollController? controller;
-
-  /// onChanged
-  final SingleListWheelPickerChanged? onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    int? index;
-    final single = SizedBox(
-        width: width,
-        height: height,
-        child: _PickerListWheel(
-            onChanged: (int i) {
-              if (index == i) return;
-              index = i;
-            },
-            onScrollEnd: onChanged,
-            options: wheelOptions,
-            controller: controller,
-            itemBuilder: itemBuilder,
-            itemCount: itemCount));
-    if (options == null) return single;
-    return PickerSubject<int>(
-        options: options!,
-        child: single,
-        confirmTap: () => controller?.selectedItem ?? 0);
-  }
-}
-
 extension ExtensionSingleListPicker on SingleListPicker {
   Future<List<int>?> show({BottomSheetOptions? options}) =>
       popupBottomSheet<List<int>?>(
@@ -84,7 +18,7 @@ class SingleListPicker extends StatelessWidget {
     this.initialIndex = const [],
     this.height = kPickerDefaultHeight,
     this.width = double.infinity,
-    this.options = const PickerOptions<List<int>>(),
+    this.options,
     this.singleListPickerOptions = const SingleListPickerOptions(),
     this.listBuilder,
     this.onChanged,
@@ -149,7 +83,10 @@ class SingleListPickerOptions {
   const SingleListPickerOptions(
       {this.isCustomGestureTap = false, this.allowedMultipleChoice = true});
 
+  ///
   final bool isCustomGestureTap;
+
+  /// 允许多项选择
   final bool allowedMultipleChoice;
 }
 

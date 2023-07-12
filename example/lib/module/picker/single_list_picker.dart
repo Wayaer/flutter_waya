@@ -1,7 +1,7 @@
 part of 'picker_page.dart';
 
 class _SingleListPickerPage extends StatelessWidget {
-  _SingleListPickerPage({Key? key}) : super(key: key);
+  const _SingleListPickerPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,8 +15,7 @@ class _SingleListPickerPage extends StatelessWidget {
               onTap: () => singleListPickerWithScreen(context)),
           ElevatedText('show SingleListPicker custom',
               onTap: customSingleListPicker),
-          Backboard(SingleListPicker(
-              options: null,
+          BackCard(SingleListPicker(
               height: 210,
               onChanged: (List<int> index) {
                 log(index);
@@ -44,8 +43,6 @@ class _SingleListPickerPage extends StatelessWidget {
         ]);
   }
 
-  final numberList = ['一', '二', '三', '四', '五', '六', '七', '八', '十'];
-
   Future<void> singleColumnPicker() async {
     final int? index = await SingleListWheelPicker(
             itemBuilder: (BuildContext context, int index) => Container(
@@ -61,6 +58,7 @@ class _SingleListPickerPage extends StatelessWidget {
     final list = 40.generate((index) => index.toString());
     final value = await SingleListPicker(
         itemCount: list.length,
+        options: BasePickerOptions(),
         listBuilder: (int itemCount, IndexedWidgetBuilder itemBuilder) {
           return ScrollList.builder(
               gridStyle: GridStyle.masonry,
@@ -86,6 +84,7 @@ class _SingleListPickerPage extends StatelessWidget {
     final list = 40.generate((index) => index.toString());
     final value = await SingleListPicker(
         itemCount: list.length,
+        options: BasePickerOptions(),
         singleListPickerOptions: const SingleListPickerOptions(
             isCustomGestureTap: true, allowedMultipleChoice: false),
         itemBuilder: (context, index, isSelect, changedFun) {
@@ -112,7 +111,7 @@ class _SingleListPickerPage extends StatelessWidget {
     List<String> screen = [];
     final value = await SingleListPicker(
         itemCount: list.length,
-        options: PickerOptions(
+        options: BasePickerOptions<List<int>>().merge(PickerOptions(
             bottom: Universal(
           child: DropdownMenus<String, String>(
               onChanged: (String key, String? value) {
@@ -135,7 +134,7 @@ class _SingleListPickerPage extends StatelessWidget {
                         child: BText(value, style: context.textTheme.bodyLarge)
                             .paddingSymmetric(vertical: 10),
                       ))))),
-        )),
+        ))),
         singleListPickerOptions: const SingleListPickerOptions(
             isCustomGestureTap: true, allowedMultipleChoice: false),
         itemBuilder: (context, index, isSelect, changedFun) {

@@ -49,7 +49,9 @@ void main() {
       ToastOptions(positioned: Alignment.center, duration: 2.seconds));
 
   /// 设置全局BottomSheet配置
-  globalOptions.setBottomSheetOptions(const BottomSheetOptions());
+  globalOptions.setBottomSheetOptions(const BottomSheetOptions(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(12)))));
   globalOptions
       .setDialogOptions(const DialogOptions(fromStyle: PopupFromStyle.fromTop));
 
@@ -110,8 +112,8 @@ class _AppState extends ExtendedState<_App> {
   @override
   Widget build(BuildContext context) {
     return ExtendedWidgetsApp(
-        theme: ThemeData.light(),
-        darkTheme: ThemeData.dark(),
+        theme: ThemeData.light(useMaterial3: true),
+        darkTheme: ThemeData.dark(useMaterial3: true),
         locale: DevicePreview.locale(context),
         title: 'Waya UI',
         home: _Home(),

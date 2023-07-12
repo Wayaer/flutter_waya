@@ -14,52 +14,46 @@ class _DateTimePickerPage extends StatelessWidget {
           ElevatedText('show DateTimePicker', onTap: pick),
           ElevatedText('show DateTimePicker with date',
               onTap: () => pick(const DateTimePickerUnit.yd())),
-          buildDateTimePicker(const DateTimePickerUnit.all()),
-          buildDateTimePicker(const DateTimePickerUnit.ydm()),
-          buildDateTimePicker(const DateTimePickerUnit.yh()),
-          buildDateTimePicker(const DateTimePickerUnit.yd()),
-          buildDateTimePicker(const DateTimePickerUnit.ym()),
-          buildDateTimePicker(const DateTimePickerUnit.mhs()),
-          buildDateTimePicker(const DateTimePickerUnit.mm()),
-          buildDateTimePicker(const DateTimePickerUnit.mh()),
-          buildDateTimePicker(const DateTimePickerUnit.md()),
-          buildDateTimePicker(const DateTimePickerUnit.ds()),
-          buildDateTimePicker(const DateTimePickerUnit.dm()),
+          buildDateTimePicker(DateTimePickerUnit.all(
+              builder: (value) => Text(
+                    value ?? '',
+                    style: const TextStyle(fontSize: 9),
+                  ))),
+          buildDateTimePicker(
+              const DateTimePickerUnit.yd(year: '年', month: '', day: '')),
           buildDateTimePicker(const DateTimePickerUnit.dh()),
-          buildDateTimePicker(const DateTimePickerUnit.hs()),
-          buildDateTimePicker(const DateTimePickerUnit.hm()),
-          buildDateTimePicker(const DateTimePickerUnit.ms()),
         ]);
   }
 
   Widget buildDateTimePicker(DateTimePickerUnit unit) =>
-      Backboard(DateTimePicker(
-          startDate: defaultDate.subtract(const Duration(days: 365)),
-          defaultDate: defaultDate,
-          endDate: defaultDate,
-          onChanged: (DateTime dateTime) {
-            log(dateTime);
-          },
-          height: 210,
-          unit: unit,
-          options: null));
+      BackCard(DateTimePicker(
+        startDate: defaultDate.subtract(const Duration(days: 365)),
+        defaultDate: defaultDate,
+        endDate: defaultDate,
+        onChanged: (DateTime dateTime) {
+          log(dateTime);
+        },
+        height: 210,
+        unit: unit,
+      ));
 
   Future<void> pick([DateTimePickerUnit? unit]) async {
     await DateTimePicker(
             dual: true,
             unit: unit ?? const DateTimePickerUnit.all(),
-            options: PickerOptions<DateTime>(
-                contentPadding: const EdgeInsets.symmetric(horizontal: 12),
-                verifyConfirm: (DateTime? dateTime) {
-                  showToast(dateTime?.format(DateTimeDist.yearSecond) ??
-                      'verifyConfirm');
-                  return true;
-                },
-                verifyCancel: (DateTime? dateTime) {
-                  showToast(dateTime?.format(DateTimeDist.yearSecond) ??
-                      'verifyCancel');
-                  return true;
-                }),
+            options:
+                BasePickerOptions<DateTime>().merge(PickerOptions<DateTime>(
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+                    verifyConfirm: (DateTime? dateTime) {
+                      showToast(dateTime?.format(DateTimeDist.yearSecond) ??
+                          'verifyConfirm');
+                      return true;
+                    },
+                    verifyCancel: (DateTime? dateTime) {
+                      showToast(dateTime?.format(DateTimeDist.yearSecond) ??
+                          'verifyCancel');
+                      return true;
+                    })),
             startDate: defaultDate.subtract(const Duration(days: 365)),
             defaultDate: defaultDate,
             endDate: defaultDate.add(const Duration(days: 365)))

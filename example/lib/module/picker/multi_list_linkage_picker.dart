@@ -12,10 +12,8 @@ class _MultiListLinkagePicker extends StatelessWidget {
         children: [
           10.heightBox,
           ElevatedText('show MultiListLinkagePicker',
-              onTap: () =>
-                  multiListLinkagePicker(mapToLinkageEntry(areaDataMap))),
-          Backboard(MultiListLinkagePicker<String>(
-              options: null,
+              onTap: () => pick(mapToLinkageEntry(areaDataMap))),
+          BackCard(MultiListLinkagePicker<String>(
               height: 300,
               onChanged: (List<int> index) {
                 log('MultiListLinkagePicker onChanged= $index');
@@ -23,66 +21,21 @@ class _MultiListLinkagePicker extends StatelessWidget {
               onValueChanged: (List<String> list) {
                 log('MultiListLinkagePicker onValueChanged= $list');
               },
-              entry: mapToLinkageEntry(areaDataMap))),
+              items: mapToLinkageEntry(areaDataMap))),
           20.heightBox,
           ElevatedText('show MultiListLinkagePicker',
-              onTap: () => multiListLinkagePicker(multiListLinkage)),
-          Backboard(MultiListLinkagePicker<String>(
-              options: null,
-              height: 150,
+              onTap: () => pick(mapToLinkageEntry(mapABC))),
+          BackCard(MultiListLinkagePicker<String>(
+              height: 300,
               onChanged: (List<int> index) {
                 log('MultiListLinkagePicker onChanged= $index');
               },
               onValueChanged: (List<String> list) {
                 log('MultiListLinkagePicker onValueChanged= $list');
               },
-              entry: multiListLinkage)),
+              items: mapToLinkageEntry(mapABC))),
         ]);
   }
-
-  List<PickerListLinkageEntry<String>> get multiListLinkage =>
-      mapToLinkageEntry({
-        'A1': ['A2'],
-        'B1': {
-          'B2': [
-            'B3',
-            'B3',
-            'B3',
-          ],
-          'B2-1': {
-            'B3': [
-              'B4',
-              'B4',
-              'B4',
-            ]
-          }
-        },
-        'C1': {
-          'C2': {
-            'C3': {
-              'C4': {
-                'C5': [
-                  'C6',
-                  'C6',
-                  'C6',
-                  'C6',
-                  'C6',
-                ]
-              }
-            }
-          },
-          'C21': [
-            'C3',
-            'C3',
-            'C3',
-          ],
-          'C22': [
-            'C3',
-            'C3',
-            'C3',
-          ]
-        }
-      });
 
   List<PickerListLinkageEntry<String>> mapToLinkageEntry(
       Map<String, dynamic> map) {
@@ -115,10 +68,11 @@ class _MultiListLinkagePicker extends StatelessWidget {
           style:
               TextStyle(fontSize: 10, color: selected ? Colors.white : null)));
 
-  Future<void> multiListLinkagePicker(
+  Future<void> pick(
       List<PickerListLinkageEntry<String>> multiListLinkage) async {
-    final List<int>? index =
-        await MultiListLinkagePicker(entry: multiListLinkage).show();
+    final List<int>? index = await MultiListLinkagePicker(
+            options: BasePickerOptions(), items: multiListLinkage)
+        .show();
     List<PickerListLinkageEntry> resultList = multiListLinkage;
     String result = '';
     index?.builder((item) {

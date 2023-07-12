@@ -1,7 +1,7 @@
 part of 'picker_page.dart';
 
 class _MultiListWheelPicker extends StatelessWidget {
-  _MultiListWheelPicker({Key? key}) : super(key: key);
+  const _MultiListWheelPicker({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -10,29 +10,27 @@ class _MultiListWheelPicker extends StatelessWidget {
         padding: const EdgeInsets.all(10),
         isScroll: true,
         children: [
-          ElevatedText('show MultiListWheelPicker',
-              onTap: multiListWheelPicker),
+          ElevatedText('show MultiListWheelPicker', onTap: pick),
           20.heightBox,
-          Backboard(MultiListWheelPicker(
-              options: null,
+          BackCard(MultiListWheelPicker(
               height: 150,
               value: const [2, 3, 4, 6, 6],
               onChanged: (List<int> index) {
                 log('MultiListWheelPicker onChanged= $index');
               },
-              entry: multiListWheelList)),
+              items: multiListWheelList)),
         ]);
   }
 
-  final List<String> letterList = ['A', 'B', 'C', 'D', 'E', 'F'];
-
-  List<PickerEntry> get multiListWheelList => 5.generate((_) => PickerEntry(
+  List<PickerItem> get multiListWheelList => 5.generate((_) => PickerItem(
       itemCount: letterList.length,
       itemBuilder: (_, int index) => Text(letterList[index])));
 
-  Future<void> multiListWheelPicker() async {
+  Future<void> pick() async {
     final List<int>? index = await MultiListWheelPicker(
-            entry: multiListWheelList, isScrollable: true)
+            options: BasePickerOptions(),
+            items: multiListWheelList,
+            isScrollable: true)
         .show();
     if (index != null) {
       String result = '';

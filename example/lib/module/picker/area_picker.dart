@@ -11,8 +11,7 @@ class _AreaPickerPage extends StatelessWidget {
         isScroll: true,
         children: [
           ElevatedText('show AreaPicker', onTap: pick),
-          Backboard(MultiListWheelLinkagePicker<String>(
-              options: null,
+          BackCard(MultiListWheelLinkagePicker<String>(
               wheelOptions: const WheelOptions.cupertino(),
               height: 210,
               onChanged: (List<int> index) {
@@ -21,13 +20,14 @@ class _AreaPickerPage extends StatelessWidget {
               onValueChanged: (List<String> list) {
                 log('AreaPicker onValueChanged= $list');
               },
-              entry: mapToLinkageEntry(areaDataMap))),
+              items: mapToLinkageEntry(areaDataMap))),
         ]);
   }
 
   Future<void> pick() async {
-    final entry = mapToLinkageEntry(areaDataMap);
+    final items = mapToLinkageEntry(areaDataMap);
     final position = await MultiListWheelLinkagePicker<String>(
+            options: BasePickerOptions(),
             height: 200,
             onChanged: (List<int> index) {
               log('AreaPicker onChanged= $index');
@@ -35,12 +35,12 @@ class _AreaPickerPage extends StatelessWidget {
             onValueChanged: (List<String> list) {
               log('AreaPicker onValueChanged= $list');
             },
-            entry: entry,
+            items: items,
             isScrollable: false)
         .show();
     if (position == null) return;
     List<String> value = [];
-    List<PickerLinkageEntry> resultList = entry;
+    List<PickerLinkageItem> resultList = items;
     position.builder((index) {
       if (index < resultList.length) {
         value.add(resultList[index].value);
@@ -50,19 +50,19 @@ class _AreaPickerPage extends StatelessWidget {
     showToast(value.toString());
   }
 
-  List<PickerLinkageEntry<String>> mapToLinkageEntry(Map<String, dynamic> map) {
-    List<PickerLinkageEntry<String>> buildEntry(Map<String, dynamic> map) =>
+  List<PickerLinkageItem<String>> mapToLinkageEntry(Map<String, dynamic> map) {
+    List<PickerLinkageItem<String>> buildEntry(Map<String, dynamic> map) =>
         map.builderEntry((entry) {
           final value = entry.value;
-          List<PickerLinkageEntry<String>> valueList = [];
+          List<PickerLinkageItem<String>> valueList = [];
           if (value is Map<String, dynamic>) {
             valueList = buildEntry(value);
           } else if (value is List) {
-            valueList = value.builder((item) => PickerLinkageEntry<String>(
+            valueList = value.builder((item) => PickerLinkageItem<String>(
                 value: item,
                 child: Text(item, style: const TextStyle(fontSize: 10))));
           }
-          return PickerLinkageEntry<String>(
+          return PickerLinkageItem<String>(
               value: entry.key,
               child: Text(entry.key, style: const TextStyle(fontSize: 10)),
               children: valueList);
