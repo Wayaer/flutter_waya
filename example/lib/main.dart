@@ -84,8 +84,8 @@ class _CustomAppState extends ExtendedState<_CustomApp> {
         title: 'Waya UI',
         locale: DevicePreview.locale(context),
         builder: DevicePreview.appBuilder,
-        theme: ThemeData.light(),
-        darkTheme: ThemeData.dark(),
+        theme: ThemeData.light(useMaterial3: true),
+        darkTheme: ThemeData.dark(useMaterial3: true),
         home: _Home());
   }
 }
@@ -185,7 +185,6 @@ class AppBarText extends AppBar {
   AppBarText(String text, {super.key})
       : super(
             elevation: 0,
-            systemOverlayStyle: const SystemUiOverlayStyleLight(),
             title: BText(text, fontSize: 18, fontWeight: FontWeight.bold),
             centerTitle: true);
 }
@@ -243,9 +242,10 @@ class Partition extends StatelessWidget {
       width: double.infinity,
       color: Colors.grey.withOpacity(0.2),
       alignment: Alignment.center,
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.all(10),
       margin: const EdgeInsets.symmetric(vertical: 20),
-      child: BText(title, fontWeight: FontWeight.bold));
+      child: BText(title,
+          textAlign: TextAlign.center, fontWeight: FontWeight.bold));
 }
 
 const List<Color> colors = <Color>[

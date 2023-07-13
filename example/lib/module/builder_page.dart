@@ -44,7 +44,7 @@ class ExtendedBuilderPage extends StatelessWidget {
               onWaiting: (_, data) {
                 return const CircularProgressIndicator();
               }),
-          const Partition('ExtendedFutureBuilder'),
+          const Partition('CustomStreamBuilder'),
           CustomStreamBuilder<String>(
               stream: Stream.fromFuture(future(false)),
               onDone: (_, String data) {
@@ -59,7 +59,7 @@ class ExtendedBuilderPage extends StatelessWidget {
               onWaiting: (_) {
                 return const CircularProgressIndicator();
               }),
-          const Partition('ExtendedFutureBuilder'),
+          const Partition('ExtendedStreamBuilder'),
           ExtendedStreamBuilder<String>(
               initialData: '初始的数据 点击刷新',
               stream: Stream.fromFuture(future(false)),

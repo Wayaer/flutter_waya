@@ -78,14 +78,14 @@ class StateComponentsPage extends StatelessWidget {
                     padding: const EdgeInsets.all(6),
                     decoration:
                         BoxDecoration(color: Colors.grey.withOpacity(0.4)),
-                    useNull: true,
+                    tristate: true,
                     builder: (bool? value) {
                       if (value != null) {
                         return Icon(value
                             ? Icons.check_box
                             : Icons.check_box_outline_blank);
                       }
-                      return const Icon(Icons.check_box_outlined);
+                      return const Icon(Icons.indeterminate_check_box);
                     }),
                 CheckBox(
                     value: false,
@@ -101,55 +101,65 @@ class StateComponentsPage extends StatelessWidget {
               ]),
           const Partition('Checkbox 官方附加状态版本'),
           Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-            CheckboxState(
+            ChangedBuilder<bool?>(
                 value: true,
                 onChanged: (bool? value) {},
-                builder: (bool? value, CheckboxStateChanged onChanged) =>
-                    Checkbox(
-                        tristate: true, value: value, onChanged: onChanged)),
-            CheckboxState(
+                builder: (bool? value, onChanged) => Checkbox(
+                    tristate: true, value: value, onChanged: onChanged)),
+            ChangedBuilder<bool?>(
                 value: true,
                 onWaitChanged: (bool? value) async {
                   await 1.seconds.delayed();
                   return value;
                 },
-                builder: (bool? value, CheckboxStateChanged onChanged) =>
-                    Checkbox(
-                        shape: const CircleBorder(),
-                        tristate: true,
-                        value: value,
-                        onChanged: onChanged)),
+                builder: (bool? value, onChanged) => Checkbox(
+                    shape: const CircleBorder(),
+                    tristate: true,
+                    value: value,
+                    onChanged: onChanged)),
           ]),
-          const Partition('SwitchState 官方附加状态版本'),
+          const Partition('XSwitch'),
           Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-            SwitchState(
+            ChangedBuilder<bool>(
                 value: true,
                 onChanged: (bool value) {},
-                builder: (bool value, SwitchStateChanged onChanged) =>
+                builder: (bool value, onChanged) => XSwitch(
+                    value: value,
+                    size: const Size(50, 28),
+                    activeColor: Colors.purple,
+                    onChanged: onChanged)),
+            ChangedBuilder<bool>(
+                value: true,
+                onWaitChanged: (bool value) async {
+                  await 1.seconds.delayed();
+                  return value;
+                },
+                builder: (bool value, onChanged) => XSwitch(
+                    value: value,
+                    activeColor: Colors.purple,
+                    onChanged: onChanged)),
+          ]),
+          const Partition('Switch 官方附加状态版本'),
+          Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+            ChangedBuilder<bool>(
+                value: true,
+                onChanged: (bool value) {},
+                builder: (bool value, onChanged) =>
                     Switch(value: value, onChanged: onChanged)),
-            SwitchState(
-                value: true,
-                onWaitChanged: (bool value) async {
-                  await 1.seconds.delayed();
-                  return value;
-                },
-                builder: (bool value, SwitchStateChanged onChanged) =>
-                    Switch.adaptive(value: value, onChanged: onChanged)),
-          ]),
-          const Partition('CupertinoSwitch SwitchState 官方附加状态版本'),
-          Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-            SwitchState(
+            ChangedBuilder<bool>(
                 value: true,
                 onChanged: (bool value) {},
-                builder: (bool value, SwitchStateChanged onChanged) =>
-                    CupertinoSwitch(value: value, onChanged: onChanged)),
-            SwitchState(
+                builder: (bool value, onChanged) => CupertinoSwitch(
+                    value: value,
+                    trackColor: Colors.red,
+                    onChanged: onChanged)),
+            ChangedBuilder<bool>(
                 value: true,
                 onWaitChanged: (bool value) async {
                   await 1.seconds.delayed();
                   return value;
                 },
-                builder: (bool value, SwitchStateChanged onChanged) =>
+                builder: (bool value, onChanged) =>
                     CupertinoSwitch(value: value, onChanged: onChanged)),
           ]),
           const Partition('SendSMS'),
@@ -160,7 +170,8 @@ class StateComponentsPage extends StatelessWidget {
               },
               padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
               decoration: BoxDecoration(
-                  color: Colors.blue, borderRadius: BorderRadius.circular(4)),
+                  color: context.theme.primaryColor,
+                  borderRadius: BorderRadius.circular(4)),
               onTap: (Function sending) async {
                 1.seconds.delayed(() {
                   sending(true);
@@ -187,7 +198,7 @@ class StateComponentsPage extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
                   decoration: BoxDecoration(
-                      color: Colors.blue,
+                      color: context.theme.primaryColor,
                       borderRadius: BorderRadius.circular(4)),
                   child: BText(i.toString()))),
           const SizedBox(height: 100),

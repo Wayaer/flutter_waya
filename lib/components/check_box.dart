@@ -1,69 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-typedef CheckboxStateWaitChanged = Future<bool?> Function(bool? value);
-
-typedef CheckboxStateBuilder = Widget Function(
-    bool? value, CheckboxStateChanged onChanged);
-
-typedef CheckboxStateChanged = void Function(bool? value);
-
-/// 官方版增加状态
-class CheckboxState extends StatelessWidget {
-  const CheckboxState(
-      {super.key,
-      required this.value,
-      this.onChanged,
-      this.onWaitChanged,
-      this.initState,
-      this.dispose,
-      this.didChangeDependencies,
-      this.didUpdateWidget,
-      required this.builder});
-
-  /// build [Checkbox]
-  final CheckboxStateBuilder builder;
-
-  ///  value
-  final bool? value;
-
-  /// onChanged
-  final ValueChanged<bool?>? onChanged;
-
-  /// onWaitChanged
-  final CheckboxStateWaitChanged? onWaitChanged;
-
-  /// initState
-  final ValueCallback<BuildContext>? initState;
-
-  /// dispose
-  final ValueCallback<BuildContext>? dispose;
-
-  /// didChangeDependencies
-  final ValueCallback<BuildContext>? didChangeDependencies;
-
-  /// didUpdateWidget
-  final ValueCallback<BuildContext>? didUpdateWidget;
-
-  @override
-  Widget build(BuildContext context) => ValueBuilder<bool?>(
-      initialValue: value,
-      initState: initState,
-      dispose: dispose,
-      didChangeDependencies: didChangeDependencies,
-      didUpdateWidget: didUpdateWidget,
-      builder: (_, bool? value, Function updater) => builder(value, (bool? v) {
-            onChanged?.call(v);
-            if (onWaitChanged != null) {
-              onWaitChanged!(v).then((result) {
-                updater(result);
-              });
-            } else {
-              updater(v);
-            }
-          }));
-}
-
 typedef CheckBoxStateBuilder = Widget Function(bool? value);
 
 /// 自定义版
@@ -72,7 +9,7 @@ class CheckBox extends StatefulWidget {
     super.key,
     this.value = false,
     required this.builder,
-    this.useNull = false,
+    this.tristate = false,
     this.onChanged,
     this.decoration,
     this.margin,
@@ -83,7 +20,7 @@ class CheckBox extends StatefulWidget {
   final CheckBoxStateBuilder builder;
 
   /// bool 类型是否使用后null
-  final bool useNull;
+  final bool tristate;
 
   /// 初始化值 默认为 false
   final bool? value;
@@ -123,7 +60,7 @@ class _CheckBoxState extends ExtendedState<CheckBox> {
   }
 
   void changeState() {
-    if (widget.useNull) {
+    if (widget.tristate) {
       if (value == null) {
         value = true;
       } else {

@@ -10,7 +10,7 @@ typedef ValueBuilderCallback<T> = Widget Function(
 /// ```
 /// ValueBuilder<T>(
 ///   initialValue: T,
-///   builder: (BuildContext context, bool value, ValueCallback<T> update) {
+///   builder: (BuildContext context, T value, ValueCallback<T> update) {
 ///
 ///   return (你需要局部刷新的组件)
 ///
@@ -21,10 +21,10 @@ typedef ValueBuilderCallback<T> = Widget Function(
 class ValueBuilder<T> extends StatefulWidget {
   const ValueBuilder({
     super.key,
+    required this.builder,
     this.initialValue,
     this.initState,
     this.didChangeDependencies,
-    required this.builder,
     this.didUpdateWidget,
     this.onUpdate,
     this.deactivate,
@@ -202,9 +202,9 @@ typedef StatefulWidgetFunction = void Function(
 class ExtendedStatefulBuilder extends StatefulWidget {
   const ExtendedStatefulBuilder({
     super.key,
+    required this.builder,
     this.initState,
     this.didChangeDependencies,
-    required this.builder,
     this.didUpdateWidget,
     this.deactivate,
     this.dispose,
@@ -651,4 +651,59 @@ class ExtendedStreamBuilder<T> extends StreamBuilder {
               return onDone?.call(context, snapshot.data) ?? const SizedBox();
           }
         });
+}
+
+typedef ValueWaitChanged<T> = Future<T> Function(T value);
+
+typedef ChangedBuilderWidget<T> = Widget Function(
+    T value, ValueChanged<T> onChanged);
+
+class ChangedBuilder<T> extends StatelessWidget {
+  const ChangedBuilder({
+    super.key,
+    required this.value,
+    required this.builder,
+    this.onChanged,
+    this.initState,
+    this.dispose,
+    this.didChangeDependencies,
+    this.didUpdateWidget,
+    this.onWaitChanged,
+  });
+
+  final T value;
+
+  final ChangedBuilderWidget<T> builder;
+
+  final ValueChanged<T>? onChanged;
+
+  final ValueWaitChanged<T>? onWaitChanged;
+
+  /// initState
+  final ValueCallback<BuildContext>? initState;
+
+  /// dispose
+  final ValueCallback<BuildContext>? dispose;
+
+  /// didChangeDependencies
+  final ValueCallback<BuildContext>? didChangeDependencies;
+
+  /// didUpdateWidget
+  final ValueCallback<BuildContext>? didUpdateWidget;
+
+  @override
+  Widget build(BuildContext context) => ValueBuilder<T>(
+      initialValue: value,
+      initState: initState,
+      dispose: dispose,
+      didChangeDependencies: didChangeDependencies,
+      didUpdateWidget: didUpdateWidget,
+      builder: (_, T? value, Function update) => builder(value as T, (T v) {
+            onChanged?.call(v);
+            if (onWaitChanged != null) {
+              onWaitChanged!(v).then((result) => update(result));
+            } else {
+              update(v);
+            }
+          }));
 }

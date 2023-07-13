@@ -5,6 +5,8 @@ import 'package:flutter_waya/flutter_waya.dart';
 typedef PinBoxTextFieldBuilder = Widget Function(
     PinTextFieldBuilderConfig builderConfig);
 
+typedef PinBoxTextFieldTextBuilder = Widget Function(String text);
+
 class PinBox extends StatefulWidget {
   const PinBox(
       {super.key,
@@ -21,6 +23,7 @@ class PinBox extends StatefulWidget {
       this.pinDecoration,
       this.hasFocusPinDecoration,
       this.textStyle,
+      this.textBuilder,
       this.boxSize = const Size(40, 40),
       this.spaces = const [],
       this.inputLimitFormatter = TextInputLimitFormatter.text,
@@ -63,6 +66,9 @@ class PinBox extends StatefulWidget {
 
   /// box 内文字样式
   final TextStyle? textStyle;
+
+  /// text builder
+  final PinBoxTextFieldTextBuilder? textBuilder;
 
   /// box 方框的大小
   final Size boxSize;
@@ -135,7 +141,8 @@ class _PinBoxState extends ExtendedState<PinBox> {
           decoration:
               hasFocus ? widget.pinDecoration : widget.hasFocusPinDecoration,
           alignment: Alignment.center,
-          child: BText(texts[i], style: widget.textStyle)));
+          child: widget.textBuilder?.call(texts[i]) ??
+              BText(texts[i], style: widget.textStyle)));
     }
     final List<Widget> children = [];
     if (spaces.isNotEmpty) {

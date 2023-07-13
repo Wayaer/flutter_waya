@@ -27,14 +27,13 @@ class TextFieldPage extends StatelessWidget {
                 Icon(Icons.ac_unit, size: 12),
               ],
               hasFocusPinDecoration: BoxDecoration(
-                  color: Colors.purple,
-                  border: Border.all(color: Colors.purple),
+                  color: context.theme.disabledColor,
+                  border: Border.all(color: context.theme.primaryColor),
                   borderRadius: BorderRadius.circular(4)),
               pinDecoration: BoxDecoration(
-                  color: Colors.yellow,
-                  border: Border.all(color: Colors.yellow),
-                  borderRadius: BorderRadius.circular(4)),
-              textStyle: const TextStyle(color: Colors.white)),
+                  color: context.theme.primaryColor,
+                  border: Border.all(color: context.theme.disabledColor),
+                  borderRadius: BorderRadius.circular(4))),
           const Partition('PinBox builder'),
           PinBox(
               builder: (PinTextFieldBuilderConfig builderConfig) => TextField(
@@ -60,12 +59,12 @@ class TextFieldPage extends StatelessWidget {
                 Icon(Icons.ac_unit, size: 12),
               ],
               hasFocusPinDecoration: BoxDecoration(
-                  color: Colors.purple,
-                  border: Border.all(color: Colors.purple),
+                  color: context.theme.disabledColor,
+                  border: Border.all(color: context.theme.primaryColor),
                   borderRadius: BorderRadius.circular(4)),
               pinDecoration: BoxDecoration(
-                  color: Colors.yellow,
-                  border: Border.all(color: Colors.yellow),
+                  color: context.theme.primaryColor,
+                  border: Border.all(color: context.theme.disabledColor),
                   borderRadius: BorderRadius.circular(4)),
               textStyle: const TextStyle(color: Colors.white)),
           const SizedBox(height: 20),

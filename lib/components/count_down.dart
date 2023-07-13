@@ -21,7 +21,7 @@ class CountDown extends StatefulWidget {
     this.duration = const Duration(seconds: 5),
     this.onChanged,
     required this.builder,
-    this.periodic = 1000,
+    this.periodic = 1,
     this.type = CountDownType.seconds,
   });
 

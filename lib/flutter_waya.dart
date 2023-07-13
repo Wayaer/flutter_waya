@@ -31,7 +31,7 @@ export 'components/spinKit/spin_kit.dart';
 export 'components/swiper/indicator.dart';
 export 'components/swiper/pagination.dart';
 export 'components/swiper/swiper.dart';
-export 'components/switch.dart';
+export 'components/x_switch.dart';
 export 'components/count_down.dart';
 export 'components/expansion_tiles.dart';
 export 'components/toggle_rotate.dart';

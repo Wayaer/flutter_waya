@@ -15,7 +15,7 @@ class ComponentsPage extends StatelessWidget {
           children: [
             const Partition('ExpansionTiles'),
             ExpansionTiles(
-                backgroundColor: Colors.amber,
+                backgroundColor: context.theme.primaryColor,
                 title: const BText('title'),
                 children: 5.generate((int index) => Universal(
                     margin: const EdgeInsets.all(12),
