@@ -1,8 +1,13 @@
 part of 'picker.dart';
 
 extension ExtensionDatePicker on DatePicker {
-  Future<DateTime?> show({BottomSheetOptions? options}) =>
-      popupBottomSheet<DateTime?>(options: options);
+  Future<DateTime?> show({BottomSheetOptions? options}) async {
+    final position = await popupBottomSheet<List<int>?>(options: options);
+    if (position == null || key == null) return null;
+    return (key as GlobalKey<_DatePickerState>)
+        .currentState
+        ?.indexToDatetime(position);
+  }
 }
 
 typedef DatePickerContentBuilder = Widget Function(String content);
@@ -11,7 +16,7 @@ typedef DatePickerUnitBuilder = Widget Function(String? unit);
 
 class DatePicker extends PickerStatefulWidget<DateTime> {
   DatePicker({
-    super.key,
+    Key? key,
     super.options,
     super.wheelOptions,
     super.height = kPickerDefaultHeight,
@@ -27,7 +32,8 @@ class DatePicker extends PickerStatefulWidget<DateTime> {
   })  : startDate =
             startDate ?? DateTime.now().subtract(const Duration(days: 1)),
         defaultDate = defaultDate ?? DateTime.now(),
-        endDate = endDate ?? DateTime.now();
+        endDate = endDate ?? DateTime.now(),
+        super(key: key ?? GlobalKey<_DatePickerState>());
 
   /// 补全双位数
   final bool dual;
@@ -54,13 +60,20 @@ class DatePicker extends PickerStatefulWidget<DateTime> {
   State<DatePicker> createState() => _DatePickerState();
 }
 
+class _DateValue {
+  _DateValue(this.value, this.dateTime);
+
+  final String value;
+  final DateTime dateTime;
+}
+
 class _DatePickerState extends State<DatePicker> {
   /// 时间
   late DateTime startDate, defaultDate, endDate;
   bool isScrolling = false;
 
   late DatePickerUnit unit;
-  late List<PickerLinkageItem<String>> items;
+  late List<PickerLinkageItem<_DateValue>> items;
   late List<int> position = [];
 
   late bool hasYear;
@@ -115,8 +128,8 @@ class _DatePickerState extends State<DatePicker> {
             mI = 0;
             yI += 1;
           }
-          final entry = buildEntry(current.year, unit.year,
-              hasMonth ? buildEntry(current.month, unit.month) : null);
+          final entry = buildEntry(current, current.year, unit.year,
+              hasMonth ? buildEntry(current, current.month, unit.month) : null);
           items.add(entry);
           if (current.year == defaultDate.year && position.isEmpty) {
             final i = items.indexOf(entry);
@@ -137,28 +150,33 @@ class _DatePickerState extends State<DatePicker> {
   }
 
   void addDay(
-      DateTime current, List<PickerLinkageItem<String>> items, int length) {
-    final entry = buildEntry(current.day, unit.day);
+      DateTime current, List<PickerLinkageItem<_DateValue>> items, int length) {
+    final entry = buildEntry(current, current.day, unit.day);
     items.add(entry);
-    if (current.day == defaultDate.day && position.length == length) {
+    if (current.format(DateTimeDist.yearDay) ==
+            defaultDate.format(DateTimeDist.yearDay) &&
+        position.length == length) {
       final i = items.indexOf(entry);
       position.add(i >= 0 ? i : 0);
     }
   }
 
   void addMonth(
-      DateTime current, List<PickerLinkageItem<String>> items, int length) {
-    final entry = buildEntry(current.month, unit.month,
-        hasDay ? buildEntry(current.day, unit.day) : null);
+      DateTime current, List<PickerLinkageItem<_DateValue>> items, int length) {
+    final entry = buildEntry(current, current.month, unit.month,
+        hasDay ? buildEntry(current, current.day, unit.day) : null);
     items.add(entry);
-    if (current.month == defaultDate.month && position.length == length) {
+    if (current.format(DateTimeDist.yearMonth) ==
+            defaultDate.format(DateTimeDist.yearMonth) &&
+        position.length == length) {
       final i = items.indexOf(entry);
       position.add(i >= 0 ? i : 0);
     }
   }
 
-  PickerLinkageItem<String> buildEntry(int value, String? unit,
-      [PickerLinkageItem<String>? secondary]) {
+  PickerLinkageItem<_DateValue> buildEntry(
+      DateTime dateTime, int value, String? unit,
+      [PickerLinkageItem<_DateValue>? secondary]) {
     String text = '';
     text = widget.dual ? value.toString().padLeft(2, '0') : value.toString();
     Widget buildText() {
@@ -166,8 +184,8 @@ class _DatePickerState extends State<DatePicker> {
       return widget.itemBuilder?.call(text) ?? Text(text);
     }
 
-    return PickerLinkageItem<String>(
-        value: text,
+    return PickerLinkageItem<_DateValue>(
+        value: _DateValue(text, dateTime),
         child: buildText(),
         children: [if (secondary != null) secondary]);
   }
@@ -181,7 +199,7 @@ class _DatePickerState extends State<DatePicker> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiListWheelLinkagePicker<String>(
+    return MultiListWheelLinkagePicker<_DateValue>(
         items: items,
         value: position,
         options: widget.options == null
@@ -198,40 +216,42 @@ class _DatePickerState extends State<DatePicker> {
                 confirm: widget.options!.confirm,
                 cancel: widget.options!.cancel),
         wheelOptions: widget.wheelOptions,
-        onChanged: onChanged,
+        onChanged: (List<int> index) {
+          if (widget.onChanged != null) {
+            final datetime = indexToDatetime(index);
+            if (datetime != null) widget.onChanged!(datetime);
+          }
+        },
         width: widget.width,
         isScrollable: false,
         height: widget.height,
         itemWidth: widget.itemWidth);
   }
 
-  void onChanged(List<int> index) {
-    if (widget.onChanged != null) {
-      List<String> value = [];
-      List<PickerLinkageItem> resultList = items;
-      for (var element in index) {
-        if (element < resultList.length) {
-          value.add(resultList[element].value);
-          resultList = resultList[element].children;
-        }
+  DateTime? indexToDatetime(List<int> index) {
+    List<_DateValue> value = [];
+    List<PickerLinkageItem<_DateValue>> resultList = items;
+    for (var element in index) {
+      if (element < resultList.length) {
+        value.add(resultList[element].value);
+        resultList = resultList[element].children;
       }
-      if (value.isEmpty) return;
-      String? year;
-      String? month;
-      String? day;
-      if (hasYear) {
-        year = value.first;
-        month = value[1];
-        if (hasDay) day = value.last;
-      } else {
-        month = value.first;
-        if (hasDay) day = value.last;
-      }
-      final now = DateTime.now();
-      final dateTime =
-          DateTime.tryParse('${year ?? now.year}-$month-${day ?? now.day}');
-      if (dateTime != null) widget.onChanged!(dateTime);
     }
+    if (value.isEmpty) return null;
+    String? year;
+    String? month;
+    String? day;
+    if (hasYear) {
+      year = value.first.value;
+      month = value[1].value;
+      if (hasDay) day = value.last.value;
+    } else {
+      year = value.first.dateTime.year.toString();
+      month = value.first.value;
+      if (hasDay) day = value.last.value;
+    }
+    final now = DateTime.now();
+    return DateTime.tryParse('$year-$month-${day ?? now.day}');
   }
 }
 

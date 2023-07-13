@@ -30,9 +30,9 @@ class _DatePickerPage extends StatelessWidget {
   }) =>
       DatePicker(
           height: 200,
-          startDate: defaultDate.subtract(const Duration(days: 600)),
+          startDate: defaultDate.subtract(const Duration(days: 365)),
+          endDate: defaultDate.add(const Duration(days: 365)),
           defaultDate: defaultDate,
-          endDate: defaultDate,
           options: options,
           onChanged: (DateTime dateTime) {
             log(dateTime);
@@ -42,7 +42,7 @@ class _DatePickerPage extends StatelessWidget {
           unit: unit);
 
   Future<void> pick([DatePickerUnit? unit]) async {
-    await buildDatePicker(unit ?? const DatePickerUnit.yd(),
+    final result = await buildDatePicker(unit ?? const DatePickerUnit.yd(),
         wheelOptions: const WheelOptions.cupertino(
             selectionOverlay: CupertinoPickerDefaultSelectionOverlay(
                 background: Colors.transparent)),
@@ -65,5 +65,6 @@ class _DatePickerPage extends StatelessWidget {
                   dateTime?.format(DateTimeDist.yearDay) ?? 'verifyCancel');
               return true;
             }))).show();
+    if (result != null) showToast(result.toString());
   }
 }
