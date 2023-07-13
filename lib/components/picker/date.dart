@@ -235,6 +235,9 @@ class _DatePickerState extends State<DatePicker> {
       if (element < resultList.length) {
         value.add(resultList[element].value);
         resultList = resultList[element].children;
+      } else {
+        value.add(resultList.last.value);
+        resultList = resultList.last.children;
       }
     }
     if (value.isEmpty) return null;
