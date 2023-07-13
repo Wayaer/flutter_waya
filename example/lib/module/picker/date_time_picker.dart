@@ -8,7 +8,7 @@ class _DateTimePickerPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ExtendedScaffold(
         appBar: AppBarText('DateTimePicker'),
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(15),
         isScroll: true,
         children: [
           ElevatedText('show DateTimePicker', onTap: pick),
@@ -28,16 +28,15 @@ class _DateTimePickerPage extends StatelessWidget {
   DateTimePicker buildDateTimePicker(DateTimePickerUnit unit,
           {PickerOptions<DateTime>? options}) =>
       DateTimePicker(
-        options: options,
-        startDate: defaultDate.subtract(const Duration(days: 365)),
-        defaultDate: defaultDate,
-        endDate: defaultDate.add(const Duration(days: 365)),
-        onChanged: (DateTime dateTime) {
-          log(dateTime);
-        },
-        height: 210,
-        unit: unit,
-      );
+          options: options,
+          startDate: defaultDate.subtract(const Duration(days: 365)),
+          defaultDate: defaultDate,
+          endDate: defaultDate.add(const Duration(days: 365)),
+          onChanged: (DateTime dateTime) {
+            log(dateTime);
+          },
+          height: 200,
+          unit: unit);
 
   Future<void> pick([DateTimePickerUnit? unit]) async {
     await buildDateTimePicker(unit ?? const DateTimePickerUnit.all(),

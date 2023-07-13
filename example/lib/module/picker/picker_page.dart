@@ -116,14 +116,6 @@ class PickerPage extends StatelessWidget {
               push(const _AreaPickerPage());
             }),
             10.heightBox,
-            ElevatedText('SingleListPicker', onTap: () {
-              push(const _SingleListPickerPage());
-            }),
-            10.heightBox,
-            ElevatedText('SingleListWheelPicker', onTap: () {
-              push(const _SingleListWheelPickerPage());
-            }),
-            10.heightBox,
             ElevatedText('MultiListLinkagePicker', onTap: () {
               push(const _MultiListLinkagePicker());
             }),
@@ -134,6 +126,14 @@ class PickerPage extends StatelessWidget {
             10.heightBox,
             ElevatedText('MultiListWheelLinkagePicker', onTap: () {
               push(const _MultiListWheelLinkagePicker());
+            }),
+            10.heightBox,
+            ElevatedText('SingleListPicker', onTap: () {
+              push(const _SingleListPickerPage());
+            }),
+            10.heightBox,
+            ElevatedText('SingleListWheelPicker', onTap: () {
+              push(const _SingleListWheelPickerPage());
             }),
             10.heightBox,
             ElevatedText('show CustomPicker', onTap: customPicker),

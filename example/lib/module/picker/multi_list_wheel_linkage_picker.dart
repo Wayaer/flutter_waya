@@ -7,29 +7,52 @@ class _MultiListWheelLinkagePicker extends StatelessWidget {
   Widget build(BuildContext context) {
     return ExtendedScaffold(
         appBar: AppBarText('MultiListWheelLinkagePicker'),
-        padding: const EdgeInsets.symmetric(horizontal: 10),
+        padding: const EdgeInsets.all(15),
         isScroll: true,
         children: [
-          const Partition('MultiListWheelLinkagePicker'),
           ElevatedText('show MultiListWheelLinkagePicker with area',
-              onTap: () => pick(mapToLinkageEntry(areaDataMap))),
+              onTap: () => pick(mapToLinkageItems(areaDataMap))),
+          BackCard(buildMultiListWheelLinkagePicker(
+              mapToLinkageItems(areaDataMap),
+              isScrollable: true)),
           20.heightBox,
-          ElevatedText('show MultiListWheelLinkagePicker',
-              onTap: () => pick(mapToLinkageEntry(mapABC))),
-          BackCard(MultiListWheelLinkagePicker<String>(
-              height: 150,
-              onChanged: (List<int> index) {
-                log('MultiListWheelLinkagePicker onChanged= $index');
-              },
-              onValueChanged: (List<String> list) {
-                log('MultiListWheelLinkagePicker onValueChanged= $list');
-              },
-              items: mapToLinkageEntry(mapABC),
+          ElevatedText('show MultiListWheelLinkagePicker custom',
+              onTap: () => pick(mapToLinkageItems(mapABC))),
+          BackCard(buildMultiListWheelLinkagePicker(mapToLinkageItems(mapABC),
               isScrollable: true)),
         ]);
   }
 
-  List<PickerLinkageItem<String>> mapToLinkageEntry(Map<String, dynamic> map) {
+  Future<void> pick(List<PickerLinkageItem<String>> items) async {
+    final List<int>? index = await buildMultiListWheelLinkagePicker(items,
+            options: BasePickerOptions(), isScrollable: false)
+        .show();
+    List<PickerLinkageItem> resultList = items;
+    List<String> result = [];
+    index?.builder((item) {
+      result.add(resultList[item].value);
+      resultList = resultList[item].children;
+    });
+    if (result.isNotEmpty) showToast(result.toString());
+  }
+
+  MultiListWheelLinkagePicker<String> buildMultiListWheelLinkagePicker(
+          List<PickerLinkageItem<String>> items,
+          {PickerOptions<List<int>>? options,
+          bool isScrollable = false}) =>
+      MultiListWheelLinkagePicker<String>(
+          height: 200,
+          options: options,
+          onChanged: (List<int> index) {
+            log('MultiListWheelLinkagePicker onChanged= $index');
+          },
+          onValueChanged: (List<String> list) {
+            log('MultiListWheelLinkagePicker onValueChanged= $list');
+          },
+          items: items,
+          isScrollable: isScrollable);
+
+  List<PickerLinkageItem<String>> mapToLinkageItems(Map<String, dynamic> map) {
     List<PickerLinkageItem<String>> buildEntry(Map<String, dynamic> map) =>
         map.builderEntry((entry) {
           final value = entry.value;
@@ -49,18 +72,5 @@ class _MultiListWheelLinkagePicker extends StatelessWidget {
               children: valueList);
         });
     return buildEntry(map);
-  }
-
-  Future<void> pick<T>(List<PickerLinkageItem<T>> items) async {
-    final List<int>? index = await MultiListWheelLinkagePicker(
-            options: BasePickerOptions(), items: items, isScrollable: false)
-        .show();
-    List<PickerLinkageItem> resultList = items;
-    String result = '';
-    index?.builder((item) {
-      result += resultList[item].value;
-      resultList = resultList[item].children;
-    });
-    if (result.isNotEmpty) showToast(result);
   }
 }

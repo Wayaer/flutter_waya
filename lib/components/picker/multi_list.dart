@@ -1,16 +1,16 @@
 part of 'picker.dart';
 
-typedef PickerListLinkageEntryBuilder = Widget Function(bool selected);
+typedef PickerListLinkageItemBuilder = Widget Function(bool selected);
 
-class PickerListLinkageEntry<T> {
-  const PickerListLinkageEntry(
+class PickerListLinkageItem<T> {
+  const PickerListLinkageItem(
       {required this.value, required this.child, this.children = const []});
 
-  final PickerListLinkageEntryBuilder child;
+  final PickerListLinkageItemBuilder child;
 
   final T value;
 
-  final List<PickerListLinkageEntry<T>> children;
+  final List<PickerListLinkageItem<T>> children;
 }
 
 extension ExtensionMultiListLinkagePicker on MultiListLinkagePicker {
@@ -34,7 +34,7 @@ class MultiListLinkagePicker<T> extends PickerStatefulWidget<List<int>> {
   }) : super(wheelOptions: null);
 
   /// 要渲染的数据
-  final List<PickerListLinkageEntry<T>> items;
+  final List<PickerListLinkageItem<T>> items;
 
   /// 是否可以横向滚动
   /// [isScrollable]==true 使用[SingleChildScrollView]创建
@@ -57,7 +57,7 @@ class MultiListLinkagePicker<T> extends PickerStatefulWidget<List<int>> {
 
 class _MultiListLinkagePickerState<T>
     extends ExtendedState<MultiListLinkagePicker<T>> {
-  List<PickerListLinkageEntry<T>> items = [];
+  List<PickerListLinkageItem<T>> items = [];
   List<int?> position = [null];
   int currentListLength = 0;
 
@@ -76,7 +76,6 @@ class _MultiListLinkagePickerState<T>
 
   @override
   Widget build(BuildContext context) {
-    log(!widget.isScrollable);
     final multiList = Universal(
         width: widget.width,
         height: widget.height,
@@ -113,7 +112,7 @@ class _MultiListLinkagePickerState<T>
       widget.onChanged?.call(getPosition);
       if (widget.onValueChanged != null) {
         List<T> value = [];
-        List<PickerListLinkageEntry> resultList = items;
+        List<PickerListLinkageItem> resultList = items;
         getPosition.builder((index) {
           if (index < resultList.length) {
             value.add(resultList[index].value);
@@ -127,7 +126,7 @@ class _MultiListLinkagePickerState<T>
 
   List<Widget> get buildList {
     List<Widget> list = [];
-    List<PickerListLinkageEntry> currentEntry = items;
+    List<PickerListLinkageItem> currentEntry = items;
     position.length.generate((index) {
       var itemPosition = position[index] ?? 0;
       if (currentEntry.isNotEmpty) {
@@ -146,7 +145,7 @@ class _MultiListLinkagePickerState<T>
   }
 
   Widget scrollList(
-          {required List<PickerListLinkageEntry> list,
+          {required List<PickerListLinkageItem> list,
           required int positionIndex,
           required int? positionValue}) =>
       ScrollList.builder(

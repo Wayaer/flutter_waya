@@ -7,37 +7,43 @@ class _MultiListWheelPicker extends StatelessWidget {
   Widget build(BuildContext context) {
     return ExtendedScaffold(
         appBar: AppBarText('MultiListWheelPicker'),
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(15),
         isScroll: true,
         children: [
           ElevatedText('show MultiListWheelPicker', onTap: pick),
           20.heightBox,
-          BackCard(MultiListWheelPicker(
-              height: 150,
-              value: const [2, 3, 4, 6, 6],
-              onChanged: (List<int> index) {
-                log('MultiListWheelPicker onChanged= $index');
-              },
-              items: multiListWheelList)),
+          BackCard(buildMultiListWheelPicker()),
         ]);
   }
 
-  List<PickerItem> get multiListWheelList => 5.generate((_) => PickerItem(
-      itemCount: letterList.length,
-      itemBuilder: (_, int index) => Text(letterList[index])));
-
   Future<void> pick() async {
-    final List<int>? index = await MultiListWheelPicker(
-            options: BasePickerOptions(),
-            items: multiListWheelList,
-            isScrollable: true)
+    final List<int>? index = await buildMultiListWheelPicker(
+            options: BasePickerOptions(), isScrollable: true)
         .show();
     if (index != null) {
-      String result = '';
+      List<String> result = [];
       for (var element in index) {
-        result += letterList[element];
+        result.add(letterList[element]);
       }
-      if (result.isNotEmpty) showToast(result);
+      if (result.isNotEmpty) showToast(result.toString());
     }
   }
+
+  MultiListWheelPicker buildMultiListWheelPicker(
+          {PickerOptions<List<int>>? options, bool isScrollable = false}) =>
+      MultiListWheelPicker(
+          height: 200,
+          options: options,
+          wheelOptions: const WheelOptions.cupertino(),
+          value: const [2, 3, 4, 6, 6],
+          onChanged: (List<int> index) {
+            log('MultiListWheelPicker onChanged= $index');
+          },
+          items: multiListWheelList);
+
+  List<PickerItem> get multiListWheelList => 5.generate((_) => PickerItem(
+      itemCount: letterList.length,
+      itemBuilder: (_, int index) => Center(
+          child:
+              Text(letterList[index], style: const TextStyle(fontSize: 16)))));
 }

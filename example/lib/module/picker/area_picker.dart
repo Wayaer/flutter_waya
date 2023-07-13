@@ -7,36 +7,36 @@ class _AreaPickerPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ExtendedScaffold(
         appBar: AppBarText('AreaPicker'),
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(15),
         isScroll: true,
         children: [
           ElevatedText('show AreaPicker', onTap: pick),
-          BackCard(MultiListWheelLinkagePicker<String>(
-              wheelOptions: const WheelOptions.cupertino(),
-              height: 210,
-              onChanged: (List<int> index) {
-                log('AreaPicker onChanged= $index');
-              },
-              onValueChanged: (List<String> list) {
-                log('AreaPicker onValueChanged= $list');
-              },
-              items: mapToLinkageEntry(areaDataMap))),
+          BackCard(
+              buildMultiListWheelLinkagePicker(mapToLinkageItems(areaDataMap))),
         ]);
   }
 
+  MultiListWheelLinkagePicker buildMultiListWheelLinkagePicker(
+    List<PickerLinkageItem<String>> items, {
+    PickerOptions<List<int>>? options,
+  }) =>
+      MultiListWheelLinkagePicker<String>(
+          options: options,
+          wheelOptions: const WheelOptions.cupertino(),
+          height: 200,
+          onChanged: (List<int> index) {
+            log('AreaPicker onChanged= $index');
+          },
+          onValueChanged: (List<String> list) {
+            log('AreaPicker onValueChanged= $list');
+          },
+          items: items,
+          isScrollable: false);
+
   Future<void> pick() async {
-    final items = mapToLinkageEntry(areaDataMap);
-    final position = await MultiListWheelLinkagePicker<String>(
-            options: BasePickerOptions(),
-            height: 200,
-            onChanged: (List<int> index) {
-              log('AreaPicker onChanged= $index');
-            },
-            onValueChanged: (List<String> list) {
-              log('AreaPicker onValueChanged= $list');
-            },
-            items: items,
-            isScrollable: false)
+    final items = mapToLinkageItems(areaDataMap);
+    final position = await buildMultiListWheelLinkagePicker(items,
+            options: BasePickerOptions())
         .show();
     if (position == null) return;
     List<String> value = [];
@@ -50,7 +50,7 @@ class _AreaPickerPage extends StatelessWidget {
     showToast(value.toString());
   }
 
-  List<PickerLinkageItem<String>> mapToLinkageEntry(Map<String, dynamic> map) {
+  List<PickerLinkageItem<String>> mapToLinkageItems(Map<String, dynamic> map) {
     List<PickerLinkageItem<String>> buildEntry(Map<String, dynamic> map) =>
         map.builderEntry((entry) {
           final value = entry.value;

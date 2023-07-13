@@ -33,25 +33,13 @@ class _SingleListPickerPage extends StatelessWidget {
               itemBuilder: (context, index, isSelect, changedFun) {
                 return Universal(
                     alignment: Alignment.center,
-                    decoration:
-                        BoxDecoration(color: isSelect ? Colors.blue : null),
+                    decoration: buildBoxDecoration(isSelect, context),
                     direction: Axis.horizontal,
                     padding: const EdgeInsets.symmetric(vertical: 6),
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    child: BText('第 $index 项'));
+                    child: buildText(index, isSelect, context));
               })),
         ]);
-  }
-
-  Future<void> singleColumnPicker() async {
-    final int? index = await SingleListWheelPicker(
-            itemBuilder: (BuildContext context, int index) => Container(
-                alignment: Alignment.center,
-                child: Text(numberList[index],
-                    style: context.textTheme.bodyLarge)),
-            itemCount: numberList.length)
-        .show();
-    showToast(index == null ? 'null' : numberList[index].toString());
   }
 
   Future<void> customSingleListPicker() async {
@@ -71,11 +59,11 @@ class _SingleListPickerPage extends StatelessWidget {
         itemBuilder: (context, index, isSelect, changedFun) {
           return Universal(
               alignment: Alignment.center,
-              decoration: BoxDecoration(color: isSelect ? Colors.blue : null),
+              decoration: buildBoxDecoration(isSelect, context),
               direction: Axis.horizontal,
               padding: const EdgeInsets.symmetric(vertical: 6),
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              child: BText('第 $index 项'));
+              child: buildText(index, isSelect, context));
         }).show();
     showToast(value.toString());
   }
@@ -93,7 +81,7 @@ class _SingleListPickerPage extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 20),
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                BText('第 $index 项'),
+                buildText(index, isSelect, context),
                 Checkbox(
                     value: isSelect,
                     onChanged: (value) {
@@ -161,4 +149,12 @@ class _SingleListPickerPage extends StatelessWidget {
         }).show();
     showToast(value.toString());
   }
+
+  BoxDecoration buildBoxDecoration(bool isSelect, BuildContext context) =>
+      BoxDecoration(
+          borderRadius: BorderRadius.circular(6),
+          color: isSelect ? context.theme.primaryColor : null);
+
+  Widget buildText(int index, bool isSelect, BuildContext context) =>
+      BText('第 $index 项', color: isSelect ? Colors.white : null);
 }

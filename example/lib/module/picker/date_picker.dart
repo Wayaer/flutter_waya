@@ -8,7 +8,7 @@ class _DatePickerPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ExtendedScaffold(
         appBar: AppBarText('DatePicker'),
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(15),
         isScroll: true,
         children: [
           ElevatedText('show DatePicker', onTap: pick),
@@ -29,6 +29,7 @@ class _DatePickerPage extends StatelessWidget {
     WheelOptions? wheelOptions,
   }) =>
       DatePicker(
+          height: 200,
           startDate: defaultDate.subtract(const Duration(days: 600)),
           defaultDate: defaultDate,
           endDate: defaultDate,
@@ -38,8 +39,7 @@ class _DatePickerPage extends StatelessWidget {
           },
           itemBuilder: (String text) =>
               Text(text, style: const TextStyle(fontSize: 16)),
-          unit: unit,
-          height: 210);
+          unit: unit);
 
   Future<void> pick([DatePickerUnit? unit]) async {
     await buildDatePicker(unit ?? const DatePickerUnit.yd(),
