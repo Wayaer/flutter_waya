@@ -83,7 +83,7 @@ extension ExtensionWidgetMethod on Widget {
     if (options.fromStyle != PopupFromStyle.fromCenter) {
       transitionBuilder = options.transitionBuilder ??
           (__, Animation<double> animation, _, Widget child) {
-            late Offset translation;
+            Offset translation;
             switch (options!.fromStyle) {
               case PopupFromStyle.fromLeft:
                 translation = Offset(animation.value - 1, 0);
