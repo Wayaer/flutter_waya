@@ -3,93 +3,261 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_waya/flutter_waya.dart';
 
 class XSwitch extends StatefulWidget {
-  const XSwitch(
-      {Key? key,
-      required this.value,
-      required this.onChanged,
-      this.activeColor,
-      this.trackColor = Colors.black54,
-      this.thumbColor = CupertinoColors.white,
-      this.radius = 14.0,
-      this.size = const Size(51.0, 30.0),
-      this.animateDuration = const Duration(milliseconds: 250)})
-      : super(key: key);
+  const XSwitch({
+    super.key,
+    required this.value,
+    required this.onChanged,
+    this.activeColor,
+    this.trackColor,
+    this.thumbColor = Colors.white,
+    this.radius = 12.0,
+    this.size = const Size(48.0, 24.0),
+    this.duration = const Duration(milliseconds: 250),
+    this.dragStartBehavior = DragStartBehavior.start,
+  });
 
+  /// Whether this switch is on or off.
+  /// Must not be null.
   final bool value;
 
+  /// ```dart
+  /// XSwitch(
+  ///   value: _giveVerse,
+  ///   onChanged: (bool newValue) {
+  ///     setState(() {
+  ///       _giveVerse = newValue;
+  ///     });
+  ///   },
+  /// )
+  /// ```
   final ValueChanged<bool> onChanged;
 
+  /// The color to use for the track when the switch is on.
   final Color? activeColor;
 
-  final Color trackColor;
+  /// The color to use for the track when the switch is off.
+  final Color? trackColor;
 
+  /// The color to use for the thumb of the switch.
   final Color thumbColor;
 
+  /// The radius of the middle circle
   final double radius;
 
+  /// XSwitch size
   final Size size;
 
-  final Duration animateDuration;
+  /// animate duration
+  final Duration duration;
+
+  /// {@template flutter.cupertino.CupertinoSwitch.dragStartBehavior}
+  /// Determines the way that drag start behavior is handled.
+  ///
+  /// If set to [DragStartBehavior.start], the drag behavior used to move the
+  /// switch from on to off will begin at the position where the drag gesture won
+  /// the arena. If set to [DragStartBehavior.down] it will begin at the position
+  /// where a down event was first detected.
+  ///
+  /// In general, setting this to [DragStartBehavior.start] will make drag
+  /// animation smoother and setting it to [DragStartBehavior.down] will make
+  /// drag behavior feel slightly more reactive.
+  ///
+  /// By default, the drag start behavior is [DragStartBehavior.start].
+  ///
+  /// See also:
+  ///
+  ///  * [DragGestureRecognizer.dragStartBehavior], which gives an example for
+  ///    the different behaviors.
+  ///
+  /// {@endtemplate}
+  final DragStartBehavior dragStartBehavior;
 
   @override
   State createState() => _XSwitchState();
 }
 
 class _XSwitchState extends State<XSwitch> with TickerProviderStateMixin {
+  late TapGestureRecognizer _tap;
+  late HorizontalDragGestureRecognizer _drag;
+  late AnimationController _positionController;
+  late AnimationController _reactionController;
+  late Animation<Color?> _color;
+  late CurvedAnimation _position;
+  late Size trackSize;
+  late double radius;
+  late double _kTrackWidth;
+  late double _kTrackHeight;
+  late double _kTrackRadius;
+  late double _kTrackInnerStart;
+  late double _kTrackInnerEnd;
+  late double _kTrackInnerLength;
+  bool needsPositionAnimation = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _tap = TapGestureRecognizer()
+      ..onTapDown = _handleTapDown
+      ..onTap = _handleTap
+      ..onTapUp = _handleTapUp
+      ..onTapCancel = _handleTapCancel;
+    _drag = HorizontalDragGestureRecognizer()
+      ..onStart = _handleDragStart
+      ..onUpdate = _handleDragUpdate
+      ..onEnd = _handleDragEnd
+      ..dragStartBehavior = widget.dragStartBehavior;
+    _positionController = AnimationController(
+        duration: widget.duration,
+        value: widget.value ? 1.0 : 0.0,
+        vsync: this);
+    _position =
+        CurvedAnimation(parent: _positionController, curve: Curves.bounceOut);
+    _reactionController =
+        AnimationController(duration: widget.duration, vsync: this);
+    initSize();
+  }
+
+  void initSize() {
+    trackSize = widget.size;
+    radius = widget.radius;
+    _kTrackWidth = trackSize.width;
+    _kTrackHeight = trackSize.height;
+    _kTrackRadius = _kTrackHeight / 2.0;
+    _kTrackInnerStart = _kTrackHeight / 2.0;
+    _kTrackInnerEnd = _kTrackWidth - _kTrackInnerStart;
+    _kTrackInnerLength = _kTrackInnerEnd - _kTrackInnerStart;
+  }
+
+  void _handleTapDown(TapDownDetails details) {
+    needsPositionAnimation = false;
+    _reactionController.forward();
+  }
+
+  void _handleTap() {
+    widget.onChanged(!widget.value);
+  }
+
+  void _handleTapUp(TapUpDetails details) {
+    needsPositionAnimation = false;
+    _reactionController.reverse();
+  }
+
+  void _handleTapCancel() {
+    _reactionController.reverse();
+  }
+
+  void _handleDragStart(DragStartDetails details) {
+    needsPositionAnimation = false;
+    _reactionController.forward();
+  }
+
+  void _handleDragUpdate(DragUpdateDetails details) {
+    final double delta = details.primaryDelta! / _kTrackInnerLength;
+    switch (Directionality.of(context)) {
+      case TextDirection.rtl:
+        _positionController.value -= delta;
+        break;
+      case TextDirection.ltr:
+        _positionController.value += delta;
+        break;
+    }
+  }
+
+  void _handleDragEnd(DragEndDetails details) {
+    setState(() {
+      needsPositionAnimation = true;
+    });
+    if (_position.value >= 0.5) {
+      _positionController.forward();
+    } else {
+      _positionController.reverse();
+    }
+    _reactionController.reverse();
+  }
+
+  @override
+  void didUpdateWidget(XSwitch oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _drag.dragStartBehavior = widget.dragStartBehavior;
+    initSize();
+    if (needsPositionAnimation || oldWidget.value != widget.value) {
+      _resumePositionAnimation(isLinear: needsPositionAnimation);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (needsPositionAnimation) {
+      _resumePositionAnimation();
+    }
+    final Color activeColor = widget.activeColor ?? context.theme.primaryColor;
+    Color trackColor = CupertinoDynamicColor.resolve(
+        widget.trackColor ?? CupertinoColors.secondarySystemFill, context);
+    _color = ColorTween(begin: trackColor, end: activeColor)
+        .animate(_positionController);
     return _XSwitchRenderObjectWidget(
         value: widget.value,
-        radius: widget.radius,
-        size: widget.size,
-        animateDuration: widget.animateDuration,
-        activeColor: widget.activeColor ?? Theme.of(context).primaryColor,
+        textDirection: Directionality.of(context),
+        activeColor: activeColor,
         onChanged: widget.onChanged,
         thumbColor: widget.thumbColor,
-        trackColor: widget.trackColor,
-        key: const Key('key'),
-        vsync: this);
+        trackColor: trackColor,
+        state: this);
+  }
+
+  void _resumePositionAnimation({bool isLinear = true}) {
+    _position
+      ..curve = isLinear ? Curves.linear : Curves.ease
+      ..reverseCurve = isLinear ? Curves.linear : Curves.ease.flipped;
+    if (widget.value) {
+      _positionController.forward();
+    } else {
+      _positionController.reverse();
+    }
+  }
+
+  @override
+  void dispose() {
+    _tap.dispose();
+    _drag.dispose();
+    _positionController.dispose();
+    _reactionController.dispose();
+    super.dispose();
   }
 }
 
 class _XSwitchRenderObjectWidget extends LeafRenderObjectWidget {
   const _XSwitchRenderObjectWidget(
-      {super.key,
-      required this.value,
+      {required this.value,
       required this.activeColor,
       required this.trackColor,
       required this.thumbColor,
       required this.onChanged,
-      required this.vsync,
-      required this.radius,
-      required this.size,
-      required this.animateDuration});
+      required this.state,
+      required this.textDirection});
 
-  final double radius;
-  final Size size;
-  final Duration animateDuration;
   final bool value;
   final Color activeColor;
   final Color trackColor;
   final Color thumbColor;
   final ValueChanged<bool> onChanged;
-  final TickerProvider vsync;
+  final _XSwitchState state;
+  final TextDirection textDirection;
 
   @override
   _RenderXSwitch createRenderObject(BuildContext context) {
     return _RenderXSwitch(
-        value: value,
-        activeColor: activeColor,
-        onChanged: onChanged,
-        trackColor: trackColor,
-        thumbColor: thumbColor,
-        textDirection: Directionality.of(context),
-        vsync: vsync,
-        radius: radius,
-        trackSize: size,
-        animateDuration: animateDuration);
+      value: value,
+      activeColor: activeColor,
+      onChanged: onChanged,
+      trackColor: trackColor,
+      thumbColor: thumbColor,
+      textDirection: textDirection,
+      state: state,
+    );
   }
 
   @override
@@ -100,78 +268,36 @@ class _XSwitchRenderObjectWidget extends LeafRenderObjectWidget {
       ..trackColor = trackColor
       ..onChanged = onChanged
       ..thumbColor = thumbColor
-      ..textDirection = Directionality.of(context)
-      ..vsync = vsync
-      ..radius = radius
-      ..trackSize = size;
+      ..textDirection = textDirection;
   }
 }
 
 class _RenderXSwitch extends RenderConstrainedBox {
-  _RenderXSwitch(
-      {required bool value,
-      required Color activeColor,
-      required Color trackColor,
-      required Color thumbColor,
-      required ValueChanged<bool> onChanged,
-      required TextDirection textDirection,
-      required TickerProvider vsync,
-      required this.radius,
-      required this.trackSize,
-      required Duration animateDuration})
-      : _value = value,
+  _RenderXSwitch({
+    required bool value,
+    required Color activeColor,
+    required Color trackColor,
+    required Color thumbColor,
+    required ValueChanged<bool> onChanged,
+    required TextDirection textDirection,
+    required _XSwitchState state,
+  })  : _value = value,
+        _state = state,
         _activeColor = activeColor,
         _trackColor = trackColor,
         _onChanged = onChanged,
         _textDirection = textDirection,
         _thumbColor = thumbColor,
         _thumbPainter = _XThumbPainter(color: thumbColor),
-        _vsync = vsync,
         super(
             additionalConstraints: BoxConstraints.tightFor(
-                width: trackSize.width, height: trackSize.height)) {
-    _tap = TapGestureRecognizer()
-      ..onTapDown = _handleTapDown
-      ..onTap = _handleTap
-      ..onTapUp = _handleTapUp
-      ..onTapCancel = _handleTapCancel;
-    _drag = HorizontalDragGestureRecognizer()
-      ..onStart = _handleDragStart
-      ..onUpdate = _handleDragUpdate
-      ..onEnd = _handleDragEnd;
-    _positionController = AnimationController(
-        duration: animateDuration, value: value ? 1.0 : 0.0, vsync: vsync);
-    _position =
-        CurvedAnimation(parent: _positionController, curve: Curves.bounceOut)
-          ..addListener(markNeedsPaint)
-          ..addStatusListener(_handlePositionStateChanged);
-    _reactionController =
-        AnimationController(duration: animateDuration, vsync: vsync);
-
-    _color = ColorTween(begin: _trackColor, end: _activeColor)
-        .animate(_positionController);
-    _kTrackWidth = trackSize.width;
-    _kTrackHeight = trackSize.height;
-    _kTrackRadius = _kTrackHeight / 2.0;
-    _kTrackInnerStart = _kTrackHeight / 2.0;
-    _kTrackInnerEnd = _kTrackWidth - _kTrackInnerStart;
-    _kTrackInnerLength = _kTrackInnerEnd - _kTrackInnerStart;
+                width: state.trackSize.width, height: state.trackSize.height)) {
+    _state._position
+      ..addListener(markNeedsPaint)
+      ..addStatusListener(_handlePositionStateChanged);
   }
 
-  late double _kTrackWidth;
-  late double _kTrackHeight;
-  late double _kTrackRadius;
-  late double _kTrackInnerStart;
-  late double _kTrackInnerEnd;
-  late double _kTrackInnerLength;
-  late Size trackSize;
-  late double radius;
-  late TapGestureRecognizer _tap;
-  late HorizontalDragGestureRecognizer _drag;
-  late AnimationController _positionController;
-  late AnimationController _reactionController;
-
-  late Animation<Color?> _color;
+  final _XSwitchState _state;
 
   Color _thumbColor;
 
@@ -181,30 +307,20 @@ class _RenderXSwitch extends RenderConstrainedBox {
     markNeedsPaint();
   }
 
-  CurvedAnimation? _position;
   bool _value;
 
   set value(bool value) {
     if (value == _value) return;
     _value = value;
     markNeedsSemanticsUpdate();
-    _position
-      ?..curve = Curves.bounceOut
+    _state._position
+      ..curve = Curves.bounceOut
       ..reverseCurve = Curves.bounceOut.flipped;
     if (value) {
-      _positionController.forward();
+      _state._positionController.forward();
     } else {
-      _positionController.reverse();
+      _state._positionController.reverse();
     }
-  }
-
-  TickerProvider _vsync;
-
-  set vsync(TickerProvider value) {
-    if (value == _vsync) return;
-    _vsync = value;
-    _positionController.resync(_vsync);
-    _reactionController.resync(_vsync);
   }
 
   Color _activeColor;
@@ -241,16 +357,16 @@ class _RenderXSwitch extends RenderConstrainedBox {
   void attach(PipelineOwner owner) {
     super.attach(owner);
     if (_value) {
-      _positionController.forward();
+      _state._positionController.forward();
     } else {
-      _positionController.reverse();
+      _state._positionController.reverse();
     }
-    switch (_reactionController.status) {
+    switch (_state._reactionController.status) {
       case AnimationStatus.forward:
-        _reactionController.forward();
+        _state._reactionController.forward();
         break;
       case AnimationStatus.reverse:
-        _reactionController.reverse();
+        _state._reactionController.reverse();
         break;
       case AnimationStatus.dismissed:
       case AnimationStatus.completed:
@@ -260,8 +376,8 @@ class _RenderXSwitch extends RenderConstrainedBox {
 
   @override
   void detach() {
-    _positionController.stop();
-    _reactionController.stop();
+    _state._positionController.stop();
+    _state._reactionController.stop();
     super.detach();
   }
 
@@ -273,47 +389,6 @@ class _RenderXSwitch extends RenderConstrainedBox {
     }
   }
 
-  void _handleTapDown(TapDownDetails details) {
-    _reactionController.forward();
-  }
-
-  void _handleTap() {
-    _onChanged(!_value);
-  }
-
-  void _handleTapUp(TapUpDetails details) {
-    _reactionController.reverse();
-  }
-
-  void _handleTapCancel() {
-    _reactionController.reverse();
-  }
-
-  void _handleDragStart(DragStartDetails details) {
-    _reactionController.forward();
-  }
-
-  void _handleDragUpdate(DragUpdateDetails details) {
-    final double delta = details.primaryDelta! / _kTrackInnerLength;
-    switch (_textDirection) {
-      case TextDirection.rtl:
-        _positionController.value -= delta;
-        break;
-      case TextDirection.ltr:
-        _positionController.value += delta;
-        break;
-    }
-  }
-
-  void _handleDragEnd(DragEndDetails details) {
-    if (_position!.value >= 0.5) {
-      _positionController.forward();
-    } else {
-      _positionController.reverse();
-    }
-    _reactionController.reverse();
-  }
-
   @override
   bool hitTestSelf(Offset position) => true;
 
@@ -321,15 +396,15 @@ class _RenderXSwitch extends RenderConstrainedBox {
   void handleEvent(PointerEvent event, BoxHitTestEntry entry) {
     assert(debugHandleEvent(event, entry));
     if (event is PointerDownEvent) {
-      _drag.addPointer(event);
-      _tap.addPointer(event);
+      _state._drag.addPointer(event);
+      _state._tap.addPointer(event);
     }
   }
 
   @override
   void describeSemanticsConfiguration(SemanticsConfiguration config) {
     super.describeSemanticsConfiguration(config);
-    config.onTap = _handleTap;
+    config.onTap = _state._handleTap;
     config.isEnabled = true;
     config.isToggled = _value;
   }
@@ -339,9 +414,7 @@ class _RenderXSwitch extends RenderConstrainedBox {
   @override
   void paint(PaintingContext context, Offset offset) {
     final Canvas canvas = context.canvas;
-
-    final double currentValue = _position!.value;
-
+    final double currentValue = _state._position.value;
     late double visualPosition;
     switch (_textDirection) {
       case TextDirection.rtl:
@@ -352,41 +425,40 @@ class _RenderXSwitch extends RenderConstrainedBox {
         break;
     }
 
-    final trackColor = _color.value!;
-    double borderThickness = 1.5 + (_kTrackRadius - 1.5) * 1.0;
+    double borderThickness = 1.5 + (_state._kTrackRadius - 1.5) * 1.0;
 
-    final Paint paint = Paint()..color = trackColor;
+    final Paint paint = Paint()..color = _state._color.value!;
 
     final Rect trackRect = Rect.fromLTWH(
-        offset.dx + (size.width - _kTrackWidth) / 2.0,
-        offset.dy + (size.height - _kTrackHeight) / 2.0,
-        _kTrackWidth,
-        _kTrackHeight);
-    final RRect outerRRect =
-        RRect.fromRectAndRadius(trackRect, Radius.circular(_kTrackRadius));
+        offset.dx + (size.width - _state._kTrackWidth) / 2.0,
+        offset.dy + (size.height - _state._kTrackHeight) / 2.0,
+        _state._kTrackWidth,
+        _state._kTrackHeight);
+    final RRect outerRRect = RRect.fromRectAndRadius(
+        trackRect, Radius.circular(_state._kTrackRadius));
     final RRect innerRRect = RRect.fromRectAndRadius(
-        trackRect.deflate(borderThickness), Radius.circular(_kTrackRadius));
+        trackRect.deflate(borderThickness),
+        Radius.circular(_state._kTrackRadius));
     canvas.drawDRRect(outerRRect, innerRRect, paint);
 
     final double thumbLeft = lerpDouble(
-      trackRect.left + _kTrackInnerStart - radius,
-      trackRect.left + _kTrackInnerEnd - radius,
+      trackRect.left + _state._kTrackInnerStart - _state.radius,
+      trackRect.left + _state._kTrackInnerEnd - _state.radius,
       visualPosition,
     )!;
     final double thumbRight = lerpDouble(
-      trackRect.left + _kTrackInnerStart + radius,
-      trackRect.left + _kTrackInnerEnd + radius,
+      trackRect.left + _state._kTrackInnerStart + _state.radius,
+      trackRect.left + _state._kTrackInnerEnd + _state.radius,
       visualPosition,
     )!;
     final double thumbCenterY = offset.dy + size.height / 2.0;
-
     _thumbPainter.paint(
         canvas,
         Rect.fromLTRB(
             thumbLeft + (currentValue / 2).abs() * 8.0,
-            thumbCenterY - radius,
+            thumbCenterY - _state.radius,
             thumbRight - (currentValue / 2).abs() * 8.0,
-            thumbCenterY + radius));
+            thumbCenterY + _state.radius));
   }
 }
 

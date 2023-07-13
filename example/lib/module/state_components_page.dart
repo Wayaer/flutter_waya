@@ -125,8 +125,8 @@ class StateComponentsPage extends StatelessWidget {
                 onChanged: (bool value) {},
                 builder: (bool value, onChanged) => XSwitch(
                     value: value,
-                    size: const Size(50, 28),
-                    activeColor: Colors.purple,
+                    size: const Size(50, 24),
+                    radius: 12,
                     onChanged: onChanged)),
             ChangedBuilder<bool>(
                 value: true,
@@ -134,10 +134,8 @@ class StateComponentsPage extends StatelessWidget {
                   await 1.seconds.delayed();
                   return value;
                 },
-                builder: (bool value, onChanged) => XSwitch(
-                    value: value,
-                    activeColor: Colors.purple,
-                    onChanged: onChanged)),
+                builder: (bool value, onChanged) =>
+                    XSwitch(value: value, onChanged: onChanged)),
           ]),
           const Partition('Switch 官方附加状态版本'),
           Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
@@ -149,10 +147,8 @@ class StateComponentsPage extends StatelessWidget {
             ChangedBuilder<bool>(
                 value: true,
                 onChanged: (bool value) {},
-                builder: (bool value, onChanged) => CupertinoSwitch(
-                    value: value,
-                    trackColor: Colors.red,
-                    onChanged: onChanged)),
+                builder: (bool value, onChanged) =>
+                    CupertinoSwitch(value: value, onChanged: onChanged)),
             ChangedBuilder<bool>(
                 value: true,
                 onWaitChanged: (bool value) async {
