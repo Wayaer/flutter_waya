@@ -45,7 +45,7 @@ class BubbleButton extends StatefulWidget {
   const BubbleButton({
     super.key,
     this.size = 20.0,
-    required this.bubbleBuilder,
+    required this.builder,
     double? bubblesSize,
     double? circleSize,
     this.initValue = false,
@@ -86,7 +86,7 @@ class BubbleButton extends StatefulWidget {
   final bool initValue;
 
   /// builder to create bubble widget
-  final BubbleBuilder bubbleBuilder;
+  final BubbleBuilder builder;
 
   @override
   State<StatefulWidget> createState() => _BubbleButtonState();
@@ -131,7 +131,7 @@ class _BubbleButtonState extends ExtendedState<BubbleButton>
     final AnimatedBuilder bubble = AnimatedBuilder(
         animation: _controller,
         builder: (BuildContext c, Widget? w) {
-          final Widget bubbleWidget = widget.bubbleBuilder.call(_value);
+          final Widget bubbleWidget = widget.builder.call(_value);
           return Stack(clipBehavior: Clip.none, children: [
             Positioned(
                 top: (widget.size - widget.bubblesSize) / 2.0,

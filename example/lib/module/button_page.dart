@@ -110,7 +110,7 @@ class _BubbleButtonPage extends StatelessWidget {
           BubbleButton(
               size: size,
               onTap: (bool value) async => !value,
-              bubbleBuilder: (bool value) => Universal(
+              builder: (bool value) => Universal(
                   isOval: true,
                   alignment: Alignment.center,
                   color: value ? context.theme.primaryColor : Colors.grey,
@@ -118,7 +118,7 @@ class _BubbleButtonPage extends StatelessWidget {
           BubbleButton(
               size: size,
               onTap: (bool isBubbled) async => !isBubbled,
-              bubbleBuilder: (bool isBubbled) => Icon(Icons.ac_unit,
+              builder: (bool isBubbled) => Icon(Icons.ac_unit,
                   size: size, color: isBubbled ? Colors.red : Colors.black38)),
           BubbleButton(
             size: size,
@@ -127,7 +127,7 @@ class _BubbleButtonPage extends StatelessWidget {
             bubbleColor: const BubbleColor(
                 dotFirstColor: Color(0xff33b5e5),
                 dotSecondColor: Color(0xff0099cc)),
-            bubbleBuilder: (bool value) => Icon(Icons.error,
+            builder: (bool value) => Icon(Icons.error,
                 color: value ? Colors.deepPurpleAccent : Colors.grey,
                 size: size),
           ),
@@ -138,7 +138,7 @@ class _BubbleButtonPage extends StatelessWidget {
               bubbleColor: const BubbleColor(
                   dotFirstColor: Color(0xff669900),
                   dotSecondColor: Color(0xff99cc00)),
-              bubbleBuilder: (bool value) => Icon(Icons.add_alert_outlined,
+              builder: (bool value) => Icon(Icons.add_alert_outlined,
                   color: value ? Colors.green : Colors.grey, size: size)),
         ]);
   }

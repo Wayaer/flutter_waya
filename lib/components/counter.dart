@@ -3,29 +3,29 @@ import 'package:flutter_waya/flutter_waya.dart';
 
 typedef CountBuilder = Widget Function(int count, String text);
 
-enum CountAnimationType { part, all }
+enum CountAnimationStyle { part, all }
 
 class CounterAnimation extends StatefulWidget {
   const CounterAnimation({
     super.key,
-    this.animationType = CountAnimationType.part,
+    this.style = CountAnimationStyle.part,
     this.duration = const Duration(milliseconds: 500),
     required this.count,
-    required this.countBuilder,
+    required this.builder,
     this.onTap,
   });
 
   final int count;
 
-  /// animation duration to change  count
+  /// animation duration to change count
   final Duration duration;
 
   /// animation type to change count(part,all)
-  final CountAnimationType animationType;
+  final CountAnimationStyle style;
 
-  final CountBuilder countBuilder;
+  final CountBuilder builder;
 
-  final ValueCallback<int>? onTap;
+  final ValueChanged<int>? onTap;
 
   @override
   State<CounterAnimation> createState() => _CounterAnimationState();
@@ -85,7 +85,7 @@ class _CounterAnimationState extends ExtendedState<CounterAnimation>
     Widget child;
     if (_count == _preCount) {
       child = _createCount(_count, _count.toString());
-    } else if (widget.animationType == CountAnimationType.part && !allChange) {
+    } else if (widget.style == CountAnimationStyle.part && !allChange) {
       final String samePart = count.substring(0, didIndex);
       final String preText = preCount.substring(didIndex, preCount.length);
       final String text = count.substring(didIndex, count.length);
@@ -141,7 +141,7 @@ class _CounterAnimationState extends ExtendedState<CounterAnimation>
   }
 
   Widget _createCount(int count, String text) =>
-      widget.countBuilder.call(count, text);
+      widget.builder.call(count, text);
 
   void animation() {
     _preCount = _count;

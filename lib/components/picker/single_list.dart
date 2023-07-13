@@ -20,7 +20,7 @@ class SingleListPicker extends StatelessWidget {
     this.width = double.infinity,
     this.options,
     this.singleListPickerOptions = const SingleListPickerOptions(),
-    this.listBuilder,
+    this.builder,
     this.onChanged,
   });
 
@@ -44,7 +44,7 @@ class SingleListPicker extends StatelessWidget {
   final SingleListPickerOptions singleListPickerOptions;
 
   /// 自定义渲染 list
-  final SelectScrollListBuilder? listBuilder;
+  final SelectScrollListBuilder? builder;
 
   /// onChanged
   final PickerPositionIndexChanged? onChanged;
@@ -65,7 +65,7 @@ class SingleListPicker extends StatelessWidget {
         height: height,
         child: _SingleListPickerContent(
             initialIndex: initialIndex,
-            listBuilder: listBuilder,
+            builder: builder,
             singleListPickerOptions: singleListPickerOptions,
             onChanged: (List<int> index) {
               position = index;
@@ -107,12 +107,12 @@ class _SingleListPickerContent extends StatefulWidget {
       required this.onChanged,
       required this.singleListPickerOptions,
       this.initialIndex = const [],
-      this.listBuilder});
+      this.builder});
 
   final int itemCount;
   final SelectIndexedWidgetBuilder itemBuilder;
   final SelectIndexedChanged onChanged;
-  final SelectScrollListBuilder? listBuilder;
+  final SelectScrollListBuilder? builder;
   final SingleListPickerOptions singleListPickerOptions;
   final List<int> initialIndex;
 
@@ -163,10 +163,8 @@ class _SingleListPickerContentState
       return Universal(onTap: () => changeSelect(index), child: entry);
     }
 
-    if (widget.listBuilder != null) {
-      return widget.listBuilder!.call(widget.itemCount, itemBuilder);
-    }
-    return ScrollList.builder(
-        itemBuilder: itemBuilder, itemCount: widget.itemCount);
+    return widget.builder?.call(widget.itemCount, itemBuilder) ??
+        ScrollList.builder(
+            itemBuilder: itemBuilder, itemCount: widget.itemCount);
   }
 }

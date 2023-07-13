@@ -34,21 +34,17 @@ class ComponentsPage extends StatelessWidget {
 
             /// CounterAnimation
             CounterAnimation(
-                animationType: CountAnimationType.part,
+                style: CountAnimationStyle.part,
                 count: 100,
-                onTap: (int c) {
-                  showToast(c.toString());
-                },
-                countBuilder: (int count, String text) =>
+                onTap: (int c) {},
+                builder: (int count, String text) =>
                     BText(text, fontSize: 30)).color(Colors.black12),
             const SizedBox(height: 40),
             CounterAnimation(
-                animationType: CountAnimationType.all,
+                style: CountAnimationStyle.all,
                 count: 100,
-                onTap: (int c) {
-                  showToast(c.toString());
-                },
-                countBuilder: (int count, String text) =>
+                onTap: (int c) {},
+                builder: (int count, String text) =>
                     BText(text, fontSize: 30)).color(Colors.black12),
             const Partition('ToggleRotate'),
             Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [

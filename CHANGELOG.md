@@ -1,4 +1,4 @@
-## 7.6.0
+## 8.0.0
 
 * Fix `DateTimePicker` issue
 * Delete `showUnit`, `unitStyle`,`contentStyle`, and add `itemBuilder` to DateTimePicker
@@ -10,6 +10,10 @@
 * Change the `PickerLinkageEntry` to a `PickerLinkageItem`
 * Removes all Picker `options` initial parameters, which need to be added by yourself
 * Use `ChangedBuilder` instead of `CheckboxState` and `SwitchState`
+* Change the `CountAnimationType` to `CountAnimationStyle`
+* Change `SingleListPicker`'s `listBuilder` to `builder`
+* Change `CounterAnimation`'s `countBuilder` to `builder`
+* Change `BubbleButton`'s `bubbleBuilder` to `builder`
 
 ## 7.5.2
 
