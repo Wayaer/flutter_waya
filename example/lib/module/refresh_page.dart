@@ -51,7 +51,7 @@ class _EasyRefreshPageState extends ExtendedState<EasyRefreshPage> {
                 setState(() {});
               }),
             ]),
-        body: DefaultTabController(
+        child: DefaultTabController(
           length: 3,
           child: TabBarView(
               children: 3.generate((int index) => EasyRefreshed(

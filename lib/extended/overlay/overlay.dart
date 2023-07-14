@@ -20,8 +20,9 @@ class ExtendedOverlay {
 
   /// 自定义Overlay
   ExtendedOverlayEntry? showOverlay(Widget widget, {bool autoOff = false}) {
+    assert(GlobalOptions().navigatorKey.currentState != null);
     final OverlayState? overlay =
-        GlobalOptions().globalNavigatorKey.currentState!.overlay;
+        GlobalOptions().navigatorKey.currentState!.overlay;
     if (overlay == null) return null;
     final ExtendedOverlayEntry entry =
         ExtendedOverlayEntry(autoOff: autoOff, widget: widget);

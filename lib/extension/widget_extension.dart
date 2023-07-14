@@ -11,10 +11,11 @@ extension ExtensionWidgetMethod on Widget {
   Future<T?> push<T extends Object?, TO extends Object?>(
       {bool maintainState = true,
       bool fullscreenDialog = false,
-      RoutePushStyle pushStyle = RoutePushStyle.material,
+      RoutePushStyle? pushStyle,
       RouteSettings? settings,
       bool replacement = false,
       TO? result}) {
+    assert(GlobalOptions().navigatorKey.currentState != null);
     if (replacement) {
       return pushReplacement(
           settings: settings,
@@ -23,44 +24,47 @@ extension ExtensionWidgetMethod on Widget {
           pushStyle: pushStyle,
           result: result);
     } else {
-      return GlobalOptions().globalNavigatorKey.currentState!.push(
-          buildPageRoute(
-              maintainState: maintainState,
-              fullscreenDialog: fullscreenDialog,
-              settings: settings,
-              pushStyle: pushStyle));
+      return GlobalOptions().navigatorKey.currentState!.push(buildPageRoute(
+          maintainState: maintainState,
+          fullscreenDialog: fullscreenDialog,
+          settings: settings,
+          pushStyle: pushStyle));
     }
   }
 
   /// [pushReplacement]
   Future<T?> pushReplacement<T extends Object?, TO extends Object?>(
-          {bool maintainState = true,
-          bool fullscreenDialog = false,
-          RoutePushStyle pushStyle = RoutePushStyle.material,
-          RouteSettings? settings,
-          TO? result}) =>
-      GlobalOptions().globalNavigatorKey.currentState!.pushReplacement(
-          buildPageRoute(
-              settings: settings,
-              maintainState: maintainState,
-              fullscreenDialog: fullscreenDialog,
-              pushStyle: pushStyle),
-          result: result);
+      {bool maintainState = true,
+      bool fullscreenDialog = false,
+      RoutePushStyle? pushStyle,
+      RouteSettings? settings,
+      TO? result}) {
+    assert(GlobalOptions().navigatorKey.currentState != null);
+    return GlobalOptions().navigatorKey.currentState!.pushReplacement(
+        buildPageRoute(
+            settings: settings,
+            maintainState: maintainState,
+            fullscreenDialog: fullscreenDialog,
+            pushStyle: pushStyle),
+        result: result);
+  }
 
   /// [pushAndRemoveUntil]
   Future<T?> pushAndRemoveUntil<T extends Object?>(
-          {bool maintainState = true,
-          bool fullscreenDialog = false,
-          RoutePushStyle pushStyle = RoutePushStyle.material,
-          RouteSettings? settings,
-          RoutePredicate? predicate}) =>
-      GlobalOptions().globalNavigatorKey.currentState!.pushAndRemoveUntil(
-          buildPageRoute(
-              settings: settings,
-              maintainState: maintainState,
-              fullscreenDialog: fullscreenDialog,
-              pushStyle: pushStyle),
-          predicate ?? (_) => false);
+      {bool maintainState = true,
+      bool fullscreenDialog = false,
+      RoutePushStyle? pushStyle,
+      RouteSettings? settings,
+      RoutePredicate? predicate}) {
+    assert(GlobalOptions().navigatorKey.currentState != null);
+    return GlobalOptions().navigatorKey.currentState!.pushAndRemoveUntil(
+        buildPageRoute(
+            settings: settings,
+            maintainState: maintainState,
+            fullscreenDialog: fullscreenDialog,
+            pushStyle: pushStyle),
+        predicate ?? (_) => false);
+  }
 
   /// [ExtendedOverlay().showOverlay()]
   ExtendedOverlayEntry? showOverlay({bool autoOff = false}) =>
@@ -105,8 +109,9 @@ extension ExtensionWidgetMethod on Widget {
                 translation: translation, child: child);
           };
     }
+    assert(GlobalOptions().navigatorKey.currentContext != null);
     return showGeneralDialog(
-        context: GlobalOptions().globalNavigatorKey.currentContext!,
+        context: GlobalOptions().navigatorKey.currentContext!,
         pageBuilder: builder ?? (_, Animation<double> animation, __) => this,
         barrierDismissible: options.barrierDismissible,
         barrierLabel: options.barrierLabel,
@@ -124,8 +129,9 @@ extension ExtensionWidgetMethod on Widget {
     DialogOptions? options,
   }) {
     options = GlobalOptions().dialogOptions.merge(options);
+    assert(GlobalOptions().navigatorKey.currentContext != null);
     return showCupertinoDialog(
-        context: GlobalOptions().globalNavigatorKey.currentContext!,
+        context: GlobalOptions().navigatorKey.currentContext!,
         builder: builder ?? toWidgetBuilder,
         barrierLabel: options.barrierLabel,
         barrierDismissible: options.barrierDismissible,
@@ -140,8 +146,9 @@ extension ExtensionWidgetMethod on Widget {
     DialogOptions? options,
   }) {
     options = GlobalOptions().dialogOptions.merge(options);
+    assert(GlobalOptions().navigatorKey.currentContext != null);
     return showDialog(
-        context: GlobalOptions().globalNavigatorKey.currentContext!,
+        context: GlobalOptions().navigatorKey.currentContext!,
         builder: builder ?? toWidgetBuilder,
         barrierColor: options.barrierColor,
         barrierLabel: options.barrierLabel,
@@ -157,8 +164,9 @@ extension ExtensionWidgetMethod on Widget {
   Future<T?> popupBottomSheet<T>(
       {WidgetBuilder? builder, BottomSheetOptions? options}) {
     options = GlobalOptions().bottomSheetOptions.merge(options);
+    assert(GlobalOptions().navigatorKey.currentContext != null);
     return showModalBottomSheet(
-        context: GlobalOptions().globalNavigatorKey.currentContext!,
+        context: GlobalOptions().navigatorKey.currentContext!,
         builder: builder ?? toWidgetBuilder,
         backgroundColor: options.backgroundColor,
         elevation: options.elevation,
@@ -181,8 +189,9 @@ extension ExtensionWidgetMethod on Widget {
     CupertinoModalPopupOptions? options,
   }) {
     options = GlobalOptions().cupertinoModalPopupOptions.merge(options);
+    assert(GlobalOptions().navigatorKey.currentContext != null);
     return showCupertinoModalPopup(
-        context: GlobalOptions().globalNavigatorKey.currentContext!,
+        context: GlobalOptions().navigatorKey.currentContext!,
         builder: builder ?? toWidgetBuilder,
         filter: options.filter,
         barrierColor: options.barrierColor,
@@ -196,9 +205,6 @@ extension ExtensionWidgetMethod on Widget {
 
 extension ExtensionWidget on Widget {
   Widget get toSliverBox => SliverToBoxAdapter(child: this);
-
-  SliverToBoxAdapter sliverToBoxAdapter({Key? key}) =>
-      SliverToBoxAdapter(key: key, child: this);
 
   WidgetBuilder get toWidgetBuilder => (_) => this;
 
@@ -216,9 +222,9 @@ extension ExtensionWidget on Widget {
           {bool maintainState = true,
           bool fullscreenDialog = false,
           String? title,
-          required RoutePushStyle pushStyle,
+          RoutePushStyle? pushStyle,
           RouteSettings? settings}) =>
-      pushStyle.pageRoute(
+      (pushStyle ?? GlobalOptions().pushStyle).pageRoute(
           title: title,
           settings: settings,
           maintainState: maintainState,
@@ -370,23 +376,6 @@ extension ExtensionWidget on Widget {
   SizedBox fromSize(Size size, {Key? key}) =>
       SizedBox.fromSize(key: key, size: size, child: this);
 
-  ConstrainedBox constrainedBox(BoxConstraints constraints, {Key? key}) =>
-      ConstrainedBox(key: key, constraints: constraints, child: this);
-
-  Transform transform(
-          {Key? key,
-          required Matrix4 transform,
-          Offset? origin,
-          AlignmentGeometry? alignment,
-          bool? transformHitTests}) =>
-      Transform(
-          key: key,
-          transform: transform,
-          origin: origin,
-          alignment: alignment,
-          transformHitTests: transformHitTests ?? true,
-          child: this);
-
   Hero hero(
     Object tag, {
     Key? key,
@@ -517,7 +506,7 @@ extension ExtensionWidget on Widget {
   RotatedBox rotatedBox(int quarterTurns, {Key? key}) =>
       RotatedBox(key: key, quarterTurns: quarterTurns, child: this);
 
-  ConstrainedBox intoConstrainedBox(BoxConstraints constraints, {Key? key}) =>
+  ConstrainedBox constrainedBox(BoxConstraints constraints, {Key? key}) =>
       ConstrainedBox(key: key, constraints: constraints, child: this);
 
   UnconstrainedBox unconstrainedBox(
@@ -530,84 +519,6 @@ extension ExtensionWidget on Widget {
           textDirection: textDirection,
           alignment: alignment,
           constrainedAxis: constrainedAxis,
-          child: this);
-
-  AnimatedAlign animatedAlign(Duration duration,
-          {Key? key,
-          Alignment alignment = Alignment.center,
-          Curve curve = Curves.linear,
-          VoidCallback? onEnd}) =>
-      AnimatedAlign(
-          key: key,
-          alignment: alignment,
-          curve: curve,
-          duration: duration,
-          onEnd: onEnd,
-          child: this);
-
-  AnimatedPadding animatedPadding(
-          {Key? key,
-          Curve curve = Curves.linear,
-          required Duration duration,
-          required EdgeInsetsGeometry padding,
-          VoidCallback? onEnd}) =>
-      AnimatedPadding(
-          key: key,
-          padding: padding,
-          curve: curve,
-          duration: duration,
-          onEnd: onEnd,
-          child: this);
-
-  AnimatedContainer animatedContainer(Duration duration,
-          {Key? key,
-          Alignment? alignment,
-          EdgeInsetsGeometry? padding,
-          Color? color,
-          Decoration? decoration,
-          Decoration? foregroundDecoration,
-          double? width,
-          double? height,
-          BoxConstraints? constraints,
-          EdgeInsetsGeometry? margin,
-          Matrix4? transform,
-          Curve curve = Curves.linear,
-          VoidCallback? onEnd}) =>
-      AnimatedContainer(
-          key: key,
-          alignment: alignment,
-          padding: padding,
-          color: color,
-          decoration: decoration,
-          foregroundDecoration: foregroundDecoration,
-          width: width,
-          height: height,
-          constraints: constraints,
-          margin: margin,
-          transform: transform,
-          curve: curve,
-          duration: duration,
-          onEnd: onEnd,
-          child: this);
-
-  SingleChildScrollView singleChildScrollView(
-          {Key? key,
-          Axis scrollDirection = Axis.vertical,
-          bool reverse = false,
-          EdgeInsetsGeometry? padding,
-          bool? primary,
-          ScrollPhysics? physics,
-          ScrollController? controller,
-          DragStartBehavior dragStartBehavior = DragStartBehavior.start}) =>
-      SingleChildScrollView(
-          key: key,
-          scrollDirection: scrollDirection,
-          reverse: reverse,
-          padding: padding,
-          primary: primary,
-          physics: physics,
-          controller: controller,
-          dragStartBehavior: dragStartBehavior,
           child: this);
 
   GestureDetector onTap(GestureTapCallback? onTap, {Key? key}) =>
@@ -707,37 +618,4 @@ extension ExtensionWidget on Widget {
     OverlayVisibilityMode mode = OverlayVisibilityMode.always,
   }) =>
       DecoratorEntry(widget: this, positioned: positioned, mode: mode);
-}
-
-extension ExtensionFlex on Flex {
-  Widget isScroll({
-    Key? key,
-    bool noScrollBehavior = true,
-    ScrollPhysics? physics,
-    ScrollController? scrollController,
-    bool reverse = false,
-    bool? primary,
-    DragStartBehavior dragStartBehavior = DragStartBehavior.start,
-  }) =>
-      noScrollBehavior
-          ? ScrollConfiguration(
-              behavior: NoScrollBehavior(),
-              child: SingleChildScrollView(
-                  key: key,
-                  physics: physics ?? const BouncingScrollPhysics(),
-                  reverse: reverse,
-                  primary: primary,
-                  dragStartBehavior: dragStartBehavior,
-                  controller: scrollController,
-                  scrollDirection: direction,
-                  child: this))
-          : SingleChildScrollView(
-              key: key,
-              physics: physics ?? const BouncingScrollPhysics(),
-              reverse: reverse,
-              primary: primary,
-              dragStartBehavior: dragStartBehavior,
-              controller: scrollController,
-              scrollDirection: direction,
-              child: this);
 }

@@ -153,8 +153,8 @@ class _AnchorScrollBuilderPage extends StatelessWidget {
                     controller: scrollController,
                     itemCount: _colors.length,
                     reverse: reverse,
-                    header: const _Header().sliverToBoxAdapter(),
-                    footer: const _Footer().sliverToBoxAdapter(),
+                    header: const _Header().toSliverBox,
+                    footer: const _Footer().toSliverBox,
                     scrollDirection: scrollDirection,
                     itemBuilder: (_, int index) => ColorEntry(
                         index, _colors[index],
@@ -205,8 +205,8 @@ class _AnchorScrollGridPage extends StatelessWidget {
                     itemCount: _colors.length,
                     crossAxisCount: 3,
                     reverse: reverse,
-                    header: const _Header().sliverToBoxAdapter(),
-                    footer: const _Footer().sliverToBoxAdapter(),
+                    header: const _Header().toSliverBox,
+                    footer: const _Footer().toSliverBox,
                     scrollDirection: scrollDirection,
                     itemBuilder: (_, int index) => ColorEntry(
                         index, _colors[index],
@@ -260,8 +260,8 @@ class _AnchorScrollBuilderWaterfallPage extends StatelessWidget {
                     crossAxisCount: 3,
                     crossAxisSpacing: 10,
                     mainAxisSpacing: 10,
-                    header: const _Header().sliverToBoxAdapter(),
-                    footer: const _Footer().sliverToBoxAdapter(),
+                    header: const _Header().toSliverBox,
+                    footer: const _Footer().toSliverBox,
                     scrollDirection: scrollDirection,
                     itemBuilder: (_, int index) => ColorEntry(
                         index, _colors[index],
@@ -310,8 +310,8 @@ class _AnchorScrollCountPage extends StatelessWidget {
                     key: scrollKey,
                     controller: scrollController,
                     reverse: reverse,
-                    header: const _Header().sliverToBoxAdapter(),
-                    footer: const _Footer().sliverToBoxAdapter(),
+                    header: const _Header().toSliverBox,
+                    footer: const _Footer().toSliverBox,
                     scrollDirection: scrollDirection,
                     children: _colors.builderEntry((entry) => ColorEntry(
                         entry.key, _colors[entry.key],

@@ -39,126 +39,54 @@ class GlobalOptions {
   /// 统一全局控制 是否可返回
   /// true 允许的返回
   /// false 不允许返回
-  ///  [ExtendedScaffold.onWillPop] 方法优先于 [scaffoldWillPop]
-  bool _scaffoldWillPop = true;
-
-  bool get scaffoldWillPop => _scaffoldWillPop;
-
-  void setScaffoldWillPop(bool value) => _scaffoldWillPop = value;
-
-  GlobalKey<NavigatorState> _globalNavigatorKey = GlobalKey<NavigatorState>();
-
-  GlobalKey<NavigatorState> get globalNavigatorKey => _globalNavigatorKey;
+  ///  [ExtendedScaffold.onWillPop] 方法优先于 [isWillPop]
+  bool isWillPop = true;
 
   /// 设置全局 [NavigatorKey]
   /// Set the global [NavigatorKey]
-  void setGlobalNavigatorKey(GlobalKey<NavigatorState> navigatorKey) {
-    _globalNavigatorKey = navigatorKey;
-  }
-
-  GlobalKey<ScaffoldMessengerState>? _globalScaffoldMessengerKey;
-
-  GlobalKey<ScaffoldMessengerState>? get globalScaffoldMessengerKey =>
-      _globalScaffoldMessengerKey;
+  GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   /// 设置全局 [ScaffoldMessengerKey]
   /// Set the global [ScaffoldMessengerKey]
-  void setGlobalScaffoldMessengerKey(
-      GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey) {
-    _globalScaffoldMessengerKey = scaffoldMessengerKey;
-  }
-
-  RoutePushStyle _pushStyle = RoutePushStyle.cupertino;
-
-  RoutePushStyle get pushStyle => _pushStyle;
+  GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
+      GlobalKey<ScaffoldMessengerState>();
 
   /// 设置全局路由跳转样式
   /// Set the global route push style
-  void setGlobalPushMode(RoutePushStyle style) {
-    _pushStyle = style;
-  }
+  RoutePushStyle pushStyle = RoutePushStyle.cupertino;
 
-  final EventBus _eventBus = EventBus();
-
-  EventBus get eventBus => _eventBus;
-
-  ModalWindowsOptions _modalWindowsOptions = const ModalWindowsOptions();
-
-  ModalWindowsOptions get modalWindowsOptions => _modalWindowsOptions;
+  final EventBus eventBus = EventBus();
 
   /// 设置全局 ModalWindowsOptions 配置
   /// Set the global [ModalWindowsOptions] 配置
-  void setModalWindowsOptions(ModalWindowsOptions modalWindowsOptions) {
-    _modalWindowsOptions = modalWindowsOptions;
-  }
-
-  LoadingOptions _loadingOptions = const LoadingOptions();
-
-  LoadingOptions get loadingOptions => _loadingOptions;
+  ModalWindowsOptions modalWindowsOptions = const ModalWindowsOptions();
 
   /// 设置全局 [LoadingOptions] 配置
   /// Set the global [LoadingOptions] configuration
-  void setLoadingOptions(LoadingOptions options) {
-    _loadingOptions = options;
-  }
-
-  ToastOptions _toastOptions = const ToastOptions();
-
-  ToastOptions get toastOptions => _toastOptions;
+  LoadingOptions loadingOptions = const LoadingOptions();
 
   /// 设置全局 [ToastOptions] 配置
   /// Set the global [ToastOptions] configuration
-  void setToastOptions(ToastOptions options) {
-    _toastOptions = options;
-  }
-
-  BottomSheetOptions _bottomSheetOptions = const BottomSheetOptions();
-
-  BottomSheetOptions get bottomSheetOptions => _bottomSheetOptions;
+  ToastOptions toastOptions = const ToastOptions();
 
   /// 设置全局 [BottomSheet] 配置
   /// Set the global [BottomSheet] configuration
-  void setBottomSheetOptions(BottomSheetOptions options) {
-    _bottomSheetOptions = options;
-  }
-
-  CupertinoModalPopupOptions _cupertinoModalPopupOptions =
-      const CupertinoModalPopupOptions();
-
-  CupertinoModalPopupOptions get cupertinoModalPopupOptions =>
-      _cupertinoModalPopupOptions;
+  BottomSheetOptions bottomSheetOptions = const BottomSheetOptions();
 
   /// 设置全局 [CupertinoBottomSheet] 配置
   /// Set the global [BottomSheet] configuration
-  void setCupertinoModalPopupOptions(CupertinoModalPopupOptions options) {
-    _cupertinoModalPopupOptions = options;
-  }
-
-  DialogOptions _dialogOptions = const DialogOptions();
-
-  DialogOptions get dialogOptions => _dialogOptions;
+  CupertinoModalPopupOptions cupertinoModalPopupOptions =
+      const CupertinoModalPopupOptions();
 
   /// 设置全局 [DialogOptions] 配置
   /// Set the global [DialogOptions] configuration
-  void setDialogOptions(DialogOptions options) {
-    _dialogOptions = options;
-  }
-
-  WheelOptions _wheelOptions = const WheelOptions.cupertino();
-
-  WheelOptions get wheelOptions => _wheelOptions;
+  DialogOptions dialogOptions = const DialogOptions();
 
   /// 设置全局 [ListWheel] 配置
   /// Set the global [ListWheel] configuration
-  void setWheelOptions(WheelOptions options) {
-    _wheelOptions = options;
-  }
+  WheelOptions wheelOptions = const WheelOptions.cupertino();
 
-  bool _logCrossLine = true;
-
-  bool get logCrossLine => _logCrossLine;
-
-  void setLogCrossLine(bool has) => _logCrossLine = has;
+  bool logCrossLine = true;
 
   Header globalRefreshHeader = const ClassicHeader(
       dragText: '请尽情拉我',

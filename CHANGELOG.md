@@ -1,4 +1,4 @@
-## 8.0.0
+## 8.0.1
 
 * Fix `DateTimePicker` issue
 * Delete `showUnit`, `unitStyle`,`contentStyle`, and add `itemBuilder` to DateTimePicker
@@ -15,6 +15,8 @@
 * Change `CounterAnimation`'s `countBuilder` to `builder`
 * Change `BubbleButton`'s `bubbleBuilder` to `builder`
 * `Toast` Adds animation effect
+* Remove `ExtendedWidgetsApp`
+* `ExtendedScaffold` removed and `ExtendedWillPopScope` added, see `exmaple/lib/main.dart`
 
 ## 7.5.2
 

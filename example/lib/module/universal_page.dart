@@ -93,7 +93,7 @@ class _ScrollUniversalPage extends StatelessWidget {
     return ExtendedScaffold(
         appBar: AppBarText('ScrollUniversal'),
         mainAxisAlignment: MainAxisAlignment.center,
-        body: scrollUniversal(context));
+        child: scrollUniversal(context));
   }
 
   Widget scrollUniversal(BuildContext context) {

@@ -1,5 +1,62 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
+
+class ExtendedWillPopScope extends WillPopScope {
+  ExtendedWillPopScope({
+    super.key,
+    required super.child,
+    WillPopCallback? onWillPop,
+
+    /// true 点击android实体返回按键先关闭Overlay【toast loading ...】但不pop 当前页面
+    /// false 点击android实体返回按键先关闭Overlay【toast loading ...】并pop 当前页面
+    bool isCloseOverlay = false,
+  }) : super(onWillPop: () async {
+          bool result = (await onWillPop?.call()) ?? true;
+          if (result == false) return result;
+          if (isCloseOverlay && ExtendedOverlay().overlayEntryList.isNotEmpty) {
+            closeOverlay();
+            return false;
+          }
+          result = GlobalOptions().isWillPop;
+          return result;
+        });
+}
+
+enum RoutePushStyle {
+  /// Cupertino风格
+  cupertino,
+
+  /// Material风格
+  material,
+  ;
+
+  /// Builds the primary contents of the route.
+  PageRoute<T> pageRoute<T>(
+      {WidgetBuilder? builder,
+      Widget? widget,
+      bool maintainState = true,
+      bool fullscreenDialog = false,
+      String? title,
+      RouteSettings? settings}) {
+    assert(widget != null || builder != null);
+    switch (this) {
+      case RoutePushStyle.cupertino:
+        return CupertinoPageRoute<T>(
+            title: title,
+            settings: settings,
+            maintainState: maintainState,
+            fullscreenDialog: fullscreenDialog,
+            builder: builder ?? widget!.toWidgetBuilder);
+      case RoutePushStyle.material:
+        return MaterialPageRoute<T>(
+            settings: settings,
+            maintainState: maintainState,
+            fullscreenDialog: fullscreenDialog,
+            builder: builder ?? widget!.toWidgetBuilder);
+    }
+  }
+}
 
 /// 打开新页面
 Future<T?> push<T extends Object?, TO extends Object?>(Widget widget,
@@ -44,15 +101,18 @@ Future<T?> pushAndRemoveUntil<T extends Object?>(Widget widget,
         pushStyle: pushStyle ?? GlobalOptions().pushStyle);
 
 /// 可能返回到上一个页面
-Future<bool> maybePop<T extends Object>([T? result]) =>
-    GlobalOptions().globalNavigatorKey.currentState!.maybePop<T>(result);
+Future<bool> maybePop<T extends Object>([T? result]) {
+  assert(GlobalOptions().navigatorKey.currentState != null);
+  return GlobalOptions().navigatorKey.currentState!.maybePop<T>(result);
+}
 
 /// 返回上一个页面
 Future<bool?> pop<T extends Object>([T? result, bool isMaybe = false]) {
   if (isMaybe) {
     return maybePop<T>(result);
   } else {
-    GlobalOptions().globalNavigatorKey.currentState!.pop<T>(result);
+    assert(GlobalOptions().navigatorKey.currentState != null);
+    GlobalOptions().navigatorKey.currentState!.pop<T>(result);
     return Future.value(true);
   }
 }
@@ -71,5 +131,7 @@ void popBack(Future<dynamic> navigator,
 }
 
 /// 循环pop 直到pop至指定页面
-void popUntil(RoutePredicate predicate) =>
-    GlobalOptions().globalNavigatorKey.currentState!.popUntil(predicate);
+void popUntil(RoutePredicate predicate) {
+  assert(GlobalOptions().navigatorKey.currentState != null);
+  return GlobalOptions().navigatorKey.currentState!.popUntil(predicate);
+}

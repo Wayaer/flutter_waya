@@ -48,7 +48,7 @@ class _ScrollListGridPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ExtendedScaffold(
         appBar: AppBarText('ScrollList.builder with GridStyle'),
-        body: ScrollList.builder(
+        child: ScrollList.builder(
           gridStyle: gridStyle,
           mainAxisSpacing: 10,
           crossAxisSpacing: 10,
@@ -82,7 +82,7 @@ class _ScrollListSeparatedPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ExtendedScaffold(
         appBar: AppBarText('ScrollList.separated'),
-        body: ScrollList.builder(
+        child: ScrollList.builder(
           header: const _Header(),
           footer: const _Footer(),
           padding: const EdgeInsets.all(10),
@@ -105,7 +105,7 @@ class _ScrollListPlaceholderPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ExtendedScaffold(
         appBar: AppBarText('ScrollList.builder with placeholder'),
-        body: ScrollList.builder(
+        child: ScrollList.builder(
             header: const _Header(),
             footer: const _Footer(),
             padding: const EdgeInsets.all(10),
@@ -129,7 +129,7 @@ class _ScrollListBuilderPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ExtendedScaffold(
         appBar: AppBarText('ScrollList.builder'),
-        body: ScrollList.builder(
+        child: ScrollList.builder(
           header: const _Header(),
           footer: const _Footer(),
           padding: const EdgeInsets.all(10),
@@ -150,7 +150,7 @@ class _ScrollListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ExtendedScaffold(
         appBar: AppBarText('ScrollList'),
-        body: ScrollList(
+        child: ScrollList(
             padding: const EdgeInsets.all(10),
             header: const _Header(),
             footer: const _Footer(),
@@ -246,7 +246,7 @@ class _ScrollListCountPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ExtendedScaffold(
         appBar: AppBarText('ScrollList.count'),
-        body: ScrollList.count(
+        child: ScrollList.count(
             header: const _Header(),
             footer: const _Footer(),
             padding: const EdgeInsets.all(10),

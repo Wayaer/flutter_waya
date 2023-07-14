@@ -6,12 +6,10 @@ import 'package:flutter_waya/flutter_waya.dart';
 
 ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? showSnackBar(
     SnackBar snackBar) {
-  if (GlobalOptions().globalScaffoldMessengerKey == null) {
-    log('Please initialize globalScaffoldMessengerKey or ExtendedWidgetsApp widgetMode must be RoutePushStyle.material');
-    return null;
-  }
+  assert(GlobalOptions().scaffoldMessengerKey?.currentState != null,
+      'Please initialize globalScaffoldMessengerKey or ExtendedWidgetsApp widgetMode must be RoutePushStyle.material');
   return GlobalOptions()
-      .globalScaffoldMessengerKey
+      .scaffoldMessengerKey
       ?.currentState
       ?.showSnackBar(snackBar);
 }
@@ -25,17 +23,19 @@ Future<T?> showMenuPopup<T>({
   ShapeBorder? shape,
   Color? color,
   bool useRootNavigator = false,
-}) =>
-    showMenu(
-        context: GlobalOptions().globalNavigatorKey.currentContext!,
-        position: position,
-        useRootNavigator: useRootNavigator,
-        initialValue: initialValue,
-        elevation: elevation,
-        semanticLabel: semanticLabel,
-        shape: shape,
-        color: color,
-        items: items);
+}) {
+  assert(GlobalOptions().navigatorKey.currentContext != null);
+  return showMenu(
+      context: GlobalOptions().navigatorKey.currentContext!,
+      position: position,
+      useRootNavigator: useRootNavigator,
+      initialValue: initialValue,
+      elevation: elevation,
+      semanticLabel: semanticLabel,
+      shape: shape,
+      color: color,
+      items: items);
+}
 
 /// 关闭弹窗
 /// 也可以通过 Navigator.of(context).maybePop()

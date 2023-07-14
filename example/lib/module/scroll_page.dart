@@ -76,7 +76,7 @@ class _RefreshScrollViewPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ExtendedScaffold(
       appBar: AppBarText('RefreshScrollView'),
-      body: RefreshScrollView(
+      child: RefreshScrollView(
           padding: const EdgeInsets.all(10),
           refreshConfig: RefreshConfig(onRefresh: () async {
             await showToast('onRefresh');
@@ -111,7 +111,7 @@ class _CustomScrollViewPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ExtendedScaffold(
-          body: CustomScrollView(slivers: [
+          child: CustomScrollView(slivers: [
         const CustomSliverAppBar(
             title: BText('CustomScrollViewPage', color: Colors.white)),
         SliverPinnedToBoxAdapter(
@@ -132,7 +132,7 @@ class _ExtendedNestedScrollViewPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ExtendedScaffold(
-          body: RefreshIndicator(
+          child: RefreshIndicator(
         notificationPredicate: (ScrollNotification notification) {
           /// 返回true即可
           return true;
@@ -166,7 +166,7 @@ class _ExtendedCustomScrollViewPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ExtendedScaffold(
-      body: RefreshIndicator(
+      child: RefreshIndicator(
           notificationPredicate: (ScrollNotification notification) {
             /// 返回true即可
             return true;
@@ -197,7 +197,7 @@ class _ExtendedScrollViewPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ExtendedScaffold(
-          body: ExtendedScrollView(
+          child: ExtendedScrollView(
               builderScrollView: (BuildContext context, List<Widget> slivers) {
                 return RefreshScrollView(
                     slivers: slivers,
@@ -280,6 +280,6 @@ class _DraggableScrollbar extends StatelessWidget {
     //     scrollbarStyle: ScrollbarStyle.arrows);
 
     return ExtendedScaffold(
-        appBar: AppBarText('DraggableScrollbar'), body: scrollbar);
+        appBar: AppBarText('DraggableScrollbar'), child: scrollbar);
   }
 }
