@@ -20,7 +20,8 @@ class ExtendedOverlay {
 
   /// 自定义Overlay
   ExtendedOverlayEntry? showOverlay(Widget widget, {bool autoOff = false}) {
-    assert(GlobalOptions().navigatorKey.currentState != null);
+    assert(GlobalOptions().navigatorKey.currentState != null,
+        'Set GlobalOptions().navigatorKey to one of [MaterialApp CupertinoApp WidgetsApp]');
     final OverlayState? overlay =
         GlobalOptions().navigatorKey.currentState!.overlay;
     if (overlay == null) return null;

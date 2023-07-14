@@ -6,11 +6,11 @@ import 'package:flutter_waya/flutter_waya.dart';
 
 ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? showSnackBar(
     SnackBar snackBar) {
-  assert(GlobalOptions().scaffoldMessengerKey?.currentState != null,
-      'Please initialize globalScaffoldMessengerKey or ExtendedWidgetsApp widgetMode must be RoutePushStyle.material');
+  assert(GlobalOptions().scaffoldMessengerKey.currentState != null,
+      'Set GlobalOptions().scaffoldMessengerKey to the MaterialApp');
   return GlobalOptions()
       .scaffoldMessengerKey
-      ?.currentState
+      .currentState
       ?.showSnackBar(snackBar);
 }
 

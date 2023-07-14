@@ -15,7 +15,8 @@ extension ExtensionWidgetMethod on Widget {
       RouteSettings? settings,
       bool replacement = false,
       TO? result}) {
-    assert(GlobalOptions().navigatorKey.currentState != null);
+    assert(GlobalOptions().navigatorKey.currentState != null,
+        'Set GlobalOptions().navigatorKey to one of [MaterialApp CupertinoApp WidgetsApp]');
     if (replacement) {
       return pushReplacement(
           settings: settings,
@@ -39,7 +40,8 @@ extension ExtensionWidgetMethod on Widget {
       RoutePushStyle? pushStyle,
       RouteSettings? settings,
       TO? result}) {
-    assert(GlobalOptions().navigatorKey.currentState != null);
+    assert(GlobalOptions().navigatorKey.currentState != null,
+        'Set GlobalOptions().navigatorKey to one of [MaterialApp CupertinoApp WidgetsApp]');
     return GlobalOptions().navigatorKey.currentState!.pushReplacement(
         buildPageRoute(
             settings: settings,
@@ -56,7 +58,8 @@ extension ExtensionWidgetMethod on Widget {
       RoutePushStyle? pushStyle,
       RouteSettings? settings,
       RoutePredicate? predicate}) {
-    assert(GlobalOptions().navigatorKey.currentState != null);
+    assert(GlobalOptions().navigatorKey.currentState != null,
+        'Set GlobalOptions().navigatorKey to one of [MaterialApp CupertinoApp WidgetsApp]');
     return GlobalOptions().navigatorKey.currentState!.pushAndRemoveUntil(
         buildPageRoute(
             settings: settings,

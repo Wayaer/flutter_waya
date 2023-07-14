@@ -6,15 +6,16 @@ const Duration kFlAnimationDuration = Duration(milliseconds: 300);
 typedef FlAnimationCallback = void Function(Function running);
 
 abstract class _FlAnimation extends StatefulWidget {
-  const _FlAnimation({super.key,
-    required this.child,
-    this.onAnimate,
-    this.delayDuration,
-    this.animationDuration = kFlAnimationDuration,
-    this.stayDuration,
-    this.reverse = true,
-    this.number = 1,
-    this.repeat = false});
+  const _FlAnimation(
+      {super.key,
+      required this.child,
+      this.onAnimate,
+      this.delayDuration,
+      this.animationDuration = kFlAnimationDuration,
+      this.stayDuration,
+      this.reverse = true,
+      this.number = 1,
+      this.repeat = false});
 
   /// child
   final Widget child;
@@ -47,16 +48,17 @@ enum AnimationStyle {
 }
 
 class FlAnimation extends _FlAnimation {
-  const FlAnimation({super.key,
-    required super.child,
-    required this.style,
-    super.animationDuration,
-    super.delayDuration,
-    super.reverse,
-    super.stayDuration,
-    super.number,
-    super.repeat,
-    super.onAnimate});
+  const FlAnimation(
+      {super.key,
+      required super.child,
+      required this.style,
+      super.animationDuration,
+      super.delayDuration,
+      super.reverse,
+      super.stayDuration,
+      super.number,
+      super.repeat,
+      super.onAnimate});
 
   final AnimationStyle style;
 
@@ -98,8 +100,7 @@ class _FlAnimationState extends State<FlAnimation>
     }
   }
 
-  Animation<double> huntingAnimation() =>
-      TweenSequence([
+  Animation<double> huntingAnimation() => TweenSequence([
         TweenSequenceItem<double>(
             tween: Tween(begin: 0.0, end: -10.0)
                 .chain(CurveTween(curve: Curves.easeInOut)),
