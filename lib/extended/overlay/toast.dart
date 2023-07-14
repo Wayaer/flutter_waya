@@ -27,24 +27,31 @@ class Toast extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final toastOptions = GlobalOptions().toastOptions.merge(options);
-    Widget toast = BText(message,
-        color: toastOptions.iconColor, maxLines: 5, fontSize: 14);
-    toast = buildIconToast(toast, toastOptions);
+    final currentOptions = GlobalOptions().toastOptions.merge(options);
+    Widget content = BText(message,
+        color: currentOptions.iconColor, maxLines: 5, fontSize: 14);
+    content = buildIconToast(content, currentOptions);
+    final toast = Universal(
+        onTap: currentOptions.onTap,
+        margin: currentOptions.margin,
+        decoration: currentOptions.decoration ??
+            BoxDecoration(
+                color: currentOptions.backgroundColor,
+                borderRadius: BorderRadius.circular(6)),
+        padding: currentOptions.padding,
+        child: content);
     return ModalWindows(
-        options: toastOptions.modalWindowsOptions.copyWith(
-            absorbing: toastOptions.absorbing,
-            ignoring: toastOptions.ignoring,
-            alignment: toastOptions.positioned),
-        child: Universal(
-            onTap: toastOptions.onTap,
-            margin: toastOptions.margin,
-            decoration: toastOptions.decoration ??
-                BoxDecoration(
-                    color: toastOptions.backgroundColor,
-                    borderRadius: BorderRadius.circular(4)),
-            padding: toastOptions.padding,
-            child: toast));
+        options: currentOptions.modalWindowsOptions.copyWith(
+            absorbing: currentOptions.absorbing,
+            ignoring: currentOptions.ignoring,
+            alignment: currentOptions.positioned),
+        child: currentOptions.animationStyle != null
+            ? FlAnimation(
+                style: currentOptions.animationStyle!,
+                stayDuration: currentOptions.duration
+                    .subtract(kFlAnimationDuration, kFlAnimationDuration),
+                child: toast)
+            : toast);
   }
 
   Widget buildIconToast(Widget toast, ToastOptions toastOptions) {
@@ -99,7 +106,7 @@ extension ExtensionToastStyle on ToastStyle {
 
 class ToastOptions {
   const ToastOptions(
-      {this.backgroundColor = const Color(0xCC000000),
+      {this.backgroundColor = const Color(0xEE000000),
       this.iconColor = const Color(0xFFFFFFFF),
       this.decoration,
       this.onTap,
@@ -108,12 +115,15 @@ class ToastOptions {
       this.positioned = Alignment.center,
       this.ignoring = false,
       this.absorbing = false,
-      this.iconSize = 30,
+      this.animationStyle = AnimationStyle.verticalHunting,
+      this.iconSize = 18,
       this.spacing = 10,
-      this.padding = const EdgeInsets.all(10),
-      this.margin = const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-      this.direction = Axis.vertical,
+      this.padding = const EdgeInsets.all(14),
+      this.margin = const EdgeInsets.all(30),
+      this.direction = Axis.horizontal,
       this.modalWindowsOptions = const ModalWindowsOptions()});
+
+  final AnimationStyle? animationStyle;
 
   /// 背景色
   final Color? backgroundColor;

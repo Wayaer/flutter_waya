@@ -131,7 +131,7 @@ class _ProgressState extends ExtendedState<LiquidProgressIndicator> {
       CustomPainter? painter,
       CustomPainter? foregroundPainter,
       Rect? pathBounds}) {
-    final wave = FlWave(
+    final wave = FlAnimationWave(
         value: widget.value!,
         color: widget._getValueColor(context),
         direction: widget.direction);

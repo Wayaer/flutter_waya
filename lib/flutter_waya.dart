@@ -13,11 +13,11 @@ export 'components/components.dart';
 export 'components/dropdown_menus.dart';
 export 'components/anchor_scroll_list.dart';
 export 'components/builder.dart';
-export 'components/bubble_button.dart';
+export 'components/animation/bubble_button.dart';
 export 'components/dropdown_menu_button.dart';
-export 'components/elastic_builder.dart';
+export 'components/animation/elastic_builder.dart';
 export 'components/check_box.dart';
-export 'components/counter.dart';
+export 'components/animation/counter.dart';
 export 'components/decorator_box.dart';
 export 'components/dotted_line.dart';
 export 'components/draggable_scrollbar.dart';
@@ -34,10 +34,12 @@ export 'components/swiper/swiper.dart';
 export 'components/x_switch.dart';
 export 'components/count_down.dart';
 export 'components/expansion_tiles.dart';
-export 'components/toggle_rotate.dart';
+export 'components/animation/toggle_rotate.dart';
 export 'components/rating_stars.dart';
 export 'components/flip_card.dart';
 export 'components/send_sms.dart';
+export 'components/animation/animation.dart';
+export 'components/animation/wave.dart';
 
 /// const
 export 'const/const.dart';

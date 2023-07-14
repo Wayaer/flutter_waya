@@ -3,8 +3,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-part 'wave.dart';
-
 part 'liquid_progress.dart';
 
 enum LinearStrokeCap { butt, round, roundAll }

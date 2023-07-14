@@ -1,4 +1,5 @@
 import 'package:app/module/anchor_scroll_builder_page.dart';
+import 'package:app/module/animation_page.dart';
 import 'package:app/module/builder_page.dart';
 import 'package:app/module/button_page.dart';
 import 'package:app/module/components_page.dart';
@@ -46,7 +47,7 @@ void main() {
 
   /// 设置全局Toast配置
   globalOptions.setToastOptions(
-      ToastOptions(positioned: Alignment.center, duration: 2.seconds));
+      ToastOptions(positioned: Alignment.bottomCenter, duration: 2.seconds));
 
   /// 设置全局BottomSheet配置
   globalOptions.setBottomSheetOptions(const BottomSheetOptions(
@@ -116,7 +117,10 @@ class _AppState extends ExtendedState<_App> {
         darkTheme: ThemeData.dark(useMaterial3: true),
         locale: DevicePreview.locale(context),
         title: 'Waya UI',
-        home: _Home(),
+        home: ExtendedScaffold(
+            onWillPopOverlayClose: true,
+            appBar: AppBarText('Flutter Waya Example'),
+            body: _Home()),
         builder: (BuildContext context, Widget? child) {
           final widget = ScreenAdaptation(
               designWidth: context.width,
@@ -131,53 +135,48 @@ class _AppState extends ExtendedState<_App> {
 class _Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ExtendedScaffold(
-      onWillPopOverlayClose: true,
-      appBar: AppBarText('Flutter Waya Example'),
-      padding: const EdgeInsets.all(10),
-      isScroll: true,
-      body: Universal(
-          isWrap: true,
-          runSpacing: 10,
-          wrapSpacing: 10,
-          wrapAlignment: WrapAlignment.center,
-          direction: Axis.horizontal,
-          children: [
-            ElevatedText('ExtendedDio',
-                onTap: () => push(const ExtendedDioPage())),
-            ElevatedText('Components',
-                onTap: () => push(const ComponentsPage())),
-            ElevatedText('State Components',
-                onTap: () => push(const StateComponentsPage())),
-            ElevatedText('Button', onTap: () => push(const ButtonPage())),
-            ElevatedText('Popup', onTap: () => push(const PopupPage())),
-            ElevatedText('Picker', onTap: () => push(const PickerPage())),
-            ElevatedText('Overlay', onTap: () => push(const OverlayPage())),
-            ElevatedText('FlSwiper', onTap: () => push(const FlSwiperPage())),
-            ElevatedText('FlProgress',
-                onTap: () => push(const FlProgressPage())),
-            ElevatedText('GestureZoom',
-                onTap: () => push(const GestureZoomPage())),
-            ElevatedText('Universal', onTap: () => push(const UniversalPage())),
-            ElevatedText('JsonParse', onTap: () => push(const JsonParsePage())),
-            ElevatedText('ScrollView',
-                onTap: () => push(const ScrollViewPage())),
-            ElevatedText('ScrollList',
-                onTap: () => push(const ScrollListPage())),
-            ElevatedText('ListWheel', onTap: () => push(const ListWheelPage())),
-            ElevatedText('AnchorScroll',
-                onTap: () => push(const AnchorScrollBuilderPage())),
-            ElevatedText('EasyRefreshed',
-                onTap: () => push(const EasyRefreshPage())),
-            ElevatedText('Extension', onTap: () => push(const ExtensionPage())),
-            ElevatedText('DecoratorBox',
-                onTap: () => push(const DecoratorBoxPage())),
-            ElevatedText('ExtendedTextField',
-                onTap: () => push(const TextFieldPage())),
-            ElevatedText('ExtendedBuilder',
-                onTap: () => push(const ExtendedBuilderPage())),
-          ]),
-    );
+    return Universal(
+        padding: const EdgeInsets.all(10),
+        isWrap: true,
+        isScroll: true,
+        runSpacing: 10,
+        wrapSpacing: 10,
+        wrapAlignment: WrapAlignment.center,
+        direction: Axis.horizontal,
+        scrollDirection: Axis.vertical,
+        children: [
+          ElevatedText('ExtendedDio',
+              onTap: () => push(const ExtendedDioPage())),
+          ElevatedText('Components', onTap: () => push(const ComponentsPage())),
+          ElevatedText('State Components',
+              onTap: () => push(const StateComponentsPage())),
+          ElevatedText('Button', onTap: () => push(const ButtonPage())),
+          ElevatedText('FlAnimation',
+              onTap: () => push(const FlAnimationPage())),
+          ElevatedText('Popup', onTap: () => push(const PopupPage())),
+          ElevatedText('Picker', onTap: () => push(const PickerPage())),
+          ElevatedText('Overlay', onTap: () => push(const OverlayPage())),
+          ElevatedText('FlSwiper', onTap: () => push(const FlSwiperPage())),
+          ElevatedText('FlProgress', onTap: () => push(const FlProgressPage())),
+          ElevatedText('GestureZoom',
+              onTap: () => push(const GestureZoomPage())),
+          ElevatedText('Universal', onTap: () => push(const UniversalPage())),
+          ElevatedText('JsonParse', onTap: () => push(const JsonParsePage())),
+          ElevatedText('ScrollView', onTap: () => push(const ScrollViewPage())),
+          ElevatedText('ScrollList', onTap: () => push(const ScrollListPage())),
+          ElevatedText('ListWheel', onTap: () => push(const ListWheelPage())),
+          ElevatedText('AnchorScroll',
+              onTap: () => push(const AnchorScrollBuilderPage())),
+          ElevatedText('EasyRefreshed',
+              onTap: () => push(const EasyRefreshPage())),
+          ElevatedText('Extension', onTap: () => push(const ExtensionPage())),
+          ElevatedText('DecoratorBox',
+              onTap: () => push(const DecoratorBoxPage())),
+          ElevatedText('ExtendedTextField',
+              onTap: () => push(const TextFieldPage())),
+          ElevatedText('ExtendedBuilder',
+              onTap: () => push(const ExtendedBuilderPage())),
+        ]);
   }
 }
 
@@ -207,12 +206,15 @@ class ElevatedText extends StatelessWidget {
             },
             child: Universal(
                 onTap: onTap,
+                enabled: onTap != null,
                 onTapDown: (_) {
                   elastic();
                 },
-                onDoubleTap: () {
-                  elastic(10.milliseconds);
-                },
+                onDoubleTap: onTap == null
+                    ? null
+                    : () {
+                        elastic(10.milliseconds);
+                      },
                 onLongPressDown: (_) {
                   elasticDown();
                 },

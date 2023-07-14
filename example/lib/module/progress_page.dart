@@ -91,7 +91,7 @@ class _FlProgressPageState extends ExtendedState<FlProgressPage>
               const SizedBox(
                   width: double.infinity,
                   height: 100,
-                  child: FlWave(
+                  child: FlAnimationWave(
                       value: 0.5,
                       color: Colors.deepPurpleAccent,
                       direction: Axis.vertical))

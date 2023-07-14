@@ -311,9 +311,9 @@ class Universal extends StatelessWidget {
   /// 水波纹半径
   final double? radius;
 
-  /// [enabled]默认为false [addInkWell]默认为false
-  /// ([enabled]=false || [addInkWell]=true ) 除[onTap]外[GestureDetector]属性无效
-  /// ([enabled]=true && [addInkWell]=false ) [GestureDetector]属性全部有效
+  /// [enabled]默认为false
+  /// ([enabled]=false) 除[onTap]外[GestureDetector]属性无效
+  /// ([enabled]=true) [GestureDetector]属性全部有效
   final bool enabled;
 
   /// 手指点击时的回调函数

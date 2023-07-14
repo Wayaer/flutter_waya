@@ -14,6 +14,7 @@
 * Change `SingleListPicker`'s `listBuilder` to `builder`
 * Change `CounterAnimation`'s `countBuilder` to `builder`
 * Change `BubbleButton`'s `bubbleBuilder` to `builder`
+* `Toast` Adds animation effect
 
 ## 7.5.2
 
@@ -92,7 +93,7 @@
 ## 5.2.0
 
 * Change the `Indicator()` to `FlIndicator()`
-* Change the `Wave()` to `FlWave()`
+* Change the `Wave()` to `FlAnimationWave()`
 * Change the `Progress()` to `FlProgress()`
 * Refactoring the `DropdownMenus()`
 

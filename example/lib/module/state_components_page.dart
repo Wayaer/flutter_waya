@@ -125,7 +125,8 @@ class StateComponentsPage extends StatelessWidget {
                 onChanged: (bool value) {},
                 builder: (bool value, onChanged) => XSwitch(
                     value: value,
-                    size: const Size(50, 24),
+                    activeColor: Colors.deepPurple,
+                    size: const Size(40, 21),
                     radius: 12,
                     onChanged: onChanged)),
             ChangedBuilder<bool>(
@@ -134,8 +135,11 @@ class StateComponentsPage extends StatelessWidget {
                   await 1.seconds.delayed();
                   return value;
                 },
-                builder: (bool value, onChanged) =>
-                    XSwitch(value: value, onChanged: onChanged)),
+                builder: (bool value, onChanged) => XSwitch(
+                    value: value,
+                    size: const Size(60, 28),
+                    activeColor: Colors.deepPurple,
+                    onChanged: onChanged)),
           ]),
           const Partition('Switch 官方附加状态版本'),
           Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
@@ -165,9 +169,6 @@ class StateComponentsPage extends StatelessWidget {
                 showToast(value.toString());
               },
               padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-              decoration: BoxDecoration(
-                  color: context.theme.primaryColor,
-                  borderRadius: BorderRadius.circular(4)),
               onTap: (Function sending) async {
                 1.seconds.delayed(() {
                   sending(true);
@@ -176,13 +177,13 @@ class StateComponentsPage extends StatelessWidget {
               builder: (SendState state, int i) {
                 switch (state) {
                   case SendState.none:
-                    return const BText('发送验证码');
+                    return const ElevatedText('发送验证码');
                   case SendState.sending:
-                    return const BText('发送中');
+                    return const ElevatedText('发送中');
                   case SendState.resend:
-                    return const BText('重新发送');
+                    return const ElevatedText('重新发送');
                   case SendState.countDown:
-                    return BText('等待 $i s');
+                    return ElevatedText('等待 $i s');
                 }
               }),
           const Partition('CountDown'),
@@ -193,10 +194,7 @@ class StateComponentsPage extends StatelessWidget {
               builder: (int i) => Universal(
                   padding:
                       const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                  decoration: BoxDecoration(
-                      color: context.theme.primaryColor,
-                      borderRadius: BorderRadius.circular(4)),
-                  child: BText(i.toString()))),
+                  child: ElevatedText(i.toString()))),
           const SizedBox(height: 100),
         ]);
   }

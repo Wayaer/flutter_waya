@@ -15,30 +15,33 @@ class _SingleListPickerPage extends StatelessWidget {
               onTap: () => singleListPickerWithScreen(context)),
           ElevatedText('show SingleListPicker custom',
               onTap: customSingleListPicker),
-          BackCard(SingleListPicker(
-              height: 210,
-              onChanged: (List<int> index) {
-                log(index);
-              },
-              itemCount: numberList.length,
-              builder: (int itemCount, IndexedWidgetBuilder itemBuilder) {
-                return ScrollList.builder(
-                    gridStyle: GridStyle.masonry,
-                    maxCrossAxisExtent: 100,
-                    mainAxisSpacing: 12,
-                    crossAxisSpacing: 12,
-                    itemBuilder: itemBuilder,
-                    itemCount: itemCount);
-              },
-              itemBuilder: (context, index, isSelect, changedFun) {
-                return Universal(
-                    alignment: Alignment.center,
-                    decoration: buildBoxDecoration(isSelect, context),
-                    direction: Axis.horizontal,
-                    padding: const EdgeInsets.symmetric(vertical: 6),
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    child: buildText(index, isSelect, context));
-              })),
+          BackCard(Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SingleListPicker(
+                height: 210,
+                onChanged: (List<int> index) {
+                  log(index);
+                },
+                itemCount: numberList.length,
+                builder: (int itemCount, IndexedWidgetBuilder itemBuilder) {
+                  return ScrollList.builder(
+                      gridStyle: GridStyle.masonry,
+                      maxCrossAxisExtent: 100,
+                      mainAxisSpacing: 12,
+                      crossAxisSpacing: 12,
+                      itemBuilder: itemBuilder,
+                      itemCount: itemCount);
+                },
+                itemBuilder: (context, index, isSelect, changedFun) {
+                  return Universal(
+                      alignment: Alignment.center,
+                      decoration: buildBoxDecoration(isSelect, context),
+                      direction: Axis.horizontal,
+                      padding: const EdgeInsets.symmetric(vertical: 6),
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      child: buildText(index, isSelect, context));
+                }),
+          )),
         ]);
   }
 

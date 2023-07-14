@@ -168,4 +168,19 @@ extension ExtensionDuration on Duration {
 
   /// 以时结尾
   String toEndHoursString() => toString().removeSuffixLength(13);
+
+  /// add duration
+  Duration add(Duration duration, [Duration? secondDuration]) => Duration(
+      microseconds: inMicroseconds +
+          duration.inMicroseconds +
+          (secondDuration?.inMicroseconds ?? 0));
+
+  /// subtract duration
+  Duration subtract(Duration duration, [Duration? secondDuration]) {
+    int s = inMicroseconds -
+        duration.inMicroseconds -
+        (secondDuration?.inMicroseconds ?? 0);
+    if (s < 0) s = 0;
+    return Duration(microseconds: s);
+  }
 }
