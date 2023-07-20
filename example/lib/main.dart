@@ -94,6 +94,7 @@ class _AppState extends ExtendedState<_App> {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         navigatorKey: GlobalOptions().navigatorKey,
+        scaffoldMessengerKey: GlobalOptions().scaffoldMessengerKey,
         theme: ThemeData.light(useMaterial3: true),
         darkTheme: ThemeData.dark(useMaterial3: true),
         locale: DevicePreview.locale(context),
