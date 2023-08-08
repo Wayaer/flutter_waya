@@ -1,4 +1,4 @@
-## 8.0.2
+## 8.0.3
 
 * Update `dio` and `flutter_staggered_grid_view`
 * Remove `flutter_localizations` from dependencies
