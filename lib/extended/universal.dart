@@ -180,7 +180,7 @@ class Universal extends StatelessWidget {
   /// [Clip.hardEdge]不抗锯齿    快
   /// [Clip.antiAlias]抗锯齿     慢
   /// [Clip.antiAliasWithSaveLayer]抗锯齿和saveLayer  很慢
-  /// 使用到的组件[Stack]、[ClipRRect]、[ClipPath]、[ClipRect]、[ClipOval]、[Container]、[Material]、[Card]、[Stack]、[Flex]、[SingleChildScrollView]
+  /// 使用到的组件[Stack]、[ClipRRect]、[ClipPath]、[ClipRect]、[ClipOval]、[Stack]、[Flex]、[SingleChildScrollView]
   final Clip? clipBehavior;
 
   /// ****** [Align] ****** ///
@@ -188,8 +188,6 @@ class Universal extends StatelessWidget {
   final double? widthFactor;
   final double? heightFactor;
 
-  /// [InkWell]飞溅半径
-  /// [Material]圆角半径
   /// [ClipRRect]剪辑半径
   final BorderRadius? borderRadius;
 
@@ -258,6 +256,7 @@ class Universal extends StatelessWidget {
 
   /// ****** [CircleAvatar] ****** ///
   final bool isCircleAvatar;
+  final double? radius;
   final ImageErrorListener? onBackgroundImageError;
   final ImageErrorListener? onForegroundImageError;
 
@@ -307,9 +306,6 @@ class Universal extends StatelessWidget {
   final double? opacity;
 
   /// ****** 点击事件相关 ****** ///
-
-  /// 水波纹半径
-  final double? radius;
 
   /// [enabled]默认为false
   /// ([enabled]=false) 除[onTap]外[GestureDetector]属性无效
