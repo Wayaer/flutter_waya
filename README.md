@@ -7,7 +7,8 @@
 ```dart
 /// 设置你自己的 navigatorKey
 void setGlobalNavigatorKey() {
-  GlobalOptions().setGlobalNavigatorKey(navigatorKey);
+  GlobalOptions().scaffoldMessengerKey = scaffoldMessengerKey;
+  GlobalOptions().navigatorKey = navigatorKey;
 }
 
 /// 使用自己的 MaterialApp
@@ -17,6 +18,7 @@ class _CustomAppState extends ExtendedState<_App> {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         navigatorKey: GlobalOptions().globalNavigatorKey,
+        scaffoldMessengerKey: GlobalOptions().scaffoldMessengerKey,
         title: 'Waya UI',
         home: _Home());
   }
