@@ -35,4 +35,4 @@ class _AppState extends ExtendedState<_App> {
 
 ```
 
-- Scaffold 使用 `ExtendedScaffold` 可自动管理 android 物理返回键 关闭 toast loading 等各种弹窗，以及多种功能
+- 使用 `ExtendedWillPopScope` 可自动管理 android 物理返回键 关闭 toast loading 等各种弹窗
