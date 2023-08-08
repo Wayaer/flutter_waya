@@ -1,3 +1,8 @@
+## 8.0.2
+
+* Update `dio` and `flutter_staggered_grid_view`
+* Remove `flutter_localizations` from dependencies
+
 ## 8.0.1
 
 * Fix `DateTimePicker` issue
