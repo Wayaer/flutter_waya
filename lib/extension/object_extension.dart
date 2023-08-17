@@ -32,14 +32,19 @@ extension ExtensionUri on Uri {
 }
 
 extension ExtensionT<T> on T {
-  /// let是做了操作后返回新的类型
-  ReturnType let<ReturnType>(ReturnType Function(T it) operation) {
-    return operation(this);
+  /// 判空后执行方法 返回新的参数
+  E? let<E>(E Function(T it) operation) {
+    if (this != null) {
+      return operation(this);
+    }
+    return null;
   }
 
   /// 做了某个操作后还返回本身啊
   T also(void Function(T it) operation) {
-    operation(this);
+    if (this != null) {
+      operation(this!);
+    }
     return this;
   }
 

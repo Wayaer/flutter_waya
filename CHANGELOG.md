@@ -1,3 +1,7 @@
+## 8.1.0
+
+* The `let` and `also` functions increase the judgment to be non-empty
+
 ## 8.0.3
 
 * Update `dio` and `flutter_staggered_grid_view`
