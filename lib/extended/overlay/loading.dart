@@ -112,7 +112,7 @@ class Loading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final loadingOptions = GlobalOptions()
+    final loadingOptions = GlobalWayUI()
         .loadingOptions
         .copyWith(custom: custom, style: style, options: options);
     Widget windows = custom ??

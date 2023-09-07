@@ -176,7 +176,7 @@ class _DropdownMenusState<K, V> extends ExtendedState<DropdownMenus<K, V>> {
               child: item.child);
         });
     ModalWindows(
-            options: GlobalOptions().modalWindowsOptions.copyWith(
+            options: GlobalWayUI().modalWindowsOptions.copyWith(
                 top: (rect?.top ?? 0) + context.size!.height,
                 alignment: Alignment.topLeft,
                 color: Colors.transparent,

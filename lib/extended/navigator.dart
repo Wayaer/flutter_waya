@@ -18,7 +18,7 @@ class ExtendedWillPopScope extends WillPopScope {
             closeOverlay();
             return false;
           }
-          result = GlobalOptions().isWillPop;
+          result = GlobalWayUI().isWillPop;
           return result;
         });
 }
@@ -70,7 +70,7 @@ Future<T?> push<T extends Object?, TO extends Object?>(Widget widget,
         settings: settings,
         maintainState: maintainState,
         fullscreenDialog: fullscreenDialog,
-        pushStyle: pushStyle ?? GlobalOptions().pushStyle,
+        pushStyle: pushStyle ?? GlobalWayUI().pushStyle,
         result: result,
         replacement: replacement);
 
@@ -85,7 +85,7 @@ Future<T?> pushReplacement<T extends Object?, TO extends Object?>(Widget widget,
         settings: settings,
         maintainState: maintainState,
         fullscreenDialog: fullscreenDialog,
-        pushStyle: pushStyle ?? GlobalOptions().pushStyle);
+        pushStyle: pushStyle ?? GlobalWayUI().pushStyle);
 
 /// 打开新页面 并移出堆栈所有页面
 Future<T?> pushAndRemoveUntil<T extends Object?>(Widget widget,
@@ -98,13 +98,13 @@ Future<T?> pushAndRemoveUntil<T extends Object?>(Widget widget,
         settings: settings,
         maintainState: maintainState,
         fullscreenDialog: fullscreenDialog,
-        pushStyle: pushStyle ?? GlobalOptions().pushStyle);
+        pushStyle: pushStyle ?? GlobalWayUI().pushStyle);
 
 /// 可能返回到上一个页面
 Future<bool> maybePop<T extends Object>([T? result]) {
-  assert(GlobalOptions().navigatorKey.currentState != null,
-      'Set GlobalOptions().navigatorKey to one of [MaterialApp CupertinoApp WidgetsApp]');
-  return GlobalOptions().navigatorKey.currentState!.maybePop<T>(result);
+  assert(GlobalWayUI().navigatorKey.currentState != null,
+      'Set GlobalWayUI().navigatorKey to one of [MaterialApp CupertinoApp WidgetsApp]');
+  return GlobalWayUI().navigatorKey.currentState!.maybePop<T>(result);
 }
 
 /// 返回上一个页面
@@ -112,9 +112,9 @@ Future<bool?> pop<T extends Object>([T? result, bool isMaybe = false]) {
   if (isMaybe) {
     return maybePop<T>(result);
   } else {
-    assert(GlobalOptions().navigatorKey.currentState != null,
-        'Set GlobalOptions().navigatorKey to one of [MaterialApp CupertinoApp WidgetsApp]');
-    GlobalOptions().navigatorKey.currentState!.pop<T>(result);
+    assert(GlobalWayUI().navigatorKey.currentState != null,
+        'Set GlobalWayUI().navigatorKey to one of [MaterialApp CupertinoApp WidgetsApp]');
+    GlobalWayUI().navigatorKey.currentState!.pop<T>(result);
     return Future.value(true);
   }
 }
@@ -134,7 +134,7 @@ void popBack(Future<dynamic> navigator,
 
 /// 循环pop 直到pop至指定页面
 void popUntil(RoutePredicate predicate) {
-  assert(GlobalOptions().navigatorKey.currentState != null,
-      'Set GlobalOptions().navigatorKey to one of [MaterialApp CupertinoApp WidgetsApp]');
-  return GlobalOptions().navigatorKey.currentState!.popUntil(predicate);
+  assert(GlobalWayUI().navigatorKey.currentState != null,
+      'Set GlobalWayUI().navigatorKey to one of [MaterialApp CupertinoApp WidgetsApp]');
+  return GlobalWayUI().navigatorKey.currentState!.popUntil(predicate);
 }

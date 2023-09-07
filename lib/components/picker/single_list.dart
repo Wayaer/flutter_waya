@@ -3,7 +3,7 @@ part of 'picker.dart';
 extension ExtensionSingleListPicker on SingleListPicker {
   Future<List<int>?> show({BottomSheetOptions? options}) =>
       popupBottomSheet<List<int>?>(
-          options: GlobalOptions()
+          options: GlobalWayUI()
               .bottomSheetOptions
               .copyWith(isScrollControlled: false)
               .merge(options));

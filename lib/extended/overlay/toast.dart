@@ -27,7 +27,7 @@ class Toast extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currentOptions = GlobalOptions().toastOptions.merge(options);
+    final currentOptions = GlobalWayUI().toastOptions.merge(options);
     Widget content = BText(message,
         color: currentOptions.iconColor, maxLines: 5, fontSize: 14);
     content = buildIconToast(content, currentOptions);

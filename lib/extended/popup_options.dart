@@ -6,9 +6,9 @@ import 'package:flutter_waya/flutter_waya.dart';
 
 ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? showSnackBar(
     SnackBar snackBar) {
-  assert(GlobalOptions().scaffoldMessengerKey.currentState != null,
-      'Set GlobalOptions().scaffoldMessengerKey to the MaterialApp');
-  return GlobalOptions()
+  assert(GlobalWayUI().scaffoldMessengerKey.currentState != null,
+      'Set GlobalWayUI().scaffoldMessengerKey to the MaterialApp');
+  return GlobalWayUI()
       .scaffoldMessengerKey
       .currentState
       ?.showSnackBar(snackBar);
@@ -24,9 +24,9 @@ Future<T?> showMenuPopup<T>({
   Color? color,
   bool useRootNavigator = false,
 }) {
-  assert(GlobalOptions().navigatorKey.currentContext != null);
+  assert(GlobalWayUI().navigatorKey.currentContext != null);
   return showMenu(
-      context: GlobalOptions().navigatorKey.currentContext!,
+      context: GlobalWayUI().navigatorKey.currentContext!,
       position: position,
       useRootNavigator: useRootNavigator,
       initialValue: initialValue,
@@ -469,7 +469,7 @@ class ModalWindows extends StatelessWidget {
       this.children,
       this.child,
       ModalWindowsOptions? options})
-      : options = options ?? GlobalOptions().modalWindowsOptions;
+      : options = options ?? GlobalWayUI().modalWindowsOptions;
 
   /// 顶层组件
   final Widget? child;
@@ -587,7 +587,7 @@ class DoubleChooseWindows extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<Widget> widgets = [content];
     if (left != null && right != null) widgets.add(leftAndRight);
-    var options = this.options ?? GlobalOptions().modalWindowsOptions;
+    var options = this.options ?? GlobalWayUI().modalWindowsOptions;
     if (context.mediaQuery.size.width > 400) {
       options =
           options.copyWith(constraints: const BoxConstraints(maxWidth: 350));

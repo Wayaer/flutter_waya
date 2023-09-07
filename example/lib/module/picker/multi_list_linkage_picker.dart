@@ -69,7 +69,7 @@ class _MultiListLinkagePicker extends StatelessWidget {
 
   Widget buildChild(String value, bool selected) {
     final color =
-        GlobalOptions().navigatorKey.currentState?.context.theme.primaryColor ??
+        GlobalWayUI().navigatorKey.currentState?.context.theme.primaryColor ??
             Colors.blue;
     return Universal(
         padding: const EdgeInsets.symmetric(vertical: 8),

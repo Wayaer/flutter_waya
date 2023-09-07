@@ -20,10 +20,10 @@ class ExtendedOverlay {
 
   /// 自定义Overlay
   ExtendedOverlayEntry? showOverlay(Widget widget, {bool autoOff = false}) {
-    assert(GlobalOptions().navigatorKey.currentState != null,
-        'Set GlobalOptions().navigatorKey to one of [MaterialApp CupertinoApp WidgetsApp]');
+    assert(GlobalWayUI().navigatorKey.currentState != null,
+        'Set GlobalWayUI().navigatorKey to one of [MaterialApp CupertinoApp WidgetsApp]');
     final OverlayState? overlay =
-        GlobalOptions().navigatorKey.currentState!.overlay;
+        GlobalWayUI().navigatorKey.currentState!.overlay;
     if (overlay == null) return null;
     final ExtendedOverlayEntry entry =
         ExtendedOverlayEntry(autoOff: autoOff, widget: widget);
@@ -63,7 +63,7 @@ class ExtendedOverlay {
     _toast = showOverlay(toast, autoOff: true);
     _toast?.addListener(_toastListener);
     final duration =
-        toast.options?.duration ?? GlobalOptions().toastOptions.duration;
+        toast.options?.duration ?? GlobalWayUI().toastOptions.duration;
     await duration.delayed<dynamic>();
     closeToast();
     return _toast;

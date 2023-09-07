@@ -252,7 +252,7 @@ class ListWheel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final wheelOptions = GlobalOptions().wheelOptions.merge(options);
+    final wheelOptions = GlobalWayUI().wheelOptions.merge(options);
     Widget child;
     if (wheelOptions.isCupertino) {
       child = CupertinoListWheelScrollView.useDelegate(

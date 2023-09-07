@@ -86,7 +86,7 @@ class _DropdownMenuButtonState extends ExtendedState<DropdownMenuButton> {
     final Rect? rect = context.getWidgetRectLocalToGlobal(
         ancestor: navigator.context.findRenderObject());
     ModalWindows(
-        options: GlobalOptions().modalWindowsOptions.copyWith(
+        options: GlobalWayUI().modalWindowsOptions.copyWith(
             top: rect?.top,
             alignment: Alignment.topLeft,
             left: rect?.left,

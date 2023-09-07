@@ -4,7 +4,7 @@ import 'package:flutter_waya/flutter_waya.dart';
 void logDebug(dynamic msg) => debugPrint(msg.toString());
 
 void log(dynamic msg, {bool? crossLine}) {
-  crossLine ??= GlobalOptions().logCrossLine;
+  crossLine ??= GlobalWayUI().logCrossLine;
   if (!(kDebugMode || kProfileMode)) return;
   final String message = msg.toString();
   if (crossLine) {

@@ -120,7 +120,7 @@ class DebuggerInterceptorHelper {
   }
 
   Future<void> showDebugDataList() => const _HttpDataWindows().popupBottomSheet(
-      options: GlobalOptions()
+      options: GlobalWayUI()
           .bottomSheetOptions
           .copyWith(backgroundColor: Colors.transparent, enableDrag: true));
 }
@@ -303,7 +303,7 @@ class _HttpDataEntry extends StatelessWidget {
   void showDetailData() {
     if (!canTap) return;
     _HttpDetailDataWindows(model).popupBottomSheet(
-        options: GlobalOptions()
+        options: GlobalWayUI()
             .bottomSheetOptions
             .copyWith(backgroundColor: Colors.transparent, enableDrag: true));
   }

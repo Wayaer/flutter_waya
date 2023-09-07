@@ -15,8 +15,8 @@ extension ExtensionWidgetMethod on Widget {
       RouteSettings? settings,
       bool replacement = false,
       TO? result}) {
-    assert(GlobalOptions().navigatorKey.currentState != null,
-        'Set GlobalOptions().navigatorKey to one of [MaterialApp CupertinoApp WidgetsApp]');
+    assert(GlobalWayUI().navigatorKey.currentState != null,
+        'Set GlobalWayUI().navigatorKey to one of [MaterialApp CupertinoApp WidgetsApp]');
     if (replacement) {
       return pushReplacement(
           settings: settings,
@@ -25,7 +25,7 @@ extension ExtensionWidgetMethod on Widget {
           pushStyle: pushStyle,
           result: result);
     } else {
-      return GlobalOptions().navigatorKey.currentState!.push(buildPageRoute(
+      return GlobalWayUI().navigatorKey.currentState!.push(buildPageRoute(
           maintainState: maintainState,
           fullscreenDialog: fullscreenDialog,
           settings: settings,
@@ -40,9 +40,9 @@ extension ExtensionWidgetMethod on Widget {
       RoutePushStyle? pushStyle,
       RouteSettings? settings,
       TO? result}) {
-    assert(GlobalOptions().navigatorKey.currentState != null,
-        'Set GlobalOptions().navigatorKey to one of [MaterialApp CupertinoApp WidgetsApp]');
-    return GlobalOptions().navigatorKey.currentState!.pushReplacement(
+    assert(GlobalWayUI().navigatorKey.currentState != null,
+        'Set GlobalWayUI().navigatorKey to one of [MaterialApp CupertinoApp WidgetsApp]');
+    return GlobalWayUI().navigatorKey.currentState!.pushReplacement(
         buildPageRoute(
             settings: settings,
             maintainState: maintainState,
@@ -58,9 +58,9 @@ extension ExtensionWidgetMethod on Widget {
       RoutePushStyle? pushStyle,
       RouteSettings? settings,
       RoutePredicate? predicate}) {
-    assert(GlobalOptions().navigatorKey.currentState != null,
-        'Set GlobalOptions().navigatorKey to one of [MaterialApp CupertinoApp WidgetsApp]');
-    return GlobalOptions().navigatorKey.currentState!.pushAndRemoveUntil(
+    assert(GlobalWayUI().navigatorKey.currentState != null,
+        'Set GlobalWayUI().navigatorKey to one of [MaterialApp CupertinoApp WidgetsApp]');
+    return GlobalWayUI().navigatorKey.currentState!.pushAndRemoveUntil(
         buildPageRoute(
             settings: settings,
             maintainState: maintainState,
@@ -85,7 +85,7 @@ extension ExtensionWidgetMethod on Widget {
     /// GeneralDialog 配置
     DialogOptions? options,
   }) {
-    options = GlobalOptions().dialogOptions.merge(options);
+    options = GlobalWayUI().dialogOptions.merge(options);
     RouteTransitionsBuilder? transitionBuilder;
     if (options.fromStyle != PopupFromStyle.fromCenter) {
       transitionBuilder = options.transitionBuilder ??
@@ -112,9 +112,9 @@ extension ExtensionWidgetMethod on Widget {
                 translation: translation, child: child);
           };
     }
-    assert(GlobalOptions().navigatorKey.currentContext != null);
+    assert(GlobalWayUI().navigatorKey.currentContext != null);
     return showGeneralDialog(
-        context: GlobalOptions().navigatorKey.currentContext!,
+        context: GlobalWayUI().navigatorKey.currentContext!,
         pageBuilder: builder ?? (_, Animation<double> animation, __) => this,
         barrierDismissible: options.barrierDismissible,
         barrierLabel: options.barrierLabel,
@@ -131,10 +131,10 @@ extension ExtensionWidgetMethod on Widget {
     WidgetBuilder? builder,
     DialogOptions? options,
   }) {
-    options = GlobalOptions().dialogOptions.merge(options);
-    assert(GlobalOptions().navigatorKey.currentContext != null);
+    options = GlobalWayUI().dialogOptions.merge(options);
+    assert(GlobalWayUI().navigatorKey.currentContext != null);
     return showCupertinoDialog(
-        context: GlobalOptions().navigatorKey.currentContext!,
+        context: GlobalWayUI().navigatorKey.currentContext!,
         builder: builder ?? toWidgetBuilder,
         barrierLabel: options.barrierLabel,
         barrierDismissible: options.barrierDismissible,
@@ -148,10 +148,10 @@ extension ExtensionWidgetMethod on Widget {
     WidgetBuilder? builder,
     DialogOptions? options,
   }) {
-    options = GlobalOptions().dialogOptions.merge(options);
-    assert(GlobalOptions().navigatorKey.currentContext != null);
+    options = GlobalWayUI().dialogOptions.merge(options);
+    assert(GlobalWayUI().navigatorKey.currentContext != null);
     return showDialog(
-        context: GlobalOptions().navigatorKey.currentContext!,
+        context: GlobalWayUI().navigatorKey.currentContext!,
         builder: builder ?? toWidgetBuilder,
         barrierColor: options.barrierColor,
         barrierLabel: options.barrierLabel,
@@ -166,10 +166,10 @@ extension ExtensionWidgetMethod on Widget {
   /// 关闭 closePopup()
   Future<T?> popupBottomSheet<T>(
       {WidgetBuilder? builder, BottomSheetOptions? options}) {
-    options = GlobalOptions().bottomSheetOptions.merge(options);
-    assert(GlobalOptions().navigatorKey.currentContext != null);
+    options = GlobalWayUI().bottomSheetOptions.merge(options);
+    assert(GlobalWayUI().navigatorKey.currentContext != null);
     return showModalBottomSheet(
-        context: GlobalOptions().navigatorKey.currentContext!,
+        context: GlobalWayUI().navigatorKey.currentContext!,
         builder: builder ?? toWidgetBuilder,
         backgroundColor: options.backgroundColor,
         elevation: options.elevation,
@@ -191,10 +191,10 @@ extension ExtensionWidgetMethod on Widget {
     WidgetBuilder? builder,
     CupertinoModalPopupOptions? options,
   }) {
-    options = GlobalOptions().cupertinoModalPopupOptions.merge(options);
-    assert(GlobalOptions().navigatorKey.currentContext != null);
+    options = GlobalWayUI().cupertinoModalPopupOptions.merge(options);
+    assert(GlobalWayUI().navigatorKey.currentContext != null);
     return showCupertinoModalPopup(
-        context: GlobalOptions().navigatorKey.currentContext!,
+        context: GlobalWayUI().navigatorKey.currentContext!,
         builder: builder ?? toWidgetBuilder,
         filter: options.filter,
         barrierColor: options.barrierColor,
@@ -227,7 +227,7 @@ extension ExtensionWidget on Widget {
           String? title,
           RoutePushStyle? pushStyle,
           RouteSettings? settings}) =>
-      (pushStyle ?? GlobalOptions().pushStyle).pageRoute(
+      (pushStyle ?? GlobalWayUI().pushStyle).pageRoute(
           title: title,
           settings: settings,
           maintainState: maintainState,

@@ -28,7 +28,7 @@ import 'package:flutter_waya/flutter_waya.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  GlobalOptions globalOptions = GlobalOptions();
+  GlobalWayUI globalOptions = GlobalWayUI();
   PaintingBinding.instance.imageCache.maximumSizeBytes = 1024 * 1024 * 40;
 
   ExtendedDio().initialize(interceptors: [
@@ -77,24 +77,11 @@ class _App extends StatefulWidget {
 
 class _AppState extends ExtendedState<_App> {
   @override
-  void initState() {
-    super.initState();
-    addPostFrameCallback((Duration duration) async {
-      if (isDebug && isDesktop) {
-        await Curiosity().desktop.focusDesktop();
-        final bool data =
-            await Curiosity().desktop.setDesktopSizeToIPad11(p: 1.3);
-        log('桌面端限制宽高:$data');
-      }
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
-        navigatorKey: GlobalOptions().navigatorKey,
-        scaffoldMessengerKey: GlobalOptions().scaffoldMessengerKey,
+        navigatorKey: GlobalWayUI().navigatorKey,
+        scaffoldMessengerKey: GlobalWayUI().scaffoldMessengerKey,
         theme: ThemeData.light(useMaterial3: true),
         darkTheme: ThemeData.dark(useMaterial3: true),
         locale: DevicePreview.locale(context),

@@ -388,8 +388,8 @@ class _EasyRefreshedState extends ExtendedState<EasyRefreshed> {
   Widget build(BuildContext context) {
     return EasyRefresh.builder(
         controller: controller,
-        header: config.header ?? GlobalOptions().globalRefreshHeader,
-        footer: config.footer ?? GlobalOptions().globalRefreshFooter,
+        header: config.header ?? GlobalWayUI().globalRefreshHeader,
+        footer: config.footer ?? GlobalWayUI().globalRefreshFooter,
         onLoad: config.onLoading == null
             ? null
             : () {

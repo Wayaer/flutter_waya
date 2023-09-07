@@ -1,7 +1,7 @@
 import 'package:app/main.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_curiosity/flutter_curiosity.dart';
 import 'package:flutter_waya/flutter_waya.dart';
+import 'package:path_provider/path_provider.dart';
 
 class ExtendedDioPage extends StatefulWidget {
   const ExtendedDioPage({super.key});
@@ -11,7 +11,6 @@ class ExtendedDioPage extends StatefulWidget {
 }
 
 class _ExtendedDioPageState extends ExtendedState<ExtendedDioPage> {
-  String? cachePath;
   Map<String, dynamic> res = {};
 
   StateSetter? progressState;
@@ -19,15 +18,6 @@ class _ExtendedDioPageState extends ExtendedState<ExtendedDioPage> {
   @override
   void initState() {
     super.initState();
-    Curiosity().native.appPath.then((value) {
-      if (isAndroid) {
-        cachePath = value?.externalCacheDir;
-      } else if (isIOS) {
-        cachePath = value?.cachesDirectory;
-      } else if (isMacOS) {
-        cachePath = value?.cachesDirectory;
-      }
-    });
   }
 
   @override
@@ -102,13 +92,11 @@ class _ExtendedDioPageState extends ExtendedState<ExtendedDioPage> {
   void download() async {
     res = {};
     setState(() {});
-    if (cachePath == null) {
-      showToast('缓存地址为null');
-      return;
-    }
+    final dir = await getTemporaryDirectory();
+    final cachePath = dir.path;
     final data = await ExtendedDio().download(
         'https://dldir1.qq.com/qqfile/qq/PCQQ9.6.1/QQ9.6.1.28732.exe',
-        '${cachePath!}QQ.exe', onReceiveProgress: (int count, int total) {
+        '$cachePath/QQ.exe', onReceiveProgress: (int count, int total) {
       this.count = count;
       this.total = total;
       progressState?.call(() {});

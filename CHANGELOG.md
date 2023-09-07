@@ -1,6 +1,7 @@
 ## 8.1.0
 
 * The `let` and `also` functions increase the judgment to be non-empty
+* `GlobalOptions` renamed `GlobalWayUI`
 
 ## 8.0.3
 
@@ -335,14 +336,14 @@
 * Modify `PopupFromType` to `PopupFromStyle`,
 * Modify `PopupSureCancel()` to `PopupDoubleChooseWindows()`,
 * Remove `setToastDuration()` `setGlobalPushMode()` `setAllToastIgnoringBackground()` methods,
-  please use the `GlobalOptions()` set up some global properties
+  please use the `GlobalWayUI()` set up some global properties
 * Modify `ExtendedOptions()` to `ExtendedDioOptions()`
 * Modify `PopupOptions()` to `PopupModalWindows()`, add `options`, use `ModalWindowsOptions()`
 * Modify `ToastType` to `ToastStyle`, `toastType` to style, add `options` in `showToast()` method
 * Remove the default background color for `showBottomPopup`
 * Add positioned for `showToast` and Add the global `setToastPositioned()`
 * Modify all `widgetMode` to `pushStyle` and Change all `WidgetMode` to `RoutePushStyle`
-* Add the `GlobalOptions()` class to set
+* Add the `GlobalWayUI()` class to set
   all `ToastOptions` `WheelOptions` `BottomSheetOptions` `DialogOptions` `PickerWheelOptions` `ModalWindowsOptions`
   configuration information
 * After modifying `showToast`, you may need to modify some of your own code

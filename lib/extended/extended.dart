@@ -25,12 +25,12 @@ class SystemUiOverlayStyleDark extends SystemUiOverlayStyle {
       super.statusBarBrightness = Brightness.light});
 }
 
-class GlobalOptions {
-  factory GlobalOptions() => _singleton ??= GlobalOptions._();
+class GlobalWayUI {
+  factory GlobalWayUI() => _singleton ??= GlobalWayUI._();
 
-  GlobalOptions._();
+  GlobalWayUI._();
 
-  static GlobalOptions? _singleton;
+  static GlobalWayUI? _singleton;
 
   WidgetsBinding widgetsBinding = WidgetsBinding.instance;
 
@@ -118,16 +118,16 @@ abstract class ExtendedState<T extends StatefulWidget> extends State<T> {
 }
 
 void addPostFrameCallback(FrameCallback duration) =>
-    GlobalOptions().widgetsBinding.addPostFrameCallback(duration);
+    GlobalWayUI().widgetsBinding.addPostFrameCallback(duration);
 
 void addObserver(WidgetsBindingObserver observer) =>
-    GlobalOptions().widgetsBinding.addObserver(observer);
+    GlobalWayUI().widgetsBinding.addObserver(observer);
 
 void removeObserver(WidgetsBindingObserver observer) =>
-    GlobalOptions().widgetsBinding.removeObserver(observer);
+    GlobalWayUI().widgetsBinding.removeObserver(observer);
 
 void addPersistentFrameCallback(FrameCallback duration) =>
-    GlobalOptions().widgetsBinding.addPersistentFrameCallback(duration);
+    GlobalWayUI().widgetsBinding.addPersistentFrameCallback(duration);
 
 void addTimingsCallback(TimingsCallback callback) =>
-    GlobalOptions().widgetsBinding.addTimingsCallback(callback);
+    GlobalWayUI().widgetsBinding.addTimingsCallback(callback);
