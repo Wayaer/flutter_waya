@@ -5,7 +5,6 @@ import 'package:app/module/button_page.dart';
 import 'package:app/module/components_page.dart';
 import 'package:app/module/decorator_page.dart';
 import 'package:app/module/dio_page.dart';
-import 'package:app/module/extension_page.dart';
 import 'package:app/module/gesture_page.dart';
 import 'package:app/module/json_parse_page.dart';
 import 'package:app/module/list_wheel_page.dart';
@@ -135,7 +134,6 @@ class _Home extends StatelessWidget {
               onTap: () => push(const AnchorScrollBuilderPage())),
           ElevatedText('EasyRefreshed',
               onTap: () => push(const EasyRefreshPage())),
-          ElevatedText('Extension', onTap: () => push(const ExtensionPage())),
           ElevatedText('DecoratorBox',
               onTap: () => push(const DecoratorBoxPage())),
           ElevatedText('ExtendedTextField',

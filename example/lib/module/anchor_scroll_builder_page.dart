@@ -165,7 +165,7 @@ class _AnchorScrollBuilderPage extends StatelessWidget {
                         width: scrollDirection == Axis.vertical
                             ? double.infinity
                             : _random(index)));
-              }).expandedNull
+              }).expanded
         ]);
   }
 }
@@ -217,7 +217,7 @@ class _AnchorScrollGridPage extends StatelessWidget {
                         width: scrollDirection == Axis.vertical
                             ? double.infinity
                             : _random(index)));
-              }).expandedNull
+              }).expanded
         ]);
   }
 }
@@ -272,7 +272,7 @@ class _AnchorScrollBuilderWaterfallPage extends StatelessWidget {
                         width: scrollDirection == Axis.vertical
                             ? double.infinity
                             : _random(index)));
-              }).expandedNull
+              }).expanded
         ]);
   }
 }
@@ -322,7 +322,7 @@ class _AnchorScrollCountPage extends StatelessWidget {
                         width: scrollDirection == Axis.vertical
                             ? double.infinity
                             : _random(entry.key))));
-              }).expandedNull
+              }).expanded
         ]);
   }
 }

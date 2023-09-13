@@ -352,10 +352,7 @@ extension ExtensionWidget on Widget {
           heightFactor: heightFactor,
           child: this);
 
-  Expanded expanded({Key? key, int flex = 1}) =>
-      Expanded(key: key, flex: flex, child: this);
-
-  Expanded get expandedNull => Expanded(flex: 1, child: this);
+  Expanded get expanded => Expanded(flex: 1, child: this);
 
   Flexible flexible({Key? key, int flex = 1, FlexFit fit = FlexFit.loose}) =>
       Flexible(key: key, flex: flex, fit: fit, child: this);
@@ -424,8 +421,6 @@ extension ExtensionWidget on Widget {
           margin: margin,
           decoration: decoration,
           child: this);
-
-  List<Widget> asList() => [this];
 
   Align align(
           {Key? key,

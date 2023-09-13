@@ -119,7 +119,7 @@ extension ExtensionString on String {
   /// 'abc'.isNumber(); // false
   /// '123abc'.isNumber(); // false
   /// ```
-  bool isNumber() {
+  bool get isNumber {
     final isMatch = RegExp("[0-9]").hasMatch(this);
     return isMatch;
   }
@@ -131,7 +131,7 @@ extension ExtensionString on String {
   /// 'abc'.isDigit(); // false
   /// '123abc'.isDigit(); // false
   /// ```
-  bool isDigit() {
+  bool get isDigit {
     final isMatch = RegExp(r'\d').hasMatch(this);
     return isMatch && length == 1;
   }
@@ -140,7 +140,7 @@ extension ExtensionString on String {
   bool get isChinese => RegExp('[\u4e00-\u9fa5]').hasMatch(this);
 
   /// 是否是小数
-  bool isLetter() => RegExp("[A-Za-z]").hasMatch(this);
+  bool get isLetter => RegExp("[A-Za-z]").hasMatch(this);
 
   /// Check if string is json decode
   bool get isJsonDecode {
@@ -153,7 +153,7 @@ extension ExtensionString on String {
   }
 
   /// Format: 'aabbcc' or 'ffaabbcc' with an optional leading '#'.
-  Color fromHex() {
+  Color get fromHex {
     final StringBuffer buffer = StringBuffer();
     if (length == 6 || length == 7) {
       buffer.write('ff');

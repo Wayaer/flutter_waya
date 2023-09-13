@@ -352,7 +352,7 @@ class DecoratorBox extends StatelessWidget {
           gradient: gradient,
           boxShadow: boxShadow);
     }
-    final List<Widget> children = [current.expandedNull];
+    final List<Widget> children = [current.expanded];
     if (prefix != null) children.insert(0, prefix!);
     if (suffix != null) children.add(suffix!);
     current = Universal(

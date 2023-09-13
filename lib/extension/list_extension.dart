@@ -112,6 +112,6 @@ extension ExtensionList<T> on List<T> {
 
 extension ExtensionListString on List<String> {
   /// 移出首尾的括号 转换为字符串
-  String removeStartEnd() =>
+  String get toStringRemoveBracket =>
       toString().removeSuffix(']').removePrefix('[').replaceAll(' ', '');
 }

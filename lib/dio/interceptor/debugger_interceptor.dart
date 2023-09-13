@@ -148,7 +148,7 @@ class _HttpDataWindows extends StatelessWidget {
                     itemCount: values.length,
                     itemBuilder: (_, int index) =>
                         _HttpDataEntry(values.elementAt(index), canTap: true));
-              }).expandedNull
+              }).expanded
         ]);
   }
 }
@@ -267,7 +267,7 @@ class _HttpDataEntry extends StatelessWidget {
                 replacement:
                     const Icon(Icons.lock_open, size: 18, color: Colors.grey),
                 child: const Icon(Icons.lock, size: 18, color: Colors.green)),
-            BText(model.requestOptions?.baseUrl ?? 'N/A').expandedNull
+            BText(model.requestOptions?.baseUrl ?? 'N/A').expanded
           ]),
           const SizedBox(height: 10),
           BText(model.requestOptions?.path ?? 'unknown',
@@ -277,14 +277,14 @@ class _HttpDataEntry extends StatelessWidget {
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             BText(model.requestTime?.format(DateTimeDist.yearMillisecond) ??
                     'unknown')
-                .expandedNull,
+                .expanded,
             BText(stringToBytes(model.response?.data?.toString() ?? ''),
                     textAlign: TextAlign.center)
-                .expandedNull,
+                .expanded,
             BText(
               '${diffMillisecond(model.requestTime, model.responseTime)} ms',
               textAlign: TextAlign.end,
-            ).expandedNull,
+            ).expanded,
           ]),
         ]);
   }
@@ -381,7 +381,7 @@ class _HttpDetailDataWindowsState extends ExtendedState<_HttpDetailDataWindows>
                         safeBottom: true,
                         padding: const EdgeInsets.symmetric(vertical: 15),
                         child: entry);
-                  }))).expandedNull
+                  }))).expanded
         ]);
   }
 

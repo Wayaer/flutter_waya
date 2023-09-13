@@ -34,7 +34,7 @@ class _FlipCardPageState extends State<FlipCardPage> {
                       fill: Fill.front,
                       front: buildContent('Front', Colors.amberAccent),
                       back: buildContent('Back', Colors.lightGreenAccent)))
-              .expandedNull,
+              .expanded,
           12.heightBox,
           Wrap(spacing: 10, runSpacing: 10, children: [
             ElevatedText('toggle', onTap: () {

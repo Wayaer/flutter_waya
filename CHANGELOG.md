@@ -1,7 +1,8 @@
-## 8.1.0
+## 8.1.1
 
 * The `let` and `also` functions increase the judgment to be non-empty
 * `GlobalOptions` renamed `GlobalWayUI`
+* `expandedNull` renamed `expanded`
 
 ## 8.0.3
 

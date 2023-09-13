@@ -27,7 +27,7 @@ extension ExtensionUri on Uri {
         'authority': authority,
         'fragment': fragment,
         'hasAbsolutePath': hasAbsolutePath,
-        'isAbsolute': isAbsolute,
+        'isAbsolute': isAbsolute
       };
 }
 
@@ -48,8 +48,6 @@ extension ExtensionT<T> on T {
     return this;
   }
 
-  List<T> convertToList() => [this];
-
   /// Check if the T is null
   bool get isNull => this == null;
 
@@ -64,8 +62,10 @@ extension ExtensionT<T> on T {
           {ToastStyle? style, IconData? customIcon, ToastOptions? options}) =>
       Toast(toString(), options: options, customIcon: customIcon, style: style)
           .show();
+
+  List<T> get toList => [this];
 }
 
 extension ExtensionBool on bool {
-  bool toggle() => !this;
+  bool get toggle => !this;
 }

@@ -329,8 +329,7 @@ class _DateTimePickerState extends ExtendedState<DateTimePicker> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         width: widget.itemWidth,
-        children:
-            unit.isEmptyOrNull ? null : [wheel.expandedNull, buildUnit(unit)],
+        children: unit.isEmptyOrNull ? null : [wheel.expanded, buildUnit(unit)],
         child: unit.isNotEmptyOrNull ? null : wheel);
   }
 

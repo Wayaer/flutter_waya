@@ -158,16 +158,16 @@ extension ExtensionDuration on Duration {
       Timer.periodic(this, (Timer time) => callback(time));
 
   /// 以毫秒结尾
-  String toEndMillisecondsString() => toString().removeSuffixLength(3);
+  String get toEndMilliseconds => toString().removeSuffixLength(3);
 
   /// 以秒结尾
-  String toEndSecondsString() => toString().removeSuffixLength(7);
+  String get toEndSeconds => toString().removeSuffixLength(7);
 
   /// 以分结尾
-  String toEndMinutesString() => toString().removeSuffixLength(10);
+  String get toEndMinutes => toString().removeSuffixLength(10);
 
   /// 以时结尾
-  String toEndHoursString() => toString().removeSuffixLength(13);
+  String get toEndHours => toString().removeSuffixLength(13);
 
   /// add duration
   Duration add(Duration duration, [Duration? secondDuration]) => Duration(

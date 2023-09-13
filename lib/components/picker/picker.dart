@@ -207,7 +207,7 @@ class PickerSubject<T> extends StatelessWidget {
                 final bool isPop = options.verifyCancel?.call(value) ?? true;
                 if (isPop) closePopup(value);
               }),
-            if (options.title != null) options.title!.expandedNull,
+            if (options.title != null) options.title!.expanded,
             if (options.confirm != null)
               options.confirm!.onTap(() {
                 final T? value = confirmTap?.call();
