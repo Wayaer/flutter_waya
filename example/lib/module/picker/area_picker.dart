@@ -25,10 +25,10 @@ class _AreaPickerPage extends StatelessWidget {
           wheelOptions: const WheelOptions.cupertino(),
           height: 200,
           onChanged: (List<int> index) {
-            log('AreaPicker onChanged= $index');
+            'AreaPicker onChanged= $index'.log();
           },
           onValueChanged: (List<String> list) {
-            log('AreaPicker onValueChanged= $list');
+            'AreaPicker onValueChanged= $list'.log;
           },
           items: items,
           isScrollable: false);

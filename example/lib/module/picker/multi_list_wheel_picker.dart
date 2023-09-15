@@ -37,7 +37,7 @@ class _MultiListWheelPicker extends StatelessWidget {
           wheelOptions: const WheelOptions.cupertino(),
           value: const [2, 3, 4, 6, 6],
           onChanged: (List<int> index) {
-            log('MultiListWheelPicker onChanged= $index');
+            'MultiListWheelPicker onChanged= $index'.log();
           },
           items: multiListWheelList);
 

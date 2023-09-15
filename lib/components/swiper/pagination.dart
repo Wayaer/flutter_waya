@@ -222,7 +222,8 @@ class FlSwiperDotPagination extends FlSwiperPlugin {
   @override
   Widget build(BuildContext context, FlSwiperPluginConfig config) {
     if (config.itemCount > 20) {
-      log('The itemCount is too big, we suggest use FlSwiperFractionPaginationBuilder instead of FlSwiperDotPaginationBuilder in this sitituation');
+      'The itemCount is too big, we suggest use FlSwiperFractionPaginationBuilder instead of FlSwiperDotPaginationBuilder in this sitituation'
+          .log();
     }
     Color? activeColor = this.activeColor;
     Color? color = this.color;

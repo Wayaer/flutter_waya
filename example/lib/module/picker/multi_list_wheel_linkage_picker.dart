@@ -44,10 +44,10 @@ class _MultiListWheelLinkagePicker extends StatelessWidget {
           height: 200,
           options: options,
           onChanged: (List<int> index) {
-            log('MultiListWheelLinkagePicker onChanged= $index');
+            'MultiListWheelLinkagePicker onChanged= $index'.log();
           },
           onValueChanged: (List<String> list) {
-            log('MultiListWheelLinkagePicker onValueChanged= $list');
+            'MultiListWheelLinkagePicker onValueChanged= $list'.log();
           },
           items: items,
           isScrollable: isScrollable);

@@ -33,7 +33,7 @@ class _DateTimePickerPage extends StatelessWidget {
           defaultDate: defaultDate,
           endDate: defaultDate.add(const Duration(days: 365)),
           onChanged: (DateTime dateTime) {
-            log(dateTime);
+            dateTime.log();
           },
           height: 200,
           unit: unit);

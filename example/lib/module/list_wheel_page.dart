@@ -22,7 +22,7 @@ class _ListWheelPageState extends ExtendedState<ListWheelPage> {
           const Partition('ListWheel.builder'),
           addBackboard(ListWheel.builder(
               onSelectedItemChanged: (_) {
-                log('ListWheel.builder : $_');
+                'ListWheel.builder : $_'.log();
               },
               itemBuilder: (_, int index) => BText(numberList[index]),
               itemCount: numberList.length)),
@@ -30,7 +30,7 @@ class _ListWheelPageState extends ExtendedState<ListWheelPage> {
           addBackboard(ListWheel.count(
               options: const WheelOptions(),
               onSelectedItemChanged: (_) {
-                log('ListWheel.count : $_');
+                'ListWheel.count : $_'.log();
               },
               children: numberList.builder((item) => BText(item)))),
           const Partition('ListWheelState.builder'),
@@ -40,7 +40,7 @@ class _ListWheelPageState extends ExtendedState<ListWheelPage> {
               builder: (_) => ListWheel.builder(
                   controller: _,
                   onSelectedItemChanged: (_) {
-                    log('ListWheelState.builder : $_');
+                    'ListWheelState.builder : $_'.log();
                   },
                   itemBuilder: (_, int index) => BText(numberList[index]),
                   itemCount: numberList.length))),
@@ -52,7 +52,7 @@ class _ListWheelPageState extends ExtendedState<ListWheelPage> {
                   controller: _,
                   options: const WheelOptions(),
                   onSelectedItemChanged: (_) {
-                    log('ListWheelState.builder : $_');
+                    'ListWheelState.builder : $_'.log();
                   },
                   children: numberList.builder((item) => BText(item))))),
         ]);

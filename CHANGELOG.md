@@ -1,6 +1,8 @@
 ## 8.2.0
 
 * Migrated `ExtendedDio`, `LoggerInterceptor`，`DebuggerInterceptor`, `CookiesInterceptor`, and `JsonParse` to [fl_dio](https://pub.dev/packages/fl_dio)
+* Removes the `crypto` dependency, so the `toMd5` method is invalid
+* Print log '$value.log()'
 
 ## 8.1.1
 

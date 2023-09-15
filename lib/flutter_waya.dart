@@ -1,12 +1,12 @@
 library flutter_waya;
 
-export 'package:crypto/crypto.dart';
 export 'package:easy_refresh/easy_refresh.dart';
-
+export 'package:path_drawing/path_drawing.dart';
 export 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 /// components
 export 'components/components.dart';
+export 'components/event.dart';
 export 'components/dropdown_menus.dart';
 export 'components/anchor_scroll_list.dart';
 export 'components/builder.dart';
@@ -68,7 +68,3 @@ export 'extension/num_extension.dart';
 export 'extension/object_extension.dart';
 export 'extension/string_extension.dart';
 export 'extension/widget_extension.dart';
-
-/// utils
-export 'utils/utils.dart';
-export 'utils/event.dart';

@@ -30,9 +30,6 @@ extension ExtensionString on String {
   String insert(int index, String element) =>
       '${substring(0, index)}$element${substring(index, length)}';
 
-  /// md5 加密
-  String get toMd5 => md5.convert(utf8.encode(this)).toString();
-
   /// Base64加密
   String get toEncodeBase64 => base64Encode(utf8.encode(this));
 

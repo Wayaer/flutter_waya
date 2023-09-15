@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 extension ExtensionT<T> on T {
@@ -34,6 +35,41 @@ extension ExtensionT<T> on T {
           .show();
 
   List<T> get toList => [this];
+
+  void log({bool? crossLine}) {
+    if (!(kDebugMode || kProfileMode)) return;
+    dynamic msg = this;
+    crossLine ??= GlobalWayUI().logCrossLine;
+    final String message = msg.toString();
+    if (crossLine) {
+      debugPrint(
+          '┌------------------------------------------------------------------------------');
+    }
+    const int limitLength = 800;
+    if (message.length < limitLength) {
+      debugPrint('$msg');
+    } else {
+      final StringBuffer outStr = StringBuffer();
+      for (int index = 0; index < message.length; index++) {
+        outStr.write(message[index]);
+        if (index % limitLength == 0 && index != 0) {
+          debugPrint(outStr.toString());
+          outStr.clear();
+          final int lastIndex = index + 1;
+          if (message.length - lastIndex < limitLength) {
+            final String remainderStr =
+                message.substring(lastIndex, message.length);
+            debugPrint(remainderStr);
+            break;
+          }
+        }
+      }
+    }
+    if (crossLine) {
+      debugPrint(
+          '└------------------------------------------------------------------------------');
+    }
+  }
 }
 
 extension ExtensionBool on bool {

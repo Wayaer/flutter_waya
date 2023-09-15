@@ -35,7 +35,7 @@ class _DatePickerPage extends StatelessWidget {
           defaultDate: defaultDate,
           options: options,
           onChanged: (DateTime dateTime) {
-            log(dateTime);
+            dateTime.log();
           },
           itemBuilder: (String text) =>
               Text(text, style: const TextStyle(fontSize: 16)),

@@ -39,11 +39,11 @@ class OverlayPage extends StatelessWidget {
                           options: ToastOptions(
                               positioned: positioned,
                               onTap: () {
-                                log('点击了Toast');
+                                '点击了Toast'.log();
                               },
                               modalWindowsOptions: ModalWindowsOptions(
                                 onTap: () {
-                                  log('点击了背景');
+                                  '点击了背景'.log();
                                 },
                               )));
                     }))),

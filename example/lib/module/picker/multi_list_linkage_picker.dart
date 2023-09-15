@@ -40,10 +40,10 @@ class _MultiListLinkagePicker extends StatelessWidget {
           options: options,
           height: 300,
           onChanged: (List<int> index) {
-            log('MultiListLinkagePicker onChanged= $index');
+            'MultiListLinkagePicker onChanged= $index'.log();
           },
           onValueChanged: (List<String> list) {
-            log('MultiListLinkagePicker onValueChanged= $list');
+            'MultiListLinkagePicker onValueChanged= $list'.log();
           },
           items: items);
 

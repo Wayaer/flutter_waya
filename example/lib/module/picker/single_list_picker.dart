@@ -20,7 +20,7 @@ class _SingleListPickerPage extends StatelessWidget {
             child: SingleListPicker(
                 height: 210,
                 onChanged: (List<int> index) {
-                  log(index);
+                  index.log();
                 },
                 itemCount: numberList.length,
                 builder: (int itemCount, IndexedWidgetBuilder itemBuilder) {

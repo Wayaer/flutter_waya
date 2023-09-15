@@ -146,11 +146,11 @@ class PickerPage extends StatelessWidget {
                 color: Colors.red,
                 borderRadius: BorderRadius.vertical(top: Radius.circular(10))),
             verifyConfirm: (String? value) {
-              log('verifyConfirm $value');
+              'verifyConfirm $value'.log();
               return true;
             },
             verifyCancel: (String? value) {
-              log('verifyCancel $value');
+              'verifyCancel $value'.log();
               return true;
             },
             title: Container(

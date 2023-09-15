@@ -553,13 +553,13 @@ abstract class _LayoutState<T extends _SubFlSwiper> extends ExtendedState<T>
         widget.onChanged!(widget.getCorrectIndex(nextIndex));
       }
     } catch (e) {
-      log(e);
+      e.log();
     } finally {
       if (nextIndex != null) {
         try {
           _animationController.value = 0.5;
         } catch (e) {
-          log(e);
+          e.log();
         }
         _currentIndex = nextIndex;
       }
