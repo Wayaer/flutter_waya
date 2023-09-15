@@ -1,36 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-extension ExtensionUriData on UriData {
-  Map<String, dynamic> toMap() => {
-        'charset': charset,
-        'contentText': contentText,
-        'mimeType': mimeType,
-        'parameters': parameters,
-        'isBase64': isBase64,
-        'uri': uri.toMap(),
-      };
-}
-
-extension ExtensionUri on Uri {
-  Map<String, dynamic> toMap() => {
-        'path': path,
-        'pathSegments': pathSegments,
-        'data': data?.toMap(),
-        'host': host,
-        'port': port,
-        'query': query,
-        'scheme': scheme,
-        'userInfo': userInfo,
-        'queryParameters': queryParameters,
-        'queryParametersAll': queryParametersAll,
-        'authority': authority,
-        'fragment': fragment,
-        'hasAbsolutePath': hasAbsolutePath,
-        'isAbsolute': isAbsolute
-      };
-}
-
 extension ExtensionT<T> on T {
   /// 判空后执行方法 返回新的参数
   E? let<E>(E Function(T it) operation) {

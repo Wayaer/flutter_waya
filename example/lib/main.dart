@@ -4,9 +4,7 @@ import 'package:app/module/builder_page.dart';
 import 'package:app/module/button_page.dart';
 import 'package:app/module/components_page.dart';
 import 'package:app/module/decorator_page.dart';
-import 'package:app/module/dio_page.dart';
 import 'package:app/module/gesture_page.dart';
-import 'package:app/module/json_parse_page.dart';
 import 'package:app/module/list_wheel_page.dart';
 import 'package:app/module/overlay_page.dart';
 import 'package:app/module/picker/picker_page.dart';
@@ -29,17 +27,6 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   GlobalWayUI globalOptions = GlobalWayUI();
   PaintingBinding.instance.imageCache.maximumSizeBytes = 1024 * 1024 * 40;
-
-  ExtendedDio().initialize(interceptors: [
-    /// 日志打印
-    LoggerInterceptor(),
-
-    /// debug 调试工具
-    DebuggerInterceptor(),
-
-    /// cooker 管理
-    CookiesInterceptor()
-  ]);
 
   globalOptions.pushStyle = RoutePushStyle.material;
 
@@ -110,8 +97,6 @@ class _Home extends StatelessWidget {
         direction: Axis.horizontal,
         scrollDirection: Axis.vertical,
         children: [
-          ElevatedText('ExtendedDio',
-              onTap: () => push(const ExtendedDioPage())),
           ElevatedText('Components', onTap: () => push(const ComponentsPage())),
           ElevatedText('State Components',
               onTap: () => push(const StateComponentsPage())),
@@ -126,7 +111,6 @@ class _Home extends StatelessWidget {
           ElevatedText('GestureZoom',
               onTap: () => push(const GestureZoomPage())),
           ElevatedText('Universal', onTap: () => push(const UniversalPage())),
-          ElevatedText('JsonParse', onTap: () => push(const JsonParsePage())),
           ElevatedText('ScrollView', onTap: () => push(const ScrollViewPage())),
           ElevatedText('ScrollList', onTap: () => push(const ScrollListPage())),
           ElevatedText('ListWheel', onTap: () => push(const ListWheelPage())),

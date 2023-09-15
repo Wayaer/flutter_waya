@@ -1,11 +1,9 @@
 library flutter_waya;
 
 export 'package:crypto/crypto.dart';
-export 'package:dio/dio.dart';
 export 'package:easy_refresh/easy_refresh.dart';
 
 export 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-export 'package:http_parser/http_parser.dart';
 
 /// components
 export 'components/components.dart';
@@ -21,7 +19,6 @@ export 'components/decorator_box.dart';
 export 'components/dotted_line.dart';
 export 'components/draggable_scrollbar.dart';
 export 'components/gesture.dart';
-export 'components/json_parse.dart';
 export 'components/picker/picker.dart';
 export 'components/pin_box.dart';
 export 'components/progress/progress.dart';
@@ -43,12 +40,6 @@ export 'components/animation/wave.dart';
 /// const
 export 'const/const.dart';
 export 'const/styles.dart';
-
-/// dio
-export 'dio/dio.dart';
-export 'dio/interceptor/cookies_interceptor.dart';
-export 'dio/interceptor/debugger_interceptor.dart';
-export 'dio/interceptor/logger_interceptor.dart';
 
 /// extended
 export 'extended/extended.dart';
@@ -80,5 +71,4 @@ export 'extension/widget_extension.dart';
 
 /// utils
 export 'utils/utils.dart';
-export 'utils/ali_oss.dart';
 export 'utils/event.dart';

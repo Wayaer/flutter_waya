@@ -1,3 +1,7 @@
+## 8.2.0
+
+* Migrated `ExtendedDio`, `LoggerInterceptor`，`DebuggerInterceptor`, `CookiesInterceptor`, and `JsonParse` to [fl_dio](https://pub.dev/packages/fl_dio)
+
 ## 8.1.1
 
 * The `let` and `also` functions increase the judgment to be non-empty

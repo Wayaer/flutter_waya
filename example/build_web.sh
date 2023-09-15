@@ -6,6 +6,6 @@ flutter packages get
 
 echo "开始构建 web"
 
-flutter build web
+flutter build web --web-renderer html
 
 mv 'build/web' 'app/web'
