@@ -18,7 +18,7 @@ class _DecoratorBoxPageState extends ExtendedState<DecoratorBoxPage> {
     return ExtendedScaffold(
         isScroll: true,
         appBar: AppBarText('DecoratorBox'),
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
         children: [
           const Partition('DecoratorBoxState'),
           DecoratorBoxState(

@@ -16,7 +16,7 @@ class ButtonPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ExtendedScaffold(
           isScroll: true,
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
           appBar: AppBarText('Button'),
           children: [
             DropdownMenus<String, String>(

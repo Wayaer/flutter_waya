@@ -6,6 +6,7 @@ export 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 /// components
 export 'components/components.dart';
+export 'components/wrapper.dart';
 export 'components/event.dart';
 export 'components/dropdown_menus.dart';
 export 'components/anchor_scroll_list.dart';

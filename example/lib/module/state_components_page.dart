@@ -12,7 +12,7 @@ class StateComponentsPage extends StatelessWidget {
     return ExtendedScaffold(
         isScroll: true,
         appBar: AppBarText('State Components'),
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
         children: [
           ElevatedText('FlipCard', onTap: () => push(const FlipCardPage())),
           const Partition('ValueBuilder'),

@@ -15,7 +15,7 @@ class _FlAnimationPageState extends State<FlAnimationPage> {
   @override
   Widget build(BuildContext context) {
     return ExtendedScaffold(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
         appBar: AppBarText('FlAnimation'),
         children: [
           FlAnimation(

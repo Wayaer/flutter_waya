@@ -101,7 +101,7 @@ class PickerPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ExtendedScaffold(
           appBar: AppBarText('Picker'),
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
           isScroll: true,
           children: [
             ElevatedText('DatePicker', onTap: () {

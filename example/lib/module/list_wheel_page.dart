@@ -17,7 +17,7 @@ class _ListWheelPageState extends ExtendedState<ListWheelPage> {
     return ExtendedScaffold(
         appBar: AppBarText('ListWheel'),
         isScroll: true,
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
         children: [
           const Partition('ListWheel.builder'),
           addBackboard(ListWheel.builder(

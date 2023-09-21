@@ -9,7 +9,7 @@ class ExtendedBuilderPage extends StatelessWidget {
   Widget build(BuildContext context) {
     bool? showError = true;
     return ExtendedScaffold(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
         appBar: AppBarText('ExtendedBuilder'),
         children: [
           const Partition('CustomFutureBuilder'),

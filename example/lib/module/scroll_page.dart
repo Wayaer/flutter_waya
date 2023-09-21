@@ -10,7 +10,7 @@ class ScrollViewPage extends StatelessWidget {
     final ScrollController scrollController = ScrollController();
     return ExtendedScaffold(
         isScroll: true,
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
         appBar: AppBarText('ScrollView'),
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

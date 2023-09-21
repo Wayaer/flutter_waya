@@ -11,41 +11,59 @@ class ComponentsPage extends StatelessWidget {
   Widget build(BuildContext context) => ExtendedScaffold(
           isScroll: true,
           appBar: AppBarText('Components'),
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
           children: [
+            const Partition('Wrapper'),
+            const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Wrapper(
+                      formEnd: true,
+                      elevation: 1,
+                      child: Text('this is Wrapper',
+                          style: TextStyle(color: Colors.white))),
+                  Wrapper(
+                      formEnd: true,
+                      elevation: 1,
+                      style: SpineStyle.right,
+                      child: Text('this is Wrapper',
+                          style: TextStyle(color: Colors.white))),
+                ]),
             const Partition('ExpansionTiles'),
-            ExpansionTiles(
-                backgroundColor: context.theme.primaryColor,
-                title: const BText('title'),
-                children: 5.generate((int index) => Universal(
-                    margin: const EdgeInsets.all(12),
-                    alignment: Alignment.centerLeft,
-                    child: BText('item$index')))),
-            ExpansionTiles(
-                title: const BText('title'),
-                child: ScrollList.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (_, int index) => Universal(
-                        margin: const EdgeInsets.all(12),
-                        alignment: Alignment.centerLeft,
-                        child: BText('item$index')),
-                    itemCount: 5)),
+            Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              ExpansionTiles(
+                  backgroundColor: context.theme.primaryColor.withOpacity(0.2),
+                  title: const BText('title'),
+                  children: 5.generate((int index) => Universal(
+                      margin: const EdgeInsets.all(12),
+                      alignment: Alignment.centerLeft,
+                      child: BText('item$index')))).expanded,
+              ExpansionTiles(
+                      title: const BText('title'),
+                      child: ScrollList.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemBuilder: (_, int index) => Universal(
+                              margin: const EdgeInsets.all(12),
+                              alignment: Alignment.centerLeft,
+                              child: BText('item$index')),
+                          itemCount: 5))
+                  .expanded,
+            ]),
             const Partition('CounterAnimation'),
-
-            /// CounterAnimation
-            CounterAnimation(
-                style: CountAnimationStyle.part,
-                count: 100,
-                onTap: (int c) {},
-                builder: (int count, String text) =>
-                    BText(text, fontSize: 30)).color(Colors.black12),
-            const SizedBox(height: 40),
-            CounterAnimation(
-                style: CountAnimationStyle.all,
-                count: 100,
-                onTap: (int c) {},
-                builder: (int count, String text) =>
-                    BText(text, fontSize: 30)).color(Colors.black12),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+              CounterAnimation(
+                  style: CountAnimationStyle.part,
+                  count: 100,
+                  onTap: (int c) {},
+                  builder: (int count, String text) =>
+                      BText(text, fontSize: 30)),
+              CounterAnimation(
+                  style: CountAnimationStyle.all,
+                  count: 100,
+                  onTap: (int c) {},
+                  builder: (int count, String text) =>
+                      BText(text, fontSize: 30))
+            ]),
             const Partition('ToggleRotate'),
             Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
               ValueBuilder<bool>(
@@ -79,7 +97,6 @@ class ComponentsPage extends StatelessWidget {
                         child: const Icon(Icons.chevron_left, size: 30));
                   }),
             ]),
-
             const Partition('DottedLine'),
             Container(
                 width: double.infinity,

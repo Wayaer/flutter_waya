@@ -12,7 +12,7 @@ class TextFieldPage extends StatelessWidget {
     return ExtendedScaffold(
         isScroll: true,
         appBar: AppBarText('TextField'),
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
         children: [
           const Partition('PinBox'),
           PinBox(

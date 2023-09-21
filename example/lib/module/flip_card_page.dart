@@ -18,7 +18,7 @@ class _FlipCardPageState extends State<FlipCardPage> {
   Widget build(BuildContext context) {
     return ExtendedScaffold(
         appBar: AppBarText('FlipCard'),
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
         children: [
           MouseRegion(
                   onEnter: (_) {

@@ -1,3 +1,7 @@
+## 8.2.1
+
+* Add `Wrapper` and add examples
+
 ## 8.2.0
 
 * Migrated `ExtendedDio`, `LoggerInterceptor`，`DebuggerInterceptor`, `CookiesInterceptor`, and `JsonParse` to [fl_dio](https://pub.dev/packages/fl_dio)
