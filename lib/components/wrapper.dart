@@ -49,22 +49,32 @@ class Wrapper extends StatelessWidget {
   /// 圆角半径
   final double radius;
 
-  /// 偏移
+  /// 偏移量
   final double offset;
 
   /// 样式
   final SpineStyle style;
 
-  /// 颜色
+  /// 框框颜色
   final Color color;
+
+  /// 边线宽
   final double? strokeWidth;
+
+  /// 是否从尾部偏移
   final bool formEnd;
+
+  /// 内边距
   final EdgeInsets padding;
+
+  /// 影深
   final double? elevation;
 
   /// 阴影颜色
   final Color shadowColor;
   final Widget? child;
+
+  /// 尖端路径构造器
   final WrapperSpinePathBuilder? spinePathBuilder;
 
   @override
