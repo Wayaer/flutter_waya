@@ -1,6 +1,8 @@
-## 8.2.1
+## 8.3.0
 
 * Add `Wrapper` and add examples
+* Remove the `ExtendedSliverAppBar`，`ExtendedFlexibleSpaceBar`，`ExtendedScrollView`
+* Add `ExtendedSliverPersistentHeader`,`ExtendedSliverPersistentHeaderDelegate`
 
 ## 8.2.0
 

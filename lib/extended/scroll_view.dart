@@ -8,25 +8,25 @@ import 'package:flutter_waya/flutter_waya.dart';
 class RefreshScrollView extends StatelessWidget {
   const RefreshScrollView(
       {super.key,
-      this.refreshConfig,
-      this.padding,
-      this.slivers = const [],
-      this.noScrollBehavior = false,
-      this.shrinkWrap = false,
-      this.reverse = false,
-      this.scrollDirection = Axis.vertical,
-      this.anchor = 0.0,
-      this.cacheExtent,
-      this.controller,
-      this.primary,
-      this.physics,
-      this.center,
-      this.semanticChildCount,
-      this.dragStartBehavior = DragStartBehavior.start,
-      this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
-      this.clipBehavior = Clip.hardEdge,
-      this.scrollBehavior,
-      this.restorationId});
+        this.refreshConfig,
+        this.padding,
+        this.slivers = const [],
+        this.noScrollBehavior = false,
+        this.shrinkWrap = false,
+        this.reverse = false,
+        this.scrollDirection = Axis.vertical,
+        this.anchor = 0.0,
+        this.cacheExtent,
+        this.controller,
+        this.primary,
+        this.physics,
+        this.center,
+        this.semanticChildCount,
+        this.dragStartBehavior = DragStartBehavior.start,
+        this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
+        this.clipBehavior = Clip.hardEdge,
+        this.scrollBehavior,
+        this.restorationId});
 
   /// CustomScrollView
   final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
@@ -97,27 +97,27 @@ class RefreshScrollView extends StatelessWidget {
 class RefreshConfig {
   const RefreshConfig(
       {this.controller,
-      this.onRefresh,
-      this.onLoading,
-      this.header,
-      this.footer,
-      this.spring,
-      this.frictionFactor,
-      this.simultaneously = false,
-      this.canRefreshAfterNoMore = false,
-      this.canLoadAfterNoMore = false,
-      this.resetAfterRefresh = true,
-      this.refreshOnStart = false,
-      this.refreshOnStartHeader,
-      this.callRefreshOverOffset = 20,
-      this.callLoadOverOffset = 20,
-      this.fit = StackFit.loose,
-      this.clipBehavior = Clip.hardEdge,
-      this.scrollController,
-      this.notLoadFooter,
-      this.notRefreshHeader,
-      this.triggerAxis,
-      this.scrollBehaviorBuilder});
+        this.onRefresh,
+        this.onLoading,
+        this.header,
+        this.footer,
+        this.spring,
+        this.frictionFactor,
+        this.simultaneously = false,
+        this.canRefreshAfterNoMore = false,
+        this.canLoadAfterNoMore = false,
+        this.resetAfterRefresh = true,
+        this.refreshOnStart = false,
+        this.refreshOnStartHeader,
+        this.callRefreshOverOffset = 20,
+        this.callLoadOverOffset = 20,
+        this.fit = StackFit.loose,
+        this.clipBehavior = Clip.hardEdge,
+        this.scrollController,
+        this.notLoadFooter,
+        this.notRefreshHeader,
+        this.triggerAxis,
+        this.scrollBehaviorBuilder});
 
   /// 可不传controller，
   /// 若想关闭刷新组件可以通过发送消息
@@ -230,14 +230,14 @@ class RefreshConfig {
           frictionFactor: frictionFactor ?? this.frictionFactor,
           simultaneously: simultaneously ?? this.simultaneously,
           canRefreshAfterNoMore:
-              canRefreshAfterNoMore ?? this.canRefreshAfterNoMore,
+          canRefreshAfterNoMore ?? this.canRefreshAfterNoMore,
           canLoadAfterNoMore: canLoadAfterNoMore ?? this.canLoadAfterNoMore,
           resetAfterRefresh: resetAfterRefresh ?? this.resetAfterRefresh,
           refreshOnStart: refreshOnStart ?? this.refreshOnStart,
           refreshOnStartHeader:
-              refreshOnStartHeader ?? this.refreshOnStartHeader,
+          refreshOnStartHeader ?? this.refreshOnStartHeader,
           callRefreshOverOffset:
-              callRefreshOverOffset ?? this.callRefreshOverOffset,
+          callRefreshOverOffset ?? this.callRefreshOverOffset,
           callLoadOverOffset: callLoadOverOffset ?? this.callLoadOverOffset,
           fit: fit ?? this.fit,
           clipBehavior: clipBehavior ?? this.clipBehavior,
@@ -246,7 +246,7 @@ class RefreshConfig {
           notRefreshHeader: notRefreshHeader ?? this.notRefreshHeader,
           triggerAxis: triggerAxis ?? this.triggerAxis,
           scrollBehaviorBuilder:
-              scrollBehaviorBuilder ?? this.scrollBehaviorBuilder);
+          scrollBehaviorBuilder ?? this.scrollBehaviorBuilder);
 }
 
 class RefreshControllers {
@@ -393,15 +393,15 @@ class _EasyRefreshedState extends ExtendedState<EasyRefreshed> {
         onLoad: config.onLoading == null
             ? null
             : () {
-                RefreshControllers().current = controller;
-                config.onLoading!.call();
-              },
+          RefreshControllers().current = controller;
+          config.onLoading!.call();
+        },
         onRefresh: config.onRefresh == null
             ? null
             : () {
-                RefreshControllers().current = controller;
-                config.onRefresh!.call();
-              },
+          RefreshControllers().current = controller;
+          config.onRefresh!.call();
+        },
         scrollController: config.scrollController,
         spring: config.spring,
         frictionFactor: config.frictionFactor,

@@ -45,12 +45,14 @@ export 'const/styles.dart';
 /// extended
 export 'extended/extended.dart';
 export 'extended/icon.dart';
+export 'extended/sliver/sliver_list_grid.dart';
+export 'extended/sliver/sliver_persistent_header.dart';
+export 'extended/sliver/sliver_pinned_to_box_adapter.dart';
 export 'extended/list_wheel.dart';
 export 'extended/overlay/overlay.dart';
 export 'extended/popup_options.dart';
-export 'extended/extended_scroll_view.dart';
-export 'extended/scroll_list.dart';
 export 'extended/scroll_view.dart';
+export 'extended/scroll_list.dart';
 export 'extended/tab_bar.dart';
 export 'extended/text.dart';
 export 'extended/text_field.dart';
