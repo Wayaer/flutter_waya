@@ -5,6 +5,7 @@
 *.xml linguist-language=Dart
 *.xml linguist-language=Dart
 *.java linguist-language=Dart
+*.javascript linguist-language=Dart
 *.md linguist-language=Dart
 *.cmd linguist-language=Dart
 *.dart linguist-language=Dart
