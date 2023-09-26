@@ -60,6 +60,7 @@ export 'extended/universal.dart';
 export 'extended/navigator.dart';
 
 /// extension
+export 'extension/when.dart';
 export 'extension/color_extension.dart';
 export 'extension/context_extension.dart';
 export 'extension/date_time_extension.dart';

@@ -97,6 +97,21 @@ extension ExtensionIterableE<E> on Iterable<E> {
     if (isEmpty) return 0;
     return fold(0, (prev, element) => prev + addend(element));
   }
+
+  /// Returns the first element matching the given [predicate], or `null` if no
+  /// such element was found.
+  ///
+  /// ```dart
+  /// final list = ['a', 'Test'];
+  /// final firstLong= list.firstOrNullWhere((e) => e.length > 1); // 'Test'
+  /// final firstVeryLong = list.firstOrNullWhere((e) => e.length > 5); // null
+  /// ```
+  E? firstOrNullWhere(bool Function(E element) predicate) {
+    for (final element in this) {
+      if (predicate(element)) return element;
+    }
+    return null;
+  }
 }
 
 extension ExtensionIterableT<T> on Iterable<T> {
