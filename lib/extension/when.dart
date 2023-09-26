@@ -11,17 +11,17 @@ import 'package:flutter_waya/flutter_waya.dart';
 ///
 ///example:
 ///```dart
-/// String? kind = whenValue<List, String>(
-///   ["apple", "orange"],
+/// T? kind = whenValue<T>(
+///   V,
 ///   {
-///     ["cat", "dog"]: () {
-///       return "pets";
+///     V: () {
+///       return T;
 ///     },
-///     ["apple", "orange"]: () {
-///       return "fruits";
+///     V: () {
+///       return T;
 ///     },
-///     ["red", "white", "black"]: () {
-///       return "colors";
+///     V: () {
+///       return T;
 ///     },
 ///   },
 /// );

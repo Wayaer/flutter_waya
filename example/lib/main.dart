@@ -19,7 +19,6 @@ import 'package:app/module/text_field_page.dart';
 import 'package:app/module/universal_page.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_curiosity/flutter_curiosity.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
@@ -50,18 +49,16 @@ void main() {
   globalOptions.loadingOptions = const LoadingOptions(
       custom: BText('全局设置loading', fontSize: 20),
       options: ModalWindowsOptions(onTap: closeLoading));
+
   runApp(DevicePreview(
       enabled: isDesktop || isWeb,
       defaultDevice: Devices.ios.iPhone13Mini,
-      builder: (context) => _App()));
+      builder: (context) => const _App()));
 }
 
-class _App extends StatefulWidget {
-  @override
-  State<_App> createState() => _AppState();
-}
+class _App extends StatelessWidget {
+  const _App();
 
-class _AppState extends ExtendedState<_App> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -214,7 +211,6 @@ class ExtendedScaffold extends StatelessWidget {
     this.isStack = false,
     this.isScroll = false,
     this.isCloseOverlay = true,
-    this.useSingleChildScrollView = true,
     this.appBar,
     this.child,
     this.padding,
@@ -225,17 +221,10 @@ class ExtendedScaffold extends StatelessWidget {
     /// 控制界面内容 body 是否重新布局来避免底部被覆盖了，比如当键盘显示的时候，
     /// 重新布局避免被键盘盖住内容。默认值为 true。
     this.resizeToAvoidBottomInset,
-    this.appBarHeight,
     this.children,
     this.mainAxisAlignment = MainAxisAlignment.start,
     this.crossAxisAlignment = CrossAxisAlignment.center,
-    this.direction = Axis.vertical,
-    this.margin,
-    this.decoration,
     this.refreshConfig,
-    this.onWillPop,
-    this.systemOverlayStyle,
-    this.backgroundColor,
   });
 
   /// 相当于给[body] 套用 [Column]、[Row]、[Stack]
@@ -247,9 +236,6 @@ class ExtendedScaffold extends StatelessWidget {
   /// [children].length > 0 && [isStack]=false 有效;
   final CrossAxisAlignment crossAxisAlignment;
 
-  /// [children].length > 0 && [isStack]=false 有效;
-  final Axis direction;
-
   /// [children].length > 0有效;
   /// 添加 [Stack]组件
   final bool isStack;
@@ -258,30 +244,16 @@ class ExtendedScaffold extends StatelessWidget {
   final bool isScroll;
 
   final EdgeInsetsGeometry? padding;
-  final EdgeInsetsGeometry? margin;
-  final Decoration? decoration;
 
   /// true 点击android实体返回按键先关闭Overlay【toast loading ...】但不pop 当前页面
   /// false 点击android实体返回按键先关闭Overlay【toast loading ...】并pop 当前页面
   final bool isCloseOverlay;
 
-  /// 返回按键监听
-  final WillPopCallback? onWillPop;
-
   /// ****** 刷新组件相关 ******  ///
   final RefreshConfig? refreshConfig;
 
-  final bool useSingleChildScrollView;
-
-  /// 在不设置AppBar的时候 修改状态栏颜色
-  final SystemUiOverlayStyle? systemOverlayStyle;
-
-  /// 限制 [appBar] 高度
-  final double? appBarHeight;
-
   /// Scaffold相关属性
   final Widget? child;
-  final Color? backgroundColor;
 
   final Widget? appBar;
   final Widget? floatingActionButton;
@@ -302,34 +274,26 @@ class ExtendedScaffold extends StatelessWidget {
         key: key,
         resizeToAvoidBottomInset: resizeToAvoidBottomInset,
         floatingActionButton: floatingActionButton,
-        backgroundColor: backgroundColor,
         appBar: buildAppBar(context),
         bottomNavigationBar: bottomNavigationBar,
         body: universal);
-    return onWillPop != null || isCloseOverlay
-        ? ExtendedWillPopScope(
-            onWillPop: onWillPop,
-            isCloseOverlay: isCloseOverlay,
-            child: scaffold)
+    return isCloseOverlay
+        ? ExtendedWillPopScope(isCloseOverlay: isCloseOverlay, child: scaffold)
         : scaffold;
   }
 
   PreferredSizeWidget? buildAppBar(BuildContext context) {
-    if (appBar is AppBar && appBarHeight == null) return appBar as AppBar;
+    if (appBar is AppBar) return appBar as AppBar;
     return appBar == null
         ? null
         : PreferredSize(
-            preferredSize:
-                Size.fromHeight(context.padding.top + (appBarHeight ?? 30)),
+            preferredSize: const Size.fromHeight(kToolbarHeight - 12),
             child: appBar!);
   }
 
   Universal get universal => Universal(
       expand: true,
       refreshConfig: refreshConfig,
-      margin: margin,
-      systemOverlayStyle: systemOverlayStyle,
-      useSingleChildScrollView: useSingleChildScrollView,
       padding: padding,
       isScroll: isScroll,
       safeLeft: safeLeft,
@@ -337,8 +301,6 @@ class ExtendedScaffold extends StatelessWidget {
       safeRight: safeRight,
       safeBottom: safeBottom,
       isStack: isStack,
-      direction: direction,
-      decoration: decoration,
       mainAxisAlignment: mainAxisAlignment,
       crossAxisAlignment: crossAxisAlignment,
       child: child,
