@@ -6,6 +6,6 @@ flutter packages get
 
 echo "开始构建 web"
 
-flutter build web  --base-href flutter_waya/example/app/web/
+flutter build web  --base-href '/flutter_waya/example/app/web/'
 
 mv 'build/web' 'app/web'
