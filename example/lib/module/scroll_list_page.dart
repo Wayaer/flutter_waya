@@ -224,7 +224,8 @@ class _ScrollListPage extends StatelessWidget {
 }
 
 class _SliverTitle extends StatelessWidget {
-  const _SliverTitle(this.title, {Key? key}) : super(key: key);
+  const _SliverTitle(this.title);
+
   final String title;
 
   @override
@@ -257,7 +258,7 @@ class _ScrollListCountPage extends StatelessWidget {
 }
 
 class _Header extends StatelessWidget {
-  const _Header({Key? key}) : super(key: key);
+  const _Header();
 
   @override
   Widget build(BuildContext context) => SliverToBoxAdapter(
@@ -271,7 +272,7 @@ class _Header extends StatelessWidget {
 }
 
 class _Footer extends StatelessWidget {
-  const _Footer({Key? key}) : super(key: key);
+  const _Footer();
 
   @override
   Widget build(BuildContext context) => SliverToBoxAdapter(

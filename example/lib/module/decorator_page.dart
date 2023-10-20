@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 class DecoratorBoxPage extends StatefulWidget {
-  const DecoratorBoxPage({Key? key}) : super(key: key);
+  const DecoratorBoxPage({super.key});
 
   @override
   State<DecoratorBoxPage> createState() => _DecoratorBoxPageState();

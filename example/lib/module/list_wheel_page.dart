@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 class ListWheelPage extends StatefulWidget {
-  const ListWheelPage({Key? key}) : super(key: key);
+  const ListWheelPage({super.key});
 
   @override
   State<ListWheelPage> createState() => _ListWheelPageState();

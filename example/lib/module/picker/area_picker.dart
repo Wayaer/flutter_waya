@@ -1,7 +1,7 @@
 part of 'picker_page.dart';
 
 class _AreaPickerPage extends StatelessWidget {
-  const _AreaPickerPage({Key? key}) : super(key: key);
+  const _AreaPickerPage();
 
   @override
   Widget build(BuildContext context) {

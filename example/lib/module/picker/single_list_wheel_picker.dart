@@ -1,7 +1,7 @@
 part of 'picker_page.dart';
 
 class _SingleListWheelPickerPage extends StatelessWidget {
-  const _SingleListWheelPickerPage({Key? key}) : super(key: key);
+  const _SingleListWheelPickerPage();
 
   @override
   Widget build(BuildContext context) {

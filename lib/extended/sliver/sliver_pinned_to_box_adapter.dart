@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 class SliverPinnedToBoxAdapter extends SingleChildRenderObjectWidget {
-  const SliverPinnedToBoxAdapter({super.key, Widget? child})
-      : super(child: child);
+  const SliverPinnedToBoxAdapter({super.key, super.child});
 
   @override
   RenderSliverPinnedToBoxAdapter createRenderObject(BuildContext context) =>
@@ -13,7 +12,7 @@ class SliverPinnedToBoxAdapter extends SingleChildRenderObjectWidget {
 }
 
 class RenderSliverPinnedToBoxAdapter extends RenderSliverSingleBoxAdapter {
-  RenderSliverPinnedToBoxAdapter({RenderBox? child}) : super(child: child);
+  RenderSliverPinnedToBoxAdapter({super.child});
 
   @override
   void performLayout() {

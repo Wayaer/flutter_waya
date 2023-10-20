@@ -1,7 +1,7 @@
 part of 'picker_page.dart';
 
 class _MultiListWheelPicker extends StatelessWidget {
-  const _MultiListWheelPicker({Key? key}) : super(key: key);
+  const _MultiListWheelPicker();
 
   @override
   Widget build(BuildContext context) {

@@ -1,3 +1,9 @@
+## 8.4.0
+
+* Upgrading lint
+* Fix web build inaccessible
+* Limit dart minsdk to 3.0.0
+
 ## 8.3.0
 
 * Add `Wrapper` and add examples
@@ -6,7 +12,8 @@
 
 ## 8.2.0
 
-* Migrated `ExtendedDio`, `LoggerInterceptor`，`DebuggerInterceptor`, `CookiesInterceptor`, and `JsonParse` to [fl_dio](https://pub.dev/packages/fl_dio)
+* Migrated `ExtendedDio`, `LoggerInterceptor`，`DebuggerInterceptor`, `CookiesInterceptor`,
+  and `JsonParse` to [fl_dio](https://pub.dev/packages/fl_dio)
 * Removes the `crypto` dependency, so the `toMd5` method is invalid
 * Print log '$value.log()'
 
@@ -28,7 +35,8 @@
 * Add `builder` to DateTimePickerUnit
 * Add a new component, `DatePicker`
 * Add a new component, `XSwitch`
-* Remove `horizontalScroll` and `addExpanded`, add `isScrollable`, in `MultiListWheelLinkagePicker` and `MultiListWheelPicker` and related components
+* Remove `horizontalScroll` and `addExpanded`, add `isScrollable`, in `MultiListWheelLinkagePicker`
+  and `MultiListWheelPicker` and related components
 * Change the `PickerEntry` to a `PickerItem`
 * Change the `PickerLinkageEntry` to a `PickerLinkageItem`
 * Removes all Picker `options` initial parameters, which need to be added by yourself
@@ -72,7 +80,8 @@
 ## 7.0.0
 
 * Compatible with 3.10.0
-* Removes the method associated with `MediaQueryData.fromWindow(ui.window)`, but can be obtained from context
+* Removes the method associated with `MediaQueryData.fromWindow(ui.window)`, but can be obtained
+  from context
 * `ListWheel` added `onSelectedItemChanged` callback,
 * Removes the `onChanged` callback for `WheelOptions()`
 * `PickerWheelOptions` removed. Please use `WheelOptions`
@@ -92,8 +101,10 @@
 
 ## 6.0.0
 
-* Added the value argument for `PickerLinkageEntry`, so `MultiColumnLinkagePicker` gets the `onValueChanged` method
-* `AreaPicker` removed. Use `MultiColumnLinkagePicker`, as shown in the `MultiColumnLinkagePicker` component in the example, In `example/lib/module/picker/area.dart` The regional data in the dart
+* Added the value argument for `PickerLinkageEntry`, so `MultiColumnLinkagePicker` gets
+  the `onValueChanged` method
+* `AreaPicker` removed. Use `MultiColumnLinkagePicker`, as shown in the `MultiColumnLinkagePicker`
+  component in the example, In `example/lib/module/picker/area.dart` The regional data in the dart
 * Rewrite `TabBarBox()` and `TabBarMerge()`
 * Added the `MultiListLinkagePicker()` and added the example
 * `ScrollList.waterfall()` and `ScrollList.separator()` removed , Use `ScrollList.builder()`.
@@ -112,7 +123,10 @@
 
 ## 5.3.0
 
-* Modified the `AreaPicker()` `DateTimePicker()` `MultiColumnPicker()` `MultiColumnLinkagePicker()` `SingleListPicker()` `SingleColumnPicker()`,Added width and height and onChanged attributes for them,And you can remove the header component by setting options to null,
+* Modified
+  the `AreaPicker()` `DateTimePicker()` `MultiColumnPicker()` `MultiColumnLinkagePicker()` `SingleListPicker()` `SingleColumnPicker()`
+  ,Added width and height and onChanged attributes for them,And you can remove the header component
+  by setting options to null,
 * Add examples for the above components
 
 ## 5.2.0

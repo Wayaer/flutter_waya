@@ -7,11 +7,11 @@ extension ExtensionToast on Toast {
 class Toast extends StatelessWidget {
   const Toast(
     this.message, {
-    Key? key,
+    super.key,
     this.options,
     this.style,
     this.customIcon,
-  }) : super(key: key);
+  });
 
   /// 文字
   final String message;

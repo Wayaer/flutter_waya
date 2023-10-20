@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 class TextFieldPage extends StatelessWidget {
-  const TextFieldPage({Key? key}) : super(key: key);
+  const TextFieldPage({super.key});
 
   @override
   Widget build(BuildContext context) {

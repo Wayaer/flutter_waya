@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 class FlipCardPage extends StatefulWidget {
-  const FlipCardPage({Key? key}) : super(key: key);
+  const FlipCardPage({super.key});
 
   @override
   State<FlipCardPage> createState() => _FlipCardPageState();

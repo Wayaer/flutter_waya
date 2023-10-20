@@ -260,13 +260,13 @@ typedef ExtendedTextFieldBuilder = Widget Function(TextInputType keyboardType,
 
 class ExtendedTextField extends StatelessWidget {
   const ExtendedTextField({
-    Key? key,
+    super.key,
     this.decorator,
     this.inputLimitFormatter = TextInputLimitFormatter.text,
     this.suffixes = const [],
     this.prefixes = const [],
     required this.builder,
-  }) : super(key: key);
+  });
 
   /// 文本限制输入类型
   final TextInputLimitFormatter inputLimitFormatter;

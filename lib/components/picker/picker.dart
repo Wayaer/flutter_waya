@@ -263,16 +263,12 @@ class CustomPicker<T> extends PickerSubject<T> {
     required Widget content,
 
     /// 头部和背景色配置
-    required PickerOptions<T> options,
+    required super.options,
 
     /// 自定义 确定 按钮 返回参数
-    PickerSubjectTapCallback<T>? confirmTap,
+    super.confirmTap,
 
     /// 自定义 取消 按钮 返回参数
-    PickerSubjectTapCallback<T>? cancelTap,
-  }) : super(
-            confirmTap: confirmTap,
-            cancelTap: cancelTap,
-            options: options,
-            child: content);
+    super.cancelTap,
+  }) : super(child: content);
 }

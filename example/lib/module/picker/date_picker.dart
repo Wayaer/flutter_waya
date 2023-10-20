@@ -1,7 +1,8 @@
 part of 'picker_page.dart';
 
 class _DatePickerPage extends StatelessWidget {
-  _DatePickerPage({Key? key}) : super(key: key);
+  _DatePickerPage();
+
   final DateTime defaultDate = DateTime.now();
 
   @override

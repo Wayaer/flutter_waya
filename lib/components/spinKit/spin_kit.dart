@@ -14,8 +14,7 @@ part 'fading.dart';
 part 'ring.dart';
 
 class _DelayTween extends Tween<double> {
-  _DelayTween({double? begin, double? end, required this.delay})
-      : super(begin: begin, end: end);
+  _DelayTween({super.begin, super.end, required this.delay});
 
   final double delay;
 
