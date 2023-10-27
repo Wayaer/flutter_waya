@@ -1,5 +1,9 @@
 ## 8.4.0
 
+* Remove `SpinKit`
+
+## 8.4.0
+
 * Upgrading lint
 * Fix web build inaccessible
 * Limit dart minsdk to 3.0.0

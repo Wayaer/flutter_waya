@@ -24,7 +24,6 @@ export 'components/picker/picker.dart';
 export 'components/pin_box.dart';
 export 'components/progress/progress.dart';
 export 'components/screen_adaptation.dart';
-export 'components/spinKit/spin_kit.dart';
 export 'components/swiper/indicator.dart';
 export 'components/swiper/pagination.dart';
 export 'components/swiper/swiper.dart';
