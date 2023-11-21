@@ -1,6 +1,6 @@
-## 8.6.0
+## 8.6.1
 
-* Merged to 3.16.0
+* Migrate to 3.16.0
 * Remove `ExtendedWillPopScope`, please use `ExtendedPopScope`
 
 ## 8.5.0
