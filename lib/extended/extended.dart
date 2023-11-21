@@ -36,12 +36,6 @@ class GlobalWayUI {
 
   SchedulerBinding schedulerBinding = SchedulerBinding.instance;
 
-  /// 统一全局控制 是否可返回
-  /// true 允许的返回
-  /// false 不允许返回
-  ///  [ExtendedWillPopScope.onWillPop] 方法优先于 [isWillPop]
-  bool isWillPop = true;
-
   /// 设置全局 [NavigatorKey]
   /// Set the global [NavigatorKey]
   GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();

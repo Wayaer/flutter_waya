@@ -65,8 +65,6 @@ class _App extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         navigatorKey: GlobalWayUI().navigatorKey,
         scaffoldMessengerKey: GlobalWayUI().scaffoldMessengerKey,
-        theme: ThemeData.light(useMaterial3: true),
-        darkTheme: ThemeData.dark(useMaterial3: true),
         locale: DevicePreview.locale(context),
         title: 'Waya UI',
         home: ExtendedScaffold(
@@ -278,7 +276,7 @@ class ExtendedScaffold extends StatelessWidget {
         bottomNavigationBar: bottomNavigationBar,
         body: universal);
     return isCloseOverlay
-        ? ExtendedWillPopScope(isCloseOverlay: isCloseOverlay, child: scaffold)
+        ? ExtendedPopScope(isCloseOverlay: isCloseOverlay, child: scaffold)
         : scaffold;
   }
 

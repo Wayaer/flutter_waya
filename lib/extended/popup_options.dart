@@ -465,9 +465,10 @@ class ModalWindowsOptions {
 class ModalWindows extends StatelessWidget {
   ModalWindows(
       {super.key,
-      this.onWillPop,
+      this.onPopInvoked,
       this.children,
       this.child,
+      this.canPop = true,
       ModalWindowsOptions? options})
       : options = options ?? GlobalWayUI().modalWindowsOptions;
 
@@ -475,8 +476,9 @@ class ModalWindows extends StatelessWidget {
   final Widget? child;
   final List<Widget>? children;
 
-  /// Android 监听物理返回按键
-  final WillPopCallback? onWillPop;
+  /// 返回处理
+  final PopInvokedCallback? onPopInvoked;
+  final bool canPop;
 
   /// 弹框最底层配置
   final ModalWindowsOptions options;
@@ -495,7 +497,9 @@ class ModalWindows extends StatelessWidget {
     } else if (options.onTap == null && options.absorbing) {
       child = AbsorbPointer(child: child);
     }
-    if (onWillPop != null) WillPopScope(onWillPop: onWillPop, child: child);
+    if (onPopInvoked != null) {
+      PopScope(onPopInvoked: onPopInvoked, canPop: canPop, child: child);
+    }
     return child;
   }
 

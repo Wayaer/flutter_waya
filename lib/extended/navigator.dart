@@ -2,24 +2,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-class ExtendedWillPopScope extends WillPopScope {
-  ExtendedWillPopScope({
+class ExtendedPopScope extends PopScope {
+  ExtendedPopScope({
     super.key,
     required super.child,
-    WillPopCallback? onWillPop,
+    super.canPop = true,
+    PopInvokedCallback? onPopInvoked,
 
     /// true 点击android实体返回按键先关闭Overlay【toast loading ...】但不pop 当前页面
     /// false 点击android实体返回按键先关闭Overlay【toast loading ...】并pop 当前页面
     bool isCloseOverlay = false,
-  }) : super(onWillPop: () async {
-          bool result = (await onWillPop?.call()) ?? true;
-          if (result == false) return result;
+  }) : super(onPopInvoked: (bool didPop) async {
           if (isCloseOverlay && ExtendedOverlay().overlayEntryList.isNotEmpty) {
             closeOverlay();
-            return false;
           }
-          result = GlobalWayUI().isWillPop;
-          return result;
+          onPopInvoked?.call(didPop);
         });
 }
 

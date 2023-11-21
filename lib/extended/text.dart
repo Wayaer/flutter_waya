@@ -53,7 +53,7 @@ class RText extends RichText {
     super.overflow = TextOverflow.clip,
 
     /// double 设置文字的放大缩小，例如，fontSize=10，this.textScaleFactor=2.0，最终得到的文字大小为10*2.0
-    super.textScaleFactor = 1.0,
+    super.textScaler = TextScaler.noScaling,
 
     /// int 设置文字的最大展示行数
     super.maxLines,
@@ -177,6 +177,7 @@ class BText extends StatelessWidget {
     this.fontFeatures,
     this.textHeightBehavior,
     this.selectionColor,
+    this.textScaler = TextScaler.noScaling,
   })  : assert(color == null || foreground == null, _kColorForegroundWarning),
         assert(backgroundColor == null || background == null,
             _kColorBackgroundWarning),
@@ -227,6 +228,7 @@ class BText extends StatelessWidget {
     this.shadows,
     this.fontFeatures,
     this.selectionColor,
+    this.textScaler = TextScaler.noScaling,
   })  : isRich = true,
         text = '',
         recognizer = null,
@@ -353,6 +355,8 @@ class BText extends StatelessWidget {
 
   final bool isRich;
 
+  final TextScaler textScaler;
+
   @override
   Widget build(BuildContext context) {
     final DefaultTextStyle defaultTextStyle = DefaultTextStyle.of(context);
@@ -402,8 +406,7 @@ class BText extends StatelessWidget {
         overflow: overflow ??
             effectiveTextStyle.overflow ??
             defaultTextStyle.overflow,
-        textScaleFactor:
-            textScaleFactor ?? MediaQuery.textScaleFactorOf(context),
+        textScaler: textScaler,
         maxLines: maxLines ?? defaultTextStyle.maxLines,
         strutStyle: strutStyle,
         textWidthBasis: textWidthBasis ?? defaultTextStyle.textWidthBasis,

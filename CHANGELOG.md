@@ -1,3 +1,8 @@
+## 8.6.0
+
+* Merged to 3.16.0
+* Remove `ExtendedWillPopScope`, please use `ExtendedPopScope`
+
 ## 8.5.0
 
 * Remove `SpinKit`

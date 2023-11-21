@@ -341,9 +341,6 @@ extension ExtensionContextWithMediaQuery on BuildContext {
   /// size → Size 设备尺寸信息，如屏幕的大小，单位 pixels
   Size get deviceSize => mediaQuery.size;
 
-  /// textScaleFactor → double 每个逻辑像素的字体像素数
-  double get textScaleFactor => mediaQuery.textScaleFactor;
-
   /// 手机屏幕的宽分辨率
   double get widthPixel => mediaQuery.size.width * devicePixelRatio;
 
