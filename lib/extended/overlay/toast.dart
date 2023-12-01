@@ -10,7 +10,7 @@ class Toast extends StatelessWidget {
     super.key,
     this.options,
     this.style,
-    this.customIcon,
+    this.icon,
   });
 
   /// 文字
@@ -22,16 +22,29 @@ class Toast extends StatelessWidget {
   /// icon 样式 不传 仅显示文字
   final ToastStyle? style;
 
-  /// 自定义icon [customIcon] 优先于 [ToastStyle]
-  final IconData? customIcon;
+  /// 自定义icon [icon] 优先于 [ToastStyle]
+  final IconData? icon;
 
   @override
   Widget build(BuildContext context) {
     final currentOptions = GlobalWayUI().toastOptions.merge(options);
-    Widget content = BText(message,
-        color: currentOptions.iconColor, maxLines: 5, fontSize: 14);
-    content = buildIconToast(content, currentOptions);
-    final toast = Universal(
+    Widget current =
+        currentOptions.buildText?.call(message, currentOptions.iconColor) ??
+            BText(message,
+                textAlign: TextAlign.center,
+                color: currentOptions.iconColor,
+                maxLines: 5,
+                fontSize: 14);
+    if ((icon ?? style?.value) != null) {
+      current = IconBox(
+          icon: icon ?? style?.value,
+          direction: currentOptions.direction,
+          spacing: currentOptions.spacing,
+          size: currentOptions.iconSize,
+          color: currentOptions.iconColor,
+          title: current);
+    }
+    current = Universal(
         onTap: currentOptions.onTap,
         margin: currentOptions.margin,
         decoration: currentOptions.decoration ??
@@ -39,32 +52,21 @@ class Toast extends StatelessWidget {
                 color: currentOptions.backgroundColor,
                 borderRadius: BorderRadius.circular(6)),
         padding: currentOptions.padding,
-        child: content);
+        child: current);
+
+    if (currentOptions.animationStyle != null) {
+      current = FlAnimation(
+          style: currentOptions.animationStyle!,
+          stayDuration: currentOptions.duration
+              .subtract(kFlAnimationDuration, kFlAnimationDuration),
+          child: current);
+    }
     return ModalWindows(
         options: currentOptions.modalWindowsOptions.copyWith(
             absorbing: currentOptions.absorbing,
             ignoring: currentOptions.ignoring,
             alignment: currentOptions.positioned),
-        child: currentOptions.animationStyle != null
-            ? FlAnimation(
-                style: currentOptions.animationStyle!,
-                stayDuration: currentOptions.duration
-                    .subtract(kFlAnimationDuration, kFlAnimationDuration),
-                child: toast)
-            : toast);
-  }
-
-  Widget buildIconToast(Widget toast, ToastOptions toastOptions) {
-    IconData? icon = customIcon ?? style?.value;
-    return icon == null
-        ? toast
-        : IconBox(
-            icon: icon,
-            direction: toastOptions.direction,
-            spacing: toastOptions.spacing,
-            size: toastOptions.iconSize,
-            color: toastOptions.iconColor,
-            title: toast);
+        child: current);
   }
 }
 
@@ -72,9 +74,8 @@ class Toast extends StatelessWidget {
 /// 关闭 closeToast();
 /// 添加 await Toast 关闭后继续执行之后的方法
 Future<ExtendedOverlayEntry?> showToast(String message,
-        {ToastStyle? style, IconData? customIcon, ToastOptions? options}) =>
-    Toast(message, options: options, customIcon: customIcon, style: style)
-        .show();
+        {ToastStyle? style, IconData? icon, ToastOptions? options}) =>
+    Toast(message, options: options, icon: icon, style: style).show();
 
 bool closeToast() => ExtendedOverlay().closeToast();
 
@@ -84,9 +85,8 @@ enum ToastStyle { success, fail, info, warning, smile }
 
 extension ExtensionToastStyle on ToastStyle {
   Future<ExtendedOverlayEntry?> show(String message,
-          {IconData? customIcon, ToastOptions? options}) =>
-      Toast(message, options: options, customIcon: customIcon, style: this)
-          .show();
+          {IconData? icon, ToastOptions? options}) =>
+      Toast(message, options: options, icon: icon, style: this).show();
 
   IconData get value {
     switch (this) {
@@ -103,6 +103,8 @@ extension ExtensionToastStyle on ToastStyle {
     }
   }
 }
+
+typedef ToastOptionsBuildText = Widget Function(String text, Color color);
 
 class ToastOptions {
   const ToastOptions(
@@ -121,6 +123,7 @@ class ToastOptions {
       this.padding = const EdgeInsets.all(14),
       this.margin = const EdgeInsets.all(30),
       this.direction = Axis.horizontal,
+      this.buildText,
       this.modalWindowsOptions = const ModalWindowsOptions()});
 
   final AnimationStyle? animationStyle;
@@ -131,7 +134,7 @@ class ToastOptions {
   final EdgeInsetsGeometry margin;
   final EdgeInsetsGeometry padding;
 
-  /// toast 显示时长
+  /// Toast 装饰器 会替换 [backgroundColor]
   final BoxDecoration? decoration;
 
   /// Toast onTap
@@ -146,7 +149,7 @@ class ToastOptions {
   /// Toast 定位
   final AlignmentGeometry positioned;
 
-  /// toast 是否忽略子组件点击事件响应背景点击事件 默认 false
+  /// Toast 是否忽略子组件点击事件响应背景点击事件 默认 false
   /// true [onTap] 和 [modalWindowsOptions.onTap] 都会失效
   final bool ignoring;
 
@@ -160,12 +163,17 @@ class ToastOptions {
   /// icon size
   final double iconSize;
 
+  /// Toast icon spacing
   final double spacing;
 
+  /// Toast icon direction
   final Axis direction;
 
   /// 全局Toast的 modalWindowsOptions
   final ModalWindowsOptions modalWindowsOptions;
+
+  /// 重新 build Text
+  final ToastOptionsBuildText? buildText;
 
   ToastOptions copyWith({
     AlignmentGeometry? positioned,
@@ -183,6 +191,7 @@ class ToastOptions {
     double? spacing,
     Axis? direction,
     ModalWindowsOptions? modalWindowsOptions,
+    ToastOptionsBuildText? buildText,
   }) =>
       ToastOptions(
           modalWindowsOptions: modalWindowsOptions ?? this.modalWindowsOptions,
@@ -199,6 +208,7 @@ class ToastOptions {
           iconColor: iconColor ?? this.iconColor,
           iconSize: iconSize ?? this.iconSize,
           spacing: spacing ?? this.spacing,
+          buildText: buildText ?? this.buildText,
           direction: direction ?? this.direction);
 
   ToastOptions merge([ToastOptions? options]) => ToastOptions(
@@ -216,5 +226,6 @@ class ToastOptions {
       iconColor: options?.iconColor ?? iconColor,
       iconSize: options?.iconSize ?? iconSize,
       spacing: options?.spacing ?? spacing,
+      buildText: options?.buildText ?? buildText,
       direction: options?.direction ?? direction);
 }

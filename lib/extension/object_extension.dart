@@ -29,10 +29,9 @@ extension ExtensionT<T> on T {
   ValueNotifier<T> get notifier => ValueNotifier<T>(this);
 
   /// toast 显示
-  Future<ExtendedOverlayEntry?> toast(
-          {ToastStyle? style, IconData? customIcon, ToastOptions? options}) =>
-      Toast(toString(), options: options, customIcon: customIcon, style: style)
-          .show();
+  Future<ExtendedOverlayEntry?> showToast(
+          {ToastStyle? style, IconData? icon, ToastOptions? options}) =>
+      Toast(toString(), options: options, icon: icon, style: style).show();
 
   List<T> get toList => [this];
 

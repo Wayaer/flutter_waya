@@ -1,3 +1,9 @@
+## 8.6.2
+
+* Change the `customIcon` of Toast to `icon`
+* Add `buildText` for `ToastOptions`
+* Change the `$T.toast()` to `$T.showToast()`
+
 ## 8.6.1
 
 * Migrate to 3.16.0

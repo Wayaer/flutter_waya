@@ -31,7 +31,7 @@ void main() {
 
   /// 设置全局Toast配置
   globalOptions.toastOptions =
-      ToastOptions(positioned: Alignment.bottomCenter, duration: 2.seconds);
+      ToastOptions(positioned: Alignment.topCenter, duration: 2.seconds);
 
   /// 设置全局BottomSheet配置
   globalOptions.bottomSheetOptions = const BottomSheetOptions(

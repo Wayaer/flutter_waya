@@ -16,26 +16,28 @@ class OverlayPage extends StatelessWidget {
             }),
             const Partition('Toast'),
             Wrap(
+                alignment: WrapAlignment.center,
                 children: ToastStyle.values.builder((ToastStyle style) =>
                     ElevatedText(style.toString(), onTap: () async {
                       await style.show(style.toString());
-                      '添加await第一个Toast完了之后弹出第二个Toast'.toast();
+                      '添加await第一个Toast完了之后弹出第二个Toast'.showToast();
                     }))),
             Wrap(
+                alignment: WrapAlignment.center,
                 children: [
-              Alignment.topCenter,
-              Alignment.topLeft,
-              Alignment.topRight,
-              Alignment.bottomCenter,
-              Alignment.bottomLeft,
-              Alignment.bottomRight,
-              Alignment.center,
-              Alignment.centerLeft,
-              Alignment.centerRight,
-            ].builder((positioned) => ElevatedText(
+                  Alignment.topCenter,
+                  Alignment.topLeft,
+                  Alignment.topRight,
+                  Alignment.bottomCenter,
+                  Alignment.bottomLeft,
+                  Alignment.bottomRight,
+                  Alignment.center,
+                  Alignment.centerLeft,
+                  Alignment.centerRight,
+                ].builder((positioned) => ElevatedText(
                         positioned.toString().split('.')[1], onTap: () async {
                       showToast(positioned.toString(),
-                          customIcon: Icons.ac_unit_sharp,
+                          icon: Icons.ac_unit_sharp,
                           options: ToastOptions(
                               positioned: positioned,
                               onTap: () {
