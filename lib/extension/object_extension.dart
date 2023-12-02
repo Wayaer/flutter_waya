@@ -71,6 +71,10 @@ extension ExtensionT<T> on T {
   }
 }
 
+extension ExtensionSize on Size {
+  Size scaling({double p = 1}) => Size(width / p, height / p);
+}
+
 extension ExtensionBool on bool {
   bool get toggle => !this;
 }
