@@ -2,6 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
+class ValueNotifiers<T> extends ValueNotifier<T> {
+  ValueNotifiers(super.value);
+
+  void notify() {
+    notifyListeners();
+  }
+}
+
+void log<T>(T msg) => msg.log();
+
 extension ExtensionT<T> on T {
   /// 判空后执行方法 返回新的参数
   E? let<E>(E Function(T it) operation) {

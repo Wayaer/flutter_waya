@@ -36,6 +36,8 @@ export 'components/flip_card.dart';
 export 'components/send_sms.dart';
 export 'components/animation/animation.dart';
 export 'components/animation/wave.dart';
+export 'components/badge.dart';
+export 'components/dismissible.dart';
 
 /// const
 export 'const/const.dart';
