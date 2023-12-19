@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
@@ -8,7 +7,6 @@ class NoScrollBehavior extends ScrollBehavior {
           BuildContext context, Widget child, ScrollableDetails details) =>
       child;
 }
-
 
 /// no data
 class PlaceholderChild extends StatelessWidget {

@@ -1,3 +1,7 @@
+## 8.6.3
+
+* Update `easy_refresh`
+
 ## 8.6.2
 
 * Change the `customIcon` of Toast to `icon`
