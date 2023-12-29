@@ -73,3 +73,4 @@ export 'extension/num_extension.dart';
 export 'extension/object_extension.dart';
 export 'extension/string_extension.dart';
 export 'extension/widget_extension.dart';
+export 'extension/text_editing_controller_extension.dart';

@@ -1,3 +1,7 @@
+## 8.6.4
+
+* Add an extension for `TextEditingController`
+
 ## 8.6.3
 
 * Update `easy_refresh`
