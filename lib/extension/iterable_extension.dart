@@ -281,7 +281,7 @@ extension ExtensionIterableT<T> on Iterable<T> {
   /// ['a', 'b'].firstOrNull(); // 'a'
   /// [].firstOrNull();         // null
   /// ```
-  T firstOrNull() => firstOrElse(() => null as T);
+  T? firstOrNull() => length == 0 ? null : first;
 
   /// Returns the last element. If there is no last element the [orElse]
   /// supplier function is called to provide a value.
@@ -304,7 +304,7 @@ extension ExtensionIterableT<T> on Iterable<T> {
   /// ['a', 'b'].lastOrElse(); // 'a'
   /// [].lastOrElse();         // null
   /// ```
-  T lastOrNull() => lastOrElse(() => null as T);
+  T? lastOrNull() => length == 0 ? null : last;
 
   /// Groups the elements of the list into a map by a key
   /// that is defined by a [keySelector] function.
