@@ -29,19 +29,19 @@ class ScrollViewPage extends StatelessWidget {
                 }),
                 slivers: [
                   SliverListGrid.builder(
-                      itemCount: colors.length,
+                      itemCount: colorList.length,
                       maxCrossAxisExtent: 60,
                       separatorBuilder: (_, int index) {
                         return Text('s$index');
                       },
                       itemBuilder: (_, int index) {
-                        return ColorEntry(index, colors[index]);
+                        return ColorEntry(index, colorList[index]);
                       }),
                   SliverListGrid.count(
                       crossAxisCount: 3,
                       mainAxisSpacing: 10,
                       crossAxisSpacing: 10,
-                      children: colors.builderEntry(
+                      children: colorList.builderEntry(
                           (MapEntry<int, Color> entry) =>
                               ColorEntry(entry.key, entry.value))),
                 ])));
@@ -53,7 +53,7 @@ class ScrollViewPage extends StatelessWidget {
             floating: false,
             child: Container(
                 height: 60,
-                color: colors[9],
+                color: colorList[9],
                 alignment: Alignment.center,
                 child: const BText('ExtendedSliverPersistentHeader',
                     color: Colors.black))),
@@ -62,7 +62,7 @@ class ScrollViewPage extends StatelessWidget {
             floating: false,
             child: Container(
                 height: 60,
-                color: colors[13],
+                color: colorList[13],
                 alignment: Alignment.center,
                 child: const BText('第二个  ExtendedSliverPersistentHeader',
                     color: Colors.black))),

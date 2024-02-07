@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+/// Automatically collapse your own components as the scrollview scrolls
+/// 随scrollview的滚动自动折叠自己的组件
 class AutoCollapsingBuilder extends StatefulWidget {
   const AutoCollapsingBuilder({
     super.key,
@@ -8,7 +10,7 @@ class AutoCollapsingBuilder extends StatefulWidget {
     this.minSize = 0,
     this.maxSize = 10,
     this.damping = 1,
-    this.axis = Axis.vertical,
+    this.direction = Axis.vertical,
     this.reverse = false,
     this.duration = const Duration(milliseconds: 300),
   });
@@ -27,7 +29,7 @@ class AutoCollapsingBuilder extends StatefulWidget {
   final double damping;
 
   /// 横向或垂直
-  final Axis axis;
+  final Axis direction;
 
   /// 反转
   final bool reverse;
@@ -97,8 +99,8 @@ class _AutoCollapsingBuilderState extends State<AutoCollapsingBuilder> {
   Widget build(BuildContext context) {
     return AnimatedContainer(
         duration: widget.duration,
-        width: widget.axis == Axis.horizontal ? _size : null,
-        height: widget.axis == Axis.vertical ? _size : null,
+        width: widget.direction == Axis.horizontal ? _size : null,
+        height: widget.direction == Axis.vertical ? _size : null,
         child: widget.child);
   }
 }

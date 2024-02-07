@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 const _colors = [
-  ...colors,
-  ...colors,
-  ...colors,
-  ...colors,
-  ...colors,
-  ...colors,
-  ...colors
+  ...colorList,
+  ...colorList,
+  ...colorList,
+  ...colorList,
+  ...colorList,
+  ...colorList,
+  ...colorList
 ];
 
 double _random(int index) {

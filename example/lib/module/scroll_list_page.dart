@@ -1,20 +1,33 @@
 import 'package:app/main.dart';
+import 'package:app/module/auto_collapsing.dart';
 import 'package:app/module/scroll_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-class ScrollListPage extends StatelessWidget {
+class ScrollListPage extends StatefulWidget {
   const ScrollListPage({super.key});
 
   @override
+  State<ScrollListPage> createState() => _ScrollListPageState();
+}
+
+class _ScrollListPageState extends State<ScrollListPage> {
+  final ScrollController scrollController = ScrollController();
+
+  @override
   Widget build(BuildContext context) {
-    final ScrollController scrollController = ScrollController();
     return ExtendedScaffold(
         isScroll: true,
         appBar: AppBarText('ScrollList'),
         mainAxisAlignment: MainAxisAlignment.center,
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
         children: [
+          ElevatedText('AutoCollapsing vertical',
+              onTap: () =>
+                  push(const AutoCollapsingPage(direction: Axis.vertical))),
+          ElevatedText('AutoCollapsing horizontal',
+              onTap: () =>
+                  push(const AutoCollapsingPage(direction: Axis.horizontal))),
           ElevatedText('ScrollList',
               onTap: () => push(_ScrollListPage(scrollController))),
           ElevatedText('ScrollList.builder',
@@ -35,6 +48,12 @@ class ScrollListPage extends StatelessWidget {
           ElevatedText('ScrollList.builder with placeholder',
               onTap: () => push(_ScrollListPlaceholderPage(scrollController))),
         ]);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    scrollController.dispose();
   }
 }
 
@@ -59,13 +78,15 @@ class _ScrollListGridPage extends StatelessWidget {
           footer: const _Footer(),
           padding: const EdgeInsets.all(10),
           refreshConfig: _RefreshConfig(),
-          itemCount: [...colors, ...colors, ...colors].length,
+          itemCount: [...colorList, ...colorList, ...colorList].length,
           itemBuilder: (_, int index) {
             if (gridStyle == GridStyle.aligned) {
-              return ColorEntry(index, [...colors, ...colors, ...colors][index],
+              return ColorEntry(
+                  index, [...colorList, ...colorList, ...colorList][index],
                   height: index & 3 == 0 ? 100 : 40);
             }
-            return ColorEntry(index, [...colors, ...colors, ...colors][index],
+            return ColorEntry(
+                index, [...colorList, ...colorList, ...colorList][index],
                 width: index.isEven ? 40 : 100,
                 height: index.isEven ? 100 : 40);
           },
@@ -87,9 +108,9 @@ class _ScrollListSeparatedPage extends StatelessWidget {
           footer: const _Footer(),
           padding: const EdgeInsets.all(10),
           refreshConfig: _RefreshConfig(),
-          itemCount: colors.length,
+          itemCount: colorList.length,
           itemBuilder: (_, int index) =>
-              ColorEntry(index, colors[index]).paddingSymmetric(vertical: 5),
+              ColorEntry(index, colorList[index]).paddingSymmetric(vertical: 5),
           separatorBuilder: (_, int index) => const Divider(
               color: Colors.amberAccent, height: 30, thickness: 10),
         ));
@@ -112,11 +133,11 @@ class _ScrollListPlaceholderPage extends StatelessWidget {
             refreshConfig: _RefreshConfig(),
             placeholder: const BText('没有数据', color: Colors.white).container(
                 alignment: Alignment.center,
-                color: colors[14],
+                color: colorList[14],
                 padding: const EdgeInsets.symmetric(vertical: 10)),
             itemCount: 0,
             itemBuilder: (_, int index) =>
-                ColorEntry(index, colors[index]).paddingOnly(bottom: 10)));
+                ColorEntry(index, colorList[index]).paddingOnly(bottom: 10)));
   }
 }
 
@@ -135,7 +156,7 @@ class _ScrollListBuilderPage extends StatelessWidget {
           padding: const EdgeInsets.all(10),
           refreshConfig: _RefreshConfig(),
           itemBuilder: (_, int index) =>
-              ColorEntry(index, index.isEven ? colors.first : colors.last)
+              ColorEntry(index, index.isEven ? colorList.first : colorList.last)
                   .paddingOnly(bottom: 10),
         ));
   }
@@ -158,9 +179,10 @@ class _ScrollListPage extends StatelessWidget {
             sliver: [
               const _SliverTitle('SliverListGrid builder'),
               SliverListGrid.builder(
-                  itemCount: colors.length,
+                  itemCount: colorList.length,
                   itemBuilder: (_, int index) =>
-                      ColorEntry(index, colors[index]).paddingOnly(bottom: 10)),
+                      ColorEntry(index, colorList[index])
+                          .paddingOnly(bottom: 10)),
               const _SliverTitle(
                   'SliverListGrid.builder with GridStyle.aligned'),
               SliverListGrid.builder(
@@ -168,9 +190,9 @@ class _ScrollListPage extends StatelessWidget {
                   crossAxisCount: 2,
                   mainAxisSpacing: 10,
                   crossAxisSpacing: 10,
-                  itemCount: colors.length,
+                  itemCount: colorList.length,
                   itemBuilder: (_, int index) => ColorEntry(
-                      index, colors[index],
+                      index, colorList[index],
                       height: index & 3 == 0 ? 80 : 40)),
               const _SliverTitle('SliverListGrid.count with GridStyle.masonry'),
               SliverListGrid.count(
@@ -178,7 +200,7 @@ class _ScrollListPage extends StatelessWidget {
                   crossAxisCount: 3,
                   mainAxisSpacing: 10,
                   crossAxisSpacing: 10,
-                  children: colors.builderEntry((entry) => ColorEntry(
+                  children: colorList.builderEntry((entry) => ColorEntry(
                       entry.key, entry.value,
                       height: entry.key.isEven ? 100 : 70,
                       width: entry.key.isEven ? 50 : 100))),
@@ -189,36 +211,38 @@ class _ScrollListPage extends StatelessWidget {
                   maxCrossAxisExtent: 100,
                   mainAxisSpacing: 10,
                   crossAxisSpacing: 10,
-                  itemCount: colors.length,
+                  itemCount: colorList.length,
                   itemBuilder: (_, int index) => ColorEntry(
-                      index, colors[index],
+                      index, colorList[index],
                       height: index.isEven ? 100 : 70,
                       width: index.isEven ? 50 : 100)),
               const _SliverTitle(
                   'SliverListGrid.builder with maxCrossAxisExtent'),
               SliverListGrid.builder(
-                  itemCount: colors.length,
+                  itemCount: colorList.length,
                   maxCrossAxisExtent: 100,
                   mainAxisSpacing: 10,
                   crossAxisSpacing: 10,
                   itemBuilder: (_, int index) =>
-                      ColorEntry(index, colors[index]).paddingOnly(bottom: 10)),
+                      ColorEntry(index, colorList[index])
+                          .paddingOnly(bottom: 10)),
               const _SliverTitle('SliverListGrid.builder with crossAxisCount'),
               SliverListGrid.builder(
-                  itemCount: colors.length,
+                  itemCount: colorList.length,
                   crossAxisCount: 8,
                   mainAxisSpacing: 10,
                   crossAxisSpacing: 10,
                   itemBuilder: (_, int index) =>
-                      ColorEntry(index, colors[index]).paddingOnly(bottom: 10)),
+                      ColorEntry(index, colorList[index])
+                          .paddingOnly(bottom: 10)),
               const _SliverTitle(
                   'SliverListGrid.builder with separatorBuilder'),
               SliverListGrid.builder(
-                  itemCount: colors.length,
-                  separatorBuilder: (_, int index) =>
-                      Divider(color: colors[index], thickness: 10, height: 20),
+                  itemCount: colorList.length,
+                  separatorBuilder: (_, int index) => Divider(
+                      color: colorList[index], thickness: 10, height: 20),
                   itemBuilder: (_, int index) =>
-                      ColorEntry(index, colors[index])),
+                      ColorEntry(index, colorList[index])),
             ]));
   }
 }
@@ -232,7 +256,7 @@ class _SliverTitle extends StatelessWidget {
   Widget build(BuildContext context) => SliverToBoxAdapter(
       child: Container(
           alignment: Alignment.center,
-          color: colors[14],
+          color: colorList[14],
           margin: const EdgeInsets.symmetric(vertical: 10),
           padding: const EdgeInsets.symmetric(vertical: 10),
           child: BText(title, color: Colors.white)));
@@ -252,7 +276,7 @@ class _ScrollListCountPage extends StatelessWidget {
             footer: const _Footer(),
             padding: const EdgeInsets.all(10),
             refreshConfig: _RefreshConfig(),
-            children: colors.builderEntry((MapEntry<int, Color> entry) =>
+            children: colorList.builderEntry((MapEntry<int, Color> entry) =>
                 ColorEntry(entry.key, entry.value))));
   }
 }

@@ -193,7 +193,7 @@ class Partition extends StatelessWidget {
           textAlign: TextAlign.center, fontWeight: FontWeight.bold));
 }
 
-const List<Color> colors = <Color>[
+const List<Color> colorList = <Color>[
   ...Colors.accents,
   ...Colors.primaries,
 ];

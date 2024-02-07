@@ -1,3 +1,8 @@
+## 8.6.5
+
+* Fixed `firstOrNull` and `lastOrNull` exceptions
+* Added the `AutoCollapsingBuilder` component,Automatically collapse your own components as the scrollview scrolls
+
 ## 8.6.4
 
 * Add an extension for `TextEditingController`
