@@ -31,18 +31,18 @@ class _AutoCollapsingPageState extends State<AutoCollapsingPage> {
                 height: index & 3 == 0 ? 80 : 40),
           ).expand,
           Padding(
-            padding: const EdgeInsets.all(20),
-            child: AutoCollapsingBuilder(
-                controller: controller,
-                minSize: 20,
-                direction: widget.direction,
-                maxSize: 300,
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10)),
-                )),
-          )
+              padding: const EdgeInsets.all(20),
+              child: AutoCollapsingBuilder(
+                  controller: controller,
+                  minSize: 20,
+                  direction: widget.direction,
+                  maxSize: 300,
+                  child: Container(
+                    height: widget.direction == Axis.horizontal ? 300 : null,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10)),
+                  )))
         ]);
   }
 }

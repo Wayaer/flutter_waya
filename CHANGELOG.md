@@ -1,7 +1,7 @@
 ## 8.6.5
 
 * Fixed `firstOrNull` and `lastOrNull` exceptions
-* Added the `AutoCollapsingBuilder` component,Automatically collapse your own components as the scrollview scrolls
+* Added the `AutoCollapsingBuilder` component,Automatically collapse your own components as the scrollview scrolls,And add examples
 
 ## 8.6.4
 
