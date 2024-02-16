@@ -41,7 +41,7 @@ abstract class _FlAnimation extends StatefulWidget {
   final FlAnimationCallback? onAnimate;
 }
 
-enum AnimationStyle {
+enum FlAnimationStyle {
   fade,
   horizontalHunting,
   verticalHunting,
@@ -60,7 +60,7 @@ class FlAnimation extends _FlAnimation {
       super.repeat,
       super.onAnimate});
 
-  final AnimationStyle style;
+  final FlAnimationStyle style;
 
   @override
   State<FlAnimation> createState() => _FlAnimationState();
@@ -88,13 +88,13 @@ class _FlAnimationState extends State<FlAnimation>
     _controller =
         AnimationController(duration: widget.animationDuration, vsync: this);
     switch (widget.style) {
-      case AnimationStyle.fade:
+      case FlAnimationStyle.fade:
         _animation = Tween(begin: 0.0, end: 1.0).animate(_controller);
         break;
-      case AnimationStyle.horizontalHunting:
+      case FlAnimationStyle.horizontalHunting:
         _animation = huntingAnimation();
         break;
-      case AnimationStyle.verticalHunting:
+      case FlAnimationStyle.verticalHunting:
         _animation = huntingAnimation();
         break;
     }
@@ -146,12 +146,12 @@ class _FlAnimationState extends State<FlAnimation>
 
   Widget buildChild() {
     switch (widget.style) {
-      case AnimationStyle.fade:
+      case FlAnimationStyle.fade:
         return Opacity(opacity: _animation.value, child: widget.child);
-      case AnimationStyle.horizontalHunting:
+      case FlAnimationStyle.horizontalHunting:
         return Transform.translate(
             offset: Offset(_animation.value, 0.0), child: widget.child);
-      case AnimationStyle.verticalHunting:
+      case FlAnimationStyle.verticalHunting:
         return Transform.translate(
             offset: Offset(0.0, _animation.value), child: widget.child);
     }

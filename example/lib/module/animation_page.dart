@@ -20,21 +20,21 @@ class _FlAnimationPageState extends State<FlAnimationPage> {
         children: [
           FlAnimation(
               delayDuration: 2.seconds,
-              style: AnimationStyle.fade,
+              style: FlAnimationStyle.fade,
               onAnimate: (running) {
                 animation.addAll({'fade': running});
               },
               child: buildText('fade')),
           FlAnimation(
               delayDuration: 2.seconds,
-              style: AnimationStyle.horizontalHunting,
+              style: FlAnimationStyle.horizontalHunting,
               onAnimate: (running) {
                 animation.addAll({'horizontalHunting': running});
               },
               child: buildText('horizontalHunting')),
           FlAnimation(
               delayDuration: 2.seconds,
-              style: AnimationStyle.verticalHunting,
+              style: FlAnimationStyle.verticalHunting,
               onAnimate: (running) {
                 animation.addAll({'verticalHunting': running});
               },

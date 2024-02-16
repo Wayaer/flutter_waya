@@ -117,7 +117,7 @@ class ToastOptions {
       this.positioned = Alignment.center,
       this.ignoring = false,
       this.absorbing = false,
-      this.animationStyle = AnimationStyle.verticalHunting,
+      this.animationStyle = FlAnimationStyle.verticalHunting,
       this.iconSize = 18,
       this.spacing = 10,
       this.padding = const EdgeInsets.all(14),
@@ -126,7 +126,7 @@ class ToastOptions {
       this.buildText,
       this.modalWindowsOptions = const ModalWindowsOptions()});
 
-  final AnimationStyle? animationStyle;
+  final FlAnimationStyle? animationStyle;
 
   /// 背景色
   final Color? backgroundColor;

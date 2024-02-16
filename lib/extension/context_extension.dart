@@ -172,8 +172,8 @@ extension ExtensionFocusScopeContext on BuildContext {
       focusScope.unfocus(disposition: disposition);
 
   FocusAttachment attach(BuildContext? context,
-          {FocusOnKeyEventCallback? onKeyEvent, FocusOnKeyCallback? onKey}) =>
-      focusScope.attach(context, onKey: onKey, onKeyEvent: onKeyEvent);
+          {FocusOnKeyEventCallback? onKeyEvent}) =>
+      focusScope.attach(context, onKeyEvent: onKeyEvent);
 
   void addListener(VoidCallback listener) => focusScope.addListener(listener);
 

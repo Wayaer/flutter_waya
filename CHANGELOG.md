@@ -1,7 +1,15 @@
+## 8.7.0
+
+* Migrate to 3.19.0
+* Change the `AnimationStyle` of `FlAnimation` to `FlAnimationStyle` to avoid conflict with the
+  official
+  `AnimationStyle`
+
 ## 8.6.5
 
 * Fixed `firstOrNull` and `lastOrNull` exceptions
-* Added the `AutoCollapsingBuilder` component,Automatically collapse your own components as the scrollview scrolls,And add examples
+* Added the `AutoCollapsingBuilder` component,Automatically collapse your own components as the
+  scrollview scrolls,And add examples
 
 ## 8.6.4
 
