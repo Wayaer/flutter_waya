@@ -43,6 +43,7 @@ export 'components/animation/auto_collapsing.dart';
 /// const
 export 'const/const.dart';
 export 'const/styles.dart';
+export 'const/typedef.dart';
 
 /// extended
 export 'extended/extended.dart';

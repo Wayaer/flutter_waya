@@ -50,23 +50,3 @@ class _IconData extends IconData {
   const _IconData(super.codePoint)
       : super(fontFamily: 'WayIcons', fontPackage: 'flutter_waya');
 }
-
-typedef Callback = void Function();
-
-typedef CallbackT<T> = T Function();
-
-typedef CallbackFutureT<T> = Future<T> Function();
-
-typedef ValueCallback<T> = void Function(T value);
-
-typedef ValueCallbackT<T> = T Function(T value);
-
-typedef ValueCallbackFutureT<T> = Future<T> Function(T value);
-
-typedef ValueTwoCallback<T, E> = void Function(T value1, E value2);
-
-typedef ValueThreeCallback<T, E, F> = void Function(
-    T value1, E value2, F value3);
-
-typedef ValueFourCallback<T, E, F, G> = void Function(
-    T value1, E value2, F value3, G value4);

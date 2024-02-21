@@ -1,9 +1,8 @@
-## 8.7.1
+## 8.7.2
 
+* Add a typedef dart file,Contains all callback methods from 0 to 4
 * Migrate to 3.19.0
-* Change the `AnimationStyle` of `FlAnimation` to `FlAnimationStyle` to avoid conflict with the
-  official
-  `AnimationStyle`
+* Change the `AnimationStyle` of `FlAnimation` to `FlAnimationStyle` to avoid conflict with the official `AnimationStyle`
 
 ## 8.6.5
 
