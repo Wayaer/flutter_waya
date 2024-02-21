@@ -1,4 +1,4 @@
-## 8.7.0
+## 8.7.1
 
 * Migrate to 3.19.0
 * Change the `AnimationStyle` of `FlAnimation` to `FlAnimationStyle` to avoid conflict with the
