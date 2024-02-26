@@ -66,6 +66,8 @@ class _App extends StatelessWidget {
         navigatorKey: GlobalWayUI().navigatorKey,
         scaffoldMessengerKey: GlobalWayUI().scaffoldMessengerKey,
         locale: DevicePreview.locale(context),
+        theme: ThemeData.light(),
+        darkTheme: ThemeData.dark(),
         title: 'Waya UI',
         home: ExtendedScaffold(
             appBar: AppBarText('Flutter Waya Example'), child: _Home()),
@@ -166,12 +168,11 @@ class ElevatedText extends StatelessWidget {
                 },
                 margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 6),
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 decoration: BoxDecoration(
-                    boxShadow: getBoxShadow(color: context.theme.canvasColor),
-                    color: context.theme.primaryColor,
-                    borderRadius: BorderRadius.circular(4)),
-                child: BText(text, color: Colors.white)),
+                    color: context.theme.colorScheme.primary.withOpacity(0.08),
+                    borderRadius: BorderRadius.circular(20)),
+                child: BText(text, color: context.theme.colorScheme.primary)),
           ));
 }
 
