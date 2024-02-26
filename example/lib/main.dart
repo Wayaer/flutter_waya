@@ -17,7 +17,7 @@ import 'package:app/module/state_components_page.dart';
 import 'package:app/module/swiper_page.dart';
 import 'package:app/module/text_field_page.dart';
 import 'package:app/module/universal_page.dart';
-import 'package:device_preview/device_preview.dart';
+import 'package:device_preview_minus/device_preview_minus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_curiosity/flutter_curiosity.dart';
 import 'package:flutter_waya/flutter_waya.dart';
