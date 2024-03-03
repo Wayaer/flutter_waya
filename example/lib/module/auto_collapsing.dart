@@ -1,5 +1,5 @@
 import 'package:app/main.dart';
-import 'package:app/module/scroll_page.dart';
+import 'package:app/module/anchor_scroll_builder_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 

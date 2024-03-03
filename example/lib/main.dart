@@ -1,37 +1,28 @@
 import 'package:app/module/anchor_scroll_builder_page.dart';
-import 'package:app/module/animation_page.dart';
-import 'package:app/module/builder_page.dart';
 import 'package:app/module/button_page.dart';
 import 'package:app/module/components_page.dart';
-import 'package:app/module/decorator_page.dart';
 import 'package:app/module/gesture_page.dart';
-import 'package:app/module/list_wheel_page.dart';
-import 'package:app/module/overlay_page.dart';
 import 'package:app/module/picker/picker_page.dart';
-import 'package:app/module/popup_page.dart';
 import 'package:app/module/progress_page.dart';
-import 'package:app/module/refresh_page.dart';
-import 'package:app/module/scroll_list_page.dart';
 import 'package:app/module/scroll_page.dart';
 import 'package:app/module/state_components_page.dart';
 import 'package:app/module/swiper_page.dart';
 import 'package:app/module/text_field_page.dart';
-import 'package:app/module/universal_page.dart';
 import 'package:device_preview_minus/device_preview_minus.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_curiosity/flutter_curiosity.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  GlobalWayUI globalOptions = GlobalWayUI();
+  FlExtended globalOptions = FlExtended();
   PaintingBinding.instance.imageCache.maximumSizeBytes = 1024 * 1024 * 40;
 
   globalOptions.pushStyle = RoutePushStyle.material;
 
   /// 设置全局Toast配置
   globalOptions.toastOptions =
-      ToastOptions(positioned: Alignment.topCenter, duration: 2.seconds);
+      ToastOptions(alignment: Alignment.topCenter, duration: 2.seconds);
 
   /// 设置全局BottomSheet配置
   globalOptions.bottomSheetOptions = const BottomSheetOptions(
@@ -47,8 +38,9 @@ void main() {
 
   /// 设置全局Loading配置
   globalOptions.loadingOptions = const LoadingOptions(
+      alignment: Alignment.center,
       custom: BText('全局设置loading', fontSize: 20),
-      options: ModalWindowsOptions(onTap: closeLoading));
+      onModalTap: closeLoading);
 
   runApp(DevicePreview(
       enabled: isDesktop || isWeb,
@@ -63,21 +55,17 @@ class _App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
-        navigatorKey: GlobalWayUI().navigatorKey,
-        scaffoldMessengerKey: GlobalWayUI().scaffoldMessengerKey,
+        navigatorKey: FlExtended().navigatorKey,
+        scaffoldMessengerKey: FlExtended().scaffoldMessengerKey,
         locale: DevicePreview.locale(context),
         theme: ThemeData.light(),
         darkTheme: ThemeData.dark(),
         title: 'Waya UI',
         home: ExtendedScaffold(
-            appBar: AppBarText('Flutter Waya Example'), child: _Home()),
-        builder: (BuildContext context, Widget? child) {
-          final widget = ScreenAdaptation(
-              designWidth: context.width,
-              scaleType: ScreenAdaptationScaleType.auto,
-              builder: (_, bool scaled) => child ?? const SizedBox());
-          return DevicePreview.appBuilder(context, widget);
-        });
+            enableDoubleClickExit: true,
+            appBar: AppBarText('Flutter Waya Example'),
+            child: _Home()),
+        builder: DevicePreview.appBuilder);
   }
 }
 
@@ -98,29 +86,15 @@ class _Home extends StatelessWidget {
           ElevatedText('State Components',
               onTap: () => push(const StateComponentsPage())),
           ElevatedText('Button', onTap: () => push(const ButtonPage())),
-          ElevatedText('FlAnimation',
-              onTap: () => push(const FlAnimationPage())),
-          ElevatedText('Popup', onTap: () => push(const PopupPage())),
           ElevatedText('Picker', onTap: () => push(const PickerPage())),
-          ElevatedText('Overlay', onTap: () => push(const OverlayPage())),
           ElevatedText('FlSwiper', onTap: () => push(const FlSwiperPage())),
           ElevatedText('FlProgress', onTap: () => push(const FlProgressPage())),
           ElevatedText('GestureZoom',
               onTap: () => push(const GestureZoomPage())),
-          ElevatedText('Universal', onTap: () => push(const UniversalPage())),
           ElevatedText('ScrollView', onTap: () => push(const ScrollViewPage())),
-          ElevatedText('ScrollList', onTap: () => push(const ScrollListPage())),
-          ElevatedText('ListWheel', onTap: () => push(const ListWheelPage())),
           ElevatedText('AnchorScroll',
               onTap: () => push(const AnchorScrollBuilderPage())),
-          ElevatedText('EasyRefreshed',
-              onTap: () => push(const EasyRefreshPage())),
-          ElevatedText('DecoratorBox',
-              onTap: () => push(const DecoratorBoxPage())),
-          ElevatedText('ExtendedTextField',
-              onTap: () => push(const TextFieldPage())),
-          ElevatedText('ExtendedBuilder',
-              onTap: () => push(const ExtendedBuilderPage())),
+          ElevatedText('TextField', onTap: () => push(const TextFieldPage())),
         ]);
   }
 }
@@ -201,30 +175,30 @@ const List<Color> colorList = <Color>[
 
 /// ExtendedScaffold
 class ExtendedScaffold extends StatelessWidget {
-  const ExtendedScaffold({
-    super.key,
-    this.safeLeft = false,
-    this.safeTop = false,
-    this.safeRight = false,
-    this.safeBottom = false,
-    this.isStack = false,
-    this.isScroll = false,
-    this.isCloseOverlay = true,
-    this.appBar,
-    this.child,
-    this.padding,
-    this.floatingActionButton,
-    this.bottomNavigationBar,
+  const ExtendedScaffold(
+      {super.key,
+      this.safeLeft = false,
+      this.safeTop = false,
+      this.safeRight = false,
+      this.safeBottom = false,
+      this.isStack = false,
+      this.isScroll = false,
+      this.isCloseOverlay = true,
+      this.appBar,
+      this.child,
+      this.padding,
+      this.floatingActionButton,
+      this.bottomNavigationBar,
 
-    /// 类似于 Android 中的 android:windowSoftInputMode=”adjustResize”，
-    /// 控制界面内容 body 是否重新布局来避免底部被覆盖了，比如当键盘显示的时候，
-    /// 重新布局避免被键盘盖住内容。默认值为 true。
-    this.resizeToAvoidBottomInset,
-    this.children,
-    this.mainAxisAlignment = MainAxisAlignment.start,
-    this.crossAxisAlignment = CrossAxisAlignment.center,
-    this.refreshConfig,
-  });
+      /// 类似于 Android 中的 android:windowSoftInputMode=”adjustResize”，
+      /// 控制界面内容 body 是否重新布局来避免底部被覆盖了，比如当键盘显示的时候，
+      /// 重新布局避免被键盘盖住内容。默认值为 true。
+      this.resizeToAvoidBottomInset,
+      this.children,
+      this.mainAxisAlignment = MainAxisAlignment.start,
+      this.crossAxisAlignment = CrossAxisAlignment.center,
+      this.refreshConfig,
+      this.enableDoubleClickExit = false});
 
   /// 相当于给[body] 套用 [Column]、[Row]、[Stack]
   final List<Widget>? children;
@@ -266,6 +240,9 @@ class ExtendedScaffold extends StatelessWidget {
   final bool safeTop;
   final bool safeRight;
   final bool safeBottom;
+  final bool enableDoubleClickExit;
+
+  static DateTime? _dateTime;
 
   @override
   Widget build(BuildContext context) {
@@ -277,7 +254,26 @@ class ExtendedScaffold extends StatelessWidget {
         bottomNavigationBar: bottomNavigationBar,
         body: universal);
     return isCloseOverlay
-        ? ExtendedPopScope(isCloseOverlay: isCloseOverlay, child: scaffold)
+        ? ExtendedPopScope(
+            isCloseOverlay: isCloseOverlay,
+            onPopInvoked: (bool didPop, bool didCloseOverlay) {
+              if (didCloseOverlay || didPop) return;
+              if (enableDoubleClickExit) {
+                final now = DateTime.now();
+                if (_dateTime != null &&
+                    now.difference(_dateTime!).inMilliseconds < 2500) {
+                  SystemNavigator.pop();
+                } else {
+                  _dateTime = now;
+                  showToast('再次点击返回键退出',
+                      options: const ToastOptions(
+                          duration: Duration(milliseconds: 1500)));
+                }
+              } else {
+                pop();
+              }
+            },
+            child: scaffold)
         : scaffold;
   }
 

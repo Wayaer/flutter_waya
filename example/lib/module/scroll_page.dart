@@ -2,6 +2,8 @@ import 'package:app/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
+import 'anchor_scroll_builder_page.dart';
+
 class ScrollViewPage extends StatelessWidget {
   const ScrollViewPage({super.key});
 
@@ -67,23 +69,4 @@ class ScrollViewPage extends StatelessWidget {
                 child: const BText('第二个  ExtendedSliverPersistentHeader',
                     color: Colors.black))),
       ];
-}
-
-class ColorEntry extends StatelessWidget {
-  const ColorEntry(this.index, this.color,
-      {this.height = 80, this.width = 80, super.key});
-
-  final int index;
-  final Color color;
-  final double height;
-  final double width;
-
-  @override
-  Widget build(BuildContext context) => Container(
-      width: width,
-      height: height,
-      alignment: Alignment.center,
-      color: color,
-      child: BText(index.toString(),
-          color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold));
 }

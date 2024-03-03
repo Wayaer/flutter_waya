@@ -1,7 +1,25 @@
 import 'package:app/main.dart';
-import 'package:app/module/scroll_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
+
+class ColorEntry extends StatelessWidget {
+  const ColorEntry(this.index, this.color,
+      {this.height = 80, this.width = 80, super.key});
+
+  final int index;
+  final Color color;
+  final double height;
+  final double width;
+
+  @override
+  Widget build(BuildContext context) => Container(
+      width: width,
+      height: height,
+      alignment: Alignment.center,
+      color: color,
+      child: BText(index.toString(),
+          color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold));
+}
 
 const _colors = [
   ...colorList,
@@ -13,13 +31,7 @@ const _colors = [
   ...colorList
 ];
 
-double _random(int index) {
-  return index.isEven ? 500 : 1000;
-  // const min = 500;
-  // const max = 1000;
-  // final _random = Random();
-  // return (min + _random.nextInt(max - min)).toDouble();
-}
+double _random(int index) => index.isEven ? 500 : 1000;
 
 class AnchorScrollBuilderPage extends StatelessWidget {
   const AnchorScrollBuilderPage({super.key});

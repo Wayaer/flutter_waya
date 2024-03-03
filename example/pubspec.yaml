@@ -12,9 +12,8 @@ dependencies:
     sdk: flutter
   flutter:
     sdk: flutter
-  flutter_curiosity: ^6.0.0
+  flutter_curiosity: ^6.1.0
   device_preview_minus: ^1.0.2
-  path_provider: ^2.1.1
   flutter_waya:
     path: ../
 

@@ -15,59 +15,6 @@ class StateComponentsPage extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
         children: [
           ElevatedText('FlipCard', onTap: () => push(const FlipCardPage())),
-          const Partition('ValueBuilder'),
-          ValueBuilder<int>(
-              initialValue: 0,
-              builder: (_, int? value, ValueCallback<int> updater) {
-                return Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      IconBox(
-                          icon: Icons.remove_circle_outline,
-                          onTap: () {
-                            int v = value ?? 0;
-                            v -= 1;
-                            updater(v);
-                          }),
-                      Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(value.toString())),
-                      IconBox(
-                          icon: Icons.add_circle_outline,
-                          onTap: () {
-                            int v = value ?? 0;
-                            v += 1;
-                            updater(v);
-                          })
-                    ]);
-              }),
-          const Partition('ValueListenBuilder'),
-          ValueListenBuilder<int>(
-              initialValue: 1,
-              builder: (_, ValueNotifier<int?> valueListenable) {
-                return Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      IconBox(
-                          icon: Icons.remove_circle_outline,
-                          onTap: () {
-                            int num = valueListenable.value ?? 0;
-                            num -= 1;
-                            valueListenable.value = num;
-                          }),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(valueListenable.value.toString()),
-                      ),
-                      IconBox(
-                          icon: Icons.add_circle_outline,
-                          onTap: () {
-                            int num = valueListenable.value ?? 0;
-                            num += 1;
-                            valueListenable.value = num;
-                          })
-                    ]);
-              }),
           const Partition('CheckBox 自定义版'),
           Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
