@@ -34,4 +34,4 @@ export 'src/animation/auto_collapsing.dart';
 export 'src/list_entry.dart';
 
 /// const
-export 'const/styles.dart';
+export 'src/const/styles.dart';
