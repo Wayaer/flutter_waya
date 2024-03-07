@@ -208,7 +208,7 @@ class _MultiListWheelLinkagePickerState<T>
     super.didUpdateWidget(oldWidget);
     position = [...widget.value];
     items = [...widget.items];
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   @override
@@ -286,7 +286,7 @@ class _MultiListWheelLinkagePickerState<T>
                     list.length > index && list[index].children.isNotEmpty;
                 if (location != position.length - 1 || builder) {
                   await 50.milliseconds.delayed();
-                  setState(() {});
+                  if (mounted) setState(() {});
                 }
                 onChanged();
               },

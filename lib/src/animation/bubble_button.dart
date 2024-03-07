@@ -189,7 +189,7 @@ class _BubbleButtonState extends State<BubbleButton>
     _value = value;
     _controller.reset();
     _controller.forward();
-    setState(() {});
+    if (mounted) setState(() {});
     return;
   }
 

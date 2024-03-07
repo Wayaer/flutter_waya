@@ -92,7 +92,7 @@ class _DropdownMenuButtonState extends State<DropdownMenuButton> {
             onModalTap: () {
               isShow = false;
               maybePop();
-              setState(() {});
+              if (mounted) setState(() {});
             }),
         child: Universal(
             margin: widget.margin,
@@ -113,7 +113,7 @@ class _DropdownMenuButtonState extends State<DropdownMenuButton> {
             fromStyle: PopupFromStyle.fromCenter,
             barrierColor: Colors.transparent));
     isShow = true;
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   void itemTap(int index) {
@@ -121,6 +121,6 @@ class _DropdownMenuButtonState extends State<DropdownMenuButton> {
     isShow = false;
     widget.onChanged?.call(index);
     selectIndex = index;
-    setState(() {});
+    if (mounted) setState(() {});
   }
 }

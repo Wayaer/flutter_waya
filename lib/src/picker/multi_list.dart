@@ -70,7 +70,7 @@ class _MultiListLinkagePickerState<T> extends State<MultiListLinkagePicker<T>> {
   void didUpdateWidget(covariant MultiListLinkagePicker<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
     items = widget.items;
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   @override
@@ -161,7 +161,7 @@ class _MultiListLinkagePickerState<T> extends State<MultiListLinkagePicker<T>> {
                   } else {
                     position.add(null);
                   }
-                  setState(() {});
+                  if (mounted) setState(() {});
                   onChanged();
                 },
                 child: index > list.length

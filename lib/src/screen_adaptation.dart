@@ -39,7 +39,7 @@ class _ScreenAdaptationState extends State<ScreenAdaptation>
   @override
   void didChangeMetrics() {
     super.didChangeMetrics();
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   @override

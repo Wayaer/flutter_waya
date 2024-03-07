@@ -111,6 +111,8 @@ class StateComponentsPage extends StatelessWidget {
           ]),
           const Partition('SendSMS'),
           SendSMS(
+              gestureBuilder: (onTap, child) =>
+                  ElevatedButton(onPressed: onTap, child: child),
               duration: const Duration(seconds: 10),
               onStateChanged: (SendState value) {
                 showToast(value.toString());
@@ -124,13 +126,13 @@ class StateComponentsPage extends StatelessWidget {
               builder: (SendState state, int i) {
                 switch (state) {
                   case SendState.none:
-                    return const ElevatedText('发送验证码');
+                    return const Text('发送验证码');
                   case SendState.sending:
-                    return const ElevatedText('发送中');
+                    return const Text('发送中');
                   case SendState.resend:
-                    return const ElevatedText('重新发送');
+                    return const Text('重新发送');
                   case SendState.countDown:
-                    return ElevatedText('等待 $i s');
+                    return Text('等待 $i s');
                 }
               }),
           const Partition('CountDown'),

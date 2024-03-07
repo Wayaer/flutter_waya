@@ -105,7 +105,7 @@ class _DropdownMenusState<K, V> extends State<DropdownMenus<K, V>> {
     super.didUpdateWidget(oldWidget);
     if (widget.menus != menus) {
       menus = widget.menus;
-      setState(() {});
+      if (mounted) setState(() {});
     }
   }
 
@@ -151,7 +151,7 @@ class _DropdownMenusState<K, V> extends State<DropdownMenus<K, V>> {
 
   void changeRotateState(DropdownMenusKeyItem<K, V> entry) {
     entry.rotateState = !entry.rotateState;
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   void popupItems(DropdownMenusKeyItem<K, V> entry) {

@@ -148,7 +148,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
   void didUpdateWidget(covariant DateTimePicker oldWidget) {
     super.didUpdateWidget(oldWidget);
     initialize();
-    setState(() {});
+    if (mounted) setState(() {});
     jumpToIndex(yearIndex, controllerYear);
     jumpToIndex(monthIndex, controllerMonth);
     jumpToIndex(dayIndex, controllerDay);

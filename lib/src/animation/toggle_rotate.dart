@@ -67,8 +67,10 @@ class _ToggleRotateState extends State<ToggleRotate>
   }
 
   void listener() {
-    setState(() =>
-        _rad = (_rotated ? (1 - _rotate.value) : _rotate.value) * widget.rad);
+    if (mounted) {
+      setState(() =>
+          _rad = (_rotated ? (1 - _rotate.value) : _rotate.value) * widget.rad);
+    }
   }
 
   @override

@@ -117,7 +117,7 @@ class FlipCardState extends State<FlipCard>
     controller.duration = widget.duration;
     final animation = isFront ? controller.forward() : controller.reverse();
     animation.whenComplete(() {
-      setState(() => isFront = !isFront);
+      if (mounted) setState(() => isFront = !isFront);
       widget.onFlipDone?.call(isFront);
     });
   }
@@ -129,7 +129,7 @@ class FlipCardState extends State<FlipCard>
     widget.onFlip?.call();
     isFront = !isFront;
     controller.value = isFront ? 0.0 : 1.0;
-    setState(() {});
+    if (mounted) setState(() {});
     widget.onFlipDone?.call(isFront);
   }
 

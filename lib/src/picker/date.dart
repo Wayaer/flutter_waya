@@ -194,7 +194,7 @@ class _DatePickerState extends State<DatePicker> {
   void didUpdateWidget(covariant DatePicker oldWidget) {
     super.didUpdateWidget(oldWidget);
     initialize();
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   @override

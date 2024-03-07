@@ -87,7 +87,7 @@ class _CountDownState extends State<CountDown> {
       if (i > 0) {
         timer = periodic.timerPeriodic((Timer time) {
           i -= widget.periodic;
-          setState(() {});
+          if (mounted) setState(() {});
           widget.onChanged?.call(i);
           if (i == 0) disposeTime();
         });

@@ -111,7 +111,7 @@ class _PinBoxState extends State<PinBox> {
     if (oldWidget.spaces != widget.spaces ||
         oldWidget.focusNode != widget.focusNode) {
       initialize();
-      setState(() {});
+      if (mounted) setState(() {});
     }
   }
 

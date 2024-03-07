@@ -79,7 +79,7 @@ class _AutoCollapsingBuilderState extends State<AutoCollapsingBuilder> {
         if (_size < minSize) {
           _size = minSize;
         }
-        setState(() {});
+        if (mounted) setState(() {});
       }
     } else if ((!widget.reverse && offset < _previousOffset) ||
         (widget.reverse && offset > _previousOffset)) {
@@ -88,7 +88,7 @@ class _AutoCollapsingBuilderState extends State<AutoCollapsingBuilder> {
         if (_size > maxSize) {
           _size = maxSize;
         }
-        setState(() {});
+        if (mounted) setState(() {});
       }
     }
 

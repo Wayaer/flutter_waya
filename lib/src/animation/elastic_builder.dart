@@ -80,7 +80,7 @@ class _ElasticBuilderState extends State<ElasticBuilder>
       initController();
       initAnimation();
     }
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   @override

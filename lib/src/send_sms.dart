@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:fl_extended/fl_extended.dart';
 import 'package:flutter/material.dart';
 
 typedef SendSMSValueCallback = void Function(void Function(bool send));
@@ -19,6 +20,8 @@ enum SendState {
 }
 
 typedef SendStateBuilder = Widget Function(SendState state, int i);
+typedef SendStateGestureBuilder = Widget Function(
+    VoidCallback? onTap, Widget child)?;
 typedef SendStateChanged = void Function(SendState state);
 
 /// 发送验证码
@@ -31,10 +34,14 @@ class SendSMS extends StatefulWidget {
       this.margin,
       this.padding,
       required this.builder,
+      this.gestureBuilder,
       this.onStateChanged});
 
-  /// 状态回调
+  /// 文字 builder
   final SendStateBuilder builder;
+
+  /// 点击 builder
+  final SendStateGestureBuilder? gestureBuilder;
 
   /// 默认计时秒
   final Duration duration;
@@ -69,20 +76,22 @@ class _SendSMSState extends State<SendSMS> {
   }
 
   @override
-  Widget build(BuildContext context) => GestureDetector(
-        onTap: (seconds < 0) ? onTap : null,
-        child: Container(
-            margin: widget.margin,
-            padding: widget.padding,
-            decoration: widget.decoration,
-            child: widget.builder(sendState, seconds)),
-      );
+  Widget build(BuildContext context) {
+    final gesture = (seconds < 0) ? onTap : null;
+    final current = Container(
+        margin: widget.margin,
+        padding: widget.padding,
+        decoration: widget.decoration,
+        child: widget.builder(sendState, seconds));
+    return widget.gestureBuilder?.call(gesture, current) ??
+        GestureDetector(onTap: gesture, child: current);
+  }
 
   @override
   void didUpdateWidget(covariant SendSMS oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.onTap != widget.onTap) {
-      setState(() {});
+      if (mounted) setState(() {});
     }
   }
 
@@ -90,7 +99,7 @@ class _SendSMSState extends State<SendSMS> {
     sendState = SendState.sending;
     lastState = sendState;
     widget.onStateChanged?.call(sendState);
-    setState(() {});
+    if (mounted) setState(() {});
     widget.onTap?.call(send);
   }
 
@@ -102,7 +111,7 @@ class _SendSMSState extends State<SendSMS> {
       sendState = SendState.resend;
       lastState = sendState;
       widget.onStateChanged?.call(sendState);
-      setState(() {});
+      if (mounted) setState(() {});
     }
   }
 
@@ -111,7 +120,7 @@ class _SendSMSState extends State<SendSMS> {
   void startTimer() {
     timer = Timer.periodic(const Duration(seconds: 1), (Timer time) {
       if (seconds < 0) {
-        timer!.cancel();
+        timer?.cancel();
         return;
       }
       seconds--;
@@ -120,7 +129,7 @@ class _SendSMSState extends State<SendSMS> {
         widget.onStateChanged?.call(sendState);
         lastState = sendState;
       }
-      setState(() {});
+      if (mounted) setState(() {});
     });
   }
 

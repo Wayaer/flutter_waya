@@ -137,7 +137,7 @@ class _SingleListPickerContentState extends State<_SingleListPickerContent> {
       }
       widget.onChanged(selectIndex);
     }
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   @override
@@ -150,7 +150,7 @@ class _SingleListPickerContentState extends State<_SingleListPickerContent> {
   void didUpdateWidget(covariant _SingleListPickerContent oldWidget) {
     super.didUpdateWidget(oldWidget);
     selectIndex = List.from(widget.initialIndex);
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   @override

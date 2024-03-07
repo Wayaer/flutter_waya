@@ -320,7 +320,7 @@ class _DraggableScrollbarState extends State<DraggableScrollbar>
         _fadeoutTimer = null;
       });
     }
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   double getBarDelta(double scrollViewDelta, double barMaxScrollExtent,
@@ -335,7 +335,7 @@ class _DraggableScrollbarState extends State<DraggableScrollbar>
     _isDragInProcess = true;
     _labelAnimationController.forward();
     _fadeoutTimer?.cancel();
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   void _onVerticalDragUpdate(DragUpdateDetails details) {
@@ -360,7 +360,7 @@ class _DraggableScrollbarState extends State<DraggableScrollbar>
 
       widget.controller.jumpTo(_viewOffset);
     }
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   void _onVerticalDragEnd(DragEndDetails details) {
@@ -370,7 +370,7 @@ class _DraggableScrollbarState extends State<DraggableScrollbar>
       _fadeoutTimer = null;
     });
     _isDragInProcess = false;
-    setState(() {});
+    if (mounted) setState(() {});
   }
 }
 

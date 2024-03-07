@@ -194,7 +194,7 @@ class _FlSwiperState extends _FlSwiperTimerMixin {
             duration: widget.transitionDuration,
             onChanged: (int index) {
               _activeIndex = index;
-              setState(() {});
+              if (mounted) setState(() {});
               widget.onChanged?.call(index);
             },
             controller: _controller,
@@ -211,7 +211,7 @@ class _FlSwiperState extends _FlSwiperTimerMixin {
             duration: widget.transitionDuration,
             onChanged: (int index) {
               _activeIndex = index;
-              setState(() {});
+              if (mounted) setState(() {});
               widget.onChanged?.call(index);
             },
             controller: _controller,
@@ -485,7 +485,7 @@ abstract class _LayoutState<T extends _SubFlSwiper> extends State<T>
     final Size size = renderObject.paintBounds.size;
     _swiperWidth = size.width;
     _swiperHeight = size.height;
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   @override

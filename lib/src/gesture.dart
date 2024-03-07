@@ -98,7 +98,7 @@ class _GestureZoomState extends State<GestureZoom>
   /// 处理缩放变化 [details]
   void _onScaleUpdate(ScaleUpdateDetails details) {
     details.scale != 1.0 ? _scaling(details) : _dragging(details);
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   /// 执行缩放
@@ -278,7 +278,7 @@ class _GestureZoomState extends State<GestureZoom>
         horizontalScale: anim.value as double,
         verticalScale: anim.value as double,
       ));
-      setState(() {});
+      if (mounted) setState(() {});
     });
     anim.addStatusListener((AnimationStatus status) {
       if (status == AnimationStatus.completed) _onScaleEnd(ScaleEndDetails());
@@ -295,7 +295,7 @@ class _GestureZoomState extends State<GestureZoom>
         .drive<dynamic>(Tween<Offset>(begin: _offset, end: targetOffset));
     anim.addListener(() {
       _offset = anim.value as Offset;
-      setState(() {});
+      if (mounted) setState(() {});
     });
     _offsetAnimController?.fling();
   }

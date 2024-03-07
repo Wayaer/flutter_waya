@@ -139,7 +139,7 @@ class _RatingStarsState extends State<RatingStars> {
     }
     _currentStars = (realStars * 100).floor() / 100;
     if (reload == true) {
-      setState(() {});
+      if (mounted) setState(() {});
       if (needCallback == false && widget.followChanged == false) return;
       if (widget.onChanged == null) return;
       widget.onChanged!(_currentStars, selectedStars);

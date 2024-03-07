@@ -55,7 +55,7 @@ class _CheckBoxState extends State<CheckBox> {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.value != widget.value) {
       value = widget.value;
-      setState(() {});
+      if (mounted) setState(() {});
     }
   }
 
@@ -69,7 +69,7 @@ class _CheckBoxState extends State<CheckBox> {
     } else {
       value = !value!;
     }
-    setState(() {});
+    if (mounted) setState(() {});
     widget.onChanged?.call(value);
   }
 

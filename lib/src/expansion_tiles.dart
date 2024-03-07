@@ -98,10 +98,10 @@ class _ExpansionTilesState extends State<ExpansionTiles>
       _controller.forward();
     } else {
       _controller.reverse().then<void>((void value) {
-        setState(() {});
+        if (mounted) setState(() {});
       });
     }
-    setState(() {});
+    if (mounted) setState(() {});
     widget.onExpansionChanged?.call(_isExpanded);
   }
 

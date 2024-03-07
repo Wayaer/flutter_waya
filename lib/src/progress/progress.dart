@@ -121,7 +121,7 @@ abstract class _FlProgressSubState extends State<FlProgress>
         CurvedAnimation(parent: animationController!, curve: widget.curve),
       )..addListener(() {
           percent = animation!.value;
-          setState(() {});
+          if (mounted) setState(() {});
           if (widget.restartAnimation && percent == 1.0) {
             animationController!.repeat(min: 0, max: 1.0);
           }
@@ -149,7 +149,7 @@ abstract class _FlProgressSubState extends State<FlProgress>
         animationController!.forward(from: 0.0);
       } else {
         percent = widget.percent;
-        setState(() {});
+        if (mounted) setState(() {});
       }
     }
     if (oldWidget.animation && !widget.animation) animationController?.stop();
@@ -178,7 +178,7 @@ class _LinearState extends _FlProgressSubState {
       if (_keyIndicator.currentContext != null) {
         _indicatorWidth = _keyIndicator.currentContext!.size!.width;
       }
-      setState(() {});
+      if (mounted) setState(() {});
     });
     super.initState();
   }

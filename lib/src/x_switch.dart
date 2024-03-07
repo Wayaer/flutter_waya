@@ -26,7 +26,7 @@ class XSwitch extends StatefulWidget {
   /// XSwitch(
   ///   value: _giveVerse,
   ///   onChanged: (bool newValue) {
-  ///     setState(() {
+  ///    if (mounted)  setState(() {
   ///       _giveVerse = newValue;
   ///     });
   ///   },
@@ -166,9 +166,11 @@ class _XSwitchState extends State<XSwitch> with TickerProviderStateMixin {
   }
 
   void _handleDragEnd(DragEndDetails details) {
-    setState(() {
-      needsPositionAnimation = true;
-    });
+    if (mounted) {
+      setState(() {
+        needsPositionAnimation = true;
+      });
+    }
     if (_position.value >= 0.5) {
       _positionController.forward();
     } else {

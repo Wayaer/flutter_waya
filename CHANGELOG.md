@@ -1,4 +1,4 @@
-## 9.0.0
+## 9.0.1
 
 * Split core extension to [fl_extended](https://pub.dev/packages/fl_extended) package
 * Modify all `GlobalWayUI()` to `FlExtended()`

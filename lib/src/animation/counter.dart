@@ -148,7 +148,7 @@ class _CounterAnimationState extends State<CounterAnimation>
     _count++;
     _controller.reset();
     _controller.forward();
-    setState(() {});
+    if (mounted) setState(() {});
     widget.onTap?.call(_count);
   }
 
