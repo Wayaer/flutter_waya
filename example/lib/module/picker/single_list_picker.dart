@@ -104,8 +104,8 @@ class _SingleListPickerPage extends StatelessWidget {
         itemCount: list.length,
         options: BasePickerOptions<List<int>>().merge(PickerOptions(
             bottom: Universal(
-          child: DropdownMenus<String, String>(
-              onChanged: (String key, String? value) {
+          child: DropdownMenusButton<String, String>(
+              onSelected: (String key, String? value) {
                 showToast('$key : $value');
                 if (value != null) {
                   screen = [list[type.indexOf(value) + 1]];
@@ -114,16 +114,16 @@ class _SingleListPickerPage extends StatelessWidget {
                   screen.clear();
                 }
               },
-              backgroundColor: Colors.black12,
-              menus: type.builder((item) => DropdownMenusKeyItem<String,
-                      String>(
+              menus: type.builder((item) => DropdownMenusItem<String, String>(
                   icon: const Icon(Icons.arrow_circle_up_rounded, size: 13),
                   value: item,
-                  child: BText(item).marginAll(4),
-                  items: type.builder((value) => DropdownMenusValueItem<String>(
+                  builder: (String? value, Widget? icon) => Row(children: [
+                        BText(value ?? item),
+                        if (icon != null) icon,
+                      ]),
+                  items: type.builder((value) => PopupMenuItem<String>(
                         value: value,
-                        child: BText(value, style: context.textTheme.bodyLarge)
-                            .paddingSymmetric(vertical: 10),
+                        child: BText(value, style: context.textTheme.bodyLarge),
                       ))))),
         ))),
         singleListPickerOptions: const SingleListPickerOptions(

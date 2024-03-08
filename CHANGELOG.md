@@ -1,3 +1,8 @@
+## 9.1.0
+
+* Refactor the `DropdownMenuButton` and `DropdownMenusButton`
+* Update `fl_extended`
+
 ## 9.0.1
 
 * Split core extension to [fl_extended](https://pub.dev/packages/fl_extended) package

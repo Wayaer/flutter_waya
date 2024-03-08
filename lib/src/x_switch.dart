@@ -26,7 +26,7 @@ class XSwitch extends StatefulWidget {
   /// XSwitch(
   ///   value: _giveVerse,
   ///   onChanged: (bool newValue) {
-  ///    if (mounted)  setState(() {
+  ///     setState(() {
   ///       _giveVerse = newValue;
   ///     });
   ///   },
