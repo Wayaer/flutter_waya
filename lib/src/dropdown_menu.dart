@@ -7,7 +7,7 @@ class DropdownMenusItem<K, V> {
   DropdownMenusItem({
     required this.builder,
     required this.value,
-    this.items = const [],
+    required this.itemBuilder,
     this.icon,
     this.initialValue,
     this.enabled = true,
@@ -23,7 +23,8 @@ class DropdownMenusItem<K, V> {
   final Widget? icon;
 
   /// items
-  final List<PopupMenuItem<V>> items;
+  final List<PopupMenuItem<V>> Function(
+      BuildContext context, V? current, ValueCallback<V> updater) itemBuilder;
 
   /// value
   final K value;
@@ -34,7 +35,7 @@ class DropdownMenusButton<K, V> extends StatelessWidget {
   const DropdownMenusButton({
     super.key,
     required this.menus,
-    this.constraints = const BoxConstraints(),
+    this.constraints = const BoxConstraints(minWidth: double.infinity),
     this.onOpened,
     this.onSelected,
     this.onCanceled,
@@ -138,7 +139,7 @@ class DropdownMenusButton<K, V> extends StatelessWidget {
               shape: shape,
               color: color,
               enableFeedback: enableFeedback,
-              constraints: constraints.copyWith(minWidth: double.infinity),
+              constraints: constraints,
               position: position,
               clipBehavior: clipBehavior,
               useRootNavigator: useRootNavigator,
@@ -153,17 +154,17 @@ class DropdownMenusButton<K, V> extends StatelessWidget {
                 onSelected?.call(entry.value, value);
               },
               icon: entry.icon,
-              itemBuilder: (_) => entry.items.builder((item) => item),
+              itemBuilder: entry.itemBuilder,
               builder: entry.builder);
         }));
   }
 }
 
-/// 弹出组件每个item样式
-typedef DropdownMenuButtonIndexBuilder = Widget Function(int index);
-
 /// 初始化 默认显示的Widget
 typedef DropdownMenuButtonBuilder<T> = Widget Function(T? value, Widget? icon);
+
+typedef PopupMenuItemBuilder<T> = List<PopupMenuEntry<T>> Function(
+    BuildContext context, T? current, ValueCallback<T> updater);
 
 class DropdownMenuButton<T> extends StatefulWidget {
   const DropdownMenuButton({
@@ -198,12 +199,10 @@ class DropdownMenuButton<T> extends StatefulWidget {
     this.clockwise = true,
     this.animationDuration = const Duration(milliseconds: 200),
     this.curve = Curves.fastOutSlowIn,
-  });
+  }) : assert(builder != null || child != null);
 
-  /// 旋转组件
   final Widget? icon;
 
-  /// 当前选中显示的 内容 [index]== null  可显示 请选择
   final DropdownMenuButtonBuilder<T>? builder;
 
   final Widget? child;
@@ -291,7 +290,7 @@ class _DropdownMenuButtonState<T> extends State<DropdownMenuButton<T>> {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<T>(
-        initialValue: widget.initialValue,
+        initialValue: value,
         tooltip: widget.tooltip,
         elevation: widget.elevation,
         shadowColor: widget.shadowColor,
@@ -308,7 +307,12 @@ class _DropdownMenuButtonState<T> extends State<DropdownMenuButton<T>> {
         clipBehavior: widget.clipBehavior,
         useRootNavigator: widget.useRootNavigator,
         popUpAnimationStyle: widget.popUpAnimationStyle,
-        itemBuilder: widget.itemBuilder,
+        itemBuilder: (_) => widget.itemBuilder(_, value, (T value) {
+              widget.onSelected?.call(value);
+              this.value = value;
+              isExpand.value = false;
+              setState(() {});
+            }),
         onOpened: () {
           widget.onOpened?.call();
           isExpand.value = true;

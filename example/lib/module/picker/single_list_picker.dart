@@ -121,10 +121,15 @@ class _SingleListPickerPage extends StatelessWidget {
                         BText(value ?? item),
                         if (icon != null) icon,
                       ]),
-                  items: type.builder((value) => PopupMenuItem<String>(
-                        value: value,
-                        child: BText(value, style: context.textTheme.bodyLarge),
-                      ))))),
+                  itemBuilder: (_, String? current, updater) =>
+                      type.builder((value) {
+                        final isSelected = current == item;
+                        return PopupMenuItem<String>(
+                            value: value,
+                            child: BText(value,
+                                style: context.textTheme.bodyLarge?.copyWith(
+                                    color: isSelected ? Colors.red : null)));
+                      })))),
         ))),
         singleListPickerOptions: const SingleListPickerOptions(
             isCustomGestureTap: true, allowedMultipleChoice: false),

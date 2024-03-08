@@ -43,15 +43,21 @@ class ButtonPage extends StatelessWidget {
                                         style: context.textTheme.titleMedium)),
                                 if (icon != null) icon,
                               ]),
-                      items: item.value.builder((valueItem) {
-                        return PopupMenuItem<String>(
-                            value: valueItem,
-                            child: Center(
-                              child: BText(valueItem,
-                                  textAlign: TextAlign.center,
-                                  style: context.textTheme.bodyLarge),
-                            ));
-                      }));
+                      itemBuilder: (_, String? current, updater) =>
+                          item.value.builder((item) {
+                            final isSelected = current == item;
+                            return PopupMenuItem<String>(
+                                value: item,
+                                child: Center(
+                                  child: BText(item,
+                                      textAlign: TextAlign.center,
+                                      style: context.textTheme.bodyLarge
+                                          ?.copyWith(
+                                              color: isSelected
+                                                  ? Colors.red
+                                                  : null)),
+                                ));
+                          }));
                 })),
             const SizedBox(height: 20),
             ElevatedText('ElasticButton', onTap: () {}),
@@ -85,8 +91,8 @@ class ButtonPage extends StatelessWidget {
                   showToast('点击了$value');
                 },
                 icon: const Icon(Icons.arrow_right_rounded),
-                itemBuilder: (_) => _colors.builder((item) =>
-                    PopupMenuItem<String>(
+                itemBuilder: (_, String? current, __) => _colors.builder(
+                    (item) => PopupMenuItem<String>(
                         value: item,
                         child:
                             BText(item, style: context.textTheme.bodyMedium)))),

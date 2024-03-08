@@ -1,4 +1,4 @@
-## 9.1.0
+## 9.1.1
 
 * Refactor the `DropdownMenuButton` and `DropdownMenusButton`
 * Update `fl_extended`
