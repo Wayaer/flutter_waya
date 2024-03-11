@@ -5,7 +5,7 @@ import 'package:flutter_waya/flutter_waya.dart';
 typedef PinBoxTextFieldBuilder = Widget Function(
     PinTextFieldBuilderConfig builderConfig);
 
-typedef PinBoxTextFieldTextBuilder = Widget Function(String text);
+typedef PinBoxTextFieldTextBuilder = Widget? Function(String text);
 
 class PinBox extends StatefulWidget {
   const PinBox(
@@ -135,14 +135,18 @@ class _PinBoxState extends State<PinBox> {
     bool hasFocus = false;
     for (int i = 0; i < widget.maxLength; i++) {
       if (texts[i].isEmpty) hasFocus = true;
+      String text = texts[i];
+      if (text.trim().isNotEmpty && widget.obscureText) {
+        text = '*';
+      }
       box.add(Container(
           height: widget.boxSize.height,
           width: widget.boxSize.width,
           decoration:
               hasFocus ? widget.pinDecoration : widget.hasFocusPinDecoration,
           alignment: Alignment.center,
-          child: widget.textBuilder?.call(texts[i]) ??
-              BText(texts[i], style: widget.textStyle)));
+          child: widget.textBuilder?.call(text) ??
+              BText(text, style: widget.textStyle)));
     }
     final List<Widget> children = [];
     if (spaces.isNotEmpty) {

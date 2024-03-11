@@ -49,7 +49,11 @@ class TextFieldPage extends StatelessWidget {
                   showCursor: builderConfig.showCursor,
                   inputFormatters: builderConfig.inputFormatters),
               maxLength: 5,
+              obscureText: true,
               autoFocus: false,
+              textBuilder: (_) => _.isEmpty
+                  ? const Icon(Icons.ac_unit, size: 14)
+                  : const Text('Hide'),
               spaces: const <Widget?>[
                 Icon(Icons.ac_unit, size: 12),
                 Icon(Icons.ac_unit, size: 12),
