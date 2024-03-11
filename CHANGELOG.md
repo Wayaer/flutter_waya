@@ -1,3 +1,8 @@
+## 9.1.2
+
+* Change `Badge` to `FlBadge` to avoid conflicts with flutter packets
+* Fixed conflicts between `DropdownMenusButton` and official packages
+
 ## 9.1.1
 
 * Refactor the `DropdownMenuButton` and `DropdownMenusButton`

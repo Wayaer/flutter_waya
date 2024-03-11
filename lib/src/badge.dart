@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 /// 组件右上角加红点
-class Badge extends StatelessWidget {
-  const Badge({
+class FlBadge extends StatelessWidget {
+  const FlBadge({
     super.key,
     this.hide = false,
     required this.child,

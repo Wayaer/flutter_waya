@@ -23,8 +23,7 @@ class DropdownMenusItem<K, V> {
   final Widget? icon;
 
   /// items
-  final List<PopupMenuItem<V>> Function(
-      BuildContext context, V? current, ValueCallback<V> updater) itemBuilder;
+  final DropdownMenuButtonItemBuilder<V> itemBuilder;
 
   /// value
   final K value;
@@ -163,7 +162,7 @@ class DropdownMenusButton<K, V> extends StatelessWidget {
 /// 初始化 默认显示的Widget
 typedef DropdownMenuButtonBuilder<T> = Widget Function(T? value, Widget? icon);
 
-typedef PopupMenuItemBuilder<T> = List<PopupMenuEntry<T>> Function(
+typedef DropdownMenuButtonItemBuilder<T> = List<PopupMenuEntry<T>> Function(
     BuildContext context, T? current, ValueCallback<T> updater);
 
 class DropdownMenuButton<T> extends StatefulWidget {
@@ -207,7 +206,7 @@ class DropdownMenuButton<T> extends StatefulWidget {
 
   final Widget? child;
 
-  final PopupMenuItemBuilder<T> itemBuilder;
+  final DropdownMenuButtonItemBuilder<T> itemBuilder;
 
   final T? initialValue;
 
