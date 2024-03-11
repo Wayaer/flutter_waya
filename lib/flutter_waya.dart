@@ -31,6 +31,7 @@ export 'src/animation/wave.dart';
 export 'src/badge.dart';
 export 'src/animation/auto_collapsing.dart';
 export 'src/list_entry.dart';
+export 'src/event.dart';
 
 /// const
 export 'src/const/styles.dart';
