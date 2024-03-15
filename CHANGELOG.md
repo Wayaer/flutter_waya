@@ -1,3 +1,7 @@
+## 9.1.3
+
+* Add `FlipCardController` to `FlipCard()`
+
 ## 9.1.2
 
 * Change `Badge` to `FlBadge` to avoid conflicts with flutter packets

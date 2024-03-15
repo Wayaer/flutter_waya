@@ -1,32 +1,80 @@
-library flip_card;
-
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 
-enum Fill { none, front, back }
+enum FlipCardState {
+  front,
+  back;
 
-typedef FlipCardOnFlipCallback = void Function(bool isFront);
-typedef FlipCardCallback = void Function(FlipCardState flipCard);
+  FlipCardState get toggle {
+    if (this == FlipCardState.front) {
+      return FlipCardState.back;
+    } else {
+      return FlipCardState.front;
+    }
+  }
+
+  bool get isFront => this == FlipCardState.front;
+
+  bool get isBack => this == FlipCardState.back;
+}
+
+typedef FlipCardOnFlipCallback = void Function(FlipCardState state);
+
+class FlipCardController {
+  _FlipCardState? _flipCardState;
+
+  FlipCardState? get flipCardState => _flipCardState?.flipCardState;
+
+  /// Flip the card without playing an animation.
+  /// This cancels any ongoing animation.
+  void toggle() {
+    _flipCardState?.toggle();
+  }
+
+  /// Flip the card
+  /// If awaited, returns after animation completes.
+  Future<void> animateToggle() async {
+    _flipCardState?.animateToggle();
+  }
+
+  /// Skew by amount percentage (0 - 1.0)
+  /// This can be used with a MouseRegion to indicate that the card can
+  /// be flipped. skew(0) to go back to original.
+  /// If awaited, returns after animation completes.
+  Future<void> skew(double amount,
+      {Duration? duration, Curve curve = Curves.linear}) async {
+    await _flipCardState?.skew(amount, duration: duration, curve: curve);
+  }
+
+  /// Triggers a flip animation that reverses after the duration
+  /// and will run for `total`
+  /// If awaited, returns after animation completes.
+  Future<void> hint(
+      {Duration duration = const Duration(milliseconds: 150),
+      Duration? total}) async {
+    await _flipCardState?.hint(duration: duration, total: total);
+  }
+}
 
 class FlipCard extends StatefulWidget {
   const FlipCard({
     super.key,
     required this.front,
     required this.back,
-    this.duration = const Duration(milliseconds: 300),
+    this.duration = const Duration(milliseconds: 250),
     this.onFlip,
     this.onFlipDone,
     this.direction = Axis.horizontal,
-    this.onFlipCardState,
     this.touchFlip = true,
-    this.initialFront = true,
+    this.initial = FlipCardState.front,
     this.alignment = Alignment.center,
-    this.fill = Fill.front,
+    this.fill,
+    this.controller,
   });
 
   /// 初始正面
-  final bool initialFront;
+  final FlipCardState initial;
 
   /// 正面
   final Widget front;
@@ -44,93 +92,93 @@ class FlipCard extends StatefulWidget {
   final bool touchFlip;
 
   /// Fill
-  final Fill fill;
+  final FlipCardState? fill;
 
   /// 开始翻转
-  final VoidCallback? onFlip;
+  final FlipCardOnFlipCallback? onFlip;
 
   /// 翻转完成
   final FlipCardOnFlipCallback? onFlipDone;
 
-  ///
+  /// alignment
   final Alignment alignment;
 
-  /// 获取 FlipCardState
-  final FlipCardCallback? onFlipCardState;
+  /// controller
+  final FlipCardController? controller;
 
   @override
-  State<StatefulWidget> createState() => FlipCardState();
+  State<StatefulWidget> createState() => _FlipCardState();
 }
 
-class FlipCardState extends State<FlipCard>
+class _FlipCardState extends State<FlipCard>
     with SingleTickerProviderStateMixin {
-  late AnimationController controller;
-  late Animation<double> _frontRotation;
-  late Animation<double> _backRotation;
+  late AnimationController animationController;
+  FlipCardController? controller;
+  late Animation<double> frontRotation;
+  late Animation<double> backRotation;
 
-  late bool isFront;
+  FlipCardState flipCardState = FlipCardState.front;
 
   @override
   void initState() {
-    isFront = widget.initialFront;
+    controller = widget.controller;
+    flipCardState = widget.initial;
     super.initState();
-    widget.onFlipCardState?.call(this);
-    _initController();
+    controller?._flipCardState = this;
+    initController();
   }
 
-  void _initController() {
-    controller = AnimationController(
-        value: isFront ? 0.0 : 1.0, duration: widget.duration, vsync: this);
-    _frontRotation = TweenSequence([
+  void initController() {
+    animationController = AnimationController(
+        value: flipCardState.index.toDouble(),
+        duration: widget.duration,
+        vsync: this);
+    frontRotation = TweenSequence([
       TweenSequenceItem<double>(
           tween: Tween(begin: 0.0, end: pi / 2)
               .chain(CurveTween(curve: Curves.easeIn)),
           weight: 50.0),
       TweenSequenceItem<double>(
           tween: ConstantTween<double>(pi / 2), weight: 50.0)
-    ]).animate(controller);
-    _backRotation = TweenSequence([
+    ]).animate(animationController);
+    backRotation = TweenSequence([
       TweenSequenceItem<double>(
           tween: ConstantTween<double>(pi / 2), weight: 50.0),
       TweenSequenceItem<double>(
           tween: Tween(begin: -pi / 2, end: 0.0)
               .chain(CurveTween(curve: Curves.easeOut)),
           weight: 50.0)
-    ]).animate(controller);
+    ]).animate(animationController);
   }
 
   @override
   void didUpdateWidget(FlipCard oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.duration != oldWidget.duration) {
-      controller.duration = widget.duration;
-    }
-    isFront = widget.initialFront;
-    widget.onFlipCardState?.call(this);
+    animationController.duration = widget.duration;
+    controller = widget.controller;
+    controller?._flipCardState = this;
   }
 
-  /// Flip the card
-  /// If awaited, returns after animation completes.
-  void animateToggle() {
+  Future<void> animateToggle() async {
     if (!mounted) return;
-    widget.onFlip?.call();
-    controller.duration = widget.duration;
-    final animation = isFront ? controller.forward() : controller.reverse();
-    animation.whenComplete(() {
-      if (mounted) setState(() => isFront = !isFront);
-      widget.onFlipDone?.call(isFront);
+    widget.onFlip?.call(flipCardState);
+    animationController.duration = widget.duration;
+    final animation = flipCardState.isFront
+        ? animationController.forward(from: 0)
+        : animationController.reverse(from: 1);
+    log(flipCardState.index);
+    await animation.whenComplete(() {
+      flipCardState = flipCardState.toggle;
+      log(flipCardState.index);
+      widget.onFlipDone?.call(flipCardState);
     });
   }
 
-  /// Flip the card without playing an animation.
-  /// This cancels any ongoing animation.
   void toggle() {
-    controller.stop();
-    widget.onFlip?.call();
-    isFront = !isFront;
-    controller.value = isFront ? 0.0 : 1.0;
-    if (mounted) setState(() {});
-    widget.onFlipDone?.call(isFront);
+    widget.onFlip?.call(flipCardState);
+    flipCardState = flipCardState.toggle;
+    animationController.value = flipCardState.index.toDouble();
+    widget.onFlipDone?.call(flipCardState);
   }
 
   @override
@@ -139,8 +187,8 @@ class FlipCardState extends State<FlipCard>
         alignment: widget.alignment,
         fit: StackFit.passthrough,
         children: [
-          _buildContent(true, widget.fill == Fill.front),
-          _buildContent(false, widget.fill == Fill.back),
+          buildContent(true, widget.fill == FlipCardState.front),
+          buildContent(false, widget.fill == FlipCardState.back),
         ]);
     if (widget.touchFlip) {
       return GestureDetector(
@@ -151,16 +199,16 @@ class FlipCardState extends State<FlipCard>
     return child;
   }
 
-  Widget _buildContent(bool front, bool isFill) {
+  Widget buildContent(bool front, bool isFill) {
     final card = IgnorePointer(
-        ignoring: front ? !isFront : isFront,
-        child: _animationCard(front ? widget.front : widget.back,
-            front ? _frontRotation : _backRotation));
+        ignoring: front ? flipCardState.isBack : flipCardState.isFront,
+        child: animationCard(front ? widget.front : widget.back,
+            front ? frontRotation : backRotation));
     if (isFill) return Positioned.fill(child: card);
     return card;
   }
 
-  Widget _animationCard(Widget child, Animation<double> animation) =>
+  Widget animationCard(Widget child, Animation<double> animation) =>
       AnimatedBuilder(
           animation: animation,
           builder: (_, Widget? child) {
@@ -181,40 +229,39 @@ class FlipCardState extends State<FlipCard>
 
   @override
   void dispose() {
-    controller.dispose();
+    animationController.dispose();
     super.dispose();
   }
 
-  /// Skew by amount percentage (0 - 1.0)
-  /// This can be used with a MouseRegion to indicate that the card can
-  /// be flipped. skew(0) to go back to original.
-  /// If awaited, returns after animation completes.
-  Future<void> skew(double amount, {Duration? duration, Curve? curve}) async {
+  Future<void> skew(double amount,
+      {Duration? duration, Curve curve = Curves.linear}) async {
     assert(0 <= amount && amount <= 1);
-    final target = isFront ? amount : 1 - amount;
-    await controller
-        .animateTo(target, duration: duration, curve: curve ?? Curves.linear)
+    final target = flipCardState.isFront ? amount : 1 - amount;
+    await animationController
+        .animateTo(target, duration: duration, curve: curve)
         .asStream()
         .first;
   }
 
-  /// Triggers a flip animation that reverses after the duration
-  /// and will run for `total`
-  /// If awaited, returns after animation completes.
   Future<void> hint(
       {Duration duration = const Duration(milliseconds: 150),
       Duration? total}) async {
-    if (controller.isAnimating || controller.value != 0) return;
-    final durationTotal = total ?? controller.duration;
+    if (animationController.isAnimating) return;
+    final durationTotal = total ?? animationController.duration;
     final completer = Completer();
-    Duration? original = controller.duration;
-    controller.duration = durationTotal;
-    controller.forward();
+    Duration? original = animationController.duration;
+    animationController.duration = durationTotal;
+    flipCardState.isFront
+        ? animationController.forward()
+        : animationController.reverse();
     Timer(duration, () {
-      controller.reverse().whenComplete(() {
+      (flipCardState.isFront
+              ? animationController.reverse()
+              : animationController.forward())
+          .whenComplete(() {
         completer.complete();
       });
-      controller.duration = original;
+      animationController.duration = original;
     });
     await completer.future;
   }

@@ -12,7 +12,7 @@ class FlipCardPage extends StatefulWidget {
 }
 
 class _FlipCardPageState extends State<FlipCardPage> {
-  FlipCardState? state;
+  FlipCardController controller = FlipCardController();
 
   @override
   Widget build(BuildContext context) {
@@ -22,32 +22,36 @@ class _FlipCardPageState extends State<FlipCardPage> {
         children: [
           MouseRegion(
                   onEnter: (_) {
-                    state?.skew(0.2);
+                    controller.skew(0.2);
                   },
                   onExit: (_) {
-                    state?.skew(0);
+                    controller.skew(0);
                   },
                   child: FlipCard(
-                      onFlipCardState: (_) {
-                        state = _;
+                      controller: controller,
+                      onFlip: (FlipCardState value) {
+                        log(value);
                       },
-                      fill: Fill.front,
+                      onFlipDone: (FlipCardState value) {
+                        log(value);
+                      },
                       front: buildContent('Front', Colors.amberAccent),
                       back: buildContent('Back', Colors.lightGreenAccent)))
               .expanded,
           12.heightBox,
           Wrap(spacing: 10, runSpacing: 10, children: [
             ElevatedText('toggle', onTap: () {
-              state?.toggle();
+              controller.toggle();
             }),
             ElevatedText('animateToggle', onTap: () {
-              state?.animateToggle();
+              controller.animateToggle();
+              // setState(() {});
             }),
             ElevatedText('skew', onTap: () {
-              state?.skew(Random().nextDouble());
+              controller.skew(Random().nextDouble());
             }),
             ElevatedText('hint', onTap: () {
-              state?.hint();
+              controller.hint();
             }),
           ])
         ]);
