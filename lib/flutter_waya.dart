@@ -32,6 +32,7 @@ export 'src/badge.dart';
 export 'src/animation/auto_collapsing.dart';
 export 'src/list_entry.dart';
 export 'src/event.dart';
+export 'src/shimmery.dart';
 
 /// const
 export 'src/const/styles.dart';

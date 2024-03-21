@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:app/main.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
@@ -13,6 +14,16 @@ class ComponentsPage extends StatelessWidget {
           appBar: AppBarText('Components'),
           padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
           children: [
+            const Partition('Shimmery'),
+            Shimmery(
+                color: Colors.yellow,
+                colorOpacity: 0.9,
+                child: Universal(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.circular(9)),
+                    child: const BText('Shimmery', color: Colors.white))),
             const Partition('Wrapper'),
             const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
