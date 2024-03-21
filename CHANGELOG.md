@@ -1,3 +1,8 @@
+## 9.1.4
+
+* Removed `AnchorScrollBuilder`
+* Add `Shimmery`
+
 ## 9.1.3
 
 * Add `FlipCardController` to `FlipCard()`

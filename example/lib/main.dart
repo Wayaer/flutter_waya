@@ -1,7 +1,5 @@
-import 'package:app/module/anchor_scroll_builder_page.dart';
 import 'package:app/module/button_page.dart';
 import 'package:app/module/components_page.dart';
-import 'package:app/module/gesture_page.dart';
 import 'package:app/module/picker/picker_page.dart';
 import 'package:app/module/progress_page.dart';
 import 'package:app/module/scroll_page.dart';
@@ -89,11 +87,7 @@ class _Home extends StatelessWidget {
           ElevatedText('Picker', onTap: () => push(const PickerPage())),
           ElevatedText('FlSwiper', onTap: () => push(const FlSwiperPage())),
           ElevatedText('FlProgress', onTap: () => push(const FlProgressPage())),
-          ElevatedText('GestureZoom',
-              onTap: () => push(const GestureZoomPage())),
           ElevatedText('ScrollView', onTap: () => push(const ScrollViewPage())),
-          ElevatedText('AnchorScroll',
-              onTap: () => push(const AnchorScrollBuilderPage())),
           ElevatedText('TextField', onTap: () => push(const TextFieldPage())),
         ]);
   }
