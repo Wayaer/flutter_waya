@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:app/main.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
@@ -78,7 +77,7 @@ class ComponentsPage extends StatelessWidget {
             const Partition('ToggleRotate'),
             Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
               ValueBuilder<bool>(
-                  initialValue: false,
+                  initial: false,
                   builder: (_, bool? value, ValueCallback<bool> updater) {
                     return ToggleRotate(
                         duration: const Duration(milliseconds: 800),
@@ -88,7 +87,7 @@ class ComponentsPage extends StatelessWidget {
                         child: const Icon(Icons.chevron_left, size: 30));
                   }),
               ValueBuilder<bool>(
-                  initialValue: false,
+                  initial: false,
                   builder: (_, bool? value, ValueCallback<bool> updater) {
                     return ToggleRotate(
                         duration: const Duration(milliseconds: 800),
@@ -98,7 +97,7 @@ class ComponentsPage extends StatelessWidget {
                         child: const Icon(Icons.chevron_left, size: 30));
                   }),
               ValueBuilder<bool>(
-                  initialValue: false,
+                  initial: false,
                   builder: (_, bool? value, ValueCallback<bool> updater) {
                     return ToggleRotate(
                         duration: const Duration(milliseconds: 800),

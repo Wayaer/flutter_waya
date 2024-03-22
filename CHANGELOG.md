@@ -1,3 +1,7 @@
+## 9.2.0
+
+* Update `fl_extended`
+
 ## 9.1.4
 
 * Removed `AnchorScrollBuilder`
