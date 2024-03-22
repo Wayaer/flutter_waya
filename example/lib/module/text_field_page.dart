@@ -15,7 +15,7 @@ class TextFieldPage extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
         children: [
           const Partition('PinBox'),
-          PinBox(
+          PINTextField(
               maxLength: 5,
               autoFocus: false,
               spaces: const <Widget?>[
@@ -35,8 +35,8 @@ class TextFieldPage extends StatelessWidget {
                   border: Border.all(color: context.theme.disabledColor),
                   borderRadius: BorderRadius.circular(4))),
           const Partition('PinBox builder'),
-          PinBox(
-              builder: (PinTextFieldBuilderConfig builderConfig) => TextField(
+          PINTextField(
+              builder: (PINTextFieldBuilderConfig builderConfig) => TextField(
                   focusNode: builderConfig.focusNode,
                   decoration: builderConfig.decoration,
                   autofocus: builderConfig.autofocus,

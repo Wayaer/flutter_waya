@@ -1,3 +1,10 @@
+## 9.3.0
+
+* Change the `SendSMS` to `SendVerificationCode`
+* Change the `PinBox` to `PINTextField`
+* Change the `PinTextFieldBuilderConfig` to `PINTextFieldBuilderConfig`
+* Update `fl_extended`
+
 ## 9.1.4
 
 * Removed `AnchorScrollBuilder`

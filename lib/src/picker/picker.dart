@@ -14,8 +14,7 @@ part 'single_list.dart';
 part 'single_list_wheel.dart';
 
 /// 返回 false 不关闭弹窗;
-typedef PickerTapConfirmCallback<T> = bool Function(T? value);
-typedef PickerTapCancelCallback<T> = bool Function(T? value);
+typedef PickerTapCallback<T> = bool Function(T? value);
 
 const double kPickerDefaultHeight = 180;
 
@@ -70,11 +69,11 @@ class PickerOptions<T> {
 
   /// 点击 [confirm] 后校验 [confirmTap] 数据，
   /// 返回 false 不关闭弹窗 默认 为 true;
-  final PickerTapConfirmCallback<T>? verifyConfirm;
+  final PickerTapCallback<T>? verifyConfirm;
 
   /// 点击 [cancel] 后校验 [cancelTap] 数据，
   /// 返回 false 不关闭弹窗 默认 为 true;
-  final PickerTapCancelCallback<T>? verifyCancel;
+  final PickerTapCallback<T>? verifyCancel;
 
   /// Decoration
   final Decoration? decoration;
@@ -89,8 +88,8 @@ class PickerOptions<T> {
     Widget? cancel,
     Widget? title,
     Widget? background,
-    PickerTapConfirmCallback<T>? verifyConfirm,
-    PickerTapCancelCallback<T>? verifyCancel,
+    PickerTapCallback<T>? verifyConfirm,
+    PickerTapCallback<T>? verifyCancel,
   }) =>
       PickerOptions<T>(
           decoration: decoration ?? this.decoration,

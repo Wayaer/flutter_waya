@@ -2,7 +2,15 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-typedef SendSMSValueCallback = void Function(void Function(bool send));
+typedef SendVerificationCodeValueCallback = void Function(
+    void Function(bool send));
+
+typedef SendStateBuilder = Widget Function(SendState state, int i);
+
+typedef SendStateGestureBuilder = Widget Function(
+    VoidCallback? onTap, Widget child)?;
+
+typedef SendStateChanged = void Function(SendState state);
 
 enum SendState {
   /// 默认状态  获取验证码
@@ -18,14 +26,9 @@ enum SendState {
   countDown
 }
 
-typedef SendStateBuilder = Widget Function(SendState state, int i);
-typedef SendStateGestureBuilder = Widget Function(
-    VoidCallback? onTap, Widget child)?;
-typedef SendStateChanged = void Function(SendState state);
-
 /// 发送验证码
-class SendSMS extends StatefulWidget {
-  const SendSMS(
+class SendVerificationCode extends StatefulWidget {
+  const SendVerificationCode(
       {super.key,
       required this.onTap,
       this.decoration,
@@ -46,7 +49,7 @@ class SendSMS extends StatefulWidget {
   final Duration duration;
 
   /// 点击按钮
-  final SendSMSValueCallback? onTap;
+  final SendVerificationCodeValueCallback? onTap;
 
   /// 状态变化
   final SendStateChanged? onStateChanged;
@@ -58,10 +61,10 @@ class SendSMS extends StatefulWidget {
   final EdgeInsetsGeometry? padding;
 
   @override
-  State<SendSMS> createState() => _SendSMSState();
+  State<SendVerificationCode> createState() => _SendVerificationCodeState();
 }
 
-class _SendSMSState extends State<SendSMS> {
+class _SendVerificationCodeState extends State<SendVerificationCode> {
   int seconds = -1;
   Timer? timer;
   SendState sendState = SendState.none;
@@ -87,7 +90,7 @@ class _SendSMSState extends State<SendSMS> {
   }
 
   @override
-  void didUpdateWidget(covariant SendSMS oldWidget) {
+  void didUpdateWidget(covariant SendVerificationCode oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.onTap != widget.onTap) {
       if (mounted) setState(() {});
