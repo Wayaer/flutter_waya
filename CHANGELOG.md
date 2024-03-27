@@ -1,3 +1,7 @@
+## 9.2.1
+
+* Example Change the `SendSMS` to `SendVerificationCode`
+
 ## 9.2.0
 
 * Update `fl_extended`

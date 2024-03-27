@@ -24,7 +24,7 @@ export 'src/expansion_tiles.dart';
 export 'src/animation/toggle_rotate.dart';
 export 'src/rating_stars.dart';
 export 'src/flip_card.dart';
-export 'src/send_sms.dart';
+export 'src/send_verification_code.dart';
 export 'src/animation/wave.dart';
 export 'src/badge.dart';
 export 'src/animation/auto_collapsing.dart';

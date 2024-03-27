@@ -109,8 +109,8 @@ class StateComponentsPage extends StatelessWidget {
                 builder: (bool value, onChanged) =>
                     CupertinoSwitch(value: value, onChanged: onChanged)),
           ]),
-          const Partition('SendSMS'),
-          SendSMS(
+          const Partition('SendVerificationCode'),
+          SendVerificationCode(
               gestureBuilder: (onTap, child) =>
                   ElevatedButton(onPressed: onTap, child: child),
               duration: const Duration(seconds: 10),
