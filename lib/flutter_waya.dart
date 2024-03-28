@@ -30,7 +30,7 @@ export 'src/dropdown_menu.dart';
 export 'src/check_box.dart';
 export 'src/dotted_line.dart';
 export 'src/draggable_scrollbar.dart';
-export 'src/text_field';
+export 'src/text_field.dart';
 export 'src/screen_adaptation.dart';
 export 'src/x_switch.dart';
 export 'src/count_down.dart';
