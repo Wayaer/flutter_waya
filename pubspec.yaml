@@ -10,7 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  fl_extended: ^0.3.2
+  fl_extended: ^0.4.0
 
 dev_dependencies:
   flutter_lints: ^3.0.2
