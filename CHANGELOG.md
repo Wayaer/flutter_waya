@@ -1,9 +1,8 @@
-## 9.2.1
+## 9.3.0
 
-* Example Change the `SendSMS` to `SendVerificationCode`
-
-## 9.2.0
-
+* Change the `SendSMS` to `SendVerificationCode`
+* Change the `PinBox` to `PINTextField`
+* Change the `PinTextFieldBuilderConfig` to `PINTextFieldBuilderConfig`
 * Update `fl_extended`
 
 ## 9.1.4

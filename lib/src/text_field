@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-typedef PinBoxTextFieldBuilder = Widget Function(
-    PinTextFieldBuilderConfig builderConfig);
+typedef PINTextFieldBuilder = Widget Function(
+    PINTextFieldBuilderConfig builderConfig);
 
-typedef PinBoxTextFieldTextBuilder = Widget? Function(String text);
+typedef PINTextFieldTextBuilder = Widget? Function(String text);
 
-class PinBox extends StatefulWidget {
-  const PinBox(
+class PINTextField extends StatefulWidget {
+  const PINTextField(
       {super.key,
       this.onTap,
       this.onChanged,
@@ -64,11 +64,11 @@ class PinBox extends StatefulWidget {
   /// 有文字后的输入框装饰器
   final Decoration? hasFocusPinDecoration;
 
-  /// box 内文字样式
+  /// 内文字样式
   final TextStyle? textStyle;
 
   /// text builder
-  final PinBoxTextFieldTextBuilder? textBuilder;
+  final PINTextFieldTextBuilder? textBuilder;
 
   /// box 方框的大小
   final Size boxSize;
@@ -82,16 +82,16 @@ class PinBox extends StatefulWidget {
   /// 额外配置输入框内容限制
   final List<TextInputFormatter>? inputFormatter;
 
-  final PinBoxTextFieldBuilder? builder;
+  /// 构建 [TextField]
+  final PINTextFieldBuilder? builder;
 
   @override
-  State<PinBox> createState() => _PinBoxState();
+  State<PINTextField> createState() => _PINTextFieldState();
 }
 
-class _PinBoxState extends State<PinBox> {
+class _PINTextFieldState extends State<PINTextField> {
   late FocusNode focusNode;
   List<Widget?> spaces = <Widget?>[];
-
   ValueNotifier<String> text = ValueNotifier('');
 
   @override
@@ -106,13 +106,11 @@ class _PinBoxState extends State<PinBox> {
   }
 
   @override
-  void didUpdateWidget(covariant PinBox oldWidget) {
+  void didUpdateWidget(covariant PINTextField oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.spaces != widget.spaces ||
-        oldWidget.focusNode != widget.focusNode) {
-      initialize();
-      if (mounted) setState(() {});
-    }
+        oldWidget.focusNode != widget.focusNode) initialize();
+    if (mounted) setState(() {});
   }
 
   @override
@@ -189,7 +187,7 @@ class _PinBoxState extends State<PinBox> {
       }
     }
 
-    final builderConfig = PinTextFieldBuilderConfig(
+    final builderConfig = PINTextFieldBuilderConfig(
         focusNode: focusNode,
         controller: widget.controller,
         decoration: inputDecoration,
@@ -227,8 +225,8 @@ class _PinBoxState extends State<PinBox> {
   }
 }
 
-class PinTextFieldBuilderConfig {
-  PinTextFieldBuilderConfig(
+class PINTextFieldBuilderConfig {
+  PINTextFieldBuilderConfig(
       {required this.focusNode,
       required this.decoration,
       this.autofocus = true,
