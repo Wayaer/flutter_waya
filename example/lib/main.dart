@@ -35,10 +35,7 @@ void main() {
   globalOptions.logCrossLine = true;
 
   /// 设置全局Loading配置
-  globalOptions.loadingOptions = const LoadingOptions(
-      alignment: Alignment.center,
-      custom: BText('全局设置loading', fontSize: 20),
-      onModalTap: closeLoading);
+  globalOptions.loadingOptions = const LoadingOptions(onModalTap: closeLoading);
 
   runApp(DevicePreview(
       enabled: isDesktop || isWeb,
