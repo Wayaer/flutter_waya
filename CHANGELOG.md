@@ -1,3 +1,7 @@
+## 9.4.0
+
+* Update `fl_extended`
+
 ## 9.3.1
 
 * Change the `SendSMS` to `SendVerificationCode`
