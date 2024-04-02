@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_waya/src/extended_state.dart';
 
 class XSwitch extends StatefulWidget {
   const XSwitch({
@@ -78,7 +79,8 @@ class XSwitch extends StatefulWidget {
   State createState() => _XSwitchState();
 }
 
-class _XSwitchState extends State<XSwitch> with TickerProviderStateMixin {
+class _XSwitchState extends ExtendedState<XSwitch>
+    with TickerProviderStateMixin {
   late TapGestureRecognizer _tap;
   late HorizontalDragGestureRecognizer _drag;
   late AnimationController _positionController;

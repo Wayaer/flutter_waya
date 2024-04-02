@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/flutter_waya.dart';
+import 'package:flutter_waya/src/extended_state.dart';
 
 typedef CountBuilder = Widget Function(int count, String text);
 
@@ -31,7 +31,7 @@ class CounterAnimation extends StatefulWidget {
   State<CounterAnimation> createState() => _CounterAnimationState();
 }
 
-class _CounterAnimationState extends State<CounterAnimation>
+class _CounterAnimationState extends ExtendedState<CounterAnimation>
     with SingleTickerProviderStateMixin {
   late Animation<double> _opacityAnimation;
   late Animation<Offset> _slidePreValueAnimation;
@@ -137,7 +137,8 @@ class _CounterAnimationState extends State<CounterAnimation>
                 ],
               ));
     }
-    return Universal(onTap: animation, clipper: _CountClip(), child: child);
+    return GestureDetector(
+        onTap: animation, child: ClipRect(clipper: _CountClip(), child: child));
   }
 
   Widget _createCount(int count, String text) =>

@@ -1,4 +1,5 @@
 import 'package:app/main.dart';
+import 'package:fl_extended/fl_extended.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
@@ -9,7 +10,7 @@ class FlProgressPage extends StatefulWidget {
   State<FlProgressPage> createState() => _FlProgressPageState();
 }
 
-class _FlProgressPageState extends ExtendedState<FlProgressPage>
+class _FlProgressPageState extends State<FlProgressPage>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   StateSetter? liquidProgressState;

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter_waya/src/extended_state.dart';
 
 enum FlipCardState {
   front,
@@ -110,7 +111,7 @@ class FlipCard extends StatefulWidget {
   State<StatefulWidget> createState() => _FlipCardState();
 }
 
-class _FlipCardState extends State<FlipCard>
+class _FlipCardState extends ExtendedState<FlipCard>
     with SingleTickerProviderStateMixin {
   late AnimationController animationController;
   FlipCardController? controller;

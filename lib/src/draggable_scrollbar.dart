@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/flutter_waya.dart';
+import 'package:flutter_waya/src/extended_state.dart';
 
 /// Build the Scroll Thumb and label using the current configuration
 typedef ScrollThumbBuilder = Widget Function(
@@ -73,14 +73,15 @@ class DraggableScrollbar extends StatefulWidget {
                     constraints: BoxConstraints.tight(Size(16.0, height))));
             break;
           case ScrollbarStyle.arrows:
-            scrollThumb = Universal(
-                height: height,
-                width: 20.0,
-                decoration: BoxDecoration(
-                    color: backgroundColor,
-                    borderRadius:
-                        const BorderRadius.all(Radius.circular(12.0))),
-                clipper: _ArrowClipper());
+            scrollThumb = ClipPath(
+                clipper: _ArrowClipper(),
+                child: Container(
+                    height: height,
+                    width: 20.0,
+                    decoration: BoxDecoration(
+                        color: backgroundColor,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(12.0)))));
             break;
           case ScrollbarStyle.semicircle:
             scrollThumb = CustomPaint(
@@ -205,7 +206,7 @@ class _ScrollLabel extends StatelessWidget {
                   child: child))));
 }
 
-class _DraggableScrollbarState extends State<DraggableScrollbar>
+class _DraggableScrollbarState extends ExtendedState<DraggableScrollbar>
     with TickerProviderStateMixin {
   late double _barOffset;
   late double _viewOffset;
@@ -268,20 +269,22 @@ class _DraggableScrollbarState extends State<DraggableScrollbar>
           child: Stack(children: [
             RepaintBoundary(child: widget.child),
             RepaintBoundary(
-                child: Universal(
+                child: GestureDetector(
                     onVerticalDragStart: _onVerticalDragStart,
                     onVerticalDragUpdate: _onVerticalDragUpdate,
                     onVerticalDragEnd: _onVerticalDragEnd,
-                    alignment: Alignment.topRight,
-                    margin: EdgeInsets.only(top: _barOffset),
-                    padding: widget.padding,
-                    child: widget.scrollThumbBuilder(
-                        widget.backgroundColor,
-                        _thumbAnimation,
-                        _labelAnimation,
-                        widget.heightScrollThumb,
-                        labelText: label,
-                        labelConstraints: widget.labelConstraints))),
+                    child: Container(
+                      alignment: Alignment.topRight,
+                      margin: EdgeInsets.only(top: _barOffset),
+                      padding: widget.padding,
+                      child: widget.scrollThumbBuilder(
+                          widget.backgroundColor,
+                          _thumbAnimation,
+                          _labelAnimation,
+                          widget.heightScrollThumb,
+                          labelText: label,
+                          labelConstraints: widget.labelConstraints),
+                    ))),
           ]));
     });
   }

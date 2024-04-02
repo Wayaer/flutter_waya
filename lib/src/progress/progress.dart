@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
+import 'package:flutter_waya/src/extended_state.dart';
 
 part 'liquid_progress.dart';
 
@@ -105,7 +106,7 @@ class FlProgress extends StatefulWidget {
   State<StatefulWidget> createState() => _LinearState();
 }
 
-abstract class _FlProgressSubState extends State<FlProgress>
+abstract class _FlProgressSubState extends ExtendedState<FlProgress>
     with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   AnimationController? animationController;
   Animation<double>? animation;
@@ -173,7 +174,7 @@ class _LinearState extends _FlProgressSubState {
 
   @override
   void initState() {
-    addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _containerWidth = _containerKey.currentContext!.size!.width;
       if (_keyIndicator.currentContext != null) {
         _indicatorWidth = _keyIndicator.currentContext!.size!.width;
@@ -195,11 +196,11 @@ class _LinearState extends _FlProgressSubState {
               isRTL: widget.isRTL,
               progress: percent,
               progressColor: widget.progressColor ??
-                  context.theme.progressIndicatorTheme.color ??
-                  context.theme.primaryColor,
+                  Theme.of(context).progressIndicatorTheme.color ??
+                  Theme.of(context).primaryColor,
               linearGradient: widget.linearGradient,
               backgroundColor: widget.backgroundColor ??
-                  context.theme.colorScheme.background,
+                  Theme.of(context).colorScheme.background,
               linearStrokeCap: widget.linearStrokeCap,
               lineWidth: widget.lineHeight,
               maskFilter: widget.maskFilter,
@@ -219,7 +220,7 @@ class _LinearState extends _FlProgressSubState {
             top: 0,
             child: widget.widgetIndicator!),
     ]);
-    return Universal(
+    return SizedBox(
         height: widget.lineHeight,
         width: widget.width ?? double.infinity,
         child: bar);

@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/flutter_waya.dart';
 
 enum FlSwiperEvent { next, previous, start, stop }
 
@@ -107,18 +106,20 @@ class FlSwiperArrowPagination extends FlSwiperPlugin {
 
   Widget buildButton(FlSwiperPluginConfig config, Color color,
           IconData iconData, int quarterTurns, bool previous) =>
-      Universal(
-          behavior: HitTestBehavior.opaque,
-          onTap: () => previous
-              ? config.controller!.previous(animation: true)
-              : config.controller!.next(animation: true),
-          padding: padding,
-          child: RotatedBox(
-              quarterTurns: quarterTurns,
-              child: Icon(iconData,
-                  semanticLabel: previous ? 'Previous' : 'Next',
-                  size: size,
-                  color: color)));
+      GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () => previous
+            ? config.controller!.previous(animation: true)
+            : config.controller!.next(animation: true),
+        child: Padding(
+            padding: padding,
+            child: RotatedBox(
+                quarterTurns: quarterTurns,
+                child: Icon(iconData,
+                    semanticLabel: previous ? 'Previous' : 'Next',
+                    size: size,
+                    color: color))),
+      );
 
   @override
   Widget build(BuildContext context, FlSwiperPluginConfig config) {
@@ -136,17 +137,17 @@ class FlSwiperArrowPagination extends FlSwiperPlugin {
       prevColor = prev ? color : disableColor;
       nextColor = next ? color : disableColor;
     }
-    return Universal(
-        key: key,
-        expand: true,
-        direction: config.scrollDirection,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
+    return SizedBox.expand(
+        child: Flex(
+            key: key,
+            direction: config.scrollDirection,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
           buildButton(config, prevColor, iconPrevious,
               config.scrollDirection == Axis.horizontal ? 0 : -3, true),
           buildButton(config, nextColor, iconNext,
               config.scrollDirection == Axis.horizontal ? 0 : -3, false)
-        ]);
+        ]));
   }
 }
 
@@ -183,11 +184,11 @@ class FlSwiperFractionPagination extends FlSwiperPlugin {
         direction: config.scrollDirection,
         mainAxisSize: MainAxisSize.min,
         children: [
-          BText('${config.activeIndex + 1}',
-              style: BTextStyle(color: activeColor, fontSize: activeFontSize)),
-          BText('/', style: BTextStyle(color: color, fontSize: fontSize)),
-          BText('${config.itemCount}',
-              style: BTextStyle(color: color, fontSize: fontSize))
+          Text('${config.activeIndex + 1}',
+              style: TextStyle(color: activeColor, fontSize: activeFontSize)),
+          Text('/', style: TextStyle(color: color, fontSize: fontSize)),
+          Text('${config.itemCount}',
+              style: TextStyle(color: color, fontSize: fontSize))
         ]);
   }
 }
@@ -222,8 +223,8 @@ class FlSwiperDotPagination extends FlSwiperPlugin {
   @override
   Widget build(BuildContext context, FlSwiperPluginConfig config) {
     if (config.itemCount > 20) {
-      'The itemCount is too big, we suggest use FlSwiperFractionPaginationBuilder instead of FlSwiperDotPaginationBuilder in this sitituation'
-          .log();
+      debugPrint(
+          'The itemCount is too big, we suggest use FlSwiperFractionPaginationBuilder instead of FlSwiperDotPaginationBuilder in this sitituation');
     }
     Color? activeColor = this.activeColor;
     Color? color = this.color;
@@ -238,7 +239,7 @@ class FlSwiperDotPagination extends FlSwiperPlugin {
         key: key,
         direction: config.scrollDirection,
         mainAxisSize: MainAxisSize.min,
-        children: config.itemCount.generate((int i) {
+        children: List.generate(config.itemCount, (int i) {
           final bool active = i == config.activeIndex;
           return Container(
               key: Key('pagination_$i'),

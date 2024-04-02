@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/flutter_waya.dart';
+import 'package:flutter_waya/src/extended_state.dart';
 
 typedef ToggleBuilder = Widget Function(Widget child);
 
@@ -46,7 +46,7 @@ class ToggleRotate extends StatefulWidget {
   State<ToggleRotate> createState() => _ToggleRotateState();
 }
 
-class _ToggleRotateState extends State<ToggleRotate>
+class _ToggleRotateState extends ExtendedState<ToggleRotate>
     with SingleTickerProviderStateMixin {
   double _rad = 0;
   bool _rotated = false;
@@ -97,7 +97,9 @@ class _ToggleRotateState extends State<ToggleRotate>
         alignment: Alignment.center,
         child: widget.child);
     if (widget.toggleBuilder != null) current = widget.toggleBuilder!(current);
-    if (widget.onTap != null) current = current.onTap(widget.onTap!);
+    if (widget.onTap != null) {
+      current = GestureDetector(onTap: widget.onTap!, child: current);
+    }
     return current;
   }
 }

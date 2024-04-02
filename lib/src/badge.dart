@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/flutter_waya.dart';
 
 /// 组件右上角加红点
 class FlBadge extends StatelessWidget {
@@ -49,8 +48,9 @@ class FlBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> children = [child];
+    Widget current = child;
     if (!hide) {
+      final List<Widget> children = [child];
       Widget current = dot(context);
       if (alignment != null) {
         current = Align(alignment: alignment!, child: current);
@@ -60,21 +60,19 @@ class FlBadge extends StatelessWidget {
             right: right, top: top, bottom: bottom, left: left, child: current);
       }
       children.add(current);
+      current = Stack(children: children);
     }
-    return Universal(
-        onTap: onTap,
-        margin: margin,
-        width: width,
-        height: height,
-        isStack: !hide,
-        children: children);
+    current =
+        Container(margin: margin, width: width, height: height, child: current);
+    if (onTap != null) current = GestureDetector(onTap: onTap, child: current);
+    return current;
   }
 
   Widget dot(BuildContext context) => Container(
       width: badgeSize,
       height: badgeSize,
       decoration: BoxDecoration(
-          color: badgeColor ?? context.theme.primaryColor,
+          color: badgeColor ?? Theme.of(context).primaryColor,
           shape: BoxShape.circle),
       child: badge);
 }

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_waya/src/extended_state.dart';
 
 typedef SendVerificationCodeValueCallback = void Function(
     void Function(bool send));
@@ -64,7 +65,7 @@ class SendVerificationCode extends StatefulWidget {
   State<SendVerificationCode> createState() => _SendVerificationCodeState();
 }
 
-class _SendVerificationCodeState extends State<SendVerificationCode> {
+class _SendVerificationCodeState extends ExtendedState<SendVerificationCode> {
   int seconds = -1;
   Timer? timer;
   SendState sendState = SendState.none;

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/flutter_waya.dart';
+import 'package:flutter_waya/src/extended_state.dart';
 
 typedef ElasticBuilderCallback = Widget Function(BuildContext context,
     Function elasticUp, Function elastic, Function elasticDown);
@@ -10,10 +10,10 @@ class ElasticBuilder extends StatefulWidget {
       {super.key,
       this.withOpacity = false,
       this.alignment = Alignment.center,
-      this.scale = 0.93,
+      this.scale = 0.9,
       required this.builder,
       this.duration = const Duration(milliseconds: 100)})
-      : assert(scale <= 1.0);
+      : assert(scale <= 1.0 && scale > 0);
 
   final bool withOpacity;
 
@@ -30,7 +30,7 @@ class ElasticBuilder extends StatefulWidget {
   State<ElasticBuilder> createState() => _ElasticBuilderState();
 }
 
-class _ElasticBuilderState extends State<ElasticBuilder>
+class _ElasticBuilderState extends ExtendedState<ElasticBuilder>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
   late Animation<double> animation;
@@ -63,7 +63,7 @@ class _ElasticBuilderState extends State<ElasticBuilder>
 
   Future<void> elastic([Duration? duration]) async {
     controller.value = 0;
-    await (duration ?? widget.duration).delayed();
+    await Future.delayed((duration ?? widget.duration));
     controller.value = 1;
   }
 
