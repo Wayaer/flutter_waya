@@ -95,17 +95,21 @@ class ListEntry extends StatelessWidget {
     if (prefix != null) children.add(prefix!);
     children.add(listTile);
     if (arrow || arrowIcon != null) children.add(arrowIcon ?? arrowWidget);
-    return Universal(
+    Widget current =
+        Row(mainAxisAlignment: MainAxisAlignment.center, children: children);
+    if (onLongPress != null || onDoubleTap != null || onTap != null) {
+      current = GestureDetector(
+          onLongPress: enabled ? onLongPress : null,
+          onDoubleTap: enabled ? onDoubleTap : null,
+          onTap: enabled ? onTap : null,
+          child: current);
+    }
+    return Container(
         height: height,
         margin: margin,
         padding: padding,
-        onLongPress: enabled ? onLongPress : null,
-        onDoubleTap: enabled ? onDoubleTap : null,
-        onTap: enabled ? onTap : null,
-        direction: Axis.horizontal,
-        mainAxisAlignment: MainAxisAlignment.center,
         decoration: decoration ?? defaultDecoration,
-        children: children);
+        child: current);
   }
 
   Decoration? get defaultDecoration => color != null || underlineColor != null
@@ -122,7 +126,7 @@ class ListEntry extends StatelessWidget {
   Widget get listTile => Expanded(
       child: ListTile(
           contentPadding: contentPadding,
-          title: hero(title ?? BText(titleText, style: titleStyle)),
+          title: hero(title ?? Text(titleText, style: titleStyle)),
           subtitle: subtitle,
           leading: leading,
           trailing: child,

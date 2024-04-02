@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/flutter_waya.dart';
+import 'package:flutter_waya/src/extended_state.dart';
 
 typedef ElasticBuilderCallback = Widget Function(BuildContext context,
     Function elasticUp, Function elastic, Function elasticDown);
@@ -30,7 +30,7 @@ class ElasticBuilder extends StatefulWidget {
   State<ElasticBuilder> createState() => _ElasticBuilderState();
 }
 
-class _ElasticBuilderState extends State<ElasticBuilder>
+class _ElasticBuilderState extends ExtendedState<ElasticBuilder>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
   late Animation<double> animation;

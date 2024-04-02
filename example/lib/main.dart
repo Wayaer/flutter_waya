@@ -1,12 +1,12 @@
 import 'package:app/module/button_page.dart';
 import 'package:app/module/components_page.dart';
-import 'package:app/module/picker/picker_page.dart';
+import 'package:app/module/decorator_page.dart';
 import 'package:app/module/progress_page.dart';
-import 'package:app/module/scroll_page.dart';
 import 'package:app/module/state_components_page.dart';
 import 'package:app/module/swiper_page.dart';
 import 'package:app/module/text_field_page.dart';
 import 'package:device_preview_minus/device_preview_minus.dart';
+import 'package:fl_extended/fl_extended.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_waya/flutter_waya.dart';
@@ -28,9 +28,6 @@ void main() {
           borderRadius: BorderRadius.vertical(top: Radius.circular(12))));
   globalOptions.dialogOptions =
       const DialogOptions(fromStyle: PopupFromStyle.fromTop);
-
-  /// 设置全局Wheel配置
-  globalOptions.wheelOptions = const WheelOptions.cupertino();
 
   globalOptions.logCrossLine = true;
 
@@ -81,11 +78,12 @@ class _Home extends StatelessWidget {
           ElevatedText('State Components',
               onTap: () => push(const StateComponentsPage())),
           ElevatedText('Button', onTap: () => push(const ButtonPage())),
-          ElevatedText('Picker', onTap: () => push(const PickerPage())),
           ElevatedText('FlSwiper', onTap: () => push(const FlSwiperPage())),
           ElevatedText('FlProgress', onTap: () => push(const FlProgressPage())),
-          ElevatedText('ScrollView', onTap: () => push(const ScrollViewPage())),
-          ElevatedText('TextField', onTap: () => push(const TextFieldPage())),
+          ElevatedText('DecoratorBox',
+              onTap: () => push(const DecoratorBoxPage())),
+          ElevatedText('ExtendedTextField',
+              onTap: () => push(const TextFieldPage())),
         ]);
   }
 }
@@ -188,7 +186,6 @@ class ExtendedScaffold extends StatelessWidget {
       this.children,
       this.mainAxisAlignment = MainAxisAlignment.start,
       this.crossAxisAlignment = CrossAxisAlignment.center,
-      this.refreshConfig,
       this.enableDoubleClickExit = false});
 
   /// 相当于给[body] 套用 [Column]、[Row]、[Stack]
@@ -212,9 +209,6 @@ class ExtendedScaffold extends StatelessWidget {
   /// true 点击android实体返回按键先关闭Overlay【toast loading ...】但不pop 当前页面
   /// false 点击android实体返回按键先关闭Overlay【toast loading ...】并pop 当前页面
   final bool isCloseOverlay;
-
-  /// ****** 刷新组件相关 ******  ///
-  final RefreshConfig? refreshConfig;
 
   /// Scaffold相关属性
   final Widget? child;
@@ -279,7 +273,6 @@ class ExtendedScaffold extends StatelessWidget {
 
   Universal get universal => Universal(
       expand: true,
-      refreshConfig: refreshConfig,
       padding: padding,
       isScroll: isScroll,
       safeLeft: safeLeft,

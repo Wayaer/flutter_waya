@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_waya/src/extended_state.dart';
 
 /// 波浪动画
 class FlAnimationWave extends StatefulWidget {
@@ -18,7 +19,7 @@ class FlAnimationWave extends StatefulWidget {
   State<FlAnimationWave> createState() => _FlAnimationWaveState();
 }
 
-class _FlAnimationWaveState extends State<FlAnimationWave>
+class _FlAnimationWaveState extends ExtendedState<FlAnimationWave>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
 

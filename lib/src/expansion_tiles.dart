@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
+import 'package:flutter_waya/src/extended_state.dart';
 
 class ExpansionTiles extends StatefulWidget {
   const ExpansionTiles({
@@ -50,7 +51,7 @@ class ExpansionTiles extends StatefulWidget {
   State<ExpansionTiles> createState() => _ExpansionTilesState();
 }
 
-class _ExpansionTilesState extends State<ExpansionTiles>
+class _ExpansionTilesState extends ExtendedState<ExpansionTiles>
     with SingleTickerProviderStateMixin {
   static final Animatable<double> _easeOutTween =
       CurveTween(curve: Curves.easeOut);

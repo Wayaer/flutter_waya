@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/flutter_waya.dart';
+import 'package:flutter_waya/src/extended_state.dart';
 
 typedef CountDownBuilder = Widget Function(int i);
 
@@ -43,7 +43,7 @@ class CountDown extends StatefulWidget {
   State<CountDown> createState() => _CountDownState();
 }
 
-class _CountDownState extends State<CountDown> {
+class _CountDownState extends ExtendedState<CountDown> {
   late int i;
   Timer? timer;
 
@@ -59,33 +59,33 @@ class _CountDownState extends State<CountDown> {
     switch (widget.type) {
       case CountDownType.microseconds:
         i = widget.duration.inMicroseconds;
-        periodic = widget.periodic.microseconds;
+        periodic = Duration(microseconds: widget.periodic);
         break;
       case CountDownType.milliseconds:
         i = widget.duration.inMilliseconds;
-        periodic = widget.periodic.milliseconds;
+        periodic = Duration(milliseconds: widget.periodic);
         break;
       case CountDownType.seconds:
         i = widget.duration.inSeconds;
-        periodic = widget.periodic.seconds;
+        periodic = Duration(seconds: widget.periodic);
         break;
       case CountDownType.minutes:
         i = widget.duration.inMinutes;
-        periodic = widget.periodic.minutes;
+        periodic = Duration(minutes: widget.periodic);
         break;
       case CountDownType.hours:
         i = widget.duration.inHours;
-        periodic = widget.periodic.hours;
+        periodic = Duration(hours: widget.periodic);
         break;
       case CountDownType.days:
         i = widget.duration.inDays;
-        periodic = widget.periodic.days;
+        periodic = Duration(days: widget.periodic);
         break;
     }
 
-    addPostFrameCallback((Duration callback) {
+    WidgetsBinding.instance.addPostFrameCallback((Duration callback) {
       if (i > 0) {
-        timer = periodic.timerPeriodic((Timer time) {
+        timer = Timer.periodic(periodic, (Timer time) {
           i -= widget.periodic;
           if (mounted) setState(() {});
           widget.onChanged?.call(i);

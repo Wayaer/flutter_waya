@@ -2,6 +2,7 @@ import 'package:app/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fl_extended/fl_extended.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 class TextFieldPage extends StatelessWidget {
@@ -14,64 +15,6 @@ class TextFieldPage extends StatelessWidget {
         appBar: AppBarText('TextField'),
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
         children: [
-          const Partition('PinBox'),
-          PINTextField(
-              maxLength: 5,
-              autoFocus: false,
-              spaces: const <Widget?>[
-                Icon(Icons.ac_unit, size: 12),
-                Icon(Icons.ac_unit, size: 12),
-                Icon(Icons.ac_unit, size: 12),
-                Icon(Icons.ac_unit, size: 12),
-                Icon(Icons.ac_unit, size: 12),
-                Icon(Icons.ac_unit, size: 12),
-              ],
-              hasFocusPinDecoration: BoxDecoration(
-                  color: context.theme.disabledColor,
-                  border: Border.all(color: context.theme.primaryColor),
-                  borderRadius: BorderRadius.circular(4)),
-              pinDecoration: BoxDecoration(
-                  color: context.theme.primaryColor,
-                  border: Border.all(color: context.theme.disabledColor),
-                  borderRadius: BorderRadius.circular(4))),
-          const Partition('PinBox builder'),
-          PINTextField(
-              builder: (PINTextFieldBuilderConfig builderConfig) => TextField(
-                  focusNode: builderConfig.focusNode,
-                  decoration: builderConfig.decoration,
-                  autofocus: builderConfig.autofocus,
-                  maxLines: builderConfig.maxLines,
-                  minLines: builderConfig.minLines,
-                  onChanged: builderConfig.onChanged,
-                  keyboardType: builderConfig.keyboardType,
-                  maxLength: builderConfig.maxLength,
-                  style: builderConfig.style,
-                  showCursor: builderConfig.showCursor,
-                  inputFormatters: builderConfig.inputFormatters),
-              maxLength: 5,
-              obscureText: true,
-              autoFocus: false,
-              textBuilder: (_) => _.isEmpty
-                  ? const Icon(Icons.ac_unit, size: 14)
-                  : const Text('Hide'),
-              spaces: const <Widget?>[
-                Icon(Icons.ac_unit, size: 12),
-                Icon(Icons.ac_unit, size: 12),
-                Icon(Icons.ac_unit, size: 12),
-                Icon(Icons.ac_unit, size: 12),
-                Icon(Icons.ac_unit, size: 12),
-                Icon(Icons.ac_unit, size: 12),
-              ],
-              hasFocusPinDecoration: BoxDecoration(
-                  color: context.theme.disabledColor,
-                  border: Border.all(color: context.theme.primaryColor),
-                  borderRadius: BorderRadius.circular(4)),
-              pinDecoration: BoxDecoration(
-                  color: context.theme.primaryColor,
-                  border: Border.all(color: context.theme.disabledColor),
-                  borderRadius: BorderRadius.circular(4)),
-              textStyle: const TextStyle(color: Colors.white)),
-          const SizedBox(height: 20),
           const Partition('ExtendedTextField with TextField'),
           builderExtendedTextFieldBuilder(
               builder: (TextInputType keyboardType,

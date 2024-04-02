@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/flutter_waya.dart';
+import 'package:flutter_waya/src/extended_state.dart';
 
 typedef CheckBoxStateBuilder = Widget Function(bool? value);
 
@@ -26,7 +26,7 @@ class CheckBox extends StatefulWidget {
   final bool? value;
 
   /// bool 值改变回调
-  final ValueCallback<bool?>? onChanged;
+  final ValueChanged<bool?>? onChanged;
 
   /// decoration
   final Decoration? decoration;
@@ -41,7 +41,7 @@ class CheckBox extends StatefulWidget {
   State<CheckBox> createState() => _CheckBoxState();
 }
 
-class _CheckBoxState extends State<CheckBox> {
+class _CheckBoxState extends ExtendedState<CheckBox> {
   bool? value = false;
 
   @override
@@ -74,10 +74,11 @@ class _CheckBoxState extends State<CheckBox> {
   }
 
   @override
-  Widget build(BuildContext context) => Universal(
-      decoration: widget.decoration,
-      margin: widget.margin,
-      padding: widget.padding,
+  Widget build(BuildContext context) => GestureDetector(
       onTap: changeState,
-      child: widget.builder(value));
+      child: Container(
+          decoration: widget.decoration,
+          margin: widget.margin,
+          padding: widget.padding,
+          child: widget.builder(value)));
 }

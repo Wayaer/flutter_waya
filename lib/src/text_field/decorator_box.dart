@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/flutter_waya.dart';
+import 'package:flutter_waya/src/extended_state.dart';
 
 extension ExtensionWidgetDecoratorEntry on Widget {
   DecoratorEntry toDecoratorEntry({
@@ -19,6 +19,25 @@ enum DecoratorPositioned {
 
   /// 在最外部
   outermost,
+}
+
+enum BorderType {
+  outline,
+  underline,
+  none,
+  ;
+
+  /// BorderType to Border
+  Border? value([BorderSide borderSide = const BorderSide()]) {
+    switch (this) {
+      case BorderType.outline:
+        return Border.fromBorderSide(borderSide);
+      case BorderType.underline:
+        return Border(bottom: borderSide);
+      case BorderType.none:
+        return null;
+    }
+  }
 }
 
 class DecoratorEntry {
@@ -136,7 +155,7 @@ class DecoratorBoxState extends StatefulWidget {
   State<DecoratorBoxState> createState() => _DecoratorBoxStateState();
 }
 
-class _DecoratorBoxStateState extends State<DecoratorBoxState> {
+class _DecoratorBoxStateState extends ExtendedState<DecoratorBoxState> {
   late FocusNode focusNode;
   late BorderSide borderSide;
   bool hasFocus = false;
@@ -202,7 +221,7 @@ class _DecoratorBoxStateState extends State<DecoratorBoxState> {
 
   /// 后缀
   Widget? buildSuffix(DecoratorPositioned positioned) {
-    List children = widget.suffixes.where((element) {
+    List<DecoratorEntry> children = widget.suffixes.where((element) {
       if (element.positioned != positioned) return false;
       switch (element.mode) {
         case OverlayVisibilityMode.never:
@@ -220,7 +239,7 @@ class _DecoratorBoxStateState extends State<DecoratorBoxState> {
     if (children.length == 1) return children.first.widget;
     return Row(
         mainAxisSize: MainAxisSize.min,
-        children: children.builder((entry) => entry.widget));
+        children: children.map((entry) => entry.widget).toList());
   }
 
   /// 前缀
@@ -242,7 +261,7 @@ class _DecoratorBoxStateState extends State<DecoratorBoxState> {
     if (children.length == 1) return children.first.widget;
     return Row(
         mainAxisSize: MainAxisSize.min,
-        children: children.builder((entry) => entry.widget));
+        children: children.map((entry) => entry.widget).toList());
   }
 
   void disposeFocusNode() {
@@ -360,19 +379,18 @@ class DecoratorBox extends StatelessWidget {
           gradient: gradient,
           boxShadow: boxShadow);
     }
-    final List<Widget> children = [current.expanded];
+    final List<Widget> children = [Expanded(child: current)];
     if (prefix != null) children.insert(0, prefix!);
     if (suffix != null) children.add(suffix!);
-    current = Universal(
+    current = Container(
         decoration: decoration,
         constraints: constraints,
-        borderRadius: borderRadius,
-        isClipRRect: borderRadius != null,
         margin: margin,
         padding: padding,
-        direction: Axis.horizontal,
-        child: children.length > 1 ? null : current,
-        children: children.length > 1 ? children : null);
+        child: children.length > 1 ? Row(children: children) : current);
+    if (borderRadius != null) {
+      current = ClipRRect(borderRadius: borderRadius!, child: current);
+    }
     return current;
   }
 }

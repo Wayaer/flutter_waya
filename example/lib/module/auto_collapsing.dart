@@ -1,7 +1,26 @@
 import 'package:app/main.dart';
-import 'package:app/module/scroll_page.dart';
+import 'package:fl_extended/fl_extended.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
+
+class ColorEntry extends StatelessWidget {
+  const ColorEntry(this.index, this.color,
+      {this.height = 80, this.width = 80, super.key});
+
+  final int index;
+  final Color color;
+  final double height;
+  final double width;
+
+  @override
+  Widget build(BuildContext context) => Container(
+      width: width,
+      height: height,
+      alignment: Alignment.center,
+      color: color,
+      child: BText(index.toString(),
+          color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold));
+}
 
 class AutoCollapsingPage extends StatefulWidget {
   const AutoCollapsingPage({super.key, this.direction = Axis.vertical});
@@ -23,13 +42,12 @@ class _AutoCollapsingPageState extends State<AutoCollapsingPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
         children: [
-          ScrollList.builder(
-            controller: controller,
-            itemCount: colorList.length,
-            itemBuilder: (BuildContext context, int index) => ColorEntry(
-                index, colorList[index],
-                height: index & 3 == 0 ? 80 : 40),
-          ).expand,
+          ListView.builder(
+              controller: controller,
+              itemCount: colorList.length,
+              itemBuilder: (BuildContext context, int index) => ColorEntry(
+                  index, colorList[index],
+                  height: index & 3 == 0 ? 80 : 40)).expand,
           Padding(
               padding: const EdgeInsets.all(20),
               child: AutoCollapsingBuilder(

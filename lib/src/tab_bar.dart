@@ -54,15 +54,15 @@ class TabBarMerge extends StatelessWidget {
     return Column(children: children);
   }
 
-  Widget get buildTabBarView => Universal(
-      expanded: true,
-      margin: margin,
-      padding: padding,
-      decoration: decoration,
-      constraints: constraints,
-      width: width,
-      height: height,
-      child: tabBarView);
+  Widget get buildTabBarView => Expanded(
+      child: Container(
+          margin: margin,
+          padding: padding,
+          decoration: decoration,
+          constraints: constraints,
+          width: width,
+          height: height,
+          child: tabBarView));
 }
 
 /// TabBarLevel 位置
@@ -101,28 +101,28 @@ class TabBarBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> children = [];
+    Widget current = tabBar;
     if (level != null) {
+      final List<Widget> children = [];
       switch (levelPosition) {
         case TabBarLevelPosition.right:
-          children.add(Expanded(child: tabBar));
+          children.add(Expanded(child: current));
           children.add(level!);
           break;
         case TabBarLevelPosition.left:
           children.add(level!);
-          children.add(Expanded(child: tabBar));
+          children.add(Expanded(child: current));
           break;
       }
+      current = Row(children: children);
     }
-    return Universal(
+    return Container(
         height: height,
         margin: margin,
         padding: padding,
         width: width,
         alignment: alignment,
-        direction: Axis.horizontal,
         decoration: decoration,
-        children: children,
-        child: level == null ? tabBar : null);
+        child: current);
   }
 }

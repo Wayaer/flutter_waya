@@ -1,4 +1,5 @@
 import 'package:app/main.dart';
+import 'package:fl_extended/fl_extended.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
@@ -9,7 +10,7 @@ class FlSwiperPage extends StatefulWidget {
   State<FlSwiperPage> createState() => _FlSwiperPageState();
 }
 
-class _FlSwiperPageState extends ExtendedState<FlSwiperPage> {
+class _FlSwiperPageState extends State<FlSwiperPage> {
   FlSwiperController controller = FlSwiperController();
   PageController pageController = PageController();
   ValueNotifier<double> position = ValueNotifier(0);

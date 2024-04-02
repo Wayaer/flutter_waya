@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
+import 'package:flutter_waya/src/extended_state.dart';
 
 class DropdownMenusItem<K, V> {
   DropdownMenusItem({
@@ -28,6 +29,11 @@ class DropdownMenusItem<K, V> {
   /// value
   final K value;
 }
+
+typedef DropdownMenusButtonValueCallbackK<K> = void Function(K key);
+
+typedef DropdownMenusButtonValueCallbackKV<K, V> = void Function(
+    K key, V value);
 
 /// 下拉菜单
 class DropdownMenusButton<K, V> extends StatelessWidget {
@@ -63,11 +69,11 @@ class DropdownMenusButton<K, V> extends StatelessWidget {
   /// 子menus
   final List<DropdownMenusItem<K, V>> menus;
 
-  final ValueCallback<K>? onOpened;
+  final DropdownMenusButtonValueCallbackK<K>? onOpened;
 
-  final ValueTwoCallback<K, V?>? onSelected;
+  final DropdownMenusButtonValueCallbackKV<K, V?>? onSelected;
 
-  final ValueCallback<K>? onCanceled;
+  final DropdownMenusButtonValueCallbackK<K>? onCanceled;
 
   final String? tooltip;
 
@@ -120,7 +126,7 @@ class DropdownMenusButton<K, V> extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: menus.builder((entry) {
+        children: menus.map((entry) {
           return DropdownMenuButton<V>(
               initialValue: entry.initialValue,
               tooltip: tooltip,
@@ -155,15 +161,19 @@ class DropdownMenusButton<K, V> extends StatelessWidget {
               icon: entry.icon,
               itemBuilder: entry.itemBuilder,
               builder: entry.builder);
-        }));
+        }).toList());
   }
 }
 
 /// 初始化 默认显示的Widget
 typedef DropdownMenuButtonBuilder<T> = Widget Function(T? value, Widget? icon);
 
+typedef DropdownMenuButtonItemBuilderCallbackK<T> = void Function(T value);
+
 typedef DropdownMenuButtonItemBuilder<T> = List<PopupMenuEntry<T>> Function(
-    BuildContext context, T? current, ValueCallback<T> updater);
+    BuildContext context,
+    T? current,
+    DropdownMenuButtonItemBuilderCallbackK<T> updater);
 
 class DropdownMenuButton<T> extends StatefulWidget {
   const DropdownMenuButton({
@@ -269,7 +279,7 @@ class DropdownMenuButton<T> extends StatefulWidget {
   State<DropdownMenuButton<T>> createState() => _DropdownMenuButtonState();
 }
 
-class _DropdownMenuButtonState<T> extends State<DropdownMenuButton<T>> {
+class _DropdownMenuButtonState<T> extends ExtendedState<DropdownMenuButton<T>> {
   T? value;
 
   ValueNotifier<bool> isExpand = ValueNotifier(false);

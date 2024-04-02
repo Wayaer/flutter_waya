@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fl_extended/fl_extended.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 /// 按回车时调用 先调用此方法  然后调用onSubmitted方法
@@ -192,25 +191,6 @@ enum TextInputLimitFormatter {
   }
 }
 
-enum BorderType {
-  outline,
-  underline,
-  none,
-  ;
-
-  /// BorderType to Border
-  Border? value([BorderSide borderSide = const BorderSide()]) {
-    switch (this) {
-      case BorderType.outline:
-        return Border.fromBorderSide(borderSide);
-      case BorderType.underline:
-        return Border(bottom: borderSide);
-      case BorderType.none:
-        return null;
-    }
-  }
-}
-
 class DecoratorBoxStyle {
   const DecoratorBoxStyle({
     this.borderType = BorderType.none,
@@ -336,7 +316,7 @@ class ExtendedTextField extends StatelessWidget {
     if (children.length == 1) return children.first.widget;
     return Row(
         mainAxisSize: MainAxisSize.min,
-        children: children.builder((entry) => entry.widget));
+        children: children.map((entry) => entry.widget).toList());
   }
 
   /// 前缀
@@ -347,7 +327,7 @@ class ExtendedTextField extends StatelessWidget {
     if (children.length == 1) return children.first.widget;
     return Row(
         mainAxisSize: MainAxisSize.min,
-        children: children.builder((entry) => entry.widget));
+        children: children.map((entry) => entry.widget).toList());
   }
 }
 

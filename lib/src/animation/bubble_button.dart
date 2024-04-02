@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_waya/src/extended_state.dart';
 
 typedef BubbleCallback = Future<bool> Function(bool isBubbled);
 
@@ -93,7 +94,7 @@ class BubbleButton extends StatefulWidget {
   State<StatefulWidget> createState() => _BubbleButtonState();
 }
 
-class _BubbleButtonState extends State<BubbleButton>
+class _BubbleButtonState extends ExtendedState<BubbleButton>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _outerCircleAnimation;

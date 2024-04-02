@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_waya/src/extended_state.dart';
 
 typedef CountBuilder = Widget Function(int count, String text);
 
@@ -30,7 +31,7 @@ class CounterAnimation extends StatefulWidget {
   State<CounterAnimation> createState() => _CounterAnimationState();
 }
 
-class _CounterAnimationState extends State<CounterAnimation>
+class _CounterAnimationState extends ExtendedState<CounterAnimation>
     with SingleTickerProviderStateMixin {
   late Animation<double> _opacityAnimation;
   late Animation<Offset> _slidePreValueAnimation;

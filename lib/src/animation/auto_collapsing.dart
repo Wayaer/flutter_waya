@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_waya/src/extended_state.dart';
 
 /// Automatically collapse your own src as the scrollview scrolls
 /// 随scrollview的滚动自动折叠自己的组件
@@ -44,7 +45,7 @@ class AutoCollapsingBuilder extends StatefulWidget {
   State<AutoCollapsingBuilder> createState() => _AutoCollapsingBuilderState();
 }
 
-class _AutoCollapsingBuilderState extends State<AutoCollapsingBuilder> {
+class _AutoCollapsingBuilderState extends ExtendedState<AutoCollapsingBuilder> {
   double _size = 0.0;
   double _previousOffset = 0.0;
 

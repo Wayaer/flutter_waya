@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_waya/src/extended_state.dart';
 
 typedef ScreenAdaptationChildBuilder = Widget Function(
     BuildContext context, bool scaled);
@@ -22,7 +23,7 @@ class ScreenAdaptation extends StatefulWidget {
   State<ScreenAdaptation> createState() => _ScreenAdaptationState();
 }
 
-class _ScreenAdaptationState extends State<ScreenAdaptation>
+class _ScreenAdaptationState extends ExtendedState<ScreenAdaptation>
     with WidgetsBindingObserver {
   @override
   void initState() {

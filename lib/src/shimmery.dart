@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_waya/src/extended_state.dart';
 
 /// Creates simple yet beautiful shimmer animations
 ///
@@ -53,7 +54,7 @@ class Shimmery extends StatefulWidget {
   State<Shimmery> createState() => _ShimmeryState();
 }
 
-class _ShimmeryState extends State<Shimmery>
+class _ShimmeryState extends ExtendedState<Shimmery>
     with SingleTickerProviderStateMixin {
   Animation<double>? animation;
   AnimationController? controller;

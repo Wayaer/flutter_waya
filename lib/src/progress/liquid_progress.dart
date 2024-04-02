@@ -88,7 +88,7 @@ class LiquidProgressIndicator extends ProgressIndicator {
   State<StatefulWidget> createState() => _ProgressState();
 }
 
-class _ProgressState extends State<LiquidProgressIndicator> {
+class _ProgressState extends ExtendedState<LiquidProgressIndicator> {
   @override
   Widget build(BuildContext context) {
     switch (widget.type) {
@@ -109,8 +109,10 @@ class _ProgressState extends State<LiquidProgressIndicator> {
                 color: widget._getBackgroundColor(context)),
             foregroundPainter: _CircleBorderPainter(
                 color: widget.borderColor ??
-                    Theme.of().theme.progressIndicatorTheme.circularTrackColor ??
-                    context.theme.primaryColor,
+                    Theme.of(context)
+                        .progressIndicatorTheme
+                        .circularTrackColor ??
+                    Theme.of(context).primaryColor,
                 width: widget.borderWidth!));
       case LiquidProgressIndicatorType.custom:
         final Rect pathBounds = widget.shapePath!.getBounds();
