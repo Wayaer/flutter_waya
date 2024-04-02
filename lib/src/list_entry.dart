@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/flutter_waya.dart';
 
 class ListEntry extends StatelessWidget {
   const ListEntry(

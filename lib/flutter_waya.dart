@@ -1,7 +1,5 @@
 library flutter_waya;
 
-export 'package:fl_extended/fl_extended.dart';
-
 /// animation
 export 'src/animation/bubble_button.dart';
 export 'src/animation/elastic_builder.dart';
@@ -13,9 +11,6 @@ export 'src/animation/auto_collapsing.dart';
 /// const
 export 'src/const/styles.dart';
 
-/// picker
-export 'src/picker/picker.dart';
-
 /// progress
 export 'src/progress/progress.dart';
 
@@ -23,6 +18,9 @@ export 'src/progress/progress.dart';
 export 'src/swiper/indicator.dart';
 export 'src/swiper/pagination.dart';
 export 'src/swiper/swiper.dart';
+export 'src/text_field/decorator_box.dart';
+export 'src/text_field/text_field.dart';
+export 'src/text_field/pin_text_field.dart';
 
 /// src
 export 'src/wrapper.dart';
@@ -30,7 +28,6 @@ export 'src/dropdown_menu.dart';
 export 'src/check_box.dart';
 export 'src/dotted_line.dart';
 export 'src/draggable_scrollbar.dart';
-export 'src/text_field.dart';
 export 'src/screen_adaptation.dart';
 export 'src/x_switch.dart';
 export 'src/count_down.dart';

@@ -63,7 +63,7 @@ class _ElasticBuilderState extends State<ElasticBuilder>
 
   Future<void> elastic([Duration? duration]) async {
     controller.value = 0;
-    await (duration ?? widget.duration).delayed();
+    await Future.delayed((duration ?? widget.duration));
     controller.value = 1;
   }
 

@@ -109,7 +109,7 @@ class _ProgressState extends State<LiquidProgressIndicator> {
                 color: widget._getBackgroundColor(context)),
             foregroundPainter: _CircleBorderPainter(
                 color: widget.borderColor ??
-                    context.theme.progressIndicatorTheme.circularTrackColor ??
+                    Theme.of().theme.progressIndicatorTheme.circularTrackColor ??
                     context.theme.primaryColor,
                 width: widget.borderWidth!));
       case LiquidProgressIndicatorType.custom:

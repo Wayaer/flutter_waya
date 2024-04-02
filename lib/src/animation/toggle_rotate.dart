@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/flutter_waya.dart';
 
 typedef ToggleBuilder = Widget Function(Widget child);
 
@@ -97,7 +96,9 @@ class _ToggleRotateState extends State<ToggleRotate>
         alignment: Alignment.center,
         child: widget.child);
     if (widget.toggleBuilder != null) current = widget.toggleBuilder!(current);
-    if (widget.onTap != null) current = current.onTap(widget.onTap!);
+    if (widget.onTap != null) {
+      current = GestureDetector(onTap: widget.onTap!, child: current);
+    }
     return current;
   }
 }

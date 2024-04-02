@@ -1,7 +1,6 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/flutter_waya.dart';
 
 typedef BubbleCallback = Future<bool> Function(bool isBubbled);
 
@@ -172,7 +171,7 @@ class _BubbleButtonState extends State<BubbleButton>
           ]);
         });
 
-    return Universal(
+    return GestureDetector(
         behavior: HitTestBehavior.translucent, onTap: onTap, child: bubble);
   }
 

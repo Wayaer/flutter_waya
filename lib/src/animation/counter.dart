@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/flutter_waya.dart';
 
 typedef CountBuilder = Widget Function(int count, String text);
 
@@ -137,7 +136,8 @@ class _CounterAnimationState extends State<CounterAnimation>
                 ],
               ));
     }
-    return Universal(onTap: animation, clipper: _CountClip(), child: child);
+    return GestureDetector(
+        onTap: animation, child: ClipRect(clipper: _CountClip(), child: child));
   }
 
   Widget _createCount(int count, String text) =>

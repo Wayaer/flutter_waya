@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fl_extended/fl_extended.dart';
 
 /// [TabBar]和[TabBarView]
 /// 外层添加 常用属性
