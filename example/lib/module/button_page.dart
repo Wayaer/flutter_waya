@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 const List<String> _colors = ['红色', '黄色黄色', '蓝色'];
-
 const Map<String, List<String>> _dropdownValue = {
   '性别': ['男', '女'],
   '年龄': ['12岁', '13岁', '14岁'],
@@ -20,6 +19,7 @@ class ButtonPage extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
           appBar: AppBarText('Button'),
           children: [
+            const Partition('DropdownMenusButton'),
             DropdownMenusButton<String, String>(
                 shape: const RoundedRectangleBorder(),
                 offset: const Offset(0, 10),
@@ -60,9 +60,7 @@ class ButtonPage extends StatelessWidget {
                                 ));
                           }));
                 })),
-            const SizedBox(height: 20),
-            ElevatedText('ElasticButton', onTap: () {}),
-            const SizedBox(height: 20),
+            const Partition('DropdownMenuButton'),
             DropdownMenuButton<String>(
                 initialValue: _colors.first,
                 constraints: const BoxConstraints(minWidth: double.infinity),
@@ -97,7 +95,9 @@ class ButtonPage extends StatelessWidget {
                         value: item,
                         child:
                             BText(item, style: context.textTheme.bodyMedium)))),
-            const SizedBox(height: 20),
+            const Partition('ElasticButton'),
+            ElevatedText('ElasticButton', onTap: () {}),
+            const Partition('BubbleButton'),
             ElevatedText('BubbleButton',
                 onTap: () => push(_BubbleButtonPage())),
           ]);
@@ -127,16 +127,15 @@ class _BubbleButtonPage extends StatelessWidget {
               builder: (bool isBubbled) => Icon(Icons.ac_unit,
                   size: size, color: isBubbled ? Colors.red : Colors.black38)),
           BubbleButton(
-            size: size,
-            circleColor: const CircleColor(
-                start: Color(0xff00ddff), end: Color(0xff0099cc)),
-            bubbleColor: const BubbleColor(
-                dotFirstColor: Color(0xff33b5e5),
-                dotSecondColor: Color(0xff0099cc)),
-            builder: (bool value) => Icon(Icons.error,
-                color: value ? Colors.deepPurpleAccent : Colors.grey,
-                size: size),
-          ),
+              size: size,
+              circleColor: const CircleColor(
+                  start: Color(0xff00ddff), end: Color(0xff0099cc)),
+              bubbleColor: const BubbleColor(
+                  dotFirstColor: Color(0xff33b5e5),
+                  dotSecondColor: Color(0xff0099cc)),
+              builder: (bool value) => Icon(Icons.error,
+                  color: value ? Colors.deepPurpleAccent : Colors.grey,
+                  size: size)),
           BubbleButton(
               size: size,
               circleColor: const CircleColor(

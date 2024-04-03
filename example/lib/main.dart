@@ -123,12 +123,6 @@ class ElevatedText extends StatelessWidget {
                     : () {
                         elastic(10.milliseconds);
                       },
-                onLongPressDown: (_) {
-                  elasticDown();
-                },
-                onLongPressUp: () {
-                  elasticUp();
-                },
                 margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 6),
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 8),

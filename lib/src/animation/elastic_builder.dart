@@ -10,10 +10,10 @@ class ElasticBuilder extends StatefulWidget {
       {super.key,
       this.withOpacity = false,
       this.alignment = Alignment.center,
-      this.scale = 0.93,
+      this.scale = 0.9,
       required this.builder,
       this.duration = const Duration(milliseconds: 100)})
-      : assert(scale <= 1.0);
+      : assert(scale <= 1.0 && scale > 0);
 
   final bool withOpacity;
 
