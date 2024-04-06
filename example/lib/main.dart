@@ -1,6 +1,6 @@
 import 'package:app/module/button_page.dart';
 import 'package:app/module/components_page.dart';
-import 'package:app/module/decorator_page.dart';
+import 'package:app/module/decorated_page.dart';
 import 'package:app/module/progress_page.dart';
 import 'package:app/module/state_components_page.dart';
 import 'package:app/module/swiper_page.dart';
@@ -19,8 +19,8 @@ void main() {
   globalOptions.pushStyle = RoutePushStyle.material;
 
   /// 设置全局Toast配置
-  globalOptions.toastOptions =
-      ToastOptions(alignment: Alignment.topCenter, duration: 2.seconds);
+  globalOptions.toastOptions = ToastOptions.extended(
+      alignment: Alignment.topCenter, duration: 2.seconds);
 
   /// 设置全局BottomSheet配置
   globalOptions.bottomSheetOptions = const BottomSheetOptions(
@@ -80,8 +80,8 @@ class _Home extends StatelessWidget {
           ElevatedText('Button', onTap: () => push(const ButtonPage())),
           ElevatedText('FlSwiper', onTap: () => push(const FlSwiperPage())),
           ElevatedText('FlProgress', onTap: () => push(const FlProgressPage())),
-          ElevatedText('DecoratorBox',
-              onTap: () => push(const DecoratorBoxPage())),
+          ElevatedText('FlDecoratedBox',
+              onTap: () => push(const FlDecoratedBoxPage())),
           ElevatedText('ExtendedTextField',
               onTap: () => push(const TextFieldPage())),
         ]);

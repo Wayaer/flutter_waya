@@ -200,7 +200,7 @@ class _LinearState extends _FlProgressSubState {
                   Theme.of(context).primaryColor,
               linearGradient: widget.linearGradient,
               backgroundColor: widget.backgroundColor ??
-                  Theme.of(context).colorScheme.background,
+                  Theme.of(context).colorScheme.primary,
               linearStrokeCap: widget.linearStrokeCap,
               lineWidth: widget.lineHeight,
               maskFilter: widget.maskFilter,

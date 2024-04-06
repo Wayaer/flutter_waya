@@ -191,141 +191,94 @@ enum TextInputLimitFormatter {
   }
 }
 
-class DecoratorBoxStyle {
-  const DecoratorBoxStyle({
-    this.borderType = BorderType.none,
-    this.borderRadius = BorderRadius.zero,
-    this.borderSide = const BorderSide(),
+typedef TextFieldWithDecoratedBuilder = Widget Function(FocusNode? focusNode);
+
+/// [TextField] 带 [FlDecoratedBox]
+class TextFieldWithFlDecoratedBox extends StatelessWidget {
+  const TextFieldWithFlDecoratedBox({
+    super.key,
+    this.decoration = const FlBoxDecoration(
+        borderType: BorderType.outline,
+        borderSide: BorderSide(color: Colors.black)),
+    this.suffixes = const [],
+    this.prefixes = const [],
+    required this.builder,
+    this.focusNode,
+    this.focusBorderSide,
     this.header,
     this.footer,
-    this.margin,
-    this.padding,
-    this.crossAxisAlignment = CrossAxisAlignment.center,
-    this.fillColor,
-    this.boxShadow,
-    this.gradient,
+    this.disposeFocusNode = false,
   });
 
-  /// 边框类型
-  final BorderType borderType;
+  /// ***** [TextField] Builder *****
+  final TextFieldWithDecoratedBuilder builder;
 
-  /// 边框圆角
-  final BorderRadius borderRadius;
+  /// ***** [FlBoxDecoration] *****
+  final FlBoxDecoration decoration;
 
-  /// 边框样式
-  final BorderSide borderSide;
+  /// 前缀
+  final List<DecoratedPendant> suffixes;
+
+  /// 后缀
+  final List<DecoratedPendant> prefixes;
+
+  /// 焦点管理
+  final FocusNode? focusNode;
+
+  /// 组件销毁自动调用 [dispose]
+  final bool disposeFocusNode;
+
+  /// 获得焦点时的边框样式
+  final BorderSide? focusBorderSide;
 
   /// [TextField] 头部和尾部挂件
   final Widget? header;
   final Widget? footer;
 
-  /// 仅作用于 [TextField]
-  final EdgeInsetsGeometry? margin;
-  final EdgeInsetsGeometry? padding;
-
-  /// [TextField] 与 [outer]、[outermost] 对齐方式
-  final CrossAxisAlignment crossAxisAlignment;
-
-  /// [TextField] 填充色
-  final Color? fillColor;
-
-  /// [TextField] 阴影
-  final List<BoxShadow>? boxShadow;
-
-  /// [TextField] 渐变色
-  final Gradient? gradient;
-}
-
-typedef TextFieldWithDecoratorBoxBuilder = Widget Function(
-    TextInputType keyboardType,
-    List<TextInputFormatter> inputFormatters,
-    Widget? suffix,
-    Widget? prefix);
-
-class TextFieldWithDecoratorBox extends StatelessWidget {
-  const TextFieldWithDecoratorBox({
-    super.key,
-    this.decorator,
-    this.inputLimitFormatter = TextInputLimitFormatter.text,
-    this.suffixes = const [],
-    this.prefixes = const [],
-    required this.builder,
-  });
-
-  /// 文本限制输入类型
-  final TextInputLimitFormatter inputLimitFormatter;
-
-  /// ***** [TextField] Builder *****
-  final TextFieldWithDecoratorBoxBuilder builder;
-
-  /// ***** [DecoratorBox] *****
-  final DecoratorBoxStyle? decorator;
-
-  /// 前缀
-  final List<DecoratorEntry> suffixes;
-
-  /// 后缀
-  final List<DecoratorEntry> prefixes;
-
   @override
   Widget build(BuildContext context) {
-    Widget current = builder.call(
-        inputLimitFormatter.toKeyboardType(),
-        inputLimitFormatter.toTextInputFormatter(),
-        buildSuffix(DecoratorPositioned.inner),
-        buildPrefix(DecoratorPositioned.inner));
+    Widget current = builder.call(focusNode);
     return buildDecoratorBox(current);
   }
 
   /// TextField 外部装饰器
   Widget buildDecoratorBox(Widget current) {
-    final decorator = this.decorator;
-    final suffix = buildSuffix(DecoratorPositioned.outer);
-    final prefix = buildPrefix(DecoratorPositioned.outer);
-    final extraSuffix = buildSuffix(DecoratorPositioned.outermost);
-    final extraPrefix = buildPrefix(DecoratorPositioned.outermost);
-    if (decorator != null ||
-        suffix != null ||
-        prefix != null ||
-        extraSuffix != null ||
-        extraPrefix != null) {
-      return DecoratorBox(
-          borderType: decorator?.borderType ?? BorderType.none,
-          borderRadius: decorator?.borderRadius,
-          borderSide: decorator?.borderSide ?? BorderSide.none,
-          header: decorator?.header,
-          footer: decorator?.footer,
-          crossAxisAlignment:
-              decorator?.crossAxisAlignment ?? CrossAxisAlignment.center,
-          fillColor: decorator?.fillColor,
-          boxShadow: decorator?.boxShadow,
-          gradient: decorator?.gradient,
-          margin: decorator?.margin,
-          padding: decorator?.padding,
-          suffix: suffix,
-          prefix: prefix,
-          extraSuffix: extraSuffix,
-          extraPrefix: extraPrefix,
+    if (focusNode != null) {
+      return FlDecoratedBoxState(
+          decoration: decoration,
+          focusBorderSide: focusBorderSide,
+          header: header,
+          footer: footer,
+          suffixes: suffixes,
+          prefixes: prefixes,
+          focusNode: focusNode!,
+          disposeFocusNode: disposeFocusNode,
           child: current);
     }
-    return current;
+
+    final suffix =
+        buildDecoratedPendant(suffixes, DecoratedPendantPosition.inner);
+    final prefix =
+        buildDecoratedPendant(prefixes, DecoratedPendantPosition.inner);
+    final extraSuffix =
+        buildDecoratedPendant(suffixes, DecoratedPendantPosition.outer);
+    final extraPrefix =
+        buildDecoratedPendant(prefixes, DecoratedPendantPosition.outer);
+    return FlDecoratedBox(
+        decoration: decoration,
+        header: header,
+        footer: footer,
+        suffix: suffix,
+        prefix: prefix,
+        extraSuffix: extraSuffix,
+        extraPrefix: extraPrefix,
+        child: current);
   }
 
-  /// 后缀
-  Widget? buildSuffix(DecoratorPositioned positioned) {
+  Widget? buildDecoratedPendant(
+      List<DecoratedPendant> list, DecoratedPendantPosition positioned) {
     final children =
-        suffixes.where((element) => element.positioned == positioned).toList();
-    if (children.isEmpty) return null;
-    if (children.length == 1) return children.first.widget;
-    return Row(
-        mainAxisSize: MainAxisSize.min,
-        children: children.map((entry) => entry.widget).toList());
-  }
-
-  /// 前缀
-  Widget? buildPrefix(DecoratorPositioned positioned) {
-    final children =
-        prefixes.where((element) => element.positioned == positioned).toList();
+        list.where((element) => element.positioned == positioned).toList();
     if (children.isEmpty) return null;
     if (children.length == 1) return children.first.widget;
     return Row(

@@ -1,4 +1,27 @@
-## 9.5.0
+## 9.7.0
+
+* Added `FlAutomaticKeepAliveWrapper` and `FlAutomaticKeepAliveWrapperState`
+* Modify `DecoratorEntry` to `DecoratedPendant`
+* Remove `DecoratorPositioned.outermost`
+* Modify `DecoratorPositioned` to `DecoratedPendantPosition`
+* `DecoratedPendant` adds the `maintainSize` property to determine whether to maintain the size
+* Modify `DecoratorBoxState` to `FlDecoratedBoxState`
+* Modify `DecoratorBox` to `FlDecoratedBox`
+* Added `FlBoxDecoration` to `FlDecoratedBox` and `FlDecoratedBoxState`
+* Modify `.toDecoratorEntry()` to `.toDecoratedPendant()`
+
+## 9.6.0
+
+* Remove the `DropdownMenusButton` component, please use the `MultiPopupMenuButton` component
+* Remove the `DropdownMenuButton` component, please use the `PopupMenuButtonRotateBuilder` component
+* Added `FlPopupMenuButton`, which can display more content than `PopupMenuButton` without lagging
+* Added `showFlMenu`, which can display more content than `showMenu` without lagging
+
+## 9.5.2
+
+* export `SystemUiOverlayStyleLight`、`SystemUiOverlayStyleDark`
+
+## 9.5.1
 
 * Removed `fl_extended`
 
