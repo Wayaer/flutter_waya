@@ -39,3 +39,4 @@ export 'src/badge.dart';
 export 'src/list_entry.dart';
 export 'src/event.dart';
 export 'src/shimmery.dart';
+export 'src/system_ui_overlay_style.dart';
