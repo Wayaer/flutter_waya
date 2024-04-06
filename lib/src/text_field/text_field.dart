@@ -236,11 +236,14 @@ class DecoratorBoxStyle {
   final Gradient? gradient;
 }
 
-typedef ExtendedTextFieldBuilder = Widget Function(TextInputType keyboardType,
-    List<TextInputFormatter> inputFormatters, Widget? suffix, Widget? prefix);
+typedef TextFieldWithDecoratorBoxBuilder = Widget Function(
+    TextInputType keyboardType,
+    List<TextInputFormatter> inputFormatters,
+    Widget? suffix,
+    Widget? prefix);
 
-class ExtendedTextField extends StatelessWidget {
-  const ExtendedTextField({
+class TextFieldWithDecoratorBox extends StatelessWidget {
+  const TextFieldWithDecoratorBox({
     super.key,
     this.decorator,
     this.inputLimitFormatter = TextInputLimitFormatter.text,
@@ -253,7 +256,7 @@ class ExtendedTextField extends StatelessWidget {
   final TextInputLimitFormatter inputLimitFormatter;
 
   /// ***** [TextField] Builder *****
-  final ExtendedTextFieldBuilder builder;
+  final TextFieldWithDecoratorBoxBuilder builder;
 
   /// ***** [DecoratorBox] *****
   final DecoratorBoxStyle? decorator;

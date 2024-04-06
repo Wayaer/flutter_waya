@@ -15,8 +15,8 @@ class TextFieldPage extends StatelessWidget {
         appBar: AppBarText('TextField'),
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
         children: [
-          const Partition('ExtendedTextField with TextField'),
-          builderExtendedTextFieldBuilder(
+          const Partition('TextFieldWithDecoratorBox with TextField'),
+          builderTextFieldWithDecoratorBoxBuilder(
               builder: (TextInputType keyboardType,
                       List<TextInputFormatter> inputFormatters,
                       Widget? suffix,
@@ -26,8 +26,8 @@ class TextFieldPage extends StatelessWidget {
                     inputFormatters: inputFormatters,
                     decoration: InputDecoration(suffix: suffix, prefix: prefix),
                   )),
-          const Partition('ExtendedTextField with TextFormField'),
-          builderExtendedTextFieldBuilder(
+          const Partition('TextFieldWithDecoratorBox with TextFormField'),
+          builderTextFieldWithDecoratorBoxBuilder(
               builder: (TextInputType keyboardType,
                       List<TextInputFormatter> inputFormatters,
                       Widget? suffix,
@@ -37,8 +37,8 @@ class TextFieldPage extends StatelessWidget {
                     inputFormatters: inputFormatters,
                     decoration: InputDecoration(suffix: suffix, prefix: prefix),
                   )),
-          const Partition('ExtendedTextField with CupertinoTextField'),
-          builderExtendedTextFieldBuilder(
+          const Partition('TextFieldWithDecoratorBox with CupertinoTextField'),
+          builderTextFieldWithDecoratorBoxBuilder(
               builder: (TextInputType keyboardType,
                       List<TextInputFormatter> inputFormatters,
                       Widget? suffix,
@@ -51,8 +51,8 @@ class TextFieldPage extends StatelessWidget {
                       prefixMode: OverlayVisibilityMode.editing,
                       prefix: prefix)),
           const Partition(
-              'ExtendedTextField with CupertinoTextField.borderless'),
-          builderExtendedTextFieldBuilder(
+              'TextFieldWithDecoratorBox with CupertinoTextField.borderless'),
+          builderTextFieldWithDecoratorBoxBuilder(
               builder: (TextInputType keyboardType,
                       List<TextInputFormatter> inputFormatters,
                       Widget? suffix,
@@ -67,9 +67,9 @@ class TextFieldPage extends StatelessWidget {
         ]);
   }
 
-  Widget builderExtendedTextFieldBuilder(
-          {required ExtendedTextFieldBuilder builder}) =>
-      ExtendedTextField(
+  Widget builderTextFieldWithDecoratorBoxBuilder(
+          {required TextFieldWithDecoratorBoxBuilder builder}) =>
+      TextFieldWithDecoratorBox(
           builder: builder,
           decorator: DecoratorBoxStyle(
               padding: const EdgeInsets.symmetric(vertical: 10),
