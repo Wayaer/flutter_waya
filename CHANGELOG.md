@@ -1,4 +1,4 @@
-## 9.5.0
+## 9.5.1
 
 * Removed `fl_extended`
 
