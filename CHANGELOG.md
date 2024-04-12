@@ -1,3 +1,7 @@
+## 9.5.2
+
+* export `SystemUiOverlayStyleLight`、`SystemUiOverlayStyleDark`
+
 ## 9.5.1
 
 * Removed `fl_extended`
