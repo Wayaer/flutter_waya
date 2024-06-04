@@ -13,13 +13,13 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_curiosity: ^6.1.0
-  device_preview_minus: ^1.0.4
-  fl_extended: ^1.0.0
+  device_preview_minus: ^1.0.6
+  fl_extended: ^1.2.0
   flutter_waya:
     path: ../
 
 dev_dependencies:
-  flutter_lints: ^3.0.2
+  flutter_lints: ^4.0.0
 
 flutter:
   uses-material-design: true

@@ -79,7 +79,7 @@ class LiquidProgressIndicator extends ProgressIndicator {
   final LiquidProgressIndicatorType type;
 
   Color _getBackgroundColor(BuildContext context) =>
-      backgroundColor ?? Theme.of(context).colorScheme.background;
+      backgroundColor ?? Theme.of(context).colorScheme.primary;
 
   Color _getValueColor(BuildContext context) =>
       color ?? valueColor?.value ?? Theme.of(context).colorScheme.secondary;

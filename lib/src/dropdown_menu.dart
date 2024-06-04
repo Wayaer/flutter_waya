@@ -316,7 +316,7 @@ class _DropdownMenuButtonState<T> extends ExtendedState<DropdownMenuButton<T>> {
         clipBehavior: widget.clipBehavior,
         useRootNavigator: widget.useRootNavigator,
         popUpAnimationStyle: widget.popUpAnimationStyle,
-        itemBuilder: (_) => widget.itemBuilder(_, value, (T value) {
+        itemBuilder: (_) => widget.itemBuilder(context, value, (T value) {
               widget.onSelected?.call(value);
               this.value = value;
               isExpand.value = false;
