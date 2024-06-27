@@ -64,6 +64,7 @@ class DropdownMenusButton<K, V> extends StatelessWidget {
     this.clockwise = true,
     this.animationDuration = const Duration(milliseconds: 200),
     this.curve = Curves.fastOutSlowIn,
+    this.usePopupMenuBuilder = false,
   });
 
   /// 子menus
@@ -122,12 +123,17 @@ class DropdownMenusButton<K, V> extends StatelessWidget {
   /// 动画曲线
   final Curve curve;
 
+  /// 使用 [PopupMenuBuilder] 渲染菜单
+  /// [PopupMenuBuilder]渲染超多菜单不卡顿
+  final bool usePopupMenuBuilder;
+
   @override
   Widget build(BuildContext context) {
     return Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: menus.map((entry) {
           return DropdownMenuButton<V>(
+              usePopupMenuBuilder: usePopupMenuBuilder,
               initialValue: entry.initialValue,
               tooltip: tooltip,
               rad: rad,
@@ -208,6 +214,7 @@ class DropdownMenuButton<T> extends StatefulWidget {
     this.clockwise = true,
     this.animationDuration = const Duration(milliseconds: 200),
     this.curve = Curves.fastOutSlowIn,
+    this.usePopupMenuBuilder = false,
   }) : assert(builder != null || child != null);
 
   final Widget? icon;
@@ -274,6 +281,10 @@ class DropdownMenuButton<T> extends StatefulWidget {
 
   /// 动画曲线
   final Curve curve;
+
+  /// 使用 [PopupMenuBuilder] 渲染菜单
+  /// [PopupMenuBuilder]渲染超多菜单不卡顿
+  final bool usePopupMenuBuilder;
 
   @override
   State<DropdownMenuButton<T>> createState() => _DropdownMenuButtonState();

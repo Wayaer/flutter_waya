@@ -28,6 +28,7 @@ export 'src/text_field/pin_text_field.dart';
 export 'src/wrapper.dart';
 export 'src/count_down.dart';
 export 'src/dropdown_menu.dart';
+export 'src/popup_menu.dart';
 export 'src/check_box.dart';
 export 'src/dotted_line.dart';
 export 'src/draggable_scrollbar.dart';
