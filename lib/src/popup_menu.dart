@@ -8,8 +8,8 @@ const double _kMenuVerticalPadding = 8.0;
 /// A base class for entries in a Material Design popup menu.
 ///
 /// The popup menu widget uses this interface to interact with the menu items.
-/// To show a popup menu, use the [showMenuBuilder] function. To create a button that
-/// shows a popup menu, consider using [PopupMenuBuilder].
+/// To show a popup menu, use the [showFlMenu] function. To create a button that
+/// shows a popup menu, consider using [FlPopupMenuButton].
 ///
 /// The type `T` is the type of the value(s) the entry represents. All the
 /// entries in a given menu must represent values with consistent types.
@@ -23,11 +23,11 @@ const double _kMenuVerticalPadding = 8.0;
 ///  * [PopupMenuItem], a popup menu entry for a single value.
 ///  * [PopupMenuDivider], a popup menu entry that is just a horizontal line.
 ///  * [CheckedPopupMenuItem], a popup menu item with a checkmark.
-///  * [showMenuBuilder], a method to dynamically show a popup menu at a given location.
-///  * [PopupMenuBuilder], an [IconButton] that automatically shows a menu when
+///  * [showFlMenu], a method to dynamically show a popup menu at a given location.
+///  * [FlPopupMenuButton], an [IconButton] that automatically shows a menu when
 ///    it is tapped.
-class PopupMenuBuilder<T> extends StatefulWidget {
-  const PopupMenuBuilder({
+class FlPopupMenuButton<T> extends StatefulWidget {
+  const FlPopupMenuButton({
     super.key,
     required this.itemBuilder,
     this.initialValue,
@@ -263,17 +263,17 @@ class PopupMenuBuilder<T> extends StatefulWidget {
   final ButtonStyle? style;
 
   @override
-  State<PopupMenuBuilder<T>> createState() => _PopupMenuBuilderState<T>();
+  State<FlPopupMenuButton<T>> createState() => _FlPopupMenuButtonState<T>();
 }
 
-class _PopupMenuBuilderState<T> extends State<PopupMenuBuilder<T>> {
+class _FlPopupMenuButtonState<T> extends State<FlPopupMenuButton<T>> {
   /// A method to show a popup menu with the items supplied to
-  /// [PopupMenuBuilder.itemBuilder] at the position of your [PopupMenuBuilder].
+  /// [FlPopupMenuButton.itemBuilder] at the position of your [FlPopupMenuButton].
   ///
-  /// By default, it is called when the user taps the button and [PopupMenuBuilder.enabled]
+  /// By default, it is called when the user taps the button and [FlPopupMenuButton.enabled]
   /// is set to `true`. Moreover, you can open the button by calling the method manually.
   ///
-  /// You would access your [PopupMenuBuilderState] using a [GlobalKey] and
+  /// You would access your [FlPopupMenuButtonState] using a [GlobalKey] and
   /// show the menu of the button with `globalKey.currentState.showButtonMenu`.
   void showButtonMenu() {
     final PopupMenuThemeData popupMenuTheme = PopupMenuTheme.of(context);
@@ -302,7 +302,7 @@ class _PopupMenuBuilderState<T> extends State<PopupMenuBuilder<T>> {
     // Only show the menu if there is something to show
     if (items.isNotEmpty) {
       widget.onOpened?.call();
-      showMenuBuilder<T?>(
+      showFlMenu<T?>(
         context: context,
         elevation: widget.elevation ?? popupMenuTheme.elevation,
         shadowColor: widget.shadowColor ?? popupMenuTheme.shadowColor,
@@ -428,12 +428,13 @@ class _PopupMenuBuilderState<T> extends State<PopupMenuBuilder<T>> {
 /// See also:
 ///
 ///  * [PopupMenuItem], a popup menu entry for a single value.
+///  * [PopupMenuDivider], a popup menu entry that is just a horizontal line.
 ///  * [CheckedPopupMenuItem], a popup menu item with a checkmark.
-///  * [PopupMenuBuilder], which provides an [IconButton] that shows a menu by
+///  * [FlPopupMenuButton], which provides an [IconButton] that shows a menu by
 ///    calling this method automatically.
 ///  * [SemanticsConfiguration.namesRoute], for a description of edge triggered
 ///    semantics.
-Future<T?> showMenuBuilder<T>({
+Future<T?> showFlMenu<T>({
   required BuildContext context,
   required RelativeRect position,
   required List<PopupMenuEntry<T>> items,

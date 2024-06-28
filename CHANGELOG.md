@@ -1,3 +1,10 @@
+## 9.6.0
+
+* Remove the `DropdownMenusButton` component, please use the `MultiPopupMenuButton` component
+* Remove the `DropdownMenuButton` component, please use the `PopupMenuButtonRotateBuilder` component
+* Added `FlPopupMenuButton`, which can display more content than `PopupMenuButton` without lagging
+* Added `showFlMenu`, which can display more content than `showMenu` without lagging
+
 ## 9.5.2
 
 * export `SystemUiOverlayStyleLight`、`SystemUiOverlayStyleDark`

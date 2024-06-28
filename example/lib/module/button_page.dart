@@ -1,10 +1,12 @@
+import 'dart:math';
+
 import 'package:app/main.dart';
 import 'package:fl_extended/fl_extended.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 const List<String> _colors = ['红色', '黄色黄色', '蓝色'];
-const Map<String, List<String>> _dropdownValue = {
+const Map<String, List<String>> _popupMenus = {
   '性别': ['男', '女'],
   '年龄': ['12岁', '13岁', '14岁'],
   '地区': ['湖北', '四川', '重庆']
@@ -14,93 +16,136 @@ class ButtonPage extends StatelessWidget {
   const ButtonPage({super.key});
 
   @override
-  Widget build(BuildContext context) => ExtendedScaffold(
-          isScroll: true,
-          padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-          appBar: AppBarText('Button'),
-          children: [
-            const Partition('DropdownMenusButton'),
-            DropdownMenusButton<String, String>(
-                shape: const RoundedRectangleBorder(),
-                offset: const Offset(0, 10),
-                onSelected: (String label, String? value) {
-                  showToast('label：$label    item: $value');
-                },
-                menus: _dropdownValue.builderEntry((item) {
-                  return DropdownMenusItem<String, String>(
-                      value: item.key,
-                      icon: const Icon(Icons.arrow_circle_up_rounded),
-                      builder: (String? value, Widget? icon) => Universal(
-                              direction: Axis.horizontal,
+  Widget build(BuildContext context) {
+    String? selected;
+    return ExtendedScaffold(
+        isScroll: true,
+        padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+        appBar: AppBarText('Button'),
+        children: [
+          const Partition('MultiPopupMenuButton'),
+          MultiPopupMenuButton<String, String>(
+              onSelected: (_, String label, String? value) {
+            showToast('label：$label    item: $value');
+          }, menus: _popupMenus.builderEntry((menusItem) {
+            return MultiPopupMenuButtonItem<String, String>(
+                key: menusItem.key,
+                builder: (BuildContext context,
+                    String key,
+                    String? value,
+                    VoidCallback onOpened,
+                    VoidCallback onCanceled,
+                    PopupMenuItemSelected<String> onSelected) {
+                  return Expanded(
+                      child: PopupMenuButton<String>(
+                          initialValue: value ?? menusItem.value.first,
+                          onCanceled: onCanceled,
+                          onOpened: onOpened,
+                          onSelected: onSelected,
+                          position: PopupMenuPosition.under,
+                          child: Universal(
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 4),
-                              decoration: BoxDecoration(
-                                  color: Colors.red.withOpacity(0.2),
-                                  borderRadius: BorderRadius.circular(8)),
+                                  vertical: 6, horizontal: 16),
+                              color: Colors.red.withOpacity(0.2),
+                              direction: Axis.horizontal,
                               children: [
-                                Container(
-                                    margin: const EdgeInsets.only(right: 10),
-                                    child: BText(value ?? item.key,
-                                        style: context.textTheme.titleMedium)),
-                                if (icon != null) icon,
+                                Text(value ?? key).expanded,
+                                10.widthBox,
+                                const Icon(Icons.keyboard_arrow_down_sharp),
                               ]),
-                      itemBuilder: (_, String? current, updater) =>
-                          item.value.builder((item) {
-                            final isSelected = current == item;
-                            return PopupMenuItem<String>(
-                                value: item,
-                                child: Center(
-                                  child: BText(item,
-                                      textAlign: TextAlign.center,
-                                      style: context.textTheme.bodyLarge
-                                          ?.copyWith(
-                                              color: isSelected
-                                                  ? Colors.red
-                                                  : null)),
-                                ));
-                          }));
-                })),
-            const Partition('DropdownMenuButton'),
-            DropdownMenuButton<String>(
-                initialValue: _colors.first,
-                constraints: const BoxConstraints(minWidth: double.infinity),
-                offset: const Offset(0, 15),
-                position: PopupMenuPosition.under,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4.0)),
-                builder: (String? value, Widget? icon) {
-                  final current = BText(value ?? '请选择',
-                      style: context.textTheme.labelLarge);
-                  return Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                          color: Colors.red.withOpacity(0.2),
-                          borderRadius: BorderRadius.circular(4)),
-                      child: icon == null
-                          ? current
-                          : Row(children: [
-                              const Icon(Icons.ac_unit),
-                              10.widthBox,
-                              current.expanded,
-                              10.widthBox,
-                              icon,
-                            ]));
-                },
-                onSelected: (String value) {
-                  showToast('点击了$value');
-                },
-                icon: const Icon(Icons.arrow_right_rounded),
-                itemBuilder: (_, String? current, __) => _colors.builder(
-                    (item) => PopupMenuItem<String>(
-                        value: item,
-                        child:
-                            BText(item, style: context.textTheme.bodyMedium)))),
-            const Partition('ElasticButton'),
-            ElevatedText('ElasticButton', onTap: () {}),
-            const Partition('BubbleButton'),
-            ElevatedText('BubbleButton',
-                onTap: () => push(_BubbleButtonPage())),
-          ]);
+                          itemBuilder: (_) => menusItem.value.builder(
+                              (item) => buildPopupMenuItem(context, item))));
+                });
+          })),
+          10.heightBox,
+          MultiPopupMenuButton<String, String>(
+              onSelected: (_, String label, String? value) {
+            showToast('label：$label    item: $value');
+          }, menus: _popupMenus.builderEntry((menusItem) {
+            return MultiPopupMenuButtonItem<String, String>(
+                key: menusItem.key,
+                builder: (BuildContext context,
+                    String key,
+                    String? value,
+                    VoidCallback onOpened,
+                    VoidCallback onCanceled,
+                    PopupMenuItemSelected<String> onSelected) {
+                  return PopupMenuButtonRotateBuilder(
+                      rad: pi,
+                      icon: const Icon(Icons.arrow_drop_down_circle_outlined),
+                      builder:
+                          (_, Widget rotateIcon, onRotateOpened, onClosed) {
+                        return Expanded(
+                            child: PopupMenuButton<String>(
+                                initialValue: value,
+                                onCanceled: () {
+                                  onCanceled();
+                                  onClosed();
+                                },
+                                onOpened: () {
+                                  onOpened();
+                                  onRotateOpened();
+                                },
+                                onSelected: (v) {
+                                  onSelected(v);
+                                  onClosed();
+                                },
+                                position: PopupMenuPosition.under,
+                                child: Universal(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 6, horizontal: 16),
+                                    color: Colors.red.withOpacity(0.2),
+                                    direction: Axis.horizontal,
+                                    children: [
+                                      Text(value ?? key).expanded,
+                                      10.widthBox,
+                                      rotateIcon
+                                    ]),
+                                itemBuilder: (_) => menusItem.value.builder(
+                                    (item) =>
+                                        buildPopupMenuItem(context, item))));
+                      });
+                });
+          })),
+          const Partition('PopupMenuButtonRotateBuilder'),
+          PopupMenuButtonRotateBuilder(
+              icon: const Icon(Icons.arrow_right_rounded),
+              builder: (_, Widget rotateIcon, onOpened, onClosed) {
+                return PopupMenuButton(
+                    onCanceled: onClosed,
+                    onOpened: onOpened,
+                    position: PopupMenuPosition.under,
+                    onSelected: (value) {
+                      selected = value;
+                      onClosed();
+                    },
+                    itemBuilder: (_) => _colors
+                        .builder((item) => buildPopupMenuItem(context, item)),
+                    child: Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                            color: Colors.red.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(4)),
+                        child: Row(children: [
+                          const Icon(Icons.ac_unit),
+                          10.widthBox,
+                          Text(selected ?? '请选择',
+                                  style: context.textTheme.labelLarge)
+                              .expanded,
+                          10.widthBox,
+                          rotateIcon,
+                        ])));
+              }),
+          const Partition('ElasticButton'),
+          ElevatedText('ElasticButton', onTap: () {}),
+          const Partition('BubbleButton'),
+          ElevatedText('BubbleButton', onTap: () => push(_BubbleButtonPage())),
+        ]);
+  }
+
+  PopupMenuItem<String> buildPopupMenuItem(BuildContext context, String item) =>
+      PopupMenuItem<String>(
+          value: item, child: Text(item, style: context.textTheme.bodyMedium));
 }
 
 class _BubbleButtonPage extends StatelessWidget {

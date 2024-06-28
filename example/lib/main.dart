@@ -19,8 +19,8 @@ void main() {
   globalOptions.pushStyle = RoutePushStyle.material;
 
   /// 设置全局Toast配置
-  globalOptions.toastOptions =
-      ToastOptions(alignment: Alignment.topCenter, duration: 2.seconds);
+  globalOptions.toastOptions = ToastOptions.extended(
+      alignment: Alignment.topCenter, duration: 2.seconds);
 
   /// 设置全局BottomSheet配置
   globalOptions.bottomSheetOptions = const BottomSheetOptions(
