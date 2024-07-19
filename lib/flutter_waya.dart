@@ -20,7 +20,7 @@ export 'src/swiper/pagination.dart';
 export 'src/swiper/swiper.dart';
 
 /// text_field
-export 'src/text_field/decorator_box.dart';
+export 'src/text_field/decorated_box.dart';
 export 'src/text_field/text_field.dart';
 export 'src/text_field/pin_text_field.dart';
 
@@ -44,3 +44,4 @@ export 'src/event.dart';
 export 'src/shimmery.dart';
 export 'src/tab_bar.dart';
 export 'src/system_ui_overlay_style.dart';
+export 'src/keep_alive_wrapper.dart';

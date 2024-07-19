@@ -101916,7 +101916,7 @@ bM(){this.cm()
 this.cc()
 this.ey()}}
 A.z_.prototype={
-T(){return"DecoratorPositioned."+this.b}}
+T(){return"DecoratedPendantPosition."+this.b}}
 A.yc.prototype={
 T(){return"BorderType."+this.b},
 auB(a,b){switch(this.a){case 0:return new A.dc(b,b,b,b)

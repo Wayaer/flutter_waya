@@ -167,10 +167,8 @@ class _FlipCardState extends ExtendedState<FlipCard>
     final animation = flipCardState.isFront
         ? animationController.forward(from: 0)
         : animationController.reverse(from: 1);
-    log(flipCardState.index);
     await animation.whenComplete(() {
       flipCardState = flipCardState.toggle;
-      log(flipCardState.index);
       widget.onFlipDone?.call(flipCardState);
     });
   }
