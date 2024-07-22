@@ -5,9 +5,9 @@
 * Remove `DecoratorPositioned.outermost`
 * Modify `DecoratorPositioned` to `DecoratedPendantPosition`
 * `DecoratedPendant` adds the `maintainSize` property to determine whether to maintain the size
-* Modify `DecoratorBoxState` to `FlDecoratedBoxState`
-* Modify `DecoratorBox` to `FlDecoratedBox`
-* Added `FlBoxDecoration` to `FlDecoratedBox` and `FlDecoratedBoxState`
+* Modify `DecoratorBoxState` to `DecoratorBoxState`
+* Modify `DecoratorBox` to `DecoratorBox`
+* Added `FlBoxDecoration` to `DecoratorBox` and `DecoratorBoxState`
 * Modify `.toDecoratorEntry()` to `.toDecoratedPendant()`
 
 ## 9.6.0

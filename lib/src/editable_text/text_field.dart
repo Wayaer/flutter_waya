@@ -40,75 +40,6 @@ import 'package:flutter_waya/flutter_waya.dart';
 /// 自定义数字显示 指定maxLength后 右下角会出现字数，flutter有默认实现  可以通过这个自定义
 /// final InputCounterWidgetBuilder? buildCounter;
 
-class InputBorderStyle {
-  InputBorderStyle({
-    this.borderType = BorderType.none,
-    this.radius = BorderRadius.zero,
-    this.color = const Color(0xFF000000),
-    this.width = 1,
-    this.gapPadding = 4,
-    this.style = BorderStyle.solid,
-    this.strokeAlign = BorderSide.strokeAlignInside,
-  });
-
-  /// 边框类型
-  final BorderType borderType;
-
-  /// 边框圆角
-  final BorderRadius radius;
-
-  /// 颜色
-  final Color color;
-
-  /// 边框宽度
-  final double width;
-
-  /// [borderType] = [BorderType.outline]有效
-  final double gapPadding;
-
-  /// 样式
-  final BorderStyle style;
-
-  /// strokeAlign
-  final double strokeAlign;
-
-  InputBorderStyle copyWith({
-    BorderType? borderType,
-    BorderRadius? radius,
-    Color? color,
-    double? width,
-    double? gapPadding,
-    BorderStyle? style,
-    double? strokeAlign,
-  }) =>
-      InputBorderStyle(
-          borderType: borderType ?? this.borderType,
-          radius: radius ?? this.radius,
-          color: color ?? this.color,
-          width: width ?? this.width,
-          gapPadding: gapPadding ?? this.gapPadding,
-          style: style ?? this.style,
-          strokeAlign: strokeAlign ?? this.strokeAlign);
-
-  /// InputBorderStyle to InputBorder
-  InputBorder toInputBorder() {
-    final borderSide = BorderSide(
-        color: color, width: width, style: style, strokeAlign: strokeAlign);
-    switch (borderType) {
-      case BorderType.outline:
-        return OutlineInputBorder(
-            gapPadding: gapPadding,
-            borderRadius: radius,
-            borderSide: borderSide);
-      case BorderType.underline:
-        return UnderlineInputBorder(
-            borderRadius: radius, borderSide: borderSide);
-      case BorderType.none:
-        return InputBorder.none;
-    }
-  }
-}
-
 enum TextInputLimitFormatter {
   /// 字母和数字
   lettersNumbers('[a-zA-Z0-9]'),
@@ -193,13 +124,14 @@ enum TextInputLimitFormatter {
 
 typedef TextFieldWithDecoratedBuilder = Widget Function(FocusNode? focusNode);
 
-/// [TextField] 带 [FlDecoratedBox]
-class TextFieldWithFlDecoratedBox extends StatelessWidget {
-  const TextFieldWithFlDecoratedBox({
+/// [TextField] 带 [DecoratorBox]
+class TextFieldWithDecoratorBox extends StatelessWidget {
+  const TextFieldWithDecoratorBox({
     super.key,
     this.decoration = const FlBoxDecoration(
-        borderType: BorderType.outline,
-        borderSide: BorderSide(color: Colors.black)),
+        // borderType: BorderType.outline,
+        // borderSide: BorderSide(color: Colors.black),
+        ),
     this.suffixes = const [],
     this.prefixes = const [],
     required this.builder,
@@ -244,7 +176,7 @@ class TextFieldWithFlDecoratedBox extends StatelessWidget {
   /// TextField 外部装饰器
   Widget buildDecoratorBox(Widget current) {
     if (focusNode != null) {
-      return FlDecoratedBoxState(
+      return DecoratorBoxState(
           decoration: decoration,
           focusBorderSide: focusBorderSide,
           header: header,
@@ -264,10 +196,10 @@ class TextFieldWithFlDecoratedBox extends StatelessWidget {
         buildDecoratedPendant(suffixes, DecoratedPendantPosition.outer);
     final extraPrefix =
         buildDecoratedPendant(prefixes, DecoratedPendantPosition.outer);
-    return FlDecoratedBox(
+    return DecoratorBox(
         decoration: decoration,
-        header: header,
-        footer: footer,
+        // header: header,
+        // footer: footer,
         suffix: suffix,
         prefix: prefix,
         extraSuffix: extraSuffix,

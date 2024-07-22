@@ -42,6 +42,20 @@ enum BorderType {
   }
 }
 
+class UnderlineDecoratorBorder extends UnderlineInputBorder {
+  const UnderlineDecoratorBorder(
+      {super.borderSide = const BorderSide(),
+      super.borderRadius = const BorderRadius.only(
+          topLeft: Radius.circular(4.0), topRight: Radius.circular(4.0))});
+}
+
+class OutlineDecoratorBorder extends OutlineInputBorder {
+  const OutlineDecoratorBorder({
+    super.borderSide = const BorderSide(),
+    super.borderRadius = const BorderRadius.all(Radius.circular(4.0)),
+  });
+}
+
 class DecoratedPendant {
   const DecoratedPendant(
       {required this.positioned,
@@ -62,78 +76,84 @@ class DecoratedPendant {
   final Widget widget;
 }
 
-/// [FlDecoratedBox] 样式
-class FlBoxDecoration {
+/// [DecoratorBox] 样式
+class FlBoxDecoration extends InputDecoration {
   const FlBoxDecoration({
-    this.borderType = BorderType.none,
-    this.borderRadius,
-    this.borderSide = const BorderSide(),
+    // this.borderType = BorderType.none,
+    // this.borderRadius,
+    // this.borderSide = const BorderSide(),
+    // this.border,
     this.margin,
     this.padding,
     this.crossAxisAlignment = CrossAxisAlignment.center,
-    this.fillColor,
-    this.boxShadow,
-    this.gradient,
-    this.constraints,
+    // this.fillColor,
+    // this.boxShadow,
+    // this.gradient,
+    // this.constraints,
   });
 
-  /// 仅作用于 [FlDecoratedBox.child]
+  /// 仅作用于 [DecoratorBox.child]
   final EdgeInsetsGeometry? margin;
   final EdgeInsetsGeometry? padding;
 
-  /// [FlDecoratedBox.child] 与 [extraPrefix]、[extraSuffix] 对齐方式
+  /// [DecoratorBox.child] 与 [extraPrefix]、[extraSuffix] 对齐方式
   final CrossAxisAlignment crossAxisAlignment;
 
-  /// [FlDecoratedBox.child] 边框类型
-  final BorderType borderType;
+  /// [DecoratorBox.child] 边框类型
+// final BorderType borderType;
 
-  /// [FlDecoratedBox.child] 边框样式
-  final BorderSide borderSide;
+  /// [DecoratorBox.child] 边框样式
+// final BorderSide borderSide;
 
-  /// [FlDecoratedBox.child] 填充色
-  final Color? fillColor;
+  /// [DecoratorBox.child] 圆角
+// final BorderRadius? borderRadius;
 
-  /// [FlDecoratedBox.child] 圆角
-  final BorderRadius? borderRadius;
+  /// [DecoratorBox.child] 边框
+// final InputBorder? border;
 
-  /// [FlDecoratedBox.child] 阴影
-  final List<BoxShadow>? boxShadow;
+  /// [DecoratorBox.child] 填充色
+// final Color? fillColor;
 
-  /// [FlDecoratedBox.child] 渐变色
-  final Gradient? gradient;
+  /// [DecoratorBox.child] 阴影
+// final List<BoxShadow>? boxShadow;
 
-  /// [FlDecoratedBox] 约束
-  final BoxConstraints? constraints;
+  /// [DecoratorBox.child] 渐变色
+// final Gradient? gradient;
+
+  /// [DecoratorBox] 约束
+// final BoxConstraints? constraints;
 }
 
-typedef FlDecoratedBoxStateBuilder = Widget Function(FocusNode focusNode);
+typedef DecoratorBoxStateBuilder = Widget Function(FocusNode focusNode);
 
 /// [Widget] 装饰器 动态焦点样式
-class FlDecoratedBoxState extends StatefulWidget {
-  const FlDecoratedBoxState({
+class DecoratorBoxState extends StatefulWidget {
+  const DecoratorBoxState({
     super.key,
     required this.child,
     required this.focusNode,
     this.suffixes = const [],
     this.prefixes = const [],
     this.decoration = const FlBoxDecoration(
-        borderType: BorderType.outline,
-        borderSide: BorderSide(color: Colors.black)),
+        // borderType: BorderType.outline,
+        // borderSide: BorderSide(color: Colors.black),
+        ),
     this.focusBorderSide,
     this.header,
     this.footer,
     this.disposeFocusNode = false,
   }) : builder = null;
 
-  const FlDecoratedBoxState.builder({
+  const DecoratorBoxState.builder({
     super.key,
     required this.builder,
     required this.focusNode,
     this.suffixes = const [],
     this.prefixes = const [],
     this.decoration = const FlBoxDecoration(
-        borderType: BorderType.outline,
-        borderSide: BorderSide(color: Colors.black)),
+      // borderType: BorderType.outline,
+      // borderSide: BorderSide(color: Colors.black),
+    ),
     this.focusBorderSide,
     this.header,
     this.footer,
@@ -145,7 +165,7 @@ class FlDecoratedBoxState extends StatefulWidget {
   final Widget? child;
 
   /// builder [TextField]
-  final FlDecoratedBoxStateBuilder? builder;
+  final DecoratorBoxStateBuilder? builder;
 
   /// 根据焦点状态改变边框样式
   final FocusNode focusNode;
@@ -166,14 +186,14 @@ class FlDecoratedBoxState extends StatefulWidget {
   /// 后缀
   final List<DecoratedPendant> prefixes;
 
-  /// [FlDecoratedBox] 装饰器
+  /// [DecoratorBox] 装饰器
   final FlBoxDecoration decoration;
 
   @override
-  State<FlDecoratedBoxState> createState() => _FlDecoratedBoxStateState();
+  State<DecoratorBoxState> createState() => _DecoratorBoxStateState();
 }
 
-class _FlDecoratedBoxStateState extends ExtendedState<FlDecoratedBoxState> {
+class _DecoratorBoxStateState extends ExtendedState<DecoratorBoxState> {
   late BorderSide borderSide;
   bool hasFocus = false;
   bool hasEditing = false;
@@ -186,7 +206,7 @@ class _FlDecoratedBoxStateState extends ExtendedState<FlDecoratedBoxState> {
   }
 
   @override
-  void didUpdateWidget(covariant FlDecoratedBoxState oldWidget) {
+  void didUpdateWidget(covariant DecoratorBoxState oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.focusNode != oldWidget.focusNode) {
       disposeFocusNode(oldWidget.focusNode);
@@ -196,7 +216,7 @@ class _FlDecoratedBoxStateState extends ExtendedState<FlDecoratedBoxState> {
 
   void initFocusNode() {
     hasFocus = widget.focusNode.hasFocus;
-    borderSide = widget.decoration.borderSide;
+    // borderSide = widget.decoration.borderSide;
     if (widget.focusBorderSide != null && hasFocus) {
       borderSide = widget.focusBorderSide!;
     }
@@ -213,16 +233,16 @@ class _FlDecoratedBoxStateState extends ExtendedState<FlDecoratedBoxState> {
   }
 
   void listener() {
-    if (hasFocus == widget.focusNode.hasFocus ||
-        (widget.decoration.borderType == BorderType.none && !hasEditing)) {
-      return;
-    }
-    hasFocus = widget.focusNode.hasFocus;
-    if (widget.focusBorderSide != null) {
-      borderSide =
-          hasFocus ? widget.focusBorderSide! : widget.decoration.borderSide;
-    }
-    focusNodeUpdate.value = !focusNodeUpdate.value;
+    // if (hasFocus == widget.focusNode.hasFocus ||
+    //     (widget.decoration.borderType == BorderType.none && !hasEditing)) {
+    //   return;
+    // }
+    // hasFocus = widget.focusNode.hasFocus;
+    // if (widget.focusBorderSide != null) {
+    //   borderSide =
+    //       hasFocus ? widget.focusBorderSide! : widget.decoration.borderSide;
+    // }
+    // focusNodeUpdate.value = !focusNodeUpdate.value;
   }
 
   @override
@@ -230,10 +250,10 @@ class _FlDecoratedBoxStateState extends ExtendedState<FlDecoratedBoxState> {
     final current = widget.child ??
         widget.builder?.call(widget.focusNode) ??
         const SizedBox();
-    return FlDecoratedBox(
+    return DecoratorBox(
         decoration: widget.decoration,
-        header: widget.header,
-        footer: widget.footer,
+        // header: widget.header,
+        // footer: widget.footer,
         prefix: buildDecoratedPendant(
             widget.prefixes, DecoratedPendantPosition.inner),
         suffix: buildDecoratedPendant(
@@ -297,12 +317,10 @@ class _FlDecoratedBoxStateState extends ExtendedState<FlDecoratedBoxState> {
 }
 
 /// [Widget] 装饰器
-class FlDecoratedBox extends StatelessWidget {
-  const FlDecoratedBox({
+class DecoratorBox extends StatelessWidget {
+  const DecoratorBox({
     super.key,
     required this.child,
-    this.header,
-    this.footer,
     this.extraPrefix,
     this.extraSuffix,
     this.prefix,
@@ -312,10 +330,6 @@ class FlDecoratedBox extends StatelessWidget {
 
   final Widget child;
 
-  /// [child] 头部和尾部挂件
-  final Widget? header;
-  final Widget? footer;
-
   /// [child] 左右两遍的挂件 在[Border] 外部
   final Widget? extraPrefix;
   final Widget? extraSuffix;
@@ -324,7 +338,7 @@ class FlDecoratedBox extends StatelessWidget {
   final Widget? prefix;
   final Widget? suffix;
 
-  /// [FlDecoratedBox] 样式
+  /// [DecoratorBox] 样式
   final FlBoxDecoration decoration;
 
   @override
@@ -338,48 +352,18 @@ class FlDecoratedBox extends StatelessWidget {
       current =
           Row(crossAxisAlignment: decoration.crossAxisAlignment, children: row);
     }
-
-    if (header != null || footer != null) {
-      final List<Widget> children = [];
-      if (header != null) children.add(header!);
-      children.add(current);
-      if (footer != null) children.add(footer!);
-      current = Column(mainAxisSize: MainAxisSize.min, children: children);
-    }
     return current;
   }
 
   Widget get buildCurrent {
     Widget current = child;
-    Border? border = decoration.borderType.value(decoration.borderSide);
-    Decoration? boxDecoration;
-    if (border != null ||
-        decoration.fillColor != null ||
-        decoration.boxShadow != null ||
-        decoration.borderRadius != null ||
-        decoration.gradient != null) {
-      boxDecoration = BoxDecoration(
-          border: border,
-          color: decoration.fillColor,
-          borderRadius: decoration.borderType == BorderType.underline
-              ? null
-              : decoration.borderRadius,
-          gradient: decoration.gradient,
-          boxShadow: decoration.boxShadow);
-    }
     final List<Widget> children = [Expanded(child: current)];
     if (prefix != null) children.insert(0, prefix!);
     if (suffix != null) children.add(suffix!);
     current = Container(
-        decoration: boxDecoration,
-        constraints: decoration.constraints,
         margin: decoration.margin,
         padding: decoration.padding,
         child: children.length > 1 ? Row(children: children) : current);
-    if (decoration.borderRadius != null) {
-      current =
-          ClipRRect(borderRadius: decoration.borderRadius!, child: current);
-    }
-    return current;
+    return InputDecorator(decoration: decoration, child: current);
   }
 }

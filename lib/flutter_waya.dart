@@ -20,9 +20,10 @@ export 'src/swiper/pagination.dart';
 export 'src/swiper/swiper.dart';
 
 /// text_field
-export 'src/text_field/decorated_box.dart';
-export 'src/text_field/text_field.dart';
-export 'src/text_field/pin_text_field.dart';
+export 'src/editable_text/decorated_box.dart';
+export 'src/editable_text/text_field.dart';
+export 'src/editable_text/editable_text.dart';
+export 'src/editable_text/pin_text_field.dart';
 
 /// src
 export 'src/wrapper.dart';

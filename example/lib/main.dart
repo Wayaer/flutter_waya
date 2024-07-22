@@ -7,8 +7,10 @@ import 'package:app/module/swiper_page.dart';
 import 'package:app/module/text_field_page.dart';
 import 'package:device_preview_minus/device_preview_minus.dart';
 import 'package:fl_extended/fl_extended.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 void main() {
@@ -61,7 +63,21 @@ class _App extends StatelessWidget {
   }
 }
 
-class _Home extends StatelessWidget {
+class _Home extends StatefulWidget {
+  @override
+  State<_Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<_Home> {
+  TextEditingController controller = TextEditingController();
+  FocusNode focusNode = FocusNode();
+
+  static Widget _defaultContextMenuBuilder(
+      BuildContext context, EditableTextState editableTextState) {
+    return CupertinoAdaptiveTextSelectionToolbar.editableText(
+        editableTextState: editableTextState);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Universal(
@@ -74,14 +90,20 @@ class _Home extends StatelessWidget {
         direction: Axis.horizontal,
         scrollDirection: Axis.vertical,
         children: [
+          ...3.generate((_) => FlTextField(
+              hintText: 'hintText',
+              decoration: BoxDecoration(
+                  border: Border.all(),
+                  borderRadius: BorderRadius.circular(4),
+                  color: Colors.red.withOpacity(0.2)))),
           ElevatedText('Components', onTap: () => push(const ComponentsPage())),
           ElevatedText('State Components',
               onTap: () => push(const StateComponentsPage())),
           ElevatedText('Button', onTap: () => push(const ButtonPage())),
           ElevatedText('FlSwiper', onTap: () => push(const FlSwiperPage())),
           ElevatedText('FlProgress', onTap: () => push(const FlProgressPage())),
-          ElevatedText('FlDecoratedBox',
-              onTap: () => push(const FlDecoratedBoxPage())),
+          ElevatedText('DecoratorBox',
+              onTap: () => push(const DecoratorBoxPage())),
           ElevatedText('ExtendedTextField',
               onTap: () => push(const TextFieldPage())),
         ]);
