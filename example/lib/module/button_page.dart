@@ -27,7 +27,7 @@ class ButtonPage extends StatelessWidget {
           MultiPopupMenuButton<String, String>(
               onSelected: (_, String label, String? value) {
             showToast('label：$label    item: $value');
-          }, menus: _popupMenus.builderEntry((menusItem) {
+          }, menus: _popupMenus.entriesMapToList((menusItem) {
             return MultiPopupMenuButtonItem<String, String>(
                 key: menusItem.key,
                 builder: (BuildContext context,
@@ -61,7 +61,7 @@ class ButtonPage extends StatelessWidget {
           MultiPopupMenuButton<String, String>(
               onSelected: (_, String label, String? value) {
             showToast('label：$label    item: $value');
-          }, menus: _popupMenus.builderEntry((menusItem) {
+          }, menus: _popupMenus.entriesMapToList((menusItem) {
             return MultiPopupMenuButtonItem<String, String>(
                 key: menusItem.key,
                 builder: (BuildContext context,
