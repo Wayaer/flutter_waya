@@ -72,6 +72,12 @@ class _HomeState extends State<_Home> {
   TextEditingController controller = TextEditingController();
   FocusNode focusNode = FocusNode();
 
+  static Widget _defaultContextMenuBuilder(
+      BuildContext context, EditableTextState editableTextState) {
+    return CupertinoAdaptiveTextSelectionToolbar.editableText(
+        editableTextState: editableTextState);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Universal(
@@ -84,123 +90,12 @@ class _HomeState extends State<_Home> {
         direction: Axis.horizontal,
         scrollDirection: Axis.vertical,
         children: [
-          ...3.generate((_) => IconTheme.merge(
-                data: IconThemeData(
-                  // color: _getIconColor(themeData, defaults),
-                  size: 12,
-                ),
-                child: InputDecorator(
-                  // isFocused: true,
-                  isEmpty: true,
-                  isHovering: true,
-                  expands: false,
-                  decoration: InputDecoration(
-                    icon: Universal(
-                      direction: Axis.horizontal,
-                      color: Colors.blue.withOpacity(0.2),
-                      mainAxisSize: MainAxisSize.min,
-                      children: [Text('icon')],
-                    ),
-                    isDense: true,
-                    errorText: 'errorText',
-                    helperText: 'helperText',
-                    // hintText: 'hintText',
-                    hintStyle: TextStyle(),
-                    contentPadding: EdgeInsets.zero,
-                    prefix: Universal(
-                      direction: Axis.horizontal,
-                      color: Colors.blue.withOpacity(0.2),
-                      mainAxisSize: MainAxisSize.min,
-                      children: [Text('prefix')],
-                    ),
-                    prefixIconConstraints: BoxConstraints(),
-                    prefixStyle: TextStyle(),
-                    prefixIcon: Universal(
-                      direction: Axis.horizontal,
-                      color: Colors.red.withOpacity(0.2),
-                      mainAxisSize: MainAxisSize.min,
-                      children: [Text('prefixIcon')],
-                    ),
-                    suffix: Universal(
-                      direction: Axis.horizontal,
-                      color: Colors.blue.withOpacity(0.2),
-                      mainAxisSize: MainAxisSize.min,
-                      children: [Text('suffix')],
-                    ),
-                    suffixIconConstraints: BoxConstraints(),
-                    suffixStyle: TextStyle(),
-                    suffixIcon: Universal(
-                      direction: Axis.horizontal,
-                      color: Colors.red.withOpacity(0.2),
-                      mainAxisSize: MainAxisSize.min,
-                      children: [Text('suffixIcon')],
-                    ),
-                    enabled: false,
-                    // counterText: 'counterText',
-                    counter: Container(
-                        color: Colors.red, child: Text('counterText')),
-                    counterStyle: TextStyle(),
-                    constraints: BoxConstraints(),
-                  ),
-                  child: Universal(
-                    onPressed: () {},
-                    child: Text('InputDecorator'),
-                  ),
-                ),
-              )),
-          Text('EditableText'),
-          Container(
-            color: Colors.blue.withOpacity(0.3),
-            child: EditableText(
-              controller: controller,
-              focusNode: focusNode,
-              style: TextStyle(),
-              cursorColor: Colors.red,
-              minLines: 4,
-              maxLines: 8,
-              backgroundCursorColor: Colors.blue,
-            ),
-          ),
-          Text('CupertinoTextField'),
-          CupertinoTextField(),
-          ...3.generate((_) => TextField(
-                decoration: InputDecoration(
-                  isDense: true,
-                  error: Text('error'),
-                  // errorText: 'errorText',
-                  helperText: 'helperText',
-                  hintText: 'hintText',
-                  contentPadding: EdgeInsets.zero,
-                  prefix: Universal(
-                    direction: Axis.horizontal,
-                    color: Colors.blue.withOpacity(0.2),
-                    mainAxisSize: MainAxisSize.min,
-                    children: [Text('prefix')],
-                  ),
-                  prefixIconConstraints: BoxConstraints(),
-                  prefixStyle: TextStyle(),
-                  prefixIcon: Universal(
-                    direction: Axis.horizontal,
-                    color: Colors.red.withOpacity(0.2),
-                    mainAxisSize: MainAxisSize.min,
-                    children: [Text('prefixIcon')],
-                  ),
-                  suffix: Universal(
-                    direction: Axis.horizontal,
-                    color: Colors.blue.withOpacity(0.2),
-                    mainAxisSize: MainAxisSize.min,
-                    children: [Text('suffix')],
-                  ),
-                  suffixIconConstraints: BoxConstraints(),
-                  suffixStyle: TextStyle(),
-                  suffixIcon: Universal(
-                    direction: Axis.horizontal,
-                    color: Colors.red.withOpacity(0.2),
-                    mainAxisSize: MainAxisSize.min,
-                    children: [Text('suffixIcon')],
-                  ),
-                ),
-              )),
+          ...3.generate((_) => FlTextField(
+              hintText: 'hintText',
+              decoration: BoxDecoration(
+                  border: Border.all(),
+                  borderRadius: BorderRadius.circular(4),
+                  color: Colors.red.withOpacity(0.2)))),
           ElevatedText('Components', onTap: () => push(const ComponentsPage())),
           ElevatedText('State Components',
               onTap: () => push(const StateComponentsPage())),
