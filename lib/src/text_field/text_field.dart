@@ -193,13 +193,14 @@ enum TextInputLimitFormatter {
 
 typedef TextFieldWithDecoratedBuilder = Widget Function(FocusNode? focusNode);
 
-/// [TextField] 带 [FlDecoratedBox]
-class TextFieldWithFlDecoratedBox extends StatelessWidget {
-  const TextFieldWithFlDecoratedBox({
+/// [TextField] 带 [DecoratorBox]
+class TextFieldWithDecoratorBox extends StatelessWidget {
+  const TextFieldWithDecoratorBox({
     super.key,
     this.decoration = const FlBoxDecoration(
-        borderType: BorderType.outline,
-        borderSide: BorderSide(color: Colors.black)),
+        // borderType: BorderType.outline,
+        // borderSide: BorderSide(color: Colors.black),
+        ),
     this.suffixes = const [],
     this.prefixes = const [],
     required this.builder,
@@ -244,7 +245,7 @@ class TextFieldWithFlDecoratedBox extends StatelessWidget {
   /// TextField 外部装饰器
   Widget buildDecoratorBox(Widget current) {
     if (focusNode != null) {
-      return FlDecoratedBoxState(
+      return DecoratorBoxState(
           decoration: decoration,
           focusBorderSide: focusBorderSide,
           header: header,
@@ -264,10 +265,10 @@ class TextFieldWithFlDecoratedBox extends StatelessWidget {
         buildDecoratedPendant(suffixes, DecoratedPendantPosition.outer);
     final extraPrefix =
         buildDecoratedPendant(prefixes, DecoratedPendantPosition.outer);
-    return FlDecoratedBox(
+    return DecoratorBox(
         decoration: decoration,
-        header: header,
-        footer: footer,
+        // header: header,
+        // footer: footer,
         suffix: suffix,
         prefix: prefix,
         extraSuffix: extraSuffix,

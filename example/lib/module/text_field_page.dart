@@ -1,6 +1,7 @@
 import 'package:app/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 class TextFieldPage extends StatelessWidget {
@@ -13,42 +14,43 @@ class TextFieldPage extends StatelessWidget {
         appBar: AppBarText('TextField'),
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
         children: [
-          const Partition('TextFieldWithFlDecoratedBox with TextField'),
-          builderTextFieldWithFlDecoratedBoxBuilder(
+          const Partition('TextFieldWithDecoratorBox with TextField'),
+          builderTextFieldWithDecoratorBoxBuilder(
               builder: (FocusNode? focusNode) =>
                   TextField(focusNode: focusNode)),
-          const Partition('TextFieldWithFlDecoratedBox with TextFormField'),
-          builderTextFieldWithFlDecoratedBoxBuilder(
+          const Partition('TextFieldWithDecoratorBox with TextFormField'),
+          builderTextFieldWithDecoratorBoxBuilder(
               builder: (FocusNode? focusNode) =>
                   TextFormField(focusNode: focusNode)),
-          const Partition(
-              'TextFieldWithFlDecoratedBox with CupertinoTextField'),
-          builderTextFieldWithFlDecoratedBoxBuilder(
+          const Partition('TextFieldWithDecoratorBox with CupertinoTextField'),
+          builderTextFieldWithDecoratorBoxBuilder(
               builder: (FocusNode? focusNode) =>
                   CupertinoTextField(focusNode: focusNode)),
           const Partition(
-              'TextFieldWithFlDecoratedBox with CupertinoTextField.borderless'),
-          builderTextFieldWithFlDecoratedBoxBuilder(
+              'TextFieldWithDecoratorBox with CupertinoTextField.borderless'),
+          builderTextFieldWithDecoratorBoxBuilder(
               builder: (FocusNode? focusNode) =>
                   CupertinoTextField.borderless(focusNode: focusNode)),
         ]);
   }
 
-  Widget builderTextFieldWithFlDecoratedBoxBuilder(
+  Widget builderTextFieldWithDecoratorBoxBuilder(
           {required TextFieldWithDecoratedBuilder builder}) =>
-      TextFieldWithFlDecoratedBox(
+      TextFieldWithDecoratorBox(
           builder: builder,
           disposeFocusNode: true,
           focusNode: FocusNode(),
           header: const Row(children: [Text(' header')]),
-          footer: const Row(children: [Text(' footer')]),
+          footer: const Row(children: [Text(' footeßr')]),
           decoration: FlBoxDecoration(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              gradient: const LinearGradient(colors: Colors.accents),
-              fillColor: Colors.blue.withOpacity(0.2),
-              borderType: BorderType.outline,
-              borderSide: const BorderSide(color: Colors.yellow),
-              borderRadius: BorderRadius.circular(6)),
+            // border: OutlineDecoratorBorder( borderRadius: BorderRadius.circular(0)),
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            // gradient: const LinearGradient(colors: Colors.accents),
+            // fillColor: Colors.red.withOpacity(0.2),
+            // borderType: BorderType.outline,
+            // borderSide: const BorderSide(color: Colors.yellow),
+            // borderRadius: BorderRadius.circular(6),
+          ),
           suffixes: [
             const Text('inner').toDecoratedPendant(
                 positioned: DecoratedPendantPosition.inner,

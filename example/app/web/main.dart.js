@@ -48300,7 +48300,7 @@ p=A.kr(B.an,o)
 return new A.B_(n.c,s.d,A.li(A.kY("Flutter Waya Example"),new A.a_C(o),o,!0,!1,B.I,o),A.b2J(),"Waya UI",q,p,r,!1,o)}}
 A.a_C.prototype={
 L(a){var s=null
-return A.i_(s,s,A.a([new A.ey("Components",new A.aw1(),s),new A.ey("State Components",new A.aw2(),s),new A.ey("Button",new A.aw3(),s),new A.ey("FlSwiper",new A.aw4(),s),new A.ey("FlProgress",new A.aw5(),s),new A.ey("FlDecoratedBox",new A.aw6(),s),new A.ey("ExtendedTextField",new A.aw7(),s)],t.p),s,s,B.B,s,B.X,!1,!1,!1,!0,!1,!0,B.I,s,s,s,s,B.dO,10,!1,!1,!1,!1,!1,B.U,s,B.at_,10)}}
+return A.i_(s,s,A.a([new A.ey("Components",new A.aw1(),s),new A.ey("State Components",new A.aw2(),s),new A.ey("Button",new A.aw3(),s),new A.ey("FlSwiper",new A.aw4(),s),new A.ey("FlProgress",new A.aw5(),s),new A.ey("DecoratorBox",new A.aw6(),s),new A.ey("ExtendedTextField",new A.aw7(),s)],t.p),s,s,B.B,s,B.X,!1,!1,!1,!0,!1,!0,B.I,s,s,s,s,B.dO,10,!1,!1,!1,!1,!1,B.U,s,B.at_,10)}}
 A.aw1.prototype={
 $0(){var s=t.X
 return A.oQ(B.PP,s,s)},
@@ -110172,7 +110172,7 @@ B.e=new A.S3(0,"fill")
 B.W=new A.S3(1,"stroke")
 B.ag0=new A.nA(1/0)
 B.ag1=new A.cy("DecoratorBoxState.builder",null)
-B.ag2=new A.cy("TextFieldWithFlDecoratedBox with CupertinoTextField.borderless",null)
+B.ag2=new A.cy("TextFieldWithDecoratorBox with CupertinoTextField.borderless",null)
 B.ag3=new A.cy("FlSwiper FlSwiperLayout.stack",null)
 B.ag4=new A.cy("BubbleButton",null)
 B.ag5=new A.cy("Switch \u5b98\u65b9\u9644\u52a0\u72b6\u6001\u7248\u672c",null)
@@ -110184,7 +110184,7 @@ B.aga=new A.cy("DottedLine",null)
 B.agb=new A.cy("PopupMenuButtonRotateBuilder",null)
 B.agc=new A.cy("ElasticButton",null)
 B.agd=new A.cy("ExpansionTiles",null)
-B.age=new A.cy("TextFieldWithFlDecoratedBox with CupertinoTextField",null)
+B.age=new A.cy("TextFieldWithDecoratorBox with CupertinoTextField",null)
 B.agf=new A.cy("FlIndicator",null)
 B.agg=new A.cy("MultiPopupMenuButton",null)
 B.agh=new A.cy("RatingStars",null)
@@ -110195,10 +110195,10 @@ B.agl=new A.cy("Wrapper",null)
 B.agm=new A.cy("XSwitch",null)
 B.agn=new A.cy("Checkbox \u5b98\u65b9\u9644\u52a0\u72b6\u6001\u7248\u672c",null)
 B.ago=new A.cy("FlSwiper FlSwiperLayout.tinder",null)
-B.agp=new A.cy("TextFieldWithFlDecoratedBox with TextField",null)
+B.agp=new A.cy("TextFieldWithDecoratorBox with TextField",null)
 B.agq=new A.cy("CheckBox \u81ea\u5b9a\u4e49\u7248",null)
 B.agr=new A.cy("PageView.builder",null)
-B.ags=new A.cy("TextFieldWithFlDecoratedBox with TextFormField",null)
+B.ags=new A.cy("TextFieldWithDecoratorBox with TextFormField",null)
 B.cA=new A.S4(0,"nonZero")
 B.aH=new A.S4(1,"evenOdd")
 B.agt=new A.ajw(2,"union")

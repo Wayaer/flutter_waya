@@ -5,14 +5,14 @@ import 'package:flutter_waya/flutter_waya.dart';
 
 import '../main.dart';
 
-class FlDecoratedBoxPage extends StatefulWidget {
-  const FlDecoratedBoxPage({super.key});
+class DecoratorBoxPage extends StatefulWidget {
+  const DecoratorBoxPage({super.key});
 
   @override
-  State<FlDecoratedBoxPage> createState() => _FlDecoratedBoxPageState();
+  State<DecoratorBoxPage> createState() => _DecoratorBoxPageState();
 }
 
-class _FlDecoratedBoxPageState extends ExtendedState<FlDecoratedBoxPage> {
+class _DecoratorBoxPageState extends ExtendedState<DecoratorBoxPage> {
   FocusNode focusNode = FocusNode();
   FocusNode focusNode1 = FocusNode();
 
@@ -24,16 +24,17 @@ class _FlDecoratedBoxPageState extends ExtendedState<FlDecoratedBoxPage> {
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
         children: [
           const Partition('DecoratorBoxState'),
-          FlDecoratedBoxState(
+          DecoratorBoxState(
               focusNode: focusNode,
               decoration: FlBoxDecoration(
-                  gradient: const LinearGradient(colors: Colors.accents),
-                  borderType: BorderType.outline,
-                  padding: const EdgeInsets.all(2),
-                  borderRadius: BorderRadius.circular(4),
-                  borderSide: const BorderSide(color: Colors.black, width: 1),
-                  fillColor: Colors.blue.withOpacity(0.2),
-                  constraints: const BoxConstraints(minHeight: 45)),
+                  // gradient: const LinearGradient(colors: Colors.accents),
+                  // borderType: BorderType.outline,
+                  // padding: const EdgeInsets.all(2),
+                  // borderRadius: BorderRadius.circular(4),
+                  // borderSide: const BorderSide(color: Colors.black, width: 1),
+                  // fillColor: Colors.blue.withOpacity(0.2),
+                  // constraints: const BoxConstraints(minHeight: 45),
+                  ),
               focusBorderSide: const BorderSide(color: Colors.red, width: 1),
               prefixes: const [
                 DecoratedPendant(
@@ -66,15 +67,16 @@ class _FlDecoratedBoxPageState extends ExtendedState<FlDecoratedBoxPage> {
                 focusNode: focusNode,
               )),
           const Partition('DecoratorBoxState.builder'),
-          FlDecoratedBoxState.builder(
+          DecoratorBoxState.builder(
               focusNode: FocusNode(),
               decoration: FlBoxDecoration(
-                  gradient: const LinearGradient(colors: Colors.accents),
-                  padding: const EdgeInsets.all(2),
-                  borderRadius: BorderRadius.circular(4),
-                  borderSide: const BorderSide(color: Colors.black, width: 1),
-                  fillColor: Colors.blue.withOpacity(0.2),
-                  constraints: const BoxConstraints(minHeight: 45)),
+                // gradient: const LinearGradient(colors: Colors.accents),
+                padding: const EdgeInsets.all(2),
+                // borderRadius: BorderRadius.circular(4),
+                // borderSide: const BorderSide(color: Colors.black, width: 1),
+                // fillColor: Colors.blue.withOpacity(0.2),
+                // constraints: const BoxConstraints(minHeight: 45),
+              ),
               focusBorderSide: const BorderSide(color: Colors.red, width: 1),
               prefixes: const [
                 DecoratedPendant(
@@ -108,13 +110,13 @@ class _FlDecoratedBoxPageState extends ExtendedState<FlDecoratedBoxPage> {
                     focusNode: focusNode,
                   )),
           const Partition('DecoratorBox'),
-          FlDecoratedBox(
+          DecoratorBox(
               decoration: FlBoxDecoration(
-                  gradient: const LinearGradient(colors: Colors.accents),
-                  borderType: BorderType.outline,
-                  fillColor: Colors.blue.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(4),
-                  borderSide: const BorderSide(color: Colors.black),
+                  // gradient: const LinearGradient(colors: Colors.accents),
+                  // borderType: BorderType.outline,
+                  // fillColor: Colors.blue.withOpacity(0.2),
+                  // borderRadius: BorderRadius.circular(4),
+                  // borderSide: const BorderSide(color: Colors.black),
                   margin: const EdgeInsets.symmetric(vertical: 10),
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 10)),
@@ -122,8 +124,8 @@ class _FlDecoratedBoxPageState extends ExtendedState<FlDecoratedBoxPage> {
               extraSuffix: const Text('extra'),
               prefix: const Text('prefix'),
               suffix: const Text('suffix'),
-              header: const Row(children: [Text('header')]),
-              footer: const Row(children: [Text('footer')]),
+              // header: const Row(children: [Text('header')]),
+              // footer: const Row(children: [Text('footer')]),
               child: CupertinoTextField.borderless(
                   prefixMode: OverlayVisibilityMode.always,
                   prefix: Container(color: Colors.green, width: 20, height: 20),
