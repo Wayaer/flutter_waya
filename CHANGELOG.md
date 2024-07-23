@@ -1,14 +1,12 @@
-## 9.7.0
+## 9.7.1
 
 * Added `FlAutomaticKeepAliveWrapper` and `FlAutomaticKeepAliveWrapperState`
-* Modify `DecoratorEntry` to `DecoratedPendant`
+* Modify `DecoratorEntry` to `DecoratorPendant`
 * Remove `DecoratorPositioned.outermost`
-* Modify `DecoratorPositioned` to `DecoratedPendantPosition`
-* `DecoratedPendant` adds the `maintainSize` property to determine whether to maintain the size
-* Modify `DecoratorBoxState` to `DecoratorBoxState`
-* Modify `DecoratorBox` to `DecoratorBox`
-* Added `FlBoxDecoration` to `DecoratorBox` and `DecoratorBoxState`
-* Modify `.toDecoratorEntry()` to `.toDecoratedPendant()`
+* Modify `DecoratorPositioned` to `DecoratorPendantPosition`
+* `DecoratorPendant` adds the `maintainSize` property to determine whether to maintain the size
+* Added `BoxDecorative` to `DecoratorBox` and `DecoratorBoxState`
+* Modify `.toDecoratorEntry()` to `.toDecoratorPendant()`
 
 ## 9.6.0
 

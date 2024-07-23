@@ -132,8 +132,8 @@ class _BubbleButtonState extends ExtendedState<BubbleButton>
   Widget build(BuildContext context) {
     final AnimatedBuilder bubble = AnimatedBuilder(
         animation: _controller,
-        builder: (BuildContext c, Widget? w) {
-          final Widget bubbleWidget = widget.builder.call(_value);
+        child: widget.builder.call(_value),
+        builder: (BuildContext context, Widget? child) {
           return Stack(clipBehavior: Clip.none, children: [
             Positioned(
                 top: (widget.size - widget.bubblesSize) / 2.0,
@@ -165,9 +165,7 @@ class _BubbleButtonState extends ExtendedState<BubbleButton>
                       ? _scaleAnimation.value
                       : 1.0,
                   child: SizedBox(
-                      height: widget.size,
-                      width: widget.size,
-                      child: bubbleWidget),
+                      height: widget.size, width: widget.size, child: child),
                 ))
           ]);
         });
