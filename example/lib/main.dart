@@ -4,6 +4,7 @@ import 'package:app/module/decorator_page.dart';
 import 'package:app/module/progress_page.dart';
 import 'package:app/module/state_components_page.dart';
 import 'package:app/module/swiper_page.dart';
+import 'package:app/module/text_field_page.dart';
 import 'package:device_preview_minus/device_preview_minus.dart';
 import 'package:fl_extended/fl_extended.dart';
 import 'package:flutter/material.dart';
@@ -89,6 +90,8 @@ class _HomeState extends State<_Home> {
           ElevatedText('FlProgress', onTap: () => push(const FlProgressPage())),
           ElevatedText('DecoratorBox',
               onTap: () => push(const DecoratorBoxPage())),
+          ElevatedText('PINTextField',
+              onTap: () => push(const TextFieldPage())),
         ]);
   }
 }

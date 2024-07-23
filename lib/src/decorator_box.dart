@@ -22,8 +22,13 @@ enum DecoratorPendantPosition {
 }
 
 enum BorderType {
+  /// outline
   outline,
+
+  /// underline
   underline,
+
+  /// none
   none,
   ;
 
@@ -122,7 +127,6 @@ class BoxDecorative {
     this.borderRadius,
     this.borderSide,
     this.focusedBorderSide,
-    this.margin,
     this.padding,
     this.crossAxisAlignment = CrossAxisAlignment.center,
     this.fillColor,
@@ -132,7 +136,6 @@ class BoxDecorative {
   });
 
   /// 仅作用于 [DecoratorBox.child]
-  final EdgeInsetsGeometry? margin;
   final EdgeInsetsGeometry? padding;
 
   /// [DecoratorBox.child] 与 [extraPrefix]、[extraSuffix] 对齐方式
@@ -298,12 +301,10 @@ class DecoratorBox extends StatelessWidget {
     if (border != null ||
         decoration.fillColor != null ||
         decoration.boxShadow != null ||
-        decoration.borderRadius != null ||
         decoration.gradient != null) {
       boxDecoration = BoxDecoration(
           border: border,
           color: decoration.fillColor,
-          borderRadius: decoration.borderRadius,
           gradient: decoration.gradient,
           boxShadow: decoration.boxShadow);
     }
@@ -325,7 +326,6 @@ class DecoratorBox extends StatelessWidget {
     current = Container(
         decoration: boxDecoration,
         constraints: decoration.constraints,
-        margin: decoration.margin,
         padding: decoration.padding,
         child: current);
     if (decoration.borderRadius != null) {
