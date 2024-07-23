@@ -34,12 +34,13 @@ class _FlAnimationWaveState extends ExtendedState<FlAnimationWave>
   @override
   Widget build(BuildContext context) => AnimatedBuilder(
       animation: CurvedAnimation(parent: controller, curve: Curves.easeInOut),
+      child: Container(color: widget.color),
       builder: (BuildContext context, Widget? child) => ClipPath(
           clipper: _FlAnimationWaveClipper(
               animationValue: controller.value,
               value: widget.value,
               direction: widget.direction),
-          child: Container(color: widget.color)));
+          child: child));
 
   @override
   void dispose() {

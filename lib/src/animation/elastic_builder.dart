@@ -86,11 +86,10 @@ class _ElasticBuilderState extends ExtendedState<ElasticBuilder>
   @override
   Widget build(BuildContext context) => AnimatedBuilder(
       animation: animation,
+      child: widget.builder(context, elasticUp, elastic, elasticDown),
       builder: (BuildContext context, Widget? child) {
         final scale = Transform.scale(
-            scale: animation.value,
-            alignment: widget.alignment,
-            child: widget.builder(context, elasticUp, elastic, elasticDown));
+            scale: animation.value, alignment: widget.alignment, child: child);
         return widget.withOpacity
             ? Opacity(
                 opacity: animation.value.clamp(0.5, 1.0).toDouble(),

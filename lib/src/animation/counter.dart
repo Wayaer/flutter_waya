@@ -95,7 +95,7 @@ class _CounterAnimationState extends ExtendedState<CounterAnimation>
       final Widget currentWidget = _createCount(_count, text);
       child = AnimatedBuilder(
           animation: _controller,
-          builder: (BuildContext b, Widget? w) =>
+          builder: (BuildContext context, Widget? child) =>
               Row(mainAxisSize: MainAxisSize.min, children: [
                 Stack(fit: StackFit.passthrough, children: [
                   Opacity(
@@ -121,7 +121,7 @@ class _CounterAnimationState extends ExtendedState<CounterAnimation>
     } else {
       child = AnimatedBuilder(
           animation: _controller,
-          builder: (BuildContext b, Widget? w) => Stack(
+          builder: (BuildContext context, Widget? child) => Stack(
                 fit: StackFit.passthrough,
                 children: [
                   FractionalTranslation(
