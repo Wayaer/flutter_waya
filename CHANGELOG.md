@@ -2,7 +2,6 @@
 
 * Added `FlAutomaticKeepAliveWrapper` and `FlAutomaticKeepAliveWrapperState`
 * Modify `DecoratorEntry` to `DecoratorPendant`
-* Remove `DecoratorPositioned.outermost`
 * Modify `DecoratorPositioned` to `DecoratorPendantPosition`
 * `DecoratorPendant` adds the `maintainSize` property to determine whether to maintain the size
 * Added `BoxDecorative` to `DecoratorBox` and `DecoratorBoxState`

@@ -3,37 +3,36 @@ import 'package:flutter/services.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/extended_state.dart';
 
-typedef PINTextFieldBuilder = Widget Function(
-    PINTextFieldBuilderConfig builderConfig);
+typedef PINTextFieldBuilder = Widget Function(PINTextFieldBuilderConfig config);
 
 typedef PINTextFieldTextBuilder = Widget? Function(String text);
 
 typedef PINTextFieldValueChanged = void Function(String text);
 
 class PINTextField extends StatefulWidget {
-  const PINTextField(
-      {super.key,
-      this.onTap,
-      this.onChanged,
-      this.onDone,
-      this.autoFocus = true,
-      this.needKeyBoard = true,
-      this.obscureText = false,
-      this.maxLength = 4,
-      this.inputFormatter,
-      this.focusNode,
-      this.decoration,
-      this.pinDecoration,
-      this.hasFocusPinDecoration,
-      this.textStyle,
-      this.textBuilder,
-      this.boxSize = const Size(40, 40),
-      this.spaces = const [],
-      this.inputLimitFormatter = TextInputLimitFormatter.text,
-      this.builder,
-      this.controller});
+  const PINTextField({
+    super.key,
+    required this.controller,
+    this.onTap,
+    this.onChanged,
+    this.onDone,
+    this.autoFocus = true,
+    this.needKeyBoard = true,
+    this.obscureText = false,
+    this.maxLength = 4,
+    this.inputFormatter,
+    this.focusNode,
+    this.decoration,
+    this.focusedDecoration,
+    this.textStyle,
+    this.textBuilder,
+    this.boxSize = const Size(40, 40),
+    this.spaces = const [],
+    this.inputLimitFormatter = TextInputLimitFormatter.text,
+    this.builder,
+  });
 
-  final TextEditingController? controller;
+  final TextEditingController controller;
 
   final GestureTapCallback? onTap;
 
@@ -58,14 +57,11 @@ class PINTextField extends StatefulWidget {
   /// 输入框焦点管理
   final FocusNode? focusNode;
 
-  /// 整个组件装饰器
+  /// 默认输入框装饰器
   final Decoration? decoration;
 
-  /// 默认输入框装饰器
-  final Decoration? pinDecoration;
-
   /// 有文字后的输入框装饰器
-  final Decoration? hasFocusPinDecoration;
+  final Decoration? focusedDecoration;
 
   /// 内文字样式
   final TextStyle? textStyle;
@@ -95,7 +91,6 @@ class PINTextField extends StatefulWidget {
 class _PINTextFieldState extends ExtendedState<PINTextField> {
   late FocusNode focusNode;
   List<Widget?> spaces = <Widget?>[];
-  ValueNotifier<String> text = ValueNotifier('');
 
   @override
   void initState() {
@@ -106,6 +101,13 @@ class _PINTextFieldState extends ExtendedState<PINTextField> {
   void initialize() {
     spaces = widget.spaces;
     focusNode = widget.focusNode ?? FocusNode();
+    widget.controller.addListener(listener);
+  }
+
+  void listener() {
+    if (widget.controller.text.length == widget.maxLength) {
+      widget.onDone?.call(widget.controller.text);
+    }
   }
 
   @override
@@ -118,22 +120,21 @@ class _PINTextFieldState extends ExtendedState<PINTextField> {
 
   @override
   Widget build(BuildContext context) {
-    Widget current = Stack(children: [
-      SizedBox(height: widget.boxSize.height, child: pinTextInput),
-      ValueListenableBuilder(
-          valueListenable: text, builder: (_, String text, __) => boxRow(text)),
-    ]);
-
-    return GestureDetector(
-        onTap: onTap,
-        child: Container(
-          height: widget.boxSize.height,
-          decoration: widget.decoration,
-          child: current,
-        ));
+    return SizedBox(
+        height: widget.boxSize.height,
+        child: Stack(children: [
+          SizedBox(height: widget.boxSize.height, child: pinTextInput),
+          AnimatedBuilder(
+              animation: Listenable.merge([
+                focusNode,
+                widget.controller,
+              ]),
+              builder: (BuildContext context, Widget? child) =>
+                  buildRow(widget.controller.text)),
+        ]));
   }
 
-  Widget boxRow(String text) {
+  Widget buildRow(String text) {
     final List<Widget> box = [];
     List<String> texts = text.trim().split('');
     List.generate((widget.maxLength - texts.length), (index) => texts.add(''));
@@ -147,8 +148,7 @@ class _PINTextFieldState extends ExtendedState<PINTextField> {
       box.add(Container(
           height: widget.boxSize.height,
           width: widget.boxSize.width,
-          decoration:
-              hasFocus ? widget.pinDecoration : widget.hasFocusPinDecoration,
+          decoration: hasFocus ? widget.decoration : widget.focusedDecoration,
           alignment: Alignment.center,
           child: widget.textBuilder?.call(text) ??
               Text(text, style: widget.textStyle)));
@@ -163,8 +163,7 @@ class _PINTextFieldState extends ExtendedState<PINTextField> {
         if (index < box.length) children.add(box[index]);
       });
     }
-    return GestureDetector(
-      onTap: onTap,
+    return IgnorePointer(
       child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: spaces.isNotEmpty ? children : box),
@@ -173,10 +172,10 @@ class _PINTextFieldState extends ExtendedState<PINTextField> {
 
   void onTap() {
     if (widget.needKeyBoard) {
-      if (focusNode.hasFocus) focusNode.unfocus();
-      Future.delayed(const Duration(milliseconds: 100), () {
-        focusNode.requestFocus();
-      });
+      // if (focusNode.hasFocus) focusNode.unfocus();
+      // Future.delayed(const Duration(milliseconds: 100), () {
+      focusNode.requestFocus();
+      // });
     }
     widget.onTap?.call();
   }
@@ -184,69 +183,65 @@ class _PINTextFieldState extends ExtendedState<PINTextField> {
   Widget get pinTextInput {
     const inputDecoration = InputDecoration(
         contentPadding: EdgeInsets.zero,
-        isDense: false,
-        counterText: '',
-        border: InputBorder.none);
-    void onChanged(String value) {
-      widget.onChanged?.call(value);
-      text.value = value;
-      if (value.length == widget.maxLength) {
-        widget.onDone?.call(value);
-      }
-    }
+        isDense: true,
+        border: InputBorder.none,
+        focusedErrorBorder: InputBorder.none,
+        focusedBorder: InputBorder.none,
+        enabledBorder: InputBorder.none,
+        disabledBorder: InputBorder.none,
+        errorBorder: InputBorder.none);
 
-    final builderConfig = PINTextFieldBuilderConfig(
+    final config = PINTextFieldBuilderConfig(
         focusNode: focusNode,
         controller: widget.controller,
         decoration: inputDecoration,
         autofocus: widget.autoFocus,
-        onChanged: onChanged,
         keyboardType: widget.inputLimitFormatter.toKeyboardType(),
-        maxLength: widget.maxLength,
         style: const TextStyle(color: Colors.transparent),
         inputFormatters: widget.inputLimitFormatter.toTextInputFormatter()
-          ..addAll(widget.inputFormatter ?? []));
-
-    return widget.builder?.call(builderConfig) ??
+          ..addAll([
+            LengthLimitingTextInputFormatter(widget.maxLength),
+            if (widget.inputFormatter != null) ...widget.inputFormatter!,
+          ]));
+    return widget.builder?.call(config) ??
         TextField(
-            controller: builderConfig.controller,
-            focusNode: builderConfig.focusNode,
-            decoration: builderConfig.decoration,
-            autofocus: builderConfig.autofocus,
-            obscureText: builderConfig.obscureText,
-            maxLines: builderConfig.maxLines,
-            minLines: builderConfig.minLines,
-            onChanged: builderConfig.onChanged,
-            keyboardType: builderConfig.keyboardType,
-            maxLength: builderConfig.maxLength,
-            style: builderConfig.style,
-            showCursor: builderConfig.showCursor,
-            inputFormatters: builderConfig.inputFormatters);
+            controller: config.controller,
+            focusNode: config.focusNode,
+            decoration: config.decoration,
+            autofocus: config.autofocus,
+            obscureText: config.obscureText,
+            maxLines: config.maxLines,
+            minLines: config.minLines,
+            keyboardType: config.keyboardType,
+            style: config.style,
+            showCursor: config.showCursor,
+            contextMenuBuilder: (context, editableTextState) =>
+                const SizedBox(),
+            inputFormatters: config.inputFormatters);
   }
 
   @override
   void dispose() {
     super.dispose();
+    widget.controller.removeListener(listener);
     if (widget.focusNode == null) focusNode.dispose();
-    text.dispose();
   }
 }
 
 class PINTextFieldBuilderConfig {
-  PINTextFieldBuilderConfig(
-      {required this.focusNode,
-      required this.decoration,
-      this.autofocus = true,
-      this.maxLines = 1,
-      this.minLines = 1,
-      required this.onChanged,
-      required this.maxLength,
-      required this.style,
-      this.showCursor = false,
-      this.obscureText = false,
-      this.controller,
-      required this.inputFormatters,
-      required this.keyboardType});
+  PINTextFieldBuilderConfig({
+    required this.focusNode,
+    required this.decoration,
+    required this.style,
+    required this.inputFormatters,
+    required this.keyboardType,
+    this.autofocus = true,
+    this.maxLines = 1,
+    this.minLines = 1,
+    this.showCursor = false,
+    this.obscureText = false,
+    this.controller,
+  });
 
   /// [TextField] 焦点管理
   final FocusNode focusNode;
@@ -265,12 +260,6 @@ class PINTextFieldBuilderConfig {
 
   /// [TextField] 最小行数 默认 1
   final int minLines;
-
-  /// [TextField] 输入内容变化
-  final ValueChanged<String> onChanged;
-
-  /// [TextField] 最大输入长度
-  final int maxLength;
 
   /// [TextField] 输入文字样式
   final TextStyle style;
