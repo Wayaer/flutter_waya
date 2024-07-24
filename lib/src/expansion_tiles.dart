@@ -1,30 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/extended_state.dart';
 
+typedef ExpansionTilesBuilderListTile = Widget Function(
+    BuildContext context, GestureTapCallback onTap, Widget rotation);
+
+/// 展开收起
 class ExpansionTiles extends StatefulWidget {
   const ExpansionTiles({
     super.key,
-    this.leading,
-    required this.title,
+    required this.builder,
     this.children = const [],
     this.child,
     this.initial = false,
-    this.subtitle,
     this.backgroundColor,
     this.onExpansionChanged,
-    this.trailing,
     this.duration = const Duration(milliseconds: 200),
+    this.rotation,
   });
 
-  /// 标题左侧图标，
-  final Widget? leading;
-
-  /// title:闭合时显示的标题，
-  final Widget title;
-
-  /// 副标题
-  final Widget? subtitle;
+  final ExpansionTilesBuilderListTile builder;
 
   /// 展开或关闭监听
   final ValueChanged<bool>? onExpansionChanged;
@@ -32,14 +26,14 @@ class ExpansionTiles extends StatefulWidget {
   /// 子元素，
   final List<Widget> children;
 
-  /// 自定义子元素
+  /// 子元素，
   final Widget? child;
+
+  /// 旋转的图标
+  final Widget? rotation;
 
   /// 展开时的背景颜色，
   final Color? backgroundColor;
-
-  /// 右侧的箭头
-  final Widget? trailing;
 
   /// 初始状态是否展开，
   final bool initial;
@@ -53,86 +47,62 @@ class ExpansionTiles extends StatefulWidget {
 
 class _ExpansionTilesState extends ExtendedState<ExpansionTiles>
     with SingleTickerProviderStateMixin {
-  static final Animatable<double> _easeOutTween =
-      CurveTween(curve: Curves.easeOut);
-  static final Animatable<double> _easeInTween =
-      CurveTween(curve: Curves.easeIn);
-  static final Animatable<double> _halfTween =
-      Tween<double>(begin: 0.0, end: 0.5);
+  late AnimationController controller;
+  late Animation<double> iconTurns;
+  late Animation<double> heightFactor;
 
-  final ColorTween _headerColorTween = ColorTween();
-  final ColorTween _iconColorTween = ColorTween();
-  final ColorTween _backgroundColorTween = ColorTween();
-
-  late AnimationController _controller;
-  late Animation<double> _iconTurns;
-  late Animation<double> _heightFactor;
-  late Animation<Color?> _headerColor;
-  late Animation<Color?> _iconColor;
-  late Animation<Color?> _backgroundColor;
-
-  bool _isExpanded = false;
+  bool isExpanded = false;
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(duration: widget.duration, vsync: this);
-    _heightFactor = _controller.drive(_easeInTween);
-    _iconTurns = _controller.drive(_halfTween.chain(_easeInTween));
-    _headerColor = _controller.drive(_headerColorTween.chain(_easeInTween));
-    _iconColor = _controller.drive(_iconColorTween.chain(_easeInTween));
-    _backgroundColor =
-        _controller.drive(_backgroundColorTween.chain(_easeOutTween));
-    _isExpanded = widget.initial;
-    if (_isExpanded) _controller.value = 1.0;
+    controller = AnimationController(duration: widget.duration, vsync: this);
+    heightFactor = controller.drive(CurveTween(curve: Curves.easeIn));
+    iconTurns = controller.drive(Tween<double>(begin: 0.0, end: 0.5)
+        .chain(CurveTween(curve: Curves.easeIn)));
+    isExpanded = widget.initial;
+    if (isExpanded) controller.value = 1.0;
   }
 
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  void _handleTap() {
-    _isExpanded = !_isExpanded;
-    if (_isExpanded) {
-      _controller.forward();
+  void handleTap() {
+    isExpanded = !isExpanded;
+    if (isExpanded) {
+      controller.forward();
     } else {
-      _controller.reverse().then<void>((void value) {
-        if (mounted) setState(() {});
+      controller.reverse().then<void>((void value) {
+        setState(() {});
       });
     }
-    if (mounted) setState(() {});
-    widget.onExpansionChanged?.call(_isExpanded);
+    setState(() {});
+    widget.onExpansionChanged?.call(isExpanded);
   }
 
   @override
   Widget build(BuildContext context) {
-    final bool closed = !_isExpanded && _controller.isDismissed;
+    final bool closed = !isExpanded && controller.isDismissed;
     return AnimatedBuilder(
-        animation: _controller.view,
+        animation: controller.view,
         builder: (_, Widget? child) => ColoredBox(
-            color: _backgroundColor.value ??
-                widget.backgroundColor ??
-                Colors.transparent,
+            color: widget.backgroundColor ?? Colors.transparent,
             child: Column(mainAxisSize: MainAxisSize.min, children: [
-              ListTileTheme.merge(
-                  iconColor: _iconColor.value,
-                  textColor: _headerColor.value,
-                  child: ListEntry(
-                      onTap: _handleTap,
-                      leading: widget.leading,
-                      title: widget.title,
-                      subtitle: widget.subtitle,
-                      child: widget.trailing ??
-                          RotationTransition(
-                            turns: _iconTurns,
-                            child: const Icon(Icons.expand_more),
-                          ))),
+              widget.builder(context, handleTap,
+                  RotationTransition(turns: iconTurns, child: widget.rotation)),
               ClipRect(
-                  child: Align(heightFactor: _heightFactor.value, child: child))
+                  child: Align(heightFactor: heightFactor.value, child: child))
             ])),
         child:
             closed ? null : widget.child ?? Column(children: widget.children));
+  }
+
+  @override
+  void didUpdateWidget(covariant ExpansionTiles oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    setState(() {});
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 }
