@@ -97,11 +97,9 @@ class _AutoCollapsingBuilderState extends ExtendedState<AutoCollapsingBuilder> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return AnimatedContainer(
-        duration: widget.duration,
-        width: widget.direction == Axis.horizontal ? _size : null,
-        height: widget.direction == Axis.vertical ? _size : null,
-        child: widget.child);
-  }
+  Widget build(BuildContext context) => AnimatedContainer(
+      duration: widget.duration,
+      width: widget.direction == Axis.horizontal ? _size : null,
+      height: widget.direction == Axis.vertical ? _size : null,
+      child: widget.child);
 }

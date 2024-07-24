@@ -27,14 +27,14 @@ export 'src/editable_text/pin_text_field.dart';
 /// src
 export 'src/wrapper.dart';
 export 'src/count_down.dart';
-export 'src/extended_popup_menu.dart';
+export 'src/animation/extended_popup_menu.dart';
 export 'src/popup_menu.dart';
 export 'src/check_box.dart';
 export 'src/dotted_line.dart';
 export 'src/draggable_scrollbar.dart';
 export 'src/screen_adaptation.dart';
 export 'src/x_switch.dart';
-export 'src/expansion_tiles.dart';
+export 'src/animation/expansion_tiles.dart';
 export 'src/rating_stars.dart';
 export 'src/flip_card.dart';
 export 'src/send_verification_code.dart';
