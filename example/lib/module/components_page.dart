@@ -42,19 +42,29 @@ class ComponentsPage extends StatelessWidget {
                 ]),
             const Partition('ExpansionTiles'),
             Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              ExpansionTile(
+                title: const BText('ExpansionTile', fontSize: 10),
+                backgroundColor: context.theme.primaryColor.withOpacity(0.2),
+                children: 5.generate((int index) => Universal(
+                    margin: const EdgeInsets.all(12),
+                    alignment: Alignment.centerLeft,
+                    child: BText('item$index'))),
+              ).expanded,
               ExpansionTiles(
-                  backgroundColor: context.theme.primaryColor.withOpacity(0.2),
-                  title: const BText('title'),
-                  children: 5.generate((int index) => Universal(
-                      margin: const EdgeInsets.all(12),
-                      alignment: Alignment.centerLeft,
-                      child: BText('item$index')))).expanded,
-              ExpansionTiles(
-                  title: const BText('title'),
-                  children: 5.generate((int index) => Universal(
-                      margin: const EdgeInsets.all(12),
-                      alignment: Alignment.centerLeft,
-                      child: BText('item$index')))).expanded,
+                rotation: const Icon(Icons.expand_more),
+                builder: (BuildContext context, GestureTapCallback onTap,
+                    Widget rotation) {
+                  return ListTile(
+                      onTap: onTap,
+                      title: const BText('ExpansionTiles', fontSize: 10),
+                      trailing: rotation);
+                },
+                backgroundColor: context.theme.primaryColor.withOpacity(0.2),
+                children: 5.generate((int index) => Universal(
+                    margin: const EdgeInsets.all(12),
+                    alignment: Alignment.centerLeft,
+                    child: BText('item$index'))),
+              ).expanded,
             ]),
             const Partition('CounterAnimation'),
             Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
