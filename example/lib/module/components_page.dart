@@ -50,15 +50,11 @@ class ComponentsPage extends StatelessWidget {
                       alignment: Alignment.centerLeft,
                       child: BText('item$index')))).expanded,
               ExpansionTiles(
-                      title: const BText('title'),
-                      child: ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemBuilder: (_, int index) => Universal(
-                              margin: const EdgeInsets.all(12),
-                              alignment: Alignment.centerLeft,
-                              child: BText('item$index')),
-                          itemCount: 5))
-                  .expanded,
+                  title: const BText('title'),
+                  children: 5.generate((int index) => Universal(
+                      margin: const EdgeInsets.all(12),
+                      alignment: Alignment.centerLeft,
+                      child: BText('item$index')))).expanded,
             ]),
             const Partition('CounterAnimation'),
             Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [

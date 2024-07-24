@@ -1,4 +1,15 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+extension ExtensionInputDecoration on InputDecoration {
+  InputDecoration get copyWithNoneBorder => copyWith(
+      border: InputBorder.none,
+      enabledBorder: InputBorder.none,
+      focusedBorder: InputBorder.none,
+      disabledBorder: InputBorder.none,
+      errorBorder: InputBorder.none,
+      focusedErrorBorder: InputBorder.none);
+}
 
 enum TextInputLimitFormatter {
   /// 字母和数字

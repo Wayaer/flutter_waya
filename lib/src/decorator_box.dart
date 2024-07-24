@@ -47,10 +47,12 @@ enum BorderType {
 
   ///BorderType to InputBorder
   InputBorder toInputBorder({
-    BorderSide borderSide = const BorderSide(),
-    BorderRadius borderRadius = const BorderRadius.all(Radius.circular(4.0)),
+    BorderSide? borderSide,
+    BorderRadius? borderRadius,
     double gapPadding = 4.0,
   }) {
+    borderSide ??= const BorderSide();
+    borderRadius ??= const BorderRadius.all(Radius.circular(4.0));
     switch (this) {
       case BorderType.outline:
         return OutlineInputBorder(
@@ -220,26 +222,27 @@ class DecoratorBox extends StatelessWidget {
         return pendant.builder!(
             pendant.positioned, pendant.mode, pendant.maintainSize);
       }
-      Widget buildVisibility(bool visible) => Visibility(
-          visible: visible,
-          maintainAnimation: pendant.maintainSize,
-          maintainState: pendant.maintainSize,
-          maintainSize: pendant.maintainSize,
-          child: pendant.widget!);
-
-      switch (pendant.mode) {
-        case DecoratorPendantVisibilityMode.never:
-          return null;
-        case DecoratorPendantVisibilityMode.always:
-          return pendant.widget;
-        case DecoratorPendantVisibilityMode.focused:
-          if (pendant.widget != null) return buildVisibility(hasFocus);
-        case DecoratorPendantVisibilityMode.unfocused:
-          if (pendant.widget != null) return buildVisibility(!hasFocus);
-        case DecoratorPendantVisibilityMode.editing:
-          if (pendant.widget != null) return buildVisibility(isEditing);
-        case DecoratorPendantVisibilityMode.notEditing:
-          if (pendant.widget != null) return buildVisibility(!isEditing);
+      if (pendant.widget != null) {
+        Widget buildVisibility(bool visible) => Visibility(
+            visible: visible,
+            maintainAnimation: pendant.maintainSize,
+            maintainState: pendant.maintainSize,
+            maintainSize: pendant.maintainSize,
+            child: pendant.widget!);
+        switch (pendant.mode) {
+          case DecoratorPendantVisibilityMode.never:
+            return buildVisibility(false);
+          case DecoratorPendantVisibilityMode.always:
+            return buildVisibility(true);
+          case DecoratorPendantVisibilityMode.focused:
+            return buildVisibility(hasFocus);
+          case DecoratorPendantVisibilityMode.unfocused:
+            return buildVisibility(!hasFocus);
+          case DecoratorPendantVisibilityMode.editing:
+            return buildVisibility(isEditing);
+          case DecoratorPendantVisibilityMode.notEditing:
+            return buildVisibility(!isEditing);
+        }
       }
       return null;
     }
@@ -295,19 +298,7 @@ class DecoratorBox extends StatelessWidget {
     final innerFooter =
         buildDecoratorPendant(footers, DecoratorPendantPosition.inner);
     Widget current = child;
-    Border? border = decoration.borderType.toBorder(
-        hasFocus ? decoration.focusedBorderSide : decoration.borderSide);
-    Decoration? boxDecoration;
-    if (border != null ||
-        decoration.fillColor != null ||
-        decoration.boxShadow != null ||
-        decoration.gradient != null) {
-      boxDecoration = BoxDecoration(
-          border: border,
-          color: decoration.fillColor,
-          gradient: decoration.gradient,
-          boxShadow: decoration.boxShadow);
-    }
+
     if (innerPrefix != null || innerSuffix != null) {
       current = Row(mainAxisSize: MainAxisSize.min, children: [
         if (innerPrefix != null) innerPrefix,
@@ -323,11 +314,28 @@ class DecoratorBox extends StatelessWidget {
         if (innerFooter != null) innerFooter,
       ]);
     }
+    Decoration? boxDecoration;
+    final border = decoration.borderType.toBorder(
+        hasFocus ? decoration.focusedBorderSide : decoration.borderSide);
+    if (decoration.fillColor != null ||
+        decoration.gradient != null ||
+        decoration.boxShadow != null ||
+        border != null) {
+      boxDecoration = BoxDecoration(
+          color: decoration.fillColor,
+          border: border,
+          borderRadius: decoration.borderType == BorderType.outline
+              ? decoration.borderRadius
+              : null,
+          gradient: decoration.gradient,
+          boxShadow: decoration.boxShadow);
+    }
     current = Container(
         decoration: boxDecoration,
         constraints: decoration.constraints,
         padding: decoration.padding,
         child: current);
+
     if (decoration.borderRadius != null) {
       current =
           ClipRRect(borderRadius: decoration.borderRadius!, child: current);
@@ -336,7 +344,7 @@ class DecoratorBox extends StatelessWidget {
   }
 }
 
-typedef DecoratorBoxStateBuilder = bool Function();
+typedef DecoratorBoxStateCallback = bool Function();
 
 class DecoratorBoxState extends StatelessWidget {
   const DecoratorBoxState(
@@ -350,7 +358,7 @@ class DecoratorBoxState extends StatelessWidget {
       this.suffixes = const [],
       this.prefixes = const [],
       this.decoration = const BoxDecorative(),
-      this.expand = false});
+      this.expand = true});
 
   final Widget child;
 
@@ -358,10 +366,10 @@ class DecoratorBoxState extends StatelessWidget {
   final Listenable listenable;
 
   /// 是否有焦点监听
-  final DecoratorBoxStateBuilder? onFocus;
+  final DecoratorBoxStateCallback? onFocus;
 
   /// 是否在编辑中
-  final DecoratorBoxStateBuilder? onEditing;
+  final DecoratorBoxStateCallback? onEditing;
 
   /// [child] 头部
   final List<DecoratorPendant> headers;

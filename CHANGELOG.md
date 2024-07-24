@@ -1,11 +1,13 @@
 ## 9.7.1
 
-* Added `FlAutomaticKeepAliveWrapper` and `FlAutomaticKeepAliveWrapperState`
-* Modify `DecoratorEntry` to `DecoratorPendant`
+* Added `AutomaticKeepAliveWrapper` and `AutomaticKeepAliveWrapperState`
+* Modify `DecoratorEntry` to `DecoratorPendant`,and adds the `maintainSize` property to determine whether to maintain the size
 * Modify `DecoratorPositioned` to `DecoratorPendantPosition`
-* `DecoratorPendant` adds the `maintainSize` property to determine whether to maintain the size
 * Added `BoxDecorative` to `DecoratorBox` and `DecoratorBoxState`
 * Modify `.toDecoratorEntry()` to `.toDecoratorPendant()`
+* Remove the `needKeyBoard` and `focusNode` from `PINTextField`
+* Change the `controller` of `PINTextField` to mandatory
+* Hide `contextMenuBuilder` and `enableInteractiveSelection` for `PINTextField`
 
 ## 9.6.0
 
