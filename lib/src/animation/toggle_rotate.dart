@@ -1,34 +1,32 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/src/extended_state.dart';
 
-typedef ToggleBuilder = Widget Function(Widget child);
+typedef ToggleRotateFunction = void Function({bool reset});
+
+typedef ToggleRotateBuilder = Widget Function(
+    Widget child, ToggleRotateFunction rotate);
 
 /// 旋转组件
 class ToggleRotate extends StatefulWidget {
   const ToggleRotate(
       {super.key,
-      required this.child,
-      this.onTap,
-      this.rad = pi / 2,
+      required this.icon,
+      this.builder,
+      this.turns = 1,
       this.clockwise = true,
       this.duration = const Duration(milliseconds: 200),
       this.curve = Curves.fastOutSlowIn,
-      this.toggleBuilder,
       this.isRotate = false});
 
-  final Widget child;
+  /// 旋转的icon
+  final Widget icon;
 
   /// 是否旋转
   final bool isRotate;
 
-  /// 点击事件
-  final GestureTapCallback? onTap;
-
-  /// 旋转角度 pi / 2
-  /// 1=180℃  2=90℃
-  final double rad;
+  /// 旋转圈数
+  /// 1 = 一圈    0.5 = 半圈    2 = 两圈
+  final double turns;
 
   /// 动画时长
   final Duration duration;
@@ -40,7 +38,7 @@ class ToggleRotate extends StatefulWidget {
   final Curve curve;
 
   /// 自定义非旋转区域
-  final ToggleBuilder? toggleBuilder;
+  final ToggleRotateBuilder? builder;
 
   @override
   State<ToggleRotate> createState() => _ToggleRotateState();
@@ -48,58 +46,63 @@ class ToggleRotate extends StatefulWidget {
 
 class _ToggleRotateState extends ExtendedState<ToggleRotate>
     with SingleTickerProviderStateMixin {
-  double _rad = 0;
-  bool _rotated = false;
-  late AnimationController _controller;
-  late Animation<double> _rotate;
+  late AnimationController controller;
+  late Animation<double> rotate;
 
   @override
   void initState() {
-    _controller = AnimationController(duration: widget.duration, vsync: this)
-      ..addListener(listener)
-      ..addStatusListener(statusListener);
-    _rotate = CurvedAnimation(parent: _controller, curve: widget.curve);
+    controller = AnimationController(duration: widget.duration, vsync: this);
+    initTween();
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (widget.isRotate) controller.forward();
+    });
   }
 
-  void statusListener(AnimationStatus status) {
-    if (status == AnimationStatus.completed) _rotated = !_rotated;
-  }
-
-  void listener() {
-    if (mounted) {
-      setState(() =>
-          _rad = (_rotated ? (1 - _rotate.value) : _rotate.value) * widget.rad);
+  void initTween() {
+    double begin = 0;
+    double end = widget.turns;
+    if (!widget.clockwise) {
+      begin = end;
+      end = 0;
     }
+    rotate = controller.drive(Tween<double>(begin: begin, end: end)
+        .chain(CurveTween(curve: widget.curve)));
   }
 
   @override
   void dispose() {
-    _controller.removeListener(listener);
-    _controller.removeStatusListener(statusListener);
-    _controller.dispose();
+    controller.dispose();
     super.dispose();
+  }
+
+  void handleRotation({bool reset = false}) {
+    if (reset) controller.reset();
+    if (controller.value == 0.0) {
+      controller.forward();
+    } else {
+      controller.reverse();
+    }
   }
 
   @override
   void didUpdateWidget(covariant ToggleRotate oldWidget) {
     super.didUpdateWidget(oldWidget);
+    controller.duration = widget.duration;
+    initTween();
     if (oldWidget.isRotate != widget.isRotate) {
-      _controller.reset();
-      _controller.forward();
+      handleRotation();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    Widget current = Transform(
-        transform: Matrix4.rotationZ(widget.clockwise ? _rad : -_rad),
-        alignment: Alignment.center,
-        child: widget.child);
-    if (widget.toggleBuilder != null) current = widget.toggleBuilder!(current);
-    if (widget.onTap != null) {
-      current = GestureDetector(onTap: widget.onTap!, child: current);
-    }
-    return current;
+    final current = AnimatedBuilder(
+        animation: controller.view,
+        child: widget.icon,
+        builder: (_, Widget? child) =>
+            RotationTransition(turns: rotate, child: child));
+    if (widget.builder == null) return current;
+    return widget.builder!(current, handleRotation);
   }
 }

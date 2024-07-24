@@ -81,42 +81,42 @@ class XSwitch extends StatefulWidget {
 
 class _XSwitchState extends ExtendedState<XSwitch>
     with TickerProviderStateMixin {
-  late TapGestureRecognizer _tap;
-  late HorizontalDragGestureRecognizer _drag;
-  late AnimationController _positionController;
-  late AnimationController _reactionController;
-  late Animation<Color?> _color;
-  late CurvedAnimation _position;
+  late TapGestureRecognizer tap;
+  late HorizontalDragGestureRecognizer drag;
+  late AnimationController positionController;
+  late AnimationController reactionController;
+  late Animation<Color?> color;
+  late CurvedAnimation position;
   late Size trackSize;
   late double radius;
-  late double _kTrackWidth;
-  late double _kTrackHeight;
-  late double _kTrackRadius;
-  late double _kTrackInnerStart;
-  late double _kTrackInnerEnd;
-  late double _kTrackInnerLength;
+  late double kTrackWidth;
+  late double kTrackHeight;
+  late double kTrackRadius;
+  late double kTrackInnerStart;
+  late double kTrackInnerEnd;
+  late double kTrackInnerLength;
   bool needsPositionAnimation = false;
 
   @override
   void initState() {
     super.initState();
-    _tap = TapGestureRecognizer()
-      ..onTapDown = _handleTapDown
-      ..onTap = _handleTap
-      ..onTapUp = _handleTapUp
-      ..onTapCancel = _handleTapCancel;
-    _drag = HorizontalDragGestureRecognizer()
-      ..onStart = _handleDragStart
-      ..onUpdate = _handleDragUpdate
-      ..onEnd = _handleDragEnd
+    tap = TapGestureRecognizer()
+      ..onTapDown = handleTapDown
+      ..onTap = handleTap
+      ..onTapUp = handleTapUp
+      ..onTapCancel = handleTapCancel;
+    drag = HorizontalDragGestureRecognizer()
+      ..onStart = handleDragStart
+      ..onUpdate = handleDragUpdate
+      ..onEnd = handleDragEnd
       ..dragStartBehavior = widget.dragStartBehavior;
-    _positionController = AnimationController(
+    positionController = AnimationController(
         duration: widget.duration,
         value: widget.value ? 1.0 : 0.0,
         vsync: this);
-    _position =
-        CurvedAnimation(parent: _positionController, curve: Curves.bounceOut);
-    _reactionController =
+    position =
+        CurvedAnimation(parent: positionController, curve: Curves.bounceOut);
+    reactionController =
         AnimationController(duration: widget.duration, vsync: this);
     initSize();
   }
@@ -124,84 +124,84 @@ class _XSwitchState extends ExtendedState<XSwitch>
   void initSize() {
     trackSize = widget.size;
     radius = widget.radius;
-    _kTrackWidth = trackSize.width;
-    _kTrackHeight = trackSize.height;
-    _kTrackRadius = _kTrackHeight / 2.0;
-    _kTrackInnerStart = _kTrackHeight / 2.0;
-    _kTrackInnerEnd = _kTrackWidth - _kTrackInnerStart;
-    _kTrackInnerLength = _kTrackInnerEnd - _kTrackInnerStart;
+    kTrackWidth = trackSize.width;
+    kTrackHeight = trackSize.height;
+    kTrackRadius = kTrackHeight / 2.0;
+    kTrackInnerStart = kTrackHeight / 2.0;
+    kTrackInnerEnd = kTrackWidth - kTrackInnerStart;
+    kTrackInnerLength = kTrackInnerEnd - kTrackInnerStart;
   }
 
-  void _handleTapDown(TapDownDetails details) {
+  void handleTapDown(TapDownDetails details) {
     needsPositionAnimation = false;
-    _reactionController.forward();
+    reactionController.forward();
   }
 
-  void _handleTap() {
+  void handleTap() {
     widget.onChanged(!widget.value);
   }
 
-  void _handleTapUp(TapUpDetails details) {
+  void handleTapUp(TapUpDetails details) {
     needsPositionAnimation = false;
-    _reactionController.reverse();
+    reactionController.reverse();
   }
 
-  void _handleTapCancel() {
-    _reactionController.reverse();
+  void handleTapCancel() {
+    reactionController.reverse();
   }
 
-  void _handleDragStart(DragStartDetails details) {
+  void handleDragStart(DragStartDetails details) {
     needsPositionAnimation = false;
-    _reactionController.forward();
+    reactionController.forward();
   }
 
-  void _handleDragUpdate(DragUpdateDetails details) {
-    final double delta = details.primaryDelta! / _kTrackInnerLength;
+  void handleDragUpdate(DragUpdateDetails details) {
+    final double delta = details.primaryDelta! / kTrackInnerLength;
     switch (Directionality.of(context)) {
       case TextDirection.rtl:
-        _positionController.value -= delta;
+        positionController.value -= delta;
         break;
       case TextDirection.ltr:
-        _positionController.value += delta;
+        positionController.value += delta;
         break;
     }
   }
 
-  void _handleDragEnd(DragEndDetails details) {
+  void handleDragEnd(DragEndDetails details) {
     if (mounted) {
       setState(() {
         needsPositionAnimation = true;
       });
     }
-    if (_position.value >= 0.5) {
-      _positionController.forward();
+    if (position.value >= 0.5) {
+      positionController.forward();
     } else {
-      _positionController.reverse();
+      positionController.reverse();
     }
-    _reactionController.reverse();
+    reactionController.reverse();
   }
 
   @override
   void didUpdateWidget(XSwitch oldWidget) {
     super.didUpdateWidget(oldWidget);
-    _drag.dragStartBehavior = widget.dragStartBehavior;
+    drag.dragStartBehavior = widget.dragStartBehavior;
     initSize();
     if (needsPositionAnimation || oldWidget.value != widget.value) {
-      _resumePositionAnimation(isLinear: needsPositionAnimation);
+      resumePositionAnimation(isLinear: needsPositionAnimation);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     if (needsPositionAnimation) {
-      _resumePositionAnimation();
+      resumePositionAnimation();
     }
     final Color activeColor =
         widget.activeColor ?? Theme.of(context).primaryColor;
     Color trackColor = CupertinoDynamicColor.resolve(
         widget.trackColor ?? CupertinoColors.secondarySystemFill, context);
-    _color = ColorTween(begin: trackColor, end: activeColor)
-        .animate(_positionController);
+    color = ColorTween(begin: trackColor, end: activeColor)
+        .animate(positionController);
     return _XSwitchRenderObjectWidget(
         value: widget.value,
         textDirection: Directionality.of(context),
@@ -212,23 +212,23 @@ class _XSwitchState extends ExtendedState<XSwitch>
         state: this);
   }
 
-  void _resumePositionAnimation({bool isLinear = true}) {
-    _position
+  void resumePositionAnimation({bool isLinear = true}) {
+    position
       ..curve = isLinear ? Curves.linear : Curves.ease
       ..reverseCurve = isLinear ? Curves.linear : Curves.ease.flipped;
     if (widget.value) {
-      _positionController.forward();
+      positionController.forward();
     } else {
-      _positionController.reverse();
+      positionController.reverse();
     }
   }
 
   @override
   void dispose() {
-    _tap.dispose();
-    _drag.dispose();
-    _positionController.dispose();
-    _reactionController.dispose();
+    tap.dispose();
+    drag.dispose();
+    positionController.dispose();
+    reactionController.dispose();
     super.dispose();
   }
 }
@@ -296,7 +296,7 @@ class _RenderXSwitch extends RenderConstrainedBox {
         super(
             additionalConstraints: BoxConstraints.tightFor(
                 width: state.trackSize.width, height: state.trackSize.height)) {
-    _state._position
+    _state.position
       ..addListener(markNeedsPaint)
       ..addStatusListener(_handlePositionStateChanged);
   }
@@ -317,13 +317,13 @@ class _RenderXSwitch extends RenderConstrainedBox {
     if (value == _value) return;
     _value = value;
     markNeedsSemanticsUpdate();
-    _state._position
+    _state.position
       ..curve = Curves.bounceOut
       ..reverseCurve = Curves.bounceOut.flipped;
     if (value) {
-      _state._positionController.forward();
+      _state.positionController.forward();
     } else {
-      _state._positionController.reverse();
+      _state.positionController.reverse();
     }
   }
 
@@ -361,16 +361,16 @@ class _RenderXSwitch extends RenderConstrainedBox {
   void attach(PipelineOwner owner) {
     super.attach(owner);
     if (_value) {
-      _state._positionController.forward();
+      _state.positionController.forward();
     } else {
-      _state._positionController.reverse();
+      _state.positionController.reverse();
     }
-    switch (_state._reactionController.status) {
+    switch (_state.reactionController.status) {
       case AnimationStatus.forward:
-        _state._reactionController.forward();
+        _state.reactionController.forward();
         break;
       case AnimationStatus.reverse:
-        _state._reactionController.reverse();
+        _state.reactionController.reverse();
         break;
       case AnimationStatus.dismissed:
       case AnimationStatus.completed:
@@ -380,8 +380,8 @@ class _RenderXSwitch extends RenderConstrainedBox {
 
   @override
   void detach() {
-    _state._positionController.stop();
-    _state._reactionController.stop();
+    _state.positionController.stop();
+    _state.reactionController.stop();
     super.detach();
   }
 
@@ -400,15 +400,15 @@ class _RenderXSwitch extends RenderConstrainedBox {
   void handleEvent(PointerEvent event, BoxHitTestEntry entry) {
     assert(debugHandleEvent(event, entry));
     if (event is PointerDownEvent) {
-      _state._drag.addPointer(event);
-      _state._tap.addPointer(event);
+      _state.drag.addPointer(event);
+      _state.tap.addPointer(event);
     }
   }
 
   @override
   void describeSemanticsConfiguration(SemanticsConfiguration config) {
     super.describeSemanticsConfiguration(config);
-    config.onTap = _state._handleTap;
+    config.onTap = _state.handleTap;
     config.isEnabled = true;
     config.isToggled = _value;
   }
@@ -418,7 +418,7 @@ class _RenderXSwitch extends RenderConstrainedBox {
   @override
   void paint(PaintingContext context, Offset offset) {
     final Canvas canvas = context.canvas;
-    final double currentValue = _state._position.value;
+    final double currentValue = _state.position.value;
     late double visualPosition;
     switch (_textDirection) {
       case TextDirection.rtl:
@@ -429,30 +429,30 @@ class _RenderXSwitch extends RenderConstrainedBox {
         break;
     }
 
-    double borderThickness = 1.5 + (_state._kTrackRadius - 1.5) * 1.0;
+    double borderThickness = 1.5 + (_state.kTrackRadius - 1.5) * 1.0;
 
-    final Paint paint = Paint()..color = _state._color.value!;
+    final Paint paint = Paint()..color = _state.color.value!;
 
     final Rect trackRect = Rect.fromLTWH(
-        offset.dx + (size.width - _state._kTrackWidth) / 2.0,
-        offset.dy + (size.height - _state._kTrackHeight) / 2.0,
-        _state._kTrackWidth,
-        _state._kTrackHeight);
+        offset.dx + (size.width - _state.kTrackWidth) / 2.0,
+        offset.dy + (size.height - _state.kTrackHeight) / 2.0,
+        _state.kTrackWidth,
+        _state.kTrackHeight);
     final RRect outerRRect = RRect.fromRectAndRadius(
-        trackRect, Radius.circular(_state._kTrackRadius));
+        trackRect, Radius.circular(_state.kTrackRadius));
     final RRect innerRRect = RRect.fromRectAndRadius(
         trackRect.deflate(borderThickness),
-        Radius.circular(_state._kTrackRadius));
+        Radius.circular(_state.kTrackRadius));
     canvas.drawDRRect(outerRRect, innerRRect, paint);
 
     final double thumbLeft = lerpDouble(
-      trackRect.left + _state._kTrackInnerStart - _state.radius,
-      trackRect.left + _state._kTrackInnerEnd - _state.radius,
+      trackRect.left + _state.kTrackInnerStart - _state.radius,
+      trackRect.left + _state.kTrackInnerEnd - _state.radius,
       visualPosition,
     )!;
     final double thumbRight = lerpDouble(
-      trackRect.left + _state._kTrackInnerStart + _state.radius,
-      trackRect.left + _state._kTrackInnerEnd + _state.radius,
+      trackRect.left + _state.kTrackInnerStart + _state.radius,
+      trackRect.left + _state.kTrackInnerEnd + _state.radius,
       visualPosition,
     )!;
     final double thumbCenterY = offset.dy + size.height / 2.0;

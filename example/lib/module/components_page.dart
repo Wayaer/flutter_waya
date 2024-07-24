@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:app/main.dart';
 import 'package:fl_extended/fl_extended.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +41,7 @@ class ComponentsPage extends StatelessWidget {
             const Partition('ExpansionTiles'),
             Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
               ExpansionTile(
-                title: const BText('ExpansionTile', fontSize: 10),
+                title: const BText('Tile'),
                 backgroundColor: context.theme.primaryColor.withOpacity(0.2),
                 children: 5.generate((int index) => Universal(
                     margin: const EdgeInsets.all(12),
@@ -51,12 +49,13 @@ class ComponentsPage extends StatelessWidget {
                     child: BText('item$index'))),
               ).expanded,
               ExpansionTiles(
-                rotation: const Icon(Icons.expand_more),
+                rotatingBuilder: (bool isExpanded) => Icon(Icons.expand_more,
+                    color: isExpanded ? context.theme.primaryColor : null),
                 builder: (BuildContext context, GestureTapCallback onTap,
-                    Widget rotation) {
+                    bool isExpanded, Widget? rotation) {
                   return ListTile(
                       onTap: onTap,
-                      title: const BText('ExpansionTiles', fontSize: 10),
+                      title: const BText('Tile'),
                       trailing: rotation);
                 },
                 backgroundColor: context.theme.primaryColor.withOpacity(0.2),
@@ -83,36 +82,24 @@ class ComponentsPage extends StatelessWidget {
             ]),
             const Partition('ToggleRotate'),
             Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-              ValueBuilder<bool>(
-                  initial: false,
-                  builder: (_, bool? value, ValueCallback<bool> updater) {
-                    return ToggleRotate(
-                        duration: const Duration(milliseconds: 800),
-                        rad: pi / 2,
-                        isRotate: value!,
-                        onTap: () => updater(!value),
-                        child: const Icon(Icons.chevron_left, size: 30));
-                  }),
-              ValueBuilder<bool>(
-                  initial: false,
-                  builder: (_, bool? value, ValueCallback<bool> updater) {
-                    return ToggleRotate(
-                        duration: const Duration(milliseconds: 800),
-                        rad: pi,
-                        isRotate: value!,
-                        onTap: () => updater(!value),
-                        child: const Icon(Icons.chevron_left, size: 30));
-                  }),
-              ValueBuilder<bool>(
-                  initial: false,
-                  builder: (_, bool? value, ValueCallback<bool> updater) {
-                    return ToggleRotate(
-                        duration: const Duration(milliseconds: 800),
-                        rad: pi * 2,
-                        isRotate: value!,
-                        onTap: () => updater(!value),
-                        child: const Icon(Icons.chevron_left, size: 30));
-                  }),
+              ToggleRotate(
+                  duration: const Duration(milliseconds: 500),
+                  turns: 0.5,
+                  builder: (Widget child, rotate) =>
+                      GestureDetector(onTap: rotate, child: child),
+                  icon: const Icon(Icons.accessibility_sharp, size: 30)),
+              ToggleRotate(
+                  duration: const Duration(seconds: 1),
+                  turns: 1,
+                  builder: (Widget child, rotate) =>
+                      GestureDetector(onTap: rotate, child: child),
+                  icon: const Icon(Icons.accessibility_sharp, size: 30)),
+              ToggleRotate(
+                  duration: const Duration(seconds: 2),
+                  turns: 1.5,
+                  builder: (Widget child, rotate) =>
+                      GestureDetector(onTap: rotate, child: child),
+                  icon: const Icon(Icons.accessibility_sharp, size: 30))
             ]),
             const Partition('DottedLine'),
             Container(
@@ -143,4 +130,24 @@ class ComponentsPage extends StatelessWidget {
             ]),
             const SizedBox(height: 100),
           ]);
+}
+
+class TextWidget extends StatefulWidget {
+  const TextWidget({super.key});
+
+  @override
+  State<TextWidget> createState() => _TextWidgetState();
+}
+
+class _TextWidgetState extends State<TextWidget> {
+  @override
+  void didUpdateWidget(covariant TextWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    log('=========================');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Text('====');
+  }
 }

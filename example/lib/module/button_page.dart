@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:app/main.dart';
 import 'package:fl_extended/fl_extended.dart';
 import 'package:flutter/material.dart';
@@ -51,7 +49,8 @@ class ButtonPage extends StatelessWidget {
                               children: [
                                 Text(value ?? key).expanded,
                                 10.widthBox,
-                                const Icon(Icons.keyboard_arrow_down_sharp),
+                                const Icon(
+                                    Icons.arrow_drop_down_circle_outlined),
                               ]),
                           itemBuilder: (_) => menusItem.value.builder(
                               (item) => buildPopupMenuItem(context, item))));
@@ -71,8 +70,8 @@ class ButtonPage extends StatelessWidget {
                     VoidCallback onCanceled,
                     PopupMenuItemSelected<String> onSelected) {
                   return PopupMenuButtonRotateBuilder(
-                      rad: pi,
-                      icon: const Icon(Icons.arrow_drop_down_circle_outlined),
+                      turns: 0.5,
+                      icon: const Icon(Icons.arrow_circle_down_sharp),
                       builder:
                           (_, Widget rotateIcon, onRotateOpened, onClosed) {
                         return Expanded(
@@ -109,8 +108,9 @@ class ButtonPage extends StatelessWidget {
           })),
           const Partition('PopupMenuButtonRotateBuilder'),
           PopupMenuButtonRotateBuilder(
-              icon: const Icon(Icons.arrow_right_rounded),
-              builder: (_, Widget rotateIcon, onOpened, onClosed) {
+              turns: 0.25,
+              icon: const Icon(Icons.arrow_circle_right_outlined),
+              builder: (_, Widget rotate, onOpened, onClosed) {
                 return PopupMenuButton(
                     onCanceled: onClosed,
                     onOpened: onOpened,
@@ -133,7 +133,7 @@ class ButtonPage extends StatelessWidget {
                                   style: context.textTheme.labelLarge)
                               .expanded,
                           10.widthBox,
-                          rotateIcon,
+                          rotate,
                         ])));
               }),
           const Partition('ElasticButton'),

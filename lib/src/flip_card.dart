@@ -27,30 +27,19 @@ class FlipCardController {
 
   FlipCardState? get flipCardState => _flipCardState?.flipCardState;
 
-  /// Flip the card without playing an animation.
-  /// This cancels any ongoing animation.
   void toggle() {
     _flipCardState?.toggle();
   }
 
-  /// Flip the card
-  /// If awaited, returns after animation completes.
   Future<void> animateToggle() async {
-    _flipCardState?.animateToggle();
+    await _flipCardState?.animateToggle();
   }
 
-  /// Skew by amount percentage (0 - 1.0)
-  /// This can be used with a MouseRegion to indicate that the card can
-  /// be flipped. skew(0) to go back to original.
-  /// If awaited, returns after animation completes.
   Future<void> skew(double amount,
       {Duration? duration, Curve curve = Curves.linear}) async {
     await _flipCardState?.skew(amount, duration: duration, curve: curve);
   }
 
-  /// Triggers a flip animation that reverses after the duration
-  /// and will run for `total`
-  /// If awaited, returns after animation completes.
   Future<void> hint(
       {Duration duration = const Duration(milliseconds: 150),
       Duration? total}) async {
@@ -58,6 +47,7 @@ class FlipCardController {
   }
 }
 
+/// 翻转组件
 class FlipCard extends StatefulWidget {
   const FlipCard({
     super.key,
@@ -114,11 +104,12 @@ class FlipCard extends StatefulWidget {
 class _FlipCardState extends ExtendedState<FlipCard>
     with SingleTickerProviderStateMixin {
   late AnimationController animationController;
-  FlipCardController? controller;
   late Animation<double> frontRotation;
   late Animation<double> backRotation;
 
   FlipCardState flipCardState = FlipCardState.front;
+
+  FlipCardController? controller;
 
   @override
   void initState() {
