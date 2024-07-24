@@ -90,8 +90,7 @@ class _HomeState extends State<_Home> {
           ElevatedText('FlProgress', onTap: () => push(const FlProgressPage())),
           ElevatedText('DecoratorBox',
               onTap: () => push(const DecoratorBoxPage())),
-          ElevatedText('PINTextField',
-              onTap: () => push(const TextFieldPage())),
+          ElevatedText('TextField', onTap: () => push(const TextFieldPage())),
         ]);
   }
 }
