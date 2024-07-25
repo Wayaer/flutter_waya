@@ -69,13 +69,17 @@ class _ExpansionTilesState extends ExtendedState<ExpansionTiles>
   void initState() {
     super.initState();
     controller = AnimationController(duration: widget.duration, vsync: this);
+    initTween();
+    isExpanded = widget.isExpanded;
+    if (isExpanded) controller.value = 1.0;
+  }
+
+  void initTween() {
     heightFactor = controller.drive(CurveTween(curve: widget.curve));
     if (widget.icon != null) {
       iconTurns = controller.drive(Tween<double>(begin: 0.0, end: 0.5)
           .chain(CurveTween(curve: widget.curve)));
     }
-    isExpanded = widget.isExpanded;
-    if (isExpanded) controller.value = 1.0;
   }
 
   void handleExpanded() {
@@ -120,9 +124,9 @@ class _ExpansionTilesState extends ExtendedState<ExpansionTiles>
   void didUpdateWidget(covariant ExpansionTiles oldWidget) {
     super.didUpdateWidget(oldWidget);
     controller.duration = widget.duration;
+    initTween();
     if (widget.isExpanded != isExpanded) {
-      isExpanded = widget.isExpanded;
-      setState(() {});
+      handleExpanded();
     }
   }
 
