@@ -1,5 +1,4 @@
 import 'package:app/main.dart';
-import 'package:app/module/flip_card_page.dart';
 import 'package:fl_extended/fl_extended.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +14,6 @@ class StateComponentsPage extends StatelessWidget {
         appBar: AppBarText('State Components'),
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
         children: [
-          ElevatedText('FlipCard', onTap: () => push(const FlipCardPage())),
           const Partition('CheckBox 自定义版'),
           Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,

@@ -1,6 +1,7 @@
 import 'package:app/module/button_page.dart';
 import 'package:app/module/components_page.dart';
 import 'package:app/module/decorator_page.dart';
+import 'package:app/module/flip_card_page.dart';
 import 'package:app/module/progress_page.dart';
 import 'package:app/module/state_components_page.dart';
 import 'package:app/module/swiper_page.dart';
@@ -91,6 +92,7 @@ class _HomeState extends State<_Home> {
           ElevatedText('DecoratorBox',
               onTap: () => push(const DecoratorBoxPage())),
           ElevatedText('TextField', onTap: () => push(const TextFieldPage())),
+          ElevatedText('FlipCard', onTap: () => push(const FlipCardPage())),
         ]);
   }
 }
