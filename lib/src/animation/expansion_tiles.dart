@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_waya/src/extended_state.dart';
 
 typedef ExpansionTilesBuilderListTile = Widget Function(BuildContext context,
-    GestureTapCallback onTap, bool isExpanded, Widget? rotation);
+    VoidCallback expand, bool isExpanded, Widget? rotation);
 
 typedef ExpansionTilesRotationIconBuilder = Widget Function(bool isExpanded);
 
