@@ -56,12 +56,6 @@ class _AutoCollapsingBuilderState extends ExtendedState<AutoCollapsingBuilder> {
   }
 
   @override
-  void dispose() {
-    widget.controller.removeListener(_onScroll);
-    super.dispose();
-  }
-
-  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     widget.controller.addListener(_onScroll);
@@ -92,7 +86,6 @@ class _AutoCollapsingBuilderState extends ExtendedState<AutoCollapsingBuilder> {
         if (mounted) setState(() {});
       }
     }
-
     _previousOffset = offset;
   }
 
@@ -102,4 +95,10 @@ class _AutoCollapsingBuilderState extends ExtendedState<AutoCollapsingBuilder> {
       width: widget.direction == Axis.horizontal ? _size : null,
       height: widget.direction == Axis.vertical ? _size : null,
       child: widget.child);
+
+  @override
+  void dispose() {
+    widget.controller.removeListener(_onScroll);
+    super.dispose();
+  }
 }

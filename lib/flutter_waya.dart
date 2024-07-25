@@ -27,7 +27,7 @@ export 'src/editable_text/pin_text_field.dart';
 /// src
 export 'src/wrapper.dart';
 export 'src/count_down.dart';
-export 'src/animation/extended_popup_menu.dart';
+export 'src/animation/popup_menu.dart';
 export 'src/popup_menu.dart';
 export 'src/check_box.dart';
 export 'src/dotted_line.dart';
