@@ -152,23 +152,3 @@ class ComponentsPage extends StatelessWidget {
             const SizedBox(height: 100),
           ]);
 }
-
-class TextWidget extends StatefulWidget {
-  const TextWidget({super.key});
-
-  @override
-  State<TextWidget> createState() => _TextWidgetState();
-}
-
-class _TextWidgetState extends State<TextWidget> {
-  @override
-  void didUpdateWidget(covariant TextWidget oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    log('=========================');
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Text('====');
-  }
-}
