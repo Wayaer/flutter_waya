@@ -8,6 +8,7 @@
 * Remove the `needKeyBoard` and `focusNode` from `PINTextField`
 * Change the `controller` of `PINTextField` to mandatory
 * Hide `contextMenuBuilder` and `enableInteractiveSelection` for `PINTextField`
+* Modify some parameters of `ExpansionTiles` `PopupMenuButtonRotateBuilder` `ToggleRotate`, please refer to Example
 
 ## 9.6.0
 

@@ -4,8 +4,12 @@ import 'package:flutter_waya/src/extended_state.dart';
 typedef ExpansionTilesBuilderListTile = Widget Function(BuildContext context,
     GestureTapCallback onTap, bool isExpanded, Widget? rotation);
 
-typedef ExpansionTilesRotationTransitionBuilder = Widget Function(
-    bool isExpanded);
+typedef ExpansionTilesRotationIconBuilder = Widget Function(bool isExpanded);
+
+extension ExtensionExpansionTiles on Widget {
+  ExpansionTilesRotationIconBuilder get toExpansionTilesRotationIconBuilder =>
+      (isExpanded) => this;
+}
 
 /// 展开收起
 class ExpansionTiles extends StatefulWidget {
@@ -14,15 +18,22 @@ class ExpansionTiles extends StatefulWidget {
     required this.builder,
     this.children = const [],
     this.child,
-    this.initial = false,
+    this.isExpanded = false,
     this.backgroundColor,
     this.onExpansionChanged,
     this.duration = const Duration(milliseconds: 200),
-    this.rotatingBuilder,
+    this.curve = Curves.fastOutSlowIn,
+    this.icon,
   });
+
+  /// 初始状态是否展开，
+  final bool isExpanded;
 
   /// 构造器
   final ExpansionTilesBuilderListTile builder;
+
+  /// 旋转的图标
+  final ExpansionTilesRotationIconBuilder? icon;
 
   /// 展开或关闭监听
   final ValueChanged<bool>? onExpansionChanged;
@@ -33,17 +44,14 @@ class ExpansionTiles extends StatefulWidget {
   /// 子元素，
   final Widget? child;
 
-  /// 旋转的图标
-  final ExpansionTilesRotationTransitionBuilder? rotatingBuilder;
-
   /// 展开时的背景颜色，
   final Color? backgroundColor;
 
-  /// 初始状态是否展开，
-  final bool initial;
-
   /// 展开时长
   final Duration duration;
+
+  /// 动画曲线
+  final Curve curve;
 
   @override
   State<ExpansionTiles> createState() => _ExpansionTilesState();
@@ -61,16 +69,16 @@ class _ExpansionTilesState extends ExtendedState<ExpansionTiles>
   void initState() {
     super.initState();
     controller = AnimationController(duration: widget.duration, vsync: this);
-    heightFactor = controller.drive(CurveTween(curve: Curves.easeIn));
-    if (widget.rotatingBuilder != null) {
+    heightFactor = controller.drive(CurveTween(curve: widget.curve));
+    if (widget.icon != null) {
       iconTurns = controller.drive(Tween<double>(begin: 0.0, end: 0.5)
-          .chain(CurveTween(curve: Curves.easeIn)));
+          .chain(CurveTween(curve: widget.curve)));
     }
-    isExpanded = widget.initial;
+    isExpanded = widget.isExpanded;
     if (isExpanded) controller.value = 1.0;
   }
 
-  void handleTap() {
+  void handleExpanded() {
     isExpanded = !isExpanded;
     if (isExpanded) {
       controller.forward();
@@ -89,11 +97,11 @@ class _ExpansionTilesState extends ExtendedState<ExpansionTiles>
     return AnimatedBuilder(
         animation: controller.view,
         builder: (_, Widget? child) {
-          final icon = widget.rotatingBuilder?.call(isExpanded);
+          final icon = widget.icon?.call(isExpanded);
           final current = Column(mainAxisSize: MainAxisSize.min, children: [
             widget.builder(
                 context,
-                handleTap,
+                handleExpanded,
                 isExpanded,
                 icon == null || iconTurns == null
                     ? null
@@ -111,7 +119,11 @@ class _ExpansionTilesState extends ExtendedState<ExpansionTiles>
   @override
   void didUpdateWidget(covariant ExpansionTiles oldWidget) {
     super.didUpdateWidget(oldWidget);
-    setState(() {});
+    controller.duration = widget.duration;
+    if (widget.isExpanded != isExpanded) {
+      isExpanded = widget.isExpanded;
+      setState(() {});
+    }
   }
 
   @override

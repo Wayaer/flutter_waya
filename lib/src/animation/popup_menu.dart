@@ -79,12 +79,17 @@ class PopupMenuButtonRotateBuilder extends StatelessWidget {
     this.isRotate = false,
     this.turns = 0.5,
     this.clockwise = true,
+    this.closedNeedsBuild = true,
+    this.openedNeedsBuild = false,
     this.animationDuration = const Duration(milliseconds: 200),
     this.curve = Curves.fastOutSlowIn,
+    this.onChanged,
   });
 
-  final Widget icon;
+  /// 旋转的icon
+  final ToggleRotateIconBuilder icon;
 
+  /// 初始是否旋转
   final bool isRotate;
 
   /// builder PopupMenuButton
@@ -103,6 +108,15 @@ class PopupMenuButtonRotateBuilder extends StatelessWidget {
   /// 动画曲线
   final Curve curve;
 
+  /// 关闭时是否需要重建
+  final bool closedNeedsBuild;
+
+  /// 打开时是否需要重建
+  final bool openedNeedsBuild;
+
+  /// 变化监听
+  final ToggleRotateCallback? onChanged;
+
   @override
   Widget build(BuildContext context) => ToggleRotate(
       turns: turns,
@@ -111,6 +125,10 @@ class PopupMenuButtonRotateBuilder extends StatelessWidget {
       curve: curve,
       isRotate: isRotate,
       icon: icon,
-      builder: (Widget child, ToggleRotateFunction rotate) =>
-          builder(context, child, rotate, rotate));
+      onChanged: onChanged,
+      builder: (Widget child, ToggleRotateHandleRotation rotate) => builder(
+          context,
+          child,
+          () => rotate(needsBuild: openedNeedsBuild),
+          () => rotate(needsBuild: closedNeedsBuild)));
 }

@@ -49,7 +49,7 @@ class ComponentsPage extends StatelessWidget {
                     child: BText('item$index'))),
               ).expanded,
               ExpansionTiles(
-                rotatingBuilder: (bool isExpanded) => Icon(Icons.expand_more,
+                icon: (bool isExpanded) => Icon(Icons.expand_more,
                     color: isExpanded ? context.theme.primaryColor : null),
                 builder: (BuildContext context, GestureTapCallback onTap,
                     bool isExpanded, Widget? rotation) {
@@ -85,21 +85,42 @@ class ComponentsPage extends StatelessWidget {
               ToggleRotate(
                   duration: const Duration(milliseconds: 500),
                   turns: 0.5,
+                  onChanged: (bool value) {
+                    log('ToggleRotate 0.5 : $value');
+                  },
                   builder: (Widget child, rotate) =>
                       GestureDetector(onTap: rotate, child: child),
-                  icon: const Icon(Icons.accessibility_sharp, size: 30)),
+                  icon: (bool value) => Icon(
+                        Icons.accessibility_sharp,
+                        size: 30,
+                        color: value ? context.theme.primaryColor : null,
+                      )),
               ToggleRotate(
                   duration: const Duration(seconds: 1),
                   turns: 1,
+                  onChanged: (bool value) {
+                    log('ToggleRotate 1 : $value');
+                  },
                   builder: (Widget child, rotate) =>
                       GestureDetector(onTap: rotate, child: child),
-                  icon: const Icon(Icons.accessibility_sharp, size: 30)),
+                  icon: (bool value) => Icon(
+                        Icons.accessibility_sharp,
+                        size: 30,
+                        color: value ? context.theme.primaryColor : null,
+                      )),
               ToggleRotate(
                   duration: const Duration(seconds: 2),
                   turns: 1.5,
+                  onChanged: (bool value) {
+                    log('ToggleRotate 1.5 : $value');
+                  },
                   builder: (Widget child, rotate) =>
                       GestureDetector(onTap: rotate, child: child),
-                  icon: const Icon(Icons.accessibility_sharp, size: 30))
+                  icon: (bool value) => Icon(
+                        Icons.accessibility_sharp,
+                        size: 30,
+                        color: value ? context.theme.primaryColor : null,
+                      )),
             ]),
             const Partition('DottedLine'),
             Container(

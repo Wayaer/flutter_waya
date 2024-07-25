@@ -61,6 +61,7 @@ class ButtonPage extends StatelessWidget {
               onSelected: (_, String label, String? value) {
             showToast('label：$label    item: $value');
           }, menus: _popupMenus.entriesMapToList((menusItem) {
+            String? selectValue;
             return MultiPopupMenuButtonItem<String, String>(
                 key: menusItem.key,
                 builder: (BuildContext context,
@@ -70,13 +71,13 @@ class ButtonPage extends StatelessWidget {
                     VoidCallback onCanceled,
                     PopupMenuItemSelected<String> onSelected) {
                   return PopupMenuButtonRotateBuilder(
-                      turns: 0.5,
-                      icon: const Icon(Icons.arrow_circle_down_sharp),
+                      icon: const Icon(Icons.arrow_circle_down_sharp)
+                          .toToggleRotateIconBuilder,
                       builder:
                           (_, Widget rotateIcon, onRotateOpened, onClosed) {
                         return Expanded(
                             child: PopupMenuButton<String>(
-                                initialValue: value,
+                                initialValue: selectValue ?? value,
                                 onCanceled: () {
                                   onCanceled();
                                   onClosed();
@@ -86,6 +87,7 @@ class ButtonPage extends StatelessWidget {
                                   onRotateOpened();
                                 },
                                 onSelected: (v) {
+                                  selectValue = v;
                                   onSelected(v);
                                   onClosed();
                                 },
@@ -96,7 +98,7 @@ class ButtonPage extends StatelessWidget {
                                     color: Colors.red.withOpacity(0.2),
                                     direction: Axis.horizontal,
                                     children: [
-                                      Text(value ?? key).expanded,
+                                      Text(selectValue ?? key).expanded,
                                       10.widthBox,
                                       rotateIcon
                                     ]),
@@ -109,7 +111,8 @@ class ButtonPage extends StatelessWidget {
           const Partition('PopupMenuButtonRotateBuilder'),
           PopupMenuButtonRotateBuilder(
               turns: 0.25,
-              icon: const Icon(Icons.arrow_circle_right_outlined),
+              icon: const Icon(Icons.arrow_circle_right_outlined)
+                  .toToggleRotateIconBuilder,
               builder: (_, Widget rotate, onOpened, onClosed) {
                 return PopupMenuButton(
                     onCanceled: onClosed,
