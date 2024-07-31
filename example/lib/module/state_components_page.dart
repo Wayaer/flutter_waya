@@ -118,7 +118,7 @@ class StateComponentsPage extends StatelessWidget {
               },
               padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
               onTap: (Function sending) async {
-                1.seconds.delayed(() {
+                3.seconds.delayed(() {
                   sending(true);
                 });
               },
@@ -135,14 +135,26 @@ class StateComponentsPage extends StatelessWidget {
                 }
               }),
           const Partition('CountDown'),
-          CountDown(
-              onChanged: (int i) {},
-              periodic: 1,
-              duration: const Duration(seconds: 100),
-              builder: (int i) => Universal(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                  child: ElevatedText(i.toString()))),
+          Row(children: [
+            CountDown(
+                onChanged: (Duration duration) {},
+                periodic: const Duration(seconds: 3),
+                duration: const Duration(seconds: 2),
+                autoStart: false,
+                builder: (Duration duration, bool isActive, start) => Universal(
+                    onTap: start,
+                    child: ElevatedText(
+                        'isActive:$isActive  | ${duration.inSeconds}'))),
+            const Spacer(),
+            CountDown(
+                onChanged: (Duration duration) {},
+                periodic: const Duration(seconds: 30),
+                duration: const Duration(seconds: 20),
+                builder: (Duration duration, bool isActive, start) => Universal(
+                    onTap: start,
+                    child: ElevatedText(
+                        'isActive:$isActive  | ${duration.inSeconds}'))),
+          ]),
           const SizedBox(height: 100),
         ]);
   }
