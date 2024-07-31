@@ -1,2 +1,2 @@
-dart format . lib
-dart format . example/lib
+dart format lib
+dart format example/lib
