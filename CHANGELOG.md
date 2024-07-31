@@ -1,3 +1,7 @@
+## 9.7.2
+
+* Add some callbacks for `CountDown` and remove `CountDownType` enumeration
+
 ## 9.7.1
 
 * Added `AutomaticKeepAliveWrapper` and `AutomaticKeepAliveWrapperState`

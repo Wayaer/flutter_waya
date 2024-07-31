@@ -37,7 +37,6 @@ export 'src/x_switch.dart';
 export 'src/animation/expansion_tiles.dart';
 export 'src/rating_stars.dart';
 export 'src/flip_card.dart';
-export 'src/send_verification_code.dart';
 export 'src/badge.dart';
 export 'src/list_entry.dart';
 export 'src/event.dart';
