@@ -1,6 +1,9 @@
-## 9.7.2
+## 9.8.0
 
-* Add some callbacks for `CountDown` and remove `CountDownType` enumeration
+* Add some callbacks for `CountDown()` and remove `CountDownType` enumeration
+* Add `onStartTiming` `onStarts` `onEnds` callback method for `CountDown()`
+* Change the `onTap` of `SendVerificationCode()` to `onSendTap`
+* Change the `onStateChanged` of `SendVerificationCode()` to `onChanged`
 
 ## 9.7.1
 
