@@ -6,6 +6,8 @@ import 'package:flutter_waya/src/extended_state.dart';
 typedef CountDownBuilder = Widget Function(
     Duration duration, bool isRunning, VoidCallback startTiming);
 
+typedef CountDownOnStartTiming = void Function(VoidCallback startTiming);
+
 /// 倒计时
 class CountDown extends StatefulWidget {
   const CountDown({
@@ -17,6 +19,7 @@ class CountDown extends StatefulWidget {
     this.autoStart = true,
     this.onStarts,
     this.onEnds,
+    this.onStartTiming,
   });
 
   /// UI 回调
@@ -33,6 +36,9 @@ class CountDown extends StatefulWidget {
 
   /// 开始回调
   final VoidCallback? onStarts;
+
+  /// 执行计时器方法回调
+  final CountDownOnStartTiming? onStartTiming;
 
   /// 结束回调
   final VoidCallback? onEnds;
@@ -52,6 +58,7 @@ class _CountDownState extends ExtendedState<CountDown> {
   void initState() {
     super.initState();
     current = widget.duration;
+    widget.onStartTiming?.call(startTiming);
     if (widget.autoStart) {
       WidgetsBinding.instance.addPostFrameCallback((Duration callback) {
         startTiming();
@@ -110,8 +117,7 @@ class _CountDownState extends ExtendedState<CountDown> {
   }
 }
 
-typedef SendVerificationCodeValueCallback = void Function(
-    void Function(bool send));
+typedef SendVerificationCodeValueCallback = Future<bool> Function();
 
 typedef SendStateBuilder = Widget Function(SendState state, int i);
 
@@ -138,14 +144,14 @@ enum SendState {
 class SendVerificationCode extends StatefulWidget {
   const SendVerificationCode(
       {super.key,
-      required this.onTap,
+      required this.onSendTap,
+      required this.builder,
       this.decoration,
       this.duration = const Duration(seconds: 60),
       this.margin,
       this.padding,
-      required this.builder,
       this.gestureBuilder,
-      this.onStateChanged});
+      this.onChanged});
 
   /// 文字 builder
   final SendStateBuilder builder;
@@ -157,10 +163,10 @@ class SendVerificationCode extends StatefulWidget {
   final Duration duration;
 
   /// 点击按钮
-  final SendVerificationCodeValueCallback? onTap;
+  final SendVerificationCodeValueCallback? onSendTap;
 
   /// 状态变化
-  final SendStateChanged? onStateChanged;
+  final SendStateChanged? onChanged;
 
   /// 装饰器
   final Decoration? decoration;
@@ -187,7 +193,7 @@ class _SendVerificationCodeState extends ExtendedState<SendVerificationCode> {
 
   void onChanged() {
     if (lastSendState == sendState) return;
-    widget.onStateChanged?.call(sendState);
+    widget.onChanged?.call(sendState);
     lastSendState = sendState;
   }
 
@@ -212,9 +218,11 @@ class _SendVerificationCodeState extends ExtendedState<SendVerificationCode> {
               sendState = SendState.resend;
               onChanged();
             },
+            onStartTiming: (VoidCallback startTiming) {
+              this.startTiming = startTiming;
+            },
             builder:
                 (Duration duration, bool isActive, VoidCallback startTiming) {
-              this.startTiming = startTiming;
               return widget.builder(sendState, duration.inSeconds);
             }));
     return widget.gestureBuilder?.call(onTap, current) ??
@@ -228,9 +236,9 @@ class _SendVerificationCodeState extends ExtendedState<SendVerificationCode> {
     sendState = SendState.sending;
     onChanged();
     setState(() {});
-    widget.onTap?.call((bool value) {
+    widget.onSendTap?.call().then((result) {
       if (!mounted) return;
-      if (value) {
+      if (result) {
         startTiming?.call();
       } else {
         sendState = SendState.resend;
