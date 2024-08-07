@@ -277,7 +277,6 @@ class _CarouselSliderState extends ExtendedState<CarouselSlider>
         findChildIndexCallback: widget.options.findChildIndexCallback,
         dragStartBehavior: widget.options.dragStartBehavior,
         restorationId: widget.options.restorationId,
-        hitTestBehavior: widget.options.hitTestBehavior,
         itemBuilder: itemBuilder,
         onPageChanged: (int index) {
           int currentPage = _getRealIndex(index + carouselState!.initialPage,

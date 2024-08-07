@@ -155,11 +155,6 @@ class CarouselSliderOptions {
   /// {@macro flutter.widgets.scrollable.dragStartBehavior}
   final DragStartBehavior dragStartBehavior;
 
-  /// {@macro flutter.widgets.scrollable.hitTestBehavior}
-  ///
-  /// Defaults to [HitTestBehavior.opaque].
-  final HitTestBehavior hitTestBehavior;
-
   /// {@template flutter.widgets.SliverChildBuilderDelegate.findChildIndexCallback}
   /// Called to find the new index of a child based on its key in case of reordering.
   ///
@@ -202,7 +197,6 @@ class CarouselSliderOptions {
     this.allowImplicitScrolling = false,
     this.restorationId,
     this.dragStartBehavior = DragStartBehavior.start,
-    this.hitTestBehavior = HitTestBehavior.opaque,
     this.findChildIndexCallback,
   });
 
@@ -236,7 +230,6 @@ class CarouselSliderOptions {
     bool? allowImplicitScrolling,
     String? restorationId,
     DragStartBehavior? dragStartBehavior,
-    HitTestBehavior? hitTestBehavior,
     ChildIndexGetter? findChildIndexCallback,
   }) =>
       CarouselSliderOptions(
@@ -272,7 +265,6 @@ class CarouselSliderOptions {
             allowImplicitScrolling ?? this.allowImplicitScrolling,
         restorationId: restorationId ?? this.restorationId,
         dragStartBehavior: dragStartBehavior ?? this.dragStartBehavior,
-        hitTestBehavior: hitTestBehavior ?? this.hitTestBehavior,
         findChildIndexCallback:
             findChildIndexCallback ?? this.findChildIndexCallback,
       );
