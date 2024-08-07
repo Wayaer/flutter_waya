@@ -1,3 +1,7 @@
+## 9.8.1
+
+* Added `CarouselSlider`
+
 ## 9.8.0
 
 * Add some callbacks for `CountDown()` and remove `CountDownType` enumeration

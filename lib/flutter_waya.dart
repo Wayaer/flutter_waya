@@ -14,13 +14,14 @@ export 'src/const/styles.dart';
 /// progress
 export 'src/progress/progress.dart';
 
+/// carousel_slider
+export 'src/carousel/carousel_slider.dart';
+
 /// swiper
 export 'src/swiper/indicator.dart';
-export 'src/swiper/pagination.dart';
 export 'src/swiper/swiper.dart';
 
-/// text_field
-
+/// editable_text
 export 'src/editable_text/text_field.dart';
 export 'src/editable_text/pin_text_field.dart';
 

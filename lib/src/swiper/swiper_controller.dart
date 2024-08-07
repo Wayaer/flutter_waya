@@ -1,6 +1,4 @@
-import 'dart:async';
-
-import 'package:flutter/material.dart';
+part of 'swiper.dart';
 
 enum FlSwiperEvent { next, previous, start, stop }
 
