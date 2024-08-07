@@ -89,7 +89,7 @@ class CarouselSliderOptions {
   /// [PageScrollPhysics] prior to being used.
   ///
   /// Defaults to matching platform conventions.
-  final ScrollPhysics? scrollPhysics;
+  final ScrollPhysics? physics;
 
   /// Set to false to disable page snapping, useful for custom scroll behavior.
   ///
@@ -136,6 +136,42 @@ class CarouselSliderOptions {
   /// Exposed clipBehavior of PageView
   final Clip clipBehavior;
 
+  /// Controls whether the widget's pages will respond to
+  /// [RenderObject.showOnScreen], which will allow for implicit accessibility
+  /// scrolling.
+  ///
+  /// With this flag set to false, when accessibility focus reaches the end of
+  /// the current page and the user attempts to move it to the next element, the
+  /// focus will traverse to the next widget outside of the page view.
+  ///
+  /// With this flag set to true, when accessibility focus reaches the end of
+  /// the current page and user attempts to move it to the next element, focus
+  /// will traverse to the next page in the page view.
+  final bool allowImplicitScrolling;
+
+  /// {@macro flutter.widgets.scrollable.restorationId}
+  final String? restorationId;
+
+  /// {@macro flutter.widgets.scrollable.dragStartBehavior}
+  final DragStartBehavior dragStartBehavior;
+
+  /// {@macro flutter.widgets.scrollable.hitTestBehavior}
+  ///
+  /// Defaults to [HitTestBehavior.opaque].
+  final HitTestBehavior hitTestBehavior;
+
+  /// {@template flutter.widgets.SliverChildBuilderDelegate.findChildIndexCallback}
+  /// Called to find the new index of a child based on its key in case of reordering.
+  ///
+  /// If not provided, a child widget may not map to its existing [RenderObject]
+  /// when the order of children returned from the children builder changes.
+  /// This may result in state-loss.
+  ///
+  /// This callback should take an input [Key], and it should return the
+  /// index of the child element with that associated key, or null if not found.
+  /// {@endtemplate}
+  final ChildIndexGetter? findChildIndexCallback;
+
   const CarouselSliderOptions({
     this.height,
     this.aspectRatio = 16 / 9,
@@ -151,7 +187,7 @@ class CarouselSliderOptions {
     this.enlargeCenterPage = false,
     this.onPageChanged,
     this.onScrolled,
-    this.scrollPhysics,
+    this.physics,
     this.pageSnapping = true,
     this.scrollDirection = Axis.horizontal,
     this.pauseAutoPlayOnTouch = true,
@@ -163,35 +199,46 @@ class CarouselSliderOptions {
     this.disableCenter = false,
     this.padEnds = true,
     this.clipBehavior = Clip.hardEdge,
+    this.allowImplicitScrolling = false,
+    this.restorationId,
+    this.dragStartBehavior = DragStartBehavior.start,
+    this.hitTestBehavior = HitTestBehavior.opaque,
+    this.findChildIndexCallback,
   });
 
   ///Generate new [CarouselSliderOptions] based on old ones.
-  CarouselSliderOptions copyWith(
-          {double? height,
-          double? aspectRatio,
-          double? viewportFraction,
-          int? initialPage,
-          bool? enableInfiniteScroll,
-          bool? reverse,
-          bool? autoPlay,
-          Duration? autoPlayInterval,
-          Duration? autoPlayAnimationDuration,
-          Curve? autoPlayCurve,
-          bool? enlargeCenterPage,
-          CarouselPageChangedCallback? onPageChanged,
-          ValueChanged<double?>? onScrolled,
-          ScrollPhysics? scrollPhysics,
-          bool? pageSnapping,
-          Axis? scrollDirection,
-          bool? pauseAutoPlayOnTouch,
-          bool? pauseAutoPlayOnManualNavigate,
-          bool? pauseAutoPlayInFiniteScroll,
-          PageStorageKey? pageViewKey,
-          CenterPageEnlargeStrategy? enlargeStrategy,
-          double? enlargeFactor,
-          bool? disableCenter,
-          Clip? clipBehavior,
-          bool? padEnds}) =>
+  CarouselSliderOptions copyWith({
+    double? height,
+    double? aspectRatio,
+    double? viewportFraction,
+    int? initialPage,
+    bool? enableInfiniteScroll,
+    bool? reverse,
+    bool? autoPlay,
+    Duration? autoPlayInterval,
+    Duration? autoPlayAnimationDuration,
+    Curve? autoPlayCurve,
+    bool? enlargeCenterPage,
+    CarouselPageChangedCallback? onPageChanged,
+    ValueChanged<double?>? onScrolled,
+    ScrollPhysics? physics,
+    bool? pageSnapping,
+    Axis? scrollDirection,
+    bool? pauseAutoPlayOnTouch,
+    bool? pauseAutoPlayOnManualNavigate,
+    bool? pauseAutoPlayInFiniteScroll,
+    PageStorageKey? pageViewKey,
+    CenterPageEnlargeStrategy? enlargeStrategy,
+    double? enlargeFactor,
+    bool? disableCenter,
+    Clip? clipBehavior,
+    bool? padEnds,
+    bool? allowImplicitScrolling,
+    String? restorationId,
+    DragStartBehavior? dragStartBehavior,
+    HitTestBehavior? hitTestBehavior,
+    ChildIndexGetter? findChildIndexCallback,
+  }) =>
       CarouselSliderOptions(
         height: height ?? this.height,
         aspectRatio: aspectRatio ?? this.aspectRatio,
@@ -207,7 +254,7 @@ class CarouselSliderOptions {
         enlargeCenterPage: enlargeCenterPage ?? this.enlargeCenterPage,
         onPageChanged: onPageChanged ?? this.onPageChanged,
         onScrolled: onScrolled ?? this.onScrolled,
-        scrollPhysics: scrollPhysics ?? this.scrollPhysics,
+        physics: physics ?? this.physics,
         pageSnapping: pageSnapping ?? this.pageSnapping,
         scrollDirection: scrollDirection ?? this.scrollDirection,
         pauseAutoPlayOnTouch: pauseAutoPlayOnTouch ?? this.pauseAutoPlayOnTouch,
@@ -221,6 +268,13 @@ class CarouselSliderOptions {
         disableCenter: disableCenter ?? this.disableCenter,
         clipBehavior: clipBehavior ?? this.clipBehavior,
         padEnds: padEnds ?? this.padEnds,
+        allowImplicitScrolling:
+            allowImplicitScrolling ?? this.allowImplicitScrolling,
+        restorationId: restorationId ?? this.restorationId,
+        dragStartBehavior: dragStartBehavior ?? this.dragStartBehavior,
+        hitTestBehavior: hitTestBehavior ?? this.hitTestBehavior,
+        findChildIndexCallback:
+            findChildIndexCallback ?? this.findChildIndexCallback,
       );
 }
 
