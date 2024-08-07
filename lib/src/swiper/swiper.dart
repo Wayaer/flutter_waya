@@ -1,8 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/flutter_waya.dart';
 import 'package:flutter_waya/src/extended_state.dart';
+
+part 'swiper_controller.dart';
 
 typedef FlSwiperOnTap = void Function(int index);
 

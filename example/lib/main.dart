@@ -1,4 +1,5 @@
 import 'package:app/module/button_page.dart';
+import 'package:app/module/carousel_slider_page.dart';
 import 'package:app/module/components_page.dart';
 import 'package:app/module/decorator_page.dart';
 import 'package:app/module/flip_card_page.dart';
@@ -89,6 +90,8 @@ class _HomeState extends State<_Home> {
           ElevatedText('Button', onTap: () => push(const ButtonPage())),
           ElevatedText('FlSwiper', onTap: () => push(const FlSwiperPage())),
           ElevatedText('FlProgress', onTap: () => push(const FlProgressPage())),
+          ElevatedText('CarouselSlider',
+              onTap: () => push(const CarouselSliderPage())),
           ElevatedText('DecoratorBox',
               onTap: () => push(const DecoratorBoxPage())),
           ElevatedText('TextField', onTap: () => push(const TextFieldPage())),
