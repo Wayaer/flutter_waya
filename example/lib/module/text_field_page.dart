@@ -21,7 +21,7 @@ class _TextFieldPageState extends State<TextFieldPage> {
         appBar: AppBarText('TextField'),
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
         children: [
-          const Partition('DecoratorBox with TextField'),
+          const Partition('DecoratorBox with TextField', marginTop: 0),
           DecoratorBox(
               decoration: BoxDecorative(
                 borderType: BorderType.underline,

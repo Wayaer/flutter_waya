@@ -16,7 +16,7 @@ class StateComponentsPage extends StatelessWidget {
         appBar: AppBarText('State Components'),
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
         children: [
-          const Partition('CheckBox 自定义版'),
+          const Partition('CheckBox 自定义版', marginTop: 0),
           Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[

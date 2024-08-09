@@ -89,7 +89,8 @@ class _HomeState extends State<_Home> {
               onTap: () => push(const StateComponentsPage())),
           ElevatedText('Button', onTap: () => push(const ButtonPage())),
           ElevatedText('FlSwiper', onTap: () => push(const FlSwiperPage())),
-          ElevatedText('FlProgress', onTap: () => push(const FlProgressPage())),
+          ElevatedText('ProgressBar',
+              onTap: () => push(const ProgressBarPage())),
           ElevatedText('CarouselSlider',
               onTap: () => push(const CarouselSliderPage())),
           ElevatedText('DecoratorBox',
@@ -146,10 +147,11 @@ class ElevatedText extends StatelessWidget {
 }
 
 class Partition extends StatelessWidget {
-  const Partition(this.title, {super.key, this.onTap});
+  const Partition(this.title, {super.key, this.onTap, this.marginTop = 20});
 
   final String title;
   final GestureTapCallback? onTap;
+  final double marginTop;
 
   @override
   Widget build(BuildContext context) => Universal(
@@ -158,7 +160,7 @@ class Partition extends StatelessWidget {
       color: Colors.grey.withOpacity(0.2),
       alignment: Alignment.center,
       padding: const EdgeInsets.all(10),
-      margin: const EdgeInsets.symmetric(vertical: 20),
+      margin: EdgeInsets.only(top: marginTop, bottom: 20),
       child: BText(title,
           textAlign: TextAlign.center, fontWeight: FontWeight.bold));
 }

@@ -47,7 +47,7 @@ class _FlSwiperPageState extends State<FlSwiperPage> {
         isScroll: true,
         appBar: AppBarText('FlSwiper'),
         children: [
-          const Partition('FlSwiper FlSwiperLayout.tinder'),
+          const Partition('FlSwiper FlSwiperLayout.tinder', marginTop: 0),
           FlSwiper(
                   autoPlay: true,
                   duration: const Duration(seconds: 3),

@@ -22,7 +22,7 @@ class _DecoratorBoxPageState extends ExtendedState<DecoratorBoxPage> {
         appBar: AppBarText('DecoratorBox'),
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
         children: [
-          const Partition('DecoratorBox'),
+          const Partition('DecoratorBox', marginTop: 0),
           DecoratorBox(
               hasFocus: true,
               decoration: decoration,

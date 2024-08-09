@@ -21,7 +21,7 @@ class LiquidProgressIndicator extends ProgressIndicator {
     super.color,
     super.valueColor,
     this.borderWidth = 0,
-    this.borderColor = Colors.transparent,
+    this.borderColor,
     this.borderRadius = 0,
     this.center,
     this.direction = Axis.horizontal,
@@ -78,12 +78,6 @@ class LiquidProgressIndicator extends ProgressIndicator {
 
   final LiquidProgressIndicatorType type;
 
-  Color _getBackgroundColor(BuildContext context) =>
-      backgroundColor ?? Theme.of(context).colorScheme.primary;
-
-  Color _getValueColor(BuildContext context) =>
-      color ?? valueColor?.value ?? Theme.of(context).colorScheme.secondary;
-
   @override
   State<StatefulWidget> createState() => _ProgressState();
 }
@@ -94,19 +88,19 @@ class _ProgressState extends ExtendedState<LiquidProgressIndicator> {
     switch (widget.type) {
       case LiquidProgressIndicatorType.linear:
         return buildCustomPaint(
-            clipper: _LiquidLinearClipper(radius: widget.borderRadius),
-            painter: _LiquidLinearPainter(
-                color: widget._getBackgroundColor(context),
-                radius: widget.borderRadius),
-            foregroundPainter: _LiquidLinearBorderPainter(
-                color: widget.borderColor!,
+            clipper: _LinearClipper(radius: widget.borderRadius),
+            painter: _LinearPainter(
+                color: backgroundColor, radius: widget.borderRadius),
+            foregroundPainter: _LinearBorderPainter(
+                color: widget.borderColor ??
+                    Theme.of(context).progressIndicatorTheme.linearTrackColor ??
+                    Theme.of(context).primaryColor,
                 width: widget.borderWidth!,
                 radius: widget.borderRadius));
       case LiquidProgressIndicatorType.circular:
         return buildCustomPaint(
-            clipper: _LiquidCircleClipper(),
-            painter: _LiquidCirclePainter(
-                color: widget._getBackgroundColor(context)),
+            clipper: _CircleClipper(),
+            painter: _CirclePainter(color: backgroundColor),
             foregroundPainter: _CircleBorderPainter(
                 color: widget.borderColor ??
                     Theme.of(context)
@@ -123,8 +117,7 @@ class _ProgressState extends ExtendedState<LiquidProgressIndicator> {
                 pathBounds: pathBounds,
                 clipper: _CustomPathClipper(path: widget.shapePath!),
                 painter: _CustomLiquidPathPainter(
-                    color: widget._getBackgroundColor(context),
-                    path: widget.shapePath!)));
+                    color: backgroundColor, path: widget.shapePath!)));
     }
   }
 
@@ -134,9 +127,7 @@ class _ProgressState extends ExtendedState<LiquidProgressIndicator> {
       CustomPainter? foregroundPainter,
       Rect? pathBounds}) {
     final wave = FlAnimationWave(
-        value: widget.value!,
-        color: widget._getValueColor(context),
-        direction: widget.direction);
+        value: widget.value!, color: valueColor, direction: widget.direction);
     return ClipPath(
         clipper: clipper,
         child: CustomPaint(
@@ -151,10 +142,18 @@ class _ProgressState extends ExtendedState<LiquidProgressIndicator> {
               if (widget.center != null) Center(child: widget.center),
             ])));
   }
+
+  Color get backgroundColor =>
+      widget.backgroundColor ?? Theme.of(context).colorScheme.secondary;
+
+  Color get valueColor =>
+      widget.color ??
+      widget.valueColor?.value ??
+      Theme.of(context).colorScheme.primary;
 }
 
-class _LiquidLinearPainter extends CustomPainter {
-  _LiquidLinearPainter({required this.color, required this.radius});
+class _LinearPainter extends CustomPainter {
+  _LinearPainter({required this.color, required this.radius});
 
   final Color color;
   final double radius;
@@ -166,12 +165,11 @@ class _LiquidLinearPainter extends CustomPainter {
       Paint()..color = color);
 
   @override
-  bool shouldRepaint(_LiquidLinearPainter oldDelegate) =>
-      color != oldDelegate.color;
+  bool shouldRepaint(_LinearPainter oldDelegate) => color != oldDelegate.color;
 }
 
-class _LiquidLinearBorderPainter extends CustomPainter {
-  _LiquidLinearBorderPainter({
+class _LinearBorderPainter extends CustomPainter {
+  _LinearBorderPainter({
     required this.color,
     required this.width,
     required this.radius,
@@ -198,14 +196,14 @@ class _LiquidLinearBorderPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(_LiquidLinearBorderPainter oldDelegate) =>
+  bool shouldRepaint(_LinearBorderPainter oldDelegate) =>
       color != oldDelegate.color ||
       width != oldDelegate.width ||
       radius != oldDelegate.radius;
 }
 
-class _LiquidLinearClipper extends CustomClipper<Path> {
-  _LiquidLinearClipper({this.radius = 0});
+class _LinearClipper extends CustomClipper<Path> {
+  _LinearClipper({this.radius = 0});
 
   final double radius;
 
@@ -218,8 +216,8 @@ class _LiquidLinearClipper extends CustomClipper<Path> {
   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
 
-class _LiquidCirclePainter extends CustomPainter {
-  _LiquidCirclePainter({required this.color});
+class _CirclePainter extends CustomPainter {
+  _CirclePainter({required this.color});
 
   final Color color;
 
@@ -230,8 +228,7 @@ class _LiquidCirclePainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(_LiquidCirclePainter oldDelegate) =>
-      color != oldDelegate.color;
+  bool shouldRepaint(_CirclePainter oldDelegate) => color != oldDelegate.color;
 }
 
 class _CircleBorderPainter extends CustomPainter {
@@ -256,7 +253,7 @@ class _CircleBorderPainter extends CustomPainter {
       color != oldDelegate.color || width != oldDelegate.width;
 }
 
-class _LiquidCircleClipper extends CustomClipper<Path> {
+class _CircleClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) => Path()..addArc(Offset.zero & size, 0, _sweep);
 

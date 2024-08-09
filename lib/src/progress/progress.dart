@@ -6,33 +6,53 @@ import 'package:flutter_waya/src/extended_state.dart';
 
 part 'liquid_progress.dart';
 
-enum LinearStrokeCap { butt, round, roundAll }
+typedef FlLinearProgressChildBuilder = Widget Function(
+    BuildContext context, double percent);
 
-class FlProgress extends StatefulWidget {
-  const FlProgress.linear({
+class FlLinearProgress extends StatefulWidget {
+  const FlLinearProgress({
     super.key,
+    required this.progressColor,
     this.percent = 0.0,
-    this.lineHeight = 5.0,
-    this.width,
+    this.height = 5.0,
+    this.width = double.infinity,
     this.backgroundColor,
-    this.progressColor,
-    this.linearGradient,
     this.animation = false,
-    this.animationDuration = const Duration(milliseconds: 500),
-    this.animateFromLastPercent = true,
+    this.repeat = false,
+    this.duration = const Duration(seconds: 2),
+    this.curve = Curves.fastLinearToSlowEaseIn,
     this.isRTL = false,
-    this.center,
-    this.addAutomaticKeepAlive = true,
-    this.linearStrokeCap = LinearStrokeCap.butt,
+    this.builder,
+    this.strokeCap = StrokeCap.butt,
     this.mainAxisAlignment = MainAxisAlignment.start,
     this.maskFilter,
-    this.clipLinearGradient = false,
-    this.curve = Curves.linear,
-    this.restartAnimation = false,
-    this.onAnimationEnd,
-    this.widgetIndicator,
-  }) : assert(linearGradient != null || progressColor != null,
-            'Cannot provide both linearGradient and progressColor');
+    this.onChanged,
+  })  : assert(percent >= 0 && percent <= 1),
+        assert(progressColor != null),
+        isClip = false,
+        linearGradient = null;
+
+  const FlLinearProgress.gradient({
+    super.key,
+    required this.linearGradient,
+    this.percent = 0.0,
+    this.height = 5.0,
+    this.width = double.infinity,
+    this.backgroundColor,
+    this.animation = false,
+    this.repeat = false,
+    this.duration = const Duration(seconds: 2),
+    this.curve = Curves.fastLinearToSlowEaseIn,
+    this.isRTL = false,
+    this.builder,
+    this.strokeCap = StrokeCap.square,
+    this.mainAxisAlignment = MainAxisAlignment.start,
+    this.maskFilter,
+    this.isClip = true,
+    this.onChanged,
+  })  : assert(percent >= 0 && percent <= 1),
+        assert(linearGradient != null),
+        progressColor = null;
 
   /// Percent value between 0.0 and 1.0
   final double percent;
@@ -48,21 +68,15 @@ class FlProgress extends StatefulWidget {
 
   /// duration of the animation in milliseconds, It only applies if animation
   /// attribute is true
-  final Duration animationDuration;
+  final Duration duration;
 
   /// widget inside the Line
-  final Widget? center;
-
-  /// set true if you want to animate the linear from the last percent value you set
-  final bool animateFromLastPercent;
+  final FlLinearProgressChildBuilder? builder;
 
   /// If present, this will make the progress bar colored by this gradient.
   ///
   /// This will override [progressColor]. It is an error to provide both.
   final LinearGradient? linearGradient;
-
-  /// set false if you don't want to preserve the state of the widget
-  final bool addAutomaticKeepAlive;
 
   /// Creates a mask filter that takes the progress shape being drawn and blurs it.
   final MaskFilter? maskFilter;
@@ -72,25 +86,17 @@ class FlProgress extends StatefulWidget {
 
   /// set true when you want to restart the animation, it restarts only when reaches 1.0 as a value
   /// defaults to false
-  final bool restartAnimation;
-
-  /// Callback called when the animation ends (only if `animation` is true)
-  final VoidCallback? onAnimationEnd;
-
-  /// Display a widget indicator at the end of the progress. It only works when `animation` is true
-  final Widget? widgetIndicator;
-
-  /// linear
+  final bool repeat;
 
   /// Percent value between 0.0 and 1.0
-  final double? width;
+  final double width;
 
   /// Height of the line
-  final double lineHeight;
+  final double height;
 
   /// The kind of finish to place on the end of lines drawn, values
   /// supported: butt, round, roundAll
-  final LinearStrokeCap linearStrokeCap;
+  final StrokeCap strokeCap;
 
   /// mainAxisAlignment of the Row
   final MainAxisAlignment mainAxisAlignment;
@@ -98,212 +104,177 @@ class FlProgress extends StatefulWidget {
   /// set true if you want to animate the linear from the right to left (RTL)
   final bool isRTL;
 
+  /// Called when the user is selecting a new value for the progress bar
+  final ValueChanged<double>? onChanged;
+
   /// Set true if you want to display only part of [linearGradient] based on percent value
   /// (ie. create 'VU effect'). If no [linearGradient] is specified this option is ignored.
-  final bool clipLinearGradient;
+  final bool isClip;
 
   @override
-  State<StatefulWidget> createState() => _LinearState();
+  State<StatefulWidget> createState() => _FlLinearProgressState();
 }
 
-abstract class _FlProgressSubState extends ExtendedState<FlProgress>
-    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
-  AnimationController? animationController;
-  Animation<double>? animation;
-  double percent = 0.0;
+class _FlLinearProgressState extends ExtendedState<FlLinearProgress>
+    with SingleTickerProviderStateMixin {
+  AnimationController? controller;
 
   @override
   void initState() {
-    if (!widget.animation) percent = widget.percent;
-    if (widget.animation && widget.percent > 0) {
-      animationController =
-          AnimationController(vsync: this, duration: widget.animationDuration);
-      animation = Tween<double>(begin: 0.0, end: widget.percent).animate(
-        CurvedAnimation(parent: animationController!, curve: widget.curve),
-      )..addListener(() {
-          percent = animation!.value;
-          if (mounted) setState(() {});
-          if (widget.restartAnimation && percent == 1.0) {
-            animationController!.repeat(min: 0, max: 1.0);
-          }
-        });
-      animationController!.addStatusListener((AnimationStatus status) {
-        if (widget.onAnimationEnd != null &&
-            status == AnimationStatus.completed) widget.onAnimationEnd!();
-      });
-      animationController!.forward();
-    }
     super.initState();
+    initAnimationController();
+    startAnimation();
   }
 
-  @override
-  void didUpdateWidget(FlProgress oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.percent != widget.percent) {
-      if (animationController != null && widget.percent > 0) {
-        animationController!.duration = widget.animationDuration;
-        animation = Tween<double>(
-                begin: widget.animateFromLastPercent ? oldWidget.percent : 0.0,
-                end: widget.percent)
-            .animate(CurvedAnimation(
-                parent: animationController!, curve: widget.curve));
-        animationController!.forward(from: 0.0);
+  void initAnimationController() {
+    if (widget.animation) {
+      if (widget.percent > 0) {
+        controller ??=
+            AnimationController(vsync: this, duration: widget.duration);
+        controller!
+            .drive(CurveTween(curve: widget.curve))
+            .addListener(listener);
       } else {
-        percent = widget.percent;
-        if (mounted) setState(() {});
+        widget.onChanged?.call(percent);
+      }
+    } else {
+      disposeController();
+    }
+  }
+
+  void disposeController() {
+    controller?.removeListener(listener);
+    controller?.dispose();
+  }
+
+  void listener() {
+    lastPercent = percent;
+    widget.onChanged?.call(percent);
+    if (mounted) setState(() {});
+  }
+
+  void startAnimation({double? from}) {
+    if (controller != null) {
+      if (widget.repeat) {
+        controller!.repeat(max: widget.percent);
+      } else {
+        controller!.animateTo(widget.percent);
       }
     }
-    if (oldWidget.animation && !widget.animation) animationController?.stop();
+  }
+
+  double lastPercent = 0;
+
+  double get percent => (controller?.value ?? widget.percent);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+        height: widget.height,
+        width: widget.width,
+        child: CustomPaint(
+            painter: _LinearProgressPainter(
+                isRTL: widget.isRTL,
+                progress: percent,
+                progressColor: widget.progressColor ??
+                    Theme.of(context).progressIndicatorTheme.color ??
+                    Theme.of(context).primaryColor,
+                linearGradient: widget.linearGradient,
+                backgroundColor: widget.backgroundColor ??
+                    Theme.of(context).colorScheme.primary,
+                strokeCap: widget.strokeCap,
+                width: widget.height,
+                maskFilter: widget.maskFilter,
+                isClip: widget.isClip),
+            child: widget.builder?.call(context, percent)));
   }
 
   @override
-  bool get wantKeepAlive => widget.addAutomaticKeepAlive;
+  void didUpdateWidget(covariant FlLinearProgress oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.animation != widget.animation) initAnimationController();
+    if (oldWidget.duration != widget.duration) {
+      controller?.duration = widget.duration;
+    }
+    startAnimation(from: oldWidget.percent);
+  }
 
   @override
   void dispose() {
-    animationController?.dispose();
+    disposeController();
     super.dispose();
   }
 }
 
-class _LinearState extends _FlProgressSubState {
-  final GlobalKey<State<StatefulWidget>> _containerKey = GlobalKey();
-  final GlobalKey<State<StatefulWidget>> _keyIndicator = GlobalKey();
-  double _containerWidth = 0.0;
-  double _indicatorWidth = 0.0;
-
-  @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _containerWidth = _containerKey.currentContext!.size!.width;
-      if (_keyIndicator.currentContext != null) {
-        _indicatorWidth = _keyIndicator.currentContext!.size!.width;
-      }
-      if (mounted) setState(() {});
-    });
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    super.build(context);
-    final double percentPositionedHorizontal =
-        _containerWidth * percent - _indicatorWidth / 3;
-    final Stack bar = Stack(children: [
-      CustomPaint(
-          key: _containerKey,
-          painter: _LinearProgressPainter(
-              isRTL: widget.isRTL,
-              progress: percent,
-              progressColor: widget.progressColor ??
-                  Theme.of(context).progressIndicatorTheme.color ??
-                  Theme.of(context).primaryColor,
-              linearGradient: widget.linearGradient,
-              backgroundColor: widget.backgroundColor ??
-                  Theme.of(context).colorScheme.primary,
-              linearStrokeCap: widget.linearStrokeCap,
-              lineWidth: widget.lineHeight,
-              maskFilter: widget.maskFilter,
-              clipLinearGradient: widget.clipLinearGradient),
-          child: (widget.center != null)
-              ? Center(child: widget.center)
-              : Container()),
-      if (widget.widgetIndicator != null && _indicatorWidth == 0)
-        Opacity(
-            opacity: 0.0, key: _keyIndicator, child: widget.widgetIndicator),
-      if (widget.widgetIndicator != null &&
-          _containerWidth > 0 &&
-          _indicatorWidth > 0)
-        Positioned(
-            right: widget.isRTL ? percentPositionedHorizontal : null,
-            left: !widget.isRTL ? percentPositionedHorizontal : null,
-            top: 0,
-            child: widget.widgetIndicator!),
-    ]);
-    return SizedBox(
-        height: widget.lineHeight,
-        width: widget.width ?? double.infinity,
-        child: bar);
-  }
-}
-
 class _LinearProgressPainter extends CustomPainter {
+  final Paint background = Paint();
+  final Paint line = Paint();
+  final double width;
+  final double progress;
+  final bool isRTL;
+  final Color backgroundColor;
+  final StrokeCap strokeCap;
+  final MaskFilter? maskFilter;
+  final bool isClip;
+  final LinearGradient? linearGradient;
+  final Color progressColor;
+
   _LinearProgressPainter({
-    required this.lineWidth,
+    required this.width,
     required this.progress,
     required this.isRTL,
     required this.progressColor,
     required this.backgroundColor,
-    this.linearStrokeCap = LinearStrokeCap.butt,
+    this.strokeCap = StrokeCap.butt,
     this.linearGradient,
     this.maskFilter,
-    required this.clipLinearGradient,
+    required this.isClip,
   }) {
-    _paintBackground.color = backgroundColor;
-    _paintBackground.style = PaintingStyle.stroke;
-    _paintBackground.strokeWidth = lineWidth;
+    line.color = progress == 0 ? Colors.transparent : progressColor;
+    background.color = backgroundColor;
 
-    _paintLine.color = progress.toString() == '0.0'
-        ? progressColor.withOpacity(0.0)
-        : progressColor;
-    _paintLine.style = PaintingStyle.stroke;
-    _paintLine.strokeWidth = lineWidth;
+    line.style = PaintingStyle.stroke;
+    background.style = PaintingStyle.stroke;
 
-    if (linearStrokeCap == LinearStrokeCap.round) {
-      _paintLine.strokeCap = StrokeCap.round;
-    } else if (linearStrokeCap == LinearStrokeCap.butt) {
-      _paintLine.strokeCap = StrokeCap.butt;
-    } else {
-      _paintLine.strokeCap = StrokeCap.round;
-      _paintBackground.strokeCap = StrokeCap.round;
-    }
+    line.strokeWidth = width;
+    background.strokeWidth = width;
+
+    line.strokeCap = strokeCap;
+    background.strokeCap = strokeCap;
   }
-
-  final Paint _paintBackground = Paint();
-  final Paint _paintLine = Paint();
-  final double lineWidth;
-  final double progress;
-  final bool isRTL;
-  final Color progressColor;
-  final Color backgroundColor;
-  final LinearStrokeCap linearStrokeCap;
-  final LinearGradient? linearGradient;
-  final MaskFilter? maskFilter;
-  final bool clipLinearGradient;
 
   @override
   void paint(Canvas canvas, Size size) {
     final Offset start = Offset(0.0, size.height / 2);
     final Offset end = Offset(size.width, size.height / 2);
-    canvas.drawLine(start, end, _paintBackground);
-    if (maskFilter != null) _paintLine.maskFilter = maskFilter;
+    canvas.drawLine(start, end, background);
+    if (maskFilter != null) line.maskFilter = maskFilter;
 
     if (isRTL) {
-      final double xFlProgress = size.width - size.width * progress;
+      final double xProgress = size.width - size.width * progress;
       if (linearGradient != null) {
-        _paintLine.shader = _createGradientShaderRightToLeft(size, xFlProgress);
+        line.shader = _createGradientShaderRightToLeft(size, xProgress);
       }
-      canvas.drawLine(end, Offset(xFlProgress, size.height / 2), _paintLine);
+      canvas.drawLine(end, Offset(xProgress, size.height / 2), line);
     } else {
-      final double xFlProgress = size.width * progress;
+      final double xProgress = size.width * progress;
       if (linearGradient != null) {
-        _paintLine.shader = _createGradientShaderLeftToRight(size, xFlProgress);
+        line.shader = _createGradientShaderLeftToRight(size, xProgress);
       }
-      canvas.drawLine(start, Offset(xFlProgress, size.height / 2), _paintLine);
+      canvas.drawLine(start, Offset(xProgress, size.height / 2), line);
     }
   }
 
-  Shader _createGradientShaderRightToLeft(Size size, double xFlProgress) {
+  Shader _createGradientShaderRightToLeft(Size size, double xProgress) {
     final Offset shaderEndPoint =
-        clipLinearGradient ? Offset.zero : Offset(xFlProgress, size.height);
+        isClip ? Offset.zero : Offset(xProgress, size.height);
     return linearGradient!.createShader(
         Rect.fromPoints(Offset(size.width, size.height), shaderEndPoint));
   }
 
   Shader _createGradientShaderLeftToRight(Size size, double x) {
-    final Offset shaderEndPoint = clipLinearGradient
-        ? Offset(size.width, size.height)
-        : Offset(x, size.height);
+    final Offset shaderEndPoint =
+        isClip ? Offset(size.width, size.height) : Offset(x, size.height);
     return linearGradient!
         .createShader(Rect.fromPoints(Offset.zero, shaderEndPoint));
   }
