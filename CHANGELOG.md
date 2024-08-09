@@ -1,6 +1,7 @@
-## 9.8.3
+## 9.9.0
 
 * Added `CarouselSlider`
+* Changed `FlProgress` to `FlLinearProgress` and made modifications to the parameters
 
 ## 9.8.0
 

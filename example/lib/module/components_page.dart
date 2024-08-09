@@ -12,7 +12,7 @@ class ComponentsPage extends StatelessWidget {
           appBar: AppBarText('Components'),
           padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
           children: [
-            const Partition('Shimmery'),
+            const Partition('Shimmery', marginTop: 0),
             Shimmery(
                 color: Colors.yellow,
                 colorOpacity: 0.9,

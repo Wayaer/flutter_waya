@@ -3,102 +3,136 @@ import 'package:fl_extended/fl_extended.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-class FlProgressPage extends StatefulWidget {
-  const FlProgressPage({super.key});
+class ProgressBarPage extends StatefulWidget {
+  const ProgressBarPage({super.key});
 
   @override
-  State<FlProgressPage> createState() => _FlProgressPageState();
+  State<ProgressBarPage> createState() => _ProgressBarPageState();
 }
 
-class _FlProgressPageState extends State<FlProgressPage>
+class _ProgressBarPageState extends State<ProgressBarPage>
     with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
-  StateSetter? liquidProgressState;
+  late AnimationController animation;
 
   @override
   void initState() {
     super.initState();
-    _animationController =
-        AnimationController(duration: 10.seconds, vsync: this);
-    _animationController.repeat();
-    _animationController.addListener(() {
-      if (mounted) liquidProgressState?.call(() {});
-    });
+    animation = AnimationController(duration: 6.seconds, vsync: this);
+    animation.repeat();
   }
 
   @override
   Widget build(BuildContext context) {
-    return ExtendedScaffold(
-        isScroll: true,
-        appBar: AppBarText('FlProgress'),
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const SizedBox(height: 20),
-          FlProgress.linear(
-              width: 300,
-              lineHeight: 20,
-              percent: 1,
-              animation: true,
-              restartAnimation: true,
-              animationDuration: const Duration(seconds: 10),
-              linearGradient: LinearGradient(colors: <Color>[
-                Colors.red,
-                context.theme.progressIndicatorTheme.color ??
-                    context.theme.primaryColor
+    return ExtendedScaffold(appBar: AppBarText('Progress'), children: [
+      const Partition('FlLinearProgress', marginTop: 0),
+      FlLinearProgress(
+          width: 300,
+          height: 20,
+          percent: 0.8,
+          animation: true,
+          mainAxisAlignment: MainAxisAlignment.center,
+          onChanged: (value) {
+            log('FlLinearProgress use animation:$value');
+          },
+          builder: (_, double percent) => Stack(children: [
+                Positioned(
+                    right: 300 - 300 * percent,
+                    top: 0,
+                    bottom: 0,
+                    child:
+                        BText(percent.toStringAsFixed(1), color: Colors.white))
               ]),
-              mainAxisAlignment: MainAxisAlignment.center,
-              center: const Text('center'),
-              widgetIndicator: const BText('0', color: Colors.red),
-              progressColor: Colors.lightGreen,
-              backgroundColor: Colors.black12),
-          const SizedBox(height: 20),
-          StatefulBuilder(builder: (context, setState) {
-            liquidProgressState ??= setState;
-            return Column(children: [
-              SizedBox.fromSize(
-                  size: const Size(150, 30),
-                  child: LiquidProgressIndicator.linear(
-                      borderColor: Colors.blue,
-                      borderWidth: 2,
-                      borderRadius: 10,
-                      color: Colors.deepPurpleAccent,
-                      value: _animationController.value)),
-              const SizedBox(height: 20),
-              LiquidProgressIndicator.circular(
-                      borderColor: Colors.blue,
-                      borderWidth: 2,
-                      value: _animationController.value,
-                      color: Colors.deepPurpleAccent)
-                  .setSize(const Size(150, 150)),
-              const SizedBox(height: 20),
-              LiquidProgressIndicator.custom(
-                  value: _animationController.value,
-                  color: Colors.deepPurpleAccent,
-                  direction: Axis.vertical,
-                  shapePath: _buildBoatPath()),
-              const SizedBox(height: 20),
-              LiquidProgressIndicator.custom(
-                  value: _animationController.value,
-                  direction: Axis.horizontal,
-                  color: Colors.deepPurpleAccent,
-                  shapePath: _buildSpeechBubblePath()),
-              const SizedBox(height: 20),
-              LiquidProgressIndicator.custom(
-                  color: Colors.deepPurpleAccent,
-                  value: _animationController.value,
-                  direction: Axis.vertical,
-                  shapePath: _buildHeartPath()),
-              const SizedBox(height: 20),
-              const SizedBox(
-                  width: double.infinity,
-                  height: 100,
-                  child: FlAnimationWave(
-                      value: 0.5,
-                      color: Colors.deepPurpleAccent,
-                      direction: Axis.vertical))
-            ]);
-          })
-        ]);
+          strokeCap: StrokeCap.round,
+          progressColor: Colors.lightGreen,
+          backgroundColor: Colors.black12),
+      const Partition('FlLinearProgress.gradient'),
+      FlLinearProgress.gradient(
+          width: 300,
+          height: 20,
+          percent: 1,
+          animation: true,
+          repeat: true,
+          linearGradient: const LinearGradient(colors: Colors.accents),
+          mainAxisAlignment: MainAxisAlignment.center,
+          duration: const Duration(seconds: 4),
+          builder: (_, double percent) => Stack(children: [
+                Positioned(
+                    top: 0,
+                    bottom: 0,
+                    right: 300 - 300 * percent,
+                    child:
+                        BText(percent.toStringAsFixed(1), color: Colors.white)),
+              ]),
+          strokeCap: StrokeCap.round,
+          backgroundColor: Colors.black12),
+      const Partition('FlLinearProgress.gradient  isClip:false'),
+      FlLinearProgress.gradient(
+          width: 300,
+          height: 20,
+          percent: 0.9,
+          animation: true,
+          repeat: true,
+          isClip: false,
+          linearGradient: const LinearGradient(colors: Colors.accents),
+          mainAxisAlignment: MainAxisAlignment.center,
+          duration: const Duration(seconds: 4),
+          builder: (_, double percent) => Stack(children: [
+                Positioned(
+                    top: 0,
+                    bottom: 0,
+                    right: 300 - 300 * percent,
+                    child:
+                        BText(percent.toStringAsFixed(1), color: Colors.white)),
+              ]),
+          strokeCap: StrokeCap.round,
+          backgroundColor: Colors.black12),
+      const SizedBox(height: 20),
+      const Partition('LiquidProgressIndicator'),
+      AnimatedBuilder(
+          animation: animation,
+          builder: (_, __) {
+            return Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  LiquidProgressIndicator.circular(
+                          borderWidth: 2,
+                          borderColor: Colors.greenAccent,
+                          value: animation.value)
+                      .setSize(const Size(120, 120)),
+                  const SizedBox(height: 20),
+                  LiquidProgressIndicator.linear(
+                          borderWidth: 2,
+                          borderColor: Colors.greenAccent,
+                          borderRadius: 10,
+                          value: animation.value)
+                      .setSize(const Size(double.infinity, 30)),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        LiquidProgressIndicator.custom(
+                            value: animation.value,
+                            direction: Axis.vertical,
+                            shapePath: _buildBoatPath()),
+                        LiquidProgressIndicator.custom(
+                            value: animation.value,
+                            direction: Axis.horizontal,
+                            shapePath: _buildSpeechBubblePath()),
+                        LiquidProgressIndicator.custom(
+                            value: animation.value,
+                            direction: Axis.vertical,
+                            shapePath: _buildHeartPath()),
+                      ]).expanded,
+                  const SizedBox(height: 20),
+                  SizedBox(
+                      width: double.infinity,
+                      height: 100,
+                      child: FlAnimationWave(
+                          value: 0.6,
+                          color: context.theme.primaryColor,
+                          direction: Axis.vertical))
+                ]);
+          }).expanded,
+    ]);
   }
 
   Path _buildBoatPath() {
@@ -141,7 +175,7 @@ class _FlProgressPageState extends State<FlProgressPage>
 
   @override
   void dispose() {
-    _animationController.dispose();
+    animation.dispose();
     super.dispose();
   }
 }

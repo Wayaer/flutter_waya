@@ -21,7 +21,7 @@ class ButtonPage extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
         appBar: AppBarText('Button'),
         children: [
-          const Partition('MultiPopupMenuButton'),
+          const Partition('MultiPopupMenuButton', marginTop: 0),
           MultiPopupMenuButton<String, String>(
               onSelected: (_, String label, String? value) {
             showToast('label：$label    item: $value');
