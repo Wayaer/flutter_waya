@@ -5,21 +5,21 @@ version: 1.0.0+1
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
-  flutter: '>=3.22.0'
+  flutter: '>=3.24.0'
 
 dependencies:
   flutter_web_plugins:
     sdk: flutter
   flutter:
     sdk: flutter
-  flutter_curiosity: ^6.1.0
-  device_preview_minus: ^1.0.6
-  fl_extended: ^1.4.0
+  flutter_curiosity: ^6.3.0
+  device_preview_minus: ^1.0.8
+  fl_extended: ^1.5.0
   flutter_waya:
     path: ../
 
 dev_dependencies:
-  flutter_lints: ^4.0.0
+  flutter_lints: ^5.0.0
 
 flutter:
   uses-material-design: true
