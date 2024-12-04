@@ -8,15 +8,16 @@ typedef CounterBuilder = Widget Function(Duration duration, bool isRunning,
 
 typedef CounterOnCallTiming = void Function(VoidCallback callTiming);
 
-///
 typedef CounterVoidCallback = void Function(Duration duration);
 
-/// 倒计时
+/// 计时器
 class Counter extends StatefulWidget {
   const Counter.down({
     super.key,
-    this.duration = const Duration(seconds: 60),
-    this.periodic = const Duration(seconds: 1),
+    this.value = const Duration(seconds: 60),
+    this.min,
+    this.interval = const Duration(seconds: 1),
+    this.step = const Duration(seconds: 1),
     required this.builder,
     this.autoStart = true,
     this.resetOnStart = true,
@@ -26,13 +27,14 @@ class Counter extends StatefulWidget {
     this.onStartTiming,
     this.onStopTiming,
   })  : isCountDown = true,
-        maxDuration = null;
+        max = null;
 
   const Counter.up({
     super.key,
-    this.duration = const Duration(seconds: 0),
-    this.maxDuration,
-    this.periodic = const Duration(seconds: 1),
+    this.value = const Duration(seconds: 0),
+    this.max,
+    this.interval = const Duration(seconds: 1),
+    this.step = const Duration(seconds: 1),
     required this.builder,
     this.autoStart = true,
     this.resetOnStart = true,
@@ -41,20 +43,27 @@ class Counter extends StatefulWidget {
     this.onEnds,
     this.onStartTiming,
     this.onStopTiming,
-  }) : isCountDown = false;
+  })  : isCountDown = false,
+        min = null;
 
   /// UI 回调
   final CounterBuilder builder;
 
   /// [Counter.down] 倒计时时长
   /// [Counter.up] 初始时间
-  final Duration duration;
+  final Duration value;
 
   /// [Counter.up] 最大时长
-  final Duration? maxDuration;
+  final Duration? max;
 
-  /// 周期
-  final Duration periodic;
+  /// [Counter.down] 最小时长
+  final Duration? min;
+
+  /// 执行间隔时间
+  final Duration interval;
+
+  /// 步长
+  final Duration step;
 
   /// 自动开始
   final bool autoStart;
@@ -92,7 +101,7 @@ class _CounterState extends ExtendedState<Counter> {
   @override
   void initState() {
     super.initState();
-    current = widget.duration;
+    current = widget.value;
     widget.onStartTiming?.call(startTiming);
     if (widget.autoStart) {
       WidgetsBinding.instance.addPostFrameCallback((Duration callback) {
@@ -103,44 +112,43 @@ class _CounterState extends ExtendedState<Counter> {
 
   void startTiming() {
     if (widget.resetOnStart) {
-      current = widget.duration;
+      current = widget.value;
       setState(() {});
     }
-    disposeTime();
     widget.onStarts?.call(current);
     if (widget.isCountDown) {
-      if (current.inMilliseconds > 0) {
-        timer = Timer.periodic(widget.periodic, (Timer time) {
-          if (current < widget.periodic) {
-            current = Duration.zero;
+      final min = (widget.min?.inMicroseconds ?? 0);
+      if (current.inMicroseconds > min) {
+        timer ??= Timer.periodic(widget.interval, (Timer time) {
+          if (current < widget.step) {
+            current = widget.min ?? Duration.zero;
           } else {
-            current -= widget.periodic;
+            current -= widget.step;
           }
-          if (current.inMicroseconds <= 0) {
+          if (current.inMicroseconds <= min) {
             stopTiming();
           }
           widget.onChanged?.call(current);
           setState(() {});
         });
       } else {
-        current = Duration.zero;
+        current = widget.min ?? Duration.zero;
         setState(() {});
         widget.onEnds?.call(current);
       }
     } else {
-      if (widget.maxDuration != null &&
-          widget.maxDuration!.inMicroseconds <=
-              widget.periodic.inMicroseconds) {
-        current = widget.maxDuration!;
+      if (widget.max != null &&
+          widget.max!.inMicroseconds <= widget.step.inMicroseconds) {
+        current = widget.max!;
         setState(() {});
         widget.onEnds?.call(current);
       } else {
-        timer = Timer.periodic(widget.periodic, (Timer time) {
-          current += widget.periodic;
-          if (widget.maxDuration != null &&
-              current.inMicroseconds >= widget.maxDuration!.inMicroseconds) {
+        timer ??= Timer.periodic(widget.interval, (Timer time) {
+          current += widget.step;
+          if (widget.max != null &&
+              current.inMicroseconds >= widget.max!.inMicroseconds) {
             stopTiming();
-            current = widget.maxDuration!;
+            current = widget.max!;
           }
           widget.onChanged?.call(current);
           setState(() {});
@@ -162,10 +170,11 @@ class _CounterState extends ExtendedState<Counter> {
   @override
   void didUpdateWidget(covariant Counter oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.duration != widget.duration ||
+    if (oldWidget.value != widget.value ||
         oldWidget.autoStart != widget.autoStart ||
         oldWidget.resetOnStart != widget.resetOnStart ||
-        oldWidget.periodic != widget.periodic) {
+        oldWidget.step != widget.step) {
+      if (oldWidget.interval != widget.interval) disposeTime();
       if (widget.autoStart) startTiming();
     }
   }
@@ -211,7 +220,7 @@ class SendVerificationCode extends StatefulWidget {
       required this.onSendTap,
       required this.builder,
       this.decoration,
-      this.duration = const Duration(seconds: 60),
+      this.value = const Duration(seconds: 60),
       this.margin,
       this.padding,
       this.gestureBuilder,
@@ -224,7 +233,7 @@ class SendVerificationCode extends StatefulWidget {
   final SendStateGestureBuilder? gestureBuilder;
 
   /// 默认计时秒
-  final Duration duration;
+  final Duration value;
 
   /// 点击按钮
   final SendVerificationCodeValueCallback? onSendTap;
@@ -268,7 +277,7 @@ class _SendVerificationCodeState extends ExtendedState<SendVerificationCode> {
         padding: widget.padding,
         decoration: widget.decoration,
         child: Counter.down(
-            duration: widget.duration,
+            value: widget.value,
             onStarts: (Duration duration) {
               sendState = SendState.countDown;
               onChanged();

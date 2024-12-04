@@ -1,3 +1,8 @@
+## 9.10.0
+
+* Remove `CounterAnimation`, add `AnimationCounter.down()`、`AnimationCounter.up()`
+* Remove `CountDown`, add `Counter.down()`、`Counter.up()`
+
 ## 9.9.0
 
 * Added `CarouselSlider`
@@ -13,14 +18,16 @@
 ## 9.7.1
 
 * Added `AutomaticKeepAliveWrapper` and `AutomaticKeepAliveWrapperState`
-* Modify `DecoratorEntry` to `DecoratorPendant`,and adds the `maintainSize` property to determine whether to maintain the size
+* Modify `DecoratorEntry` to `DecoratorPendant`,and adds the `maintainSize` property to determine
+  whether to maintain the size
 * Modify `DecoratorPositioned` to `DecoratorPendantPosition`
 * Added `BoxDecorative` to `DecoratorBox` and `DecoratorBoxState`
 * Modify `.toDecoratorEntry()` to `.toDecoratorPendant()`
 * Remove the `needKeyBoard` and `focusNode` from `PINTextField`
 * Change the `controller` of `PINTextField` to mandatory
 * Hide `contextMenuBuilder` and `enableInteractiveSelection` for `PINTextField`
-* Modify some parameters of `ExpansionTiles` `PopupMenuButtonRotateBuilder` `ToggleRotate`, please refer to Example
+* Modify some parameters of `ExpansionTiles` `PopupMenuButtonRotateBuilder` `ToggleRotate`, please
+  refer to Example
 
 ## 9.6.0
 
@@ -230,7 +237,8 @@
 ## 5.3.0
 
 * Modified
-  the `AreaPicker()` `DateTimePicker()` `MultiColumnPicker()` `MultiColumnLinkagePicker()` `SingleListPicker()` `SingleColumnPicker()`
+  the `AreaPicker()` `DateTimePicker()` `MultiColumnPicker()` `MultiColumnLinkagePicker()`
+  `SingleListPicker()` `SingleColumnPicker()`
   ,Added width and height and onChanged attributes for them,And you can remove the header component
   by setting options to null,
 * Add examples for the above components
@@ -416,7 +424,8 @@
 ## 1.19.1
 
 * Add some extension
-  methods `toChineseNumbers()` `getWidgetRectGlobalToLocal()` `getWidgetRectLocalToGlobal()` `checkNullOrEmpty()`
+  methods `toChineseNumbers()` `getWidgetRectGlobalToLocal()` `getWidgetRectLocalToGlobal()`
+  `checkNullOrEmpty()`
 * Remove `RipplePageRoute()`
 * Fixed some popover bugs
 
@@ -477,7 +486,8 @@
 * Add positioned for `showToast` and Add the global `setToastPositioned()`
 * Modify all `widgetMode` to `pushStyle` and Change all `WidgetMode` to `RoutePushStyle`
 * Add the `GlobalWayUI()` class to set
-  all `ToastOptions` `WheelOptions` `BottomSheetOptions` `DialogOptions` `PickerWheelOptions` `ModalWindowsOptions`
+  all `ToastOptions` `WheelOptions` `BottomSheetOptions` `DialogOptions` `PickerWheelOptions`
+  `ModalWindowsOptions`
   configuration information
 * After modifying `showToast`, you may need to modify some of your own code
 * Add `ExtendedOverlay`

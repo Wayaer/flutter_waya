@@ -1,38 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/src/extended_state.dart';
 
-typedef AnimationCounterCallback = void Function(String text);
-
-typedef AnimationCounterBuilder = Widget Function(
-    String text, AnimationCounterCallback animate);
+typedef AnimationCounterBuilder = Widget Function(String value);
 
 enum CounterStyle { part, all }
 
-enum CounterTranslationStyle { up, down }
-
+/// animation counter
 class AnimationCounter extends StatefulWidget {
-  const AnimationCounter({
+  const AnimationCounter.down({
     super.key,
     this.style = CounterStyle.part,
-    this.translationStyle = CounterTranslationStyle.up,
     this.duration = const Duration(milliseconds: 300),
-    required this.text,
+    required this.value,
     required this.builder,
-  });
+  }) : isDown = true;
 
-  final String text;
+  const AnimationCounter.up({
+    super.key,
+    this.style = CounterStyle.part,
+    this.duration = const Duration(milliseconds: 300),
+    required this.value,
+    required this.builder,
+  }) : isDown = false;
 
-  /// animation duration to change count
+  /// value
+  final String value;
+
+  /// animation duration to change
   final Duration duration;
 
   /// animation type to change
   final CounterStyle style;
 
-  /// animation translation type to change
-  final CounterTranslationStyle translationStyle;
-
-  ///
+  /// value builder
   final AnimationCounterBuilder builder;
+
+  /// animation direction
+  final bool isDown;
 
   @override
   State<AnimationCounter> createState() => _AnimationCounterState();
@@ -42,98 +46,81 @@ class _AnimationCounterState extends ExtendedState<AnimationCounter>
     with SingleTickerProviderStateMixin {
   late Animation<Offset> preSlideAnimation;
   late Animation<Offset> slideAnimation;
-  late String _text;
-  late String _preText;
+  late String value;
+  late String preValue;
   late AnimationController controller;
 
   @override
   void initState() {
     super.initState();
-    _text = widget.text;
-    _preText = _text;
-    initAnimationController();
+    controller =
+        AnimationController(duration: widget.duration, value: 1, vsync: this);
+    value = widget.value;
+    preValue = value;
+    slideAnimation = controller
+        .drive(Tween<Offset>(begin: const Offset(0.0, -1.0), end: Offset.zero));
+    preSlideAnimation = controller
+        .drive(Tween<Offset>(begin: Offset.zero, end: const Offset(0.0, 1.0)));
   }
 
   @override
   void didUpdateWidget(AnimationCounter oldWidget) {
-    if (controller.duration != widget.duration) {
-      controller.dispose();
-      initAnimationController();
-    }
-    if (widget.text != _text) {
-      animation(widget.text);
-    }
     super.didUpdateWidget(oldWidget);
-  }
-
-  void initAnimationController() {
-    controller = AnimationController(duration: widget.duration, vsync: this);
-    preSlideAnimation = controller
-        .drive(Tween<Offset>(begin: Offset.zero, end: const Offset(0.0, 1.0)));
-    slideAnimation = controller
-        .drive(Tween<Offset>(begin: const Offset(0.0, -1.0), end: Offset.zero));
+    if (controller.duration != widget.duration) {
+      controller.duration = widget.duration;
+    }
+    if (widget.value != value) {
+      if (mounted) animation(widget.value);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final String text = _text.toString();
-    final String preText = _preText.toString();
     int didIndex = 0;
-    if (preText.length == text.length) {
-      for (; didIndex < text.length; didIndex++) {
-        if (text[didIndex] != preText[didIndex]) break;
+    if (preValue.length == value.length) {
+      for (; didIndex < value.length; didIndex++) {
+        if (value[didIndex] != preValue[didIndex]) break;
       }
     }
-    final bool allChange = preText.length != text.length || didIndex == 0;
-
-    Widget child;
-    if (_text == _preText) {
-      child = builder(_text.toString());
-    } else if (widget.style == CounterStyle.part && !allChange) {
-      final Widget same = builder(text.substring(0, didIndex));
-      final Widget pre = builder(preText.substring(didIndex, preText.length));
-      final Widget current = builder(text.substring(didIndex, text.length));
-      child = AnimatedBuilder(
-          animation: controller,
-          child: same,
-          builder: (BuildContext context, Widget? child) =>
-              Row(mainAxisSize: MainAxisSize.min, children: [
-                child ?? same,
-                Stack(fit: StackFit.passthrough, children: [
-                  buildFractionalTranslation(slideAnimation, current),
-                  buildFractionalTranslation(preSlideAnimation, pre),
-                ])
-              ]));
-    } else {
-      child = AnimatedBuilder(
-          animation: controller,
-          builder: (BuildContext context, _) =>
-              Stack(fit: StackFit.passthrough, children: [
-                buildFractionalTranslation(
-                    slideAnimation, builder(_text.toString())),
-                buildFractionalTranslation(
-                    preSlideAnimation, builder(_preText.toString())),
-              ]));
-    }
-    return ClipRect(clipper: _CountClip(), child: child);
+    final bool allChange = preValue.length != value.length || didIndex == 0;
+    return ClipRect(
+        child: AnimatedBuilder(
+            animation: controller,
+            builder: (_, __) {
+              if (value == preValue) {
+                return builder(value);
+              } else if (widget.style == CounterStyle.part && !allChange) {
+                return Row(mainAxisSize: MainAxisSize.min, children: [
+                  builder(value.substring(0, didIndex)),
+                  buildStack(value.substring(didIndex, value.length),
+                      preValue.substring(didIndex, preValue.length))
+                ]);
+              }
+              return buildStack(value, preValue);
+            }));
   }
 
-  Widget buildFractionalTranslation(
-          Animation<Offset> animation, Widget child) =>
-      FractionalTranslation(
-          translation: widget.translationStyle == CounterTranslationStyle.down
-              ? animation.value
-              : -animation.value,
-          child: child);
+  Widget buildStack(String value, String preValue) =>
+      Stack(fit: StackFit.passthrough, alignment: Alignment.center, children: [
+        FractionalTranslation(
+            translation:
+                widget.isDown ? slideAnimation.value : -slideAnimation.value,
+            child: builder(value)),
+        if (controller.value < 1)
+          FractionalTranslation(
+              translation: widget.isDown
+                  ? preSlideAnimation.value
+                  : -preSlideAnimation.value,
+              child: builder(preValue))
+      ]);
 
-  Widget builder(String text) => widget.builder.call(text, animation);
+  Widget builder(String value) => widget.builder(value);
 
-  void animation(String newText) {
-    _preText = _text;
-    _text = newText;
+  void animation(String newValue) {
+    preValue = value;
+    value = newValue;
     controller.reset();
     controller.forward();
-    if (mounted) setState(() {});
   }
 
   @override
@@ -141,12 +128,4 @@ class _AnimationCounterState extends ExtendedState<AnimationCounter>
     super.dispose();
     controller.dispose();
   }
-}
-
-class _CountClip extends CustomClipper<Rect> {
-  @override
-  Rect getClip(Size size) => Offset.zero & size;
-
-  @override
-  bool shouldReclip(CustomClipper<Rect> oldClipper) => true;
 }
