@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:app/main.dart';
 import 'package:fl_extended/fl_extended.dart';
 import 'package:flutter/cupertino.dart';
@@ -110,63 +108,6 @@ class StateComponentsPage extends StatelessWidget {
                 builder: (bool value, onChanged) =>
                     CupertinoSwitch(value: value, onChanged: onChanged)),
           ]),
-          const Partition('SendVerificationCode'),
-          Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-            SendVerificationCode(
-                gestureBuilder: (onTap, child) =>
-                    ElevatedButton(onPressed: onTap, child: child),
-                duration: const Duration(seconds: 10),
-                onChanged: (SendState value) {
-                  showToast(value.toString());
-                },
-                padding:
-                    const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                onSendTap: () async {
-                  await 2.seconds.delayed();
-                  return true;
-                },
-                builder: (SendState state, int i) {
-                  switch (state) {
-                    case SendState.none:
-                      return const Text('发送验证码');
-                    case SendState.sending:
-                      return const Text('发送中');
-                    case SendState.resend:
-                      return const Text('重新发送');
-                    case SendState.countDown:
-                      return Text('等待 $i s');
-                  }
-                }),
-            SendVerificationCode(
-                gestureBuilder: (onTap, child) =>
-                    ElevatedButton(onPressed: onTap, child: child),
-                duration: const Duration(seconds: 10),
-                onChanged: (SendState value) {
-                  showToast(value.toString());
-                },
-                padding:
-                    const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                onSendTap: () async {
-                  final completer = Completer<bool>();
-                  2.seconds.delayed(() {
-                    completer.complete(true);
-                  });
-                  return completer.future;
-                },
-                builder: (SendState state, int i) {
-                  switch (state) {
-                    case SendState.none:
-                      return const Text('发送验证码');
-                    case SendState.sending:
-                      return const Text('发送中');
-                    case SendState.resend:
-                      return const Text('重新发送');
-                    case SendState.countDown:
-                      return Text('等待 $i s');
-                  }
-                }),
-          ]),
-
           const SizedBox(height: 100),
         ]);
   }
