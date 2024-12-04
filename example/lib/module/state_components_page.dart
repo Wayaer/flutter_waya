@@ -166,26 +166,7 @@ class StateComponentsPage extends StatelessWidget {
                   }
                 }),
           ]),
-          const Partition('CountDown'),
-          Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-            CountDown(
-                onChanged: (Duration duration) {},
-                periodic: const Duration(seconds: 3),
-                duration: const Duration(seconds: 2),
-                autoStart: false,
-                builder: (Duration duration, bool isActive, start) => Universal(
-                    onTap: start,
-                    child: ElevatedText(
-                        'isActive:$isActive  | ${duration.inSeconds}'))),
-            CountDown(
-                onChanged: (Duration duration) {},
-                periodic: const Duration(seconds: 30),
-                duration: const Duration(seconds: 20),
-                builder: (Duration duration, bool isActive, start) => Universal(
-                    onTap: start,
-                    child: ElevatedText(
-                        'isActive:$isActive  | ${duration.inSeconds}'))),
-          ]),
+
           const SizedBox(height: 100),
         ]);
   }

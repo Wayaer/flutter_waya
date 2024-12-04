@@ -65,21 +65,6 @@ class ComponentsPage extends StatelessWidget {
                     child: BText('item$index'))),
               ).expanded,
             ]),
-            const Partition('CounterAnimation'),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-              CounterAnimation(
-                  style: CountAnimationStyle.part,
-                  count: 100,
-                  onTap: (int c) {},
-                  builder: (int count, String text) =>
-                      BText(text, fontSize: 30)),
-              CounterAnimation(
-                  style: CountAnimationStyle.all,
-                  count: 100,
-                  onTap: (int c) {},
-                  builder: (int count, String text) =>
-                      BText(text, fontSize: 30))
-            ]),
             const Partition('ToggleRotate'),
             Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
               ToggleRotate(

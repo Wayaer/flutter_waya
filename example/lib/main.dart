@@ -1,6 +1,7 @@
 import 'package:app/module/button_page.dart';
 import 'package:app/module/carousel_slider_page.dart';
 import 'package:app/module/components_page.dart';
+import 'package:app/module/counter_page.dart';
 import 'package:app/module/decorator_page.dart';
 import 'package:app/module/flip_card_page.dart';
 import 'package:app/module/progress_page.dart';
@@ -97,6 +98,7 @@ class _HomeState extends State<_Home> {
               onTap: () => push(const DecoratorBoxPage())),
           ElevatedText('TextField', onTap: () => push(const TextFieldPage())),
           ElevatedText('FlipCard', onTap: () => push(const FlipCardPage())),
+          ElevatedText('Counter', onTap: () => push(const CounterPage())),
         ]);
   }
 }
@@ -142,7 +144,9 @@ class ElevatedText extends StatelessWidget {
                 decoration: BoxDecoration(
                     color: context.theme.colorScheme.primary.withOpacity(0.08),
                     borderRadius: BorderRadius.circular(20)),
-                child: BText(text, color: context.theme.colorScheme.primary)),
+                child: BText(text,
+                    color: context.theme.colorScheme.primary,
+                    textAlign: TextAlign.center)),
           ));
 }
 

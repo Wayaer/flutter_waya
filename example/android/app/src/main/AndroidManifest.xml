@@ -10,7 +10,7 @@
             android:exported="true"
             android:hardwareAccelerated="true"
             android:launchMode="singleTop"
-            android:theme="@style/LaunchThemeFullscreen"
+            android:theme="@style/LaunchIconTheme"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,7 +23,7 @@
 
             <meta-data
                 android:name="io.flutter.embedding.android.NormalTheme"
-                android:resource="@style/NormalTheme" />
+                android:resource="@style/BaseNormalTheme" />
         </activity>
         <meta-data
             android:name="flutterEmbedding"
