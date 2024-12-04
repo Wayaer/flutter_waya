@@ -1,9 +1,9 @@
-library flutter_waya;
+library;
 
 /// animation
 export 'src/animation/bubble_button.dart';
 export 'src/animation/elastic_builder.dart';
-export 'src/animation/counter.dart';
+export 'src/animation/animation_counter.dart';
 export 'src/animation/toggle_rotate.dart';
 export 'src/animation/wave.dart';
 export 'src/animation/auto_collapsing.dart';
@@ -27,7 +27,7 @@ export 'src/editable_text/pin_text_field.dart';
 
 /// src
 export 'src/wrapper.dart';
-export 'src/count_down.dart';
+export 'src/counter.dart';
 export 'src/animation/popup_menu.dart';
 export 'src/popup_menu.dart';
 export 'src/check_box.dart';

@@ -3,30 +3,55 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/src/extended_state.dart';
 
-typedef CountDownBuilder = Widget Function(
-    Duration duration, bool isRunning, VoidCallback startTiming);
+typedef CounterBuilder = Widget Function(Duration duration, bool isRunning,
+    VoidCallback startTiming, VoidCallback stopTiming);
 
-typedef CountDownOnStartTiming = void Function(VoidCallback startTiming);
+typedef CounterOnCallTiming = void Function(VoidCallback callTiming);
+
+///
+typedef CounterVoidCallback = void Function(Duration duration);
 
 /// 倒计时
-class CountDown extends StatefulWidget {
-  const CountDown({
+class Counter extends StatefulWidget {
+  const Counter.down({
     super.key,
-    this.duration = const Duration(seconds: 5),
+    this.duration = const Duration(seconds: 60),
     this.periodic = const Duration(seconds: 1),
-    this.onChanged,
     required this.builder,
     this.autoStart = true,
+    this.resetOnStart = true,
     this.onStarts,
+    this.onChanged,
     this.onEnds,
     this.onStartTiming,
-  });
+    this.onStopTiming,
+  })  : isCountDown = true,
+        maxDuration = null;
+
+  const Counter.up({
+    super.key,
+    this.duration = const Duration(seconds: 0),
+    this.maxDuration,
+    this.periodic = const Duration(seconds: 1),
+    required this.builder,
+    this.autoStart = true,
+    this.resetOnStart = true,
+    this.onStarts,
+    this.onChanged,
+    this.onEnds,
+    this.onStartTiming,
+    this.onStopTiming,
+  }) : isCountDown = false;
 
   /// UI 回调
-  final CountDownBuilder builder;
+  final CounterBuilder builder;
 
-  /// 倒计时时间
+  /// [Counter.down] 倒计时时长
+  /// [Counter.up] 初始时间
   final Duration duration;
+
+  /// [Counter.up] 最大时长
+  final Duration? maxDuration;
 
   /// 周期
   final Duration periodic;
@@ -34,24 +59,34 @@ class CountDown extends StatefulWidget {
   /// 自动开始
   final bool autoStart;
 
-  /// 开始回调
-  final VoidCallback? onStarts;
+  /// 调用 [startTiming] 时是否重置
+  final bool resetOnStart;
 
-  /// 执行计时器方法回调
-  final CountDownOnStartTiming? onStartTiming;
+  /// 开始回调
+  final CounterVoidCallback? onStarts;
 
   /// 结束回调
-  final VoidCallback? onEnds;
+  final CounterVoidCallback? onEnds;
+
+  /// 执行计时器方法回调
+  final CounterOnCallTiming? onStartTiming;
+
+  /// 停止计时器方法回调
+  final CounterOnCallTiming? onStopTiming;
 
   /// 时间变化回调
   final ValueChanged<Duration>? onChanged;
 
+  /// 是否倒计时
+  final bool isCountDown;
+
   @override
-  State<CountDown> createState() => _CountDownState();
+  State<Counter> createState() => _CounterState();
 }
 
-class _CountDownState extends ExtendedState<CountDown> {
-  late Duration current;
+class _CounterState extends ExtendedState<Counter> {
+  Duration current = Duration();
+
   Timer? timer;
 
   @override
@@ -67,28 +102,56 @@ class _CountDownState extends ExtendedState<CountDown> {
   }
 
   void startTiming() {
-    current = widget.duration;
-    disposeTime();
-    widget.onStarts?.call();
-    if (current.inMilliseconds > 0) {
-      timer = Timer.periodic(widget.periodic, (Timer time) {
-        if (current < widget.periodic) {
-          current = Duration.zero;
-        } else {
-          current -= widget.periodic;
-        }
-        widget.onChanged?.call(current);
-        setState(() {});
-        if (current.inMicroseconds <= 0) {
-          disposeTime();
-          widget.onEnds?.call();
-        }
-      });
-    } else {
-      current = Duration.zero;
+    if (widget.resetOnStart) {
+      current = widget.duration;
       setState(() {});
-      widget.onEnds?.call();
     }
+    disposeTime();
+    widget.onStarts?.call(current);
+    if (widget.isCountDown) {
+      if (current.inMilliseconds > 0) {
+        timer = Timer.periodic(widget.periodic, (Timer time) {
+          if (current < widget.periodic) {
+            current = Duration.zero;
+          } else {
+            current -= widget.periodic;
+          }
+          if (current.inMicroseconds <= 0) {
+            stopTiming();
+          }
+          widget.onChanged?.call(current);
+          setState(() {});
+        });
+      } else {
+        current = Duration.zero;
+        setState(() {});
+        widget.onEnds?.call(current);
+      }
+    } else {
+      if (widget.maxDuration != null &&
+          widget.maxDuration!.inMicroseconds <=
+              widget.periodic.inMicroseconds) {
+        current = widget.maxDuration!;
+        setState(() {});
+        widget.onEnds?.call(current);
+      } else {
+        timer = Timer.periodic(widget.periodic, (Timer time) {
+          current += widget.periodic;
+          if (widget.maxDuration != null &&
+              current.inMicroseconds >= widget.maxDuration!.inMicroseconds) {
+            stopTiming();
+            current = widget.maxDuration!;
+          }
+          widget.onChanged?.call(current);
+          setState(() {});
+        });
+      }
+    }
+  }
+
+  void stopTiming() {
+    disposeTime();
+    widget.onEnds?.call(current);
   }
 
   void disposeTime() {
@@ -97,18 +160,19 @@ class _CountDownState extends ExtendedState<CountDown> {
   }
 
   @override
-  void didUpdateWidget(covariant CountDown oldWidget) {
+  void didUpdateWidget(covariant Counter oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.duration != widget.duration ||
         oldWidget.autoStart != widget.autoStart ||
+        oldWidget.resetOnStart != widget.resetOnStart ||
         oldWidget.periodic != widget.periodic) {
       if (widget.autoStart) startTiming();
     }
   }
 
   @override
-  Widget build(BuildContext context) =>
-      widget.builder(current, timer?.isActive ?? false, startTiming);
+  Widget build(BuildContext context) => widget.builder(
+      current, timer?.isActive ?? false, startTiming, stopTiming);
 
   @override
   void dispose() {
@@ -203,9 +267,9 @@ class _SendVerificationCodeState extends ExtendedState<SendVerificationCode> {
         margin: widget.margin,
         padding: widget.padding,
         decoration: widget.decoration,
-        child: CountDown(
+        child: Counter.down(
             duration: widget.duration,
-            onStarts: () {
+            onStarts: (Duration duration) {
               sendState = SendState.countDown;
               onChanged();
             },
@@ -214,15 +278,15 @@ class _SendVerificationCodeState extends ExtendedState<SendVerificationCode> {
               sendState = SendState.countDown;
               onChanged();
             },
-            onEnds: () {
+            onEnds: (Duration duration) {
               sendState = SendState.resend;
               onChanged();
             },
             onStartTiming: (VoidCallback startTiming) {
               this.startTiming = startTiming;
             },
-            builder:
-                (Duration duration, bool isActive, VoidCallback startTiming) {
+            builder: (Duration duration, bool isActive,
+                VoidCallback startTiming, VoidCallback stopTiming) {
               return widget.builder(sendState, duration.inSeconds);
             }));
     return widget.gestureBuilder?.call(onTap, current) ??
