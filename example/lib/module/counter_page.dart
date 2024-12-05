@@ -64,16 +64,13 @@ class CounterPage extends StatelessWidget {
           const Partition('Counter.down'),
           Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
             Counter.down(
-                onStarts: (Duration duration) {},
-                onEnds: (Duration duration) {},
                 builder: (Duration duration, bool isActive, start, stop) {
-                  return ElevatedButton(
-                      onPressed: isActive ? stop : start,
-                      child: AnimationCounter.down(
-                          value: duration.inSeconds.toString(),
-                          builder: (String value) =>
-                              BText(value, fontSize: 20)));
-                }),
+              return ElevatedButton(
+                  onPressed: isActive ? stop : start,
+                  child: AnimationCounter.down(
+                      value: duration.inSeconds.toString(),
+                      builder: (String value) => BText(value, fontSize: 20)));
+            }),
             Counter.down(
                 builder: (Duration duration, bool isActive, start, stop) {
               return ElevatedButton(
