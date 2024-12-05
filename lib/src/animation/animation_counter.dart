@@ -119,13 +119,16 @@ class _AnimationCounterState extends ExtendedState<AnimationCounter>
   void animation(String newValue) {
     preValue = value;
     value = newValue;
-    controller.reset();
-    controller.forward();
+    if (mounted) {
+      controller.reset();
+      controller.forward();
+    }
   }
 
   @override
   void dispose() {
-    super.dispose();
+    controller.stop();
     controller.dispose();
+    super.dispose();
   }
 }

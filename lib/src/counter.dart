@@ -103,6 +103,7 @@ class _CounterState extends ExtendedState<Counter> {
     super.initState();
     current = widget.value;
     widget.onStartTiming?.call(startTiming);
+    widget.onStopTiming?.call(stopTiming);
     if (widget.autoStart) {
       WidgetsBinding.instance.addPostFrameCallback((Duration callback) {
         startTiming();
@@ -113,53 +114,60 @@ class _CounterState extends ExtendedState<Counter> {
   void startTiming() {
     if (widget.resetOnStart) {
       current = widget.value;
-      setState(() {});
     }
     widget.onStarts?.call(current);
+    onChanged();
     if (widget.isCountDown) {
-      final min = (widget.min?.inMicroseconds ?? 0);
-      if (current.inMicroseconds > min) {
+      final min = widget.min ?? Duration.zero;
+      if (current > min) {
         timer ??= Timer.periodic(widget.interval, (Timer time) {
-          if (current < widget.step) {
-            current = widget.min ?? Duration.zero;
-          } else {
-            current -= widget.step;
-          }
-          if (current.inMicroseconds <= min) {
+          current -= widget.step;
+          if (current <= min) {
+            current = min;
+            onChanged();
             stopTiming();
+          } else {
+            onChanged();
           }
-          widget.onChanged?.call(current);
-          setState(() {});
         });
       } else {
-        current = widget.min ?? Duration.zero;
-        setState(() {});
-        widget.onEnds?.call(current);
+        current = min;
+        onChanged();
+        onEnds();
       }
     } else {
       if (widget.max != null &&
-          widget.max!.inMicroseconds <= widget.step.inMicroseconds) {
+          (widget.max! <= widget.step || widget.max! <= current)) {
         current = widget.max!;
-        setState(() {});
-        widget.onEnds?.call(current);
+        onChanged();
+        onEnds();
       } else {
         timer ??= Timer.periodic(widget.interval, (Timer time) {
           current += widget.step;
-          if (widget.max != null &&
-              current.inMicroseconds >= widget.max!.inMicroseconds) {
-            stopTiming();
+          if (widget.max != null && widget.max! <= current) {
             current = widget.max!;
+            onChanged();
+            stopTiming();
+          } else {
+            onChanged();
           }
-          widget.onChanged?.call(current);
-          setState(() {});
         });
       }
     }
   }
 
-  void stopTiming() {
-    disposeTime();
+  void onEnds() {
     widget.onEnds?.call(current);
+  }
+
+  void onChanged() {
+    widget.onChanged?.call(current);
+    if (mounted) setState(() {});
+  }
+
+  void stopTiming() {
+    onEnds();
+    disposeTime();
   }
 
   void disposeTime() {
@@ -308,7 +316,7 @@ class _SendVerificationCodeState extends ExtendedState<SendVerificationCode> {
     }
     sendState = SendState.sending;
     onChanged();
-    setState(() {});
+    if (mounted) setState(() {});
     widget.onSendTap?.call().then((result) {
       if (!mounted) return;
       if (result) {
@@ -316,7 +324,7 @@ class _SendVerificationCodeState extends ExtendedState<SendVerificationCode> {
       } else {
         sendState = SendState.resend;
         onChanged();
-        setState(() {});
+        if (mounted) setState(() {});
       }
     });
   }
