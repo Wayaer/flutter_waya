@@ -51,7 +51,7 @@ class _DecoratorBoxPageState extends ExtendedState<DecoratorBoxPage> {
   }
 
   BoxDecorative get decoration => BoxDecorative(
-      fillColor: Colors.blue.withOpacity(0.2),
+      fillColor: Colors.blue.withValues(alpha: 0.2),
       borderType: BorderType.outline,
       borderSide: context.theme.inputDecorationTheme.enabledBorder?.borderSide,
       focusedBorderSide:

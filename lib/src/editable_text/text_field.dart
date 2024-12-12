@@ -53,7 +53,7 @@ enum TextInputLimitFormatter {
 
   final String regExp;
 
-  /// TextInputLimitFormatter 转换为  List<TextInputFormatter>
+  /// TextInputLimitFormatter 转换为  `List<TextInputFormatter>`
   List<TextInputFormatter> toTextInputFormatter() {
     if (this == TextInputLimitFormatter.text) return [];
     final RegExp regExp = RegExp(this.regExp);

@@ -14,8 +14,13 @@ class ComponentsPage extends StatelessWidget {
           children: [
             const Partition('Shimmery', marginTop: 0),
             Shimmery(
-                color: Colors.yellow,
-                colorOpacity: 0.9,
+                colors: [
+                  Colors.transparent,
+                  Colors.yellow.withValues(alpha: 0.05),
+                  Colors.yellow.withValues(alpha: 0.9),
+                  Colors.yellow.withValues(alpha: 0.05),
+                  Colors.transparent,
+                ],
                 child: Universal(
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
@@ -42,7 +47,8 @@ class ComponentsPage extends StatelessWidget {
             Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
               ExpansionTile(
                 title: const BText('Tile'),
-                backgroundColor: context.theme.primaryColor.withOpacity(0.2),
+                backgroundColor:
+                    context.theme.primaryColor.withValues(alpha: 0.2),
                 children: 5.generate((int index) => Universal(
                     margin: const EdgeInsets.all(12),
                     alignment: Alignment.centerLeft,
@@ -58,7 +64,8 @@ class ComponentsPage extends StatelessWidget {
                       title: const BText('Tile'),
                       trailing: rotation);
                 },
-                backgroundColor: context.theme.primaryColor.withOpacity(0.2),
+                backgroundColor:
+                    context.theme.primaryColor.withValues(alpha: 0.2),
                 children: 5.generate((int index) => Universal(
                     margin: const EdgeInsets.all(12),
                     alignment: Alignment.centerLeft,

@@ -4,8 +4,7 @@ class Event<T> {
   Event({bool sync = false})
       : _streamController = StreamController<T>.broadcast(sync: sync);
 
-  /// EventBus.customController(StreamController<T> controller) : _streamController = controller;
-
+  /// `EventBus.customController(StreamController<T> controller) : _streamController = controller;`
   StreamController<T> get streamController => _streamController;
 
   Stream<dynamic> on<E>() => T == dynamic

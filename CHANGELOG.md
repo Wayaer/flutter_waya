@@ -1,3 +1,7 @@
+## 10.0.0
+
+* Migrate to 3.27.0
+
 ## 9.10.1
 
 * Remove `CounterAnimation`, add `AnimationCounter.down()`、`AnimationCounter.up()`

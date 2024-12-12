@@ -44,7 +44,7 @@ class ButtonPage extends StatelessWidget {
                           child: Universal(
                               padding: const EdgeInsets.symmetric(
                                   vertical: 6, horizontal: 16),
-                              color: Colors.red.withOpacity(0.2),
+                              color: Colors.red.withValues(alpha: 0.2),
                               direction: Axis.horizontal,
                               children: [
                                 Text(value ?? key).expanded,
@@ -95,7 +95,7 @@ class ButtonPage extends StatelessWidget {
                                 child: Universal(
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 6, horizontal: 16),
-                                    color: Colors.red.withOpacity(0.2),
+                                    color: Colors.red.withValues(alpha: 0.2),
                                     direction: Axis.horizontal,
                                     children: [
                                       Text(selectValue ?? key).expanded,
@@ -127,7 +127,7 @@ class ButtonPage extends StatelessWidget {
                     child: Container(
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
-                            color: Colors.red.withOpacity(0.2),
+                            color: Colors.red.withValues(alpha: 0.2),
                             borderRadius: BorderRadius.circular(4)),
                         child: Row(children: [
                           const Icon(Icons.ac_unit),
