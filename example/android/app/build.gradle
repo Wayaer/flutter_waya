@@ -28,14 +28,6 @@ android {
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
-    signingConfigs {
-        release {
-            storeFile file("waya.jks")
-            storePassword "waya123"
-            keyAlias "waya"
-            keyPassword "waya111"
-        }
-    }
 }
 
 flutter {
