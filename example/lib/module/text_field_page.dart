@@ -26,7 +26,7 @@ class _TextFieldPageState extends State<TextFieldPage> {
               decoration: BoxDecorative(
                 borderType: BorderType.underline,
                 borderRadius: BorderRadius.circular(4),
-                fillColor: context.theme.primaryColor.withOpacity(0.2),
+                fillColor: context.theme.primaryColor.withValues(alpha: 0.2),
               ),
               child: TextField(
                 decoration:
@@ -37,7 +37,7 @@ class _TextFieldPageState extends State<TextFieldPage> {
               decoration: BoxDecorative(
                 borderType: BorderType.outline,
                 borderRadius: BorderRadius.circular(4),
-                fillColor: context.theme.primaryColor.withOpacity(0.2),
+                fillColor: context.theme.primaryColor.withValues(alpha: 0.2),
               ),
               child: TextField(
                 decoration:
@@ -102,7 +102,7 @@ class _TextFieldPageState extends State<TextFieldPage> {
 
   BoxDecoration get focusedDecoration => BoxDecoration(
       borderRadius: BorderRadius.circular(4),
-      color: context.theme.primaryColor.withOpacity(0.2),
+      color: context.theme.primaryColor.withValues(alpha: 0.2),
       border: Border.all(width: 2, color: context.theme.primaryColor));
 
   BoxDecoration get pinDecoration => BoxDecoration(

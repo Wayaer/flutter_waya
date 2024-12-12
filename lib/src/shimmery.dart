@@ -17,13 +17,19 @@ import 'package:flutter_waya/src/extended_state.dart';
 /// - [duration] : accepts a [Duration] that would be the time period of animation. Default value is [Duration(seconds: 3)]
 /// - [interval] : accepts a [Duration] that would be the interval between the repeating animation. Default value is [Duration(seconds: 0)]
 /// - [direction] : accepts a [ShimmerDirection] and aligns the animation accordingly. Default value is [ShimmerDirection.fromLBRT()]
+
 class Shimmery extends StatefulWidget {
   const Shimmery({
     super.key,
     required this.child,
     this.enabled = true,
-    this.color = Colors.white,
-    this.colorOpacity = 0.3,
+    this.colors = const [
+      Colors.transparent,
+      Color.from(alpha: 0.05, red: 1, green: 1, blue: 1),
+      Color.from(alpha: 0.3, red: 1, green: 1, blue: 1),
+      Color.from(alpha: 0.05, red: 1, green: 1, blue: 1),
+      Colors.transparent
+    ],
     this.duration = const Duration(seconds: 3),
     this.interval = const Duration(seconds: 0),
     this.direction = const ShimmerDirection.fromLTRB(),
@@ -35,11 +41,7 @@ class Shimmery extends StatefulWidget {
   /// Accepts a [bool] which toggles the animation on/off. Default value is [true]
   final bool enabled;
 
-  /// Accepts a parameter of type [Color] and sets the color of the animation overlay. Default value is [Colors.white]
-  final Color color;
-
-  /// Accepts a parameter of type [double] and sets the Opacity of the color of the animation overlay. Default value is [0.3]
-  final double colorOpacity;
+  final List<Color> colors;
 
   /// Accepts a [Duration] that would be the time period of animation. Default value is [Duration(seconds: 3)]
   final Duration duration;
@@ -114,8 +116,7 @@ class _ShimmeryState extends ExtendedState<Shimmery>
         foregroundPainter: _ShimmeryAnimation(
             context: context,
             position: animation!.value,
-            color: widget.color,
-            opacity: widget.colorOpacity,
+            colors: widget.colors,
             begin: widget.direction.begin,
             end: widget.direction.end),
         child: widget.child);
@@ -194,16 +195,15 @@ class ShimmerDirection {
 
 class _ShimmeryAnimation extends CustomPainter {
   final BuildContext context;
-  double position, opacity;
+  double position;
   double width = 0.2;
-  final Color color;
+  final List<Color> colors;
   final Alignment begin, end;
 
   _ShimmeryAnimation({
     required this.context,
     required this.position,
-    required this.color,
-    required this.opacity,
+    required this.colors,
     required this.begin,
     required this.end,
   });
@@ -221,21 +221,16 @@ class _ShimmeryAnimation extends CustomPainter {
     ];
     paint.style = PaintingStyle.fill;
     paint.shader = LinearGradient(
-        tileMode: TileMode.decal,
-        begin: begin,
-        end: end,
-        stops: stops,
-        colors: [
-          Colors.transparent,
-          (color).withOpacity(0.05),
-          (color).withOpacity(opacity),
-          (color).withOpacity(0.05),
-          Colors.transparent
-        ]).createShader(Rect.fromLTRB(
-        size.width * -0.5,
-        (size.height > size.width) ? 0 : size.height * -0.5,
-        size.width * 1.5,
-        size.height * 1.5));
+            tileMode: TileMode.decal,
+            begin: begin,
+            end: end,
+            stops: stops,
+            colors: colors)
+        .createShader(Rect.fromLTRB(
+            size.width * -0.5,
+            (size.height > size.width) ? 0 : size.height * -0.5,
+            size.width * 1.5,
+            size.height * 1.5));
     var path = Path();
 
     path.lineTo(0, size.height);

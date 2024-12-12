@@ -64,8 +64,6 @@ class FlIndicator extends StatelessWidget {
         return _ScalePainter(this, position, index, paint, activeColor, color);
       case FlIndicatorType.drop:
         return _DropPainter(this, position, index, paint, activeColor, color);
-      default:
-        throw Exception('Not a valid layout');
     }
   }
 

@@ -142,7 +142,8 @@ class ElevatedText extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 decoration: BoxDecoration(
-                    color: context.theme.colorScheme.primary.withOpacity(0.08),
+                    color: context.theme.colorScheme.primary
+                        .withValues(alpha: 0.08),
                     borderRadius: BorderRadius.circular(20)),
                 child: BText(text,
                     color: context.theme.colorScheme.primary,
@@ -161,7 +162,7 @@ class Partition extends StatelessWidget {
   Widget build(BuildContext context) => Universal(
       onTap: onTap,
       width: double.infinity,
-      color: Colors.grey.withOpacity(0.2),
+      color: Colors.grey.withValues(alpha: 0.2),
       alignment: Alignment.center,
       padding: const EdgeInsets.all(10),
       margin: EdgeInsets.only(top: marginTop, bottom: 20),

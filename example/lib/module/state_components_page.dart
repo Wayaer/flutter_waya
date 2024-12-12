@@ -22,8 +22,8 @@ class StateComponentsPage extends StatelessWidget {
                     value: true,
                     margin: const EdgeInsets.only(left: 20),
                     padding: const EdgeInsets.all(6),
-                    decoration:
-                        BoxDecoration(color: Colors.grey.withOpacity(0.4)),
+                    decoration: BoxDecoration(
+                        color: Colors.grey.withValues(alpha: 0.4)),
                     tristate: true,
                     builder: (bool? value) {
                       if (value != null) {
@@ -37,8 +37,8 @@ class StateComponentsPage extends StatelessWidget {
                     value: false,
                     padding: const EdgeInsets.all(6),
                     margin: const EdgeInsets.only(right: 20),
-                    decoration:
-                        BoxDecoration(color: Colors.grey.withOpacity(0.4)),
+                    decoration: BoxDecoration(
+                        color: Colors.grey.withValues(alpha: 0.4)),
                     builder: (bool? value) {
                       return Icon(value!
                           ? Icons.check_box
