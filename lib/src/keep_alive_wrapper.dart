@@ -1,27 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/src/extended_state.dart';
 
-class AutomaticKeepAliveWrapper extends StatefulWidget {
-  const AutomaticKeepAliveWrapper(this.child, {super.key});
+abstract class AutomaticKeepAliveClientMixinState<T extends StatefulWidget>
+    extends ExtendedState<T> with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+}
+
+class AutomaticKeepAliveClientWrapper extends StatefulWidget {
+  const AutomaticKeepAliveClientWrapper({super.key, required this.child});
 
   final Widget child;
 
   @override
-  State<AutomaticKeepAliveWrapper> createState() =>
-      _AutomaticKeepAliveWrapperState();
+  State<AutomaticKeepAliveClientWrapper> createState() =>
+      _AutomaticKeepAliveClientWrapperState();
 }
 
-class _AutomaticKeepAliveWrapperState
-    extends AutomaticKeepAliveWrapperState<AutomaticKeepAliveWrapper> {
+class _AutomaticKeepAliveClientWrapperState
+    extends AutomaticKeepAliveClientMixinState<
+        AutomaticKeepAliveClientWrapper> {
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return widget.child;
   }
-}
-
-abstract class AutomaticKeepAliveWrapperState<T extends StatefulWidget>
-    extends ExtendedState<T> with AutomaticKeepAliveClientMixin {
-  @override
-  bool get wantKeepAlive => true;
 }
