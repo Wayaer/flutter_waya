@@ -1,3 +1,8 @@
+## 10.0.1
+
+* `AutomaticKeepAliveWrapperState` renamed to `AutomaticKeepAliveClientMixinState`
+* `AutomaticKeepAliveWrapper` renamed to `AutomaticKeepAliveClientWrapper`
+
 ## 10.0.0
 
 * Migrate to 3.27.0
