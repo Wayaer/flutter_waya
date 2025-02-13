@@ -1,6 +1,6 @@
 {
-    "name": "WayaUI",
-    "short_name": "WayaUI",
+    "name": "Waya",
+    "short_name": "Waya",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

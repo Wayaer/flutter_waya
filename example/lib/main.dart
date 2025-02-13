@@ -80,7 +80,7 @@ class _HomeState extends State<_Home> {
         isWrap: true,
         isScroll: true,
         runSpacing: 10,
-        wrapSpacing: 10,
+        spacing: 10,
         wrapAlignment: WrapAlignment.center,
         direction: Axis.horizontal,
         scrollDirection: Axis.vertical,
