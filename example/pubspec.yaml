@@ -5,16 +5,16 @@ version: 1.0.0+1
 
 environment:
   sdk: '>=3.6.0 <4.0.0'
-  flutter: '>=3.27.0'
+  flutter: '>=3.29.0'
 
 dependencies:
   flutter_web_plugins:
     sdk: flutter
   flutter:
     sdk: flutter
-  flutter_curiosity: ^6.4.0
-  device_preview_minus: ^1.0.8
-  fl_extended: ^1.6.0
+  flutter_curiosity: ^6.6.0
+  device_preview_minus: ^1.2.0
+  fl_extended: ^1.7.0
   flutter_waya:
     path: ../
 
