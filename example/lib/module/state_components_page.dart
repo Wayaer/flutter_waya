@@ -14,37 +14,6 @@ class StateComponentsPage extends StatelessWidget {
         appBar: AppBarText('State Components'),
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
         children: [
-          const Partition('CheckBox 自定义版', marginTop: 0),
-          Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                CheckBox(
-                    value: true,
-                    margin: const EdgeInsets.only(left: 20),
-                    padding: const EdgeInsets.all(6),
-                    decoration: BoxDecoration(
-                        color: Colors.grey.withValues(alpha: 0.4)),
-                    tristate: true,
-                    builder: (bool? value) {
-                      if (value != null) {
-                        return Icon(value
-                            ? Icons.check_box
-                            : Icons.check_box_outline_blank);
-                      }
-                      return const Icon(Icons.indeterminate_check_box);
-                    }),
-                CheckBox(
-                    value: false,
-                    padding: const EdgeInsets.all(6),
-                    margin: const EdgeInsets.only(right: 20),
-                    decoration: BoxDecoration(
-                        color: Colors.grey.withValues(alpha: 0.4)),
-                    builder: (bool? value) {
-                      return Icon(value!
-                          ? Icons.check_box
-                          : Icons.check_box_outline_blank);
-                    }),
-              ]),
           const Partition('Checkbox 官方附加状态版本'),
           Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
             ChangedBuilder<bool?>(
