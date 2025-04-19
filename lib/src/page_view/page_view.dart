@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 enum FlPageViewItemBuilderStyle { scale, zoom }
 
 /// [PageView.builder]itemBuilder
-class FlPageViewItemScaleBuilder extends StatelessWidget {
-  const FlPageViewItemScaleBuilder(
+class FlPageViewItemTransform extends StatelessWidget {
+  const FlPageViewItemTransform(
       {super.key,
       required this.child,
       required this.controller,

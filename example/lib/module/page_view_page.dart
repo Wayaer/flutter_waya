@@ -40,11 +40,11 @@ class _PageViewPageState extends State<PageViewPage> {
         isScroll: true,
         appBar: AppBarText('PageView'),
         children: [
-          const Partition('FlPageViewItemScaleBuilder vertical', marginTop: 0),
+          const Partition('FlPageViewItemTransform vertical', marginTop: 0),
           SizedBox(
               height: 100,
               child: buildPageView(controllerVertical, Axis.vertical)),
-          const Partition('FlPageViewItemScaleBuilder horizontal'),
+          const Partition('FlPageViewItemTransform horizontal'),
           SizedBox(
               height: 200,
               child: buildPageView(controllerHorizontal, Axis.horizontal)),
@@ -72,7 +72,7 @@ class _PageViewPageState extends State<PageViewPage> {
                     ? Axis.vertical
                     : Axis.horizontal,
                 children: [
-                  FlPageViewItemScaleBuilder(
+                  FlPageViewItemTransform(
                           controller: controller,
                           scrollDirection: direction,
                           index: index,
@@ -80,7 +80,7 @@ class _PageViewPageState extends State<PageViewPage> {
                           child: child)
                       .expanded,
                   SizedBox(width: 5, height: 5),
-                  FlPageViewItemScaleBuilder(
+                  FlPageViewItemTransform(
                           controller: controller,
                           scrollDirection: direction,
                           style: FlPageViewItemBuilderStyle.zoom,
