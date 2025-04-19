@@ -38,8 +38,8 @@ class CarouselSliderPage extends StatelessWidget {
               controller: controller,
               options: const CarouselSliderOptions(
                   enlargeStrategy: CenterPageEnlargeStrategy.zoom,
-                  autoPlay: true,
-                  enlargeCenterPage: true),
+                  enlargeCenterPage: true,
+                  autoPlay: true),
               itemCount: 3,
               itemBuilder: (BuildContext context, int index, int realIndex) =>
                   Container(

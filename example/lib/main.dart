@@ -78,7 +78,7 @@ class _HomeState extends State<_Home> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      push(CarouselSliderPage());
+      push(FlSwiperPage());
     });
   }
 

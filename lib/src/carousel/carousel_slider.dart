@@ -178,27 +178,31 @@ class _CarouselSliderState extends ExtendedState<CarouselSlider>
     return child;
   }
 
-  Widget getEnlargeWrapper(Widget? child,
+  Widget buildEnlarge(Widget? child,
       {double? width,
       double? height,
-      double? scale,
+      required double scale,
       required double itemOffset}) {
-    if (widget.options.enlargeStrategy == CenterPageEnlargeStrategy.height) {
-      return SizedBox(width: width, height: height, child: child);
+    switch (widget.options.enlargeStrategy) {
+      case CenterPageEnlargeStrategy.none:
+        return SizedBox(width: width, height: height, child: child);
+      case CenterPageEnlargeStrategy.scale:
+        return Transform.scale(
+            scale: scale,
+            child: SizedBox(width: width, height: height, child: child));
+      case CenterPageEnlargeStrategy.zoom:
+        late Alignment alignment;
+        final bool horizontal = options.scrollDirection == Axis.horizontal;
+        if (itemOffset > 0) {
+          alignment =
+              horizontal ? Alignment.centerRight : Alignment.bottomCenter;
+        } else {
+          alignment = horizontal ? Alignment.centerLeft : Alignment.topCenter;
+        }
+        return Transform.scale(
+            scale: scale, alignment: alignment, child: child);
+        break;
     }
-    if (widget.options.enlargeStrategy == CenterPageEnlargeStrategy.zoom) {
-      late Alignment alignment;
-      final bool horizontal = options.scrollDirection == Axis.horizontal;
-      if (itemOffset > 0) {
-        alignment = horizontal ? Alignment.centerRight : Alignment.bottomCenter;
-      } else {
-        alignment = horizontal ? Alignment.centerLeft : Alignment.topCenter;
-      }
-      return Transform.scale(scale: scale!, alignment: alignment, child: child);
-    }
-    return Transform.scale(
-        scale: scale!,
-        child: SizedBox(width: width, height: height, child: child));
   }
 
   void onStart() {
@@ -291,12 +295,12 @@ class _CarouselSliderState extends ExtendedState<CarouselSlider>
                   (1 / widget.options.aspectRatio);
 
           if (widget.options.scrollDirection == Axis.horizontal) {
-            return getEnlargeWrapper(child,
+            return buildEnlarge(child,
                 height: distortionValue * height,
                 scale: distortionValue,
                 itemOffset: itemOffset);
           } else {
-            return getEnlargeWrapper(child,
+            return buildEnlarge(child,
                 width: distortionValue * MediaQuery.of(context).size.width,
                 scale: distortionValue,
                 itemOffset: itemOffset);
