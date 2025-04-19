@@ -26,15 +26,15 @@ class CarouselSliderOptions {
   /// Defaults to 0.
   final int initialPage;
 
-  ///Determines if carousel should loop infinitely or be limited to item length.
-  ///
-  ///Defaults to true, i.e. infinite loop.
-  final bool enableInfiniteScroll;
-
   ///Determines if carousel should loop to the closest occurence of requested page.
   ///
   ///Defaults to true.
   final bool animateToClosest;
+
+  /// Reverse the order of items if set to true.
+  ///
+  /// Defaults to false.
+  final bool reverse;
 
   /// Enables auto play, sliding one page at a time.
   ///
@@ -75,6 +75,22 @@ class CarouselSliderOptions {
   /// Called whenever the carousel is scrolled
   final ValueChanged<double?>? onScrolled;
 
+  /// How the carousel should respond to user input.
+  ///
+  /// For example, determines how the items continues to animate after the
+  /// user stops dragging the page view.
+  ///
+  /// The physics are modified to snap to page boundaries using
+  /// [PageScrollPhysics] prior to being used.
+  ///
+  /// Defaults to matching platform conventions.
+  final ScrollPhysics? physics;
+
+  /// Set to false to disable page snapping, useful for custom scroll behavior.
+  ///
+  /// Default to `true`.
+  final bool pageSnapping;
+
   /// If `true`, the auto play function will be paused when user is interacting with
   /// the carousel, and will be resumed when user finish interacting.
   /// Default to `true`.
@@ -100,16 +116,53 @@ class CarouselSliderOptions {
   /// If `enlargeCenterPage` is false, this property has no effect.
   final double enlargeFactor;
 
-  /// Whether or not to disable the `Center` widget for each slide.
-  final bool disableCenter;
+  /// Whether to add padding to both ends of the list.
+  /// If this is set to true and [viewportFraction] < 1.0, padding will be added such that the first and last child slivers will be in the center of the viewport when scrolled all the way to the start or end, respectively.
+  /// If [viewportFraction] >= 1.0, this property has no effect.
+  /// This property defaults to true and must not be null.
+  final bool padEnds;
+
+  /// Exposed clipBehavior of PageView
+  final Clip clipBehavior;
+
+  /// Controls whether the widget's pages will respond to
+  /// [RenderObject.showOnScreen], which will allow for implicit accessibility
+  /// scrolling.
+  ///
+  /// With this flag set to false, when accessibility focus reaches the end of
+  /// the current page and the user attempts to move it to the next element, the
+  /// focus will traverse to the next widget outside of the page view.
+  ///
+  /// With this flag set to true, when accessibility focus reaches the end of
+  /// the current page and user attempts to move it to the next element, focus
+  /// will traverse to the next page in the page view.
+  final bool allowImplicitScrolling;
+
+  /// {@macro flutter.widgets.scrollable.restorationId}
+  final String? restorationId;
+
+  /// {@macro flutter.widgets.scrollable.dragStartBehavior}
+  final DragStartBehavior dragStartBehavior;
+
+  /// {@template flutter.widgets.SliverChildBuilderDelegate.findChildIndexCallback}
+  /// Called to find the new index of a child based on its key in case of reordering.
+  ///
+  /// If not provided, a child widget may not map to its existing [RenderObject]
+  /// when the order of children returned from the children builder changes.
+  /// This may result in state-loss.
+  ///
+  /// This callback should take an input [Key], and it should return the
+  /// index of the child element with that associated key, or null if not found.
+  /// {@endtemplate}
+  final ChildIndexGetter? findChildIndexCallback;
 
   const CarouselSliderOptions({
     this.height,
     this.aspectRatio = 16 / 9,
-    this.viewportFraction = 0.8,
+    this.viewportFraction = 1,
     this.initialPage = 0,
-    this.enableInfiniteScroll = true,
     this.animateToClosest = true,
+    this.reverse = false,
     this.autoPlay = false,
     this.autoPlayInterval = const Duration(seconds: 4),
     this.autoPlayAnimationDuration = const Duration(milliseconds: 800),
@@ -117,13 +170,20 @@ class CarouselSliderOptions {
     this.enlargeCenterPage = false,
     this.onPageChanged,
     this.onScrolled,
+    this.physics,
+    this.pageSnapping = true,
     this.scrollDirection = Axis.horizontal,
     this.pauseAutoPlayOnTouch = true,
     this.pauseAutoPlayOnManualNavigate = true,
     this.pauseAutoPlayInFiniteScroll = false,
     this.enlargeStrategy = CenterPageEnlargeStrategy.scale,
     this.enlargeFactor = 0.3,
-    this.disableCenter = false,
+    this.padEnds = true,
+    this.clipBehavior = Clip.hardEdge,
+    this.allowImplicitScrolling = false,
+    this.restorationId,
+    this.dragStartBehavior = DragStartBehavior.start,
+    this.findChildIndexCallback,
   });
 }
 
@@ -133,7 +193,7 @@ class CarouselState {
 
   /// [pageController] is created using the properties passed to the constructor
   /// and can be used to control the [PageView] it is passed to.
-  PageController? pageController;
+  PageController pageController;
 
   /// The actual index of the [PageView].
   ///
@@ -159,11 +219,13 @@ class CarouselState {
   /// Internal use only
   Function onResumeTimer;
 
+  bool get isInfiniteScroll => itemCount == null;
+
   /// The callback to set the Reason Carousel changed
   Function(CarouselPageChangedReason) changeMode;
 
-  CarouselState(
-      this.options, this.onResetTimer, this.onResumeTimer, this.changeMode);
+  CarouselState(this.pageController, this.options, this.onResetTimer,
+      this.onResumeTimer, this.changeMode);
 }
 
 class CarouselSliderController {
@@ -188,7 +250,7 @@ class CarouselSliderController {
       _state!.onResetTimer();
     }
     _setModeController();
-    await _state!.pageController!.nextPage(duration: duration!, curve: curve!);
+    await _state!.pageController.nextPage(duration: duration!, curve: curve!);
     if (isNeedResetTimer) {
       _state!.onResumeTimer();
     }
@@ -206,7 +268,7 @@ class CarouselSliderController {
       _state!.onResetTimer();
     }
     _setModeController();
-    await _state!.pageController!
+    await _state!.pageController
         .previousPage(duration: duration!, curve: curve!);
     if (isNeedResetTimer) {
       _state!.onResumeTimer();
@@ -218,12 +280,12 @@ class CarouselSliderController {
   /// Jumps the page position from its current value to the given value,
   /// without animation, and without checking if the new value is in range.
   void jumpToPage(int page) {
-    final index = _getRealIndex(_state!.pageController!.page!.toInt(),
+    final index = _getRealIndex(_state!.pageController.page!.toInt(),
         _state!.realPage - _state!.initialPage, _state!.itemCount);
 
     _setModeController();
-    final int pageToJump = _state!.pageController!.page!.toInt() + page - index;
-    return _state!.pageController!.jumpToPage(pageToJump);
+    final int pageToJump = _state!.pageController.page!.toInt() + page - index;
+    return _state!.pageController.jumpToPage(pageToJump);
   }
 
   /// Animates the controlled [CarouselSlider] from the current page to the given page.
@@ -237,10 +299,10 @@ class CarouselSliderController {
     if (isNeedResetTimer) {
       _state!.onResetTimer();
     }
-    final index = _getRealIndex(_state!.pageController!.page!.toInt(),
+    final index = _getRealIndex(_state!.pageController.page!.toInt(),
         _state!.realPage - _state!.initialPage, _state!.itemCount);
     int smallestMovement = page - index;
-    if (_state!.options.enableInfiniteScroll &&
+    if (_state!.isInfiniteScroll &&
         _state!.itemCount != null &&
         _state!.options.animateToClosest) {
       if ((page - index).abs() > (page + _state!.itemCount! - index).abs()) {
@@ -251,8 +313,8 @@ class CarouselSliderController {
       }
     }
     _setModeController();
-    await _state!.pageController!.animateToPage(
-        _state!.pageController!.page!.toInt() + smallestMovement,
+    await _state!.pageController.animateToPage(
+        _state!.pageController.page!.toInt() + smallestMovement,
         duration: duration!,
         curve: curve!);
     if (isNeedResetTimer) {
@@ -290,13 +352,8 @@ class CarouselSliderController {
 /// to be placed in the given position.
 int _getRealIndex(int position, int base, int? length) {
   final int offset = position - base;
-  return _remainder(offset, length);
-}
 
-/// Returns the remainder of the modulo operation [input] % [source], and adjust it for
-/// negative values.
-int _remainder(int input, int? source) {
-  if (source == 0) return 0;
-  final int result = input % source!;
-  return result < 0 ? source + result : result;
+  if (length == 0) return 0;
+  final int result = offset % length!;
+  return result < 0 ? length + result : result;
 }
