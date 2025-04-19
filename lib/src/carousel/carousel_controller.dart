@@ -36,11 +36,6 @@ class CarouselSliderOptions {
   ///Defaults to true.
   final bool animateToClosest;
 
-  /// Reverse the order of items if set to true.
-  ///
-  /// Defaults to false.
-  final bool reverse;
-
   /// Enables auto play, sliding one page at a time.
   ///
   /// Use [autoPlayInterval] to determent the frequency of slides.
@@ -67,7 +62,7 @@ class CarouselSliderOptions {
   /// creating a feeling of depth in the carousel.
   ///
   /// Defaults to false.
-  final bool? enlargeCenterPage;
+  final bool enlargeCenterPage;
 
   /// The axis along which the page view scrolls.
   ///
@@ -79,22 +74,6 @@ class CarouselSliderOptions {
 
   /// Called whenever the carousel is scrolled
   final ValueChanged<double?>? onScrolled;
-
-  /// How the carousel should respond to user input.
-  ///
-  /// For example, determines how the items continues to animate after the
-  /// user stops dragging the page view.
-  ///
-  /// The physics are modified to snap to page boundaries using
-  /// [PageScrollPhysics] prior to being used.
-  ///
-  /// Defaults to matching platform conventions.
-  final ScrollPhysics? physics;
-
-  /// Set to false to disable page snapping, useful for custom scroll behavior.
-  ///
-  /// Default to `true`.
-  final bool pageSnapping;
 
   /// If `true`, the auto play function will be paused when user is interacting with
   /// the carousel, and will be resumed when user finish interacting.
@@ -114,9 +93,6 @@ class CarouselSliderOptions {
   /// in the last item.
   final bool pauseAutoPlayInFiniteScroll;
 
-  /// Pass a `PageStoragekey` if you want to keep the pageview's position when it was recreated.
-  final PageStorageKey? pageViewKey;
-
   /// Use [enlargeStrategy] to determine which method to enlarge the center page.
   final CenterPageEnlargeStrategy enlargeStrategy;
 
@@ -127,46 +103,6 @@ class CarouselSliderOptions {
   /// Whether or not to disable the `Center` widget for each slide.
   final bool disableCenter;
 
-  /// Whether to add padding to both ends of the list.
-  /// If this is set to true and [viewportFraction] < 1.0, padding will be added such that the first and last child slivers will be in the center of the viewport when scrolled all the way to the start or end, respectively.
-  /// If [viewportFraction] >= 1.0, this property has no effect.
-  /// This property defaults to true and must not be null.
-  final bool padEnds;
-
-  /// Exposed clipBehavior of PageView
-  final Clip clipBehavior;
-
-  /// Controls whether the widget's pages will respond to
-  /// [RenderObject.showOnScreen], which will allow for implicit accessibility
-  /// scrolling.
-  ///
-  /// With this flag set to false, when accessibility focus reaches the end of
-  /// the current page and the user attempts to move it to the next element, the
-  /// focus will traverse to the next widget outside of the page view.
-  ///
-  /// With this flag set to true, when accessibility focus reaches the end of
-  /// the current page and user attempts to move it to the next element, focus
-  /// will traverse to the next page in the page view.
-  final bool allowImplicitScrolling;
-
-  /// {@macro flutter.widgets.scrollable.restorationId}
-  final String? restorationId;
-
-  /// {@macro flutter.widgets.scrollable.dragStartBehavior}
-  final DragStartBehavior dragStartBehavior;
-
-  /// {@template flutter.widgets.SliverChildBuilderDelegate.findChildIndexCallback}
-  /// Called to find the new index of a child based on its key in case of reordering.
-  ///
-  /// If not provided, a child widget may not map to its existing [RenderObject]
-  /// when the order of children returned from the children builder changes.
-  /// This may result in state-loss.
-  ///
-  /// This callback should take an input [Key], and it should return the
-  /// index of the child element with that associated key, or null if not found.
-  /// {@endtemplate}
-  final ChildIndexGetter? findChildIndexCallback;
-
   const CarouselSliderOptions({
     this.height,
     this.aspectRatio = 16 / 9,
@@ -174,7 +110,6 @@ class CarouselSliderOptions {
     this.initialPage = 0,
     this.enableInfiniteScroll = true,
     this.animateToClosest = true,
-    this.reverse = false,
     this.autoPlay = false,
     this.autoPlayInterval = const Duration(seconds: 4),
     this.autoPlayAnimationDuration = const Duration(milliseconds: 800),
@@ -182,112 +117,14 @@ class CarouselSliderOptions {
     this.enlargeCenterPage = false,
     this.onPageChanged,
     this.onScrolled,
-    this.physics,
-    this.pageSnapping = true,
     this.scrollDirection = Axis.horizontal,
     this.pauseAutoPlayOnTouch = true,
     this.pauseAutoPlayOnManualNavigate = true,
     this.pauseAutoPlayInFiniteScroll = false,
-    this.pageViewKey,
     this.enlargeStrategy = CenterPageEnlargeStrategy.scale,
     this.enlargeFactor = 0.3,
     this.disableCenter = false,
-    this.padEnds = true,
-    this.clipBehavior = Clip.hardEdge,
-    this.allowImplicitScrolling = false,
-    this.restorationId,
-    this.dragStartBehavior = DragStartBehavior.start,
-    this.findChildIndexCallback,
   });
-
-  ///Generate new [CarouselSliderOptions] based on old ones.
-  CarouselSliderOptions copyWith({
-    double? height,
-    double? aspectRatio,
-    double? viewportFraction,
-    int? initialPage,
-    bool? enableInfiniteScroll,
-    bool? reverse,
-    bool? autoPlay,
-    Duration? autoPlayInterval,
-    Duration? autoPlayAnimationDuration,
-    Curve? autoPlayCurve,
-    bool? enlargeCenterPage,
-    CarouselPageChangedCallback? onPageChanged,
-    ValueChanged<double?>? onScrolled,
-    ScrollPhysics? physics,
-    bool? pageSnapping,
-    Axis? scrollDirection,
-    bool? pauseAutoPlayOnTouch,
-    bool? pauseAutoPlayOnManualNavigate,
-    bool? pauseAutoPlayInFiniteScroll,
-    PageStorageKey? pageViewKey,
-    CenterPageEnlargeStrategy? enlargeStrategy,
-    double? enlargeFactor,
-    bool? disableCenter,
-    Clip? clipBehavior,
-    bool? padEnds,
-    bool? allowImplicitScrolling,
-    String? restorationId,
-    DragStartBehavior? dragStartBehavior,
-    ChildIndexGetter? findChildIndexCallback,
-  }) =>
-      CarouselSliderOptions(
-        height: height ?? this.height,
-        aspectRatio: aspectRatio ?? this.aspectRatio,
-        viewportFraction: viewportFraction ?? this.viewportFraction,
-        initialPage: initialPage ?? this.initialPage,
-        enableInfiniteScroll: enableInfiniteScroll ?? this.enableInfiniteScroll,
-        reverse: reverse ?? this.reverse,
-        autoPlay: autoPlay ?? this.autoPlay,
-        autoPlayInterval: autoPlayInterval ?? this.autoPlayInterval,
-        autoPlayAnimationDuration:
-            autoPlayAnimationDuration ?? this.autoPlayAnimationDuration,
-        autoPlayCurve: autoPlayCurve ?? this.autoPlayCurve,
-        enlargeCenterPage: enlargeCenterPage ?? this.enlargeCenterPage,
-        onPageChanged: onPageChanged ?? this.onPageChanged,
-        onScrolled: onScrolled ?? this.onScrolled,
-        physics: physics ?? this.physics,
-        pageSnapping: pageSnapping ?? this.pageSnapping,
-        scrollDirection: scrollDirection ?? this.scrollDirection,
-        pauseAutoPlayOnTouch: pauseAutoPlayOnTouch ?? this.pauseAutoPlayOnTouch,
-        pauseAutoPlayOnManualNavigate:
-            pauseAutoPlayOnManualNavigate ?? this.pauseAutoPlayOnManualNavigate,
-        pauseAutoPlayInFiniteScroll:
-            pauseAutoPlayInFiniteScroll ?? this.pauseAutoPlayInFiniteScroll,
-        pageViewKey: pageViewKey ?? this.pageViewKey,
-        enlargeStrategy: enlargeStrategy ?? this.enlargeStrategy,
-        enlargeFactor: enlargeFactor ?? this.enlargeFactor,
-        disableCenter: disableCenter ?? this.disableCenter,
-        clipBehavior: clipBehavior ?? this.clipBehavior,
-        padEnds: padEnds ?? this.padEnds,
-        allowImplicitScrolling:
-            allowImplicitScrolling ?? this.allowImplicitScrolling,
-        restorationId: restorationId ?? this.restorationId,
-        dragStartBehavior: dragStartBehavior ?? this.dragStartBehavior,
-        findChildIndexCallback:
-            findChildIndexCallback ?? this.findChildIndexCallback,
-      );
-}
-
-abstract class _CarouselSliderController {
-  bool get ready;
-
-  Future<Null> get onReady;
-
-  Future<void> nextPage({Duration? duration, Curve? curve});
-
-  Future<void> previousPage({Duration? duration, Curve? curve});
-
-  void jumpToPage(int page);
-
-  Future<void> animateToPage(int page, {Duration? duration, Curve? curve});
-
-  void startAutoPlay();
-
-  void stopAutoPlay();
-
-  factory _CarouselSliderController() => CarouselSliderController();
 }
 
 class CarouselState {
@@ -329,32 +166,20 @@ class CarouselState {
       this.options, this.onResetTimer, this.onResumeTimer, this.changeMode);
 }
 
-class CarouselSliderController implements _CarouselSliderController {
-  final Completer<Null> _readyCompleter = Completer<Null>();
-
+class CarouselSliderController {
   CarouselState? _state;
 
   set state(CarouselState? state) {
     _state = state;
-    if (!_readyCompleter.isCompleted) {
-      _readyCompleter.complete();
-    }
   }
 
   void _setModeController() =>
       _state!.changeMode(CarouselPageChangedReason.controller);
 
-  @override
-  bool get ready => _state != null;
-
-  @override
-  Future<Null> get onReady => _readyCompleter.future;
-
   /// Animates the controlled [CarouselSlider] to the next page.
   ///
   /// The animation lasts for the given duration and follows the given curve.
   /// The returned [Future] resolves when the animation completes.
-  @override
   Future<void> nextPage(
       {Duration? duration = const Duration(milliseconds: 300),
       Curve? curve = Curves.linear}) async {
@@ -373,7 +198,6 @@ class CarouselSliderController implements _CarouselSliderController {
   ///
   /// The animation lasts for the given duration and follows the given curve.
   /// The returned [Future] resolves when the animation completes.
-  @override
   Future<void> previousPage(
       {Duration? duration = const Duration(milliseconds: 300),
       Curve? curve = Curves.linear}) async {
@@ -393,7 +217,6 @@ class CarouselSliderController implements _CarouselSliderController {
   ///
   /// Jumps the page position from its current value to the given value,
   /// without animation, and without checking if the new value is in range.
-  @override
   void jumpToPage(int page) {
     final index = _getRealIndex(_state!.pageController!.page!.toInt(),
         _state!.realPage - _state!.initialPage, _state!.itemCount);
@@ -407,7 +230,6 @@ class CarouselSliderController implements _CarouselSliderController {
   ///
   /// The animation lasts for the given duration and follows the given curve.
   /// The returned [Future] resolves when the animation completes.
-  @override
   Future<void> animateToPage(int page,
       {Duration? duration = const Duration(milliseconds: 300),
       Curve? curve = Curves.linear}) async {
@@ -442,7 +264,6 @@ class CarouselSliderController implements _CarouselSliderController {
   ///
   /// The carousel will only autoPlay if the [autoPlay] parameter
   /// in [CarouselSliderOptions] is true.
-  @override
   void startAutoPlay() {
     _state!.onResumeTimer();
   }
@@ -451,7 +272,6 @@ class CarouselSliderController implements _CarouselSliderController {
   ///
   /// This is a more on-demand way of doing this. Use the [autoPlay]
   /// parameter in [CarouselSliderOptions] to specify the autoPlay behaviour of the carousel.
-  @override
   void stopAutoPlay() {
     _state!.onResetTimer();
   }

@@ -74,6 +74,15 @@ class _HomeState extends State<_Home> {
   FocusNode focusNode = FocusNode();
 
   @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      push(CarouselSliderPage());
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Universal(
         padding: const EdgeInsets.all(10),
