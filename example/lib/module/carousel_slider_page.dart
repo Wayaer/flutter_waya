@@ -34,8 +34,6 @@ class CarouselSliderPage extends StatelessWidget {
             }),
           ]),
           const Partition('CarouselSlider.builder'),
-
-
           CarouselSlider.builder(
               controller: controller,
               options: const CarouselSliderOptions(
