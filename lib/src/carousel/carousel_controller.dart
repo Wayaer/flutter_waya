@@ -2,7 +2,7 @@ part of 'carousel_slider.dart';
 
 enum CarouselPageChangedReason { timed, manual, controller }
 
-enum CenterPageEnlargeStrategy { scale, height, zoom }
+enum CenterPageEnlargeStrategy { none,scale,  zoom }
 
 typedef CarouselPageChangedCallback = void Function(
     int index, CarouselPageChangedReason reason);
@@ -111,7 +111,6 @@ class CarouselSliderOptions {
     this.autoPlayInterval = const Duration(seconds: 4),
     this.autoPlayAnimationDuration = const Duration(milliseconds: 800),
     this.autoPlayCurve = Curves.fastOutSlowIn,
-    this.enlargeCenterPage = false,
     this.onPageChanged,
     this.onScrolled,
     this.scrollDirection = Axis.horizontal,
@@ -119,6 +118,7 @@ class CarouselSliderOptions {
     this.pauseAutoPlayOnManualNavigate = true,
     this.pauseAutoPlayInFiniteScroll = false,
     this.enlargeStrategy = CenterPageEnlargeStrategy.scale,
+    this.enlargeCenterPage = false,
     this.enlargeFactor = 0.3,
   });
 }
