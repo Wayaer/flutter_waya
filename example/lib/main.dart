@@ -1,18 +1,18 @@
 import 'package:app/module/button_page.dart';
-import 'package:app/module/carousel_slider_page.dart';
 import 'package:app/module/components_page.dart';
 import 'package:app/module/counter_page.dart';
 import 'package:app/module/decorator_page.dart';
 import 'package:app/module/flip_card_page.dart';
 import 'package:app/module/progress_page.dart';
 import 'package:app/module/state_components_page.dart';
-import 'package:app/module/swiper_page.dart';
 import 'package:app/module/text_field_page.dart';
 import 'package:device_preview_minus/device_preview_minus.dart';
 import 'package:fl_extended/fl_extended.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_waya/flutter_waya.dart';
+
+import 'module/page_view_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -78,7 +78,7 @@ class _HomeState extends State<_Home> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      push(FlSwiperPage());
+      // push(FlSwiperPage());
     });
   }
 
@@ -98,11 +98,9 @@ class _HomeState extends State<_Home> {
           ElevatedText('State Components',
               onTap: () => push(const StateComponentsPage())),
           ElevatedText('Button', onTap: () => push(const ButtonPage())),
-          ElevatedText('FlSwiper', onTap: () => push(const FlSwiperPage())),
+          ElevatedText('PageView', onTap: () => push(const PageViewPage())),
           ElevatedText('ProgressBar',
               onTap: () => push(const ProgressBarPage())),
-          ElevatedText('CarouselSlider',
-              onTap: () => push(const CarouselSliderPage())),
           ElevatedText('DecoratorBox',
               onTap: () => push(const DecoratorBoxPage())),
           ElevatedText('TextField', onTap: () => push(const TextFieldPage())),

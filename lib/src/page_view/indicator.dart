@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 
-enum FlIndicatorType { none, slide, warm, color, scale, drop }
+enum FlIndicatorStyle { none, slide, warm, color, scale, drop }
 
 /// 指示器
 class FlIndicator extends StatelessWidget {
   const FlIndicator(
       {super.key,
       required this.count,
-      this.size = 20.0,
+      this.size = 12.0,
       this.space = 5.0,
-      this.activeSize = 20.0,
+      this.activeSize = 12.0,
       this.color,
-      this.layout = FlIndicatorType.slide,
+      this.style = FlIndicatorStyle.slide,
       this.activeColor,
       this.scale = 0.6,
-      this.dropHeight = 20.0,
+      this.dropHeight = 12.0,
       required this.index,
       required this.position});
 
@@ -38,49 +38,47 @@ class FlIndicator extends StatelessWidget {
   /// normal color
   final Color? color;
 
-  /// layout of the dots,default is [FlIndicatorType.slide]
-  final FlIndicatorType layout;
+  /// layout of the dots,default is [FlIndicatorStyle.slide]
+  final FlIndicatorStyle style;
 
-  /// Only valid when layout==FlIndicatorType.scale
+  /// Only valid when layout==FlIndicatorStyle.scale
   final double scale;
 
-  /// Only valid when layout==FlIndicatorType.drop
+  /// Only valid when layout==FlIndicatorStyle.drop
   final double dropHeight;
 
   final double activeSize;
 
   FlIndicatorPainter createPainter(Color activeColor, Color color) {
     final Paint paint = Paint();
-    switch (layout) {
-      case FlIndicatorType.none:
+    switch (style) {
+      case FlIndicatorStyle.none:
         return _NonePainter(this, position, index, paint, activeColor, color);
-      case FlIndicatorType.slide:
+      case FlIndicatorStyle.slide:
         return _SlidePainter(this, position, index, paint, activeColor, color);
-      case FlIndicatorType.warm:
+      case FlIndicatorStyle.warm:
         return _WarmPainter(this, position, index, paint, activeColor, color);
-      case FlIndicatorType.color:
+      case FlIndicatorStyle.color:
         return _ColorPainter(this, position, index, paint, activeColor, color);
-      case FlIndicatorType.scale:
+      case FlIndicatorStyle.scale:
         return _ScalePainter(this, position, index, paint, activeColor, color);
-      case FlIndicatorType.drop:
+      case FlIndicatorStyle.drop:
         return _DropPainter(this, position, index, paint, activeColor, color);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     final Widget child = SizedBox(
         width: count * size + (count - 1) * space,
         height: size,
         child: CustomPaint(
-            painter: createPainter(
-                activeColor ?? Theme.of(context).colorScheme.primary,
-                color ?? Theme.of(context).unselectedWidgetColor)));
-    return IgnorePointer(
-        child:
-            layout == FlIndicatorType.scale || layout == FlIndicatorType.color
-                ? ClipRect(child: child)
-                : child);
+            painter: createPainter(activeColor ?? colorScheme.primary,
+                color ?? colorScheme.primaryContainer)));
+    final isClip =
+        style == FlIndicatorStyle.scale || style == FlIndicatorStyle.color;
+    return IgnorePointer(child: isClip ? ClipRect(child: child) : child);
   }
 }
 
