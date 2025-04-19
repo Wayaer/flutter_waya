@@ -14,9 +14,10 @@ export 'src/const/styles.dart';
 /// progress
 export 'src/progress/progress.dart';
 
-/// carousel_slider
-export 'src/carousel/carousel_slider.dart';
-export 'src/carousel/indicator.dart';
+/// page_view
+export 'src/page_view/indicator.dart';
+export 'src/page_view/page_view.dart';
+export 'src/page_view/page_view_controller.dart';
 
 /// editable_text
 export 'src/editable_text/text_field.dart';
