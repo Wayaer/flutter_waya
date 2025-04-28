@@ -1,4 +1,4 @@
-## 11.0.1
+## 11.0.2
 
 * Removed `CheckBox`, `FlBadge`,`FlPopupMenuButton`,`FlSwiper`, `FlSwiperPagination`,
   `FlSwiperIndicator`,
