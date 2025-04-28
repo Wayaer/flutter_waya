@@ -11,10 +11,10 @@ class PageViewPage extends StatefulWidget {
 }
 
 class _PageViewPageState extends State<PageViewPage> {
-  PageAutoPlayController controllerHorizontal =
-      PageAutoPlayController(viewportFraction: 0.8);
-  PageAutoPlayController controllerVertical =
-      PageAutoPlayController(viewportFraction: 0.8);
+  FlPageViewController controllerHorizontal =
+      FlPageViewController(viewportFraction: 0.8, isLoop: true);
+  FlPageViewController controllerVertical =
+      FlPageViewController(viewportFraction: 0.8, isLoop: true);
 
   int itemCount = 3;
 
@@ -23,15 +23,8 @@ class _PageViewPageState extends State<PageViewPage> {
     super.initState();
     addPostFrameCallback((_) {
       controllerHorizontal.startAutoPlay();
-      controllerVertical.startAutoPlay(reverse: true);
+      controllerVertical.startAutoPlay();
     });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    controllerHorizontal.dispose();
-    controllerVertical.dispose();
   }
 
   @override
@@ -41,54 +34,57 @@ class _PageViewPageState extends State<PageViewPage> {
         appBar: AppBarText('PageView'),
         children: [
           const Partition('FlPageViewItemTransform vertical', marginTop: 0),
-          SizedBox(
-              height: 100,
-              child: buildPageView(controllerVertical, Axis.vertical)),
+          buildPageView(controllerVertical, Axis.vertical),
           const Partition('FlPageViewItemTransform horizontal'),
-          SizedBox(
-              height: 200,
-              child: buildPageView(controllerHorizontal, Axis.horizontal)),
+          buildPageView(controllerHorizontal, Axis.horizontal),
           const Partition('FlIndicator'),
           buildIndicator(controllerHorizontal),
           20.heightBox,
         ]);
   }
 
-  Widget buildPageView(PageController controller, Axis direction) =>
-      PageView.builder(
-          controller: controller,
-          scrollDirection: direction,
-          itemCount: itemCount,
-          itemBuilder: (_, int index) {
-            final colorScheme = Theme.of(context).colorScheme;
-            final child = Container(
-                alignment: Alignment.center,
-                color: index.isEven
-                    ? colorScheme.primary
-                    : colorScheme.primaryContainer,
-                child: Text('page $index'));
-            return Flex(
-                direction: direction == Axis.horizontal
-                    ? Axis.vertical
-                    : Axis.horizontal,
-                children: [
-                  FlPageViewItemTransform(
-                          controller: controller,
-                          scrollDirection: direction,
-                          index: index,
-                          style: FlPageViewItemBuilderStyle.scale,
-                          child: child)
-                      .expanded,
-                  SizedBox(width: 5, height: 5),
-                  FlPageViewItemTransform(
-                          controller: controller,
-                          scrollDirection: direction,
-                          style: FlPageViewItemBuilderStyle.zoom,
-                          index: index,
-                          child: child)
-                      .expanded,
-                ]);
-          });
+  Widget buildPageView(FlPageViewController controller, Axis direction) =>
+      FlPageView(
+        controller: controller,
+        itemCount: itemCount,
+        autoPlay: true,
+        builder: (FlPageViewController pageController, int? itemCount) =>
+            PageView.builder(
+                controller: pageController,
+                scrollDirection: direction,
+                itemCount: itemCount,
+                itemBuilder: (_, int index) {
+                  final colorScheme = Theme.of(context).colorScheme;
+                  final child = Container(
+                      alignment: Alignment.center,
+                      color: index.isEven
+                          ? colorScheme.primary
+                          : colorScheme.primaryContainer,
+                      child: Text(
+                          'index:${pageController.getIndex(index)}\nrealIndex: $index'));
+                  return Flex(
+                      direction: direction == Axis.horizontal
+                          ? Axis.vertical
+                          : Axis.horizontal,
+                      children: [
+                        FlPageViewTransform(
+                                controller: pageController,
+                                scrollDirection: direction,
+                                index: index,
+                                style: FlPageViewTransformStyle.scale,
+                                child: child)
+                            .expanded,
+                        SizedBox(width: 5, height: 5),
+                        FlPageViewTransform(
+                                controller: pageController,
+                                scrollDirection: direction,
+                                style: FlPageViewTransformStyle.zoom,
+                                index: index,
+                                child: child)
+                            .expanded,
+                      ]);
+                }),
+      );
 
   Widget buildIndicator(PageController controller) => ListenableBuilder(
       listenable: controller,

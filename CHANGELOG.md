@@ -1,8 +1,8 @@
-## 11.0.0
+## 11.0.1
 
 * Removed `CheckBox`, `FlBadge`,`FlPopupMenuButton`,`FlSwiper`, `FlSwiperPagination`,
   `FlSwiperIndicator`,
-* Removed `CarouselSlider`,added  `FlPageViewItemTransform`,`PageAutoPlayController`
+* Removed `CarouselSlider`,added  `FlPageViewTransform`,`FlPageView`
 
 ## 10.0.1
 
