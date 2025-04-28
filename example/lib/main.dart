@@ -98,7 +98,7 @@ class _HomeState extends State<_Home> {
           ElevatedText('State Components',
               onTap: () => push(const StateComponentsPage())),
           ElevatedText('Button', onTap: () => push(const ButtonPage())),
-          ElevatedText('PageView', onTap: () => push(const PageViewPage())),
+          ElevatedText('PageView', onTap: () => push(const FlPageViewPage())),
           ElevatedText('ProgressBar',
               onTap: () => push(const ProgressBarPage())),
           ElevatedText('DecoratorBox',
