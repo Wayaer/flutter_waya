@@ -41,8 +41,9 @@ class FlPageViewTransform extends StatelessWidget {
         double scale = 1.0;
         double itemOffset = 0;
         final position = controller.position;
-        final page = controller.page ?? controller.initialPage.toDouble();
+        double page = controller.initialPage.toDouble();
         if (position.hasPixels && position.hasContentDimensions) {
+          if (controller.page != null) page = controller.page!;
           itemOffset = page - index;
         } else {
           final storageContext = controller.position.context.storageContext;
