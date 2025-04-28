@@ -3,20 +3,20 @@ import 'package:fl_extended/fl_extended.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
-class PageViewPage extends StatefulWidget {
-  const PageViewPage({super.key});
+class FlPageViewPage extends StatefulWidget {
+  const FlPageViewPage({super.key});
 
   @override
-  State<PageViewPage> createState() => _PageViewPageState();
+  State<FlPageViewPage> createState() => _FlPageViewPageState();
 }
 
-class _PageViewPageState extends State<PageViewPage> {
+class _FlPageViewPageState extends State<FlPageViewPage> {
   FlPageViewController controllerHorizontal =
-      FlPageViewController(viewportFraction: 0.8, isLoop: true);
+      FlPageViewController(viewportFraction: 0.8);
   FlPageViewController controllerVertical =
       FlPageViewController(viewportFraction: 0.8, isLoop: true);
 
-  int itemCount = 3;
+  int itemCount = 10;
 
   @override
   void initState() {
@@ -31,11 +31,11 @@ class _PageViewPageState extends State<PageViewPage> {
   Widget build(BuildContext context) {
     return ExtendedScaffold(
         isScroll: true,
-        appBar: AppBarText('PageView'),
+        appBar: AppBarText('FlPageView'),
         children: [
-          const Partition('FlPageViewItemTransform vertical', marginTop: 0),
+          const Partition('FlPageView vertical', marginTop: 0),
           buildPageView(controllerVertical, Axis.vertical),
-          const Partition('FlPageViewItemTransform horizontal'),
+          const Partition('FlPageView horizontal'),
           buildPageView(controllerHorizontal, Axis.horizontal),
           const Partition('FlIndicator'),
           buildIndicator(controllerHorizontal),
@@ -86,10 +86,10 @@ class _PageViewPageState extends State<PageViewPage> {
                 }),
       );
 
-  Widget buildIndicator(PageController controller) => ListenableBuilder(
+  Widget buildIndicator(FlPageViewController controller) => ListenableBuilder(
       listenable: controller,
       builder: (_, __) {
-        final position = controller.page ?? 0;
+        final position = controller.getPage() ?? 0;
         return Column(children: [
           FlIndicator(
               space: 20,

@@ -267,6 +267,26 @@ class FlPageViewController extends PageController {
     return _getIndex(index + initial, realPage, itemCount);
   }
 
+  /// Returns the real index of the page
+  int _getIndex(int position, int base, int? length) {
+    final int offset = position - base;
+    if (length == 0) return 0;
+    final int result = offset % length!;
+    return result < 0 ? length + result : result;
+  }
+
+  double? getPage() {
+    if (_state == null || page == null) return null;
+    final itemCount = _state!.widget.itemCount;
+    final double offset = page! + initial - realPage;
+    double result = offset % itemCount;
+    if (result < 0) result += itemCount;
+    if (result > itemCount - 1) {
+      result = itemCount - 1;
+    }
+    return result;
+  }
+
   /// Start auto play
   void startAutoPlay() {
     _resumeTimer();
@@ -275,14 +295,6 @@ class FlPageViewController extends PageController {
   /// Stop auto play
   void stopAutoPlay() {
     _clearTimer();
-  }
-
-  /// Returns the real index of the page
-  int _getIndex(int position, int base, int? length) {
-    final int offset = position - base;
-    if (length == 0) return 0;
-    final int result = offset % length!;
-    return result < 0 ? length + result : result;
   }
 
   /// The timer used to automatically advance the carousel
