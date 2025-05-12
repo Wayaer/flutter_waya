@@ -23,22 +23,24 @@ class _TextFieldPageState extends State<TextFieldPage> {
         children: [
           const Partition('DecoratorBox with TextField', marginTop: 0),
           DecoratorBox(
-              decoration: BoxDecorative(
-                borderType: BorderType.underline,
-                borderRadius: BorderRadius.circular(4),
-                fillColor: context.theme.primaryColor.withValues(alpha: 0.2),
-              ),
+              decoration: (_, __) => BoxDecorative(
+                    borderType: BorderType.underline,
+                    borderRadius: BorderRadius.circular(4),
+                    fillColor:
+                        context.theme.primaryColor.withValues(alpha: 0.2),
+                  ),
               child: TextField(
                 decoration:
                     const InputDecoration(isDense: true).copyWithNoneBorder,
               )),
           10.heightBox,
           DecoratorBox(
-              decoration: BoxDecorative(
-                borderType: BorderType.outline,
-                borderRadius: BorderRadius.circular(4),
-                fillColor: context.theme.primaryColor.withValues(alpha: 0.2),
-              ),
+              decoration: (_, __) => BoxDecorative(
+                    borderType: BorderType.outline,
+                    borderRadius: BorderRadius.circular(4),
+                    fillColor:
+                        context.theme.primaryColor.withValues(alpha: 0.2),
+                  ),
               child: TextField(
                 decoration:
                     const InputDecoration(isDense: true).copyWithNoneBorder,

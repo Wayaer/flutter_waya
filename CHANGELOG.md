@@ -1,7 +1,7 @@
-## 11.1.0
+## 11.1.1
 
 * `BoxDecorative()` removes `focusedBorderSide` and `crossAxisAlignment`
-* `DecoratorBoxState()` and `DecoratorBox()` have added a `focusedDecoration`
+* Changed the `decoration` of `BoxDecorative()` to callback mode
 
 ## 11.0.2
 
