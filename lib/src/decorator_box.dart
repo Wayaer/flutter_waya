@@ -205,6 +205,9 @@ class BoxDecorative {
       );
 }
 
+typedef DecoratorBoxDecorativeBuilder = BoxDecorative Function(
+    bool hasFocus, bool isEditing);
+
 /// [Widget] 装饰器
 class DecoratorBox extends StatelessWidget {
   const DecoratorBox({
@@ -218,7 +221,6 @@ class DecoratorBox extends StatelessWidget {
     this.hasFocus = false,
     this.isEditing = false,
     this.decoration,
-    this.focusedDecoration,
   });
 
   final Widget child;
@@ -236,10 +238,7 @@ class DecoratorBox extends StatelessWidget {
   final List<DecoratorPendant> prefixes;
 
   /// [DecoratorBox] 样式
-  final BoxDecorative? decoration;
-
-  /// [DecoratorBox] 焦点样式
-  final BoxDecorative? focusedDecoration;
+  final DecoratorBoxDecorativeBuilder? decoration;
 
   /// 是否 [Expanded]
   final bool expanded;
@@ -285,8 +284,9 @@ class DecoratorBox extends StatelessWidget {
       return null;
     }
 
-    if (listPendant.length == 1)
+    if (listPendant.length == 1) {
       return buildVisibilityPendant(listPendant.first);
+    }
     List<Widget> children = [];
     for (var e in listPendant) {
       final widget = buildVisibilityPendant(e);
@@ -353,8 +353,7 @@ class DecoratorBox extends StatelessWidget {
   }
 
   Widget buildDecoration(Widget current) {
-    final currentDecoration =
-        hasFocus ? (focusedDecoration ?? decoration) : decoration;
+    final currentDecoration = decoration?.call(hasFocus, isEditing);
     if (currentDecoration != null) {
       current = Container(
           decoration: currentDecoration.toBoxDecoration(),
@@ -411,7 +410,7 @@ class DecoratorBoxState extends StatelessWidget {
   final List<DecoratorPendant> prefixes;
 
   /// [DecoratorBox] 样式
-  final BoxDecorative? decoration;
+  final DecoratorBoxDecorativeBuilder? decoration;
 
   /// [DecoratorBox] 焦点样式
   final BoxDecorative? focusedDecoration;
@@ -425,7 +424,6 @@ class DecoratorBoxState extends StatelessWidget {
       builder: (BuildContext context, Widget? child) => DecoratorBox(
           hasFocus: onFocus?.call() ?? false,
           isEditing: onEditing?.call() ?? false,
-          focusedDecoration: focusedDecoration,
           decoration: decoration,
           footers: footers,
           headers: headers,
