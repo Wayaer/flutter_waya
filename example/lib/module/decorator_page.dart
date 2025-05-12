@@ -22,16 +22,24 @@ class _DecoratorBoxPageState extends ExtendedState<DecoratorBoxPage> {
         appBar: AppBarText('DecoratorBox'),
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
         children: [
-          const Partition('DecoratorBox', marginTop: 0),
+          const Partition('DecoratorBox hasFocus(true)', marginTop: 0),
           DecoratorBox(
               hasFocus: true,
               decoration: decoration,
+              focusedDecoration: focusedDecoration,
+              child: TextField(focusNode: focusNodeWithDecoratorBox)),
+          const Partition('DecoratorBox hasFocus(false)', marginTop: 0),
+          DecoratorBox(
+              hasFocus: false,
+              decoration: decoration,
+              focusedDecoration: focusedDecoration,
               child: TextField(focusNode: focusNodeWithDecoratorBox)),
           const Partition('DecoratorBoxState with FocusNode'),
           DecoratorBoxState(
               listenable: Listenable.merge([focusNodeWithDecoratorBoxState]),
               onFocus: () => focusNodeWithDecoratorBoxState.hasFocus,
               decoration: decoration,
+              focusedDecoration: focusedDecoration,
               footers: footers(false),
               headers: headers(false),
               prefixes: prefixes(false),
@@ -42,6 +50,7 @@ class _DecoratorBoxPageState extends ExtendedState<DecoratorBoxPage> {
               listenable: Listenable.merge([textEditingController]),
               onEditing: () => textEditingController.text.isNotEmpty,
               decoration: decoration,
+              focusedDecoration: focusedDecoration,
               footers: footers(true),
               headers: headers(true),
               prefixes: prefixes(true),
@@ -50,12 +59,13 @@ class _DecoratorBoxPageState extends ExtendedState<DecoratorBoxPage> {
         ]);
   }
 
+  BoxDecorative get focusedDecoration => decoration.copyWith(
+      borderSide: BorderSide(color: context.theme.primaryColor, width: 2));
+
   BoxDecorative get decoration => BoxDecorative(
       fillColor: Colors.blue.withValues(alpha: 0.2),
       borderType: BorderType.outline,
       borderSide: context.theme.inputDecorationTheme.enabledBorder?.borderSide,
-      focusedBorderSide:
-          BorderSide(color: context.theme.primaryColor, width: 2),
       borderRadius: BorderRadius.circular(8),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10));
 

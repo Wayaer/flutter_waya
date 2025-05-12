@@ -34,7 +34,7 @@ enum BorderType {
 
   /// BorderType to Border
   Border? toBorder([BorderSide? borderSide]) {
-    borderSide ??= const BorderSide();
+    if (borderSide == null) return null;
     switch (this) {
       case BorderType.outline:
         return Border.fromBorderSide(borderSide);
@@ -47,12 +47,10 @@ enum BorderType {
 
   ///BorderType to InputBorder
   InputBorder toInputBorder({
-    BorderSide? borderSide,
-    BorderRadius? borderRadius,
+    BorderSide borderSide = const BorderSide(),
+    BorderRadius borderRadius = const BorderRadius.all(Radius.circular(4.0)),
     double gapPadding = 4.0,
   }) {
-    borderSide ??= const BorderSide();
-    borderRadius ??= const BorderRadius.all(Radius.circular(4.0));
     switch (this) {
       case BorderType.outline:
         return OutlineInputBorder(
@@ -128,9 +126,7 @@ class BoxDecorative {
     this.borderType = BorderType.none,
     this.borderRadius,
     this.borderSide,
-    this.focusedBorderSide,
     this.padding,
-    this.crossAxisAlignment = CrossAxisAlignment.center,
     this.fillColor,
     this.boxShadow,
     this.gradient,
@@ -140,17 +136,11 @@ class BoxDecorative {
   /// 仅作用于 [DecoratorBox.child]
   final EdgeInsetsGeometry? padding;
 
-  /// [DecoratorBox.child] 与 [extraPrefix]、[extraSuffix] 对齐方式
-  final CrossAxisAlignment crossAxisAlignment;
-
   /// [DecoratorBox.child] 边框类型
   final BorderType borderType;
 
   /// [DecoratorBox.child] 边框样式
   final BorderSide? borderSide;
-
-  /// [DecoratorBox.child] 有焦点时的边框样式
-  final BorderSide? focusedBorderSide;
 
   /// [DecoratorBox.child] 填充色
   final Color? fillColor;
@@ -169,6 +159,50 @@ class BoxDecorative {
 
   /// [DecoratorBox] 约束
   final BoxConstraints? constraints;
+
+  BoxDecorative copyWith({
+    BorderType? borderType,
+    BorderSide? borderSide,
+    Color? fillColor,
+    BorderRadius? borderRadius,
+    List<BoxShadow>? boxShadow,
+    BoxShape? shape,
+    Gradient? gradient,
+    BoxConstraints? constraints,
+    EdgeInsetsGeometry? padding,
+  }) =>
+      BoxDecorative(
+        borderType: borderType ?? this.borderType,
+        borderSide: borderSide ?? this.borderSide,
+        fillColor: fillColor ?? this.fillColor,
+        borderRadius: borderRadius ?? this.borderRadius,
+        boxShadow: boxShadow ?? this.boxShadow,
+        shape: shape ?? this.shape,
+        gradient: gradient ?? this.gradient,
+        constraints: constraints ?? this.constraints,
+        padding: padding ?? this.padding,
+      );
+
+  BoxDecorative merge(BoxDecorative? other) => copyWith(
+        borderType: other?.borderType,
+        borderSide: other?.borderSide,
+        fillColor: other?.fillColor,
+        borderRadius: other?.borderRadius,
+        boxShadow: other?.boxShadow,
+        shape: other?.shape,
+        gradient: other?.gradient,
+        constraints: other?.constraints,
+        padding: other?.padding,
+      );
+
+  /// to [BoxDecoration]
+  BoxDecoration toBoxDecoration() => BoxDecoration(
+        color: fillColor,
+        border: borderType.toBorder(borderSide),
+        borderRadius: borderRadius,
+        gradient: gradient,
+        boxShadow: boxShadow,
+      );
 }
 
 /// [Widget] 装饰器
@@ -180,10 +214,11 @@ class DecoratorBox extends StatelessWidget {
     this.footers = const [],
     this.suffixes = const [],
     this.prefixes = const [],
-    this.expand = true,
+    this.expanded = true,
     this.hasFocus = false,
     this.isEditing = false,
-    this.decoration = const BoxDecorative(),
+    this.decoration,
+    this.focusedDecoration,
   });
 
   final Widget child;
@@ -201,10 +236,13 @@ class DecoratorBox extends StatelessWidget {
   final List<DecoratorPendant> prefixes;
 
   /// [DecoratorBox] 样式
-  final BoxDecorative decoration;
+  final BoxDecorative? decoration;
 
-  /// 是否 expand
-  final bool expand;
+  /// [DecoratorBox] 焦点样式
+  final BoxDecorative? focusedDecoration;
+
+  /// 是否 [Expanded]
+  final bool expanded;
 
   /// 是否有焦点
   final bool hasFocus;
@@ -247,9 +285,8 @@ class DecoratorBox extends StatelessWidget {
       return null;
     }
 
-    if (listPendant.length == 1) {
+    if (listPendant.length == 1)
       return buildVisibilityPendant(listPendant.first);
-    }
     List<Widget> children = [];
     for (var e in listPendant) {
       final widget = buildVisibilityPendant(e);
@@ -274,7 +311,7 @@ class DecoratorBox extends StatelessWidget {
     if (outerPrefix != null || outerSuffix != null) {
       current = Row(mainAxisSize: MainAxisSize.min, children: [
         if (outerPrefix != null) outerPrefix,
-        expand ? Expanded(child: current) : current,
+        expanded ? Expanded(child: current) : current,
         if (outerSuffix != null) outerSuffix,
       ]);
     }
@@ -298,15 +335,13 @@ class DecoratorBox extends StatelessWidget {
     final innerFooter =
         buildDecoratorPendant(footers, DecoratorPendantPosition.inner);
     Widget current = child;
-
     if (innerPrefix != null || innerSuffix != null) {
       current = Row(mainAxisSize: MainAxisSize.min, children: [
         if (innerPrefix != null) innerPrefix,
-        expand ? Expanded(child: current) : current,
+        expanded ? Expanded(child: current) : current,
         if (innerSuffix != null) innerSuffix,
       ]);
     }
-
     if (innerHeader != null || innerFooter != null) {
       current = Column(mainAxisSize: MainAxisSize.min, children: [
         if (innerHeader != null) innerHeader,
@@ -314,31 +349,22 @@ class DecoratorBox extends StatelessWidget {
         if (innerFooter != null) innerFooter,
       ]);
     }
-    Decoration? boxDecoration;
-    final border = decoration.borderType.toBorder(
-        hasFocus ? decoration.focusedBorderSide : decoration.borderSide);
-    if (decoration.fillColor != null ||
-        decoration.gradient != null ||
-        decoration.boxShadow != null ||
-        border != null) {
-      boxDecoration = BoxDecoration(
-          color: decoration.fillColor,
-          border: border,
-          borderRadius: decoration.borderType == BorderType.outline
-              ? decoration.borderRadius
-              : null,
-          gradient: decoration.gradient,
-          boxShadow: decoration.boxShadow);
-    }
-    current = Container(
-        decoration: boxDecoration,
-        constraints: decoration.constraints,
-        padding: decoration.padding,
-        child: current);
+    return buildDecoration(current);
+  }
 
-    if (decoration.borderRadius != null) {
-      current =
-          ClipRRect(borderRadius: decoration.borderRadius!, child: current);
+  Widget buildDecoration(Widget current) {
+    final currentDecoration =
+        hasFocus ? (focusedDecoration ?? decoration) : decoration;
+    if (currentDecoration != null) {
+      current = Container(
+          decoration: currentDecoration.toBoxDecoration(),
+          constraints: currentDecoration.constraints,
+          padding: currentDecoration.padding,
+          child: current);
+      if (currentDecoration.borderRadius != null) {
+        current = ClipRRect(
+            borderRadius: currentDecoration.borderRadius!, child: current);
+      }
     }
     return current;
   }
@@ -357,8 +383,9 @@ class DecoratorBoxState extends StatelessWidget {
       this.footers = const [],
       this.suffixes = const [],
       this.prefixes = const [],
-      this.decoration = const BoxDecorative(),
-      this.expand = true});
+      this.decoration,
+      this.focusedDecoration,
+      this.expanded = true});
 
   final Widget child;
 
@@ -384,23 +411,27 @@ class DecoratorBoxState extends StatelessWidget {
   final List<DecoratorPendant> prefixes;
 
   /// [DecoratorBox] 样式
-  final BoxDecorative decoration;
+  final BoxDecorative? decoration;
 
-  /// 是否 expand
-  final bool expand;
+  /// [DecoratorBox] 焦点样式
+  final BoxDecorative? focusedDecoration;
+
+  /// 是否 [Expanded]
+  final bool expanded;
 
   @override
-  Widget build(BuildContext context) => AnimatedBuilder(
-      animation: listenable,
+  Widget build(BuildContext context) => ListenableBuilder(
+      listenable: listenable,
       builder: (BuildContext context, Widget? child) => DecoratorBox(
           hasFocus: onFocus?.call() ?? false,
           isEditing: onEditing?.call() ?? false,
+          focusedDecoration: focusedDecoration,
           decoration: decoration,
           footers: footers,
           headers: headers,
           prefixes: prefixes,
           suffixes: suffixes,
-          expand: expand,
+          expanded: expanded,
           child: child!),
       child: child);
 }
