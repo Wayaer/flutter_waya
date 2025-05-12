@@ -136,7 +136,6 @@ class ElevatedText extends StatelessWidget {
             },
             child: Universal(
                 onTap: onTap,
-                enabled: onTap != null,
                 onTapDown: (_) {
                   elastic();
                 },

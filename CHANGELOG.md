@@ -1,3 +1,8 @@
+## 11.1.0
+
+* `BoxDecorative()` removes `focusedBorderSide` and `crossAxisAlignment`
+* `DecoratorBoxState()` and `DecoratorBox()` have added a `focusedDecoration`
+
 ## 11.0.2
 
 * Removed `CheckBox`, `FlBadge`,`FlPopupMenuButton`,`FlSwiper`, `FlSwiperPagination`,
