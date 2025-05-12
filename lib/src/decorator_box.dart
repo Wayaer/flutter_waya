@@ -383,7 +383,6 @@ class DecoratorBoxState extends StatelessWidget {
       this.suffixes = const [],
       this.prefixes = const [],
       this.decoration,
-      this.focusedDecoration,
       this.expanded = true});
 
   final Widget child;
@@ -411,9 +410,6 @@ class DecoratorBoxState extends StatelessWidget {
 
   /// [DecoratorBox] 样式
   final DecoratorBoxDecorativeBuilder? decoration;
-
-  /// [DecoratorBox] 焦点样式
-  final BoxDecorative? focusedDecoration;
 
   /// 是否 [Expanded]
   final bool expanded;
