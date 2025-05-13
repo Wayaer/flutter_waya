@@ -1,3 +1,8 @@
+## 11.1.2
+
+* `DecoratorPendantVisibilityMode` add `focusedEditing`,`unfocusedEditing,`focusedNotEditing`,`
+  unfocusedNotEditing`
+
 ## 11.1.1
 
 * `BoxDecorative()` removes `focusedBorderSide` and `crossAxisAlignment`
