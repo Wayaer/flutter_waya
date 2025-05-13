@@ -69,6 +69,9 @@ enum BorderType {
 }
 
 enum DecoratorPendantVisibilityMode {
+  /// 一直显示
+  always,
+
   /// 从不显示
   never,
 
@@ -78,14 +81,23 @@ enum DecoratorPendantVisibilityMode {
   /// 只在失去焦点时显示
   unfocused,
 
-  /// 只在焦点时显示
+  /// 在编辑的时候显示
   editing,
 
-  /// 只在失去焦点时显示
+  /// 没有编辑的时候显示
   notEditing,
 
-  /// 一直显示
-  always,
+  /// 有焦点且编辑的时候显示
+  focusedEditing,
+
+  /// 没有焦点且编辑的时候显示
+  unfocusedEditing,
+
+  /// 有焦点且没有编辑的时候显示
+  focusedNotEditing,
+
+  /// 没有焦点且没有编辑的时候显示
+  unfocusedNotEditing,
 }
 
 typedef DecoratorPendantBuilder = Widget Function(
@@ -279,6 +291,14 @@ class DecoratorBox extends StatelessWidget {
             return buildVisibility(isEditing);
           case DecoratorPendantVisibilityMode.notEditing:
             return buildVisibility(!isEditing);
+          case DecoratorPendantVisibilityMode.focusedEditing:
+            return buildVisibility(hasFocus && isEditing);
+          case DecoratorPendantVisibilityMode.unfocusedEditing:
+            return buildVisibility(!hasFocus && isEditing);
+          case DecoratorPendantVisibilityMode.focusedNotEditing:
+            return buildVisibility(hasFocus && !isEditing);
+          case DecoratorPendantVisibilityMode.unfocusedNotEditing:
+            return buildVisibility(!hasFocus && !isEditing);
         }
       }
       return null;

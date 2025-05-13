@@ -11,9 +11,10 @@ class DecoratorBoxPage extends StatefulWidget {
 }
 
 class _DecoratorBoxPageState extends ExtendedState<DecoratorBoxPage> {
-  FocusNode focusNodeWithDecoratorBox = FocusNode();
-  FocusNode focusNodeWithDecoratorBoxState = FocusNode();
-  TextEditingController textEditingController = TextEditingController();
+  FocusNode focusNode1 = FocusNode();
+  TextEditingController editingController1 = TextEditingController();
+  FocusNode focusNode2 = FocusNode();
+  TextEditingController editingController2 = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -24,34 +25,43 @@ class _DecoratorBoxPageState extends ExtendedState<DecoratorBoxPage> {
         children: [
           const Partition('DecoratorBox hasFocus(true)', marginTop: 0),
           DecoratorBox(
-              hasFocus: true,
-              decoration: buildDecoration,
-              child: TextField(focusNode: focusNodeWithDecoratorBox)),
+              hasFocus: true, decoration: buildDecoration, child: TextField()),
           const Partition('DecoratorBox hasFocus(false)', marginTop: 0),
           DecoratorBox(
-              hasFocus: false,
-              decoration: buildDecoration,
-              child: TextField(focusNode: focusNodeWithDecoratorBox)),
+              hasFocus: false, decoration: buildDecoration, child: TextField()),
           const Partition('DecoratorBoxState with FocusNode'),
           DecoratorBoxState(
-              listenable: Listenable.merge([focusNodeWithDecoratorBoxState]),
-              onFocus: () => focusNodeWithDecoratorBoxState.hasFocus,
+              listenable: Listenable.merge([focusNode1]),
+              onFocus: () => focusNode1.hasFocus,
               decoration: buildDecoration,
-              footers: footers(false),
-              headers: headers(false),
-              prefixes: prefixes(false),
-              suffixes: suffixes(false),
-              child: TextField(focusNode: focusNodeWithDecoratorBoxState)),
+              footers: buildPendants,
+              headers: buildPendants,
+              prefixes: buildPendants,
+              suffixes: buildPendants,
+              child: TextField(focusNode: focusNode1)),
           const Partition('DecoratorBoxState with TextEditingController'),
           DecoratorBoxState(
-              listenable: Listenable.merge([textEditingController]),
-              onEditing: () => textEditingController.text.isNotEmpty,
+              listenable: Listenable.merge([editingController1]),
+              onEditing: () => editingController1.text.isNotEmpty,
               decoration: buildDecoration,
-              footers: footers(true),
-              headers: headers(true),
-              prefixes: prefixes(true),
-              suffixes: suffixes(true),
-              child: TextField(controller: textEditingController)),
+              footers: buildPendants,
+              headers: buildPendants,
+              prefixes: buildPendants,
+              suffixes: buildPendants,
+              child: TextField(controller: editingController1)),
+          const Partition(
+              'DecoratorBoxState with FocusNode TextEditingController'),
+          DecoratorBoxState(
+              listenable: Listenable.merge([focusNode2, editingController2]),
+              onFocus: () => focusNode2.hasFocus,
+              onEditing: () => editingController2.text.isNotEmpty,
+              decoration: buildDecoration,
+              footers: buildPendants,
+              headers: buildPendants,
+              prefixes: buildPendants,
+              suffixes: buildPendants,
+              child: TextField(
+                  focusNode: focusNode2, controller: editingController2)),
         ]);
   }
 
@@ -59,104 +69,24 @@ class _DecoratorBoxPageState extends ExtendedState<DecoratorBoxPage> {
       fillColor: Colors.blue.withValues(alpha: 0.2),
       borderType: BorderType.outline,
       borderSide: hasFocus
-          ? BorderSide(color: context.theme.primaryColor, width: 2)
-          : context.theme.inputDecorationTheme.enabledBorder?.borderSide,
+          ? BorderSide(color: context.theme.colorScheme.primary, width: 2)
+          : BorderSide(
+              color: context.theme.colorScheme.primaryContainer, width: 2),
       borderRadius: BorderRadius.circular(8),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10));
 
-  List<DecoratorPendant> footers(bool isEditing) => [
-        if (isEditing) ...[
-          const DecoratorPendant(
-              maintainSize: true,
-              widget: Text('editing'),
-              mode: DecoratorPendantVisibilityMode.editing,
-              positioned: DecoratorPendantPosition.outer),
-          const DecoratorPendant(
-              maintainSize: true,
-              widget: Text('notEditing'),
-              mode: DecoratorPendantVisibilityMode.notEditing),
-        ] else ...[
-          const DecoratorPendant(
-              maintainSize: true,
-              widget: Text('focused'),
-              mode: DecoratorPendantVisibilityMode.focused,
-              positioned: DecoratorPendantPosition.outer),
-          const DecoratorPendant(
-              maintainSize: true,
-              widget: Text('unfocused'),
-              mode: DecoratorPendantVisibilityMode.unfocused),
-        ]
-      ];
-
-  List<DecoratorPendant> headers(bool isEditing) => [
-        if (isEditing) ...[
-          const DecoratorPendant(
-              maintainSize: true,
-              widget: Text('notEditing'),
-              mode: DecoratorPendantVisibilityMode.notEditing),
-          const DecoratorPendant(
-              maintainSize: true,
-              widget: Text('editing'),
-              mode: DecoratorPendantVisibilityMode.editing,
-              positioned: DecoratorPendantPosition.outer),
-        ] else ...[
-          const DecoratorPendant(
-              maintainSize: true,
-              widget: Text('focused'),
-              mode: DecoratorPendantVisibilityMode.focused,
-              positioned: DecoratorPendantPosition.outer),
-          const DecoratorPendant(
-              maintainSize: true,
-              widget: Text('unfocused'),
-              mode: DecoratorPendantVisibilityMode.unfocused),
-        ]
-      ];
-
-  List<DecoratorPendant> prefixes(bool isEditing) => [
-        if (isEditing) ...[
-          const DecoratorPendant(
-              maintainSize: true,
-              widget: Text('editing'),
-              mode: DecoratorPendantVisibilityMode.editing,
-              positioned: DecoratorPendantPosition.outer),
-          const DecoratorPendant(
-              maintainSize: true,
-              widget: Text('notEditing'),
-              mode: DecoratorPendantVisibilityMode.notEditing),
-        ] else ...[
-          const DecoratorPendant(
-              maintainSize: true,
-              widget: Text('focused'),
-              mode: DecoratorPendantVisibilityMode.focused,
-              positioned: DecoratorPendantPosition.outer),
-          const DecoratorPendant(
-              maintainSize: true,
-              widget: Text('unfocused'),
-              mode: DecoratorPendantVisibilityMode.unfocused),
-        ]
-      ];
-
-  List<DecoratorPendant> suffixes(bool isEditing) => [
-        if (isEditing) ...[
-          const DecoratorPendant(
-              maintainSize: true,
-              widget: Text('editing'),
-              mode: DecoratorPendantVisibilityMode.editing,
-              positioned: DecoratorPendantPosition.outer),
-          const DecoratorPendant(
-              maintainSize: true,
-              widget: Text('notEditing'),
-              mode: DecoratorPendantVisibilityMode.notEditing),
-        ] else ...[
-          const DecoratorPendant(
-              maintainSize: true,
-              widget: Text('focused'),
-              mode: DecoratorPendantVisibilityMode.focused,
-              positioned: DecoratorPendantPosition.outer),
-          const DecoratorPendant(
-              maintainSize: true,
-              widget: Text('unfocused'),
-              mode: DecoratorPendantVisibilityMode.unfocused),
-        ]
+  List<DecoratorPendant> get buildPendants => [
+        ...DecoratorPendantVisibilityMode.values.builder((mode) =>
+            DecoratorPendant(
+                maintainSize: false,
+                widget: Text(' ${mode.index} '),
+                mode: mode,
+                positioned: DecoratorPendantPosition.inner)),
+        ...DecoratorPendantVisibilityMode.values.builder((mode) =>
+            DecoratorPendant(
+                maintainSize: false,
+                widget: Text(' ${mode.index} '),
+                mode: mode,
+                positioned: DecoratorPendantPosition.outer))
       ];
 }
