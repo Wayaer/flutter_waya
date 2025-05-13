@@ -266,8 +266,9 @@ class DecoratorBox extends StatelessWidget {
           child: pendant.child!);
     }
 
-    if (listPendant.length == 1)
+    if (listPendant.length == 1) {
       return buildVisibilityPendant(listPendant.first);
+    }
     return Row(
         mainAxisSize: MainAxisSize.min,
         children: listPendant.map((e) => buildVisibilityPendant(e)).toList());
