@@ -3,14 +3,16 @@ import 'package:flutter/material.dart';
 extension ExtensionWidgetDecoratorBox on Widget {
   DecoratorPendant toDecoratorPendant({
     DecoratorPendantPosition positioned = DecoratorPendantPosition.outer,
-    DecoratorPendantVisibilityMode mode = DecoratorPendantVisibilityMode.always,
     bool maintainSize = false,
+    bool? needFocus,
+    bool? needEditing,
   }) =>
       DecoratorPendant(
-          widget: this,
+          child: this,
           maintainSize: maintainSize,
           positioned: positioned,
-          mode: mode);
+          needEditing: needEditing,
+          needFocus: needFocus);
 }
 
 enum DecoratorPendantPosition {
@@ -45,7 +47,7 @@ enum BorderType {
     }
   }
 
-  ///BorderType to InputBorder
+  /// BorderType to InputBorder
   InputBorder toInputBorder({
     BorderSide borderSide = const BorderSide(),
     BorderRadius borderRadius = const BorderRadius.all(Radius.circular(4.0)),
@@ -68,67 +70,39 @@ enum BorderType {
   }
 }
 
-enum DecoratorPendantVisibilityMode {
-  /// 一直显示
-  always,
-
-  /// 从不显示
-  never,
-
-  /// 只在焦点时显示
-  focused,
-
-  /// 只在失去焦点时显示
-  unfocused,
-
-  /// 在编辑的时候显示
-  editing,
-
-  /// 没有编辑的时候显示
-  notEditing,
-
-  /// 有焦点且编辑的时候显示
-  focusedEditing,
-
-  /// 没有焦点且编辑的时候显示
-  unfocusedEditing,
-
-  /// 有焦点且没有编辑的时候显示
-  focusedNotEditing,
-
-  /// 没有焦点且没有编辑的时候显示
-  unfocusedNotEditing,
-}
-
 typedef DecoratorPendantBuilder = Widget Function(
-    DecoratorPendantPosition positioned,
-    DecoratorPendantVisibilityMode mode,
-    bool maintainSize);
+    bool hasFocus, bool isEditing);
 
 /// Decorator Pendant
 class DecoratorPendant {
-  const DecoratorPendant(
-      {this.widget,
-      this.builder,
-      this.positioned = DecoratorPendantPosition.inner,
-      this.maintainSize = false,
-      this.mode = DecoratorPendantVisibilityMode.always})
-      : assert(widget != null || builder != null);
+  const DecoratorPendant({
+    this.child,
+    this.builder,
+    this.needFocus,
+    this.needEditing,
+    this.positioned = DecoratorPendantPosition.inner,
+    this.maintainSize = false,
+  }) : assert(child != null || builder != null);
 
   /// 显示的位置
   final DecoratorPendantPosition positioned;
 
-  /// 叠加可见性模式
-  final DecoratorPendantVisibilityMode mode;
-
   /// 保持占位
   final bool maintainSize;
 
-  /// 要显示的 widget
-  final Widget? widget;
-
-  /// 要显示的 builder
+  /// 要显示的 [builder] 会覆盖 [child]
   final DecoratorPendantBuilder? builder;
+
+  /// 要显示的 widget
+  final Widget? child;
+
+  /// 是否需要编辑状态(输入框是否有内容)
+  /// [needEditing] == nul 无需判断 是否编辑状态
+  final bool? needEditing;
+
+  /// 是否需要焦点
+  /// [needFocus] == null 无需判断 是否有焦点
+  final bool? needFocus;
 }
 
 /// [DecoratorBox] 样式
@@ -266,55 +240,37 @@ class DecoratorBox extends StatelessWidget {
     final listPendant =
         list.where((element) => element.positioned == positioned);
     if (listPendant.isEmpty) return null;
-    Widget? buildVisibilityPendant(DecoratorPendant pendant) {
+    Widget buildVisibilityPendant(DecoratorPendant pendant) {
       if (pendant.builder != null) {
-        return pendant.builder!(
-            pendant.positioned, pendant.mode, pendant.maintainSize);
-      }
-      if (pendant.widget != null) {
-        Widget buildVisibility(bool visible) => Visibility(
-            visible: visible,
+        return Visibility(
             maintainAnimation: pendant.maintainSize,
             maintainState: pendant.maintainSize,
             maintainSize: pendant.maintainSize,
-            child: pendant.widget!);
-        switch (pendant.mode) {
-          case DecoratorPendantVisibilityMode.never:
-            return buildVisibility(false);
-          case DecoratorPendantVisibilityMode.always:
-            return buildVisibility(true);
-          case DecoratorPendantVisibilityMode.focused:
-            return buildVisibility(hasFocus);
-          case DecoratorPendantVisibilityMode.unfocused:
-            return buildVisibility(!hasFocus);
-          case DecoratorPendantVisibilityMode.editing:
-            return buildVisibility(isEditing);
-          case DecoratorPendantVisibilityMode.notEditing:
-            return buildVisibility(!isEditing);
-          case DecoratorPendantVisibilityMode.focusedEditing:
-            return buildVisibility(hasFocus && isEditing);
-          case DecoratorPendantVisibilityMode.unfocusedEditing:
-            return buildVisibility(!hasFocus && isEditing);
-          case DecoratorPendantVisibilityMode.focusedNotEditing:
-            return buildVisibility(hasFocus && !isEditing);
-          case DecoratorPendantVisibilityMode.unfocusedNotEditing:
-            return buildVisibility(!hasFocus && !isEditing);
-        }
+            child: pendant.builder!(hasFocus, isEditing));
       }
-      return null;
+
+      bool isEditingVisible = true;
+      bool isHasFocus = true;
+
+      if (pendant.needEditing != null) {
+        isEditingVisible = pendant.needEditing == isEditing;
+      }
+      if (pendant.needFocus != null) {
+        isHasFocus = pendant.needFocus == hasFocus;
+      }
+      return Visibility(
+          visible: isEditingVisible && isHasFocus,
+          maintainAnimation: pendant.maintainSize,
+          maintainState: pendant.maintainSize,
+          maintainSize: pendant.maintainSize,
+          child: pendant.child!);
     }
 
-    if (listPendant.length == 1) {
+    if (listPendant.length == 1)
       return buildVisibilityPendant(listPendant.first);
-    }
-    List<Widget> children = [];
-    for (var e in listPendant) {
-      final widget = buildVisibilityPendant(e);
-      if (widget != null) {
-        children.add(widget);
-      }
-    }
-    return Row(mainAxisSize: MainAxisSize.min, children: children);
+    return Row(
+        mainAxisSize: MainAxisSize.min,
+        children: listPendant.map((e) => buildVisibilityPendant(e)).toList());
   }
 
   @override
