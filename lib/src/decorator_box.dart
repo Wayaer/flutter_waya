@@ -250,16 +250,16 @@ class DecoratorBox extends StatelessWidget {
       }
 
       bool isEditingVisible = true;
-      bool isHasFocus = true;
+      bool isHasFocusVisible = true;
 
       if (pendant.needEditing != null) {
         isEditingVisible = pendant.needEditing == isEditing;
       }
       if (pendant.needFocus != null) {
-        isHasFocus = pendant.needFocus == hasFocus;
+        isHasFocusVisible = pendant.needFocus == hasFocus;
       }
       return Visibility(
-          visible: isEditingVisible && isHasFocus,
+          visible: isEditingVisible && isHasFocusVisible,
           maintainAnimation: pendant.maintainSize,
           maintainState: pendant.maintainSize,
           maintainSize: pendant.maintainSize,
