@@ -23,24 +23,40 @@ class _TextFieldPageState extends State<TextFieldPage> {
         children: [
           const Partition('DecoratorBox with TextField', marginTop: 0),
           DecoratorBox(
-              decoration: (_, __) => BoxDecorative(
-                    borderType: BorderType.underline,
-                    borderRadius: BorderRadius.circular(4),
-                    fillColor:
-                        context.theme.primaryColor.withValues(alpha: 0.2),
-                  ),
+              suffixes: [
+                Icon(Icons.ac_unit).toDecoratorPendant(),
+              ],
+              prefixes: [
+                Icon(Icons.ac_unit).toDecoratorPendant(),
+              ],
+              decoration: (Widget child, _) => Container(
+                  decoration: BoxDecoration(
+                      border: BorderType.underline.toBorder(BorderSide(
+                          color: context.theme.primaryColor, width: 1)),
+                      borderRadius: BorderRadius.circular(4),
+                      color: context.theme.primaryColor.withValues(alpha: 0.2)),
+                  child: child),
               child: TextField(
-                decoration:
-                    const InputDecoration(isDense: true).copyWithNoneBorder,
-              )),
+                  decoration:
+                      const InputDecoration(isDense: true).copyWithNoneBorder)),
           10.heightBox,
           DecoratorBox(
-              decoration: (_, __) => BoxDecorative(
-                    borderType: BorderType.outline,
+              suffixes: [
+                Icon(Icons.ac_unit).toDecoratorPendant(
+                    positioned: DecoratorPendantPosition.inner),
+              ],
+              prefixes: [
+                Icon(Icons.ac_unit).toDecoratorPendant(
+                    positioned: DecoratorPendantPosition.inner),
+              ],
+              decoration: (Widget child, _) => Container(
+                  decoration: BoxDecoration(
+                    border: BorderType.outline.toBorder(BorderSide(
+                        color: context.theme.primaryColor, width: 1)),
                     borderRadius: BorderRadius.circular(4),
-                    fillColor:
-                        context.theme.primaryColor.withValues(alpha: 0.2),
+                    color: context.theme.primaryColor.withValues(alpha: 0.2),
                   ),
+                  child: child),
               child: TextField(
                 decoration:
                     const InputDecoration(isDense: true).copyWithNoneBorder,

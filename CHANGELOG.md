@@ -1,9 +1,11 @@
-## 11.2.0
+## 11.2.1
 
-* Remove `DecoratorPendantVisibilityMode` from `DecoratorPendant`, please use `needEditing` and
-  `needFocus`
-* `BoxDecorative()` removes `focusedBorderSide` and `crossAxisAlignment`
-* Changed the `decoration` of `BoxDecorative()` to callback mode
+* Remove `DecoratorPendantVisibilityMode` from `DecoratorPendant`, please use `needEditing`,
+  `needValue` and `needFocus`
+* To remove `BoxDecorative` from `DecoratorBox`, please use the `decoration` callback method
+* `DecoratorBox` changes `hasFocus` to `onFocus`, `isEditing` to onEditing, and adds `onValue` and
+  `listenable`
+* Remove `DecoratorBoxState`,please use `DecoratorBox`
 
 ## 11.0.2
 
