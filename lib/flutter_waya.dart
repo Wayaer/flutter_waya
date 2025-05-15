@@ -22,6 +22,7 @@ export 'src/page_view/page_view.dart';
 /// editable_text
 export 'src/editable_text/text_field.dart';
 export 'src/editable_text/pin_text_field.dart';
+export 'src/editable_text/decorator_box.dart';
 
 /// src
 export 'src/wrapper.dart';
@@ -40,4 +41,3 @@ export 'src/shimmery.dart';
 export 'src/tab_bar.dart';
 export 'src/system_ui_overlay_style.dart';
 export 'src/keep_alive_wrapper.dart';
-export 'src/decorator_box.dart';

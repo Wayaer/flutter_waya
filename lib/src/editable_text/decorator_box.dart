@@ -47,11 +47,11 @@ class DecoratorPendant<T> {
   const DecoratorPendant({
     this.child,
     this.builder,
-    this.needFocus,
-    this.needEditing,
     this.positioned = DecoratorPendantPosition.inner,
     this.maintainSize = false,
     this.needValue,
+    this.needFocus,
+    this.needEditing,
   }) : assert(child != null || builder != null);
 
   /// 显示的位置
@@ -135,7 +135,7 @@ class DecoratorBox<T> extends StatelessWidget {
   final DecoratorBoxStatusCallback? onEditing;
 
   /// value 回调
-  final DecoratorBoxStatusValueCallback? onValue;
+  final DecoratorBoxStatusValueCallback<T>? onValue;
 
   @override
   Widget build(BuildContext context) {
