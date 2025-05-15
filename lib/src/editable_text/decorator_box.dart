@@ -40,7 +40,7 @@ class DecoratorBoxStatus<T> {
 typedef DecoratorBoxPendantBuilder<T> = Widget Function(
     DecoratorBoxStatus<T> status);
 
-typedef DecoratorPendantValueCallback<T> = bool Function(T value);
+typedef DecoratorPendantValueCallback<T> = bool Function(T? value);
 
 /// Decorator Pendant
 class DecoratorPendant<T> {
@@ -76,7 +76,7 @@ class DecoratorPendant<T> {
 
   /// 是否需要值
   /// [onValue] == null 无需判断 值是否满足条件
-  final DecoratorPendantValueCallback<T?>? needValue;
+  final DecoratorPendantValueCallback<T>? needValue;
 }
 
 typedef DecoratorBoxDecorativeBuilder<T> = Widget Function(

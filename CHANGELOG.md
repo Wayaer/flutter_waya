@@ -1,4 +1,4 @@
-## 11.2.1
+## 11.2.2
 
 * Remove `DecoratorPendantVisibilityMode` from `DecoratorPendant`, please use `needEditing`,
   `needValue` and `needFocus`
