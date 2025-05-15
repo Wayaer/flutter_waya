@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 
 extension ExtensionWidgetDecoratorBox on Widget {
-  DecoratorPendant toDecoratorPendant({
+  DecoratorPendant<T> toDecoratorPendant<T>({
     DecoratorPendantPosition positioned = DecoratorPendantPosition.outer,
     bool maintainSize = false,
     bool? needFocus,
     bool? needEditing,
+    DecoratorPendantValueCallback<T?>? needValue,
   }) =>
-      DecoratorPendant(
+      DecoratorPendant<T>(
           child: this,
           maintainSize: maintainSize,
           positioned: positioned,
+          needValue: needValue,
           needEditing: needEditing,
           needFocus: needFocus);
 }
@@ -40,7 +42,7 @@ class DecoratorBoxStatus<T> {
 typedef DecoratorBoxPendantBuilder<T> = Widget Function(
     DecoratorBoxStatus<T> status);
 
-typedef DecoratorPendantValueCallback<T> = bool Function(T? value);
+typedef DecoratorPendantValueCallback<T> = bool Function(T value);
 
 /// Decorator Pendant
 class DecoratorPendant<T> {
@@ -76,7 +78,7 @@ class DecoratorPendant<T> {
 
   /// 是否需要值
   /// [onValue] == null 无需判断 值是否满足条件
-  final DecoratorPendantValueCallback<T>? needValue;
+  final DecoratorPendantValueCallback<T?>? needValue;
 }
 
 typedef DecoratorBoxDecorativeBuilder<T> = Widget Function(
