@@ -37,15 +37,15 @@ class DecoratorBoxPage extends StatelessWidget {
               onFocus: () => false,
               decoration: buildDecoration,
               child: TextField()),
-          // _DecoratorBoxPage(),
-          // _DecoratorBoxPage(needEditing: true),
-          // _DecoratorBoxPage(needEditing: false),
-          // _DecoratorBoxPage(needFocus: true),
-          // _DecoratorBoxPage(needFocus: false),
+          _DecoratorBoxPage(),
+          _DecoratorBoxPage(needEditing: true),
+          _DecoratorBoxPage(needEditing: false),
+          _DecoratorBoxPage(needFocus: true),
+          _DecoratorBoxPage(needFocus: false),
           _DecoratorBoxPage(needFocus: true, needEditing: true),
-          // _DecoratorBoxPage(needFocus: true, needEditing: false),
-          // _DecoratorBoxPage(needFocus: false, needEditing: true),
-          // _DecoratorBoxPage(needFocus: false, needEditing: false),
+          _DecoratorBoxPage(needFocus: true, needEditing: false),
+          _DecoratorBoxPage(needFocus: false, needEditing: true),
+          _DecoratorBoxPage(needFocus: false, needEditing: false),
         ]);
   }
 }
@@ -106,8 +106,6 @@ class _DecoratorBoxPageState extends State<_DecoratorBoxPage> {
               needFocus: widget.needFocus,
               needEditing: widget.needEditing,
               maintainSize: false,
-              needValue: (TextEditingValue? value) =>
-                  value?.text.contains('1') ?? false,
               child: Text(positioned.name),
               positioned: positioned));
 
