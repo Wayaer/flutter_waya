@@ -8,17 +8,20 @@ class DecoratorBoxPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BoxDecorative buildDecoration(bool hasFocus, bool isEditing) =>
-        BoxDecorative(
-            fillColor: context.theme.primaryColor.withValues(alpha: 0.2),
-            borderType: BorderType.outline,
-            borderSide: hasFocus
-                ? BorderSide(color: context.theme.colorScheme.primary, width: 2)
-                : BorderSide(
-                    color: context.theme.colorScheme.primaryContainer,
-                    width: 2),
-            borderRadius: BorderRadius.circular(8),
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10));
+    Widget buildDecoration(
+            Widget child, DecoratorBoxStatus<TextEditingValue> status) =>
+        Container(
+            decoration: BoxDecoration(
+                color: context.theme.primaryColor.withValues(alpha: 0.2),
+                border: BorderType.outline.toBorder(status.hasFocus
+                    ? BorderSide(
+                        color: context.theme.colorScheme.primary, width: 2)
+                    : BorderSide(
+                        color: context.theme.colorScheme.primaryContainer,
+                        width: 2)),
+                borderRadius: BorderRadius.circular(8)),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            child: child);
     return ExtendedScaffold(
         isScroll: true,
         appBar: AppBarText('DecoratorBox'),
@@ -26,34 +29,38 @@ class DecoratorBoxPage extends StatelessWidget {
         children: [
           const Partition('DecoratorBox hasFocus(true)', marginTop: 0),
           DecoratorBox(
-              hasFocus: true, decoration: buildDecoration, child: TextField()),
+              onFocus: () => true,
+              decoration: buildDecoration,
+              child: TextField()),
           const Partition('DecoratorBox hasFocus(false)', marginTop: 0),
           DecoratorBox(
-              hasFocus: false, decoration: buildDecoration, child: TextField()),
-          _DecoratorBoxStatePage(),
-          _DecoratorBoxStatePage(needEditing: true),
-          _DecoratorBoxStatePage(needEditing: false),
-          _DecoratorBoxStatePage(needFocus: true),
-          _DecoratorBoxStatePage(needFocus: false),
-          _DecoratorBoxStatePage(needFocus: true, needEditing: true),
-          _DecoratorBoxStatePage(needFocus: true, needEditing: false),
-          _DecoratorBoxStatePage(needFocus: false, needEditing: true),
-          _DecoratorBoxStatePage(needFocus: false, needEditing: false),
+              onFocus: () => false,
+              decoration: buildDecoration,
+              child: TextField()),
+          // _DecoratorBoxPage(),
+          // _DecoratorBoxPage(needEditing: true),
+          // _DecoratorBoxPage(needEditing: false),
+          // _DecoratorBoxPage(needFocus: true),
+          // _DecoratorBoxPage(needFocus: false),
+          _DecoratorBoxPage(needFocus: true, needEditing: true),
+          // _DecoratorBoxPage(needFocus: true, needEditing: false),
+          // _DecoratorBoxPage(needFocus: false, needEditing: true),
+          // _DecoratorBoxPage(needFocus: false, needEditing: false),
         ]);
   }
 }
 
-class _DecoratorBoxStatePage extends StatefulWidget {
-  const _DecoratorBoxStatePage({this.needFocus, this.needEditing});
+class _DecoratorBoxPage extends StatefulWidget {
+  const _DecoratorBoxPage({this.needFocus, this.needEditing});
 
   final bool? needFocus;
   final bool? needEditing;
 
   @override
-  State<_DecoratorBoxStatePage> createState() => _DecoratorBoxStatePageState();
+  State<_DecoratorBoxPage> createState() => _DecoratorBoxPageState();
 }
 
-class _DecoratorBoxStatePageState extends State<_DecoratorBoxStatePage> {
+class _DecoratorBoxPageState extends State<_DecoratorBoxPage> {
   FocusNode focusNode = FocusNode();
   TextEditingController controller = TextEditingController();
 
@@ -61,11 +68,12 @@ class _DecoratorBoxStatePageState extends State<_DecoratorBoxStatePage> {
   Widget build(BuildContext context) {
     return Universal(children: [
       Partition(
-          'DecoratorBoxState \nneedFocus(${widget.needFocus}) needEditing(${widget.needEditing})'),
-      DecoratorBoxState(
+          'DecoratorBox \nneedFocus(${widget.needFocus}) needEditing(${widget.needEditing})'),
+      DecoratorBox<TextEditingValue>(
           listenable: Listenable.merge([focusNode, controller]),
           onFocus: () => focusNode.hasFocus,
           onEditing: () => controller.text.isNotEmpty,
+          onValue: () => controller.value,
           decoration: buildDecoration,
           footers: buildPendants,
           headers: buildPendants,
@@ -75,23 +83,33 @@ class _DecoratorBoxStatePageState extends State<_DecoratorBoxStatePage> {
     ]);
   }
 
-  BoxDecorative buildDecoration(bool hasFocus, bool isEditing) => BoxDecorative(
-      fillColor: context.theme.primaryColor.withValues(alpha: 0.2),
-      borderType: BorderType.outline,
-      borderSide: hasFocus
-          ? BorderSide(color: context.theme.colorScheme.primary, width: 2)
-          : BorderSide(
-              color: context.theme.colorScheme.primaryContainer, width: 2),
-      borderRadius: BorderRadius.circular(8),
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10));
+  Widget buildDecoration(
+          Widget child, DecoratorBoxStatus<TextEditingValue> status) =>
+      Container(
+          decoration: BoxDecoration(
+              color: context.theme.primaryColor.withValues(alpha: 0.2),
+              border: BorderType.outline.toBorder(status.hasFocus
+                  ? BorderSide(
+                      color: context.theme.colorScheme.primary,
+                      width:
+                          (status.value?.text.contains('1') ?? false) ? 4 : 2)
+                  : BorderSide(
+                      color: context.theme.colorScheme.primaryContainer,
+                      width: 2)),
+              borderRadius: BorderRadius.circular(8)),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          child: child);
 
-  List<DecoratorPendant> get buildPendants =>
-      DecoratorPendantPosition.values.builder((positioned) => DecoratorPendant(
-          needFocus: widget.needFocus,
-          needEditing: widget.needEditing,
-          maintainSize: false,
-          child: Text(positioned.name),
-          positioned: positioned));
+  List<DecoratorPendant<TextEditingValue>> get buildPendants =>
+      DecoratorPendantPosition.values.builder((positioned) =>
+          DecoratorPendant<TextEditingValue>(
+              needFocus: widget.needFocus,
+              needEditing: widget.needEditing,
+              maintainSize: false,
+              needValue: (TextEditingValue? value) =>
+                  value?.text.contains('1') ?? false,
+              child: Text(positioned.name),
+              positioned: positioned));
 
   @override
   void dispose() {

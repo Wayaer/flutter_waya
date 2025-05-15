@@ -11,6 +11,53 @@ extension ExtensionInputDecoration on InputDecoration {
       focusedErrorBorder: InputBorder.none);
 }
 
+enum BorderType {
+  /// outline
+  outline,
+
+  /// underline
+  underline,
+
+  /// none
+  none,
+  ;
+
+  /// BorderType to Border
+  Border? toBorder([BorderSide? borderSide]) {
+    if (borderSide == null) return null;
+    switch (this) {
+      case BorderType.outline:
+        return Border.fromBorderSide(borderSide);
+      case BorderType.underline:
+        return Border(bottom: borderSide);
+      case BorderType.none:
+        return null;
+    }
+  }
+
+  /// BorderType to InputBorder
+  InputBorder toInputBorder({
+    BorderSide borderSide = const BorderSide(),
+    BorderRadius borderRadius = const BorderRadius.all(Radius.circular(4.0)),
+    double gapPadding = 4.0,
+  }) {
+    switch (this) {
+      case BorderType.outline:
+        return OutlineInputBorder(
+            gapPadding: gapPadding,
+            borderRadius: borderRadius,
+            borderSide: borderSide);
+      case BorderType.underline:
+        borderRadius = const BorderRadius.only(
+            topLeft: Radius.circular(4.0), topRight: Radius.circular(4.0));
+        return UnderlineInputBorder(
+            borderRadius: borderRadius, borderSide: borderSide);
+      case BorderType.none:
+        return InputBorder.none;
+    }
+  }
+}
+
 enum TextInputLimitFormatter {
   /// 字母和数字
   lettersNumbers('[a-zA-Z0-9]'),

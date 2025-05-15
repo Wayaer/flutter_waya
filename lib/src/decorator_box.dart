@@ -23,58 +23,27 @@ enum DecoratorPendantPosition {
   outer,
 }
 
-enum BorderType {
-  /// outline
-  outline,
+class DecoratorBoxStatus<T> {
+  const DecoratorBoxStatus(
+      {required this.hasFocus, required this.isEditing, this.value});
 
-  /// underline
-  underline,
+  /// 是否有焦点
+  final bool hasFocus;
 
-  /// none
-  none,
-  ;
+  /// 是否编辑中
+  final bool isEditing;
 
-  /// BorderType to Border
-  Border? toBorder([BorderSide? borderSide]) {
-    if (borderSide == null) return null;
-    switch (this) {
-      case BorderType.outline:
-        return Border.fromBorderSide(borderSide);
-      case BorderType.underline:
-        return Border(bottom: borderSide);
-      case BorderType.none:
-        return null;
-    }
-  }
-
-  /// BorderType to InputBorder
-  InputBorder toInputBorder({
-    BorderSide borderSide = const BorderSide(),
-    BorderRadius borderRadius = const BorderRadius.all(Radius.circular(4.0)),
-    double gapPadding = 4.0,
-  }) {
-    switch (this) {
-      case BorderType.outline:
-        return OutlineInputBorder(
-            gapPadding: gapPadding,
-            borderRadius: borderRadius,
-            borderSide: borderSide);
-      case BorderType.underline:
-        borderRadius = const BorderRadius.only(
-            topLeft: Radius.circular(4.0), topRight: Radius.circular(4.0));
-        return UnderlineInputBorder(
-            borderRadius: borderRadius, borderSide: borderSide);
-      case BorderType.none:
-        return InputBorder.none;
-    }
-  }
+  /// 数据
+  final T? value;
 }
 
-typedef DecoratorPendantBuilder = Widget Function(
-    bool hasFocus, bool isEditing);
+typedef DecoratorBoxPendantBuilder<T> = Widget Function(
+    DecoratorBoxStatus<T> status);
+
+typedef DecoratorPendantValueCallback<T> = bool Function(T value);
 
 /// Decorator Pendant
-class DecoratorPendant {
+class DecoratorPendant<T> {
   const DecoratorPendant({
     this.child,
     this.builder,
@@ -82,6 +51,7 @@ class DecoratorPendant {
     this.needEditing,
     this.positioned = DecoratorPendantPosition.inner,
     this.maintainSize = false,
+    this.needValue,
   }) : assert(child != null || builder != null);
 
   /// 显示的位置
@@ -91,7 +61,7 @@ class DecoratorPendant {
   final bool maintainSize;
 
   /// 要显示的 [builder] 会覆盖 [child]
-  final DecoratorPendantBuilder? builder;
+  final DecoratorBoxPendantBuilder<T>? builder;
 
   /// 要显示的 widget
   final Widget? child;
@@ -103,99 +73,21 @@ class DecoratorPendant {
   /// 是否需要焦点
   /// [needFocus] == null 无需判断 是否有焦点
   final bool? needFocus;
+
+  /// 是否需要值
+  /// [onValue] == null 无需判断 值是否满足条件
+  final DecoratorPendantValueCallback<T?>? needValue;
 }
 
-/// [DecoratorBox] 样式
-class BoxDecorative {
-  const BoxDecorative({
-    this.shape,
-    this.borderType = BorderType.none,
-    this.borderRadius,
-    this.borderSide,
-    this.padding,
-    this.fillColor,
-    this.boxShadow,
-    this.gradient,
-    this.constraints,
-  });
+typedef DecoratorBoxDecorativeBuilder<T> = Widget Function(
+    Widget child, DecoratorBoxStatus<T> status);
 
-  /// 仅作用于 [DecoratorBox.child]
-  final EdgeInsetsGeometry? padding;
+typedef DecoratorBoxStatusCallback = bool Function();
 
-  /// [DecoratorBox.child] 边框类型
-  final BorderType borderType;
-
-  /// [DecoratorBox.child] 边框样式
-  final BorderSide? borderSide;
-
-  /// [DecoratorBox.child] 填充色
-  final Color? fillColor;
-
-  /// [DecoratorBox.child] 圆角
-  final BorderRadius? borderRadius;
-
-  /// [DecoratorBox.child] 阴影
-  final List<BoxShadow>? boxShadow;
-
-  /// [DecoratorBox.child] 形状
-  final BoxShape? shape;
-
-  /// [DecoratorBox.child] 渐变色
-  final Gradient? gradient;
-
-  /// [DecoratorBox] 约束
-  final BoxConstraints? constraints;
-
-  BoxDecorative copyWith({
-    BorderType? borderType,
-    BorderSide? borderSide,
-    Color? fillColor,
-    BorderRadius? borderRadius,
-    List<BoxShadow>? boxShadow,
-    BoxShape? shape,
-    Gradient? gradient,
-    BoxConstraints? constraints,
-    EdgeInsetsGeometry? padding,
-  }) =>
-      BoxDecorative(
-        borderType: borderType ?? this.borderType,
-        borderSide: borderSide ?? this.borderSide,
-        fillColor: fillColor ?? this.fillColor,
-        borderRadius: borderRadius ?? this.borderRadius,
-        boxShadow: boxShadow ?? this.boxShadow,
-        shape: shape ?? this.shape,
-        gradient: gradient ?? this.gradient,
-        constraints: constraints ?? this.constraints,
-        padding: padding ?? this.padding,
-      );
-
-  BoxDecorative merge(BoxDecorative? other) => copyWith(
-        borderType: other?.borderType,
-        borderSide: other?.borderSide,
-        fillColor: other?.fillColor,
-        borderRadius: other?.borderRadius,
-        boxShadow: other?.boxShadow,
-        shape: other?.shape,
-        gradient: other?.gradient,
-        constraints: other?.constraints,
-        padding: other?.padding,
-      );
-
-  /// to [BoxDecoration]
-  BoxDecoration toBoxDecoration() => BoxDecoration(
-        color: fillColor,
-        border: borderType.toBorder(borderSide),
-        borderRadius: borderRadius,
-        gradient: gradient,
-        boxShadow: boxShadow,
-      );
-}
-
-typedef DecoratorBoxDecorativeBuilder = BoxDecorative Function(
-    bool hasFocus, bool isEditing);
+typedef DecoratorBoxStatusValueCallback<T> = T Function();
 
 /// [Widget] 装饰器
-class DecoratorBox extends StatelessWidget {
+class DecoratorBox<T> extends StatelessWidget {
   const DecoratorBox({
     super.key,
     required this.child,
@@ -204,87 +96,75 @@ class DecoratorBox extends StatelessWidget {
     this.suffixes = const [],
     this.prefixes = const [],
     this.expanded = true,
-    this.hasFocus = false,
-    this.isEditing = false,
     this.decoration,
+    this.listenable,
+    this.onFocus,
+    this.onEditing,
+    this.onValue,
   });
 
   final Widget child;
 
   /// [child] 头部
-  final List<DecoratorPendant> headers;
+  final List<DecoratorPendant<T>> headers;
 
   /// [child] 尾部
-  final List<DecoratorPendant> footers;
+  final List<DecoratorPendant<T>> footers;
 
   /// [child] 前缀
-  final List<DecoratorPendant> suffixes;
+  final List<DecoratorPendant<T>> suffixes;
 
   /// [child] 后缀
-  final List<DecoratorPendant> prefixes;
+  final List<DecoratorPendant<T>> prefixes;
 
   /// [DecoratorBox] 样式
-  final DecoratorBoxDecorativeBuilder? decoration;
+  final DecoratorBoxDecorativeBuilder<T>? decoration;
 
   /// 是否 [Expanded]
   final bool expanded;
 
-  /// 是否有焦点
-  final bool hasFocus;
+  /// 添加 [Listenable] 监听
+  /// 当 [listenable] 发生变化时，会重新构建 [DecoratorBox]
+  /// 注意：[listenable] 必须是 [Listenable] 或 [Listenable] 的子类
+  final Listenable? listenable;
 
-  /// 是否编辑中
-  final bool isEditing;
+  /// 是否有焦点监听
+  final DecoratorBoxStatusCallback? onFocus;
 
-  Widget? buildDecoratorPendant(
-      List<DecoratorPendant> list, DecoratorPendantPosition positioned) {
-    final listPendant =
-        list.where((element) => element.positioned == positioned);
-    if (listPendant.isEmpty) return null;
-    Widget buildVisibilityPendant(DecoratorPendant pendant) {
-      if (pendant.builder != null) {
-        return Visibility(
-            maintainAnimation: pendant.maintainSize,
-            maintainState: pendant.maintainSize,
-            maintainSize: pendant.maintainSize,
-            child: pendant.builder!(hasFocus, isEditing));
-      }
+  /// 是否在编辑中
+  final DecoratorBoxStatusCallback? onEditing;
 
-      bool isEditingVisible = true;
-      bool isHasFocusVisible = true;
-
-      if (pendant.needEditing != null) {
-        isEditingVisible = pendant.needEditing == isEditing;
-      }
-      if (pendant.needFocus != null) {
-        isHasFocusVisible = pendant.needFocus == hasFocus;
-      }
-      return Visibility(
-          visible: isEditingVisible && isHasFocusVisible,
-          maintainAnimation: pendant.maintainSize,
-          maintainState: pendant.maintainSize,
-          maintainSize: pendant.maintainSize,
-          child: pendant.child!);
-    }
-
-    if (listPendant.length == 1) {
-      return buildVisibilityPendant(listPendant.first);
-    }
-    return Row(
-        mainAxisSize: MainAxisSize.min,
-        children: listPendant.map((e) => buildVisibilityPendant(e)).toList());
-  }
+  /// value 回调
+  final DecoratorBoxStatusValueCallback? onValue;
 
   @override
   Widget build(BuildContext context) {
+    Widget current = buildDecoratorBox(_status);
+    if (listenable == null) return current;
+    return ListenableBuilder(
+        listenable: listenable!,
+        builder: (_, Widget? child) => buildDecoratorBox(_status),
+        child: child);
+  }
+
+  DecoratorBoxStatus<T> get _status {
+    final hasFocus = onFocus?.call() ?? false;
+    final isEditing = onEditing?.call() ?? false;
+    final value = onValue?.call();
+    return DecoratorBoxStatus<T>(
+        hasFocus: hasFocus, isEditing: isEditing, value: value);
+  }
+
+  Widget buildDecoratorBox(DecoratorBoxStatus<T> status) {
     final outerHeader =
-        buildDecoratorPendant(headers, DecoratorPendantPosition.outer);
+        buildPendant(headers, DecoratorPendantPosition.outer, status);
     final outerPrefix =
-        buildDecoratorPendant(prefixes, DecoratorPendantPosition.outer);
+        buildPendant(prefixes, DecoratorPendantPosition.outer, status);
     final outerSuffix =
-        buildDecoratorPendant(suffixes, DecoratorPendantPosition.outer);
+        buildPendant(suffixes, DecoratorPendantPosition.outer, status);
     final outerFooter =
-        buildDecoratorPendant(footers, DecoratorPendantPosition.outer);
-    Widget current = buildInner;
+        buildPendant(footers, DecoratorPendantPosition.outer, status);
+    Widget current = buildInner(status);
     if (outerPrefix != null || outerSuffix != null) {
       current = Row(mainAxisSize: MainAxisSize.min, children: [
         if (outerPrefix != null) outerPrefix,
@@ -302,15 +182,15 @@ class DecoratorBox extends StatelessWidget {
     return current;
   }
 
-  Widget get buildInner {
+  Widget buildInner(DecoratorBoxStatus<T> status) {
     final innerHeader =
-        buildDecoratorPendant(headers, DecoratorPendantPosition.inner);
+        buildPendant(headers, DecoratorPendantPosition.inner, status);
     final innerPrefix =
-        buildDecoratorPendant(prefixes, DecoratorPendantPosition.inner);
+        buildPendant(prefixes, DecoratorPendantPosition.inner, status);
     final innerSuffix =
-        buildDecoratorPendant(suffixes, DecoratorPendantPosition.inner);
+        buildPendant(suffixes, DecoratorPendantPosition.inner, status);
     final innerFooter =
-        buildDecoratorPendant(footers, DecoratorPendantPosition.inner);
+        buildPendant(footers, DecoratorPendantPosition.inner, status);
     Widget current = child;
     if (innerPrefix != null || innerSuffix != null) {
       current = Row(mainAxisSize: MainAxisSize.min, children: [
@@ -326,83 +206,51 @@ class DecoratorBox extends StatelessWidget {
         if (innerFooter != null) innerFooter,
       ]);
     }
-    return buildDecoration(current);
+    return decoration?.call(current, status) ?? current;
   }
 
-  Widget buildDecoration(Widget current) {
-    final currentDecoration = decoration?.call(hasFocus, isEditing);
-    if (currentDecoration != null) {
-      current = Container(
-          decoration: currentDecoration.toBoxDecoration(),
-          constraints: currentDecoration.constraints,
-          padding: currentDecoration.padding,
-          child: current);
-      if (currentDecoration.borderRadius != null) {
-        current = ClipRRect(
-            borderRadius: currentDecoration.borderRadius!, child: current);
+  Widget? buildPendant(List<DecoratorPendant<T>> list,
+      DecoratorPendantPosition positioned, DecoratorBoxStatus<T> status) {
+    final listPendant =
+        list.where((element) => element.positioned == positioned);
+    if (listPendant.isEmpty) return null;
+    Widget buildVisibilityPendant(DecoratorPendant<T> pendant) {
+      if (pendant.builder != null) {
+        return Visibility(
+            maintainAnimation: pendant.maintainSize,
+            maintainState: pendant.maintainSize,
+            maintainSize: pendant.maintainSize,
+            child: pendant.builder!(status));
       }
+
+      bool isEditingVisible = true;
+      bool isHasFocusVisible = true;
+      bool isValueVisible = true;
+
+      if (pendant.needEditing != null) {
+        isEditingVisible = pendant.needEditing == status.isEditing;
+      }
+      if (pendant.needFocus != null) {
+        isHasFocusVisible = pendant.needFocus == status.hasFocus;
+      }
+      if (pendant.needValue != null) {
+        isValueVisible = pendant.needValue!(status.value);
+      }
+      return Visibility(
+          visible: isEditingVisible && isHasFocusVisible && isValueVisible,
+          maintainAnimation: pendant.maintainSize,
+          maintainState: pendant.maintainSize,
+          maintainSize: pendant.maintainSize,
+          child: pendant.child!);
     }
-    return current;
+
+    if (listPendant.length == 1) {
+      return buildVisibilityPendant(listPendant.first);
+    }
+    return Row(
+        mainAxisSize: MainAxisSize.min,
+        children: listPendant
+            .map((pendant) => buildVisibilityPendant(pendant))
+            .toList());
   }
-}
-
-typedef DecoratorBoxStateCallback = bool Function();
-
-class DecoratorBoxState extends StatelessWidget {
-  const DecoratorBoxState(
-      {super.key,
-      required this.listenable,
-      required this.child,
-      this.onFocus,
-      this.onEditing,
-      this.headers = const [],
-      this.footers = const [],
-      this.suffixes = const [],
-      this.prefixes = const [],
-      this.decoration,
-      this.expanded = true});
-
-  final Widget child;
-
-  /// [Listenable] 监听
-  final Listenable listenable;
-
-  /// 是否有焦点监听
-  final DecoratorBoxStateCallback? onFocus;
-
-  /// 是否在编辑中
-  final DecoratorBoxStateCallback? onEditing;
-
-  /// [child] 头部
-  final List<DecoratorPendant> headers;
-
-  /// [child] 尾部
-  final List<DecoratorPendant> footers;
-
-  /// [child] 前缀
-  final List<DecoratorPendant> suffixes;
-
-  /// [child] 后缀
-  final List<DecoratorPendant> prefixes;
-
-  /// [DecoratorBox] 样式
-  final DecoratorBoxDecorativeBuilder? decoration;
-
-  /// 是否 [Expanded]
-  final bool expanded;
-
-  @override
-  Widget build(BuildContext context) => ListenableBuilder(
-      listenable: listenable,
-      builder: (BuildContext context, Widget? child) => DecoratorBox(
-          hasFocus: onFocus?.call() ?? false,
-          isEditing: onEditing?.call() ?? false,
-          decoration: decoration,
-          footers: footers,
-          headers: headers,
-          prefixes: prefixes,
-          suffixes: suffixes,
-          expanded: expanded,
-          child: child!),
-      child: child);
 }
