@@ -309,8 +309,7 @@ class FlPageViewController extends PageController {
   void _resumeTimer() {
     if (_state == null || !_state!.widget.autoPlay) return;
     _timer ??= Timer.periodic(_state!.widget.autoPlayInterval, (_) {
-      if (page == null || _state == null) return;
-      if (!_state!.context.mounted) {
+      if (page == null || _state == null || !_state!.context.mounted) {
         _clearTimer();
         return;
       }

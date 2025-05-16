@@ -1,4 +1,4 @@
-## 11.2.4
+## 11.2.5
 
 * Fix `FlPageViewController` scrolling error
 
