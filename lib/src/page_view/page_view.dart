@@ -192,7 +192,7 @@ class FlPageViewController extends PageController {
   Future<void> next(
       {Duration duration = const Duration(milliseconds: 300),
       Curve curve = Curves.linear}) async {
-    assert(_state != null);
+    if (page == null || _state == null) return;
     final isNeedResetTimer = _state!.widget.pauseAutoPlayOnManualNavigate;
     if (isNeedResetTimer) {
       _resumeTimer();
@@ -208,7 +208,7 @@ class FlPageViewController extends PageController {
   Future<void> previous(
       {Duration duration = const Duration(milliseconds: 300),
       Curve curve = Curves.linear}) async {
-    assert(_state != null);
+    if (page == null || _state == null) return;
     final isNeedResetTimer = _state!.widget.pauseAutoPlayOnManualNavigate;
     if (isNeedResetTimer) {
       _clearTimer();
@@ -222,8 +222,7 @@ class FlPageViewController extends PageController {
 
   /// Jump to a page
   void jump(int page) {
-    assert(_state != null);
-    assert(this.page != null);
+    if (this.page == null || _state == null) return;
     final index = _getIndex(
         this.page!.toInt(), (realPage - initial), _state!.widget.itemCount);
     _source = FlPageViewSource.controller;
@@ -237,7 +236,7 @@ class FlPageViewController extends PageController {
     Duration duration = const Duration(milliseconds: 300),
     Curve curve = Curves.linear,
   }) async {
-    if (_state == null) return;
+    if (this.page == null || _state == null) return;
     final bool isNeedResetTimer = _state!.widget.pauseAutoPlayOnManualNavigate;
     if (isNeedResetTimer) {
       _clearTimer();
@@ -310,6 +309,7 @@ class FlPageViewController extends PageController {
   void _resumeTimer() {
     if (_state == null || !_state!.widget.autoPlay) return;
     _timer ??= Timer.periodic(_state!.widget.autoPlayInterval, (_) {
+      if (page == null || _state == null) return;
       if (!_state!.context.mounted) {
         _clearTimer();
         return;
