@@ -1,3 +1,7 @@
+## 11.2.4
+
+* Fix `FlPageViewController` scrolling error
+
 ## 11.2.3
 
 * Remove `DecoratorPendantVisibilityMode` from `DecoratorPendant`, please use `needEditing`,
