@@ -1,3 +1,8 @@
+## 11.2.6
+
+* Add `DecoratorPendant.builder()`
+* Add `Widget().toDecoratorPendantBuilder()`
+
 ## 11.2.5
 
 * Fix `FlPageViewController` scrolling error
