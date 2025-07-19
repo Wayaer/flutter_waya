@@ -15,6 +15,21 @@ extension ExtensionWidgetDecoratorBox on Widget {
           needValue: needValue,
           needEditing: needEditing,
           needFocus: needFocus);
+
+  DecoratorPendant<T> toDecoratorPendantBuilder<T>({
+    DecoratorPendantPosition positioned = DecoratorPendantPosition.outer,
+    bool maintainSize = false,
+    bool? needFocus,
+    bool? needEditing,
+    DecoratorPendantValueCallback<T?>? needValue,
+  }) =>
+      DecoratorPendant<T>(
+          builder: (_) => this,
+          maintainSize: maintainSize,
+          positioned: positioned,
+          needValue: needValue,
+          needEditing: needEditing,
+          needFocus: needFocus);
 }
 
 enum DecoratorPendantPosition {
@@ -141,8 +156,7 @@ class DecoratorBox<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget current = buildDecoratorBox(_status);
-    if (listenable == null) return current;
+    if (listenable == null) return buildDecoratorBox(_status);
     return ListenableBuilder(
         listenable: listenable!,
         builder: (_, Widget? child) => buildDecoratorBox(_status),

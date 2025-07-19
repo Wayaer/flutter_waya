@@ -35,7 +35,7 @@ void main() {
   globalOptions.logCrossLine = true;
 
   /// 设置全局Loading配置
-  globalOptions.loadingOptions = const LoadingOptions(onModalTap: closeLoading);
+  globalOptions.loadingOptions = const LoadingOptions(onModalTap: hideLoading);
 
   runApp(DevicePreview(
       enabled: isDesktop || isWeb,
@@ -191,7 +191,7 @@ class ExtendedScaffold extends StatelessWidget {
       this.safeBottom = false,
       this.isStack = false,
       this.isScroll = false,
-      this.isCloseOverlay = true,
+      this.canHideOverlay = true,
       this.appBar,
       this.child,
       this.padding,
@@ -227,7 +227,7 @@ class ExtendedScaffold extends StatelessWidget {
 
   /// true 点击android实体返回按键先关闭Overlay【toast loading ...】但不pop 当前页面
   /// false 点击android实体返回按键先关闭Overlay【toast loading ...】并pop 当前页面
-  final bool isCloseOverlay;
+  final bool canHideOverlay;
 
   /// Scaffold相关属性
   final Widget? child;
@@ -257,10 +257,11 @@ class ExtendedScaffold extends StatelessWidget {
         appBar: buildAppBar(context),
         bottomNavigationBar: bottomNavigationBar,
         body: universal);
-    return isCloseOverlay
-        ? ExtendedPopScope(
-            isCloseOverlay: isCloseOverlay,
-            onPopInvoked: (bool didPop, bool didCloseOverlay) {
+    return canHideOverlay
+        ? FlPopScope(
+            canHideOverlay: canHideOverlay,
+            onPopInvokedWithResult:
+                (bool didPop, result, bool didCloseOverlay) {
               if (didCloseOverlay || didPop) return;
               if (enableDoubleClickExit) {
                 final now = DateTime.now();
