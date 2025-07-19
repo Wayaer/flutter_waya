@@ -23,7 +23,7 @@ extension ExtensionWidgetDecoratorBox on Widget {
     bool? needEditing,
     DecoratorPendantValueCallback<T?>? needValue,
   }) =>
-      DecoratorPendant<T>(
+      DecoratorPendant<T>.builder(
           builder: (_) => this,
           maintainSize: maintainSize,
           positioned: positioned,
@@ -63,13 +63,21 @@ typedef DecoratorPendantValueCallback<T> = bool Function(T value);
 class DecoratorPendant<T> {
   const DecoratorPendant({
     this.child,
+    this.positioned = DecoratorPendantPosition.inner,
+    this.maintainSize = false,
+    this.needValue,
+    this.needFocus,
+    this.needEditing,
+  }) : builder = null;
+
+  const DecoratorPendant.builder({
     this.builder,
     this.positioned = DecoratorPendantPosition.inner,
     this.maintainSize = false,
     this.needValue,
     this.needFocus,
     this.needEditing,
-  }) : assert(child != null || builder != null);
+  }) : child = null;
 
   /// 显示的位置
   final DecoratorPendantPosition positioned;
