@@ -62,5 +62,6 @@ class _FlipCardPageState extends State<FlipCardPage> {
       alignment: Alignment.center,
       decoration:
           BoxDecoration(color: color, borderRadius: BorderRadius.circular(10)),
-      child: BText(text, fontSize: 20, fontWeight: FontWeight.bold));
+      child: Text(text,
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)));
 }

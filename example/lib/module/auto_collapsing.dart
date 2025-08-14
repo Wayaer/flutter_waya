@@ -18,8 +18,11 @@ class ColorEntry extends StatelessWidget {
       height: height,
       alignment: Alignment.center,
       color: color,
-      child: BText(index.toString(),
-          color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold));
+      child: Text(
+        index.toString(),
+        style: TextStyle(
+            color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+      ));
 }
 
 class AutoCollapsingPage extends StatefulWidget {

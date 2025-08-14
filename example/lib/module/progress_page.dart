@@ -39,8 +39,8 @@ class _ProgressBarPageState extends State<ProgressBarPage>
                     right: 300 - 300 * percent,
                     top: 0,
                     bottom: 0,
-                    child:
-                        BText(percent.toStringAsFixed(1), color: Colors.white))
+                    child: Text(percent.toStringAsFixed(1),
+                        style: TextStyle(color: Colors.white)))
               ]),
           strokeCap: StrokeCap.round,
           progressColor: Colors.lightGreen,
@@ -60,8 +60,8 @@ class _ProgressBarPageState extends State<ProgressBarPage>
                     top: 0,
                     bottom: 0,
                     right: 300 - 300 * percent,
-                    child:
-                        BText(percent.toStringAsFixed(1), color: Colors.white)),
+                    child: Text(percent.toStringAsFixed(1),
+                        style: TextStyle(color: Colors.white))),
               ]),
           strokeCap: StrokeCap.round,
           backgroundColor: Colors.black12),
@@ -81,8 +81,8 @@ class _ProgressBarPageState extends State<ProgressBarPage>
                     top: 0,
                     bottom: 0,
                     right: 300 - 300 * percent,
-                    child:
-                        BText(percent.toStringAsFixed(1), color: Colors.white)),
+                    child: Text(percent.toStringAsFixed(1),
+                        style: TextStyle(color: Colors.white))),
               ]),
           strokeCap: StrokeCap.round,
           backgroundColor: Colors.black12),

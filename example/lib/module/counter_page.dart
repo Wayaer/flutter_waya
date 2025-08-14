@@ -26,7 +26,7 @@ class CounterPage extends StatelessWidget {
                         onTap: () {
                           updater(value! + 2);
                         },
-                        child: BText(text, fontSize: 30)))),
+                        child: Text(text, style: TextStyle(fontSize: 30))))),
             ValueBuilder(
                 initial: 100,
                 builder: (_, int? value, updater) => AnimationCounter.up(
@@ -36,7 +36,7 @@ class CounterPage extends StatelessWidget {
                         onTap: () {
                           updater(value! + 1);
                         },
-                        child: BText(text, fontSize: 30)))),
+                        child: Text(text, style: TextStyle(fontSize: 30))))),
           ]),
           const Partition('AnimationCounter.down'),
           Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
@@ -49,7 +49,7 @@ class CounterPage extends StatelessWidget {
                         onTap: () {
                           updater(value! - 1);
                         },
-                        child: BText(text, fontSize: 30)))),
+                        child: Text(text, style: TextStyle(fontSize: 30))))),
             ValueBuilder(
                 initial: 100,
                 builder: (_, int? value, updater) => AnimationCounter.down(
@@ -59,7 +59,7 @@ class CounterPage extends StatelessWidget {
                         onTap: () {
                           updater(value! - 2);
                         },
-                        child: BText(text, fontSize: 30)))),
+                        child: Text(text, style: TextStyle(fontSize: 30))))),
           ]),
           const Partition('Counter.down'),
           Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
@@ -69,7 +69,8 @@ class CounterPage extends StatelessWidget {
                   onPressed: isActive ? stop : start,
                   child: AnimationCounter.down(
                       value: duration.inSeconds.toString(),
-                      builder: (String value) => BText(value, fontSize: 20)));
+                      builder: (String value) =>
+                          Text(value, style: TextStyle(fontSize: 20))));
             }),
             Counter.down(
                 builder: (Duration duration, bool isActive, start, stop) {
@@ -78,7 +79,8 @@ class CounterPage extends StatelessWidget {
                   child: AnimationCounter.down(
                       style: CounterStyle.all,
                       value: duration.inSeconds.toString(),
-                      builder: (String value) => BText(value, fontSize: 20)));
+                      builder: (String value) =>
+                          Text(value, style: TextStyle(fontSize: 20))));
             }),
           ]),
           const Partition('Counter.up'),
@@ -91,7 +93,7 @@ class CounterPage extends StatelessWidget {
                       child: AnimationCounter.up(
                           value: duration.inSeconds.toString(),
                           builder: (String value) =>
-                              BText(value, fontSize: 20)));
+                              Text(value, style: TextStyle(fontSize: 20))));
                 }),
             Counter.up(
                 builder: (Duration duration, bool isActive, start, stop) {
@@ -100,7 +102,8 @@ class CounterPage extends StatelessWidget {
                   child: AnimationCounter.up(
                       style: CounterStyle.all,
                       value: duration.inSeconds.toString(),
-                      builder: (String value) => BText(value, fontSize: 20)));
+                      builder: (String value) =>
+                          Text(value, style: TextStyle(fontSize: 20))));
             }),
           ]),
           const Partition('SendVerificationCode'),
