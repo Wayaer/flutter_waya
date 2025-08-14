@@ -168,7 +168,8 @@ class _BubbleButtonPage extends StatelessWidget {
                   isOval: true,
                   alignment: Alignment.center,
                   color: value ? context.theme.primaryColor : Colors.grey,
-                  child: const BText('点击', color: Colors.white))),
+                  child:
+                      const Text('点击', style: TextStyle(color: Colors.white)))),
           BubbleButton(
               size: size,
               onTap: (bool isBubbled) async => !isBubbled,

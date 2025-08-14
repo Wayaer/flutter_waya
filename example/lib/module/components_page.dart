@@ -26,7 +26,8 @@ class ComponentsPage extends StatelessWidget {
                     decoration: BoxDecoration(
                         color: Colors.blue,
                         borderRadius: BorderRadius.circular(9)),
-                    child: const BText('Shimmery', color: Colors.white))),
+                    child: const Text('Shimmery',
+                        style: TextStyle(color: Colors.white)))),
             const Partition('Wrapper'),
             const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -46,13 +47,13 @@ class ComponentsPage extends StatelessWidget {
             const Partition('ExpansionTiles'),
             Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
               ExpansionTile(
-                title: const BText('Tile'),
+                title: const Text('Tile'),
                 backgroundColor:
                     context.theme.primaryColor.withValues(alpha: 0.2),
                 children: 5.generate((int index) => Universal(
                     margin: const EdgeInsets.all(12),
                     alignment: Alignment.centerLeft,
-                    child: BText('item$index'))),
+                    child: Text('item$index'))),
               ).expanded,
               ExpansionTiles(
                 icon: (bool isExpanded) => Icon(Icons.expand_more,
@@ -61,7 +62,7 @@ class ComponentsPage extends StatelessWidget {
                     bool isExpanded, Widget? rotation) {
                   return ListTile(
                       onTap: onTap,
-                      title: const BText('Tile'),
+                      title: const Text('Tile'),
                       trailing: rotation);
                 },
                 backgroundColor:
@@ -69,7 +70,7 @@ class ComponentsPage extends StatelessWidget {
                 children: 5.generate((int index) => Universal(
                     margin: const EdgeInsets.all(12),
                     alignment: Alignment.centerLeft,
-                    child: BText('item$index'))),
+                    child: Text('item$index'))),
               ).expanded,
             ]),
             const Partition('ToggleRotate'),

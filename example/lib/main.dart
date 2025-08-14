@@ -114,7 +114,8 @@ class AppBarText extends AppBar {
   AppBarText(String text, {super.key})
       : super(
             elevation: 0,
-            title: BText(text, fontSize: 18, fontWeight: FontWeight.bold),
+            title: Text(text,
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             centerTitle: true);
 }
 
@@ -151,8 +152,8 @@ class ElevatedText extends StatelessWidget {
                     color: context.theme.colorScheme.primary
                         .withValues(alpha: 0.08),
                     borderRadius: BorderRadius.circular(20)),
-                child: BText(text,
-                    color: context.theme.colorScheme.primary,
+                child: Text(text,
+                    style: TextStyle(color: context.theme.colorScheme.primary),
                     textAlign: TextAlign.center)),
           ));
 }
@@ -172,8 +173,9 @@ class Partition extends StatelessWidget {
       alignment: Alignment.center,
       padding: const EdgeInsets.all(10),
       margin: EdgeInsets.only(top: marginTop, bottom: 20),
-      child: BText(title,
-          textAlign: TextAlign.center, fontWeight: FontWeight.bold));
+      child: Text(title,
+          textAlign: TextAlign.center,
+          style: TextStyle(fontWeight: FontWeight.bold)));
 }
 
 const List<Color> colorList = <Color>[
