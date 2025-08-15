@@ -1,3 +1,7 @@
+## 11.3.0
+
+* Currently supports versions 3.27 to 3.35
+
 ## 11.2.6
 
 * Add `DecoratorPendant.builder()`
