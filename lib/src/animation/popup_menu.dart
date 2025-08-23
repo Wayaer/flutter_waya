@@ -54,12 +54,12 @@ class MultiPopupMenuButton<K, V> extends StatelessWidget {
   Widget build(BuildContext context) {
     final children = menus.map((entry) {
       return entry.builder(context, entry.key, entry.value, () {
-        this.onOpened?.call(context, entry.key, entry.value);
+        onOpened?.call(context, entry.key, entry.value);
       }, () {
-        this.onCanceled?.call(context, entry.key, entry.value);
+        onCanceled?.call(context, entry.key, entry.value);
       }, (V? value) {
         entry.value = value;
-        this.onSelected?.call(context, entry.key, value);
+        onSelected?.call(context, entry.key, value);
       });
     }).toList();
     return Row(

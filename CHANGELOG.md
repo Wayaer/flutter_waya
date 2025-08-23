@@ -1,3 +1,8 @@
+## 11.4.0
+
+* Refactor the `FlipCard`, and `FlipCardController`
+* Add `FlipCardStateful`
+
 ## 11.3.0
 
 * Currently supports versions 3.27 to 3.35
