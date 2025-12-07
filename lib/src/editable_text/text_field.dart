@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 extension ExtensionInputDecoration on InputDecoration {
-  InputDecoration get copyWithNoneBorder => copyWith(
+  InputDecoration get noneBorder => copyWith(
       border: InputBorder.none,
       enabledBorder: InputBorder.none,
       focusedBorder: InputBorder.none,

@@ -166,8 +166,7 @@ class _PINTextFieldState extends ExtendedState<PINTextField> {
 
   Widget get pinTextInput {
     final inputDecoration =
-        const InputDecoration(contentPadding: EdgeInsets.zero, isDense: true)
-            .copyWithNoneBorder;
+        const InputDecoration(contentPadding: EdgeInsets.zero, isDense: true).noneBorder;
     final config = PINTextFieldBuilderConfig(
         controller: widget.controller,
         decoration: inputDecoration,

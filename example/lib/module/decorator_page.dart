@@ -1,6 +1,6 @@
 import 'package:app/main.dart';
-import 'package:flutter/material.dart';
 import 'package:fl_extended/fl_extended.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 
 class DecoratorBoxPage extends StatelessWidget {
@@ -75,6 +75,13 @@ class _DecoratorBoxPageState extends State<_DecoratorBoxPage> {
           onEditing: () => controller.text.isNotEmpty,
           onValue: () => controller.value,
           decoration: buildDecoration,
+          direction: DecoratorBoxHeadersFootersDirection(
+            innerHeaders: Axis.horizontal,
+            innerFooters: Axis.horizontal,
+            outerHeaders: Axis.horizontal,
+            outerFooters: Axis.horizontal,
+          ),
+          spacing: DecoratorBoxSpacing(innerColumnSpacing: 4, innerRowSpacing: 4, outerColumnSpacing: 4, outerRowSpacing: 4),
           footers: buildPendants,
           headers: buildPendants,
           prefixes: buildPendants,
@@ -100,14 +107,25 @@ class _DecoratorBoxPageState extends State<_DecoratorBoxPage> {
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           child: child);
 
-  List<DecoratorPendant<TextEditingValue>> get buildPendants =>
-      DecoratorPendantPosition.values.builder((positioned) =>
-          DecoratorPendant<TextEditingValue>(
-              needFocus: widget.needFocus,
-              needEditing: widget.needEditing,
-              maintainSize: false,
-              child: Text(positioned.name),
-              positioned: positioned));
+  List<DecoratorPendant<TextEditingValue>> get buildPendants {
+    List<DecoratorPendant<TextEditingValue>> pendants = [];
+    DecoratorPendantPosition.values.builder((positioned) {
+      pendants.add(DecoratorPendant<TextEditingValue>(
+          needFocus: widget.needFocus,
+          needEditing: widget.needEditing,
+          maintainSize: false,
+          child: Text('${positioned.name.substring(0, 2)}0', style: TextStyle(fontSize: 10)),
+          positioned: positioned));
+      pendants.add(DecoratorPendant<TextEditingValue>(
+          needFocus: widget.needFocus,
+          needEditing: widget.needEditing,
+          maintainSize: false,
+          child: Text('${positioned.name.substring(0, 2)}1', style: TextStyle(fontSize: 10)),
+          positioned: positioned));
+    });
+
+    return pendants;
+  }
 
   @override
   void dispose() {

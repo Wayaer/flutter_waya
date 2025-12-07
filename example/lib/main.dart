@@ -26,11 +26,10 @@ void main() {
       alignment: Alignment.topCenter, duration: 2.seconds);
 
   /// 设置全局BottomSheet配置
-  globalOptions.bottomSheetOptions = const BottomSheetOptions(
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(12))));
-  globalOptions.dialogOptions =
-      const DialogOptions(fromStyle: PopupFromStyle.fromTop);
+  globalOptions.modalBottomSheetOptions =
+      const ModalBottomSheetOptions(shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(12))));
+
+  globalOptions.generalDialogOptions = const GeneralDialogOptions(fromStyle: PopupFromStyle.fromTop);
 
   globalOptions.logCrossLine = true;
 
