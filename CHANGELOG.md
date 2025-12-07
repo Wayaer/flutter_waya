@@ -1,3 +1,8 @@
+## 11.5.0
+
+* Add `spacing` and direction` to `DecoratorBox()`
+* Change `DecoratorBoxBorder` to `noneBorder`
+
 ## 11.4.0
 
 * Refactor the `FlipCard`, and `FlipCardController`

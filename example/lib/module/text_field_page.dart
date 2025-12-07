@@ -29,18 +29,17 @@ class _TextFieldPageState extends State<TextFieldPage> {
               prefixes: [
                 Icon(Icons.ac_unit).toDecoratorPendant(),
               ],
+              spacing: DecoratorBoxSpacing(outerRowSpacing: 10),
               decoration: (Widget child, _) => Container(
                   decoration: BoxDecoration(
-                      border: BorderType.underline.toBorder(BorderSide(
-                          color: context.theme.primaryColor, width: 1)),
+                      border: BorderType.underline.toBorder(BorderSide(color: context.theme.primaryColor, width: 1)),
                       borderRadius: BorderRadius.circular(4),
                       color: context.theme.primaryColor.withValues(alpha: 0.2)),
                   child: child),
-              child: TextField(
-                  decoration:
-                      const InputDecoration(isDense: true).copyWithNoneBorder)),
+              child: TextField(decoration: const InputDecoration(isDense: true).noneBorder)),
           10.heightBox,
           DecoratorBox(
+              spacing: DecoratorBoxSpacing(innerRowSpacing: 10),
               suffixes: [
                 Icon(Icons.ac_unit).toDecoratorPendant(
                     positioned: DecoratorPendantPosition.inner),
@@ -58,8 +57,7 @@ class _TextFieldPageState extends State<TextFieldPage> {
                   ),
                   child: child),
               child: TextField(
-                decoration:
-                    const InputDecoration(isDense: true).copyWithNoneBorder,
+                decoration: const InputDecoration(isDense: true).noneBorder,
               )),
           const Partition('PINTextField'),
           PINTextField(

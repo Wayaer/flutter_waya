@@ -111,6 +111,105 @@ typedef DecoratorBoxStatusCallback = bool Function();
 
 typedef DecoratorBoxStatusValueCallback<T> = T Function();
 
+class DecoratorBoxSpacing {
+  /// 内部列间距
+  /// 作用于 [headers] spacing [child] spacing [footers]
+  final double innerColumnSpacing;
+
+  /// 内部行间距
+  /// 作用于 [suffixes] spacing [child] spacing [prefixes]
+  final double innerRowSpacing;
+
+  /// 外部列间距
+  /// 作用于 [headers] spacing [child] spacing [footers]
+  final double outerColumnSpacing;
+
+  /// 外部行间距
+  /// 作用于 [suffixes] spacing [child] spacing [prefixes]
+  final double outerRowSpacing;
+
+  /// 内部头部间距
+  /// inner [headers] 内部间距
+  final double innerHeaderSpacing;
+
+  /// 外部头部间距
+  /// outer [headers] 内部间距
+  final double outerHeaderSpacing;
+
+  /// 内部尾部间距
+  /// inner [footers] 内部间距
+  final double innerFooterSpacing;
+
+  /// 外部尾部间距
+  /// outer [footers] 内部间距
+  final double outerFooterSpacing;
+
+  const DecoratorBoxSpacing(
+      {this.innerColumnSpacing = 0,
+      this.innerRowSpacing = 0,
+      this.innerHeaderSpacing = 0,
+      this.innerFooterSpacing = 0,
+      this.outerColumnSpacing = 0,
+      this.outerRowSpacing = 0,
+      this.outerHeaderSpacing = 0,
+      this.outerFooterSpacing = 0});
+
+  DecoratorBoxSpacing copyWith({
+    double? innerColumnSpacing,
+    double? innerRowSpacing,
+    double? innerHeaderSpacing,
+    double? innerFooterSpacing,
+    double? outerColumnSpacing,
+    double? outerRowSpacing,
+    double? outerHeaderSpacing,
+    double? outerFooterSpacing,
+  }) =>
+      DecoratorBoxSpacing(
+        innerColumnSpacing: innerColumnSpacing ?? this.innerColumnSpacing,
+        innerRowSpacing: innerRowSpacing ?? this.innerRowSpacing,
+        innerHeaderSpacing: innerHeaderSpacing ?? this.innerHeaderSpacing,
+        innerFooterSpacing: innerFooterSpacing ?? this.innerFooterSpacing,
+        outerColumnSpacing: outerColumnSpacing ?? this.outerColumnSpacing,
+        outerRowSpacing: outerRowSpacing ?? this.outerRowSpacing,
+        outerHeaderSpacing: outerHeaderSpacing ?? this.outerHeaderSpacing,
+        outerFooterSpacing: outerFooterSpacing ?? this.outerFooterSpacing,
+      );
+}
+
+class DecoratorBoxHeadersFootersDirection {
+  /// inner [headers] 方向
+  final Axis innerHeaders;
+
+  /// inner [footers] 方向
+  final Axis innerFooters;
+
+  /// outer [headers] 方向
+  final Axis outerHeaders;
+
+  /// outer [footers] 方向
+  final Axis outerFooters;
+
+  const DecoratorBoxHeadersFootersDirection({
+    this.innerHeaders = Axis.vertical,
+    this.innerFooters = Axis.vertical,
+    this.outerHeaders = Axis.vertical,
+    this.outerFooters = Axis.vertical,
+  });
+
+  DecoratorBoxHeadersFootersDirection copyWith({
+    Axis? innerHeaders,
+    Axis? innerFooters,
+    Axis? outerHeaders,
+    Axis? outerFooters,
+  }) =>
+      DecoratorBoxHeadersFootersDirection(
+        innerHeaders: innerHeaders ?? this.innerHeaders,
+        innerFooters: innerFooters ?? this.innerFooters,
+        outerHeaders: outerHeaders ?? this.outerHeaders,
+        outerFooters: outerFooters ?? this.outerFooters,
+      );
+}
+
 /// [Widget] 装饰器
 class DecoratorBox<T> extends StatelessWidget {
   const DecoratorBox({
@@ -126,6 +225,8 @@ class DecoratorBox<T> extends StatelessWidget {
     this.onFocus,
     this.onEditing,
     this.onValue,
+    this.spacing = const DecoratorBoxSpacing(),
+    this.direction = const DecoratorBoxHeadersFootersDirection(),
   });
 
   final Widget child;
@@ -162,6 +263,12 @@ class DecoratorBox<T> extends StatelessWidget {
   /// value 回调
   final DecoratorBoxStatusValueCallback<T>? onValue;
 
+  /// 间距
+  final DecoratorBoxSpacing spacing;
+
+  /// [headers], [footers] 方向
+  final DecoratorBoxHeadersFootersDirection direction;
+
   @override
   Widget build(BuildContext context) {
     if (listenable == null) return buildDecoratorBox(_status);
@@ -179,25 +286,24 @@ class DecoratorBox<T> extends StatelessWidget {
         hasFocus: hasFocus, isEditing: isEditing, value: value);
   }
 
+  /// outer
   Widget buildDecoratorBox(DecoratorBoxStatus<T> status) {
-    final outerHeader =
-        buildPendant(headers, DecoratorPendantPosition.outer, status);
-    final outerPrefix =
-        buildPendant(prefixes, DecoratorPendantPosition.outer, status);
-    final outerSuffix =
-        buildPendant(suffixes, DecoratorPendantPosition.outer, status);
-    final outerFooter =
-        buildPendant(footers, DecoratorPendantPosition.outer, status);
+    final outerHeader = buildPendant(headers, DecoratorPendantPosition.outer, status,
+        spacing: spacing.outerHeaderSpacing, direction: direction.outerHeaders);
+    final outerPrefix = buildPendant(prefixes, DecoratorPendantPosition.outer, status, spacing: spacing.outerRowSpacing);
+    final outerSuffix = buildPendant(suffixes, DecoratorPendantPosition.outer, status, spacing: spacing.outerRowSpacing);
+    final outerFooter = buildPendant(footers, DecoratorPendantPosition.outer, status,
+        spacing: spacing.outerFooterSpacing, direction: direction.outerFooters);
     Widget current = buildInner(status);
     if (outerPrefix != null || outerSuffix != null) {
-      current = Row(mainAxisSize: MainAxisSize.min, children: [
+      current = Row(spacing: spacing.outerRowSpacing, mainAxisSize: MainAxisSize.min, children: [
         if (outerPrefix != null) outerPrefix,
         expanded ? Expanded(child: current) : current,
         if (outerSuffix != null) outerSuffix,
       ]);
     }
     if (outerHeader != null || outerFooter != null) {
-      current = Column(mainAxisSize: MainAxisSize.min, children: [
+      current = Column(spacing: spacing.outerColumnSpacing, mainAxisSize: MainAxisSize.min, children: [
         if (outerHeader != null) outerHeader,
         current,
         if (outerFooter != null) outerFooter,
@@ -206,25 +312,24 @@ class DecoratorBox<T> extends StatelessWidget {
     return current;
   }
 
+  /// inner
   Widget buildInner(DecoratorBoxStatus<T> status) {
-    final innerHeader =
-        buildPendant(headers, DecoratorPendantPosition.inner, status);
-    final innerPrefix =
-        buildPendant(prefixes, DecoratorPendantPosition.inner, status);
-    final innerSuffix =
-        buildPendant(suffixes, DecoratorPendantPosition.inner, status);
-    final innerFooter =
-        buildPendant(footers, DecoratorPendantPosition.inner, status);
+    final innerHeader = buildPendant(headers, DecoratorPendantPosition.inner, status,
+        spacing: spacing.innerHeaderSpacing, direction: direction.innerHeaders);
+    final innerPrefix = buildPendant(prefixes, DecoratorPendantPosition.inner, status, spacing: spacing.innerRowSpacing);
+    final innerSuffix = buildPendant(suffixes, DecoratorPendantPosition.inner, status, spacing: spacing.innerRowSpacing);
+    final innerFooter = buildPendant(footers, DecoratorPendantPosition.inner, status,
+        spacing: spacing.innerFooterSpacing, direction: direction.innerFooters);
     Widget current = child;
     if (innerPrefix != null || innerSuffix != null) {
-      current = Row(mainAxisSize: MainAxisSize.min, children: [
+      current = Row(spacing: spacing.innerRowSpacing, mainAxisSize: MainAxisSize.min, children: [
         if (innerPrefix != null) innerPrefix,
         expanded ? Expanded(child: current) : current,
         if (innerSuffix != null) innerSuffix,
       ]);
     }
     if (innerHeader != null || innerFooter != null) {
-      current = Column(mainAxisSize: MainAxisSize.min, children: [
+      current = Column(spacing: spacing.innerColumnSpacing, mainAxisSize: MainAxisSize.min, children: [
         if (innerHeader != null) innerHeader,
         current,
         if (innerFooter != null) innerFooter,
@@ -233,8 +338,8 @@ class DecoratorBox<T> extends StatelessWidget {
     return decoration?.call(current, status) ?? current;
   }
 
-  Widget? buildPendant(List<DecoratorPendant<T>> list,
-      DecoratorPendantPosition positioned, DecoratorBoxStatus<T> status) {
+  Widget? buildPendant(List<DecoratorPendant<T>> list, DecoratorPendantPosition positioned, DecoratorBoxStatus<T> status,
+      {double spacing = 0, Axis direction = Axis.horizontal}) {
     final listPendant =
         list.where((element) => element.positioned == positioned);
     if (listPendant.isEmpty) return null;
@@ -271,8 +376,10 @@ class DecoratorBox<T> extends StatelessWidget {
     if (listPendant.length == 1) {
       return buildVisibilityPendant(listPendant.first);
     }
-    return Row(
+    return Flex(
+        spacing: spacing,
         mainAxisSize: MainAxisSize.min,
+        direction: direction,
         children: listPendant
             .map((pendant) => buildVisibilityPendant(pendant))
             .toList());
