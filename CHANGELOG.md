@@ -1,4 +1,4 @@
-## 11.5.1
+## 11.5.2
 
 * Add `spacing` and `direction` to `DecoratorBox()`
 * Change `DecoratorBoxBorder` to `noneBorder`

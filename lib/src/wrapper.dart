@@ -2,8 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-typedef WrapperSpinePathBuilder = Path Function(
-    Canvas canvas, SpineStyle style, Rect range);
+typedef WrapperSpinePathBuilder = Path Function(Canvas canvas, SpineStyle style, Rect range);
 
 enum SpineStyle { top, left, right, bottom }
 
@@ -144,8 +143,7 @@ class WrapperPainter extends CustomPainter {
       this.style = SpineStyle.left})
       : mPaint = Paint()
           ..color = color
-          ..style =
-              strokeWidth == null ? PaintingStyle.fill : PaintingStyle.stroke
+          ..style = strokeWidth == null ? PaintingStyle.fill : PaintingStyle.stroke
           ..strokeWidth = strokeWidth ?? 1;
 
   @override
@@ -166,12 +164,10 @@ class WrapperPainter extends CustomPainter {
           range = Rect.fromLTRB(-spineHeight, 0, 0, size.height);
           break;
         case SpineStyle.right:
-          range = Rect.fromLTRB(-spineHeight, 0, 0, size.height)
-              .translate(size.width, 0);
+          range = Rect.fromLTRB(-spineHeight, 0, 0, size.height).translate(size.width, 0);
           break;
         case SpineStyle.bottom:
-          range = Rect.fromLTRB(0, 0, size.width, spineHeight)
-              .translate(0, size.height - spineHeight);
+          range = Rect.fromLTRB(0, 0, size.width, spineHeight).translate(0, size.height - spineHeight);
           break;
       }
       if (spinePathBuilder != null) {
@@ -189,8 +185,7 @@ class WrapperPainter extends CustomPainter {
     }
   }
 
-  buildDefaultSpinePath(
-      Canvas canvas, double spineHeight, SpineStyle style, Size size) {
+  Path buildDefaultSpinePath(Canvas canvas, double spineHeight, SpineStyle style, Size size) {
     switch (style) {
       case SpineStyle.top:
         return _drawTop(size.width, size.height, canvas);
@@ -226,8 +221,7 @@ class WrapperPainter extends CustomPainter {
     var spineMoveY = spineHeight;
     if (spineHeight != 0) {
       return Path()
-        ..moveTo(
-            !formBottom ? offset : width - offset - spineHeight, lineHeight)
+        ..moveTo(!formBottom ? offset : width - offset - spineHeight, lineHeight)
         ..relativeLineTo(spineMoveX, spineMoveY)
         ..relativeLineTo(spineMoveX, -spineMoveY);
     }
@@ -254,16 +248,14 @@ class WrapperPainter extends CustomPainter {
     var spineMoveY = spineHeight * tan(angleRad / 2);
     if (spineHeight != 0) {
       return Path()
-        ..moveTo(
-            lineWidth, !formBottom ? offset : height - offset - spineHeight)
+        ..moveTo(lineWidth, !formBottom ? offset : height - offset - spineHeight)
         ..relativeLineTo(spineMoveX, spineMoveY)
         ..relativeLineTo(-spineMoveX, spineMoveY);
     }
     return Path();
   }
 
-  Path buildBoxBySpineStyle(
-      Canvas canvas, SpineStyle style, double width, double height) {
+  Path buildBoxBySpineStyle(Canvas canvas, SpineStyle style, double width, double height) {
     double lineHeight, lineWidth;
 
     switch (style) {
@@ -287,10 +279,7 @@ class WrapperPainter extends CustomPainter {
         break;
     }
 
-    Rect box = Rect.fromCenter(
-        center: Offset(lineWidth / 2, lineHeight / 2),
-        width: lineWidth,
-        height: lineHeight);
+    Rect box = Rect.fromCenter(center: Offset(lineWidth / 2, lineHeight / 2), width: lineWidth, height: lineHeight);
 
     return Path()..addRRect(RRect.fromRectXY(box, radius, radius));
   }

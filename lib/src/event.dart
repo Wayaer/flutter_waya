@@ -1,15 +1,13 @@
 import 'dart:async';
 
 class Event<T> {
-  Event({bool sync = false})
-      : _streamController = StreamController<T>.broadcast(sync: sync);
+  Event({bool sync = false}) : _streamController = StreamController<T>.broadcast(sync: sync);
 
   /// `EventBus.customController(StreamController<T> controller) : _streamController = controller;`
   StreamController<T> get streamController => _streamController;
 
-  Stream<dynamic> on<E>() => T == dynamic
-      ? streamController.stream
-      : streamController.stream.where((dynamic event) => event is T).cast<T>();
+  Stream<dynamic> on<E>() =>
+      T == dynamic ? streamController.stream : streamController.stream.where((dynamic event) => event is T).cast<T>();
 
   final StreamController<T> _streamController;
 
@@ -17,8 +15,7 @@ class Event<T> {
 
   void close() => _streamController.close();
 
-  void listen(void Function(dynamic event) onData) =>
-      _streamController.stream.listen(onData);
+  void listen(void Function(dynamic event) onData) => _streamController.stream.listen(onData);
 
   void error(Object error) => _streamController.addError(error);
 
@@ -26,41 +23,39 @@ class Event<T> {
 }
 
 class EventFactory {
-  factory EventFactory() => _getInstance();
+  factory EventFactory() => _instance;
 
-  EventFactory._internal() {
+  EventFactory._() {
     event = Event<dynamic>();
   }
 
-  static EventFactory? get instance => _getInstance();
+  static EventFactory get instance => _instance;
 
-  static EventFactory? _instance;
+  static final EventFactory _instance = EventFactory._();
 
   late Event<dynamic> event;
-
-  static EventFactory _getInstance() => _instance ??= EventFactory._internal();
 }
 
-void sendEvent(dynamic message) => EventFactory.instance!.event.send(message);
+void sendEvent(dynamic message) => EventFactory.instance.event.send(message);
 
-void eventDestroy() => EventFactory.instance!.event.close();
+void eventDestroy() => EventFactory.instance.event.close();
 
-void eventListen(void Function(dynamic event) onData) =>
-    EventFactory.instance!.event.listen(onData);
+void eventListen(void Function(dynamic event) onData) => EventFactory.instance.event.listen(onData);
 
 /// 订阅者回调签名
 typedef EventCallback = void Function(dynamic data);
 
 class EventBus {
-  factory EventBus() => _singleton ??= EventBus._();
+  factory EventBus() => _instance;
 
   EventBus._();
 
-  static EventBus? _singleton;
+  static final EventBus _instance = EventBus._();
+
+  static EventBus get instance => _instance;
 
   /// 保存事件订阅者队列，key:事件名(id)，value: 对应事件的订阅者队列
-  final Map<dynamic, List<EventCallback>?> _map =
-      <dynamic, List<EventCallback>>{};
+  final Map<dynamic, List<EventCallback>?> _map = <dynamic, List<EventCallback>>{};
 
   /// 添加订阅者
   void add(String eventName, EventCallback eventCallback) {
