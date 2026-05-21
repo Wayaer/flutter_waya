@@ -4,7 +4,7 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.6.0 <4.0.0'
+  sdk: '>=3.10.0 <4.0.0'
   flutter: '>=3.38.0'
 
 dependencies:
@@ -13,12 +13,12 @@ dependencies:
   flutter:
     sdk: flutter
   device_preview_minus: ^1.4.0
-  fl_extended: ^3.2.2
+  fl_extended: ^4.0.0
   flutter_waya:
     path: ../
 
 dev_dependencies:
-  flutter_lints: ^5.0.0
+  flutter_lints: ^6.0.0
 
 flutter:
   uses-material-design: true

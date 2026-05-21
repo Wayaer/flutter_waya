@@ -269,16 +269,16 @@ class DecoratorBox<T> extends StatelessWidget {
     Widget current = buildInner(status);
     if (outerPrefix != null || outerSuffix != null) {
       current = Row(spacing: spacing.outerRowSpacing, mainAxisSize: MainAxisSize.min, children: [
-        if (outerPrefix != null) outerPrefix,
+        ?outerPrefix,
         expanded ? Expanded(child: current) : current,
-        if (outerSuffix != null) outerSuffix,
+        ?outerSuffix,
       ]);
     }
     if (outerHeader != null || outerFooter != null) {
       current = Column(spacing: spacing.outerColumnSpacing, mainAxisSize: MainAxisSize.min, children: [
-        if (outerHeader != null) outerHeader,
+        ?outerHeader,
         current,
-        if (outerFooter != null) outerFooter,
+        ?outerFooter,
       ]);
     }
     return current;
@@ -294,16 +294,16 @@ class DecoratorBox<T> extends StatelessWidget {
     Widget current = child;
     if (innerPrefix != null || innerSuffix != null) {
       current = Row(spacing: spacing.innerRowSpacing, mainAxisSize: MainAxisSize.min, children: [
-        if (innerPrefix != null) innerPrefix,
+        ?innerPrefix,
         expanded ? Expanded(child: current) : current,
-        if (innerSuffix != null) innerSuffix,
+        ?innerSuffix,
       ]);
     }
     if (innerHeader != null || innerFooter != null) {
       current = Column(spacing: spacing.innerColumnSpacing, mainAxisSize: MainAxisSize.min, children: [
-        if (innerHeader != null) innerHeader,
+        ?innerHeader,
         current,
-        if (innerFooter != null) innerFooter,
+        ?innerFooter,
       ]);
     }
     return decoration?.call(current, status) ?? current;

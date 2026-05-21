@@ -1,3 +1,7 @@
+## 11.6.0
+
+* Update example
+
 ## 11.5.2
 
 * Add `spacing` and `direction` to `DecoratorBox()`

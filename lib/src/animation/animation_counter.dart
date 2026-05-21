@@ -86,7 +86,7 @@ class _AnimationCounterState extends ExtendedState<AnimationCounter>
     return ClipRect(
         child: AnimatedBuilder(
             animation: controller,
-            builder: (_, __) {
+            builder: (_, child) {
               if (value == preValue) {
                 return builder(value);
               } else if (widget.style == CounterStyle.part && !allChange) {
