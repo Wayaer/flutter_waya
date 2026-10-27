@@ -1,19 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/src/extended_state.dart';
+import 'package:flutter_waya/src/core/extended_state.dart';
 
-typedef ExpansionTilesBuilderListTile = Widget Function(BuildContext context,
-    VoidCallback expand, bool isExpanded, Widget? rotation);
+/// 头部构建器，参数为展开方法、当前是否展开以及旋转图标（未配置图标时为 null）
+typedef FlExpansionTilesBuilderListTile = Widget Function(
+  BuildContext context,
+  VoidCallback expand,
+  bool isExpanded,
+  Widget? rotation,
+);
 
-typedef ExpansionTilesRotationIconBuilder = Widget Function(bool isExpanded);
+/// 旋转图标构建器，参数为当前是否展开
+typedef FlExpansionTilesRotationIconBuilder = Widget Function(bool isExpanded);
 
-extension ExtensionExpansionTiles on Widget {
-  ExpansionTilesRotationIconBuilder get toExpansionTilesRotationIconBuilder =>
+/// 将任意 Widget 转换为旋转图标构建器
+extension FlExpansionTilesExtension on Widget {
+  FlExpansionTilesRotationIconBuilder get toExpansionTilesRotationIconBuilder =>
       (isExpanded) => this;
 }
 
-/// 展开收起
-class ExpansionTiles extends StatefulWidget {
-  const ExpansionTiles({
+/// 可展开收起的列表项，展开时以高度动画展示子内容
+class FlExpansionTiles extends StatefulWidget {
+  const FlExpansionTiles({
     super.key,
     required this.builder,
     this.children = const [],
@@ -26,39 +33,38 @@ class ExpansionTiles extends StatefulWidget {
     this.icon,
   });
 
-  /// 初始状态是否展开，
+  /// 初始是否展开，默认 false
   final bool isExpanded;
 
-  /// 构造器
-  final ExpansionTilesBuilderListTile builder;
+  /// 头部构建器
+  final FlExpansionTilesBuilderListTile builder;
 
-  /// 旋转的图标
-  final ExpansionTilesRotationIconBuilder? icon;
+  /// 旋转图标构建器，展开时旋转 0.5 圈
+  final FlExpansionTilesRotationIconBuilder? icon;
 
-  /// 展开或关闭监听
+  /// 展开或收起状态变化回调
   final ValueChanged<bool>? onExpansionChanged;
 
-  /// 子元素，
+  /// 展开区域包含的多个子组件
   final List<Widget> children;
 
-  /// 子元素，
+  /// 展开区域的自定义子组件，优先级高于 [children]
   final Widget? child;
 
-  /// 展开时的背景颜色，
+  /// 展开时的背景颜色
   final Color? backgroundColor;
 
-  /// 展开时长
+  /// 展开动画时长，默认 200 毫秒
   final Duration duration;
 
-  /// 动画曲线
+  /// 展开动画曲线，默认 [Curves.fastOutSlowIn]
   final Curve curve;
 
   @override
-  State<ExpansionTiles> createState() => _ExpansionTilesState();
+  State<FlExpansionTiles> createState() => _ExpansionTilesState();
 }
 
-class _ExpansionTilesState extends ExtendedState<ExpansionTiles>
-    with SingleTickerProviderStateMixin {
+class _ExpansionTilesState extends FlExtendedState<FlExpansionTiles> with SingleTickerProviderStateMixin {
   late AnimationController controller;
   Animation<double>? iconTurns;
   late Animation<double> heightFactor;
@@ -77,8 +83,7 @@ class _ExpansionTilesState extends ExtendedState<ExpansionTiles>
   void initTween() {
     heightFactor = controller.drive(CurveTween(curve: widget.curve));
     if (widget.icon != null) {
-      iconTurns = controller.drive(Tween<double>(begin: 0.0, end: 0.5)
-          .chain(CurveTween(curve: widget.curve)));
+      iconTurns = controller.drive(Tween<double>(begin: 0.0, end: 0.5).chain(CurveTween(curve: widget.curve)));
     }
   }
 
@@ -99,34 +104,47 @@ class _ExpansionTilesState extends ExtendedState<ExpansionTiles>
   Widget build(BuildContext context) {
     final bool closed = !isExpanded && controller.isDismissed;
     return AnimatedBuilder(
-        animation: controller.view,
-        builder: (_, Widget? child) {
-          final icon = widget.icon?.call(isExpanded);
-          final current = Column(mainAxisSize: MainAxisSize.min, children: [
+      animation: controller.view,
+      builder: (_, Widget? child) {
+        final icon = widget.icon?.call(isExpanded);
+        final current = Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
             widget.builder(
-                context,
-                handleExpanded,
-                isExpanded,
-                icon == null || iconTurns == null
-                    ? null
-                    : RotationTransition(turns: iconTurns!, child: icon)),
+              context,
+              handleExpanded,
+              isExpanded,
+              icon == null || iconTurns == null ? null : RotationTransition(turns: iconTurns!, child: icon),
+            ),
             ClipRect(
-                child: Align(heightFactor: heightFactor.value, child: child))
-          ]);
-          if (widget.backgroundColor == null || !isExpanded) return current;
-          return ColoredBox(color: widget.backgroundColor!, child: current);
-        },
-        child:
-            closed ? null : widget.child ?? Column(children: widget.children));
+              child: Align(heightFactor: heightFactor.value, child: child),
+            ),
+          ],
+        );
+        if (widget.backgroundColor == null || !isExpanded) return current;
+
+        // 透明 Material 作为最近祖先，避免 ColoredBox 遮挡 ListTile 背景与 ink
+        return ColoredBox(
+          color: widget.backgroundColor!,
+          child: Material(type: MaterialType.transparency, child: current),
+        );
+      },
+      child: closed ? null : widget.child ?? Column(children: widget.children),
+    );
   }
 
   @override
-  void didUpdateWidget(covariant ExpansionTiles oldWidget) {
+  void didUpdateWidget(covariant FlExpansionTiles oldWidget) {
     super.didUpdateWidget(oldWidget);
     controller.duration = widget.duration;
     initTween();
-    if (widget.isExpanded != isExpanded) {
-      handleExpanded();
+    if (oldWidget.isExpanded != widget.isExpanded && widget.isExpanded != isExpanded) {
+      isExpanded = widget.isExpanded;
+      if (isExpanded) {
+        controller.forward();
+      } else {
+        controller.reverse();
+      }
     }
   }
 

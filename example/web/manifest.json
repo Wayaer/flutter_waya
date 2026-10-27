@@ -1,6 +1,6 @@
 {
-    "name": "Waya",
-    "short_name": "Waya",
+    "name": "FlutterWaya",
+    "short_name": "FlutterWaya",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

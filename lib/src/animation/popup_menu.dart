@@ -1,78 +1,85 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_waya/flutter_waya.dart';
+import 'package:flutter_waya/src/animation/toggle_rotate.dart';
 
-typedef MultiPopupMenuButtonItemBuilder<K, V> = Widget Function(
-    BuildContext context,
-    K key,
-    V? value,
-    VoidCallback onOpened,
-    VoidCallback onCanceled,
-    PopupMenuItemSelected<V> onSelected);
+/// 菜单项构建器，提供 key、当前 value 以及打开、取消、选中回调
+typedef FlMultiPopupMenuButtonItemBuilder<K, V> = Widget Function(
+  BuildContext context,
+  K key,
+  V? value,
+  VoidCallback onOpened,
+  VoidCallback onCanceled,
+  PopupMenuItemSelected<V> onSelected,
+);
 
-class MultiPopupMenuButtonItem<K, V> {
-  MultiPopupMenuButtonItem({
-    required this.key,
-    this.value,
-    required this.builder,
-  });
+/// 多菜单按钮中的单个菜单项配置
+class FlMultiPopupMenuButtonItem<K, V> {
+  FlMultiPopupMenuButtonItem({required this.key, this.value, required this.builder});
 
-  final MultiPopupMenuButtonItemBuilder<K, V> builder;
+  /// 菜单项构建器
+  final FlMultiPopupMenuButtonItemBuilder<K, V> builder;
 
-  /// key
+  /// 菜单项唯一标识
   final K key;
 
-  /// value
+  /// 菜单项当前选中的值
   V? value;
 }
 
-typedef MultiPopupMenuButtonValueCallbackKV<K, V> = void Function(
-    BuildContext context, K key, V value);
+/// 菜单项回调，回传上下文、key 与选中的值
+typedef FlMultiPopupMenuButtonValueCallbackKV<K, V> = void Function(BuildContext context, K key, V value);
 
-/// 多个 [PopupMenuButton] 旋转 Builder
-class MultiPopupMenuButton<K, V> extends StatelessWidget {
-  const MultiPopupMenuButton({
-    super.key,
-    required this.menus,
-    this.onOpened,
-    this.onSelected,
-    this.onCanceled,
-  });
+/// 一行内并排多个菜单按钮，常用于带旋转箭头的多级菜单入口
+class FlMultiPopupMenuButton<K, V> extends StatefulWidget {
+  const FlMultiPopupMenuButton({super.key, required this.menus, this.onOpened, this.onSelected, this.onCanceled});
 
-  /// 菜单
-  final List<MultiPopupMenuButtonItem<K, V>> menus;
+  /// 菜单项列表
+  final List<FlMultiPopupMenuButtonItem<K, V>> menus;
 
-  /// onOpened
-  final MultiPopupMenuButtonValueCallbackKV<K, V?>? onOpened;
+  /// 菜单打开回调
+  final FlMultiPopupMenuButtonValueCallbackKV<K, V?>? onOpened;
 
-  /// onCanceled
-  final MultiPopupMenuButtonValueCallbackKV<K, V?>? onCanceled;
+  /// 菜单取消回调
+  final FlMultiPopupMenuButtonValueCallbackKV<K, V?>? onCanceled;
 
-  /// onSelected
-  final MultiPopupMenuButtonValueCallbackKV<K, V?>? onSelected;
+  /// 菜单选中回调
+  final FlMultiPopupMenuButtonValueCallbackKV<K, V?>? onSelected;
 
   @override
+  State<FlMultiPopupMenuButton<K, V>> createState() => _MultiPopupMenuButtonState<K, V>();
+}
+
+class _MultiPopupMenuButtonState<K, V> extends State<FlMultiPopupMenuButton<K, V>> {
+  @override
   Widget build(BuildContext context) {
-    final children = menus.map((entry) {
-      return entry.builder(context, entry.key, entry.value, () {
-        onOpened?.call(context, entry.key, entry.value);
-      }, () {
-        onCanceled?.call(context, entry.key, entry.value);
-      }, (V? value) {
-        entry.value = value;
-        onSelected?.call(context, entry.key, value);
-      });
+    final children = widget.menus.map((entry) {
+      return entry.builder(
+        context,
+        entry.key,
+        entry.value,
+        () => widget.onOpened?.call(context, entry.key, entry.value),
+        () => widget.onCanceled?.call(context, entry.key, entry.value),
+        (V? value) {
+          entry.value = value;
+          widget.onSelected?.call(context, entry.key, value);
+          setState(() {});
+        },
+      );
     }).toList();
-    return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround, children: children);
+    return Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: children);
   }
 }
 
-typedef PopupMenuButtonBuilder = Widget Function(BuildContext context,
-    Widget rotateIcon, VoidCallback onOpened, VoidCallback onClosed);
+/// 菜单按钮构建器，提供旋转图标、打开与关闭回调
+typedef FlPopupMenuButtonBuilder = Widget Function(
+  BuildContext context,
+  Widget rotateIcon,
+  VoidCallback onOpened,
+  VoidCallback onClosed,
+);
 
-/// [PopupMenuButton] 旋转 Builder
-class PopupMenuButtonRotateBuilder extends StatelessWidget {
-  const PopupMenuButtonRotateBuilder({
+/// 带旋转图标的菜单按钮，打开菜单时图标旋转
+class FlPopupMenuButtonRotateBuilder extends StatelessWidget {
+  const FlPopupMenuButtonRotateBuilder({
     super.key,
     required this.builder,
     required this.icon,
@@ -86,49 +93,46 @@ class PopupMenuButtonRotateBuilder extends StatelessWidget {
     this.onChanged,
   });
 
-  /// 旋转的icon
-  final ToggleRotateIconBuilder icon;
+  /// 旋转图标构建器
+  final FlToggleRotateIconBuilder icon;
 
-  /// 初始是否旋转
+  /// 初始是否处于旋转状态，默认 false
   final bool isRotate;
 
-  /// builder PopupMenuButton
-  final PopupMenuButtonBuilder builder;
+  /// 菜单按钮构建器
+  final FlPopupMenuButtonBuilder builder;
 
-  /// 旋转圈数
-  /// 1 = 一圈    0.5 = 半圈    2 = 两圈
+  /// 旋转圈数，1 = 一圈，0.5 = 半圈，2 = 两圈，默认 0.5
   final double turns;
 
-  /// 动画时长
+  /// 旋转动画时长，默认 200 毫秒
   final Duration animationDuration;
 
-  /// 是否顺时针旋转
+  /// 是否顺时针旋转，默认 true
   final bool clockwise;
 
-  /// 动画曲线
+  /// 旋转动画曲线，默认 [Curves.fastOutSlowIn]
   final Curve curve;
 
-  /// 关闭时是否需要重建
+  /// 关闭菜单时是否需要重建，默认 true
   final bool closedNeedsBuild;
 
-  /// 打开时是否需要重建
+  /// 打开菜单时是否需要重建，默认 false
   final bool openedNeedsBuild;
 
-  /// 变化监听
-  final ToggleRotateCallback? onChanged;
+  /// 旋转状态变化回调
+  final FlToggleRotateCallback? onChanged;
 
   @override
-  Widget build(BuildContext context) => ToggleRotate(
-      turns: turns,
-      duration: animationDuration,
-      clockwise: clockwise,
-      curve: curve,
-      isRotate: isRotate,
-      icon: icon,
-      onChanged: onChanged,
-      builder: (Widget child, ToggleRotateHandleRotation rotate) => builder(
-          context,
-          child,
-          () => rotate(needsBuild: openedNeedsBuild),
-          () => rotate(needsBuild: closedNeedsBuild)));
+  Widget build(BuildContext context) => FlToggleRotate(
+    turns: turns,
+    duration: animationDuration,
+    clockwise: clockwise,
+    curve: curve,
+    isRotate: isRotate,
+    icon: icon,
+    onChanged: onChanged,
+    builder: (Widget child, FlToggleRotateHandleRotation rotate) =>
+        builder(context, child, () => rotate(needsBuild: openedNeedsBuild), () => rotate(needsBuild: closedNeedsBuild)),
+  );
 }

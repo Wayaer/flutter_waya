@@ -1,0 +1,8 @@
+# 构建产物与本地环境，不进入 pub 发布包
+build/
+example/build/
+example/app/web/
+example/.dart_tool/
+example/ios/Flutter/ephemeral/
+example/ios/Pods/
+example/ios/.symlinks/

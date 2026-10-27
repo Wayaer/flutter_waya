@@ -1,8 +1,11 @@
+cd "$(dirname "$0")" || exit 1
+
 rm -rf 'app/web'
+mkdir -p 'app'
 
 echo "开始获取 packages 插件资源"
 
-flutter packages get
+flutter pub get
 
 echo "开始构建 web"
 

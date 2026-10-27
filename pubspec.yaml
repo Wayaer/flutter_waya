@@ -1,11 +1,18 @@
 name: flutter_waya
-description: The Flutter UI library contains multiple custom src,compatible with android,web,ios and MAC.
-version: 11.6.0
+description: A lightweight Flutter UI library with animation, progress, paging, input, display and timing widgets.
+version: 12.0.0
 repository: https://github.com/Wayaer/flutter_waya
+issue_tracker: https://github.com/Wayaer/flutter_waya/issues
+topics:
+  - flutter
+  - widgets
+  - ui
+  - animation
+  - components
 
 environment:
-  sdk: '>=3.10.0 <4.0.0'
-  flutter: '>=3.38.0'
+  sdk: '>=3.13.0 <4.0.0'
+  flutter: '>=3.47.0'
 
 dependencies:
   flutter:
@@ -13,3 +20,5 @@ dependencies:
 
 dev_dependencies:
   flutter_lints: ^6.0.0
+  flutter_test:
+    sdk: flutter
